@@ -51,9 +51,8 @@ HEADERS += \
         sqldbwriter.h \
         websocketcontroller.h
 
-include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
 include($$PWD/../ClientProtocol/ClientProtocol.pri)
-include($$PWD/../../SnakeUtils/SnakeUtils.pri)
 
 RESOURCES += sqlres.qrc

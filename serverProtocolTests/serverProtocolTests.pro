@@ -19,11 +19,10 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
 include($$PWD/../ClientProtocol/ClientProtocol.pri)
-include($$PWD/../../SnakeUtils/SnakeUtils.pri)
-include($$PWD/../../SnakeServer/Server/Server.pri)
+include($$PWD/../Server/Server.pri)
 
 
 HEADERS += \

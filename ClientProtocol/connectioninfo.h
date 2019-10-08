@@ -1,10 +1,11 @@
 #ifndef CONNECTIONINFO_H
 #define CONNECTIONINFO_H
 
-#include "rsakeyspool.h"
 #include "clientprotocol_global.h"
 
-class QTcpSocket;
+#include <QByteArray>
+
+class QAbstractSocket;
 namespace ClientProtocol {
 
 #define NOT_VALID_CARMA 0xFF
@@ -14,9 +15,8 @@ namespace ClientProtocol {
 
 class CLIENTPROTOCOLSHARED_EXPORT Connectioninfo {
 
-    QTcpSocket *sct = nullptr;
+    QAbstractSocket *sct = nullptr;
     int karma = DEFAULT_KARMA;
-    RSAKeyPair RSAKey;
     QByteArray token;
 
 public:
@@ -28,17 +28,14 @@ public:
 
     bool isValid() const;
 
-    Connectioninfo(QTcpSocket * tcp = nullptr,
-                   int kar = NOT_VALID_CARMA,
-                   RSAKeyPair keys = RSAKeyPair());
+    Connectioninfo(QAbstractSocket * tcp = nullptr,
+                   int kar = NOT_VALID_CARMA);
     ~Connectioninfo();
 
     int getKarma() const;
     void setKarma(int value);
-    RSAKeyPair getRSAKey() const;
-    void setRSAKey(const RSAKeyPair &value);
-    QTcpSocket *getSct() const;
-    void setSct(QTcpSocket *value);
+    QAbstractSocket *getSct() const;
+    void setSct(QAbstractSocket *value);
     QByteArray getToken() const;
     void setToken(const QByteArray &value);
 };

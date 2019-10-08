@@ -9,7 +9,7 @@ class Item;
 class PlayerDBData;
 
 namespace ClientProtocol {
-    class Server;
+    class BaseServer;
 }
 
 template <class KEY_TYPE, class VALUE_TYPE>
@@ -22,13 +22,13 @@ private:
     MultiHash<char, quint32> _subscribs;
     MultiHash<int, quint32> _subscribsObjIds;
 
-    ClientProtocol::Server *_serverDaemon = nullptr;
+    ClientProtocol::BaseServer *_serverDaemon = nullptr;
 
     void foreachSubscribers(const Item &newData, const QSet<quint32> &subscribersList);
     void foreachSubscribers(const PlayerDBData &newData, const QSet<quint32> &subscribersList);
 
 public:
-    WebSocketController(ClientProtocol::Server * server, QObject* obj = nullptr);
+    WebSocketController(ClientProtocol::BaseServer * server, QObject* obj = nullptr);
     void subscribe(quint32 address, ClientProtocol::Command cmd, int id);
     void unsubscribe(quint32 address, ClientProtocol::Command cmd, int id);
 public slots:

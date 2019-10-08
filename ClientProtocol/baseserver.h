@@ -4,7 +4,6 @@
 #include "clientprotocol.h"
 
 #include <QTcpServer>
-#include "rsakeyspool.h"
 #include "connectioninfo.h"
 
 namespace ClientProtocol {
@@ -14,22 +13,20 @@ namespace ClientProtocol {
 #define REQUEST_ERROR   -5
 
 
-class CLIENTPROTOCOLSHARED_EXPORT Server : public QTcpServer
+class CLIENTPROTOCOLSHARED_EXPORT BaseServer : public QTcpServer
 {
     Q_OBJECT
 private:
     Package _downloadPackage;
     QHash<quint32, Connectioninfo*> _connections;
 
-    RSAKeysPool * _pool = nullptr;
-    bool parsePackage(const Package &pkg, QTcpSocket * sender);
-    bool sendPackage(const Package &pkg, QTcpSocket * target);
-    bool registerSocket(QTcpSocket *socket);
+    bool parsePackage(const Package &pkg, QAbstractSocket * sender);
+    bool sendPackage(const Package &pkg, QAbstractSocket *target);
+    bool registerSocket(QAbstractSocket *socket);
     bool changeKarma(quint32 addresss, int diff);
     inline bool isBaned(const QTcpSocket *) const;
 
     int connectionsCount() const;
-    bool sendPubKey(QTcpSocket *target, const QByteArray &pubKey);
 
 
 private slots:
@@ -39,8 +36,8 @@ private slots:
     void handleIncommingConnection();
 
 public:
-    explicit Server(RSAKeysPool * pool, QObject * ptr = nullptr);
-    ~Server() override;
+    explicit BaseServer(QObject * ptr = nullptr);
+    ~BaseServer() override;
     bool run(const QString& ip, unsigned short port);
     void stop(bool reset = false);
 
@@ -68,7 +65,6 @@ public:
 
     QStringList baned() const;
 
-    bool getRSA(quint32, RSAKeyPair & res) const;
     QByteArray getToken(quint32 address) const;
     bool setToken(quint32 address, const QByteArray &token);
 

@@ -10,7 +10,7 @@ namespace ServerProtocol {
 }
 
 namespace ClientProtocol {
-    class Server;
+    class BaseServer;
     class BaseNetworkObject;
     class Login;
     class RSAKeyPair;
@@ -25,7 +25,7 @@ class SERVERSHARED_EXPORT MainServer: public QObject
     Q_OBJECT
 private:
     ServerProtocol::Server *_terminalPort = nullptr;
-    ClientProtocol::Server *_serverDaemon= nullptr;
+    ClientProtocol::BaseServer *_serverDaemon= nullptr;
     SqlDBCache *_db = nullptr;
     KeysReactor *_keyReactor = nullptr;
     WebSocketController* _websocketctrl = nullptr;

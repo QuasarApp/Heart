@@ -1,4 +1,4 @@
-#include "client.h"
+#include "baseclient.h"
 #include <QRegularExpression>
 #include <QTcpSocket>
 #include <QVariantMap>
@@ -18,7 +18,7 @@
 #define SOLT "SNAKE"
 namespace ClientProtocol {
 
-Command Client::checkCommand(int sig, Command reqCmd, Type type) {
+Command BaseClient::checkCommand(int sig, Command reqCmd, Type type) {
 
 #define idx static_cast<quint8>(sig)
 
@@ -37,7 +37,7 @@ Command Client::checkCommand(int sig, Command reqCmd, Type type) {
     return expCmd;
 }
 
-void Client::updateStatuses(Command extCmd, Command cmd, Type type, const QByteArray& obj)
+void BaseClient::updateStatuses(Command extCmd, Command cmd, Type type, const QByteArray& obj)
 {
     setOnlineStatus(extCmd != Command::Undefined && type == Type::Responke);
 
@@ -58,7 +58,7 @@ void Client::updateStatuses(Command extCmd, Command cmd, Type type, const QByteA
     }
 }
 
-bool Client::receiveData(const QByteArray &obj, Header hdr) {
+bool BaseClient::receiveData(const QByteArray &obj, Header hdr) {
 
     auto command = static_cast<Command>(hdr.command);
     auto requesCommand = static_cast<Command>(hdr.requestCommand);
@@ -91,7 +91,7 @@ bool Client::receiveData(const QByteArray &obj, Header hdr) {
     return true;
 }
 
-bool Client::setRSAKey(const QByteArray& key) {
+bool BaseClient::setRSAKey(const QByteArray& key) {
     bool newStatus = QRSAEncryption::isValidRsaKey(key);
     setOnlineStatus(newStatus);
 
@@ -102,14 +102,14 @@ bool Client::setRSAKey(const QByteArray& key) {
     return newStatus;
 }
 
-void Client::setLoginStatus(bool newStatus) {
+void BaseClient::setLoginStatus(bool newStatus) {
     if (newStatus != _logined) {
         _logined = newStatus;
         emit loginChanged(_logined);
     }
 }
 
-void Client::setOnlineStatus(bool newOnline) {
+void BaseClient::setOnlineStatus(bool newOnline) {
     if (newOnline != _online) {
         _online = newOnline;
         emit onlineChanged(_online);
@@ -120,7 +120,7 @@ void Client::setOnlineStatus(bool newOnline) {
     }
 }
 
-void Client::incommingData() {
+void BaseClient::incommingData() {
     auto array = _destination->readAll();
 
     if (_downloadPackage.hdr.isValid()) {
@@ -142,24 +142,24 @@ void Client::incommingData() {
     }
 }
 
-void Client::handleDisconnected() {
+void BaseClient::handleDisconnected() {
     setOnlineStatus(false);
 }
 
-Client::Client(const QString &addrress, unsigned short port, QObject *ptr):
+BaseClient::BaseClient(const QString &addrress, unsigned short port, QObject *ptr):
     QObject (ptr) {
 
     _destination = new QTcpSocket(this);
     connectToHost(addrress, port);
 
     connect(_destination, &QTcpSocket::readyRead,
-            this, &Client::incommingData);
+            this, &BaseClient::incommingData);
 
     connect(_destination, &QTcpSocket::disconnected,
-            this, &Client::handleDisconnected);
+            this, &BaseClient::handleDisconnected);
 }
 
-bool Client::sendPackage(Package &pkg) {
+bool BaseClient::sendPackage(Package &pkg) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -184,11 +184,11 @@ bool Client::sendPackage(Package &pkg) {
     return sendet;
 }
 
-unsigned char Client::nextIndex() {
+unsigned char BaseClient::nextIndex() {
     return static_cast<unsigned char>((currentIndex++) % 256);
 }
 
-bool Client::ping() {
+bool BaseClient::ping() {
 
     Package pcg;
 
@@ -206,12 +206,12 @@ bool Client::ping() {
 
 ///  Do not change the order of this function,
 ///  as this may lead to the loss of user accounts.
-QByteArray Client::generateHash(const QByteArray& pass) const {
+QByteArray BaseClient::generateHash(const QByteArray& pass) const {
     auto passHash = QCryptographicHash::hash(pass, QCryptographicHash::Sha256);
     return QCryptographicHash::hash(SOLT + passHash, QCryptographicHash::Sha256);
 }
 
-bool Client::login(const QString &gmail, const QByteArray &pass, bool newUser) {
+bool BaseClient::login(const QString &gmail, const QByteArray &pass, bool newUser) {
     if (!pass.size()) {
         return false;
     }
@@ -249,30 +249,30 @@ bool Client::login(const QString &gmail, const QByteArray &pass, bool newUser) {
     return true;
 }
 
-bool Client::registration(const QString &gmail,
+bool BaseClient::registration(const QString &gmail,
                           const QByteArray &pass) {
     return login(gmail, pass, true);
 }
 
-void Client::loginOut() {
+void BaseClient::loginOut() {
     _token = "";
     setLoginStatus(false);
 }
 
-void Client::dissconnectFromHost() {
+void BaseClient::dissconnectFromHost() {
     loginOut();
     _destination->disconnectFromHost();
 }
 
-void Client::connectToHost(const QString &address, unsigned short port) {
+void BaseClient::connectToHost(const QString &address, unsigned short port) {
     _destination->connectToHost(_address = address, _port = port);
 }
 
-void Client::reconnectToHost() {
+void BaseClient::reconnectToHost() {
     _destination->connectToHost(_address, _port);
 }
 
-bool Client::updateData() {
+bool BaseClient::updateData() {
 
     if (!isLogin()) {
         return false;
@@ -299,7 +299,7 @@ bool Client::updateData() {
     return true;
 }
 
-bool Client::savaData(const QList<int>& gameData) {
+bool BaseClient::savaData(const QList<int>& gameData) {
     if (!isLogin()) {
         return false;
     }
@@ -326,7 +326,7 @@ bool Client::savaData(const QList<int>& gameData) {
     return true;
 }
 
-bool Client::getItem(int id) {
+bool BaseClient::getItem(int id) {
 
     if (!isLogin()) {
         return false;
@@ -357,7 +357,7 @@ bool Client::getItem(int id) {
     return true;
 }
 
-bool Client::getPlayer(int id){
+bool BaseClient::getPlayer(int id){
     if (!isLogin()) {
         return false;
     }
@@ -387,15 +387,15 @@ bool Client::getPlayer(int id){
     return true;
 }
 
-const bool& Client::isOnline() const {
+const bool& BaseClient::isOnline() const {
     return _online;
 }
 
-const bool& Client::isLogin() const {
+const bool& BaseClient::isLogin() const {
     return _logined;
 }
 
-bool Client::setSubscribe(Command cmd, bool subscribe, int id) {
+bool BaseClient::setSubscribe(Command cmd, bool subscribe, int id) {
     if (!isLogin()) {
         return false;
     }
@@ -430,7 +430,7 @@ bool Client::setSubscribe(Command cmd, bool subscribe, int id) {
     return true;
 }
 
-QHash<quint8, bool> Client::getSubscribe() const {
+QHash<quint8, bool> BaseClient::getSubscribe() const {
     return _subscribe;
 }
 

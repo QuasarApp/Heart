@@ -38,54 +38,23 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-#include($$PWD/../../QuasarAppLib/QuasarLib.pri)
-include($$PWD/../../SnakeUtils/SnakeUtils.pri)
+include($$PWD/../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
 
 
 SOURCES += \
-        Objects/basenetworkobject.cpp \
-        Objects/map.cpp \
-        Objects/objdata.cpp \
-        Objects/pubkey.cpp \
-        Objects/snake.cpp \
-        Objects/websocket.cpp \
+        baseclient.cpp \
+        baseserver.cpp \
         clientprotocol.cpp \
-        client.cpp \
-        Objects/gamedata.cpp \
-        Objects/getitem.cpp \
-        Objects/login.cpp \
-        networkclasssize.cpp \
-        Objects/player.cpp \
-        rsakeyspool.cpp \
-        server.cpp \
-        factorynetobjects.cpp \
-        connectioninfo.cpp \
-        Objects/updateplayerdata.cpp
+        connectioninfo.cpp
 
 
 HEADERS += \
-        Objects/basenetworkobject.h \
-        Objects/map.h \
-        Objects/objdata.h \
-        Objects/pubkey.h \
-        Objects/snake.h \
-        Objects/websocket.h \
+        baseclient.h \
+        baseserver.h \
         clientprotocol.h \
         clientprotocol_global.h \
-        Objects/gamedata.h \
-        Objects/getitem.h \
-        Objects/login.h \
-        networkclasssize.h \
-        client.h \
-        Objects/player.h \
-        rsakeyspool.h \
-        server.h \
-        cp.h \
         config.h \
-        factorynetobjects.h \
-        connectioninfo.h \
-        cpserver.h \
-        Objects/updateplayerdata.h
+        connectioninfo.h
 
 include($$PWD/ClientProtocolIncludes.pri)

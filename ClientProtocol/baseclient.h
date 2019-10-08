@@ -14,32 +14,20 @@ class testSankeServer;
 namespace ClientProtocol {
 
 
-class CLIENTPROTOCOLSHARED_EXPORT Client: public QObject
+class CLIENTPROTOCOLSHARED_EXPORT BaseClient: public QObject
 {
     Q_OBJECT
 private:
     QTcpSocket *_destination;
     Package _downloadPackage;
-    bool _online = false;
-    bool _logined = false;
     QByteArray _token;
-    QByteArray _rsaKey;
     int currentIndex = 0;
     QHash<unsigned char, QVariantMap> _requestsMap;
     QHash<quint8, bool> _subscribe; // command and data confirmation
     QString _address = LOCAL_SNAKE_SERVER;
     unsigned short _port = DEFAULT_SNAKE_PORT;
 
-    /**
-     * @brief checkCommand - return old sendet command if commnad not valid return undefined command
-     * @param sig - sig package
-     * @param reqCmd - reqCmd of package
-     * @param type - type of package
-     * @return if commnad not valid return undefined command
-     */
-    Command checkCommand(int sig, Command reqCmd, Type type);
     bool receiveData(const QByteArray &obj, Header hdr);
-    bool setRSAKey(const QByteArray &key);
     void setLoginStatus(bool newStatus);
     void setOnlineStatus(bool newStatus);
     bool sendPackage(Package &pkg);
@@ -47,8 +35,6 @@ private:
 
 
     QByteArray generateHash(const QByteArray &pass) const;
-
-    void updateStatuses(Command extCmd, Command cmd, Type type, const QByteArray &obj);
 
 private slots:
     void incommingData();
@@ -59,7 +45,7 @@ protected:
 
 
 public:
-    explicit Client(const QString& addrress = LOCAL_SNAKE_SERVER,
+    explicit BaseClient(const QString& addrress = LOCAL_SNAKE_SERVER,
                     unsigned short port = DEFAULT_SNAKE_PORT,
                     QObject * ptr = nullptr);
 

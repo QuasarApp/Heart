@@ -269,13 +269,13 @@ MainServer::MainServer(bool forceKeys ,QObject *ptr):
     QObject (ptr) {
 
     _keyReactor = new KeysReactor(forceKeys , this);
-    _serverDaemon = new  ClientProtocol::Server(_keyReactor->getPool(), this);
+    _serverDaemon = new  ClientProtocol::BaseServer(_keyReactor->getPool(), this);
     _websocketctrl = new WebSocketController(_serverDaemon, this);
     _terminalPort = new  ServerProtocol::Server(this);
 
     _db = new SqlDBCache();
 
-    connect(_serverDaemon, &ClientProtocol::Server::incomingReques,
+    connect(_serverDaemon, &ClientProtocol::BaseServer::incomingReques,
             this, &MainServer::handleRequest);
 
     connect(_terminalPort, &ServerProtocol::Server::incomingRequest,

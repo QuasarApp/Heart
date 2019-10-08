@@ -3,7 +3,7 @@
 #include "websocketcontroller.h"
 #include <cpserver.h>
 
-WebSocketController::WebSocketController(ClientProtocol::Server *server, QObject* obj):
+WebSocketController::WebSocketController(ClientProtocol::BaseServer *server, QObject* obj):
     QObject (obj) {
 
     assert( server );

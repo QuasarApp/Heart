@@ -16,19 +16,11 @@ void Connectioninfo::setKarma(int value) {
     }
 }
 
-RSAKeyPair Connectioninfo::getRSAKey() const {
-    return RSAKey;
-}
-
-void Connectioninfo::setRSAKey(const RSAKeyPair &value) {
-    RSAKey = value;
-}
-
-QTcpSocket *Connectioninfo::getSct() const {
+QAbstractSocket *Connectioninfo::getSct() const {
     return sct;
 }
 
-void Connectioninfo::setSct(QTcpSocket *value) {
+void Connectioninfo::setSct(QAbstractSocket *value) {
     sct = value;
 }
 
@@ -63,13 +55,12 @@ void Connectioninfo::unBan() {
 }
 
 bool Connectioninfo::isValid() const {
-    return sct && !RSAKey.pub.isEmpty() && !RSAKey.priv.isEmpty();
+    return sct;
 }
 
-Connectioninfo::Connectioninfo(QTcpSocket *tcp, int kar, RSAKeyPair keys) {
+Connectioninfo::Connectioninfo(QAbstractSocket *tcp, int kar) {
     sct = tcp;
     karma = kar;
-    RSAKey = keys;
     token = "";
 }
 

@@ -29,8 +29,7 @@ CONFIG(release, debug|release): {
 
 HEADERS +=
 
-include($$PWD/../../QuasarAppLib/QuasarLib.pri)
+include($$PWD/../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../ServerProtocol/ServerProtocol.pri)
 include($$PWD/../ClientProtocol/ClientProtocol.pri)
-include($$PWD/../../SnakeUtils/SnakeUtils.pri)
 include($$PWD/../Server/Server.pri)

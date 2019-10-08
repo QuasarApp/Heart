@@ -1,13 +1,11 @@
-#include "server.h"
+#include "baseserver.h"
 #include "quasarapp.h"
 #include <QTcpSocket>
-#include <factorynetobjects.h>
-#include <pubkey.h>
 #include "clientprotocol.h"
 
 namespace ClientProtocol {
 
-bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
+bool BaseServer::parsePackage(const Package &pkg, QAbstractSocket* sender) {
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!");
         changeKarma(sender->peerAddress().toIPv4Address(), CRITICAL_ERROOR);
@@ -31,7 +29,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
 
         if (!(pcg.create(Command::Ping, Type::Responke, &pkg.hdr))) {
             return false;
-        };
+        }
 
         if (!sendPackage(pcg, sender)) {
             QuasarAppUtils::Params::verboseLog("!responce not sendet!");
@@ -49,7 +47,7 @@ bool Server::parsePackage(const Package &pkg, QTcpSocket* sender) {
     return true;
 }
 
-bool Server::sendPackage(const Package &pkg, QTcpSocket * target) {
+bool BaseServer::sendPackage(const Package &pkg, QAbstractSocket * target) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -70,7 +68,7 @@ bool Server::sendPackage(const Package &pkg, QTcpSocket * target) {
     return sendet;
 }
 
-void Server::ban(quint32 target) {
+void BaseServer::ban(quint32 target) {
     if (!_connections[target]) {
         _connections[target] = new Connectioninfo();
     }
@@ -78,7 +76,7 @@ void Server::ban(quint32 target) {
     _connections[target]->ban();
 }
 
-void Server::unBan(quint32 target) {
+void BaseServer::unBan(quint32 target) {
     if (!_connections.contains(target)) {
         return;
     }
@@ -86,37 +84,19 @@ void Server::unBan(quint32 target) {
     _connections[target]->unBan();
 }
 
-bool Server::registerSocket(QTcpSocket *socket) {
+bool BaseServer::registerSocket(QAbstractSocket *socket) {
     auto address = socket->peerAddress().toIPv4Address();
 
-    if (!_pool) {
-        QuasarAppUtils::Params::verboseLog("key pool is not inited", QuasarAppUtils::Error);
-        return false;
-    }
 
-    RSAKeyPair pair;
+    _connections[address] = new Connectioninfo(socket, DEFAULT_KARMA);
 
-    if (!_pool->take(BASE_RSA_BITS, pair)) {
-        QuasarAppUtils::Params::verboseLog("key pool is empty", QuasarAppUtils::Error);
-        return false;
-    }
-
-    _connections[address] = new Connectioninfo(socket, DEFAULT_KARMA,
-                                           pair);
-
-    connect(socket, &QTcpSocket::readyRead, this, &Server::avelableBytes);
-    connect(socket, &QTcpSocket::disconnected, this, &Server::handleDisconected);
-
-    if (!sendPubKey(socket, pair.pub)) {
-        QuasarAppUtils::Params::verboseLog("not sendet pub key to client"
-                                           "generate new key!", QuasarAppUtils::Error);
-        return false;
-    }
+    connect(socket, &QTcpSocket::readyRead, this, &BaseServer::avelableBytes);
+    connect(socket, &QTcpSocket::disconnected, this, &BaseServer::handleDisconected);
 
     return true;
 }
 
-bool Server::changeKarma(quint32 addresss, int diff) {
+bool BaseServer::changeKarma(quint32 addresss, int diff) {
     auto ptr = _connections.value(addresss);
     if (!ptr) {
         return false;
@@ -136,7 +116,7 @@ bool Server::changeKarma(quint32 addresss, int diff) {
     return true;
 }
 
-bool Server::isBaned(const QTcpSocket * adr) const {
+bool BaseServer::isBaned(const QTcpSocket * adr) const {
     auto ptr = _connections.value(adr->peerAddress().toIPv4Address());
 
     if (!ptr) {
@@ -146,7 +126,7 @@ bool Server::isBaned(const QTcpSocket * adr) const {
     return ptr->isBaned();
 }
 
-int Server::connectionsCount() const {
+int BaseServer::connectionsCount() const {
     int count = 0;
     for (auto i : _connections) {
         if (i->getSct()) {
@@ -161,29 +141,7 @@ int Server::connectionsCount() const {
     return count;
 }
 
-bool Server::sendPubKey(QTcpSocket * target, const QByteArray &pubKey) {
-
-    Package pcg;
-
-    PubKey pubkey;
-
-    pubkey.setKey(pubKey);
-    pubkey.setTypeKey(BASE_RSA_BITS);
-    pubkey.setId(0);
-
-    if (!pubkey.isValid()) {
-        return false;
-    }
-
-    if (!(pcg.create(&pubkey, Type::Request))) {
-        return false;
-    };
-
-    return sendPackage(pcg, target);
-
-}
-
-void Server::avelableBytes() {
+void BaseServer::avelableBytes() {
     auto client = dynamic_cast<QTcpSocket*>(sender());
 
     if (!client) {
@@ -213,7 +171,7 @@ void Server::avelableBytes() {
     }
 }
 
-void Server::handleDisconected() {
+void BaseServer::handleDisconected() {
     auto _sender = dynamic_cast<QTcpSocket*>(sender());
 
     if (_sender) {
@@ -236,7 +194,7 @@ void Server::handleDisconected() {
                                        QuasarAppUtils::Error);
 }
 
-void Server::handleIncommingConnection() {
+void BaseServer::handleIncommingConnection() {
     while (hasPendingConnections()) {
         auto socket = nextPendingConnection();
 
@@ -249,18 +207,17 @@ void Server::handleIncommingConnection() {
     }
 }
 
-Server::Server(RSAKeysPool *pool, QObject *ptr) :
+BaseServer::BaseServer(QObject *ptr) :
     QTcpServer (ptr) {
 
-    _pool = pool;
-    connect(this, &Server::newConnection, this, &Server::handleIncommingConnection);
+    connect(this, &BaseServer::newConnection, this, &BaseServer::handleIncommingConnection);
 }
 
-Server::~Server() {
+BaseServer::~BaseServer() {
     stop();
 }
 
-bool Server::run(const QString &ip, unsigned short port) {
+bool BaseServer::run(const QString &ip, unsigned short port) {
 
     if (!listen(QHostAddress(ip), port)) {
         QuasarAppUtils::Params::verboseLog("listing fail " + this->errorString(),
@@ -271,7 +228,7 @@ bool Server::run(const QString &ip, unsigned short port) {
     return true;
 }
 
-void Server::stop(bool reset) {
+void BaseServer::stop(bool reset) {
     close();
 
     if (reset) {
@@ -284,7 +241,7 @@ void Server::stop(bool reset) {
     }
 }
 
-void Server::badRequest(quint32 address, const Header &req) {
+void BaseServer::badRequest(quint32 address, const Header &req) {
     auto client = _connections.value(address);
 
     if (!client) {
@@ -309,7 +266,7 @@ void Server::badRequest(quint32 address, const Header &req) {
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
                                            " because package not created",
                                            QuasarAppUtils::Error);
-    };
+    }
 
     if (!sendPackage(pcg, client->getSct())) {
 
@@ -324,7 +281,7 @@ void Server::badRequest(quint32 address, const Header &req) {
                                        QuasarAppUtils::Info);
 }
 
-bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const Header *req) {
+bool BaseServer::sendResponse(const BaseNetworkObject *resp, quint32 address, const Header *req) {
 
     Package pcg;
 
@@ -336,12 +293,12 @@ bool Server::sendResponse(const BaseNetworkObject *resp, quint32 address, const 
     return sendResponse(&pcg, address, req);
 }
 
-bool Server::sendResponse(Package *pcg, quint32 address, const Header *req) {
+bool BaseServer::sendResponse(Package *pcg, quint32 address, const Header *req) {
     pcg->signPackage(req);
     return sendResponse(*pcg, address);
 }
 
-bool Server::sendResponse(const Package &pcg, quint32 address)
+bool BaseServer::sendResponse(const Package &pcg, quint32 address)
 {
     auto client = _connections.value(address);
 
@@ -361,7 +318,7 @@ bool Server::sendResponse(const Package &pcg, quint32 address)
     return true;
 }
 
-QString Server::getWorkState() const {
+QString BaseServer::getWorkState() const {
     if (isListening()) {
         if (hasPendingConnections())
             return "overload";
@@ -373,11 +330,11 @@ QString Server::getWorkState() const {
     return "Not running";
 }
 
-QString Server::connectionState() const {
+QString BaseServer::connectionState() const {
     return QString("%0 / %1").arg(connectionsCount()).arg(maxPendingConnections());
 }
 
-QStringList Server::baned() const {
+QStringList BaseServer::baned() const {
     QStringList list = {};
     for (auto i = _connections.begin(); i != _connections.end(); ++i) {
         if (i.value()->isBaned()) {
@@ -388,21 +345,11 @@ QStringList Server::baned() const {
     return list;
 }
 
-bool Server::getRSA(quint32 key, RSAKeyPair& res) const {
-    auto sct = _connections.value(key);
-    if (sct) {
-        res = sct->getRSAKey();
-        return true;
-    }
-
-    return false;
-}
-
-QByteArray Server::getToken(quint32 address) const {
+QByteArray BaseServer::getToken(quint32 address) const {
     return _connections.value(address)->getToken();
 }
 
-bool Server::setToken(quint32 address, const QByteArray &token) {
+bool BaseServer::setToken(quint32 address, const QByteArray &token) {
     if (_connections.contains(address)) {
         _connections[address]->setToken(token);
         return true;
