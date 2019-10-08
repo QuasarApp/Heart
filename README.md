@@ -1,2 +1,2 @@
 # QtNetworkProtocol
-network protockol for qt 
+Network protockol for qt 
