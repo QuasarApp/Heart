@@ -3,7 +3,7 @@
 #include <clientprotocol.h>
 #include "server_global.h"
 
-class SERVERSHARED_EXPORT Item : public ClientProtocol::Package
+class SERVERSHARED_EXPORT Item : public ClientProtocol::BasePackage
 {
 private:
 
@@ -11,7 +11,7 @@ private:
 
 public:
     Item();
-    Item(const ClientProtocol::Package& other);
+    Item(const ClientProtocol::BasePackage& other);
     Item(const ClientProtocol::BaseNetworkObject* obj);
     Item(ClientProtocol::Command cmd, const QByteArray& data);
 
@@ -23,7 +23,7 @@ public:
     bool setId(int value);
     template<class T>
     bool parse(T& res) {
-        return ClientProtocol::Package::parse(res);
+        return ClientProtocol::BasePackage::parse(res);
     }
 };
 

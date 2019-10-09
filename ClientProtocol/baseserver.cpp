@@ -5,7 +5,7 @@
 
 namespace ClientProtocol {
 
-bool BaseServer::parsePackage(const Package &pkg, QAbstractSocket* sender) {
+bool BaseServer::parsePackage(const BasePackage &pkg, QAbstractSocket* sender) {
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!");
         changeKarma(sender->peerAddress().toIPv4Address(), CRITICAL_ERROOR);
@@ -25,7 +25,7 @@ bool BaseServer::parsePackage(const Package &pkg, QAbstractSocket* sender) {
             return false;
         }
 
-        Package pcg;
+        BasePackage pcg;
 
         if (!(pcg.create(Command::Ping, Type::Responke, &pkg.hdr))) {
             return false;
@@ -47,7 +47,7 @@ bool BaseServer::parsePackage(const Package &pkg, QAbstractSocket* sender) {
     return true;
 }
 
-bool BaseServer::sendPackage(const Package &pkg, QAbstractSocket * target) {
+bool BaseServer::sendPackage(const BasePackage &pkg, QAbstractSocket * target) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -70,7 +70,7 @@ bool BaseServer::sendPackage(const Package &pkg, QAbstractSocket * target) {
 
 void BaseServer::ban(quint32 target) {
     if (!_connections[target]) {
-        _connections[target] = new Connectioninfo();
+        _connections[target] = new AbstractNode();
     }
 
     _connections[target]->ban();
@@ -88,7 +88,7 @@ bool BaseServer::registerSocket(QAbstractSocket *socket) {
     auto address = socket->peerAddress().toIPv4Address();
 
 
-    _connections[address] = new Connectioninfo(socket, DEFAULT_KARMA);
+    _connections[address] = new AbstractNode(socket, DEFAULT_KARMA);
 
     connect(socket, &QTcpSocket::readyRead, this, &BaseServer::avelableBytes);
     connect(socket, &QTcpSocket::disconnected, this, &BaseServer::handleDisconected);
@@ -157,9 +157,9 @@ void BaseServer::avelableBytes() {
         _downloadPackage.reset();
 
         memcpy(&_downloadPackage.hdr,
-               array.data(), sizeof(Header));
+               array.data(), sizeof(BaseHeader));
 
-        _downloadPackage.data.append(array.mid(sizeof(Header)));
+        _downloadPackage.data.append(array.mid(sizeof(BaseHeader)));
     }
 
     if (_downloadPackage.isValid()) {
@@ -241,7 +241,7 @@ void BaseServer::stop(bool reset) {
     }
 }
 
-void BaseServer::badRequest(quint32 address, const Header &req) {
+void BaseServer::badRequest(quint32 address, const BaseHeader &req) {
     auto client = _connections.value(address);
 
     if (!client) {
@@ -261,7 +261,7 @@ void BaseServer::badRequest(quint32 address, const Header &req) {
         return;
     }
 
-    Package pcg;
+    BasePackage pcg;
     if (!(pcg.create(Command::BadRequest, Type::Responke, &req))) {
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
                                            " because package not created",
@@ -281,9 +281,9 @@ void BaseServer::badRequest(quint32 address, const Header &req) {
                                        QuasarAppUtils::Info);
 }
 
-bool BaseServer::sendResponse(const BaseNetworkObject *resp, quint32 address, const Header *req) {
+bool BaseServer::sendResponse(const BaseNetworkObject *resp, quint32 address, const BaseHeader *req) {
 
-    Package pcg;
+    BasePackage pcg;
 
     if (!pcg.create(resp, Type::Responke, req)) {
         QuasarAppUtils::Params::verboseLog("Response not sent because package not created",
@@ -293,12 +293,12 @@ bool BaseServer::sendResponse(const BaseNetworkObject *resp, quint32 address, co
     return sendResponse(&pcg, address, req);
 }
 
-bool BaseServer::sendResponse(Package *pcg, quint32 address, const Header *req) {
+bool BaseServer::sendResponse(BasePackage *pcg, quint32 address, const BaseHeader *req) {
     pcg->signPackage(req);
     return sendResponse(*pcg, address);
 }
 
-bool BaseServer::sendResponse(const Package &pcg, quint32 address)
+bool BaseServer::sendResponse(const BasePackage &pcg, quint32 address)
 {
     auto client = _connections.value(address);
 

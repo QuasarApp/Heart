@@ -19,7 +19,7 @@ class CLIENTPROTOCOLSHARED_EXPORT BaseClient: public QObject
     Q_OBJECT
 private:
     QTcpSocket *_destination;
-    Package _downloadPackage;
+    BasePackage _downloadPackage;
     QByteArray _token;
     int currentIndex = 0;
     QHash<unsigned char, QVariantMap> _requestsMap;
@@ -27,10 +27,10 @@ private:
     QString _address = LOCAL_SNAKE_SERVER;
     unsigned short _port = DEFAULT_SNAKE_PORT;
 
-    bool receiveData(const QByteArray &obj, Header hdr);
+    bool receiveData(const QByteArray &obj, BaseHeader hdr);
     void setLoginStatus(bool newStatus);
     void setOnlineStatus(bool newStatus);
-    bool sendPackage(Package &pkg);
+    bool sendPackage(BasePackage &pkg);
     inline unsigned char nextIndex();
 
 

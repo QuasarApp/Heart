@@ -85,7 +85,7 @@ bool MainServer::restartSrver(const QString &ip, unsigned short port) {
     return true;
 }
 
-void MainServer::handleRequest(ClientProtocol::Header hdr,
+void MainServer::handleRequest(ClientProtocol::BaseHeader hdr,
                                const QByteArray& data,
                                const quint32 &addres) {
 

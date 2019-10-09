@@ -2,16 +2,14 @@
 
 #include <QDataStream>
 #include <QVariantMap>
-#include <map.h>
 
 namespace ClientProtocol {
 
-
-Header::Header() {
+BaseHeader::BaseHeader() {
     reset();
 }
 
-bool Header::isValid() const {
+bool BaseHeader::isValid() const {
 
     if (sizeof (*this) != 4) {
         return false;
@@ -20,17 +18,17 @@ bool Header::isValid() const {
     return true;
 }
 
-void Header::reset() {
+void BaseHeader::reset() {
     size = 0;
     command = 0;
     triggerCommnad = 0;
 }
 
-Package::Package() {
+BasePackage::BasePackage() {
     reset();
 }
 
-bool Package::isValid() const {
+bool BasePackage::isValid() const {
     if (!hdr.isValid()) {
         return false;
     }
@@ -42,16 +40,16 @@ bool Package::isValid() const {
     return hdr.size == static_cast<unsigned int> (data.size());
 }
 
-QByteArray Package::toBytes() const {
+QByteArray BasePackage::toBytes() const {
     QByteArray res;
-    res.append(reinterpret_cast<char*>(const_cast<Header*>(&hdr)),
+    res.append(reinterpret_cast<char*>(const_cast<BaseHeader*>(&hdr)),
                sizeof (hdr));
 
     res.append(data);
     return res;
 }
 
-void Package::reset() {
+void BasePackage::reset() {
     hdr.reset();
     data.clear();
 }

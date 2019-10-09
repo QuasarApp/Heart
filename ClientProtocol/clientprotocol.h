@@ -9,63 +9,61 @@
 
 namespace ClientProtocol {
 
-
-bool CLIENTPROTOCOLSHARED_EXPORT initClientProtockol();
-
 /**
  * @brief The Header struct 4 byte
  */
 #pragma pack(push, 1)
-struct CLIENTPROTOCOLSHARED_EXPORT Header {
+struct CLIENTPROTOCOLSHARED_EXPORT BaseHeader {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned short size: 12;
+    unsigned short size;
 
     /**
      * @brief command of pacage
      */
-    quint8 command: 5;
+    quint8 command;
 
     /**
      * @brief command of pacage see Command (rquest from client)
      * the server should write to which command it responds
      */
-    quint8 triggerCommnad: 5;
+    quint8 triggerCommnad;
 
     /**
      * @brief Header default constructor
      */
-    Header();
+    BaseHeader();
+    virtual ~BaseHeader() = default;
 
     /**
      * @brief isValid
      * @return true if header is valid
      */
-    bool isValid() const;
+    virtual bool isValid() const;
 
 
     /**
      * @brief reset - reset all data and set for header invalid status
      */
-    void reset();
+    virtual void reset();
 };
 #pragma pack(pop)
 
 /**
  * @brief The Package struct
  */
-struct CLIENTPROTOCOLSHARED_EXPORT Package {
+struct CLIENTPROTOCOLSHARED_EXPORT BasePackage {
     /**
      * @brief hdr - header of package
      */
-    Header hdr;
+    BaseHeader hdr;
     /**
      * @brief data - source data of package
      */
     QByteArray data;
 
-    Package();
+    BasePackage();
 
     /**
      * @brief isValid
@@ -77,14 +75,14 @@ struct CLIENTPROTOCOLSHARED_EXPORT Package {
      * @brief toBytes
      * @return bytes array of packag
      */
-    QByteArray toBytes() const;
+    virtual QByteArray toBytes() const;
 
     /**
      * @brief reset - reset all data and set for package invalid status
      */
-    void reset();
+    virtual void reset();
 
-    virtual ~Package() = default;
+    virtual ~BasePackage() = default;
 
 };
 

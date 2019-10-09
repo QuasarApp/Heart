@@ -41,7 +41,7 @@ private:
     bool restartSrver(const QString& ip, unsigned short port);
 
 private slots:
-    void handleRequest(ClientProtocol::Header hdr, const QByteArray &data,
+    void handleRequest(ClientProtocol::BaseHeader hdr, const QByteArray &data,
                        const quint32& addres);
     void handleTerminalRequest(QVariantMap obj);
 

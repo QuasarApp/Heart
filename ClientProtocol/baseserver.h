@@ -4,7 +4,7 @@
 #include "clientprotocol.h"
 
 #include <QTcpServer>
-#include "connectioninfo.h"
+#include "basenodeinfo.h"
 
 namespace ClientProtocol {
 
@@ -17,11 +17,11 @@ class CLIENTPROTOCOLSHARED_EXPORT BaseServer : public QTcpServer
 {
     Q_OBJECT
 private:
-    Package _downloadPackage;
-    QHash<quint32, Connectioninfo*> _connections;
+    BasePackage _downloadPackage;
+    QHash<quint32, AbstractNode*> _connections;
 
-    bool parsePackage(const Package &pkg, QAbstractSocket * sender);
-    bool sendPackage(const Package &pkg, QAbstractSocket *target);
+    bool parsePackage(const BasePackage &pkg, QAbstractSocket * sender);
+    bool sendPackage(const BasePackage &pkg, QAbstractSocket *target);
     bool registerSocket(QAbstractSocket *socket);
     bool changeKarma(quint32 addresss, int diff);
     inline bool isBaned(const QTcpSocket *) const;
@@ -41,12 +41,12 @@ public:
     bool run(const QString& ip, unsigned short port);
     void stop(bool reset = false);
 
-    void badRequest(quint32 address, const Header &req);
+    void badRequest(quint32 address, const BaseHeader &req);
 
     bool sendResponse(const BaseNetworkObject* resp,  quint32 address,
-                      const Header *req = nullptr);
-    bool sendResponse(Package *pcg, quint32 address, const Header *req = nullptr);
-    bool sendResponse(const Package &pcg, quint32 address);
+                      const BaseHeader *req = nullptr);
+    bool sendResponse(BasePackage *pcg, quint32 address, const BaseHeader *req = nullptr);
+    bool sendResponse(const BasePackage &pcg, quint32 address);
 
     void ban(quint32 target);
     void unBan(quint32 target);
@@ -69,7 +69,7 @@ public:
     bool setToken(quint32 address, const QByteArray &token);
 
 signals:
-    void incomingReques(Header hdr, const QByteArray &data, const quint32 &sender);
+    void incomingReques(BaseHeader hdr, const QByteArray &data, const quint32 &sender);
 };
 
 }

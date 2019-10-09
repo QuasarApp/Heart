@@ -26,7 +26,7 @@ Item::Item() {
 
 }
 
-Item::Item(const ClientProtocol::Package &other) {
+Item::Item(const ClientProtocol::BasePackage &other) {
     hdr = other.hdr;
     data = other.data;
     ClientProtocol::BaseNetworkObject base;
@@ -68,5 +68,5 @@ const QByteArray &Item::dataArray() const {
 
 bool Item::isValid() const {
     return ClientProtocol::FactoryNetObjects::isRegisteredType(hdr.type)
-            && Package::isValid();
+            && BasePackage::isValid();
 }

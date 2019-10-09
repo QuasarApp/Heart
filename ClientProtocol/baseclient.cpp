@@ -58,7 +58,7 @@ void BaseClient::updateStatuses(Command extCmd, Command cmd, Type type, const QB
     }
 }
 
-bool BaseClient::receiveData(const QByteArray &obj, Header hdr) {
+bool BaseClient::receiveData(const QByteArray &obj, BaseHeader hdr) {
 
     auto command = static_cast<Command>(hdr.command);
     auto requesCommand = static_cast<Command>(hdr.requestCommand);
@@ -128,8 +128,8 @@ void BaseClient::incommingData() {
 
     } else {
         memcpy(&_downloadPackage.hdr,
-               array.data(), sizeof(Header));
-        _downloadPackage.data.append(array.mid(sizeof(Header)));
+               array.data(), sizeof(BaseHeader));
+        _downloadPackage.data.append(array.mid(sizeof(BaseHeader)));
     }
 
     if (_downloadPackage.isValid()) {
@@ -159,7 +159,7 @@ BaseClient::BaseClient(const QString &addrress, unsigned short port, QObject *pt
             this, &BaseClient::handleDisconnected);
 }
 
-bool BaseClient::sendPackage(Package &pkg) {
+bool BaseClient::sendPackage(BasePackage &pkg) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -190,7 +190,7 @@ unsigned char BaseClient::nextIndex() {
 
 bool BaseClient::ping() {
 
-    Package pcg;
+    BasePackage pcg;
 
     if (!pcg.create(Command::Ping, Type::Request)) {
         return false;
@@ -224,7 +224,7 @@ bool BaseClient::login(const QString &gmail, const QByteArray &pass, bool newUse
         return false;
     }
 
-    Package pcg;
+    BasePackage pcg;
 
     Login login;
 
@@ -278,7 +278,7 @@ bool BaseClient::updateData() {
         return false;
     }
 
-    Package pcg;
+    BasePackage pcg;
 
     UpdatePlayerData rec;
     rec.setToken(_token);
@@ -304,7 +304,7 @@ bool BaseClient::savaData(const QList<int>& gameData) {
         return false;
     }
 
-    Package pcg;
+    BasePackage pcg;
 
     GameData rec;
     rec.setToken(_token);
@@ -336,7 +336,7 @@ bool BaseClient::getItem(int id) {
         return false;
     }
 
-    Package pcg;
+    BasePackage pcg;
 
     GetItem rec;
     rec.setToken(_token);
@@ -366,7 +366,7 @@ bool BaseClient::getPlayer(int id){
         return false;
     }
 
-    Package pcg;
+    BasePackage pcg;
 
     UpdatePlayerData rec;
     rec.setToken(_token);
@@ -400,7 +400,7 @@ bool BaseClient::setSubscribe(Command cmd, bool subscribe, int id) {
         return false;
     }
 
-    Package pcg;
+    BasePackage pcg;
 
     WebSocket rec;
     rec.setId(0);

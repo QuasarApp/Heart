@@ -43,18 +43,22 @@ include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
 
 
 SOURCES += \
+        abstractdata.cpp \
+        abstractnode.cpp \
         baseclient.cpp \
+        basenodeinfo.cpp \
         baseserver.cpp \
-        clientprotocol.cpp \
-        connectioninfo.cpp
+        clientprotocol.cpp
 
 
 HEADERS += \
+        abstractdata.h \
+        abstractnode.h \
         baseclient.h \
+        basenodeinfo.h \
         baseserver.h \
         clientprotocol.h \
         clientprotocol_global.h \
-        config.h \
-        connectioninfo.h
+        config.h
 
 include($$PWD/ClientProtocolIncludes.pri)
