@@ -45,6 +45,7 @@ include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
 SOURCES += \
         abstractdata.cpp \
         abstractnode.cpp \
+        abstractnodeinfo.cpp \
         baseclient.cpp \
         basenodeinfo.cpp \
         baseserver.cpp \
@@ -54,6 +55,7 @@ SOURCES += \
 HEADERS += \
         abstractdata.h \
         abstractnode.h \
+        abstractnodeinfo.h \
         baseclient.h \
         basenodeinfo.h \
         baseserver.h \
