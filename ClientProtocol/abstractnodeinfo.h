@@ -102,6 +102,20 @@ public:
      */
     virtual bool isValid() const;
 
+    /**
+     * @brief fromStream
+     * @param stream
+     * @return stream
+     */
+    virtual QDataStream& fromStream(QDataStream& stream);
+
+    /**
+     * @brief toStream
+     * @param stream
+     * @return stream
+     */
+    virtual QDataStream& toStream(QDataStream& stream) const;
+
 protected:
     /**
      * @brief setSct
@@ -118,6 +132,7 @@ protected:
 
 private:
 
+    unsigned int _id = 0;
     QAbstractSocket *_sct = nullptr;
     NodeType _type = NodeType::Undefined;
     int _trust = static_cast<int>(TrustNode::Default);

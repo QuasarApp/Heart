@@ -1,6 +1,7 @@
 #include "abstractnodeinfo.h"
 #include <QHostAddress>
 #include <QAbstractSocket>
+#include <QDataStream>
 
 namespace ClientProtocol {
 
@@ -9,11 +10,7 @@ AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct, ClientProtocol::NodeTyp
     setType(type);
 }
 
-AbstractNodeInfo::~AbstractNodeInfo() {
-    if (_sct) {
-        _sct->deleteLater();
-    }
-}
+AbstractNodeInfo::~AbstractNodeInfo() {}
 
 QAbstractSocket *AbstractNodeInfo::sct() const {
     return _sct;
@@ -32,7 +29,7 @@ unsigned int AbstractNodeInfo::id() const {
     if (_sct)
         return (qHash(_sct->peerAddress()));
 
-    return 0;
+    return _id;
 }
 
 void AbstractNodeInfo::ban() {
@@ -50,6 +47,8 @@ void AbstractNodeInfo::unBan() {
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
+    if (_sct)
+        _id = qHash(_sct->peerAddress());
 }
 
 int AbstractNodeInfo::trust() const {
@@ -74,6 +73,16 @@ void AbstractNodeInfo::setType(const NodeType &type) {
 
 bool AbstractNodeInfo::isValid() const {
     return _sct && _type != NodeType::Undefined;
+}
+
+QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
+    stream >> _id;
+    return stream;
+}
+
+QDataStream &AbstractNodeInfo::toStream(QDataStream &stream) const {
+    stream << id();
+    return stream;
 }
 
 }
