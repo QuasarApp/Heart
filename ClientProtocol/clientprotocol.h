@@ -34,19 +34,19 @@ struct CLIENTPROTOCOLSHARED_EXPORT BaseHeader {
      * @brief Header default constructor
      */
     BaseHeader();
-    virtual ~BaseHeader() = default;
+    ~BaseHeader() = default;
 
     /**
      * @brief isValid
      * @return true if header is valid
      */
-    virtual bool isValid() const;
+    bool isValid() const;
 
 
     /**
      * @brief reset - reset all data and set for header invalid status
      */
-    virtual void reset();
+    void reset();
 };
 #pragma pack(pop)
 

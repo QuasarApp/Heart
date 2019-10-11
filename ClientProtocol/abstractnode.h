@@ -56,10 +56,30 @@ public:
     /**
      * @brief getInfo
      * @param id of selected node
-     * @return info about node
+     * @return pointer to information about node
      */
     virtual AbstractNodeInfo *getInfoPtr(quint32 id);
+
+    /**
+     * @brief getInfo
+     * @param id
+     * @return information about Node
+     */
     virtual AbstractNodeInfo getInfo(quint32 id) const;
+
+    /**
+     * @brief getInfo
+     * @param id of selected node
+     * @return pointer to information about node
+     */
+    virtual AbstractNodeInfo *getInfoPtr(const QHostAddress &id);
+
+    /**
+     * @brief getInfo
+     * @param id peer adders
+     * @return information about Node
+     */
+    virtual AbstractNodeInfo getInfo(const QHostAddress &id) const;
 
     /**
      * @brief ban
@@ -85,8 +105,6 @@ public:
      */
     QHostAddress address() const;
 
-
-
     ~AbstractNode() override;
 
 
@@ -110,7 +128,7 @@ protected:
      * @param sender
      * @return
      */
-    virtual bool parsePackage(const BasePackage &pkg, QAbstractSocket * sender);
+    virtual bool parsePackage(const BasePackage &pkg, AbstractNodeInfo *sender);
 
     /**
      * @brief sendPackage
@@ -177,9 +195,22 @@ protected:
 protected:
     bool changeTrust(quint32 id, int diff);
 
+    /**
+    * @brief incomingConnection for ssl sockets
+    * @param handle - handle of socket
+    */
+   virtual void incomingSsl(qintptr handle);
+
+    /**
+    * @brief incomingConnection for tcp sockets
+    * @param handle -  handle of socket
+    */
+   virtual void incomingTcp(qintptr handle);
 
 private slots:
-    void incommingData();
+
+
+
     void avelableBytes();
     void handleDisconnected();
 

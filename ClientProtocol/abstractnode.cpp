@@ -1,5 +1,6 @@
 #include "abstractdata.h"
 #include "abstractnode.h"
+#include <QSslSocket>
 #include <quasarapp.h>
 
 namespace ClientProtocol {
@@ -37,6 +38,14 @@ AbstractNodeInfo *AbstractNode::getInfoPtr(quint32 id) {
 
 AbstractNodeInfo AbstractNode::getInfo(quint32 id) const{
     return _connections.value(id).info;
+}
+
+AbstractNodeInfo *AbstractNode::getInfoPtr(const QHostAddress &id) {
+    return getInfoPtr(qHash(id));
+}
+
+AbstractNodeInfo AbstractNode::getInfo(const QHostAddress &id) const {
+    return getInfo(qHash(id));
 }
 
 void AbstractNode::ban(quint32 target) {
@@ -80,23 +89,23 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket) {
     return true;
 }
 
-bool AbstractNode::parsePackage(const BasePackage &pkg, QAbstractSocket *sender) {
+bool AbstractNode::parsePackage(const BasePackage &pkg, AbstractNodeInfo *sender) {
 
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!",
                                            QuasarAppUtils::Error);
-        changeTrust(qHash(sender->peerAddress()), CRITICAL_ERROOR);
+        changeTrust(sender->id(), CRITICAL_ERROOR);
         return false;
     }
 
     if (!sender->isValid()) {
         QuasarAppUtils::Params::verboseLog("sender socket is not valid!",
                                            QuasarAppUtils::Error);
-        changeTrust(qHash(sender->peerAddress()), LOGICK_ERROOR);
+        changeTrust(sender->id(), LOGICK_ERROOR);
         return false;
     }
 
-    emit incomingReques(pkg, qHash(sender->peerAddress()));
+    emit incomingReques(pkg, sender->id());
 
     return true;
 }
@@ -169,7 +178,7 @@ QString AbstractNode::connectionState() const {
 QStringList AbstractNode::baned() const {
     QStringList list = {};
     for (auto i = _connections.begin(); i != _connections.end(); ++i) {
-        if (i.value()->isBaned()) {
+        if (i.value().info.isBaned()) {
             list.push_back(QHostAddress(i.key()).toString());
         }
     }
@@ -180,8 +189,8 @@ QStringList AbstractNode::baned() const {
 int AbstractNode::connectionsCount() const {
     int count = 0;
     for (auto i : _connections) {
-        if (i->getSct()) {
-            if (!i->getSct()->isValid()) {
+        if (i.info.sct()) {
+            if (!i.info.sct()->isValid()) {
                 QuasarAppUtils::Params::verboseLog("connection count, findet not valid socket",
                                                    QuasarAppUtils::Warning);
             }
@@ -193,17 +202,22 @@ int AbstractNode::connectionsCount() const {
 }
 
 bool AbstractNode::isBaned(QAbstractSocket *socket) const {
-    auto ptr = _connections.value(adr->peerAddress().toIPv4Address());
+    auto info = getInfo(socket->peerAddress());
 
-    if (!ptr) {
+    if (!info.isValid()) {
         return false;
     }
 
-    return ptr->isBaned();
+    return info.isBaned();
 }
 
 void AbstractNode::incomingConnection(qintptr handle) {
 
+    if (useSSL) {
+        incomingSsl(handle);
+    } else {
+        incomingTcp(handle);
+    }
 }
 
 bool AbstractNode::changeTrust(quint32 id, int diff) {
@@ -226,34 +240,92 @@ bool AbstractNode::changeTrust(quint32 id, int diff) {
     return true;
 }
 
+void AbstractNode::incomingSsl(qintptr socketDescriptor) {
+    QSslSocket *serverSocket = new QSslSocket;
+
+    serverSocket->setProtocol(QSsl::TlsV1_3);
+    serverSocket->setLocalCertificate(QSslCertificate());
+
+    if (serverSocket->setSocketDescriptor(socketDescriptor)) {
+        connect(serverSocket, &QSslSocket::encrypted, [this, serverSocket](){
+            registerSocket(serverSocket);
+        });
+
+        connect(serverSocket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+            [serverSocket](const QList<QSslError> &errors){
+
+                for (auto &error : errors) {
+                    QuasarAppUtils::Params::verboseLog(error.errorString(), QuasarAppUtils::Error);
+                }
+
+                serverSocket->deleteLater();
+        });
+
+        serverSocket->startServerEncryption();
+    } else {
+        delete serverSocket;
+    }
+}
+
+void AbstractNode::incomingTcp(qintptr socketDescriptor) {
+    QTcpSocket *serverSocket = new QTcpSocket;
+    if (serverSocket->setSocketDescriptor(socketDescriptor)) {
+        connect(serverSocket, &QSslSocket::encrypted, [this, serverSocket](){
+            registerSocket(serverSocket);
+        });
+
+        connect(serverSocket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+            [serverSocket](const QList<QSslError> &errors){
+
+                for (auto &error : errors) {
+                    QuasarAppUtils::Params::verboseLog(error.errorString(), QuasarAppUtils::Error);
+                }
+
+                serverSocket->deleteLater();
+        });
+
+        serverSocket->startServerEncryption();
+    } else {
+        delete serverSocket;
+    }
+}
+
 
 void AbstractNode::avelableBytes() {
-    auto client = dynamic_cast<QTcpSocket*>(sender());
+
+    auto client = dynamic_cast<QAbstractSocket*>(sender());
 
     if (!client) {
         return;
     }
 
-    auto array = client->readAll();
+    auto id = qHash(client->peerAddress());
 
-    if (_downloadPackage.hdr.isValid()) {
-        _downloadPackage.data.append(array);
+    if (!_connections.contains(id)) {
+        return;
+    }
+
+    auto &val = _connections[id];
+
+    auto array = client->readAll();
+    if (val.pkg.hdr.isValid()) {
+        val.pkg.data.append(array);
 
     } else {
-        _downloadPackage.reset();
+        val.pkg.reset();
 
-        memcpy(&_downloadPackage.hdr,
+        memcpy(&val.pkg.hdr,
                array.data(), sizeof(BaseHeader));
 
-        _downloadPackage.data.append(array.mid(sizeof(BaseHeader)));
+        val.pkg.data.append(array.mid(sizeof(BaseHeader)));
     }
 
-    if (_downloadPackage.isValid()) {
-        parsePackage(_downloadPackage, client);
+    if (val.pkg.isValid()) {
+        parsePackage(val.pkg, &val.info);
     }
 
-    if (_downloadPackage.data.size() >= _downloadPackage.hdr.size) {
-        _downloadPackage.reset();
+    if (val.pkg.data.size() >= val.pkg.hdr.size) {
+        val.pkg.reset();
     }
 }
 
@@ -263,8 +335,7 @@ void AbstractNode::handleDisconnected() {
     if (_sender) {
         // log error
 
-        unsigned int address = _sender->peerAddress().toIPv4Address();
-        auto ptr = _connections.value(address);
+        auto ptr = getInfoPtr(_sender->peerAddress());
         if (ptr) {
             ptr->disconnect();
         } else {
