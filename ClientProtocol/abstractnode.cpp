@@ -169,6 +169,10 @@ AbstractNode::~AbstractNode() {
 
 bool AbstractNode::registerSocket(QAbstractSocket *socket) {
 
+    if (connectionsCount() >= maxPendingConnections()) {
+        return false;
+    }
+
     auto info = AbstractNodeInfo(socket);
     _connections[info.id()] = {info, {}};
 
@@ -247,10 +251,9 @@ bool AbstractNode::sendResponse(const AbstractData &resp, quint32 id, const Base
     return true;
 }
 
-// TO DO hasPendingConnections is no implementing
 QString AbstractNode::getWorkState() const {
     if (isListening()) {
-        if (hasPendingConnections())
+        if (connectionsCount() >= maxPendingConnections())
             return "overload";
         else {
             return "Work";
@@ -330,52 +333,42 @@ bool AbstractNode::changeTrust(quint32 id, int diff) {
 }
 
 void AbstractNode::incomingSsl(qintptr socketDescriptor) {
-    QSslSocket *serverSocket = new QSslSocket;
+    QSslSocket *socket = new QSslSocket;
 
-    serverSocket->setProtocol(QSsl::TlsV1_3);
-    serverSocket->setLocalCertificate(QSslCertificate());
+    socket->setProtocol(QSsl::TlsV1_3);
+    socket->setLocalCertificate(QSslCertificate());
 
-    if (serverSocket->setSocketDescriptor(socketDescriptor)) {
-        connect(serverSocket, &QSslSocket::encrypted, [this, serverSocket](){
-            registerSocket(serverSocket);
+    if (!isBaned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+        connect(socket, &QSslSocket::encrypted, [this, socket](){
+            if (!registerSocket(socket)) {
+                socket->deleteLater();
+            }
         });
 
-        connect(serverSocket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-            [serverSocket](const QList<QSslError> &errors){
+        connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+            [socket](const QList<QSslError> &errors){
 
                 for (auto &error : errors) {
                     QuasarAppUtils::Params::verboseLog(error.errorString(), QuasarAppUtils::Error);
                 }
 
-                serverSocket->deleteLater();
+                socket->deleteLater();
         });
 
-        serverSocket->startServerEncryption();
+        socket->startServerEncryption();
     } else {
-        delete serverSocket;
+        delete socket;
     }
 }
 
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
-    QTcpSocket *serverSocket = new QTcpSocket;
-    if (serverSocket->setSocketDescriptor(socketDescriptor)) {
-        connect(serverSocket, &QSslSocket::encrypted, [this, serverSocket](){
-            registerSocket(serverSocket);
-        });
-
-        connect(serverSocket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-            [serverSocket](const QList<QSslError> &errors){
-
-                for (auto &error : errors) {
-                    QuasarAppUtils::Params::verboseLog(error.errorString(), QuasarAppUtils::Error);
-                }
-
-                serverSocket->deleteLater();
-        });
-
-        serverSocket->startServerEncryption();
+    QTcpSocket *socket = new QTcpSocket;
+    if (!isBaned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+        if (!registerSocket(socket)) {
+            delete socket;
+        }
     } else {
-        delete serverSocket;
+        delete socket;
     }
 }
 
