@@ -7,6 +7,8 @@
 #include <QAbstractSocket>
 #include <QTcpServer>
 
+class QSslCertificate;
+class QSslKey;
 
 namespace ClientProtocol {
 
@@ -104,6 +106,14 @@ public:
      * @return return current adders
      */
     QHostAddress address() const;
+
+    /**
+     * @brief generateSslData - generate new ssl data
+     * @param srt - result srt
+     * @param key - result private key
+     * @return true if all good
+     */
+    virtual bool generateSslData(QSslCertificate& srt, QSslKey& key);
 
     ~AbstractNode() override;
 
