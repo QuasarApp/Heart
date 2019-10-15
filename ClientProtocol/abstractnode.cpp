@@ -12,9 +12,11 @@
 
 namespace ClientProtocol {
 
-AbstractNode::AbstractNode(bool ssl, QObject *ptr):
+AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
     QTcpServer(ptr) {
-    useSSL = ssl;
+    _mode = mode;
+
+    setMode(_mode);
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -81,39 +83,70 @@ QHostAddress AbstractNode::address() const {
     return serverAddress();
 }
 
-bool AbstractNode::generateSslData(QSslCertificate& srt, QSslKey& key) {
 
 
-    EVP_PKEY * pkey = nullptr;
+AbstractNode::~AbstractNode() {
+    stop();
+}
+
+QSslConfiguration AbstractNode::getSslConfig() const {
+    return _ssl;
+}
+
+bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
     RSA * rsa = nullptr;
+    if (!pkey) {
+        return false;
+    }
+
+    if (!RSA_generate_key_ex(rsa, 2048, nullptr, nullptr)) {
+        return false;
+    }
+
+    q_check_ptr(rsa);
+    if (EVP_PKEY_assign_RSA(pkey, rsa) <= 0)
+        return false;
+
+    return true;
+}
+
+bool AbstractNode::generateSslDataPrivate(const SslSrtData &data, QSslCertificate& r_srt, QSslKey& r_key) {
+
+    EVP_PKEY *pkey = EVP_PKEY_new();
+
+    if (!generateRSAforSSL(pkey)) {
+        return false;
+    }
+
     X509 * x509 = nullptr;
     X509_NAME * name = nullptr;
     BIO * bp_public = nullptr, * bp_private = nullptr;
-    const char * buffer = nullptr;
+    const char *buffer = nullptr;
     int size;
 
-    pkey = EVP_PKEY_new();
-    q_check_ptr(pkey);
-    rsa = RSA_generate_key(2048, RSA_F4, nullptr, nullptr);
-    q_check_ptr(rsa);
-    EVP_PKEY_assign_RSA(pkey, rsa);
     x509 = X509_new();
     q_check_ptr(x509);
     ASN1_INTEGER_set(X509_get_serialNumber(x509), 1);
     X509_gmtime_adj(X509_get_notBefore(x509), 0); // not before current time
-    X509_gmtime_adj(X509_get_notAfter(x509), 31536000L); // not after a year from this point
+    X509_gmtime_adj(X509_get_notAfter(x509), data.endTime); // not after a year from this point
     X509_set_pubkey(x509, pkey);
     name = X509_get_subject_name(x509);
     q_check_ptr(name);
-    X509_NAME_add_entry_by_txt(name, "C", MBSTRING_ASC, (unsigned char *)"US", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "O", MBSTRING_ASC, (unsigned char *)"My Organization", -1, -1, 0);
-    X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, (unsigned char *)"My Common Name", -1, -1, 0);
+
+    unsigned char *C = reinterpret_cast<unsigned char *>(data.country.toLatin1().data());
+    X509_NAME_add_entry_by_txt(name, "C", MBSTRING_ASC, C, -1, -1, 0);
+
+    unsigned char *O = reinterpret_cast<unsigned char *>(data.organization.toLatin1().data());
+    X509_NAME_add_entry_by_txt(name, "O", MBSTRING_ASC, O, -1, -1, 0);
+
+    unsigned char *CN = reinterpret_cast<unsigned char *>(data.commonName.toLatin1().data());
+    X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, CN, -1, -1, 0);
+
     X509_set_issuer_name(x509, name);
-    X509_sign(x509, pkey, EVP_sha1());
+    X509_sign(x509, pkey, EVP_sha256());
     bp_private = BIO_new(BIO_s_mem());
     q_check_ptr(bp_private);
-    if(PEM_write_bio_PrivateKey(bp_private, pkey, nullptr, nullptr, 0, nullptr, nullptr) != 1)
-    {
+    if(PEM_write_bio_PrivateKey(bp_private, pkey, nullptr, nullptr, 0, nullptr, nullptr) != 1) {
         EVP_PKEY_free(pkey);
         X509_free(x509);
         BIO_free_all(bp_private);
@@ -121,10 +154,10 @@ bool AbstractNode::generateSslData(QSslCertificate& srt, QSslKey& key) {
         return false;
 
     }
+
     bp_public = BIO_new(BIO_s_mem());
     q_check_ptr(bp_public);
-    if(PEM_write_bio_X509(bp_public, x509) != 1)
-    {
+    if(PEM_write_bio_X509(bp_public, x509) != 1){
         EVP_PKEY_free(pkey);
         X509_free(x509);
         BIO_free_all(bp_public);
@@ -133,13 +166,17 @@ bool AbstractNode::generateSslData(QSslCertificate& srt, QSslKey& key) {
         return false;
 
     }
+
     size = static_cast<int>(BIO_get_mem_data(bp_public, &buffer));
     q_check_ptr(buffer);
 
-    srt = QSslCertificate(QByteArray(buffer, size));
+    r_srt = QSslCertificate(QByteArray(buffer, size));
 
-    if(srt.isNull())
-    {
+    if(r_srt.isNull()) {
+        EVP_PKEY_free(pkey);
+        X509_free(x509);
+        BIO_free_all(bp_public);
+        BIO_free_all(bp_private);
         qCritical("Failed to generate a random client certificate");
         return false;
 
@@ -147,9 +184,12 @@ bool AbstractNode::generateSslData(QSslCertificate& srt, QSslKey& key) {
 
     size = static_cast<int>(BIO_get_mem_data(bp_private, &buffer));
     q_check_ptr(buffer);
-    key = QSslKey(QByteArray(buffer, size), QSsl::Rsa);
-    if(key.isNull())
-    {
+    r_key = QSslKey(QByteArray(buffer, size), QSsl::Rsa);
+    if(r_key.isNull()) {
+        EVP_PKEY_free(pkey);
+        X509_free(x509);
+        BIO_free_all(bp_public);
+        BIO_free_all(bp_private);
         qCritical("Failed to generate a random private key");
         return false;
 
@@ -163,8 +203,25 @@ bool AbstractNode::generateSslData(QSslCertificate& srt, QSslKey& key) {
     return true;
 }
 
-AbstractNode::~AbstractNode() {
-    stop();
+QSslConfiguration AbstractNode::selfSignedSslConfiguration() {
+    QSslConfiguration res = QSslConfiguration::defaultConfiguration();
+
+    QSslKey pkey;
+    QSslCertificate crt;
+    SslSrtData sslData;
+
+    if (!generateSslDataPrivate(sslData, crt, pkey)) {
+
+        QuasarAppUtils::Params::verboseLog("fail to create ssl certificate. node svitch to InitFromSystem mode",
+                                           QuasarAppUtils::Warning);
+
+        return res;
+    }
+
+    res.setPrivateKey(pkey);
+    res.setLocalCertificate(crt);
+
+    return res;
 }
 
 bool AbstractNode::registerSocket(QAbstractSocket *socket) {
@@ -305,7 +362,7 @@ bool AbstractNode::isBaned(QAbstractSocket *socket) const {
 
 void AbstractNode::incomingConnection(qintptr handle) {
 
-    if (useSSL) {
+    if (_mode == SslMode::NoSSL) {
         incomingSsl(handle);
     } else {
         incomingTcp(handle);
@@ -335,8 +392,7 @@ bool AbstractNode::changeTrust(quint32 id, int diff) {
 void AbstractNode::incomingSsl(qintptr socketDescriptor) {
     QSslSocket *socket = new QSslSocket;
 
-    socket->setProtocol(QSsl::TlsV1_3);
-    socket->setLocalCertificate(QSslCertificate());
+    socket->setSslConfiguration(_ssl);
 
     if (!isBaned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
         connect(socket, &QSslSocket::encrypted, [this, socket](){
@@ -432,4 +488,42 @@ void AbstractNode::handleDisconnected() {
                                        "dynamic_cast fail!",
                                        QuasarAppUtils::Error);
 }
+
+SslMode AbstractNode::getMode() const {
+    return _mode;
+}
+
+bool AbstractNode::setMode(const SslMode &mode) {
+
+    if (_mode == mode) {
+        return true;
+    }
+
+    if (isListening()) {
+        return false;
+    }
+
+    _mode = mode;
+
+    switch (_mode) {
+    case SslMode::InitFromSystem: {
+        _ssl = QSslConfiguration::defaultConfiguration();
+        break;
+
+    }
+    case SslMode::InitSelfSigned: {
+        _ssl = selfSignedSslConfiguration();
+        break;
+
+    }
+    default: {
+        break;
+    }
+
+    }
+
+    return true;
+
+}
+
 }
