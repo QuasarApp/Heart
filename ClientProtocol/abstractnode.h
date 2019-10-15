@@ -115,6 +115,11 @@ public:
     virtual void unBan(quint32 target);
 
     /**
+     * @brief connectToHost
+     */
+    virtual void connectToHost(const QHostAddress &ip, short port, SslMode mode = SslMode::NoSSL);
+
+    /**
      * @brief port
      * @return current node port
      */

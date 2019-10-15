@@ -75,6 +75,18 @@ void AbstractNode::unBan(quint32 target) {
     _connections[target].info.unBan();
 }
 
+void AbstractNode::connectToHost(const QHostAddress &ip, short port, SslMode mode) {
+    QAbstractSocket *socket;
+    if (mode == SslMode::NoSSL) {
+        socket = new QTcpSocket(nullptr);
+    } else {
+        socket = new QSslSocket(nullptr);
+    }
+
+    registerSocket(socket);
+    socket->connectToHost(ip, port);
+}
+
 unsigned short AbstractNode::port() const {
     return serverPort();
 }
