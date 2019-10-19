@@ -117,7 +117,7 @@ public:
     /**
      * @brief connectToHost
      */
-    virtual void connectToHost(const QHostAddress &ip, short port, SslMode mode = SslMode::NoSSL);
+    virtual void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL);
 
     /**
      * @brief port

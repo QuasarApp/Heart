@@ -4,11 +4,7 @@ CONFIG += ordered
 
 SUBDIRS += \
     QuasarAppLib \
-    ServerProtocol \
     ClientProtocol \
-    Terminal \
-    Server \
-    Daemon \
-    serverProtocolTests \
+    Tests \
 
 QuasarAppLib.file = $$PWD/QuasarAppLib/QuasarApp.pro
