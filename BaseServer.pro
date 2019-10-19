@@ -5,6 +5,6 @@ CONFIG += ordered
 SUBDIRS += \
     QuasarAppLib \
     ClientProtocol \
-    Tests \
+    ProtocolTests \
 
 QuasarAppLib.file = $$PWD/QuasarAppLib/QuasarApp.pro

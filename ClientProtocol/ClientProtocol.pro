@@ -39,26 +39,33 @@ CONFIG(release, debug|release): {
 }
 
 include($$PWD/../QuasarAppLib/QuasarLib.pri)
-include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
 
 
 SOURCES += \
         abstractdata.cpp \
+    abstractheader.cpp \
         abstractnode.cpp \
         abstractnodeinfo.cpp \
-        baseclient.cpp \
+#        baseclient.cpp \
+    abstractpackage.cpp \
+    baseheader.cpp \
         basenodeinfo.cpp \
-        baseserver.cpp \
+#        baseserver.cpp \
+    basepackage.cpp \
         clientprotocol.cpp
 
 
 HEADERS += \
         abstractdata.h \
+    abstractheader.h \
         abstractnode.h \
         abstractnodeinfo.h \
-        baseclient.h \
+#        baseclient.h \
+    abstractpackage.h \
+    baseheader.h \
         basenodeinfo.h \
-        baseserver.h \
+#        baseserver.h \
+    basepackage.h \
         clientprotocol.h \
         clientprotocol_global.h \
         config.h

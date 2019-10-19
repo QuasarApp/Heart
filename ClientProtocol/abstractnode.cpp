@@ -6,7 +6,6 @@
 #include <QSslSocket>
 #include <quasarapp.h>
 #include <openssl/rsa.h>
-#include <openssl/evp.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 
@@ -527,6 +526,7 @@ bool AbstractNode::setMode(const SslMode &mode) {
 
     }
     default: {
+        _ssl = QSslConfiguration();
         break;
     }
 

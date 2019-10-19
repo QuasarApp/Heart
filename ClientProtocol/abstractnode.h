@@ -3,6 +3,7 @@
 
 #include "abstractnodeinfo.h"
 #include "clientprotocol.h"
+#include <openssl/evp.h>
 
 #include <QAbstractSocket>
 #include <QSslConfiguration>
@@ -10,7 +11,6 @@
 
 class QSslCertificate;
 class QSslKey;
-class EVP_PKEY;
 class QSslConfiguration;
 
 namespace ClientProtocol {

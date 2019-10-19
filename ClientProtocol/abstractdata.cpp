@@ -1,5 +1,6 @@
 #include "abstractdata.h"
 #include <QDataStream>
+#include <QMap>
 #include <typeinfo>
 #include "clientprotocol.h"
 

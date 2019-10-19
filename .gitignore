@@ -29,6 +29,8 @@ ui_*.h
 Makefile*
 *build-*
 ServerProtocol/build/
+ClientProtocol/build/
+ProtocolTests/build/
 
 # Qt unit tests
 target_wrapper.*
