@@ -4,6 +4,8 @@
 #include "baseheader.h"
 #include "basepackage.h"
 #include "config.h"
+#include "abstractnode.h"
+#include "abstractnodeinfo.h"
 
 
 namespace ClientProtocol {

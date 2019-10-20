@@ -18,7 +18,6 @@ CONFIG(release, debug|release): {
 LIBS += -L$$CLIENTPROTOCOL_LIB_OUTPUT_DIR -lClientProtocol
 
 include($$PWD/ClientProtocolIncludes.pri)
-include($$PWD/../Qt-Secret/src/Qt-Secret.pri)
 
 
 

@@ -4,11 +4,13 @@
 
 namespace ClientProtocol {
 
+namespace Data {
+
 /**
  * @brief The AbstractData class
  * all data packages inherited this class.
  */
-class CLIENTPROTOCOLSHARED_EXPORT AbstractData
+class CLIENTPROTOCOLSHARED_EXPORT Abstract
 {
 private:
     /**
@@ -20,13 +22,13 @@ protected:
     /**
      * @brief AbstractData
      */
-    explicit AbstractData();
+    explicit Abstract();
 
     /**
      * @brief AbstractData
      * @param package
      */
-    explicit AbstractData(const BasePackage& package);
+    explicit Abstract(const BasePackage& package);
 
     /**
      * @brief fromBytes - private initialisation of object from byte array
@@ -77,10 +79,12 @@ public:
      */
     virtual bool isValid() const;
 
-    virtual ~AbstractData();
+    virtual ~Abstract();
 
 
 };
+}
+
 }
 
 

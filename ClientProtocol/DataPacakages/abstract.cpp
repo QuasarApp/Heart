@@ -1,4 +1,4 @@
-#include "abstractdata.h"
+#include "abstract.h"
 #include <QDataStream>
 #include <QMap>
 #include <typeinfo>
@@ -6,16 +6,17 @@
 
 namespace ClientProtocol {
 
+namespace Data {
 
 
 static QMap<size_t, unsigned char> commandTable = {};
 
 
-unsigned char ClientProtocol::AbstractData::cmd() const {
+unsigned char Abstract::cmd() const {
     return _cmd;
 }
 
-AbstractData::AbstractData() {
+Abstract::Abstract() {
     size_t hash = typeid(*this).hash_code();
     if (!commandTable.contains(hash)) {
         commandTable[hash] = static_cast<unsigned char>(commandTable.size());
@@ -23,13 +24,13 @@ AbstractData::AbstractData() {
     _cmd = commandTable[hash];
 }
 
-AbstractData::AbstractData(const ClientProtocol::BasePackage &package):
-    AbstractData() {
+Abstract::Abstract(const ClientProtocol::BasePackage &package):
+    Abstract() {
 
     fromBytes(package.data);
 }
 
-bool AbstractData::fromBytes(const QByteArray &data) {
+bool Abstract::fromBytes(const QByteArray &data) {
 
     if (data.isEmpty())
         return false;
@@ -39,14 +40,14 @@ bool AbstractData::fromBytes(const QByteArray &data) {
     return true;
 }
 
-QByteArray AbstractData::toBytes() const {
+QByteArray Abstract::toBytes() const {
     QByteArray res;
     QDataStream stream(&res, QIODevice::WriteOnly);
     toStream(stream);
     return res;
 }
 
-bool AbstractData::toPackage(BasePackage &package,
+bool Abstract::toPackage(BasePackage &package,
                                              unsigned char trigeredCommand) const {
 
     if (!isValid()) {
@@ -62,18 +63,20 @@ bool AbstractData::toPackage(BasePackage &package,
     return package.isValid();
 }
 
-QDataStream &AbstractData::fromStream(QDataStream &stream) {
+QDataStream &Abstract::fromStream(QDataStream &stream) {
     stream >> _cmd;
     return stream;
 }
 
-QDataStream &AbstractData::toStream(QDataStream &stream) const {
+QDataStream &Abstract::toStream(QDataStream &stream) const {
     stream << _cmd;
     return stream;
 }
 
-bool AbstractData::isValid() const {
+bool Abstract::isValid() const {
     return _cmd;
+}
+
 }
 
 }

@@ -43,7 +43,7 @@ struct SslSrtData {
 #define LOGICK_ERROOR   -20
 #define REQUEST_ERROR   -5
 
-class AbstractData;
+class Abstract;
 
 /**
  * @brief The AbstractNode class
@@ -199,7 +199,7 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendResponse(const AbstractData& resp,  quint32 address,
+    virtual bool sendResponse(const Abstract& resp,  quint32 address,
                               const BaseHeader *req = nullptr);
 
     /**

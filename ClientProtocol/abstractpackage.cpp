@@ -1,3 +1,4 @@
+#include "abstract.h"
 #include "abstractpackage.h"
 namespace ClientProtocol {
 

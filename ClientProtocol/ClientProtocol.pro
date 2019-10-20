@@ -42,32 +42,30 @@ include($$PWD/../QuasarAppLib/QuasarLib.pri)
 
 
 SOURCES += \
-        abstractdata.cpp \
+    DataPacakages/abstract.cpp \
+    DataPacakages/badrequest.cpp \
     abstractheader.cpp \
-        abstractnode.cpp \
-        abstractnodeinfo.cpp \
-#        baseclient.cpp \
+    abstractnode.cpp \
+    abstractnodeinfo.cpp \
     abstractpackage.cpp \
     baseheader.cpp \
-        basenodeinfo.cpp \
-#        baseserver.cpp \
+    basenodeinfo.cpp \
     basepackage.cpp \
-        clientprotocol.cpp
+    clientprotocol.cpp
 
 
 HEADERS += \
-        abstractdata.h \
+    DataPacakages/abstract.h \
+    DataPacakages/badrequest.h \
     abstractheader.h \
-        abstractnode.h \
-        abstractnodeinfo.h \
-#        baseclient.h \
+    abstractnode.h \
+    abstractnodeinfo.h \
     abstractpackage.h \
     baseheader.h \
-        basenodeinfo.h \
-#        baseserver.h \
+    basenodeinfo.h \
     basepackage.h \
-        clientprotocol.h \
-        clientprotocol_global.h \
-        config.h
+    clientprotocol.h \
+    clientprotocol_global.h \
+    config.h
 
 include($$PWD/ClientProtocolIncludes.pri)

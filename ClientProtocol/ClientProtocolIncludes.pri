@@ -1,4 +1,5 @@
 INCLUDEPATH += "$$PWD/"
-INCLUDEPATH += "$$PWD/Objects"
+INCLUDEPATH += "$$PWD/DataPacakages"
 
+LIBS += -L$$CLIENTPROTOCOL_LIB_OUTPUT_DIR -lcrypto
 

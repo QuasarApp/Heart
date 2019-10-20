@@ -1,4 +1,4 @@
-#include "abstractdata.h"
+#include "abstract.h"
 #include "abstractnode.h"
 #include <QSslCertificate>
 #include <QSslKey>
@@ -292,7 +292,7 @@ bool AbstractNode::sendPackage(const BasePackage &pkg, QAbstractSocket *target) 
     return sendet;
 }
 
-bool AbstractNode::sendResponse(const AbstractData &resp, quint32 id, const BaseHeader *req) {
+bool AbstractNode::sendResponse(const Abstract &resp, quint32 id, const BaseHeader *req) {
     auto client = getInfoPtr(id);
 
     if (!client) {
@@ -315,6 +315,46 @@ bool AbstractNode::sendResponse(const AbstractData &resp, quint32 id, const Base
     }
 
     return true;
+}
+
+void AbstractNode::badRequest(quint32 address, const BaseHeader &req) {
+    auto client = getInfoPtr(address);
+
+    if (!client) {
+
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because client == null",
+                                           QuasarAppUtils::Error);
+        return;
+    }
+
+    if (!changeTrust(address, REQUEST_ERROR)) {
+
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because karma not changed",
+                                           QuasarAppUtils::Error);
+
+        return;
+    }
+
+    BasePackage pcg;
+    if (!(pcg.create(Command::BadRequest, Type::Responke, &req))) {
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because package not created",
+                                           QuasarAppUtils::Error);
+    };
+
+    if (!sendPackage(pcg, client->getSct())) {
+
+        QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
+                                           " because karma not changed",
+                                           QuasarAppUtils::Error);
+        return;
+    }
+
+    QuasarAppUtils::Params::verboseLog("Bad request sendet to adderess: " +
+                                       client->getSct()->peerAddress().toString(),
+                                       QuasarAppUtils::Info);
 }
 
 QString AbstractNode::getWorkState() const {
