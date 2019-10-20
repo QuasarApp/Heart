@@ -12,11 +12,19 @@ bool Package::isValid() const {
         return false;
     }
 
-    if (data.size() && hdr.command != data.at(0)) {
-        return false;
+    auto rawint = data.mid(0, 4);
+    unsigned int cmd;
+    memcpy(&cmd, rawint.data(), sizeof (cmd));
+
+    if (data.size() && hdr.command != cmd) {
+        std::reverse(rawint.begin(), rawint.end());
+        memcpy(&cmd, rawint.data(), sizeof (cmd));
+
+        if (hdr.command != cmd)
+            return false;
     }
 
-    return hdr.size == static_cast<unsigned int> (data.size());
+    return hdr.size == data.size();
 }
 
 QByteArray Package::toBytes() const {

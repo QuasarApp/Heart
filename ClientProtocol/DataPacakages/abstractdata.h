@@ -14,7 +14,7 @@ private:
     /**
      * @brief _cmd - unique id of class using in Header of package for identification.
      */
-    unsigned char _cmd = 0;
+    unsigned int _cmd = 0;
 
 protected:
     /**
@@ -38,7 +38,7 @@ protected:
      * @brief generateId
      * @return generate cmd function
      */
-    virtual int generateId();
+    virtual unsigned int generateId();
 
 public:
 
@@ -46,7 +46,7 @@ public:
      * @brief cmd
      * @return command of package
      */
-    unsigned char cmd() const;
+    unsigned int cmd() const;
 
     /**
      * @brief toBytes
@@ -61,7 +61,7 @@ public:
      * @param trigeredCommand - old cmd
      * @return retorn package object created from this object.
      */
-    bool toPackage(Package &package, unsigned char trigeredCommand = 0) const;
+    bool toPackage(Package &package, unsigned int trigeredCommand = 0) const;
 
     /**
      * @brief fromStream

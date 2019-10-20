@@ -2,6 +2,8 @@
 #define ABSTRACTNODEINFO_H
 #include "clientprotocol_global.h"
 
+#include <QHostAddress>
+
 
 class QAbstractSocket;
 namespace ClientProtocol {
@@ -60,7 +62,7 @@ public:
      * @brief id
      * @return unique id of socket
      */
-    virtual unsigned int id() const;
+    virtual QHostAddress id() const;
 
     /**
      * @brief ban this node
@@ -132,7 +134,7 @@ protected:
 
 private:
 
-    unsigned int _id = 0;
+    QHostAddress _id;
     QAbstractSocket *_sct = nullptr;
     NodeType _type = NodeType::Undefined;
     int _trust = static_cast<int>(TrustNode::Default);

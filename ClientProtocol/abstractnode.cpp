@@ -1,4 +1,5 @@
 #include "abstractnode.h"
+#include "workstate.h"
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslKey>
@@ -36,7 +37,7 @@ void AbstractNode::stop() {
     }
 }
 
-AbstractNodeInfo *AbstractNode::getInfoPtr(quint32 id) {
+AbstractNodeInfo *AbstractNode::getInfoPtr(const QHostAddress &id) {
     if (!_connections.contains(id)) {
         return nullptr;
     }
@@ -44,19 +45,11 @@ AbstractNodeInfo *AbstractNode::getInfoPtr(quint32 id) {
     return &_connections[id].info;
 }
 
-AbstractNodeInfo AbstractNode::getInfo(quint32 id) const{
+AbstractNodeInfo AbstractNode::getInfo(const QHostAddress &id) const{
     return _connections.value(id).info;
 }
 
-AbstractNodeInfo *AbstractNode::getInfoPtr(const QHostAddress &id) {
-    return getInfoPtr(qHash(id));
-}
-
-AbstractNodeInfo AbstractNode::getInfo(const QHostAddress &id) const {
-    return getInfo(qHash(id));
-}
-
-void AbstractNode::ban(quint32 target) {
+void AbstractNode::ban(const QHostAddress &target) {
 
     auto info = getInfoPtr(target);
 
@@ -66,7 +59,7 @@ void AbstractNode::ban(quint32 target) {
     _connections[target].info.ban();
 }
 
-void AbstractNode::unBan(quint32 target) {
+void AbstractNode::unBan(const QHostAddress &target) {
     if (!_connections.contains(target)) {
         return;
     }
@@ -292,9 +285,9 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     return sendet;
 }
 
-bool AbstractNode::sendResponse(const AbstractData &resp, quint32 id,
+bool AbstractNode::sendResponse(const AbstractData &resp, const QHostAddress &addere,
                                 const Header *req) {
-    auto client = getInfoPtr(id);
+    auto client = getInfoPtr(addere);
 
     if (!client) {
         QuasarAppUtils::Params::verboseLog("Response not sent because client == null",
@@ -326,7 +319,7 @@ bool AbstractNode::sendResponse(const AbstractData &resp, quint32 id,
     return true;
 }
 
-void AbstractNode::badRequest(quint32 address, const Header &req) {
+void AbstractNode::badRequest(const QHostAddress &address, const Header &req) {
     auto client = getInfoPtr(address);
 
     if (!client) {
@@ -368,7 +361,18 @@ void AbstractNode::badRequest(quint32 address, const Header &req) {
                                        QuasarAppUtils::Info);
 }
 
-QString AbstractNode::getWorkState() const {
+WorkState AbstractNode::getWorkState() const {
+    WorkState state;
+
+    state.setConnectionCount(connectionsCount());
+    state.setMaxConnectionCount(maxPendingConnections());
+    state.setBanedList(banedList());
+
+    return state;
+
+}
+
+QString AbstractNode::getWorkStateString() const {
     if (isListening()) {
         if (connectionsCount() >= maxPendingConnections())
             return "overload";
@@ -384,11 +388,11 @@ QString AbstractNode::connectionState() const {
     return QString("%0 / %1").arg(connectionsCount()).arg(maxPendingConnections());
 }
 
-QStringList AbstractNode::baned() const {
-    QStringList list = {};
+QList<QHostAddress> AbstractNode::banedList() const {
+    QList<QHostAddress> list = {};
     for (auto i = _connections.begin(); i != _connections.end(); ++i) {
         if (i.value().info.isBaned()) {
-            list.push_back(QHostAddress(i.key()).toString());
+            list.push_back(i.key());
         }
     }
 
@@ -423,13 +427,13 @@ bool AbstractNode::isBaned(QAbstractSocket *socket) const {
 void AbstractNode::incomingConnection(qintptr handle) {
 
     if (_mode == SslMode::NoSSL) {
-        incomingSsl(handle);
-    } else {
         incomingTcp(handle);
+    } else {
+        incomingSsl(handle);
     }
 }
 
-bool AbstractNode::changeTrust(quint32 id, int diff) {
+bool AbstractNode::changeTrust(const QHostAddress &id, int diff) {
     auto ptr = getInfoPtr(id);
     if (!ptr) {
         return false;
@@ -497,7 +501,7 @@ void AbstractNode::avelableBytes() {
         return;
     }
 
-    auto id = qHash(client->peerAddress());
+    auto id = client->peerAddress();
 
     if (!_connections.contains(id)) {
         return;

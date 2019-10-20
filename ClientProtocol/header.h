@@ -4,14 +4,14 @@
 
 namespace ClientProtocol {
 /**
- * @brief The Header struct 4 byte
+ * @brief The Header struct 12 byte
  */
 #pragma pack(push, 1)
 struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned int size;
+    int size;
 
     /**
      * @brief command of pacage

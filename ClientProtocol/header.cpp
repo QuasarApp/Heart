@@ -7,7 +7,7 @@ Header::Header() {
 
 bool Header::isValid() const {
 
-    if (sizeof (*this) != 4) {
+    if (sizeof (*this) != 12) {
         return false;
     }
 

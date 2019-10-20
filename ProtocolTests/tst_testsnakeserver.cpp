@@ -7,6 +7,7 @@
 #include <clientprotocol.h>
 #include <abstractdata.h>
 #include <badrequest.h>
+#include <package.h>
 
 #include "testutils.h"
 
@@ -42,7 +43,7 @@ testSankeServer::~testSankeServer() {
 }
 
 void testSankeServer::initTestCase() {
-    //    ClientProtocol::initClientProtockol();
+    ClientProtocol::initClientProtockol();
 }
 
 void testSankeServer::testPakageData() {
@@ -52,11 +53,36 @@ void testSankeServer::testPakageData() {
 
     QVERIFY(bad.cmd() == bad1.cmd() && bad.cmd() == bad2.cmd());
 
+    ClientProtocol::Package pkg;
+
+    QVERIFY(bad.toPackage(pkg));
+
+    ClientProtocol::BadRequest res(pkg);
+
+    QVERIFY(bad.cmd() == res.cmd());
+
 }
 
 void testSankeServer::testAbstractNode() {
-    ClientProtocol::AbstractNode node;
-    node.run(TEST_LOCAL_HOST, TEST_PORT);
+    ClientProtocol::AbstractNode node, node2, node3;
+
+    const int port1 = TEST_PORT + 1;
+    const int port2 = TEST_PORT + 2;
+    const int port3 = TEST_PORT + 3;
+
+    QVERIFY(node.run(TEST_LOCAL_HOST, port1));
+    QVERIFY(node2.run(TEST_LOCAL_HOST, port2));
+    QVERIFY(node3.run(TEST_LOCAL_HOST, port3));
+
+    node.connectToHost(QHostAddress(TEST_LOCAL_HOST), port2);
+    QVERIFY(node2.waitForNewConnection(1000));
+
+    QVERIFY(node.getWorkState().getConnectionCount() == 1);
+
+    node3.connectToHost(QHostAddress(TEST_LOCAL_HOST), port2);
+    QVERIFY(node2.waitForNewConnection(1000));
+
+    QVERIFY(node.getWorkState().getConnectionCount() == 2);
 
 }
 

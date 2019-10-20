@@ -25,9 +25,9 @@ void AbstractNodeInfo::disconnect() {
     }
 }
 
-unsigned int AbstractNodeInfo::id() const {
+QHostAddress AbstractNodeInfo::id() const {
     if (_sct)
-        return (qHash(_sct->peerAddress()));
+        return (_sct->peerAddress());
 
     return _id;
 }
@@ -48,7 +48,7 @@ void AbstractNodeInfo::unBan() {
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
     if (_sct)
-        _id = qHash(_sct->peerAddress());
+        _id = _sct->peerAddress();
 }
 
 int AbstractNodeInfo::trust() const {

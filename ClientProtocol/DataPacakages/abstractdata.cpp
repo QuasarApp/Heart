@@ -6,16 +6,12 @@
 
 namespace ClientProtocol {
 
-
-static QMap<size_t, unsigned char> commandTable = {};
-
-
-unsigned char AbstractData::cmd() const {
+unsigned int AbstractData::cmd() const {
     return _cmd;
 }
 
 AbstractData::AbstractData() {
-    _cmd = static_cast<unsigned char>(generateId());
+    _cmd = static_cast<unsigned int>(generateId());
 }
 
 AbstractData::AbstractData(const ClientProtocol::Package &package):
@@ -34,8 +30,8 @@ bool AbstractData::fromBytes(const QByteArray &data) {
     return true;
 }
 
-int AbstractData::generateId() {
-    return typeid(*this).hash_code() % 0xFF;
+unsigned int AbstractData::generateId() {
+    return qHash(typeid(*this).name());
 }
 
 QByteArray AbstractData::toBytes() const {
@@ -46,7 +42,7 @@ QByteArray AbstractData::toBytes() const {
 }
 
 bool AbstractData::toPackage(Package &package,
-                        unsigned char trigeredCommand) const {
+                        unsigned int trigeredCommand) const {
 
     if (!isValid()) {
         return false;
@@ -56,7 +52,7 @@ bool AbstractData::toPackage(Package &package,
 
     package.hdr.command = _cmd;
     package.hdr.triggerCommnad = trigeredCommand;
-    package.hdr.size = static_cast<unsigned short>(package.data.size());
+    package.hdr.size = package.data.size();
 
     return package.isValid();
 }

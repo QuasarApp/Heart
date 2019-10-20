@@ -9,6 +9,7 @@
 #include <QSslConfiguration>
 #include <QTcpServer>
 #include "abstractdata.h"
+#include "workstate.h"
 
 class QSslCertificate;
 class QSslKey;
@@ -80,20 +81,6 @@ public:
      * @param id of selected node
      * @return pointer to information about node
      */
-    virtual AbstractNodeInfo *getInfoPtr(quint32 id);
-
-    /**
-     * @brief getInfo
-     * @param id
-     * @return information about Node
-     */
-    virtual AbstractNodeInfo getInfo(quint32 id) const;
-
-    /**
-     * @brief getInfo
-     * @param id of selected node
-     * @return pointer to information about node
-     */
     virtual AbstractNodeInfo *getInfoPtr(const QHostAddress &id);
 
     /**
@@ -107,13 +94,13 @@ public:
      * @brief ban
      * @param target id of ban node
      */
-    virtual void ban(quint32 target);
+    virtual void ban(const QHostAddress& target);
 
     /**
      * @brief unBan
      * @param target id of unban node
      */
-    virtual void unBan(quint32 target);
+    virtual void unBan(const QHostAddress& target);
 
     /**
      * @brief connectToHost
@@ -142,8 +129,14 @@ public:
 
     SslMode getMode() const;
 
+    /**
+     * @brief getWorkState
+     * @return
+     */
+    virtual WorkState getWorkState() const;
+
 signals:
-    void incomingReques(Package pkg, quint32 sender);
+    void incomingReques(Package pkg, const QHostAddress&  sender);
 
 
 protected:
@@ -200,7 +193,7 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendResponse(const AbstractData& resp,  quint32 address,
+    virtual bool sendResponse(const AbstractData& resp,  const QHostAddress& addere,
                               const Header *req = nullptr);
 
     /**
@@ -208,13 +201,13 @@ protected:
      * @param address
      * @param req
      */
-    virtual void badRequest(quint32 address, const Header &req);
+    virtual void badRequest(const QHostAddress &address, const Header &req);
 
     /**
-     * @brief getWorkState
+     * @brief getWorkStateString
      * @return string of work state
      */
-    virtual QString getWorkState() const;
+    virtual QString getWorkStateString() const;
 
     /**
      * @brief connectionState
@@ -223,10 +216,10 @@ protected:
     virtual QString connectionState() const;
 
     /**
-     * @brief baned
-     * @return
+     * @brief banedList
+     * @return list of baned nodes
      */
-    QStringList baned() const;
+    QList<QHostAddress> banedList() const;
 
     /**
      * @brief connectionsCount
@@ -253,7 +246,7 @@ protected:
      * @param diff
      * @return true if all good
      */
-    bool changeTrust(quint32 id, int diff);
+    bool changeTrust(const QHostAddress& id, int diff);
 
     /**
     * @brief incomingConnection for ssl sockets
@@ -283,7 +276,7 @@ private slots:
 private:
     SslMode _mode;
     QSslConfiguration _ssl;
-    QHash<unsigned int, NodeInfoData> _connections;
+    QHash<QHostAddress, NodeInfoData> _connections;
 
 
 };

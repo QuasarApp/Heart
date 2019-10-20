@@ -1,87 +1,61 @@
-//#include "testutils.h"
+#include "testutils.h"
 
-//#include <QCoreApplication>
-//#include <QDateTime>
-//#include <QVariantMap>
+#include <QCoreApplication>
+#include <QDateTime>
+#include <QVariantMap>
 
-//auto terminalFuncPrivate(std::function<bool()> func,
-//                         ServerProtocol::Client& cli, QVariantMap* resMap = nullptr) {
-//    bool isWork = false;
-//    bool received = false;
+bool funcPrivate(std::function<bool()> requestFunc,
+            ClientProtocol::AbstractNode& node,
+            unsigned int *responceCmd = nullptr,
+            QByteArray* responceArray = nullptr,
+            QHostAddress *responceSender = nullptr) {
 
-//    QMetaObject::Connection m_connection;
+        bool received = false;
+        QMetaObject::Connection m_connection;
+        m_connection = QObject::connect(&node, &ClientProtocol::AbstractNode::incomingReques,
+                         [ &received, &m_connection, responceCmd, responceArray, responceSender]
+                                        (ClientProtocol::Package pkg,
+                                        QHostAddress sender) {
 
-//    m_connection = QObject::connect(&cli, &ServerProtocol::Client::sigIncommingData,
-//                     [&isWork, &received, &m_connection, resMap] (const QVariantMap& map) {
+            received = true;
 
-//        isWork = !map.contains("Error");
-//        received = true;
+            if (responceCmd) {
+                *responceCmd = pkg.hdr.command;
+            }
 
-//        if (resMap)
-//            *resMap = map;
+            if (responceArray) {
+                *responceArray = pkg.data;
+            }
 
-//        QObject::disconnect(m_connection);
-//    });
+            if (responceSender) {
+                *responceSender = sender;
+            }
 
-
-//    if (!func()) {
-//        return false;
-//    }
-
-//    if (!cli.wait(received, 1000)) {
-//        return false;
-//    }
-
-//    return isWork;
-//}
-
-//bool clientFuncPrivate(std::function<bool()> requestFunc,
-//            ClientProtocol::Client& cli,
-//            ClientProtocol::Command* responceCmd = nullptr,
-//            QByteArray* responceArray = nullptr) {
-
-//        bool received = false;
-//        QMetaObject::Connection m_connection;
-//        m_connection = QObject::connect(&cli, &ClientProtocol::Client::sigIncommingData,
-//                         [ &received, &m_connection, responceCmd, responceArray]
-//                                        (const ClientProtocol::Command cmd,
-//                                        const QByteArray& data) {
-
-//            received = true;
-
-//            if (responceCmd) {
-//                *responceCmd = cmd;
-//            }
-
-//            if (responceArray) {
-//                *responceArray = data;
-//            }
-
-//            QObject::disconnect(m_connection);
+            QObject::disconnect(m_connection);
 
 
-//        });
+        });
 
-//        if (!requestFunc()) {
-//            return false;
-//        }
+        if (!requestFunc()) {
+            return false;
+        }
 
-//        return TestUtils::wait(received, 1000);
-//}
+        return TestUtils::wait(received, 1000);
+}
 
-//TestUtils::TestUtils()
-//{
+TestUtils::TestUtils()
+{
 
-//}
+}
 
-//bool TestUtils::wait(const bool &forWait, int msec) {
-//    auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
-//    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !forWait) {
-//        QCoreApplication::processEvents();
-//    }
-//    QCoreApplication::processEvents();
-//    return forWait;
-//}
+bool TestUtils::wait(const bool &forWait, int msec) {
+    auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
+    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !forWait) {
+        QCoreApplication::processEvents();
+    }
+    QCoreApplication::processEvents();
+    return forWait;
+}
 
 
 //bool TestUtils::loginFunc(
@@ -92,7 +66,7 @@
 //                    bool loginResult) {
 
 //    auto wraper = [&cli, login, pass](){return cli.login(login, pass);};
-//    bool result = clientFuncPrivate(wraper, cli);
+//    bool result = funcPrivate(wraper, cli);
 
 //    if (!result) {
 //        return !sendResult;
@@ -109,7 +83,7 @@
 //                    bool loginResult) {
 
 //    auto wraper = [&cli, login, pass](){return cli.registration(login, pass);};
-//    bool result = clientFuncPrivate(wraper, cli);
+//    bool result = funcPrivate(wraper, cli);
 
 //    if (!result) {
 //        return !sendResult;

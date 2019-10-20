@@ -49,7 +49,8 @@ SOURCES += \
     basenodeinfo.cpp \
     clientprotocol.cpp \
     header.cpp \
-    package.cpp
+    package.cpp \
+    workstate.cpp
 
 
 HEADERS += \
@@ -62,6 +63,7 @@ HEADERS += \
     clientprotocol_global.h \
     config.h \
     header.h \
-    package.h
+    package.h \
+    workstate.h
 
 include($$PWD/ClientProtocolIncludes.pri)
