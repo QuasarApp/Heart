@@ -1,16 +1,18 @@
 #ifndef BADREQUEST_H
 #define BADREQUEST_H
 
-#include "abstract.h"
+#include "abstractdata.h"
 
 namespace ClientProtocol{
 
-}
-
-class BadRequest : public Abstract
+class BadRequest : public AbstractData
 {
 public:
-    BadRequest();
+    explicit BadRequest();
+    explicit BadRequest(const Package& package);
+
 };
+
+}
 
 #endif // BADREQUEST_H

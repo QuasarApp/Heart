@@ -1,4 +1,4 @@
-#include "abstract.h"
+#include "abstractdata.h"
 #include <QDataStream>
 #include <QMap>
 #include <typeinfo>
@@ -6,31 +6,25 @@
 
 namespace ClientProtocol {
 
-namespace Data {
-
 
 static QMap<size_t, unsigned char> commandTable = {};
 
 
-unsigned char Abstract::cmd() const {
+unsigned char AbstractData::cmd() const {
     return _cmd;
 }
 
-Abstract::Abstract() {
-    size_t hash = typeid(*this).hash_code();
-    if (!commandTable.contains(hash)) {
-        commandTable[hash] = static_cast<unsigned char>(commandTable.size());
-    }
-    _cmd = commandTable[hash];
+AbstractData::AbstractData() {
+    _cmd = static_cast<unsigned char>(generateId());
 }
 
-Abstract::Abstract(const ClientProtocol::BasePackage &package):
-    Abstract() {
+AbstractData::AbstractData(const ClientProtocol::Package &package):
+    AbstractData() {
 
     fromBytes(package.data);
 }
 
-bool Abstract::fromBytes(const QByteArray &data) {
+bool AbstractData::fromBytes(const QByteArray &data) {
 
     if (data.isEmpty())
         return false;
@@ -40,15 +34,19 @@ bool Abstract::fromBytes(const QByteArray &data) {
     return true;
 }
 
-QByteArray Abstract::toBytes() const {
+int AbstractData::generateId() {
+    return typeid(*this).hash_code() % 0xFF;
+}
+
+QByteArray AbstractData::toBytes() const {
     QByteArray res;
     QDataStream stream(&res, QIODevice::WriteOnly);
     toStream(stream);
     return res;
 }
 
-bool Abstract::toPackage(BasePackage &package,
-                                             unsigned char trigeredCommand) const {
+bool AbstractData::toPackage(Package &package,
+                        unsigned char trigeredCommand) const {
 
     if (!isValid()) {
         return false;
@@ -63,20 +61,23 @@ bool Abstract::toPackage(BasePackage &package,
     return package.isValid();
 }
 
-QDataStream &Abstract::fromStream(QDataStream &stream) {
+QDataStream &AbstractData::fromStream(QDataStream &stream) {
     stream >> _cmd;
     return stream;
 }
 
-QDataStream &Abstract::toStream(QDataStream &stream) const {
+QDataStream &AbstractData::toStream(QDataStream &stream) const {
     stream << _cmd;
     return stream;
 }
 
-bool Abstract::isValid() const {
+bool AbstractData::isValid() const {
     return _cmd;
 }
 
+AbstractData::~AbstractData() {
+
 }
+
 
 }

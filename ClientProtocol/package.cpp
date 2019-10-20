@@ -1,12 +1,13 @@
-#include "abstract.h"
-#include "abstractpackage.h"
+#include "abstractdata.h"
+#include "package.h"
+
 namespace ClientProtocol {
 
-AbstractPackage::AbstractPackage() {
+Package::Package() {
     reset();
 }
 
-bool AbstractPackage::isValid() const {
+bool Package::isValid() const {
     if (!hdr.isValid()) {
         return false;
     }
@@ -18,16 +19,16 @@ bool AbstractPackage::isValid() const {
     return hdr.size == static_cast<unsigned int> (data.size());
 }
 
-QByteArray AbstractPackage::toBytes() const {
+QByteArray Package::toBytes() const {
     QByteArray res;
-    res.append(reinterpret_cast<char*>(const_cast<AbstractHeader*>(&hdr)),
+    res.append(reinterpret_cast<char*>(const_cast<Header*>(&hdr)),
                sizeof (hdr));
 
     res.append(data);
     return res;
 }
 
-void AbstractPackage::reset() {
+void Package::reset() {
     hdr.reset();
     data.clear();
 }

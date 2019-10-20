@@ -8,6 +8,7 @@
 #include <QAbstractSocket>
 #include <QSslConfiguration>
 #include <QTcpServer>
+#include "abstractdata.h"
 
 class QSslCertificate;
 class QSslKey;
@@ -26,7 +27,7 @@ enum class SslMode {
  */
 struct NodeInfoData {
     AbstractNodeInfo info;
-    BasePackage pkg;
+    Package pkg;
 };
 
 /**
@@ -142,7 +143,7 @@ public:
     SslMode getMode() const;
 
 signals:
-    void incomingReques(BasePackage pkg, quint32 sender);
+    void incomingReques(Package pkg, quint32 sender);
 
 
 protected:
@@ -182,7 +183,7 @@ protected:
      * @param sender
      * @return
      */
-    virtual bool parsePackage(const BasePackage &pkg, AbstractNodeInfo *sender);
+    virtual bool parsePackage(const Package &pkg, AbstractNodeInfo *sender);
 
     /**
      * @brief sendPackage
@@ -190,7 +191,7 @@ protected:
      * @param target
      * @return
      */
-    virtual bool sendPackage(const BasePackage &pkg, QAbstractSocket *target);
+    virtual bool sendPackage(const Package &pkg, QAbstractSocket *target);
 
     /**
      * @brief sendResponse
@@ -199,15 +200,15 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendResponse(const Abstract& resp,  quint32 address,
-                              const BaseHeader *req = nullptr);
+    virtual bool sendResponse(const AbstractData& resp,  quint32 address,
+                              const Header *req = nullptr);
 
     /**
      * @brief badRequest
      * @param address
      * @param req
      */
-    virtual void badRequest(quint32 address, const BaseHeader &req);
+    virtual void badRequest(quint32 address, const Header &req);
 
     /**
      * @brief getWorkState

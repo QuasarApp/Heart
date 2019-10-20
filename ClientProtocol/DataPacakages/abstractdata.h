@@ -1,16 +1,14 @@
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
-#include "clientprotocol.h"
+#include "package.h"
 
 namespace ClientProtocol {
-
-namespace Data {
 
 /**
  * @brief The AbstractData class
  * all data packages inherited this class.
  */
-class CLIENTPROTOCOLSHARED_EXPORT Abstract
+class CLIENTPROTOCOLSHARED_EXPORT AbstractData
 {
 private:
     /**
@@ -22,19 +20,25 @@ protected:
     /**
      * @brief AbstractData
      */
-    explicit Abstract();
+    explicit AbstractData();
 
     /**
      * @brief AbstractData
      * @param package
      */
-    explicit Abstract(const BasePackage& package);
+    explicit AbstractData(const Package& package);
 
     /**
      * @brief fromBytes - private initialisation of object from byte array
      * @return true if all good
      */
     bool fromBytes(const QByteArray&);
+
+    /**
+     * @brief generateId
+     * @return generate cmd function
+     */
+    virtual int generateId();
 
 public:
 
@@ -57,7 +61,7 @@ public:
      * @param trigeredCommand - old cmd
      * @return retorn package object created from this object.
      */
-    bool toPackage(BasePackage &package, unsigned char trigeredCommand = 0) const;
+    bool toPackage(Package &package, unsigned char trigeredCommand = 0) const;
 
     /**
      * @brief fromStream
@@ -79,11 +83,13 @@ public:
      */
     virtual bool isValid() const;
 
-    virtual ~Abstract();
+    virtual ~AbstractData();
+
+    friend class testSankeServer;
 
 
 };
-}
+
 
 }
 

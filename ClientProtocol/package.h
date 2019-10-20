@@ -1,6 +1,6 @@
 #ifndef ABSTRACTPACKAGE_H
 #define ABSTRACTPACKAGE_H
-#include "abstractheader.h"
+#include "header.h"
 #include "clientprotocol_global.h"
 
 #include <QByteArray>
@@ -11,17 +11,17 @@ class Abstract;
 /**
  * @brief The Package struct
  */
-struct CLIENTPROTOCOLSHARED_EXPORT AbstractPackage {
+struct CLIENTPROTOCOLSHARED_EXPORT Package {
     /**
      * @brief hdr - header of package
      */
-    AbstractHeader hdr;
+    Header hdr;
     /**
      * @brief data - source data of package
      */
     QByteArray data;
 
-    AbstractPackage();
+    Package();
 
     /**
      * @brief isValid
@@ -40,7 +40,7 @@ struct CLIENTPROTOCOLSHARED_EXPORT AbstractPackage {
      */
     virtual void reset();
 
-    virtual ~AbstractPackage() = default;
+    virtual ~Package() = default;
 
 };
 

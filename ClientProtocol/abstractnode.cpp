@@ -1,9 +1,9 @@
-#include "abstract.h"
 #include "abstractnode.h"
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslKey>
 #include <QSslSocket>
+#include <badrequest.h>
 #include <quasarapp.h>
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
@@ -248,7 +248,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket) {
     return true;
 }
 
-bool AbstractNode::parsePackage(const BasePackage &pkg, AbstractNodeInfo *sender) {
+bool AbstractNode::parsePackage(const Package &pkg, AbstractNodeInfo *sender) {
 
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!",
@@ -269,7 +269,7 @@ bool AbstractNode::parsePackage(const BasePackage &pkg, AbstractNodeInfo *sender
     return true;
 }
 
-bool AbstractNode::sendPackage(const BasePackage &pkg, QAbstractSocket *target) {
+bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     if (!pkg.isValid()) {
         return false;
     }
@@ -292,7 +292,8 @@ bool AbstractNode::sendPackage(const BasePackage &pkg, QAbstractSocket *target) 
     return sendet;
 }
 
-bool AbstractNode::sendResponse(const Abstract &resp, quint32 id, const BaseHeader *req) {
+bool AbstractNode::sendResponse(const AbstractData &resp, quint32 id,
+                                const Header *req) {
     auto client = getInfoPtr(id);
 
     if (!client) {
@@ -301,12 +302,20 @@ bool AbstractNode::sendResponse(const Abstract &resp, quint32 id, const BaseHead
         return false;
     }
 
-    BasePackage pkg = ;
-    if (!resp.toPackage(pkg, req->command)) {
+    Package pkg;
+    bool convert = false;
+    if (req) {
+        convert = resp.toPackage(pkg, req->command);
+    } else {
+        convert = resp.toPackage(pkg);
+    }
+
+    if (convert) {
         QuasarAppUtils::Params::verboseLog("Response not sent because dont create package from object",
                                            QuasarAppUtils::Error);
         return false;
     }
+
 
     if (!sendPackage(pkg, client->sct())) {
         QuasarAppUtils::Params::verboseLog("Response not sent!",
@@ -317,7 +326,7 @@ bool AbstractNode::sendResponse(const Abstract &resp, quint32 id, const BaseHead
     return true;
 }
 
-void AbstractNode::badRequest(quint32 address, const BaseHeader &req) {
+void AbstractNode::badRequest(quint32 address, const Header &req) {
     auto client = getInfoPtr(address);
 
     if (!client) {
@@ -331,20 +340,22 @@ void AbstractNode::badRequest(quint32 address, const BaseHeader &req) {
     if (!changeTrust(address, REQUEST_ERROR)) {
 
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
-                                           " because karma not changed",
+                                           " because trust not changed",
                                            QuasarAppUtils::Error);
 
         return;
     }
 
-    BasePackage pcg;
-    if (!(pcg.create(Command::BadRequest, Type::Responke, &req))) {
+    auto bad = BadRequest();
+    Package pcg;
+
+    if (!bad.toPackage(pcg, req.command)) {
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
                                            " because package not created",
                                            QuasarAppUtils::Error);
-    };
+    }
 
-    if (!sendPackage(pcg, client->getSct())) {
+    if (!sendPackage(pcg, client->sct())) {
 
         QuasarAppUtils::Params::verboseLog("Bad request detected, bud responce command not sendet!"
                                            " because karma not changed",
@@ -353,7 +364,7 @@ void AbstractNode::badRequest(quint32 address, const BaseHeader &req) {
     }
 
     QuasarAppUtils::Params::verboseLog("Bad request sendet to adderess: " +
-                                       client->getSct()->peerAddress().toString(),
+                                       client->sct()->peerAddress().toString(),
                                        QuasarAppUtils::Info);
 }
 
@@ -502,9 +513,9 @@ void AbstractNode::avelableBytes() {
         val.pkg.reset();
 
         memcpy(&val.pkg.hdr,
-               array.data(), sizeof(BaseHeader));
+               array.data(), sizeof(Header));
 
-        val.pkg.data.append(array.mid(sizeof(BaseHeader)));
+        val.pkg.data.append(array.mid(sizeof(Header)));
     }
 
     if (val.pkg.isValid()) {

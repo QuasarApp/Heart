@@ -5,6 +5,8 @@
 #include <QCoreApplication>
 #include <QCryptographicHash>
 #include <clientprotocol.h>
+#include <abstractdata.h>
+#include <badrequest.h>
 
 #include "testutils.h"
 
@@ -25,6 +27,7 @@ public:
 
 private slots:
     void initTestCase();
+    void testPakageData();
     void testAbstractNode();
 
 };
@@ -40,6 +43,15 @@ testSankeServer::~testSankeServer() {
 
 void testSankeServer::initTestCase() {
     //    ClientProtocol::initClientProtockol();
+}
+
+void testSankeServer::testPakageData() {
+    ClientProtocol::BadRequest bad;
+    ClientProtocol::BadRequest bad1;
+    ClientProtocol::BadRequest bad2;
+
+    QVERIFY(bad.cmd() == bad1.cmd() && bad.cmd() == bad2.cmd());
+
 }
 
 void testSankeServer::testAbstractNode() {

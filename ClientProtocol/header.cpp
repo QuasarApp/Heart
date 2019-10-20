@@ -1,11 +1,11 @@
-#include "abstractheader.h"
+#include "header.h"
 
 namespace ClientProtocol {
-AbstractHeader::AbstractHeader() {
+Header::Header() {
     reset();
 }
 
-bool AbstractHeader::isValid() const {
+bool Header::isValid() const {
 
     if (sizeof (*this) != 4) {
         return false;
@@ -14,7 +14,7 @@ bool AbstractHeader::isValid() const {
     return true;
 }
 
-void AbstractHeader::reset() {
+void Header::reset() {
     size = 0;
     command = 0;
     triggerCommnad = 0;

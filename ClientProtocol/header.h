@@ -7,28 +7,28 @@ namespace ClientProtocol {
  * @brief The Header struct 4 byte
  */
 #pragma pack(push, 1)
-struct CLIENTPROTOCOLSHARED_EXPORT AbstractHeader {
+struct CLIENTPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    unsigned short size;
+    unsigned int size;
 
     /**
      * @brief command of pacage
      */
-    quint8 command;
+    unsigned int command;
 
     /**
      * @brief command of pacage see Command (rquest from client)
      * the server should write to which command it responds
      */
-    quint8 triggerCommnad;
+    unsigned int triggerCommnad;
 
     /**
      * @brief Header default constructor
      */
-    AbstractHeader();
-    ~AbstractHeader() = default;
+    Header();
+    ~Header() = default;
 
     /**
      * @brief isValid
