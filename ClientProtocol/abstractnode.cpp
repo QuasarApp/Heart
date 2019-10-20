@@ -301,7 +301,7 @@ bool AbstractNode::sendResponse(const Abstract &resp, quint32 id, const BaseHead
         return false;
     }
 
-    BasePackage pkg;
+    BasePackage pkg = ;
     if (!resp.toPackage(pkg, req->command)) {
         QuasarAppUtils::Params::verboseLog("Response not sent because dont create package from object",
                                            QuasarAppUtils::Error);
