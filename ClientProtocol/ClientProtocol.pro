@@ -46,6 +46,7 @@ SOURCES += \
     DataPacakages/badrequest.cpp \
     abstractnode.cpp \
     abstractnodeinfo.cpp \
+    basenode.cpp \
     basenodeinfo.cpp \
     clientprotocol.cpp \
     header.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     DataPacakages/badrequest.h \
     abstractnode.h \
     abstractnodeinfo.h \
+    basenode.h \
     basenodeinfo.h \
     clientprotocol.h \
     clientprotocol_global.h \
