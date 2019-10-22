@@ -38,6 +38,10 @@ QHash<QString, QVariant::Type> DbTableBase::keys() const {
     return _keys;
 }
 
+QString DbTableBase::lastIdQuery() const {
+    return QString("SELECT MAX(id) FROM " + _name);
+}
+
 DbTableBase::~DbTableBase() {
 
 }

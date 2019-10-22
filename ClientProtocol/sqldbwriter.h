@@ -4,60 +4,89 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QDir>
+#include <QSqlQuery>
 #include "clientprotocol_global.h"
-
-#define DEFAULT_DB_NAME "SnakeDatabase.db"
-#define DEFAULT_DB_PATH QDir::homePath() + "/SnakeServer/" + DEFAULT_DB_NAME
-#define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
+#include "config.h"
 
 class QSqlQuery;
 class QSqlDatabase;
 class QSqlQuery;
 class PlayerDBData;
 
+namespace ClientProtocol {
+
+/**
+ * @brief The SqlDBWriter class
+ */
 class CLIENTPROTOCOLSHARED_EXPORT SqlDBWriter
 {
 private:
     bool exec(QSqlQuery *sq, const QString &sqlFile);
 
-    QSqlDatabase *db = nullptr;
-    QSqlQuery *query = nullptr;
     bool initSuccessful = false;
 
-    bool enableFK() const;
-    bool disableFK() const;
-
 protected:
-    int getLastIdItems();
-    int getLastIdPlayers();
 
-    virtual int getPlayerId(const QString &gmail);
+    /**
+     * @brief enableFK - enavle forign ke for sqlite db
+     * @return return true if all good
+     */
+    bool enableFK();
 
-    virtual bool checkPlayer(int id);
-    virtual bool checkItem(int idItem, int idOwner = -1);
+    /**
+     * @brief enableFK - disavle forign ke for sqlite db
+     * @return return true if all good
+     */
+    bool disableFK();
 
-    virtual int savePlayer(const PlayerDBData& player);
-    virtual int saveItem(const Item &item);
-    virtual bool saveowners(int player, const QSet<int>);
 
-    virtual bool getAllItemsOfPalyer(int player, QSet<int>& items);
+    /**
+     * @brief getInitPararm
+     * @param initFile
+     * @return
+     *
+     * Params :
+     * DBDriver - driver of db see https://doc.qt.io/qt-5/sql-driver.html
+     * DBFilePath - path to file of data base (sqlite only)
+     * DBInitFile - sql file with init state database
+     * DBPass - pass of remote db
+     * DBLogin - login of remote db
+     * DBHost - host addres of reote db
+     * DBPort - port of reote db
 
-    virtual PlayerDBData getPlayer(int id);
-    virtual Item getItem(int id);
+     */
+    virtual QVariantMap getInitParams(const QString& initFile) const;
 
-    virtual bool itemIsFreeFrom(int item) const;
+    /**
+     * @brief defaultInitPararm
+     * @param initFile
+     * @return
+     */
+    virtual QVariantMap defaultInitPararm() const;
+
+    QSqlQuery query;
+    QSqlDatabase db;
+
 
 public:
     SqlDBWriter();
 
-    virtual bool initDb(const QString &path = DEFAULT_DB_PATH);
+    /**
+     * @brief initDb
+     * @param path
+     * @return
+     */
+    virtual bool initDb(const QString &initDbParams = DEFAULT_DB_PATH);
 
+    /**
+     * @brief isValid
+     * @return
+     */
     virtual bool isValid() const;
 
     virtual ~SqlDBWriter();
 
-    friend class testSankeServer;
-
 };
 
+}
 #endif // SQLDBWRITER_H

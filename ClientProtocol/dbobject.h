@@ -2,6 +2,7 @@
 #define DBOBJECT_H
 #include <QVariantMap>
 #include "clientprotocol_global.h"
+#include "streambase.h"
 
 class QSqlQuery;
 
@@ -12,14 +13,14 @@ class IDbTable;
 /**
  * @brief The DBObject class
  */
-class CLIENTPROTOCOLSHARED_EXPORT DBObject
+class CLIENTPROTOCOLSHARED_EXPORT DBObject : StreamBase
 {
 public:
     /**
      * @brief DBObject
      */
     DBObject();
-    virtual ~DBObject();
+    ~DBObject() override;
 
     /**
      * @brief tableStruct
@@ -89,6 +90,10 @@ protected:
     IDbTable * _tableStruct = nullptr;
     int _id = -1;
 
+
+    //// StreamBase interface
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 };
 }
 

@@ -21,13 +21,7 @@ AbstractData::AbstractData(const ClientProtocol::Package &package):
 }
 
 bool AbstractData::fromBytes(const QByteArray &data) {
-
-    if (data.isEmpty())
-        return false;
-
-    QDataStream stream(data);
-    fromStream(stream);
-    return true;
+    return StreamBase::fromBytes(data);
 }
 
 unsigned int AbstractData::generateId() {
@@ -35,10 +29,7 @@ unsigned int AbstractData::generateId() {
 }
 
 QByteArray AbstractData::toBytes() const {
-    QByteArray res;
-    QDataStream stream(&res, QIODevice::WriteOnly);
-    toStream(stream);
-    return res;
+    return StreamBase::toBytes();
 }
 
 bool AbstractData::toPackage(Package &package,

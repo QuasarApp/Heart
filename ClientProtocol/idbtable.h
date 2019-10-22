@@ -35,6 +35,13 @@ public:
      * @return
      */
     virtual QHash<QString, QVariant::Type> keys() const = 0;
+
+    /**
+     * @brief lastId
+     * @return query for get last id of table in db
+     */
+    virtual QString lastIdQuery() const = 0;
+
     virtual ~IDbTable() = 0;
 
 };

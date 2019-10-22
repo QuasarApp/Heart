@@ -56,6 +56,7 @@ SOURCES += \
     package.cpp \
     sqldbcache.cpp \
     sqldbwriter.cpp \
+    streambase.cpp \
     workstate.cpp
 
 
@@ -76,6 +77,7 @@ HEADERS += \
     package.h \
     sqldbcache.h \
     sqldbwriter.h \
+    streambase.h \
     workstate.h
 
 include($$PWD/ClientProtocolIncludes.pri)

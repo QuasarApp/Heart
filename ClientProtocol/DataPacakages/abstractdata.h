@@ -2,13 +2,15 @@
 #define ABSTRACTDATA_H
 #include "package.h"
 
+#include <streambase.h>
+
 namespace ClientProtocol {
 
 /**
  * @brief The AbstractData class
  * all data packages inherited this class.
  */
-class CLIENTPROTOCOLSHARED_EXPORT AbstractData
+class CLIENTPROTOCOLSHARED_EXPORT AbstractData : public StreamBase
 {
 private:
     /**
@@ -68,14 +70,14 @@ public:
      * @param stream
      * @return stream
      */
-    virtual QDataStream& fromStream(QDataStream& stream);
+    QDataStream& fromStream(QDataStream& stream) override;
 
     /**
      * @brief toStream
      * @param stream
      * @return stream
      */
-    virtual QDataStream& toStream(QDataStream& stream) const;
+    QDataStream& toStream(QDataStream& stream) const override;
 
     /**
      * @brief isValid
@@ -83,7 +85,7 @@ public:
      */
     virtual bool isValid() const;
 
-    virtual ~AbstractData();
+    virtual ~AbstractData() override;
 
     friend class testSankeServer;
 

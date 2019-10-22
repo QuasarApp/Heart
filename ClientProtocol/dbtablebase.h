@@ -22,6 +22,7 @@ public:
     QString name() const override;
     QString toStringQuery() const override;
     QHash<QString, QVariant::Type> keys() const override;
+    QString lastIdQuery() const override;
 
     ~DbTableBase() override;
 
@@ -67,7 +68,6 @@ private:
     QVariant::Type getType(const QString& str);
 
     QHash<QString, QVariant::Type> _keys;
-
 };
 }
 

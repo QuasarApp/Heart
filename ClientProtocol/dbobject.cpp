@@ -1,5 +1,6 @@
 #include "dbobject.h"
 #include "dbtablebase.h"
+#include <QDataStream>
 #include <QDateTime>
 #include <QSqlQuery>
 
@@ -132,6 +133,16 @@ bool DBObject::getBaseQueryString(QString queryString, QSqlQuery *query) const {
     }
 
     return true;
+}
+
+QDataStream &DBObject::fromStream(QDataStream &stream) {
+    stream >> _dataTable;
+    return stream;
+}
+
+QDataStream &DBObject::toStream(QDataStream &stream) const {
+    stream << _dataTable;
+    return stream;
 }
 
 int DBObject::getId() const {
