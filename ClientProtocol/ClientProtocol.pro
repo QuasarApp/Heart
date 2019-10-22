@@ -12,7 +12,7 @@
 #-------------------------------------------------
 
 QT       -= gui
-QT       += network
+QT       += network sql
 
 CONFIG += c++14
 TARGET = ClientProtocol
@@ -49,8 +49,13 @@ SOURCES += \
     basenode.cpp \
     basenodeinfo.cpp \
     clientprotocol.cpp \
+    dbobject.cpp \
+    dbtablebase.cpp \
     header.cpp \
+    idbtable.cpp \
     package.cpp \
+    sqldbcache.cpp \
+    sqldbwriter.cpp \
     workstate.cpp
 
 
@@ -64,8 +69,13 @@ HEADERS += \
     clientprotocol.h \
     clientprotocol_global.h \
     config.h \
+    dbobject.h \
+    dbtablebase.h \
     header.h \
+    idbtable.h \
     package.h \
+    sqldbcache.h \
+    sqldbwriter.h \
     workstate.h
 
 include($$PWD/ClientProtocolIncludes.pri)
