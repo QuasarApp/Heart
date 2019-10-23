@@ -1,14 +1,16 @@
 #ifndef SQLDBCASHE_H
 #define SQLDBCASHE_H
-#include "sqldbwriter.h"
 
 #include <QMap>
 #include <QHash>
 #include <QSet>
 #include <QVariantMap>
-#include <player.h>
-#include "item.h"
 #include <clientprotocol.h>
+
+namespace ClientProtocol {
+
+class SqlDBWriter;
+class DBObject;
 
 enum class SqlDBCasheWriteMode: int {
     Default = 0x0,
@@ -16,59 +18,39 @@ enum class SqlDBCasheWriteMode: int {
     Force = 0x2,
 } ;
 
-namespace ClientProtocol {
-    class BaseNetworkObject;
-}
-
-class SERVERSHARED_EXPORT SqlDBCache: public QObject , private SqlDBWriter
+class CLIENTPROTOCOLSHARED_EXPORT SqlDBCache: public QObject
 {
     Q_OBJECT
-private:
-    qint64 lastUpdateTime = 0;
-    qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
 
-    QMap <int, Item> items;
-    QMap <int, PlayerDBData> players;
-    QHash <int, QSet<int>>  owners;
-    QHash <QString, int>  playersIds;
-
-    int generateIdForItem() const;
-    int generateIdForPalyer() const;
-
-    bool checkPlayer(int id) override;
-    bool checkItem(int idItem, int idOwner = -1) override;
-
-    void globalUpdateDataBasePrivate(qint64 currentTime);
-    void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
-
-    bool itemIsFreeFrom(int item) const override ;
 
 public:
     SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL);
     ~SqlDBCache() override;
 
-    bool initDb(const QString &pdbath = DEFAULT_DB_PATH) override;
+    SqlDBWriter *writer() const;
+    void setWriter(SqlDBWriter *writer);
 
-    Item getItem(int id) override;
-    int saveItem(const Item& saveData) override;
-    PlayerDBData getPlayer(int id) override;
-    int savePlayer(const PlayerDBData &player) override;
+protected:
+    virtual bool init();
 
-    bool login(const QString& gmail, const QString& pass);
+private:
+    qint64 lastUpdateTime = 0;
+    qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
 
-    bool giveAwayItem(int player, int item);
-    bool getItem(int player, int item, bool check = true);
-    bool moveItem(int owner, int receiver, int item);
-    int getPlayerId(const QString &gmail) override;
+    SqlDBWriter *_writer = nullptr;
 
-    bool getAllItemsOfPalyer(int player, QSet<int>& items) override;
+    QHash<QString, QHash <int, DBObject*>>  _cache;
 
-    friend class testSankeServer;
+    int generateIdForItem() const;
+    int generateIdForPalyer() const;
+
+    void globalUpdateDataBasePrivate(qint64 currentTime);
+    void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 signals:
-    void sigItemChanged(int id, const Item& newData);
-    void sigPlayerChanged(int id, const PlayerDBData& newData);
+    void sigItemChanged(int id);
 
 };
 
+}
 #endif // SQLDBCASHE_H

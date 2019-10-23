@@ -13,7 +13,7 @@ class IDbTable;
 /**
  * @brief The DBObject class
  */
-class CLIENTPROTOCOLSHARED_EXPORT DBObject : StreamBase
+class CLIENTPROTOCOLSHARED_EXPORT DBObject : public StreamBase
 {
 public:
     /**

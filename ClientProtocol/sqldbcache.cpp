@@ -1,11 +1,12 @@
 #include "sqldbcache.h"
 #include "quasarapp.h"
-#include "playerdbdata.h"
-#include <qtconcurrentrun.h>
+
 #include <clientprotocol.h>
 
 #include <QDateTime>
-#include <basenetworkobject.h>
+
+namespace ClientProtocol {
+
 
 int SqlDBCache::generateIdForItem() const {
     if (items.isEmpty()) {
@@ -145,6 +146,16 @@ SqlDBCache::SqlDBCache(qint64 updateInterval) {
 
 SqlDBCache::~SqlDBCache() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
+}
+
+SqlDBWriter *SqlDBCache::writer() const
+{
+    return _writer;
+}
+
+void SqlDBCache::setWriter(SqlDBWriter *writer)
+{
+    _writer = writer;
 }
 
 bool SqlDBCache::initDb(const QString &pdbath) {
@@ -380,4 +391,6 @@ bool SqlDBCache::getAllItemsOfPalyer(int player, QSet<int> &items) {
     }
 
     return false;
+}
+
 }
