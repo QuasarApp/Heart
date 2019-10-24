@@ -18,6 +18,9 @@ enum class SqlDBCasheWriteMode: int {
     Force = 0x2,
 } ;
 
+/**
+ * @brief The SqlDBCache class it is db cache and bridge for DbWriters
+ */
 class CLIENTPROTOCOLSHARED_EXPORT SqlDBCache: public QObject
 {
     Q_OBJECT
@@ -27,10 +30,38 @@ public:
     SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL);
     ~SqlDBCache() override;
 
+    /**
+     * @brief addDbObject
+     * @param obj
+     * @return
+     */
+    bool addDbObject(const DBObject* obj);
+
+    /**
+     * @brief removeDbObject
+     * @param obj
+     * @return
+     */
+    bool removeDbObject(const DBObject* obj);
+
+
+    /**
+     * @brief writer
+     * @return
+     */
     SqlDBWriter *writer() const;
+
+    /**
+     * @brief setWriter
+     * @param writer
+     */
     void setWriter(SqlDBWriter *writer);
 
 protected:
+    /**
+     * @brief init
+     * @return
+     */\
     virtual bool init();
 
 private:
@@ -39,7 +70,7 @@ private:
 
     SqlDBWriter *_writer = nullptr;
 
-    QHash<QString, QHash <int, DBObject*>>  _cache;
+    QHash<QString, QHash <int, QSharedPointer<DBObject>>>  _cache;
 
     int generateIdForItem() const;
     int generateIdForPalyer() const;
@@ -48,7 +79,7 @@ private:
     void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 signals:
-    void sigItemChanged(int id);
+    void sigItemChanged(int id, QWeakPointer<DBObject> obj);
 
 };
 

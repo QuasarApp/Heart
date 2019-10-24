@@ -88,6 +88,7 @@ protected:
 
     QVariantMap _dataTable;
     IDbTable * _tableStruct = nullptr;
+    int _dbId = -1;
     int _id = -1;
 
 

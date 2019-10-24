@@ -44,6 +44,13 @@ public:
      */
     QHash<QString, QString> dependencies() const;
 
+protected:
+    /**
+     * @brief setDependencies
+     * @param dependencies
+     */
+    void setDependencies(const QHash<QString, QString> &dependencies);
+
     /**
      * @brief addDependecies
      * @param table
@@ -51,9 +58,6 @@ public:
      * @return
      */
     bool addDependecies(const IDbTable* table, const QString &val);
-
-protected:
-    void setDependencies(const QHash<QString, QString> &dependencies);
 
     QString _name;
     QVariantMap _tableMap;

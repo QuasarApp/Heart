@@ -28,20 +28,20 @@ bool DBObject::getSaveQueryString(QSqlQuery *query) const {
 
 bool DBObject::getSelectQueryString(QSqlQuery *query) const {
 
-    if (_id < 0) {
+    if (_dbId < 0) {
         return false;
     }
 
-    QString queryString = "SELECT (%1) from %0 where id=" + QString::number(_id);
+    QString queryString = "SELECT (%1) from %0 where id=" + QString::number(_dbId);
     return getBaseQueryString(queryString, query);
 }
 
 bool DBObject::getDeleteQueryString(QSqlQuery *query) const {
-    if (_id < 0) {
+    if (_dbId < 0) {
         return false;
     }
 
-    QString queryString = "DELETE FROM %0 where id=" + QString::number(_id);
+    QString queryString = "DELETE FROM %0 where id=" + QString::number(_dbId);
     return getBaseQueryString(queryString, query);
 }
 
