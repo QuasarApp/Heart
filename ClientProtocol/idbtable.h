@@ -25,16 +25,16 @@ public:
     virtual QString name() const = 0;
 
     /**
-     * @brief toStringQuery
-     * @return
-     */
-    virtual QString toStringQuery() const = 0;
-
-    /**
      * @brief keys
      * @return
      */
     virtual QHash<QString, QVariant::Type> keys() const = 0;
+
+    /**
+     * @brief setKeys
+     * @param keys
+     */
+    virtual void setKeys(const QHash<QString, QVariant::Type> &keys) = 0;
 
     /**
      * @brief lastId
@@ -42,7 +42,9 @@ public:
      */
     virtual QString lastIdQuery() const = 0;
 
+
     virtual ~IDbTable() = 0;
+
 
 };
 }

@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include "clientprotocol_global.h"
 #include "config.h"
+#include <QVariant>
 
 class QSqlQuery;
 class QSqlDatabase;
@@ -14,6 +15,8 @@ class QSqlQuery;
 class PlayerDBData;
 
 namespace ClientProtocol {
+
+class IDbTable;
 
 /**
  * @brief The SqlDBWriter class
@@ -26,6 +29,12 @@ private:
     bool initSuccessful = false;
 
 protected:
+
+    /**
+     * @brief getDbStruct
+     * @return structure of the data base
+     */
+    QHash<QString, IDbTable*> getDbStruct() const;
 
     /**
      * @brief enableFK - enavle forign ke for sqlite db
@@ -64,8 +73,16 @@ protected:
      */
     virtual QVariantMap defaultInitPararm() const;
 
+    /**
+     * @brief getType
+     * @param str
+     * @return
+     */
+    virtual QVariant::Type getType(const QString& str);
+
     QSqlQuery query;
     QSqlDatabase db;
+    QHash<QString, IDbTable *> _dbStruct;
 
 
 public:

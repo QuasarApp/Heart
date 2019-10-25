@@ -23,22 +23,42 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
         stream.setCodec("UTF8");
 
         while(!stream.atEnd()) {
+
             temp += stream.readLine();
+
             if (temp.lastIndexOf("delimiter", -1, Qt::CaseInsensitive) > -1) {
+
                 temp.remove("delimiter", Qt::CaseInsensitive);
+
                 int last = temp.indexOf(QRegularExpression("[^ \f\n\r\t\v]")) + 1;
+
                 int begin = temp.lastIndexOf(QRegularExpression("[^ \f\n\r\t\v]"));
+
                 delimiter = temp.mid(begin, last - begin);
+
                 temp = "";
             } else {
                 if (temp.lastIndexOf(delimiter) >- 1) {
                     temp.remove(delimiter);
+
                     result = result && sq->exec(temp);
 
                     if (!result) {
                         qCritical() << sq->lastError().text();
                         f.close();
                         return false;
+                    }
+
+                    if (temp.contains("CREATE TABLE ", Qt::CaseInsensitive)) {
+                        int tableBegin = temp.indexOf('(');
+                        int tableEnd = temp.indexOf(')');
+
+                        QStringList columns = temp.mid(tableBegin, tableEnd - tableBegin).split(',');
+
+                        for (QString & col : columns) {
+                            getType(col);
+                        }
+
                     }
 
                     temp = "";
@@ -103,6 +123,11 @@ QVariantMap SqlDBWriter::defaultInitPararm() const {
     params["DBFile"] = DEFAULT_DB_PATH;
 
     return params;
+}
+
+QHash<QString, IDbTable *> SqlDBWriter::getDbStruct() const
+{
+    return _dbStruct;
 }
 
 SqlDBWriter::SqlDBWriter() {
@@ -172,5 +197,29 @@ bool SqlDBWriter::isValid() const {
 SqlDBWriter::~SqlDBWriter() {
 }
 
+
+#define c(x) str.contains(x, Qt::CaseInsensitive)
+QVariant::Type SqlDBWriter::getType(const QString &str) {
+
+    if (str.isEmpty() || c(" BINARY") || c(" BLOB") || c(" TINYBLOB") || c(" MEDIUMBLOB") || c(" LONGBLOB")) {
+        return QVariant::ByteArray;
+    } else if (c(" INT")) {
+        return QVariant::Int;
+    } else if (c(" VARCHAR") || c(" TEXT") || c(" TINYTEXT") || c(" MEDIUMTEXT") || c(" LONGTEXT")) {
+        return QVariant::String;
+    } else if (c(" FLOAT") || c(" DOUBLE") || c(" REAL")) {
+        return QVariant::Double;
+    } else if (c(" BOOL")) {
+        return QVariant::Bool;
+    } else if (c(" DATETIME")) {
+        return QVariant::DateTime;
+    } else if (c(" DATE")) {
+        return QVariant::Date;
+    } else if (c(" TIME")) {
+        return QVariant::Time;
+    }
+
+    return QVariant::ByteArray;
+}
 
 }

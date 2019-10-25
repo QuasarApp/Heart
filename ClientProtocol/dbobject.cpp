@@ -28,20 +28,20 @@ bool DBObject::getSaveQueryString(QSqlQuery *query) const {
 
 bool DBObject::getSelectQueryString(QSqlQuery *query) const {
 
-    if (_dbId < 0) {
+    if (_id < 0) {
         return false;
     }
 
-    QString queryString = "SELECT (%1) from %0 where id=" + QString::number(_dbId);
+    QString queryString = "SELECT (%1) from %0 where id=" + QString::number(_id);
     return getBaseQueryString(queryString, query);
 }
 
 bool DBObject::getDeleteQueryString(QSqlQuery *query) const {
-    if (_dbId < 0) {
+    if (_id < 0) {
         return false;
     }
 
-    QString queryString = "DELETE FROM %0 where id=" + QString::number(_dbId);
+    QString queryString = "DELETE FROM %0 where id=" + QString::number(_id);
     return getBaseQueryString(queryString, query);
 }
 
@@ -143,6 +143,16 @@ QDataStream &DBObject::fromStream(QDataStream &stream) {
 QDataStream &DBObject::toStream(QDataStream &stream) const {
     stream << _dataTable;
     return stream;
+}
+
+QVariantMap &DBObject::fromVariantMap(QVariantMap &map) {
+    _dataTable = map;
+    return map;
+}
+
+QVariantMap &DBObject::toVariantmap(QVariantMap &map) const {
+    map = _dataTable;
+    return map;
 }
 
 int DBObject::getId() const {

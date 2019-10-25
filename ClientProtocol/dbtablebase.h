@@ -20,56 +20,25 @@ public:
 
     // IDbTable interface:
     QString name() const override;
-    QString toStringQuery() const override;
     QHash<QString, QVariant::Type> keys() const override;
+    void setKeys(const QHash<QString, QVariant::Type> &keys) override;
     QString lastIdQuery() const override;
 
     ~DbTableBase() override;
 
     /**
-     * @brief tableMap
-     * @return
-     */
-    QVariantMap tableMap() const;
-
-    /**
      * @brief setTableMap
      * @param tableMap
      */
-    void setTableMap(const QVariantMap &tableMap);
+    void setTableMap(const QHash<QString, QVariant::Type> &);
 
-    /**
-     * @brief dependencies
-     * @return
-     */
-    QHash<QString, QString> dependencies() const;
 
 protected:
-    /**
-     * @brief setDependencies
-     * @param dependencies
-     */
-    void setDependencies(const QHash<QString, QString> &dependencies);
-
-    /**
-     * @brief addDependecies
-     * @param table
-     * @param val
-     * @return
-     */
-    bool addDependecies(const IDbTable* table, const QString &val);
 
     QString _name;
-    QVariantMap _tableMap;
-    QHash<QString, QString> _dependencies;
 
 private:
-    /**
-     * @brief getType
-     * @param str
-     * @return
-     */
-    QVariant::Type getType(const QString& str);
+
 
     QHash<QString, QVariant::Type> _keys;
 };

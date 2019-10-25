@@ -4,7 +4,7 @@
 #include <QByteArray>
 #include "clientprotocol_global.h"
 
-
+class QVariantMap;
 class QDataStream;
 namespace ClientProtocol {
 
@@ -41,6 +41,20 @@ public:
      * @return stream
      */
     virtual QDataStream& toStream(QDataStream& stream) const = 0;
+
+    /**
+     * @brief fromVariantMap
+     * @param map
+     * @return
+     */
+    virtual QVariantMap& fromVariantMap(QVariantMap& map) = 0;
+
+    /**
+     * @brief toVariantmap
+     * @param map
+     * @return
+     */
+    virtual QVariantMap& toVariantmap(QVariantMap& map) const = 0;
 
 };
 }

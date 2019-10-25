@@ -88,13 +88,14 @@ protected:
 
     QVariantMap _dataTable;
     IDbTable * _tableStruct = nullptr;
-    int _dbId = -1;
     int _id = -1;
 
 
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
+    QVariantMap &fromVariantMap(QVariantMap &map) override;
+    QVariantMap &toVariantmap(QVariantMap &map) const override;
 };
 }
 
