@@ -1,46 +1,40 @@
 #ifndef DBTABLEBASE_H
 #define DBTABLEBASE_H
 
-#include "idbtable.h"
-
 #include <QSet>
 #include <QString>
 #include <QVariantMap>
 
+#include "clientprotocol_global.h"
 
 namespace ClientProtocol {
 
 /**
  * @brief The DbTableBase class
  */
-class CLIENTPROTOCOLSHARED_EXPORT DbTableBase : public IDbTable
+struct CLIENTPROTOCOLSHARED_EXPORT DbTableBase
 {
-public:
-    DbTableBase(QString& name);
-
-    // IDbTable interface:
-    QString name() const override;
-    QHash<QString, QVariant::Type> keys() const override;
-    void setKeys(const QHash<QString, QVariant::Type> &keys) override;
-    QString lastIdQuery() const override;
-
-    ~DbTableBase() override;
+    QString name;
+    QHash<QString, QVariant::Type> keys;
 
     /**
-     * @brief setTableMap
-     * @param tableMap
+     * @brief lastIdQuery
+     * @return
      */
-    void setTableMap(const QHash<QString, QVariant::Type> &);
+    QString lastIdQuery() const;
 
+    /**
+     * @brief isInited
+     * @return
+     */
+    bool isInited() const;
 
-protected:
+    /**
+     * @brief isValid
+     * @return
+     */
+    bool isValid() const;
 
-    QString _name;
-
-private:
-
-
-    QHash<QString, QVariant::Type> _keys;
 };
 }
 

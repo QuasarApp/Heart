@@ -3,18 +3,12 @@
 #include <QDataStream>
 #include <QDateTime>
 #include <QSqlQuery>
+#include <QHash>
 
 namespace ClientProtocol {
 
-DBObject::DBObject() {
-}
-
-IDbTable *DBObject::tableStruct() const {
-    return _tableStruct;
-}
-
-void DBObject::setTableStruct(IDbTable *tableStruct) {
-    _tableStruct = tableStruct;
+DBObject::DBObject(const QString &tableName) {
+    _tableStruct.name = tableName;
 }
 
 // 0 - table name
@@ -48,7 +42,7 @@ bool DBObject::getDeleteQueryString(QSqlQuery *query) const {
 bool DBObject::generateHeaderOfQuery(QString & retQuery) const {
     retQuery = "";
     for (auto it = _dataTable.begin(); it != _dataTable.end(); ++it) {
-        if (_tableStruct->keys().contains(it.key())) {
+        if (_tableStruct.keys.contains(it.key())) {
             retQuery += it.key() + ", ";
         }
     }
@@ -62,7 +56,7 @@ bool DBObject::generateSourceOfQuery(QString& retQuery,
 
     retBindValue.clear();
     for (auto it = _dataTable.begin(); it != _dataTable.end(); ++it) {
-        auto type = _tableStruct->keys().value(it.key(), QVariant::UserType);
+        auto type = _tableStruct.keys.value(it.key(), QVariant::UserType);
         if (type != QVariant::UserType) {
 
             switch (type) {
@@ -106,7 +100,7 @@ bool DBObject::generateSourceOfQuery(QString& retQuery,
 
 bool DBObject::getBaseQueryString(QString queryString, QSqlQuery *query) const {
 
-    queryString = queryString.arg(_tableStruct->name());
+    queryString = queryString.arg(_tableStruct.name);
 
     QString temp = "";
     if (!generateHeaderOfQuery(temp)) {
@@ -137,11 +131,14 @@ bool DBObject::getBaseQueryString(QString queryString, QSqlQuery *query) const {
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {
     stream >> _dataTable;
+    stream >> _tableStruct.name;
     return stream;
 }
 
 QDataStream &DBObject::toStream(QDataStream &stream) const {
+
     stream << _dataTable;
+    stream << _tableStruct.name;
     return stream;
 }
 
@@ -153,6 +150,10 @@ QVariantMap &DBObject::fromVariantMap(QVariantMap &map) {
 QVariantMap &DBObject::toVariantmap(QVariantMap &map) const {
     map = _dataTable;
     return map;
+}
+
+bool DBObject::isValid() const {
+    return AbstractData::isValid() && _tableStruct.isValid();
 }
 
 int DBObject::getId() const {

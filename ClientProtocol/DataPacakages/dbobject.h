@@ -1,38 +1,26 @@
 #ifndef DBOBJECT_H
 #define DBOBJECT_H
 #include <QVariantMap>
+#include <dbtablebase.h>
+#include "abstractdata.h"
 #include "clientprotocol_global.h"
-#include "streambase.h"
 
 class QSqlQuery;
 
 namespace ClientProtocol {
 
-class IDbTable;
-
 /**
  * @brief The DBObject class
  */
-class CLIENTPROTOCOLSHARED_EXPORT DBObject : public StreamBase
+class CLIENTPROTOCOLSHARED_EXPORT DBObject : public AbstractData
 {
 public:
     /**
      * @brief DBObject
      */
-    DBObject();
+    DBObject(const QString& tableName);
     ~DBObject() override;
 
-    /**
-     * @brief tableStruct
-     * @return pointer to DbTable object
-     */
-    IDbTable *tableStruct() const;
-
-    /**
-     * @brief setTableStruct
-     * @param tableStruct pointer to table
-     */
-    void setTableStruct(IDbTable *tableStruct);
 
     /**
      * @brief getSaveQueryString
@@ -87,7 +75,7 @@ protected:
     virtual bool getBaseQueryString(QString queryString, QSqlQuery *query) const;
 
     QVariantMap _dataTable;
-    IDbTable * _tableStruct = nullptr;
+    DbTableBase _tableStruct;
     int _id = -1;
 
 
@@ -96,6 +84,10 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
     QVariantMap &fromVariantMap(QVariantMap &map) override;
     QVariantMap &toVariantmap(QVariantMap &map) const override;
+
+    //// AbstractData interface
+    bool isValid() const override;
+
 };
 }
 

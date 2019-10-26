@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include "clientprotocol_global.h"
 #include "config.h"
+#include "dbtablebase.h"
 #include <QVariant>
 
 class QSqlQuery;
@@ -16,7 +17,7 @@ class PlayerDBData;
 
 namespace ClientProtocol {
 
-class IDbTable;
+class DBObject;
 
 /**
  * @brief The SqlDBWriter class
@@ -24,17 +25,22 @@ class IDbTable;
 class CLIENTPROTOCOLSHARED_EXPORT SqlDBWriter
 {
 private:
+
+    QString tablesListMySql();
+    QString tablesListSqlite();
+
+    QString describeQueryMySql(const QString& tabme);
+    QString describeQuerySqlite(const QString& tabme);
+
+    QString getTablesQuery();
+    QString describeQuery(const QString& tabme);
+
     bool exec(QSqlQuery *sq, const QString &sqlFile);
 
     bool initSuccessful = false;
+    QVariantMap _config;
 
 protected:
-
-    /**
-     * @brief getDbStruct
-     * @return structure of the data base
-     */
-    QHash<QString, IDbTable*> getDbStruct() const;
 
     /**
      * @brief enableFK - enavle forign ke for sqlite db
@@ -82,7 +88,7 @@ protected:
 
     QSqlQuery query;
     QSqlDatabase db;
-    QHash<QString, IDbTable *> _dbStruct;
+    QHash<QString, DbTableBase> _dbStruct;
 
 
 public:
@@ -100,6 +106,24 @@ public:
      * @return
      */
     virtual bool isValid() const;
+
+    /**
+     * @brief getObject
+     * @return
+     */
+    virtual bool getObject(DBObject *result, const QString &table, int id) const;
+
+    /**
+     * @brief saveObject
+     * @return
+     */
+    virtual bool saveObject(DBObject *saveObject);
+
+    /**
+     * @brief deleteObject
+     * @return
+     */
+    virtual bool deleteObject(const QString &table, int id);
 
     virtual ~SqlDBWriter();
 

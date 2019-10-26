@@ -87,8 +87,6 @@ public:
 
     virtual ~AbstractData() override;
 
-    friend class testSankeServer;
-
 
 };
 

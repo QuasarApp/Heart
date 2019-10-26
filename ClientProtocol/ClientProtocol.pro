@@ -12,7 +12,7 @@
 #-------------------------------------------------
 
 QT       -= gui
-QT       += network sql
+QT       += network sql concurrent
 
 CONFIG += c++14
 TARGET = ClientProtocol
@@ -44,15 +44,14 @@ include($$PWD/../QuasarAppLib/QuasarLib.pri)
 SOURCES += \
     DataPacakages/abstractdata.cpp \
     DataPacakages/badrequest.cpp \
+    DataPacakages/dbobject.cpp \
     abstractnode.cpp \
     abstractnodeinfo.cpp \
     basenode.cpp \
     basenodeinfo.cpp \
     clientprotocol.cpp \
-    dbobject.cpp \
     dbtablebase.cpp \
     header.cpp \
-    idbtable.cpp \
     package.cpp \
     sqldbcache.cpp \
     sqldbwriter.cpp \
@@ -63,6 +62,7 @@ SOURCES += \
 HEADERS += \
     DataPacakages/abstractdata.h \
     DataPacakages/badrequest.h \
+    DataPacakages/dbobject.h \
     abstractnode.h \
     abstractnodeinfo.h \
     basenode.h \
@@ -70,10 +70,8 @@ HEADERS += \
     clientprotocol.h \
     clientprotocol_global.h \
     config.h \
-    dbobject.h \
     dbtablebase.h \
     header.h \
-    idbtable.h \
     package.h \
     sqldbcache.h \
     sqldbwriter.h \

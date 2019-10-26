@@ -62,7 +62,7 @@ protected:
      * @brief init
      * @return
      */\
-    virtual bool init();
+    virtual bool init(const QString &initDbParams = "");
 
 private:
     qint64 lastUpdateTime = 0;
@@ -71,9 +71,6 @@ private:
     SqlDBWriter *_writer = nullptr;
 
     QHash<QString, QHash <int, QSharedPointer<DBObject>>>  _cache;
-
-    int generateIdForItem() const;
-    int generateIdForPalyer() const;
 
     void globalUpdateDataBasePrivate(qint64 currentTime);
     void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);

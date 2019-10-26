@@ -1,3 +1,4 @@
+#include "dbtablebase.h"
 #include "sqldbwriter.h"
 
 #include <QRegularExpression>
@@ -9,9 +10,51 @@
 #include <clientprotocol.h>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QHash>
+#include <dbobject.h>
 
 namespace ClientProtocol {
 
+
+QString SqlDBWriter::tablesListMySql() {
+    return "show tables";
+}
+
+QString SqlDBWriter::tablesListSqlite() {
+    return "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'";
+}
+
+QString SqlDBWriter::describeQueryMySql(const QString &tabme) {
+    return QString("describe %0").arg(tabme);
+}
+
+QString SqlDBWriter::describeQuerySqlite(const QString &tabme) {
+    return  QString("pragma table_info('%0')").arg(tabme);
+}
+
+QString SqlDBWriter::getTablesQuery() {
+    auto driver = _config["DBDriver"].toString();
+
+    if (driver.contains("QSQLITE")) {
+        return tablesListSqlite();
+    } else if (driver.contains("QMYSQL")) {
+        return tablesListMySql();
+    }
+
+    return "";
+}
+
+QString SqlDBWriter::describeQuery(const QString &tabme) {
+    auto driver = _config["DBDriver"].toString();
+
+    if (driver.contains("QSQLITE")) {
+        return describeQuerySqlite(tabme);
+    } else if (driver.contains("QMYSQL")) {
+        return describeQueryMySql(tabme);
+    }
+
+    return "";
+}
 
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);
@@ -44,21 +87,10 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
                     result = result && sq->exec(temp);
 
                     if (!result) {
-                        qCritical() << sq->lastError().text();
+                        QuasarAppUtils::Params::verboseLog("exec database error: " +sq->lastError().text(),
+                                                           QuasarAppUtils::Error);
                         f.close();
                         return false;
-                    }
-
-                    if (temp.contains("CREATE TABLE ", Qt::CaseInsensitive)) {
-                        int tableBegin = temp.indexOf('(');
-                        int tableEnd = temp.indexOf(')');
-
-                        QStringList columns = temp.mid(tableBegin, tableEnd - tableBegin).split(',');
-
-                        for (QString & col : columns) {
-                            getType(col);
-                        }
-
                     }
 
                     temp = "";
@@ -67,6 +99,32 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
         }
 
         f.close();
+
+        if (result && !(sq->prepare(getTablesQuery()) && sq->exec())) {
+            QuasarAppUtils::Params::verboseLog("init database error: " +sq->lastError().text(),
+                                               QuasarAppUtils::Error);
+        }
+
+        QStringList tables;
+        while(sq->next()) {
+            tables.push_back(sq->value(0).toString());
+        }
+
+        for(auto &table : tables) {
+            if (!(sq->prepare(describeQuery(table)) && sq->exec())) {
+                QuasarAppUtils::Params::verboseLog("init database error: " +sq->lastError().text(),
+                                                   QuasarAppUtils::Error);
+                continue;
+            }
+
+            DbTableBase tableInfo{table, {}};
+
+            while (sq->next()) {
+                tableInfo.keys[sq->value(0).toString()] = getType(sq->value(1).toString());
+            }
+
+            _dbStruct[table] = tableInfo;
+        }
         return result;
     }
     return false;
@@ -125,11 +183,6 @@ QVariantMap SqlDBWriter::defaultInitPararm() const {
     return params;
 }
 
-QHash<QString, IDbTable *> SqlDBWriter::getDbStruct() const
-{
-    return _dbStruct;
-}
-
 SqlDBWriter::SqlDBWriter() {
 }
 
@@ -142,6 +195,8 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
     } else {
         params = getInitParams(initDbParams);
     }
+
+    _config = params;
 
     db = QSqlDatabase::addDatabase(params["DBDriver"].toString(),
             QFileInfo(params["DBFilePath"].toString()).fileName());
@@ -192,6 +247,30 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
 
 bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
+}
+
+bool SqlDBWriter::getObject(DBObject *result, const QString& table, int id) const {
+    QSqlQuery q(db);
+    result->getSelectQueryString(&q);
+    if (!q.exec()) {
+        return false;
+    }
+
+    if (!q.next()) {
+        return false;
+    }
+
+    q.
+
+    q.value(0).
+}
+
+bool SqlDBWriter::saveObject(DBObject *saveObject) {
+
+}
+
+bool SqlDBWriter::deleteObject(const QString& table, int id) {
+
 }
 
 SqlDBWriter::~SqlDBWriter() {
