@@ -16,7 +16,7 @@ public:
      * @brief getObject
      * @return
      */
-    virtual bool getObject(DBObject *result, const QString &table, int id) const = 0;
+    virtual bool getObject(DBObject *result, const QString &table, int id) = 0;
 
     /**
      * @brief saveObject

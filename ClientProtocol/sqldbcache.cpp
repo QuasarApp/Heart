@@ -3,6 +3,7 @@
 #include "sqldbwriter.h"
 
 #include <clientprotocol.h>
+#include <dbobject.h>
 
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
@@ -77,8 +78,21 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(DBObject *result, const QString &table, int id) const {
+bool SqlDBCache::getObject(DBObject *result, const QString &table, int id) {
 
+    if (!_writer) {
+        return false;
+    }
+
+    auto& tableObj = _cache[table];
+
+    if (!_cache.contains(table)) {
+
+    }
+
+    if ()
+
+    return true;
 }
 
 bool SqlDBCache::saveObject(DBObject *saveObject) {

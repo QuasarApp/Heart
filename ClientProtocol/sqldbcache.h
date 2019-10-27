@@ -59,7 +59,7 @@ public:
      */
     void setWriter(SqlDBWriter *writer);
 
-    bool getObject(DBObject *result, const QString &table, int id) const override;
+    bool getObject(DBObject *result, const QString &table, int id) override;
     bool saveObject(DBObject *saveObject) override;
     bool deleteObject(const QString &table, int id) override;
 
