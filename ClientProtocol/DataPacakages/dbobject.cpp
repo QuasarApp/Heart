@@ -15,29 +15,56 @@ DBObject::DBObject(const QString &tableName) {
 // 0 - table name
 // 1 - headers of update values
 // 2 - update values
-bool DBObject::getSaveQueryString(QSqlQuery *query) const {
+bool DBObject::saveQuery(QSqlQuery *query) const {
 
     QString queryString = "INSERT IGNORE INTO %0(%1) VALUES (%2)";
-    return getBaseQueryString(queryString, query);
+    if (!getBaseQueryString(queryString, query)) {
+        return false;
+    }
+
+    return exec(query);
 }
 
-bool DBObject::getSelectQueryString(QSqlQuery *query) const {
+bool DBObject::selectQuery(QSqlQuery *query) {
 
     if (getId() < 0) {
         return false;
     }
 
     QString queryString = "SELECT (%1) from %0 where id=" + QString::number(getId());
-    return getBaseQueryString(queryString, query);
+
+    if (!getBaseQueryString(queryString, query)) {
+        return false;
+    }
+
+    if (! exec(query)) {
+        return false;
+    }
+
+    QSqlRecord record = query->record();
+    QVariantMap initMap;
+
+    for (int i = 0; i < query->size(); ++i ) {
+        initMap[record.fieldName(i)] = record.value(i);
+    }
+
+    fromVariantMap(initMap);
+
+    return isValid();
 }
 
-bool DBObject::getDeleteQueryString(QSqlQuery *query) const {
+bool DBObject::deleteQuery(QSqlQuery *query) const {
     if (getId() < 0) {
         return false;
     }
 
     QString queryString = "DELETE FROM %0 where id=" + QString::number(getId());
-    return getBaseQueryString(queryString, query);
+
+    if (!getBaseQueryString(queryString, query)) {
+        return false;
+    }
+
+    return exec(query);
 }
 
 bool DBObject::generateHeaderOfQuery(QString & retQuery) const {
@@ -130,13 +157,11 @@ bool DBObject::getBaseQueryString(QString queryString, QSqlQuery *query) const {
     return true;
 }
 
-DbTableBase DBObject::getTableStruct() const
-{
+DbTableBase DBObject::getTableStruct() const {
     return _tableStruct;
 }
 
-void DBObject::setTableStruct(const DbTableBase &tableStruct)
-{
+void DBObject::setTableStruct(const DbTableBase &tableStruct) {
     _tableStruct = tableStruct;
 }
 
@@ -166,7 +191,7 @@ QVariantMap &DBObject::toVariantmap(QVariantMap &map) const {
     return map;
 }
 
-bool DBObject::fromQuery(QSqlQuery *query) {
+bool DBObject::exec(QSqlQuery *query) const {
     if (!query->exec()) {
         return false;
     }
@@ -175,16 +200,7 @@ bool DBObject::fromQuery(QSqlQuery *query) {
         return false;
     }
 
-    QSqlRecord record = query->record();
-    QVariantMap initMap;
-
-    for (int i = 0; i < query->size(); ++i ) {
-        initMap[record.fieldName(i)] =  record.value(i);
-    }
-
-    fromVariantMap(initMap);
-
-    return isValid();
+    return true;
 }
 
 bool DBObject::isValid() const {

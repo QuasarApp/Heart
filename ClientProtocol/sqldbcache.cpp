@@ -77,6 +77,18 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
+bool SqlDBCache::getObject(DBObject *result, const QString &table, int id) const {
+
+}
+
+bool SqlDBCache::saveObject(DBObject *saveObject) {
+
+}
+
+bool SqlDBCache::deleteObject(const QString &table, int id) {
+
+}
+
 bool SqlDBCache::init(const QString &initDbParams) {
 
     if (!_writer) {

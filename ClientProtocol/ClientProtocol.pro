@@ -52,6 +52,7 @@ SOURCES += \
     clientprotocol.cpp \
     dbtablebase.cpp \
     header.cpp \
+    iobjectprovider.cpp \
     package.cpp \
     sqldbcache.cpp \
     sqldbwriter.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     config.h \
     dbtablebase.h \
     header.h \
+    iobjectprovider.h \
     package.h \
     sqldbcache.h \
     sqldbwriter.h \

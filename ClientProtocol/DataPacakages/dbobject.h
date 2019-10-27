@@ -23,25 +23,25 @@ public:
 
 
     /**
-     * @brief getSaveQueryString
+     * @brief saveQuery
      * @param query update value for sql query
      * @return true if all good
      */
-    virtual bool getSaveQueryString(QSqlQuery *query) const;
+    virtual bool saveQuery(QSqlQuery *query) const;
 
     /**
-     * @brief getSelectQueryString
+     * @brief selectQuery
      * @param query update value
      * @return return true if all good
      */
-    virtual bool getSelectQueryString(QSqlQuery *query) const;
+    virtual bool selectQuery(QSqlQuery *query);
 
     /**
-     * @brief getDeleteQueryString
-     * @param query update value
+     * @brief deleteQuery
+     * @param query delete value
      * @return true if all good
      */
-    virtual bool getDeleteQueryString(QSqlQuery *query) const;
+    virtual bool deleteQuery(QSqlQuery *query) const;
 
     /**
      * @brief getId
@@ -53,14 +53,23 @@ public:
      * @brief getId
      * @return id of objcet
      */
-    void setId(int) const;
+    void setId(int);
 
     /**
      * @brief clear
      */
     virtual void clear();
 
+    /**
+     * @brief getTableStruct
+     * @return
+     */
     DbTableBase getTableStruct() const;
+
+    /**
+     * @brief setTableStruct
+     * @param tableStruct
+     */
     void setTableStruct(const DbTableBase &tableStruct);
 
 protected:
@@ -103,7 +112,7 @@ protected:
      * @param query
      * @return
      */
-    virtual bool fromQuery(QSqlQuery *query);
+    virtual bool exec(QSqlQuery *query) const;
 
     //// AbstractData interface
     bool isValid() const override;

@@ -1,6 +1,8 @@
 #ifndef SQLDBCASHE_H
 #define SQLDBCASHE_H
 
+#include "iobjectprovider.h"
+
 #include <QMap>
 #include <QHash>
 #include <QSet>
@@ -21,7 +23,7 @@ enum class SqlDBCasheWriteMode: int {
 /**
  * @brief The SqlDBCache class it is db cache and bridge for DbWriters
  */
-class CLIENTPROTOCOLSHARED_EXPORT SqlDBCache: public QObject
+class CLIENTPROTOCOLSHARED_EXPORT SqlDBCache: public QObject, public iObjectProvider
 {
     Q_OBJECT
 
@@ -56,6 +58,10 @@ public:
      * @param writer
      */
     void setWriter(SqlDBWriter *writer);
+
+    bool getObject(DBObject *result, const QString &table, int id) const override;
+    bool saveObject(DBObject *saveObject) override;
+    bool deleteObject(const QString &table, int id) override;
 
 protected:
     /**

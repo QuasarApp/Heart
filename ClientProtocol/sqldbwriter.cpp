@@ -262,16 +262,29 @@ bool SqlDBWriter::getObject(DBObject *result, const QString& table, int id) cons
     result->setTableStruct(_dbStruct.value(table));
     result->setId(id);
 
-    return result->getSelectQueryString(&q);
+    return result->selectQuery(&q);
 
 }
 
 bool SqlDBWriter::saveObject(DBObject *saveObject) {
 
+    if (!saveObject) {
+        return false;
+    }
+
+    QSqlQuery query(db);
+    return saveObject->saveQuery(&query);
+
 }
 
 bool SqlDBWriter::deleteObject(const QString& table, int id) {
+    DBObject obj(table);
 
+    obj.setTableStruct(_dbStruct.value(table));
+    obj.setId(id);
+
+    QSqlQuery query(db);
+    return obj.deleteQuery(&query);
 }
 
 SqlDBWriter::~SqlDBWriter() {

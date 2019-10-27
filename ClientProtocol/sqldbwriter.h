@@ -8,6 +8,7 @@
 #include "clientprotocol_global.h"
 #include "config.h"
 #include "dbtablebase.h"
+#include "iobjectprovider.h"
 #include <QVariant>
 
 class QSqlQuery;
@@ -22,7 +23,7 @@ class DBObject;
 /**
  * @brief The SqlDBWriter class
  */
-class CLIENTPROTOCOLSHARED_EXPORT SqlDBWriter
+class CLIENTPROTOCOLSHARED_EXPORT SqlDBWriter : public iObjectProvider
 {
 private:
 
@@ -111,21 +112,21 @@ public:
      * @brief getObject
      * @return
      */
-    virtual bool getObject(DBObject *result, const QString &table, int id) const;
+    bool getObject(DBObject *result, const QString &table, int id) const override;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(DBObject *saveObject);
+    bool saveObject(DBObject *saveObject) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    virtual bool deleteObject(const QString &table, int id);
+    bool deleteObject(const QString &table, int id) override;
 
-    virtual ~SqlDBWriter();
+    virtual ~SqlDBWriter() override;
 
 };
 
