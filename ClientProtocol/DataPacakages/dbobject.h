@@ -49,6 +49,20 @@ public:
      */
     int getId() const;
 
+    /**
+     * @brief getId
+     * @return id of objcet
+     */
+    void setId(int) const;
+
+    /**
+     * @brief clear
+     */
+    virtual void clear();
+
+    DbTableBase getTableStruct() const;
+    void setTableStruct(const DbTableBase &tableStruct);
+
 protected:
 
     /**
@@ -76,7 +90,6 @@ protected:
 
     QVariantMap _dataTable;
     DbTableBase _tableStruct;
-    int _id = -1;
 
 
     //// StreamBase interface
@@ -84,6 +97,13 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
     QVariantMap &fromVariantMap(QVariantMap &map) override;
     QVariantMap &toVariantmap(QVariantMap &map) const override;
+
+    /**
+     * @brief fromQuery
+     * @param query
+     * @return
+     */
+    virtual bool fromQuery(QSqlQuery *query);
 
     //// AbstractData interface
     bool isValid() const override;

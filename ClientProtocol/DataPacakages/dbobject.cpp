@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QSqlQuery>
 #include <QHash>
+#include <QSqlRecord>
 
 namespace ClientProtocol {
 
@@ -22,20 +23,20 @@ bool DBObject::getSaveQueryString(QSqlQuery *query) const {
 
 bool DBObject::getSelectQueryString(QSqlQuery *query) const {
 
-    if (_id < 0) {
+    if (getId() < 0) {
         return false;
     }
 
-    QString queryString = "SELECT (%1) from %0 where id=" + QString::number(_id);
+    QString queryString = "SELECT (%1) from %0 where id=" + QString::number(getId());
     return getBaseQueryString(queryString, query);
 }
 
 bool DBObject::getDeleteQueryString(QSqlQuery *query) const {
-    if (_id < 0) {
+    if (getId() < 0) {
         return false;
     }
 
-    QString queryString = "DELETE FROM %0 where id=" + QString::number(_id);
+    QString queryString = "DELETE FROM %0 where id=" + QString::number(getId());
     return getBaseQueryString(queryString, query);
 }
 
@@ -129,13 +130,26 @@ bool DBObject::getBaseQueryString(QString queryString, QSqlQuery *query) const {
     return true;
 }
 
+DbTableBase DBObject::getTableStruct() const
+{
+    return _tableStruct;
+}
+
+void DBObject::setTableStruct(const DbTableBase &tableStruct)
+{
+    _tableStruct = tableStruct;
+}
+
 QDataStream &DBObject::fromStream(QDataStream &stream) {
+    AbstractData::fromStream(stream);
+
     stream >> _dataTable;
     stream >> _tableStruct.name;
     return stream;
 }
 
 QDataStream &DBObject::toStream(QDataStream &stream) const {
+    AbstractData::toStream(stream);
 
     stream << _dataTable;
     stream << _tableStruct.name;
@@ -152,12 +166,42 @@ QVariantMap &DBObject::toVariantmap(QVariantMap &map) const {
     return map;
 }
 
+bool DBObject::fromQuery(QSqlQuery *query) {
+    if (!query->exec()) {
+        return false;
+    }
+
+    if (!query->next()) {
+        return false;
+    }
+
+    QSqlRecord record = query->record();
+    QVariantMap initMap;
+
+    for (int i = 0; i < query->size(); ++i ) {
+        initMap[record.fieldName(i)] =  record.value(i);
+    }
+
+    fromVariantMap(initMap);
+
+    return isValid();
+}
+
 bool DBObject::isValid() const {
-    return AbstractData::isValid() && _tableStruct.isValid();
+    return AbstractData::isValid() && _tableStruct.isValid() &&
+            _dataTable.contains("id");
 }
 
 int DBObject::getId() const {
-    return _id;
+    return _dataTable.value("id").toInt();
+}
+
+void DBObject::setId(int id) {
+    _dataTable["id"] = id;
+}
+
+void DBObject::clear() {
+    _dataTable.clear();
 }
 
 

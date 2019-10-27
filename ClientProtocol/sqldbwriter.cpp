@@ -12,6 +12,7 @@
 #include <QJsonObject>
 #include <QHash>
 #include <dbobject.h>
+#include <QSqlRecord>
 
 namespace ClientProtocol {
 
@@ -250,19 +251,19 @@ bool SqlDBWriter::isValid() const {
 }
 
 bool SqlDBWriter::getObject(DBObject *result, const QString& table, int id) const {
+
+    if (!_dbStruct.contains(table)) {
+        return false;
+    }
+
     QSqlQuery q(db);
-    result->getSelectQueryString(&q);
-    if (!q.exec()) {
-        return false;
-    }
+    result->clear();
 
-    if (!q.next()) {
-        return false;
-    }
+    result->setTableStruct(_dbStruct.value(table));
+    result->setId(id);
 
-    q.
+    return result->getSelectQueryString(&q);
 
-    q.value(0).
 }
 
 bool SqlDBWriter::saveObject(DBObject *saveObject) {
