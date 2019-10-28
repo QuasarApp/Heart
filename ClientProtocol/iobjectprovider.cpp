@@ -1,6 +1,7 @@
 #include "iobjectprovider.h"
+namespace ClientProtocol {
+iObjectProvider::iObjectProvider() = default;
 
-iObjectProvider::iObjectProvider()
-{
+iObjectProvider::~iObjectProvider() = default;
 
 }

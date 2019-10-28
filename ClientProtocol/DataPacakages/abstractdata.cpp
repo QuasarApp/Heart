@@ -58,12 +58,12 @@ QDataStream &AbstractData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QVariantMap &AbstractData::fromVariantMap(QVariantMap &) {
-
+QVariantMap &AbstractData::fromVariantMap(QVariantMap & map) {
+    return map;
 }
 
-QVariantMap &AbstractData::toVariantmap(QVariantMap &) const {
-
+QVariantMap &AbstractData::toVariantmap(QVariantMap & map) const {
+    return map;
 }
 
 bool AbstractData::isValid() const {

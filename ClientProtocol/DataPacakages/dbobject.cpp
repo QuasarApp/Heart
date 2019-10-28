@@ -12,6 +12,10 @@ DBObject::DBObject(const QString &tableName) {
     _tableStruct.name = tableName;
 }
 
+DBObject::~DBObject() {
+
+}
+
 // 0 - table name
 // 1 - headers of update values
 // 2 - update values

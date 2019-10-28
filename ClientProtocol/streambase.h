@@ -2,9 +2,9 @@
 #define STREAMBASE_H
 
 #include <QByteArray>
+#include <QVariantMap>
 #include "clientprotocol_global.h"
 
-class QVariantMap;
 class QDataStream;
 namespace ClientProtocol {
 

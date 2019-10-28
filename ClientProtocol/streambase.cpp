@@ -6,7 +6,9 @@
 namespace ClientProtocol {
 
 
-StreamBase::StreamBase() {}
+StreamBase::StreamBase() = default;
+
+StreamBase::~StreamBase() = default;
 
 bool StreamBase::fromBytes(const QByteArray &data) {
     if (data.isEmpty())

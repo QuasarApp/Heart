@@ -153,9 +153,7 @@ bool SqlDBCache::init(const QString &initDbParams) {
         return false;
     }
 
-    if (!_writer->initDb(initDbParams)) {
-        return false;
-    }
+    return _writer->initDb(initDbParams);
 }
 
 void SqlDBCache::deleteFromCache(const QString &table, int id) {
