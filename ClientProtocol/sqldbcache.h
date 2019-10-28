@@ -76,7 +76,7 @@ protected:
      * @param id in table of object
      * @return true if all good
      */
-    virtual bool deleteFromCache(const QString &table, int id);
+    virtual void deleteFromCache(const QString &table, int id);
 
 private:
     qint64 lastUpdateTime = 0;
