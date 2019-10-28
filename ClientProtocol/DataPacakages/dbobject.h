@@ -43,6 +43,9 @@ public:
      */
     virtual bool deleteQuery(QSqlQuery *query) const;
 
+    //// AbstractData interface
+    bool isValid() const override;
+
     /**
      * @brief getId
      * @return id of objcet
@@ -113,9 +116,6 @@ protected:
      * @return
      */
     virtual bool exec(QSqlQuery *query) const;
-
-    //// AbstractData interface
-    bool isValid() const override;
 
 };
 }

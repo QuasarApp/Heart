@@ -78,28 +78,39 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(DBObject *result, const QString &table, int id) {
+bool SqlDBCache::getObject(const QString &table, int id, QSharedPointer<DBObject> result) {
 
-    if (!_writer) {
+    if (result.isNull())
         return false;
-    }
 
     auto& tableObj = _cache[table];
 
-    if (!_cache.contains(table)) {
-
+    if (!tableObj.contains(id) && _writer && _writer->isValid()) {
+        return _writer->getObject(table, id, result);
     }
 
-    if ()
+    result = tableObj[id];
+
+    if (!result->isValid()) {
+        deleteFromCache(table, id);
+        return false;
+    }
 
     return true;
 }
 
-bool SqlDBCache::saveObject(DBObject *saveObject) {
+bool SqlDBCache::saveObject(QSharedPointer<DBObject> saveObject) {
 
 }
 
 bool SqlDBCache::deleteObject(const QString &table, int id) {
+    deleteFromCache(table, id);
+
+    if (_writer && _writer->isValid()) {
+        return _writer->deleteObject(table, id);
+    }
+
+    return false;
 
 }
 
@@ -111,6 +122,15 @@ bool SqlDBCache::init(const QString &initDbParams) {
 
     if (!_writer->initDb(initDbParams)) {
         return false;
+    }
+}
+
+void SqlDBCache::deleteFromCache(const QString &table, int id) {
+    auto& tableObj = _cache[table];
+    tableObj.remove(id);
+
+    if (tableObj.isEmpty()) {
+        _cache.remove(table);
     }
 }
 

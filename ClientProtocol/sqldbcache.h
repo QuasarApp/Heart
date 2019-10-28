@@ -59,8 +59,8 @@ public:
      */
     void setWriter(SqlDBWriter *writer);
 
-    bool getObject(DBObject *result, const QString &table, int id) override;
-    bool saveObject(DBObject *saveObject) override;
+    bool getObject(const QString &table, int id, QSharedPointer<DBObject> result) override;
+    bool saveObject(QSharedPointer<DBObject> saveObject) override;
     bool deleteObject(const QString &table, int id) override;
 
 protected:
@@ -69,6 +69,14 @@ protected:
      * @return
      */\
     virtual bool init(const QString &initDbParams = "");
+
+    /**
+     * @brief deleteFromCache - delete object  from db cache, bat not from database.
+     * @param table - table of object
+     * @param id in table of object
+     * @return true if all good
+     */
+    virtual bool deleteFromCache(const QString &table, int id);
 
 private:
     qint64 lastUpdateTime = 0;

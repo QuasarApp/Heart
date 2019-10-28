@@ -112,13 +112,13 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(DBObject *result, const QString &table, int id) const override;
+    bool getObject(const QString &table, int id, QSharedPointer<DBObject> result) override;
 
     /**
      * @brief saveObject
      * @return
      */
-    bool saveObject(DBObject *saveObject) override;
+    bool saveObject(QSharedPointer<DBObject> saveObject) override;
 
     /**
      * @brief deleteObject

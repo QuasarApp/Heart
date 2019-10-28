@@ -2,6 +2,8 @@
 #define IOBJECTPROVIDER_H
 #include "clientprotocol_global.h"
 
+#include <QSharedPointer>
+
 namespace ClientProtocol {
 
 class DBObject;
@@ -16,13 +18,13 @@ public:
      * @brief getObject
      * @return
      */
-    virtual bool getObject(DBObject *result, const QString &table, int id) = 0;
+    virtual bool getObject(const QString &table, int id, QSharedPointer<DBObject> result) = 0;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(DBObject *saveObject) = 0;
+    virtual bool saveObject(QSharedPointer<DBObject> saveObject) = 0;
 
     /**
      * @brief deleteObject

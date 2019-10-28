@@ -250,14 +250,17 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(DBObject *result, const QString& table, int id) const {
+bool SqlDBWriter::getObject(const QString& table, int id, QSharedPointer<DBObject> result) {
 
     if (!_dbStruct.contains(table)) {
         return false;
     }
 
     QSqlQuery q(db);
-    result->clear();
+
+    if (result.isNull()) {
+        return false;
+    }
 
     result->setTableStruct(_dbStruct.value(table));
     result->setId(id);
@@ -266,9 +269,9 @@ bool SqlDBWriter::getObject(DBObject *result, const QString& table, int id) cons
 
 }
 
-bool SqlDBWriter::saveObject(DBObject *saveObject) {
+bool SqlDBWriter::saveObject(QSharedPointer<DBObject> saveObject) {
 
-    if (!saveObject) {
+    if (saveObject.isNull()) {
         return false;
     }
 
