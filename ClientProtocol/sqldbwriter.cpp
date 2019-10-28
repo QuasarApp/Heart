@@ -250,33 +250,37 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(const QString& table, int id, QSharedPointer<DBObject> result) {
+bool SqlDBWriter::getObject(const QString& table, int id, QWeakPointer<DBObject> *result) {
 
-    if (!_dbStruct.contains(table)) {
+    if (!result) {
+        return false;
+    }
+
+    auto ptr = result->toStrongRef();
+
+    if (!_dbStruct.contains(table) || ptr.isNull()) {
         return false;
     }
 
     QSqlQuery q(db);
 
-    if (result.isNull()) {
-        return false;
-    }
+    ptr->setTableStruct(_dbStruct.value(table));
+    ptr->setId(id);
 
-    result->setTableStruct(_dbStruct.value(table));
-    result->setId(id);
-
-    return result->selectQuery(&q);
+    return ptr->selectQuery(&q);
 
 }
 
-bool SqlDBWriter::saveObject(QSharedPointer<DBObject> saveObject) {
+bool SqlDBWriter::saveObject(QWeakPointer<DBObject> saveObject) {
 
-    if (saveObject.isNull()) {
+    auto ptr = saveObject.toStrongRef();
+
+    if (ptr.isNull()) {
         return false;
     }
 
     QSqlQuery query(db);
-    return saveObject->saveQuery(&query);
+    return ptr->saveQuery(&query);
 
 }
 

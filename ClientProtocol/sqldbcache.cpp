@@ -12,35 +12,42 @@
 namespace ClientProtocol {
 
 void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
-//    for (auto item = items.begin(); item != items.end(); ++item) {
-//        if (SqlDBWriter::saveItem(item.value()) < 0) {
-//            QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
-//                                               " work globalUpdateDataRelease!!! id=" +
-//                                                QString::number(item.key()),
-//                                               QuasarAppUtils::VerboseLvl::Error);
-//        }
-//    }
 
-//    for (auto player = players.begin(); player != players.end(); ++player) {
-//        if (SqlDBWriter::savePlayer(player.value()) < 0) {
-//            QuasarAppUtils::Params::verboseLog("writeUpdatePlayerIntoDB failed when"
-//                                               " work globalUpdateDataRelease!!! id=" +
-//                                                QString::number(player.key()),
-//                                               QuasarAppUtils::VerboseLvl::Error);
+    QMutexLocker lock(&_saveLaterMutex);
 
-//        }
-//    }
+    for (auto listIt = _needToSaveCache.begin(); listIt != _needToSaveCache.end(); ++listIt ) {
 
-//    for (auto owner = owners.begin(); owner != owners.end(); ++owner) {
-//        if (!SqlDBWriter::saveowners(owner.key(), owner.value())) {
-//            QuasarAppUtils::Params::verboseLog("UpdateInfoOfowners failed when"
-//                                               " work globalUpdateDataRelease!!! id=" +
-//                                                QString::number(owner.key()),
-//                                               QuasarAppUtils::VerboseLvl::Error);
-//        }
-//    }
+        auto list = listIt.value();
+        for (int id: list) {
 
-//    lastUpdateTime = currentTime;
+            auto saveObject = _cache.value(listIt.key()).value(id);
+
+            if (!saveObject.isNull() && !_writer.isNull() && _writer->isValid()) {
+
+                if (!saveObject->isValid()) {
+                    deleteFromCache(listIt.key(), id);
+
+                    QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
+                                                       " db object is not valid! id=" + QString::number(id),
+                                                       QuasarAppUtils::VerboseLvl::Error);
+                    continue;
+                }
+
+                 if (!_writer->saveObject(saveObject)) {
+                     QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
+                                                        " work globalUpdateDataRelease!!! id=" +
+                                                         QString::number(id),
+                                                        QuasarAppUtils::VerboseLvl::Error);
+                 }
+
+                 QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
+                                                    " db writer is npt inited! ",
+                                                    QuasarAppUtils::VerboseLvl::Error);
+            }
+        }
+    }
+
+    lastUpdateTime = currentTime;
 }
 
 void SqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
@@ -70,36 +77,62 @@ SqlDBCache::~SqlDBCache() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
-SqlDBWriter *SqlDBCache::writer() const {
+QWeakPointer<SqlDBWriter> SqlDBCache::writer() const {
     return _writer;
 }
 
-void SqlDBCache::setWriter(SqlDBWriter *writer) {
+void SqlDBCache::setWriter(QWeakPointer<SqlDBWriter> writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(const QString &table, int id, QSharedPointer<DBObject> result) {
+bool SqlDBCache::getObject(const QString &table, int id, QWeakPointer<DBObject> *result) {
 
-    if (result.isNull())
+    if (!result) {
+        return false;
+    }
+
+    auto ptr = result->toStrongRef();
+
+    if (ptr.isNull())
         return false;
 
     auto& tableObj = _cache[table];
 
-    if (!tableObj.contains(id) && _writer && _writer->isValid()) {
+    if (!tableObj.contains(id) && !_writer.isNull() && _writer->isValid()) {
         return _writer->getObject(table, id, result);
     }
 
-    result = tableObj[id];
+    auto &sptr = tableObj[id];
 
-    if (!result->isValid()) {
+    if (!sptr->isValid()) {
         deleteFromCache(table, id);
         return false;
     }
 
+    *result = sptr;
     return true;
 }
 
-bool SqlDBCache::saveObject(QSharedPointer<DBObject> saveObject) {
+bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
+
+    auto ptr = saveObject.toStrongRef();
+
+    if (!(ptr.isNull() && ptr->isValid())) {
+        return false;
+    }
+
+    _cache[ptr->getTableStruct().name][ptr->getId()] = saveObject;
+
+    if (getMode() == SqlDBCasheWriteMode::Force) {
+        if (!_writer.isNull() && _writer->isValid()) {
+            return _writer->saveObject(saveObject);
+        }
+    } else {
+        _needToSaveCache[ptr->getTableStruct().name].push_back(ptr->getId());
+    }
+
+    return true;
+
 
 }
 
@@ -116,7 +149,7 @@ bool SqlDBCache::deleteObject(const QString &table, int id) {
 
 bool SqlDBCache::init(const QString &initDbParams) {
 
-    if (!_writer) {
+    if (_writer.isNull()) {
         return false;
     }
 
@@ -132,6 +165,22 @@ void SqlDBCache::deleteFromCache(const QString &table, int id) {
     if (tableObj.isEmpty()) {
         _cache.remove(table);
     }
+}
+
+SqlDBCasheWriteMode SqlDBCache::getMode() const {
+    return _mode;
+}
+
+void SqlDBCache::setMode(const SqlDBCasheWriteMode &mode) {
+    _mode = mode;
+}
+
+qint64 SqlDBCache::getUpdateInterval() const {
+    return updateInterval;
+}
+
+void SqlDBCache::setUpdateInterval(const qint64 &value) {
+    updateInterval = value;
 }
 
 }

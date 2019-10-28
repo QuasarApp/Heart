@@ -8,6 +8,7 @@
 #include <QSet>
 #include <QVariantMap>
 #include <clientprotocol.h>
+#include <QMutex>
 
 namespace ClientProtocol {
 
@@ -49,19 +50,31 @@ public:
 
     /**
      * @brief writer
-     * @return
+     * @return weak pointer to writer
      */
-    SqlDBWriter *writer() const;
+    QWeakPointer<SqlDBWriter> writer() const;
 
     /**
      * @brief setWriter
      * @param writer
      */
-    void setWriter(SqlDBWriter *writer);
+    void setWriter(QWeakPointer<SqlDBWriter> writer);
 
-    bool getObject(const QString &table, int id, QSharedPointer<DBObject> result) override;
-    bool saveObject(QSharedPointer<DBObject> saveObject) override;
+    bool getObject(const QString &table, int id, QWeakPointer<DBObject> *result) override;
+    bool saveObject(QWeakPointer<DBObject> saveObject) override;
     bool deleteObject(const QString &table, int id) override;
+
+    /**
+     * @brief getUpdateInterval of SqlDBCasheWriteMode::Default mode
+     * @return time in msecs
+     */
+    qint64 getUpdateInterval() const;
+
+    /**
+     * @brief setUpdateInterval set update time of SqlDBCasheWriteMode::Default mode
+     * @param value time in msecs
+     */
+    void setUpdateInterval(const qint64 &value);
 
 protected:
     /**
@@ -78,16 +91,33 @@ protected:
      */
     virtual void deleteFromCache(const QString &table, int id);
 
+    /**
+     * @brief getMode
+     * @return
+     */
+    SqlDBCasheWriteMode getMode() const;
+
+    /**
+     * @brief setMode
+     * @param mode
+     */
+    void setMode(const SqlDBCasheWriteMode &mode);
+
+    QMutex _saveLaterMutex;
+
 private:
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
 
-    SqlDBWriter *_writer = nullptr;
+    SqlDBCasheWriteMode _mode;
+
+    QSharedPointer<SqlDBWriter> _writer = nullptr;
 
     QHash<QString, QHash <int, QSharedPointer<DBObject>>>  _cache;
+    QHash<QString, QList<int>>  _needToSaveCache;
 
-    void globalUpdateDataBasePrivate(qint64 currentTime);
-    void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
+    virtual void globalUpdateDataBasePrivate(qint64 currentTime);
+    virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 signals:
     void sigItemChanged(int id, QWeakPointer<DBObject> obj);

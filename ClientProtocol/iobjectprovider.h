@@ -18,13 +18,13 @@ public:
      * @brief getObject
      * @return
      */
-    virtual bool getObject(const QString &table, int id, QSharedPointer<DBObject> result) = 0;
+    virtual bool getObject(const QString &table, int id, QWeakPointer<DBObject> *result) = 0;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(QSharedPointer<DBObject> saveObject) = 0;
+    virtual bool saveObject(QWeakPointer<DBObject> saveObject) = 0;
 
     /**
      * @brief deleteObject
