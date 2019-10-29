@@ -129,6 +129,7 @@ bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
         }
     } else {
         _needToSaveCache[ptr->getTableStruct().name].push_back(ptr->getId());
+        globalUpdateDataBase(_mode);
     }
 
     return true;

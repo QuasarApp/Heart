@@ -76,12 +76,13 @@ public:
      */
     void setUpdateInterval(const qint64 &value);
 
-protected:
     /**
      * @brief init
      * @return
      */\
     virtual bool init(const QString &initDbParams = "");
+
+protected:
 
     /**
      * @brief deleteFromCache - delete object  from db cache, bat not from database.

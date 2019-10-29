@@ -47,6 +47,7 @@ SOURCES += \
     DataPacakages/dbobject.cpp \
     abstractnode.cpp \
     abstractnodeinfo.cpp \
+    asyncsqldbwriter.cpp \
     basenode.cpp \
     basenodeinfo.cpp \
     clientprotocol.cpp \
@@ -66,6 +67,7 @@ HEADERS += \
     DataPacakages/dbobject.h \
     abstractnode.h \
     abstractnodeinfo.h \
+    asyncsqldbwriter.h \
     basenode.h \
     basenodeinfo.h \
     clientprotocol.h \
