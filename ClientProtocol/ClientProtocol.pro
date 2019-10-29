@@ -45,6 +45,7 @@ SOURCES += \
     DataPacakages/abstractdata.cpp \
     DataPacakages/badrequest.cpp \
     DataPacakages/dbobject.cpp \
+    DataPacakages/userdata.cpp \
     abstractnode.cpp \
     abstractnodeinfo.cpp \
     asyncsqldbwriter.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     DataPacakages/abstractdata.h \
     DataPacakages/badrequest.h \
     DataPacakages/dbobject.h \
+    DataPacakages/userdata.h \
     abstractnode.h \
     abstractnodeinfo.h \
     asyncsqldbwriter.h \

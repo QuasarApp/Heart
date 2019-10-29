@@ -22,7 +22,7 @@ bool BaseNode::intSqlDb(const QString &DBparamsFile,
     }
 
     cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
-    _db = QSharedPointer<SqlDBWriter>(cache);
+    _db = QSharedPointer<SqlDBCache>(cache);
 
     if (!cache->init(DBparamsFile)) {
         return false;
