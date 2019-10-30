@@ -26,7 +26,7 @@ public:
     /**
      * @brief intSqlDb
      */
-    virtual bool intSqlDb( const QString &DBparamsFile = "",
+    virtual bool intSqlDb( QString DBparamsFile = "",
                            SqlDBCache * cache = nullptr,
                            SqlDBWriter* writer = nullptr);
 
@@ -46,6 +46,9 @@ public:
     bool run(const QString &addres, unsigned short port) override;
 
     ~BaseNode() override;
+
+protected:
+    virtual QString defaultDataBase() const;
 
 private:
     QSharedPointer<SqlDBCache> _db;

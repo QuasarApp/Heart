@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <QHash>
 #include <QSqlRecord>
+#include <QVariantMap>
 
 namespace ClientProtocol {
 
@@ -73,10 +74,11 @@ bool DBObject::deleteQuery(QSqlQuery *query) const {
 
 bool DBObject::generateHeaderOfQuery(QString & retQuery) const {
     retQuery = "";
-    for (auto it = _dataTable.begin(); it != _dataTable.end(); ++it) {
-        if (_tableStruct.keys.contains(it.key())) {
-            retQuery += it.key() + ", ";
-        }
+    auto map = QVariantMap{};
+    auto dataMap = toVariantMap(map);
+
+    for (auto it = _tableStruct.keys.begin(); it != _tableStruct.keys.end(); ++it) {
+        retQuery += it.key() + ", ";
     }
 
     return true;
@@ -87,34 +89,37 @@ bool DBObject::generateSourceOfQuery(QString& retQuery,
     retQuery = "";
 
     retBindValue.clear();
-    for (auto it = _dataTable.begin(); it != _dataTable.end(); ++it) {
-        auto type = _tableStruct.keys.value(it.key(), QVariant::UserType);
+
+    auto dataMap = getMap();
+
+    for (auto it = _tableStruct.keys.begin(); it != _tableStruct.keys.end(); ++it) {
+        auto type = it.value();
         if (type != QVariant::UserType) {
 
             switch (type) {
             case QVariant::String:
             case QVariant::Int:
             case QVariant::Double:  {
-                retQuery += "'" + it.value().toString() + "', ";
+                retQuery += "'" + dataMap.value(it.key()).toString() + "', ";
                 break;
             }
             case QVariant::Time: {
-                retQuery += "'" + it.value().toDate().toString("HH:mm:ss") + "', ";
+                retQuery += "'" + dataMap.value(it.key()).toDate().toString("HH:mm:ss") + "', ";
                 break;
 
             }
             case QVariant::DateTime: {
-                retQuery += "'" + it.value().toDateTime().toString("yyyy-MM-dd HH:mm:ss") + "', ";
+                retQuery += "'" + dataMap.value(it.key()).toDateTime().toString("yyyy-MM-dd HH:mm:ss") + "', ";
                 break;
             }
             case QVariant::Date: {
-                retQuery += "'" + it.value().toDate().toString("yyyy-MM-dd") + "', ";
+                retQuery += "'" + dataMap.value(it.key()).toDate().toString("yyyy-MM-dd") + "', ";
                 break;
             }
             case QVariant::ByteArray: {
                 auto bindValue = it.key() + "bytes";
                 retQuery += ":" + bindValue + ", ";
-                retBindValue.push_back({bindValue, it.value()});
+                retBindValue.push_back({bindValue, dataMap.value(it.key())});
 
                 break;
             }
@@ -165,33 +170,42 @@ DbTableBase DBObject::getTableStruct() const {
     return _tableStruct;
 }
 
-void DBObject::setTableStruct(const DbTableBase &tableStruct) {
+bool DBObject::setTableStruct(const DbTableBase &tableStruct) {
+    auto map = getMap();
+
+
+    for (auto it = tableStruct.keys.begin(); it != tableStruct.keys.end(); ++it) {
+        if (!map.contains(it.key())) {
+            return false;
+        }
+    }
+
     _tableStruct = tableStruct;
+
+    return true;
 }
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 
-    stream >> _dataTable;
     stream >> _tableStruct.name;
+    stream >> _id;
     return stream;
 }
 
 QDataStream &DBObject::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
 
-    stream << _dataTable;
     stream << _tableStruct.name;
+    stream << _id;
     return stream;
 }
 
 QVariantMap &DBObject::fromVariantMap(QVariantMap &map) {
-    _dataTable = map;
     return map;
 }
 
-QVariantMap &DBObject::toVariantmap(QVariantMap &map) const {
-    map = _dataTable;
+QVariantMap &DBObject::toVariantMap(QVariantMap &map) const {
     return map;
 }
 
@@ -209,19 +223,19 @@ bool DBObject::exec(QSqlQuery *query) const {
 
 bool DBObject::isValid() const {
     return AbstractData::isValid() && _tableStruct.isValid() &&
-            _dataTable.contains("id");
+            _id > -1;
 }
 
 int DBObject::getId() const {
-    return _dataTable.value("id").toInt();
+    return _id;
 }
 
 void DBObject::setId(int id) {
-    _dataTable["id"] = id;
+    _id = id;
 }
 
 void DBObject::clear() {
-    _dataTable.clear();
+    _id = -1;
 }
 
 

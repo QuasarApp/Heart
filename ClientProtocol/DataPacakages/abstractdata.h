@@ -91,7 +91,7 @@ public:
      * @param map
      * @return
      */
-    QVariantMap &toVariantmap(QVariantMap &) const override;
+    QVariantMap &toVariantMap(QVariantMap &) const override;
 
     /**
      * @brief isValid

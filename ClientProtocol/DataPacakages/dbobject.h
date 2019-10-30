@@ -72,8 +72,9 @@ public:
     /**
      * @brief setTableStruct
      * @param tableStruct
+     * @return true if structure of table compatible with this object
      */
-    void setTableStruct(const DbTableBase &tableStruct);
+    bool setTableStruct(const DbTableBase &tableStruct);
 
 protected:
 
@@ -100,15 +101,14 @@ protected:
      */
     virtual bool getBaseQueryString(QString queryString, QSqlQuery *query) const;
 
-    QVariantMap _dataTable;
     DbTableBase _tableStruct;
-
+    int _id = -1;
 
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     QVariantMap &fromVariantMap(QVariantMap &map) override;
-    QVariantMap &toVariantmap(QVariantMap &map) const override;
+    QVariantMap &toVariantMap(QVariantMap &map) const override;
 
     /**
      * @brief fromQuery

@@ -9,7 +9,7 @@ BaseNode::BaseNode(ClientProtocol::SslMode mode, QObject *ptr):
 
 }
 
-bool BaseNode::intSqlDb(const QString &DBparamsFile,
+bool BaseNode::intSqlDb(QString DBparamsFile,
                         SqlDBCache *cache,
                         SqlDBWriter *writer) {
 
@@ -23,6 +23,10 @@ bool BaseNode::intSqlDb(const QString &DBparamsFile,
 
     cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
     _db = QSharedPointer<SqlDBCache>(cache);
+
+    if (DBparamsFile.isEmpty()) {
+        DBparamsFile = defaultDataBase();
+    }
 
     if (!cache->init(DBparamsFile)) {
         return false;
@@ -45,6 +49,10 @@ bool BaseNode::run(const QString &addres, unsigned short port) {
 
 BaseNode::~BaseNode() {
 
+}
+
+QString BaseNode::defaultDataBase() const {
+    return ":/sql/default";
 }
 
 }

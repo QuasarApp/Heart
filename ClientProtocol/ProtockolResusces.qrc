@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/sql">
+        <file alias="default">Res/Default.sql</file>
+    </qresource>
+</RCC>

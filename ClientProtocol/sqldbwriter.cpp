@@ -264,7 +264,10 @@ bool SqlDBWriter::getObject(const QString& table, int id, QWeakPointer<DBObject>
 
     QSqlQuery q(db);
 
-    ptr->setTableStruct(_dbStruct.value(table));
+    if (!ptr->setTableStruct(_dbStruct.value(table))) {
+        return false;
+    }
+
     ptr->setId(id);
 
     return ptr->selectQuery(&q);
@@ -287,7 +290,6 @@ bool SqlDBWriter::saveObject(QWeakPointer<DBObject> saveObject) {
 bool SqlDBWriter::deleteObject(const QString& table, int id) {
     DBObject obj(table);
 
-    obj.setTableStruct(_dbStruct.value(table));
     obj.setId(id);
 
     QSqlQuery query(db);

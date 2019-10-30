@@ -25,4 +25,9 @@ QByteArray StreamBase::toBytes() const {
     toStream(stream);
     return res;
 }
+
+QVariantMap StreamBase::getMap() const {
+    QVariantMap map;
+    return toVariantMap(map);
+}
 }

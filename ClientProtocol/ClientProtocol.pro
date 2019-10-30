@@ -85,3 +85,6 @@ HEADERS += \
     workstate.h
 
 include($$PWD/ClientProtocolIncludes.pri)
+
+RESOURCES += \
+    ProtockolResusces.qrc

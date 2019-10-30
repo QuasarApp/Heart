@@ -62,7 +62,7 @@ QVariantMap &AbstractData::fromVariantMap(QVariantMap & map) {
     return map;
 }
 
-QVariantMap &AbstractData::toVariantmap(QVariantMap & map) const {
+QVariantMap &AbstractData::toVariantMap(QVariantMap & map) const {
     return map;
 }
 

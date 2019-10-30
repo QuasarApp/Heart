@@ -29,6 +29,13 @@ public:
     QByteArray toBytes() const;
 
     /**
+     * @brief getMap
+     * @return return QVarianMap of object
+     */
+    QVariantMap getMap() const;
+
+
+    /**
      * @brief fromStream
      * @param stream
      * @return stream
@@ -50,11 +57,11 @@ public:
     virtual QVariantMap& fromVariantMap(QVariantMap& map) = 0;
 
     /**
-     * @brief toVariantmap
+     * @brief toVariantMap
      * @param map
      * @return
      */
-    virtual QVariantMap& toVariantmap(QVariantMap& map) const = 0;
+    virtual QVariantMap& toVariantMap(QVariantMap& map) const = 0;
 
 };
 }
