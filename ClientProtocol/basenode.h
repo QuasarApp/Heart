@@ -24,9 +24,20 @@ public:
     BaseNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
 
     /**
-     * @brief intSqlDb
+     * @brief intSqlDb - this function init database of node
+     * @param DBparamsFile - path to json file with all patarams
+     * @param cache - new SqlDBCache object
+     * @param writer - new SqlDBWriter
+     * @return true if all good
      */
-    virtual bool intSqlDb( QString DBparamsFile = "",
+    virtual bool intSqlDb( QString DBparamsFile,
+                           SqlDBCache * cache = nullptr,
+                           SqlDBWriter* writer = nullptr);
+
+    /**
+      * params it is map of data base params if it option is empty then params get from defaultDbParams function
+    */
+    virtual bool intSqlDb( QVariantMap params = {},
                            SqlDBCache * cache = nullptr,
                            SqlDBWriter* writer = nullptr);
 
@@ -47,12 +58,23 @@ public:
 
     ~BaseNode() override;
 
+    /**
+     * @brief defaultDbParams
+     * @return
+     */
+    virtual QVariantMap defaultDbParams() const;
 protected:
-    virtual QString defaultDataBase() const;
+
+    /**
+     * @brief initDefaultDbObjects create default cache and db writer if pointer is null
+     * @param cache
+     * @param writer
+     */
+    void initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer);
 
 private:
-    QSharedPointer<SqlDBCache> _db;
 
+    QSharedPointer<SqlDBCache> _db;
 };
 
 }

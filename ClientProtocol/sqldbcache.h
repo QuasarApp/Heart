@@ -82,6 +82,12 @@ public:
      */\
     virtual bool init(const QString &initDbParams = "");
 
+    /**
+     * @brief init
+     * @return
+     */\
+    virtual bool init(const QVariantMap &params);
+
 protected:
 
     /**

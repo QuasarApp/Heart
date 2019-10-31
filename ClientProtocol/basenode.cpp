@@ -13,22 +13,24 @@ bool BaseNode::intSqlDb(QString DBparamsFile,
                         SqlDBCache *cache,
                         SqlDBWriter *writer) {
 
-    if (!writer) {
-        writer = new SqlDBWriter();
+    initDefaultDbObjects(cache, writer);
+
+    if (!_db->init(DBparamsFile)) {
+        return false;
     }
 
-    if (!cache) {
-        cache = new SqlDBCache();
+    return true;
+}
+
+bool BaseNode::intSqlDb(QVariantMap params, SqlDBCache *cache, SqlDBWriter *writer) {
+
+    initDefaultDbObjects(cache, writer);
+
+    if (params.isEmpty()) {
+        params = defaultDbParams();
     }
 
-    cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
-    _db = QSharedPointer<SqlDBCache>(cache);
-
-    if (DBparamsFile.isEmpty()) {
-        DBparamsFile = defaultDataBase();
-    }
-
-    if (!cache->init(DBparamsFile)) {
+    if (!_db->init(params)) {
         return false;
     }
 
@@ -51,8 +53,26 @@ BaseNode::~BaseNode() {
 
 }
 
-QString BaseNode::defaultDataBase() const {
-    return ":/sql/default";
+void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
+    if (!writer) {
+        writer = new SqlDBWriter();
+    }
+
+    if (!cache) {
+        cache = new SqlDBCache();
+    }
+
+    cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
+    _db = QSharedPointer<SqlDBCache>(cache);
+}
+
+QVariantMap BaseNode::defaultDbParams() const {
+
+    return {
+        {"DBDriver", "QSQLITE"},
+        {"DBFilePath", DEFAULT_DB_PATH},
+        {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
+    };
 }
 
 }

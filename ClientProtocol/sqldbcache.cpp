@@ -157,6 +157,15 @@ bool SqlDBCache::init(const QString &initDbParams) {
     return _writer->initDb(initDbParams);
 }
 
+bool SqlDBCache::init(const QVariantMap &params) {
+
+    if (_writer.isNull()) {
+        return false;
+    }
+
+    return _writer->initDb(params);
+}
+
 void SqlDBCache::deleteFromCache(const QString &table, int id) {
     auto& tableObj = _cache[table];
     tableObj.remove(id);

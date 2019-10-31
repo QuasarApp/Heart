@@ -103,6 +103,13 @@ public:
     virtual bool initDb(const QString &initDbParams = DEFAULT_DB_PATH);
 
     /**
+     * @brief initDb
+     * @param path
+     * @return
+     */
+    virtual bool initDb(const QVariantMap &params);
+
+    /**
      * @brief isValid
      * @return
      */

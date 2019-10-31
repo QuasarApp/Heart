@@ -1,5 +1,3 @@
-# This table work with UserData class.
-# Work with sqlite
 
 CREATE TABLE IF NOT EXISTS users(
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,

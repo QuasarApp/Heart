@@ -188,7 +188,6 @@ SqlDBWriter::SqlDBWriter() {
 }
 
 bool SqlDBWriter::initDb(const QString &initDbParams) {
-
     QVariantMap params;
 
     if (initDbParams.isEmpty()) {
@@ -197,6 +196,12 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
         params = getInitParams(initDbParams);
     }
 
+    return initDb(params);
+}
+
+bool SqlDBWriter::initDb(const QVariantMap &params) {
+
+
     _config = params;
 
     db = QSqlDatabase::addDatabase(params["DBDriver"].toString(),
@@ -204,12 +209,12 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
 
     if (params.contains("DBFilePath")) {
 
-        auto path = QFileInfo(params["DBFilePath"].toString()).absoluteFilePath();
-        if (!QDir("").mkpath(path)) {
+        auto path = QFileInfo(params["DBFilePath"].toString());
+        if (!QDir("").mkpath(path.absolutePath())) {
             return false;
         }
 
-        db.setDatabaseName(path);
+        db.setDatabaseName(path.absoluteFilePath());
     }
 
     if (params.contains("DBLogin")) {
@@ -231,6 +236,8 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
     query = QSqlQuery(db);
 
     if (!db.open()) {
+        QuasarAppUtils::Params::verboseLog(db.lastError().text(),
+                                           QuasarAppUtils::Error);
         return false;
     }
 
