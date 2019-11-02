@@ -43,9 +43,12 @@ include($$PWD/../QuasarAppLib/QuasarLib.pri)
 
 SOURCES += \
     DataPacakages/abstractdata.cpp \
+    DataPacakages/availabledata.cpp \
+    DataPacakages/availabledatarequest.cpp \
     DataPacakages/badrequest.cpp \
     DataPacakages/dbobject.cpp \
     DataPacakages/userdata.cpp \
+    DataPacakages/userdatarequest.cpp \
     abstractnode.cpp \
     abstractnodeinfo.cpp \
     asyncsqldbwriter.cpp \
@@ -64,9 +67,12 @@ SOURCES += \
 
 HEADERS += \
     DataPacakages/abstractdata.h \
+    DataPacakages/availabledata.h \
+    DataPacakages/availabledatarequest.h \
     DataPacakages/badrequest.h \
     DataPacakages/dbobject.h \
     DataPacakages/userdata.h \
+    DataPacakages/userdatarequest.h \
     abstractnode.h \
     abstractnodeinfo.h \
     asyncsqldbwriter.h \

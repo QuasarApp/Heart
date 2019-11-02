@@ -49,20 +49,6 @@ public:
      */
     virtual QDataStream& toStream(QDataStream& stream) const = 0;
 
-    /**
-     * @brief fromVariantMap
-     * @param map
-     * @return
-     */
-    virtual QVariantMap& fromVariantMap(QVariantMap& map) = 0;
-
-    /**
-     * @brief toVariantMap
-     * @param map
-     * @return
-     */
-    virtual QVariantMap& toVariantMap(QVariantMap& map) const = 0;
-
 };
 }
 #endif // STREAMBASE_H

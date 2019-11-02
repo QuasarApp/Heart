@@ -21,4 +21,12 @@ void BaseNodeInfo::setToken(const QByteArray &token) {
     _token = token;
 }
 
+Permission BaseNodeInfo::permision() const {
+    return _permision;
+}
+
+void BaseNodeInfo::setPermision(const Permission &permision) {
+    _permision = permision;
+}
+
 }

@@ -27,7 +27,7 @@ enum class SslMode {
  * @brief The NodeInfoData struct
  */
 struct NodeInfoData {
-    AbstractNodeInfo info;
+    QSharedPointer<AbstractNodeInfo> info;
     Package pkg;
 };
 
@@ -81,7 +81,7 @@ public:
      * @param id of selected node
      * @return pointer to information about node
      */
-    virtual AbstractNodeInfo *getInfoPtr(const QHostAddress &id);
+    virtual QWeakPointer<AbstractNodeInfo> getInfoPtr(const QHostAddress &id);
 
     /**
      * @brief getInfo
@@ -135,9 +135,6 @@ public:
      */
     virtual WorkState getWorkState() const;
 
-signals:
-    void incomingReques(Package pkg, const QHostAddress&  sender);
-
 
 protected:
 
@@ -164,6 +161,13 @@ protected:
     virtual QSslConfiguration selfSignedSslConfiguration();
 
     /**
+     * @brief createNodeInfo
+     * @return nodeinfo for new connection
+     * override this metho for set your own nodeInfo objects;
+     */
+    virtual QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const;
+
+    /**
      * @brief registerSocket
      * @param socket
      * @return
@@ -176,7 +180,7 @@ protected:
      * @param sender
      * @return
      */
-    virtual bool parsePackage(const Package &pkg, AbstractNodeInfo *sender);
+    virtual bool parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender);
 
     /**
      * @brief sendPackage
@@ -193,15 +197,17 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendResponse(const AbstractData& resp,  const QHostAddress& addere,
+    virtual bool sendResponse(const QWeakPointer<AbstractData> resp,  const QHostAddress& addere,
                               const Header *req = nullptr);
 
     /**
      * @brief badRequest
      * @param address
      * @param req
+     * @param msg - message of error
      */
-    virtual void badRequest(const QHostAddress &address, const Header &req);
+    virtual void badRequest(const QHostAddress &address, const Header &req,
+                            const QString msg = "");
 
     /**
      * @brief getWorkStateString

@@ -1,6 +1,12 @@
 #include "basenode.h"
+#include "basenodeinfo.h"
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
+
+#include <badrequest.h>
+#include <userdata.h>
+#include <userdatarequest.h>
+#include <quasarapp.h>
 
 namespace ClientProtocol {
 
@@ -64,6 +70,145 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
 
     cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
     _db = QSharedPointer<SqlDBCache>(cache);
+}
+
+bool BaseNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) {
+    if (!AbstractNode::parsePackage(pkg, sender)) {
+        return false;
+    }
+
+    auto strongSender = sender.toStrongRef();
+
+    if (BadRequest().cmd() == pkg.hdr.command) {
+        emit requestError();
+    } else if (UserDataRequest().cmd() == pkg.hdr.command) {
+        auto cmd = QSharedPointer<UserDataRequest>::create(pkg);
+
+        if (!cmd->isValid()) {
+            badRequest(strongSender->id(), pkg.hdr);
+            return false;
+        }
+
+        if (!workWithUserRequest(cmd, strongSender->id(), &pkg.hdr)) {
+            badRequest(strongSender->id(), pkg.hdr);
+        }
+
+    }
+
+    return true;
+
+}
+
+bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHostAddress &addere,
+                                   const Header *rHeader) {
+    auto request = rec.toStrongRef();
+
+    if (request.isNull())
+        return false;
+
+    if (!isListening()) {
+        return false;
+    }
+
+    if (_db.isNull()) {
+        QuasarAppUtils::Params::verboseLog("Server not inited (db is null)",
+                                           QuasarAppUtils::Error);
+        return false;
+    }
+
+    switch (request->requestCmd()) {
+    case UserDataRequestCmd::Get: {
+
+        QWeakPointer<DBObject> res;
+        if (!_db->getObject(request->getTableStruct().name, request->getId(), &res)) {
+            return false;
+        }
+
+        if (!sendResponse(res, addere, rHeader)) {
+            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+                                               QuasarAppUtils::Warning);
+            return false;
+        }
+        break;
+
+    }
+
+    case UserDataRequestCmd::Save: {
+
+        if(!_db->saveObject(request)) {
+            QuasarAppUtils::Params::verboseLog("do not saved object in database!" + addere.toString(),
+                                               QuasarAppUtils::Error);
+            return false;
+        }
+
+        if (!sendResponse(request, addere, rHeader)) {
+            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+                                               QuasarAppUtils::Warning);
+            return false;
+        }
+
+        break;
+    }
+
+        // TODO
+
+//    case UserDataRequestCmd::Login: {
+
+//        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+//        if (node.isNull()) {
+//            return false;
+//        }
+
+//        QWeakPointer<DBObject> res;
+//        if (!_db->getObject(request->getTableStruct().name, request->getId(), &res)) {
+//            return false;
+//        }
+
+//        auto user = res.toStrongRef();
+//        if (user.isNull()) {
+//            return false;
+//        }
+
+
+
+//        //node->setToken();
+
+//        if (!sendResponse(request, addere, rHeader)) {
+//            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+//                                               QuasarAppUtils::Warning);
+//            return false;
+//        }
+
+//        break;
+//    }
+
+    case UserDataRequestCmd::Delete: {
+
+        if(!_db->deleteObject(request->getTableStruct().name, request->getId())) {
+            QuasarAppUtils::Params::verboseLog("do not deleted object from database!" + addere.toString(),
+                                               QuasarAppUtils::Error);
+            return false;
+        }
+
+
+        if (!sendResponse(request, addere, rHeader)) {
+            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+                                               QuasarAppUtils::Warning);
+            return false;
+        }
+
+        break;
+    }
+    default: return false;
+
+    }
+
+
+    return true;
+}
+
+QSharedPointer<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {
+    return  QSharedPointer<BaseNodeInfo>::create(socket);
 }
 
 QVariantMap BaseNode::defaultDbParams() const {

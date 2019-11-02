@@ -12,6 +12,8 @@ class CLIENTPROTOCOLSHARED_EXPORT UserData : public DBObject
 {
 public:
     UserData();
+    UserData(const Package& package);
+
     ~UserData() override;
     QString name() const;
     void setName(const QString &name);
@@ -31,14 +33,6 @@ public:
     QVariantMap extraData() const;
     void setExtraData(const QVariantMap &extraData);
 
-protected:
-    QString _name;
-    QString _passSHA256;
-    QString _mail;
-    int _lastOnline; // unix time
-    int _onlineTime; // unix time
-    QVariantMap _extraData;
-
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
@@ -47,6 +41,15 @@ protected:
 
     void clear() override;
     bool isValid() const override;
+
+protected:
+    QString _name;
+    QString _passSHA256;
+    QString _mail;
+    int _lastOnline; // unix time
+    int _onlineTime; // unix time
+    QVariantMap _extraData;
+
 };
 
 }

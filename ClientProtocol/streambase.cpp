@@ -26,8 +26,4 @@ QByteArray StreamBase::toBytes() const {
     return res;
 }
 
-QVariantMap StreamBase::getMap() const {
-    QVariantMap map;
-    return toVariantMap(map);
-}
 }

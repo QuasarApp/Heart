@@ -7,6 +7,7 @@ namespace ClientProtocol {
 
 class SqlDBCache;
 class SqlDBWriter;
+class UserDataRequest;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -63,6 +64,11 @@ public:
      * @return
      */
     virtual QVariantMap defaultDbParams() const;
+
+signals:
+    void incomingReques(Package pkg, const QHostAddress&  sender);
+    void requestError();
+
 protected:
 
     /**
@@ -71,6 +77,23 @@ protected:
      * @param writer
      */
     void initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer);
+
+    /**
+     * @brief parsePackage
+     * @param pkg
+     * @param sender
+     * @return
+     */
+    bool parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
+
+    /**
+     * @brief workWithUserRequest
+     * @return
+     */
+    bool workWithUserRequest(QWeakPointer<UserDataRequest>, const QHostAddress &addere,
+                             const Header *rHeader = nullptr);
+
+    QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
 private:
 

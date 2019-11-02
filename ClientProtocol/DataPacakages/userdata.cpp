@@ -9,6 +9,10 @@ UserData::UserData():
 
 }
 
+UserData::UserData(const Package &package): DBObject("users") {
+    fromBytes(package.data);
+}
+
 UserData::~UserData() {
 
 }

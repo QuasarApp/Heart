@@ -76,6 +76,12 @@ public:
      */
     bool setTableStruct(const DbTableBase &tableStruct);
 
+    /**
+     * @brief getMap
+     * @return map of object
+     */
+    QVariantMap getMap() const;
+
 protected:
 
     /**
@@ -107,8 +113,20 @@ protected:
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    QVariantMap &fromVariantMap(QVariantMap &map) override;
-    QVariantMap &toVariantMap(QVariantMap &map) const override;
+
+    /**
+     * @brief fromVariantMap
+     * @param map
+     * @return
+     */
+    virtual QVariantMap& fromVariantMap(QVariantMap& map);
+
+    /**
+     * @brief toVariantMap
+     * @param map
+     * @return
+     */
+    virtual QVariantMap& toVariantMap(QVariantMap& map) const;
 
     /**
      * @brief fromQuery

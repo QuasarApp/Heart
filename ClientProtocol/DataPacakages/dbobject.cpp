@@ -185,6 +185,11 @@ bool DBObject::setTableStruct(const DbTableBase &tableStruct) {
     return true;
 }
 
+QVariantMap DBObject::getMap() const {
+    QVariantMap map;
+    return toVariantMap(map);
+}
+
 QDataStream &DBObject::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 

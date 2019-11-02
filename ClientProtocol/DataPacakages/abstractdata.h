@@ -78,21 +78,6 @@ public:
      * @return stream
      */
     QDataStream& toStream(QDataStream& stream) const override;
-
-    /**
-     * @brief fromVariantMap
-     * @param map
-     * @return
-     */
-    QVariantMap &fromVariantMap(QVariantMap &) override;
-
-    /**
-     * @brief toVariantmap
-     * @param map
-     * @return
-     */
-    QVariantMap &toVariantMap(QVariantMap &) const override;
-
     /**
      * @brief isValid
      * @return true if class isValid

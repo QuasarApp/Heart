@@ -4,44 +4,44 @@
 #include <QDateTime>
 #include <QVariantMap>
 
-bool funcPrivate(std::function<bool()> requestFunc,
-            ClientProtocol::AbstractNode& node,
-            unsigned int *responceCmd = nullptr,
-            QByteArray* responceArray = nullptr,
-            QHostAddress *responceSender = nullptr) {
+//bool funcPrivate(std::function<bool()> requestFunc,
+//            ClientProtocol::AbstractNode& node,
+//            unsigned int *responceCmd = nullptr,
+//            QByteArray* responceArray = nullptr,
+//            QHostAddress *responceSender = nullptr) {
 
-        bool received = false;
-        QMetaObject::Connection m_connection;
-        m_connection = QObject::connect(&node, &ClientProtocol::AbstractNode::incomingReques,
-                         [ &received, &m_connection, responceCmd, responceArray, responceSender]
-                                        (ClientProtocol::Package pkg,
-                                        QHostAddress sender) {
+//        bool received = false;
+//        QMetaObject::Connection m_connection;
+//        m_connection = QObject::connect(&node, &ClientProtocol::AbstractNode::incomingReques,
+//                         [ &received, &m_connection, responceCmd, responceArray, responceSender]
+//                                        (ClientProtocol::Package pkg,
+//                                        QHostAddress sender) {
 
-            received = true;
+//            received = true;
 
-            if (responceCmd) {
-                *responceCmd = pkg.hdr.command;
-            }
+//            if (responceCmd) {
+//                *responceCmd = pkg.hdr.command;
+//            }
 
-            if (responceArray) {
-                *responceArray = pkg.data;
-            }
+//            if (responceArray) {
+//                *responceArray = pkg.data;
+//            }
 
-            if (responceSender) {
-                *responceSender = sender;
-            }
+//            if (responceSender) {
+//                *responceSender = sender;
+//            }
 
-            QObject::disconnect(m_connection);
+//            QObject::disconnect(m_connection);
 
 
-        });
+//        });
 
-        if (!requestFunc()) {
-            return false;
-        }
+//        if (!requestFunc()) {
+//            return false;
+//        }
 
-        return TestUtils::wait(received, 1000);
-}
+//        return TestUtils::wait(received, 1000);
+//}
 
 TestUtils::TestUtils()
 {
