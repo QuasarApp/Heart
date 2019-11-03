@@ -91,7 +91,7 @@ QDataStream &UserData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QVariantMap &UserData::fromVariantMap(QVariantMap &map) {
+void UserData::fromVariantMap(const QVariantMap &map) {
     DBObject::fromVariantMap(map);
 
     _name = map.value("name").toString();
@@ -101,7 +101,7 @@ QVariantMap &UserData::fromVariantMap(QVariantMap &map) {
     _onlineTime = map.value("onlinetime").toInt();
     _extraData = map.value("data").toMap();
 
-    return map;
+    return;
 }
 
 QVariantMap &UserData::toVariantMap(QVariantMap &map) const {

@@ -9,6 +9,8 @@
 
 namespace ClientProtocol {
 
+class DBObject;
+
 /**
  * @brief The DbTableBase class
  */

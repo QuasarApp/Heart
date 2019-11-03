@@ -21,28 +21,6 @@ public:
     DBObject(const QString& tableName);
     ~DBObject() override;
 
-
-    /**
-     * @brief saveQuery
-     * @param query update value for sql query
-     * @return true if all good
-     */
-    virtual bool saveQuery(QSqlQuery *query) const;
-
-    /**
-     * @brief selectQuery
-     * @param query update value
-     * @return return true if all good
-     */
-    virtual bool selectQuery(QSqlQuery *query);
-
-    /**
-     * @brief deleteQuery
-     * @param query delete value
-     * @return true if all good
-     */
-    virtual bool deleteQuery(QSqlQuery *query) const;
-
     //// AbstractData interface
     bool isValid() const override;
 
@@ -64,23 +42,25 @@ public:
     virtual void clear();
 
     /**
-     * @brief getTableStruct
-     * @return
-     */
-    DbTableBase getTableStruct() const;
-
-    /**
-     * @brief setTableStruct
-     * @param tableStruct
-     * @return true if structure of table compatible with this object
-     */
-    bool setTableStruct(const DbTableBase &tableStruct);
-
-    /**
      * @brief getMap
      * @return map of object
      */
     QVariantMap getMap() const;
+    /**
+     * @brief seyMap
+     * @return set map for this object
+     */
+    void setMap(const QVariantMap &map);
+
+    QString tableName() const;
+
+    void setTableName(const QString &tableName);
+
+    /**
+     * @brief factory
+     * @return self object pointer
+     */
+    virtual QSharedPointer<DBObject> factory() = 0;
 
 protected:
 
@@ -107,7 +87,7 @@ protected:
      */
     virtual bool getBaseQueryString(QString queryString, QSqlQuery *query) const;
 
-    DbTableBase _tableStruct;
+    QString _tableName;
     int _id = -1;
 
     //// StreamBase interface
@@ -119,7 +99,7 @@ protected:
      * @param map
      * @return
      */
-    virtual QVariantMap& fromVariantMap(QVariantMap& map);
+    virtual void fromVariantMap(const QVariantMap &map);
 
     /**
      * @brief toVariantMap

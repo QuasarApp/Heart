@@ -49,13 +49,14 @@ SOURCES += \
     DataPacakages/dbobject.cpp \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
+    dbobjectsfactory.cpp \
+    dbtablebase.cpp \
     abstractnode.cpp \
     abstractnodeinfo.cpp \
     asyncsqldbwriter.cpp \
     basenode.cpp \
     basenodeinfo.cpp \
     clientprotocol.cpp \
-    dbtablebase.cpp \
     header.cpp \
     iobjectprovider.cpp \
     package.cpp \
@@ -73,6 +74,8 @@ HEADERS += \
     DataPacakages/dbobject.h \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
+    dbobjectsfactory.h \
+    dbtablebase.h \
     abstractnode.h \
     abstractnodeinfo.h \
     asyncsqldbwriter.h \
@@ -81,7 +84,6 @@ HEADERS += \
     clientprotocol.h \
     clientprotocol_global.h \
     config.h \
-    dbtablebase.h \
     header.h \
     iobjectprovider.h \
     package.h \

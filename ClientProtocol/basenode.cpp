@@ -152,35 +152,38 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
 
         // TODO
 
-//    case UserDataRequestCmd::Login: {
+    case UserDataRequestCmd::Login: {
 
-//        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-//        if (node.isNull()) {
-//            return false;
-//        }
+        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+        if (node.isNull()) {
+            return false;
+        }
 
-//        QWeakPointer<DBObject> res;
-//        if (!_db->getObject(request->getTableStruct().name, request->getId(), &res)) {
-//            return false;
-//        }
+        QWeakPointer<DBObject> res;
+        if (!_db->getObject(request->getTableStruct().name, request->getId(), &res)) {
+            return false;
+        }
 
-//        auto user = res.toStrongRef();
-//        if (user.isNull()) {
-//            return false;
-//        }
+        auto user = res.toStrongRef().dynamicCast<UserData>();
+        if (user.isNull()) {
+            return false;
+        }
+
+        if (user->passSHA256() == request->passSHA256()) {
+
+        }
 
 
+        //node->setToken();
 
-//        //node->setToken();
+        if (!sendResponse(request, addere, rHeader)) {
+            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+                                               QuasarAppUtils::Warning);
+            return false;
+        }
 
-//        if (!sendResponse(request, addere, rHeader)) {
-//            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
-//                                               QuasarAppUtils::Warning);
-//            return false;
-//        }
-
-//        break;
-//    }
+        break;
+    }
 
     case UserDataRequestCmd::Delete: {
 
@@ -205,6 +208,12 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
 
 
     return true;
+}
+
+QString BaseNode::hashgenerator(const QByteArray &pass) {
+    return QCryptographicHash::hash(
+                QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
+                QCryptographicHash::Sha256);
 }
 
 QSharedPointer<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {

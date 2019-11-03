@@ -56,6 +56,7 @@ protected:
     bool disableFK();
 
 
+
     /**
      * @brief getInitPararm
      * @param initFile
@@ -91,6 +92,58 @@ protected:
     QSqlDatabase db;
     QHash<QString, DbTableBase> _dbStruct;
 
+    /**
+     * @brief generateHeaderOfQuery
+     * @param retQuery
+     * @return true if all good
+     */
+    virtual bool generateHeaderOfQuery(QString& retQuery,
+                                       const DbTableBase& tableStruct) const;
+
+    /**
+     * @brief generateSourceOfQuery
+     * @param retQuery
+     * @param retBindValue
+     * @return
+     */
+    virtual bool generateSourceOfQuery(QString& retQuery,
+                                       QList<QPair<QString, QVariant> > &retBindValue,
+                                       const DbTableBase& tableStruct,
+                                       const QVariantMap &map) const;
+
+    /**
+     * @brief getBaseQueryString
+     * @param queryString
+     * @param query
+     * @return
+     */
+    virtual bool getBaseQueryString(QString queryString,
+                                    QSqlQuery *query,
+                                    const DbTableBase &tableStruct,
+                                    const QVariantMap &objMap = {}) const;
+
+    // 0 - table name
+    // 1 - headers of update values
+    // 2 - update values
+    virtual bool saveQuery(const QWeakPointer<DBObject> &ptr) const;
+
+    /**
+     * @brief selectQuery generate select query to database from parameters
+     * @param returnList - return values
+     * @param table - table name of query
+     * @param key - compare key (column) for select is default it is id
+     * @param val - compare value
+     * @return true if all goodelse false
+     */
+    virtual bool selectQuery(QList<QSharedPointer<DBObject>>& returnList,
+                             const QString& table,
+                             const QString &key,
+                             const QVariant &val);
+
+    virtual bool deleteQuery(const QString &table, int id) const;
+
+    virtual bool checkTableStruct(const QWeakPointer<DBObject> &ptr);
+
 
 public:
     SqlDBWriter();
@@ -119,7 +172,19 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(const QString &table, int id, QWeakPointer<DBObject> *result) override;
+    bool getObject(const QString &table, int id, QSharedPointer<DBObject> *result) override;
+
+
+    /**
+     * @brief getObjects
+     * @param table
+     * @param key - the key by which the value will be searched
+     * @param val - value for compare
+     * @param result list of db objects (ret value)
+     * @return true if all good
+     */
+    bool getObjects(const QString &table, const QString &key,
+                    QVariant val, QList<QSharedPointer<DBObject> > &result) override;
 
     /**
      * @brief saveObject
@@ -133,8 +198,13 @@ public:
      */
     bool deleteObject(const QString &table, int id) override;
 
+
+
     virtual ~SqlDBWriter() override;
 
+
+    QHash<QString, QSharedPointer<DbTableBase> > getDbStruct() const;
+    void setDbStruct(const QHash<QString, QSharedPointer<DbTableBase> > &dbStruct);
 };
 
 }

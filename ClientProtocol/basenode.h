@@ -93,6 +93,12 @@ protected:
     bool workWithUserRequest(QWeakPointer<UserDataRequest>, const QHostAddress &addere,
                              const Header *rHeader = nullptr);
 
+    /**
+     * @brief hashgenerator
+     * @param pass
+     */
+    virtual QString hashgenerator(const QByteArray &pass);
+
     QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
 private:

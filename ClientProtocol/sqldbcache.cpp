@@ -85,21 +85,23 @@ void SqlDBCache::setWriter(QWeakPointer<SqlDBWriter> writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(const QString &table, int id, QWeakPointer<DBObject> *result) {
+bool SqlDBCache::getObject(const QString &table, int id, QSharedPointer<DBObject> *result) {
 
     if (!result) {
         return false;
     }
 
-    auto ptr = result->toStrongRef();
-
-    if (ptr.isNull())
+    if (result->isNull())
         return false;
 
     auto& tableObj = _cache[table];
 
     if (!tableObj.contains(id) && !_writer.isNull() && _writer->isValid()) {
-        return _writer->getObject(table, id, result);
+        if (!_writer->getObject(table, id, result)) {
+            return false;
+        }
+        _cache[table][id] = *result;
+        return true;
     }
 
     auto &sptr = tableObj[id];
@@ -113,6 +115,13 @@ bool SqlDBCache::getObject(const QString &table, int id, QWeakPointer<DBObject> 
     return true;
 }
 
+bool SqlDBCache::getObjects(const QString &table, const QString &key, QVariant val, QList<QSharedPointer<DBObject> > &result) {
+    if (_writer.isNull() || !_writer->isValid())
+        return false;
+
+    return _writer->getObjects(table, key, val, result);
+}
+
 bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
 
     auto ptr = saveObject.toStrongRef();
@@ -121,14 +130,14 @@ bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
         return false;
     }
 
-    _cache[ptr->getTableStruct().name][ptr->getId()] = saveObject;
+    _cache[ptr->tableName()][ptr->getId()] = saveObject;
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
         if (!_writer.isNull() && _writer->isValid()) {
             return _writer->saveObject(saveObject);
         }
     } else {
-        _needToSaveCache[ptr->getTableStruct().name].push_back(ptr->getId());
+        _needToSaveCache[ptr->tableName()].push_back(ptr->getId());
         globalUpdateDataBase(_mode);
     }
 
