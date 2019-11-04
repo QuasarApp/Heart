@@ -119,8 +119,8 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
     switch (request->requestCmd()) {
     case UserDataRequestCmd::Get: {
 
-        QWeakPointer<DBObject> res;
-        if (!_db->getObject(request->getTableStruct().name, request->getId(), &res)) {
+        QSharedPointer<DBObject> res;
+        if (!_db->getObject(request->tableName(), request->getId(), &res)) {
             return false;
         }
 
@@ -159,12 +159,12 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
             return false;
         }
 
-        QWeakPointer<DBObject> res;
-        if (!_db->getObject(request->getTableStruct().name, request->getId(), &res)) {
+        QSharedPointer<DBObject> res;
+        if (!_db->getObject(request->tableName(), request->getId(), &res)) {
             return false;
         }
 
-        auto user = res.toStrongRef().dynamicCast<UserData>();
+        auto user = res.dynamicCast<UserData>();
         if (user.isNull()) {
             return false;
         }
@@ -187,7 +187,7 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
 
     case UserDataRequestCmd::Delete: {
 
-        if(!_db->deleteObject(request->getTableStruct().name, request->getId())) {
+        if(!_db->deleteObject(request->tableName(), request->getId())) {
             QuasarAppUtils::Params::verboseLog("do not deleted object from database!" + addere.toString(),
                                                QuasarAppUtils::Error);
             return false;

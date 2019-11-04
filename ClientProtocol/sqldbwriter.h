@@ -93,17 +93,17 @@ protected:
     QHash<QString, DbTableBase> _dbStruct;
 
     /**
-     * @brief generateHeaderOfQuery
-     * @param retQuery
+     * @brief generateHeaderOfQuery - generate list of columns header for update
+     * @param retQuery return value
      * @return true if all good
      */
     virtual bool generateHeaderOfQuery(QString& retQuery,
                                        const DbTableBase& tableStruct) const;
 
     /**
-     * @brief generateSourceOfQuery
-     * @param retQuery
-     * @param retBindValue
+     * @brief generateSourceOfQuery - enerate list of columns header for update
+     * @param retQuery return value
+     * @param retBindValue list of bind value, after invoce of this method need invoce
      * @return
      */
     virtual bool generateSourceOfQuery(QString& retQuery,
@@ -112,7 +112,7 @@ protected:
                                        const QVariantMap &map) const;
 
     /**
-     * @brief getBaseQueryString
+     * @brief getBaseQueryString private implementation of getQueryMethods
      * @param queryString
      * @param query
      * @return

@@ -41,6 +41,8 @@ public:
 
     void clear() override;
     bool isValid() const override;
+    QSharedPointer<DBObject> factory() override;
+
 
 protected:
     QString _name;

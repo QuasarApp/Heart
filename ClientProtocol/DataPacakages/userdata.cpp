@@ -1,6 +1,7 @@
 #include "userdata.h"
 
 #include <QDataStream>
+#include <QSharedPointer>
 
 namespace ClientProtocol {
 
@@ -130,6 +131,10 @@ void UserData::clear() {
 
 bool UserData::isValid() const {
     return DBObject::isValid() && !_name.isEmpty();
+}
+
+QSharedPointer<DBObject> UserData::factory() {
+    return QSharedPointer<UserData>::create();
 }
 
 }

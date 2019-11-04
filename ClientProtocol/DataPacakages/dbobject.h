@@ -64,29 +64,6 @@ public:
 
 protected:
 
-    /**
-     * @brief generateHeaderOfQuery - generate list of columns header for update
-     * @param retQuery return value
-     * @return true if all good
-     */
-    virtual bool generateHeaderOfQuery(QString &retQuery) const;
-
-    /**
-     * @brief generateSourceOfQuery - enerate list of columns header for update
-     * @param retQuery return value
-     * @param retBindValue list of bind value, after invoce of this method need invoce
-     * @return
-     */
-    virtual bool generateSourceOfQuery(QString &retQuery,
-                                       QList<QPair<QString, QVariant>>& retBindValue) const;
-
-    /**
-     * @brief getBaseQueryString private implementation of getQueryMethods
-     * @param query
-     * @return true if all good
-     */
-    virtual bool getBaseQueryString(QString queryString, QSqlQuery *query) const;
-
     QString _tableName;
     int _id = -1;
 
