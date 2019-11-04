@@ -94,6 +94,21 @@ protected:
                              const Header *rHeader = nullptr);
 
     /**
+     * @brief registerNewUser
+     * @param user
+     * @return
+     */
+    bool registerNewUser(QWeakPointer<UserDataRequest> user);
+
+    /**
+     * @brief loginUser
+     * @param user
+     * @return
+     */
+    bool loginUser(QWeakPointer<UserDataRequest> user);
+
+
+    /**
      * @brief hashgenerator
      * @param pass
      */
@@ -102,6 +117,8 @@ protected:
     QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
 private:
+
+    QByteArray generateTocken(const QString& user);
 
     QSharedPointer<SqlDBCache> _db;
 };

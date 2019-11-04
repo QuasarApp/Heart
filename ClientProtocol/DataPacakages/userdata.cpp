@@ -75,6 +75,7 @@ QDataStream &UserData::fromStream(QDataStream &stream) {
     stream >> _lastOnline;
     stream >> _onlineTime;
     stream >> _extraData;
+    stream >> _token;
 
     return stream;
 }
@@ -88,6 +89,7 @@ QDataStream &UserData::toStream(QDataStream &stream) const {
     stream << _lastOnline;
     stream << _onlineTime;
     stream << _extraData;
+    stream << _token;
 
     return stream;
 }
@@ -135,6 +137,16 @@ bool UserData::isValid() const {
 
 QSharedPointer<DBObject> UserData::factory() {
     return QSharedPointer<UserData>::create();
+}
+
+QByteArray UserData::token() const
+{
+    return _token;
+}
+
+void UserData::setToken(const QByteArray &token)
+{
+    _token = token;
 }
 
 }

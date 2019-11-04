@@ -44,6 +44,9 @@ public:
     QSharedPointer<DBObject> factory() override;
 
 
+    QByteArray token() const;
+    void setToken(const QByteArray &token);
+
 protected:
     QString _name;
     QString _passSHA256;
@@ -51,6 +54,7 @@ protected:
     int _lastOnline; // unix time
     int _onlineTime; // unix time
     QVariantMap _extraData;
+    QByteArray _token;
 
 };
 

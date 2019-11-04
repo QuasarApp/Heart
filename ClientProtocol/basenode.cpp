@@ -159,9 +159,21 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
             return false;
         }
 
-        QSharedPointer<DBObject> res;
-        if (!_db->getObject(request->tableName(), request->getId(), &res)) {
+        QList<QSharedPointer<DBObject>> res;
+        if (!_db->getObjects(request->tableName(), "gmail", request->mail(), res)) {
             return false;
+        }
+
+        if (res.isEmpty()) {
+            // register a new user;
+            if (!registerNewUser(request)) {
+                return false;
+            }
+        } else {
+            // login oldUser
+            if (!loginUser(request)) {
+                return false;
+            }
         }
 
         auto user = res.dynamicCast<UserData>();
@@ -210,6 +222,27 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
     return true;
 }
 
+bool BaseNode::registerNewUser(QWeakPointer<UserDataRequest> user) {
+    auto strongUser = user.toStrongRef();
+
+    if (strongUser.isNull()) {
+        return false;
+    }
+
+
+    strongUser->setToken();
+
+    if (!_db->saveObject(user)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool BaseNode::loginUser(QWeakPointer<UserDataRequest> user) {
+
+}
+
 QString BaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
@@ -218,6 +251,17 @@ QString BaseNode::hashgenerator(const QByteArray &pass) {
 
 QSharedPointer<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {
     return  QSharedPointer<BaseNodeInfo>::create(socket);
+}
+
+QByteArray BaseNode::generateTocken(const QString &user) {
+    QByteArray result = QCryptographicHash::hash(user.toLatin1(), QCryptographicHash::Sha256);
+    srand(static_cast<unsigned int>(time(nullptr)));
+    for (int i = 0; i < 256; ++i) {
+        char byte = static_cast<char>(rand() % 256);
+        result.push_back(byte);
+    }
+
+    return QCryptographicHash::hash(result, QCryptographicHash::Sha256);
 }
 
 QVariantMap BaseNode::defaultDbParams() const {
