@@ -46,6 +46,11 @@ QWeakPointer<AbstractNodeInfo> AbstractNode::getInfoPtr(const QHostAddress &id) 
 }
 
 AbstractNodeInfo AbstractNode::getInfo(const QHostAddress &id) const{
+    auto info = _connections.value(id).info;
+
+    if (info.isNull())
+        return {};
+
     return *_connections.value(id).info.get();
 }
 
