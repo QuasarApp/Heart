@@ -1,3 +1,4 @@
+#include "accesstoken.h"
 #include "basenode.h"
 #include "basenodeinfo.h"
 #include "sqldbcache.h"
@@ -119,6 +120,15 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
     switch (request->requestCmd()) {
     case UserDataRequestCmd::Get: {
 
+        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+        if (node.isNull()) {
+            return false;
+        }
+
+        if (node->permision(request->tableName(), request->getId()) < Permission::Read) {
+            return false;
+        }
+
         QSharedPointer<DBObject> res;
         if (!_db->getObject(request->tableName(), request->getId(), &res)) {
             return false;
@@ -134,6 +144,15 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
     }
 
     case UserDataRequestCmd::Save: {
+
+        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+        if (node.isNull()) {
+            return false;
+        }
+
+        if (node->permision(request->tableName(), request->getId()) < Permission::Write) {
+            return false;
+        }
 
         if(!_db->saveObject(request)) {
             QuasarAppUtils::Params::verboseLog("do not saved object in database!" + addere.toString(),
@@ -154,11 +173,6 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
 
     case UserDataRequestCmd::Login: {
 
-        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-        if (node.isNull()) {
-            return false;
-        }
-
         QList<QSharedPointer<DBObject>> res;
         if (!_db->getObjects(request->tableName(), "gmail", request->mail(), res)) {
             return false;
@@ -166,27 +180,34 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
 
         if (res.isEmpty()) {
             // register a new user;
-            if (!registerNewUser(request)) {
+            if (!registerNewUser(request, addere)) {
+                return false;
+            }
+        } else if (res.size() == 1) {
+            // login oldUser
+            if (!loginUser(request, res.value(1), addere)) {
                 return false;
             }
         } else {
-            // login oldUser
-            if (!loginUser(request)) {
+            QuasarAppUtils::Params::verboseLog("user " + request->mail() + " have a clone user",
+                                               QuasarAppUtils::Error);
+
+            for (auto obj: res) {
+                if (!obj.isNull()) {
+                    QuasarAppUtils::Params::verboseLog("delete user " + QString::number(obj->getId()) + " from database",
+                                                       QuasarAppUtils::Info);
+
+                    if (!_db->deleteObject(obj->tableName(), obj->getId())) {
+                        QuasarAppUtils::Params::verboseLog("delete user " + QString::number(obj->getId()) + " fail",
+                                                           QuasarAppUtils::Error);
+                    }
+                }
+            }
+
+            if (!registerNewUser(request, addere)) {
                 return false;
             }
         }
-
-        auto user = res.dynamicCast<UserData>();
-        if (user.isNull()) {
-            return false;
-        }
-
-        if (user->passSHA256() == request->passSHA256()) {
-
-        }
-
-
-        //node->setToken();
 
         if (!sendResponse(request, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
@@ -222,15 +243,24 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
     return true;
 }
 
-bool BaseNode::registerNewUser(QWeakPointer<UserDataRequest> user) {
+bool BaseNode::registerNewUser(QWeakPointer<UserDataRequest> user, const QHostAddress& address) {
     auto strongUser = user.toStrongRef();
 
     if (strongUser.isNull()) {
         return false;
     }
 
+    auto node = getInfoPtr(address).toStrongRef().dynamicCast<BaseNodeInfo>();
+    if (node.isNull()) {
+        return false;
+    }
 
-    strongUser->setToken();
+    AccessToken token = AccessToken(AccessToken::Day);
+
+    strongUser->setToken(token);
+    node->setToken(token);
+    node->setPermision(strongUser->tableName(), strongUser->getId(),
+                       Permission::Read | Permission::Write);
 
     if (!_db->saveObject(user)) {
         return false;
@@ -239,8 +269,40 @@ bool BaseNode::registerNewUser(QWeakPointer<UserDataRequest> user) {
     return true;
 }
 
-bool BaseNode::loginUser(QWeakPointer<UserDataRequest> user) {
+bool BaseNode::loginUser(const QWeakPointer<UserDataRequest>& user,
+                         const QWeakPointer<DBObject>& userdb,
+                         const QHostAddress& address) {
+    auto strongUser = user.toStrongRef();
 
+    if (strongUser.isNull()) {
+        return false;
+    }
+
+    auto node = getInfoPtr(address).toStrongRef().dynamicCast<BaseNodeInfo>();
+    if (node.isNull()) {
+        return false;
+    }
+
+    if (node->token().isValid()) {
+
+        if (node->token() == strongUser->token()) {
+            node->setPermision(strongUser->tableName(), strongUser->getId(),
+                               Permission::Read | Permission::Write);
+            return true;
+        }
+    }
+
+    auto strongUserDB = userdb.toStrongRef().dynamicCast<UserData>();
+
+    if (!strongUserDB.isNull() && strongUserDB->isValid() ) {
+        if (strongUserDB->passSHA256() == strongUser->passSHA256()) {
+            node->setPermision(strongUser->tableName(), strongUser->getId(),
+                               Permission::Read | Permission::Write);
+            return true;
+        }
+    }
+
+    return false;
 }
 
 QString BaseNode::hashgenerator(const QByteArray &pass) {
@@ -251,17 +313,6 @@ QString BaseNode::hashgenerator(const QByteArray &pass) {
 
 QSharedPointer<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {
     return  QSharedPointer<BaseNodeInfo>::create(socket);
-}
-
-QByteArray BaseNode::generateTocken(const QString &user) {
-    QByteArray result = QCryptographicHash::hash(user.toLatin1(), QCryptographicHash::Sha256);
-    srand(static_cast<unsigned int>(time(nullptr)));
-    for (int i = 0; i < 256; ++i) {
-        char byte = static_cast<char>(rand() % 256);
-        result.push_back(byte);
-    }
-
-    return QCryptographicHash::hash(result, QCryptographicHash::Sha256);
 }
 
 QVariantMap BaseNode::defaultDbParams() const {

@@ -139,13 +139,11 @@ QSharedPointer<DBObject> UserData::factory() {
     return QSharedPointer<UserData>::create();
 }
 
-QByteArray UserData::token() const
-{
+const AccessToken &UserData::token() const {
     return _token;
 }
 
-void UserData::setToken(const QByteArray &token)
-{
+void UserData::setToken(const AccessToken &token) {
     _token = token;
 }
 

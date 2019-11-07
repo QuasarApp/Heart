@@ -49,6 +49,8 @@ SOURCES += \
     DataPacakages/dbobject.cpp \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
+    accesstoken.cpp \
+    databaseaddress.cpp \
     dbobjectsfactory.cpp \
     dbtablebase.cpp \
     abstractnode.cpp \
@@ -74,6 +76,8 @@ HEADERS += \
     DataPacakages/dbobject.h \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
+    accesstoken.h \
+    databaseaddress.h \
     dbobjectsfactory.h \
     dbtablebase.h \
     abstractnode.h \

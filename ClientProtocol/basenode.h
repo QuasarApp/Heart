@@ -3,6 +3,8 @@
 
 #include "abstractnode.h"
 
+#include <dbobject.h>
+
 namespace ClientProtocol {
 
 class SqlDBCache;
@@ -93,19 +95,25 @@ protected:
     bool workWithUserRequest(QWeakPointer<UserDataRequest>, const QHostAddress &addere,
                              const Header *rHeader = nullptr);
 
+    bool workWitGetRequest();
+
     /**
      * @brief registerNewUser
      * @param user
+     * @param address
      * @return
      */
-    bool registerNewUser(QWeakPointer<UserDataRequest> user);
+    bool registerNewUser(QWeakPointer<UserDataRequest> user, const QHostAddress& address);
 
     /**
      * @brief loginUser
      * @param user
+     * @param address
      * @return
      */
-    bool loginUser(QWeakPointer<UserDataRequest> user);
+    bool loginUser(const QWeakPointer<UserDataRequest> &user,
+                   const QWeakPointer<DBObject>& userdb,
+                   const QHostAddress& address);
 
 
     /**
@@ -117,9 +125,6 @@ protected:
     QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
 private:
-
-    QByteArray generateTocken(const QString& user);
-
     QSharedPointer<SqlDBCache> _db;
 };
 

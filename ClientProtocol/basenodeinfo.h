@@ -2,6 +2,7 @@
 #define CONNECTIONINFO_H
 
 #include "abstractnodeinfo.h"
+#include "accesstoken.h"
 #include "clientprotocol_global.h"
 
 #include <QByteArray>
@@ -17,12 +18,6 @@ enum class Permission {
     NoPermission = 0x00,
     Read = 0x01,
     Write = 0x02,
-
-    Own = 0x01,
-    Other = 0x10,
-
-    Logined = (Read * Own | Write * Own) |  (Read * Other),
-    Guest = (Read * Other)
 };
 
 /**
@@ -41,26 +36,34 @@ public:
      * @brief token
      * @return token
      */
-    QByteArray token() const;
+    const AccessToken& token() const;
 
     /**
      * @brief setToken
      * @param token set token
      */
-    void setToken(const QByteArray &token);
+    void setToken(const AccessToken &token);
 
     /**
-     * @brief isLogined
-     * @return true if your node logined on destanation host (this node info)
+     * @brief permision return permision on table item of node
+     * @param table name of table
+     * @param id of item,
+     * @return return permision
      */
-    bool isLogined() const;
+    Permission permision(const QString& table, int id) const;
 
-    Permission permision() const;
-    void setPermision(const Permission &permision);
+    /**
+     * @brief setPermision - set new permision for table object
+     * @param table - table of set permision
+     * @param id - id of object( set -1 if you need set permision for all items of table)
+     * @param permision new value of permision
+     */
+    void setPermision(const QString& table, int id ,const Permission &permision);
 
 protected:
-    QByteArray _token;
-    Permission _permision = Permission::Guest;
+    AccessToken _token;
+    QHash<QString, QHash<int, Permission>> _permision;
+
 
 };
 }

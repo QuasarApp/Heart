@@ -3,6 +3,8 @@
 
 #include "dbobject.h"
 
+#include <accesstoken.h>
+
 namespace ClientProtocol {
 
 /**
@@ -44,8 +46,8 @@ public:
     QSharedPointer<DBObject> factory() override;
 
 
-    QByteArray token() const;
-    void setToken(const QByteArray &token);
+    const AccessToken& token() const;
+    void setToken(const AccessToken &token);
 
 protected:
     QString _name;
@@ -54,7 +56,7 @@ protected:
     int _lastOnline; // unix time
     int _onlineTime; // unix time
     QVariantMap _extraData;
-    QByteArray _token;
+    AccessToken _token;
 
 };
 

@@ -34,21 +34,6 @@ public:
     ~SqlDBCache() override;
 
     /**
-     * @brief addDbObject
-     * @param obj
-     * @return
-     */
-    bool addDbObject(const DBObject* obj);
-
-    /**
-     * @brief removeDbObject
-     * @param obj
-     * @return
-     */
-    bool removeDbObject(const DBObject* obj);
-
-
-    /**
      * @brief writer
      * @return weak pointer to writer
      */
