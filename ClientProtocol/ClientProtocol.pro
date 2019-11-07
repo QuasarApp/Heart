@@ -50,6 +50,7 @@ SOURCES += \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
     accesstoken.cpp \
+    client.cpp \
     databaseaddress.cpp \
     dbobjectsfactory.cpp \
     dbtablebase.cpp \
@@ -77,6 +78,7 @@ HEADERS += \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
     accesstoken.h \
+    client.h \
     databaseaddress.h \
     dbobjectsfactory.h \
     dbtablebase.h \

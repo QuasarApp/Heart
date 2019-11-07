@@ -9,6 +9,7 @@ namespace ClientProtocol {
 
 class SqlDBCache;
 class SqlDBWriter;
+class UserData;
 class UserDataRequest;
 
 /**
@@ -68,8 +69,9 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
 signals:
-    void incomingReques(Package pkg, const QHostAddress&  sender);
-    void requestError();
+    void incomingData(Package pkg, const QHostAddress&  sender);
+
+    void requestError(QString msg);
 
 protected:
 
@@ -92,10 +94,9 @@ protected:
      * @brief workWithUserRequest
      * @return
      */
-    bool workWithUserRequest(QWeakPointer<UserDataRequest>, const QHostAddress &addere,
+    virtual bool workWithUserRequest(QWeakPointer<UserDataRequest>,
+                                     const QHostAddress &addere,
                              const Header *rHeader = nullptr);
-
-    bool workWitGetRequest();
 
     /**
      * @brief registerNewUser

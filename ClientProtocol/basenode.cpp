@@ -81,7 +81,9 @@ bool BaseNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> s
     auto strongSender = sender.toStrongRef();
 
     if (BadRequest().cmd() == pkg.hdr.command) {
-        emit requestError();
+        auto cmd = QSharedPointer<BadRequest>::create(pkg);
+        emit requestError(cmd->err());
+
     } else if (UserDataRequest().cmd() == pkg.hdr.command) {
         auto cmd = QSharedPointer<UserDataRequest>::create(pkg);
 
@@ -93,6 +95,10 @@ bool BaseNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> s
         if (!workWithUserRequest(cmd, strongSender->id(), &pkg.hdr)) {
             badRequest(strongSender->id(), pkg.hdr);
         }
+
+    } else if (UserData().cmd() == pkg.hdr.command) {
+
+        emit incomingData(pkg, strongSender->id());
 
     }
 

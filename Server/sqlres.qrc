@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/sql">
-        <file alias="DB">sql/SnakeDB.sql</file>
-    </qresource>
-</RCC>
