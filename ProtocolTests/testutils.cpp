@@ -3,45 +3,42 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QVariantMap>
+#include <basenode.h>
+#include <client.h>
 
-//bool funcPrivate(std::function<bool()> requestFunc,
-//            ClientProtocol::AbstractNode& node,
-//            unsigned int *responceCmd = nullptr,
-//            QByteArray* responceArray = nullptr,
-//            QHostAddress *responceSender = nullptr) {
+bool funcPrivate(std::function<bool()> requestFunc,
+            ClientProtocol::BaseNode& node,
+            QSharedPointer<ClientProtocol::AbstractData>* responce = nullptr,
+            QHostAddress *responceSender = nullptr) {
 
-//        bool received = false;
-//        QMetaObject::Connection m_connection;
-//        m_connection = QObject::connect(&node, &ClientProtocol::AbstractNode::incomingReques,
-//                         [ &received, &m_connection, responceCmd, responceArray, responceSender]
-//                                        (ClientProtocol::Package pkg,
-//                                        QHostAddress sender) {
+        bool received = false;
+        QMetaObject::Connection m_connection;
+        m_connection = QObject::connect(&node, &ClientProtocol::BaseNode::incomingData,
+                         [ &received, &m_connection, responce, responceSender]
+                                        (QSharedPointer<ClientProtocol::AbstractData> pkg,
+                                        QHostAddress sender) {
 
-//            received = true;
+            received = true;
 
-//            if (responceCmd) {
-//                *responceCmd = pkg.hdr.command;
-//            }
+            if (responce) {
+                *responce = pkg;
+            }
 
-//            if (responceArray) {
-//                *responceArray = pkg.data;
-//            }
+            if (responceSender) {
+                *responceSender = sender;
+            }
 
-//            if (responceSender) {
-//                *responceSender = sender;
-//            }
-
-//            QObject::disconnect(m_connection);
+            QObject::disconnect(m_connection);
 
 
-//        });
+        });
 
-//        if (!requestFunc()) {
-//            return false;
-//        }
+        if (!requestFunc()) {
+            return false;
+        }
 
-//        return TestUtils::wait(received, 1000);
-//}
+        return TestUtils::wait(received, 1000);
+}
 
 TestUtils::TestUtils()
 {
@@ -57,41 +54,22 @@ bool TestUtils::wait(const bool &forWait, int msec) {
     return forWait;
 }
 
+bool TestUtils::loginFunc(
+        ClientProtocol::Client &cli,
+                    const QString& login,
+                    const QByteArray& pass,
+                    bool sendResult,
+                    bool loginResult) {
 
-//bool TestUtils::loginFunc(
-//        ClientProtocol::Client &cli,
-//                    const QString& login,
-//                    const QByteArray& pass,
-//                    bool sendResult,
-//                    bool loginResult) {
+    auto wraper = [&cli, login, pass](){return cli.login(login, pass);};
+    bool result = funcPrivate(wraper, cli);
 
-//    auto wraper = [&cli, login, pass](){return cli.login(login, pass);};
-//    bool result = funcPrivate(wraper, cli);
+    if (!result) {
+        return !sendResult;
+    }
 
-//    if (!result) {
-//        return !sendResult;
-//    }
-
-//    return loginResult == cli.isLogin();
-//}
-
-//bool TestUtils::registerFunc(
-//        ClientProtocol::Client &cli,
-//                    const QString& login,
-//                    const QByteArray& pass,
-//                    bool sendResult,
-//                    bool loginResult) {
-
-//    auto wraper = [&cli, login, pass](){return cli.registration(login, pass);};
-//    bool result = funcPrivate(wraper, cli);
-
-//    if (!result) {
-//        return !sendResult;
-//    }
-
-//    return loginResult == cli.isLogin();
-//}
-
+    return loginResult == (cli.status() == ClientProtocol::Client::Logined);
+}
 
 //bool TestUtils::getState( ServerProtocol::Client& cli, QVariantMap &state) {
 //    auto wraper = [&cli](){return cli.getState();};

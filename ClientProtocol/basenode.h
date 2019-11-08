@@ -69,7 +69,8 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
 signals:
-    void incomingData(Package pkg, const QHostAddress&  sender);
+    void incomingData(QSharedPointer<AbstractData> pkg,
+                      const QHostAddress&  sender);
 
     void requestError(QString msg);
 

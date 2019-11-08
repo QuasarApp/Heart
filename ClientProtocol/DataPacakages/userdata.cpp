@@ -132,7 +132,7 @@ void UserData::clear() {
 }
 
 bool UserData::isValid() const {
-    return DBObject::isValid() && !_name.isEmpty();
+    return DBObject::isValid() && _mail.size();
 }
 
 QSharedPointer<DBObject> UserData::factory() {

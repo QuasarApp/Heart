@@ -8,8 +8,8 @@ bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid() && !_token.isValid();
 }
 
-BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp, NodeType type):
-    AbstractNodeInfo(tcp, type){}
+BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp):
+    AbstractNodeInfo(tcp){}
 
 BaseNodeInfo::~BaseNodeInfo(){}
 

@@ -9,13 +9,14 @@
 #include <badrequest.h>
 #include <package.h>
 #include <basenode.h>
+#include <client.h>
 
 #include "testutils.h"
 
 #define TEST_LOCAL_HOST "127.0.0.1"
 #define TEST_PORT 1234
 
-class testSankeServer : public QObject
+class testProtockol : public QObject
 {
     Q_OBJECT
 
@@ -23,31 +24,32 @@ private:
 
 
 public:
-    testSankeServer();
+    testProtockol();
 
-    ~testSankeServer();
+    ~testProtockol();
 
 private slots:
     void initTestCase();
     void testPakageData();
     void testBaseNode();
+    void testUser();
 
 };
 
-testSankeServer::testSankeServer() {
+testProtockol::testProtockol() {
     QuasarAppUtils::Params::setArg("verbose", 3);
 
 }
 
-testSankeServer::~testSankeServer() {
+testProtockol::~testProtockol() {
 
 }
 
-void testSankeServer::initTestCase() {
+void testProtockol::initTestCase() {
     ClientProtocol::initClientProtockol();
 }
 
-void testSankeServer::testPakageData() {
+void testProtockol::testPakageData() {
     ClientProtocol::BadRequest bad;
     ClientProtocol::BadRequest bad1;
     ClientProtocol::BadRequest bad2;
@@ -64,7 +66,7 @@ void testSankeServer::testPakageData() {
 
 }
 
-void testSankeServer::testBaseNode() {
+void testProtockol::testBaseNode() {
     ClientProtocol::BaseNode node, node2;
 
     const int port1 = TEST_PORT + 1;
@@ -80,10 +82,21 @@ void testSankeServer::testBaseNode() {
 
     node2.stop();
 
+}
+
+void testProtockol::testUser() {
+    ClientProtocol::BaseNode server;
+    QVERIFY(server.run(TEST_LOCAL_HOST, TEST_PORT));
+    ClientProtocol::Client client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+
+    QVERIFY(client.connectClient());
+
+    QVERIFY(TestUtils::loginFunc(client, "user", "123", true, true));
+    QVERIFY(TestUtils::loginFunc(client, "user", "124", true, false));
 
 }
 
 
-QTEST_APPLESS_MAIN(testSankeServer)
+QTEST_APPLESS_MAIN(testProtockol)
 
 #include "tst_testsnakeserver.moc"

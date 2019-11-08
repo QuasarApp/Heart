@@ -97,8 +97,12 @@ bool BaseNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> s
         }
 
     } else if (UserData().cmd() == pkg.hdr.command) {
+        auto obj = QSharedPointer<UserData>::create(pkg);
+        if (!obj->isValid()) {
+            badRequest(strongSender->id(), pkg.hdr);
+        }
 
-        emit incomingData(pkg, strongSender->id());
+        emit incomingData(obj, strongSender->id());
 
     }
 
@@ -140,7 +144,7 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
             return false;
         }
 
-        if (!sendResponse(res, addere, rHeader)) {
+        if (!sendData(res, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
@@ -166,7 +170,7 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
             return false;
         }
 
-        if (!sendResponse(request, addere, rHeader)) {
+        if (!sendData(request, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
@@ -215,7 +219,7 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
             }
         }
 
-        if (!sendResponse(request, addere, rHeader)) {
+        if (!sendData(request, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
@@ -233,7 +237,7 @@ bool BaseNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec, const QHos
         }
 
 
-        if (!sendResponse(request, addere, rHeader)) {
+        if (!sendData(request, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;

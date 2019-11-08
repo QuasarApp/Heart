@@ -1,17 +1,57 @@
-#include "client.h"
+﻿#include "client.h"
+
+#include <userdata.h>
+#include <userdatarequest.h>
 namespace ClientProtocol {
 
 Client::Client(const QHostAddress &address, unsigned short port) {
     setHost(address, port);
 }
 
-void Client::connectClient() {
+bool Client::connectClient() {
     connectToHost(_address, _port);
+
+    auto info = getInfoPtr(_address).toStrongRef();
+
+    if (info.isNull()) {
+        return false;
+    }
+
+    connect(info->sct(), &QAbstractSocket::stateChanged,
+            this, &Client::socketStateChanged);
+
+    return true;
+
 }
 
 void Client::setHost(const QHostAddress &address, unsigned short port) {
     _address = address;
     _port = port;
+}
+
+bool Client::login(const QString &userMail, const QByteArray &rawPath) {
+    _user = QSharedPointer<UserData>::create();
+    _user->setMail(userMail);
+    _user->setPassSHA256(hashgenerator(rawPath));
+
+    return sendData(_user, _address);
+}
+
+bool Client::syncUserData() {
+    if (_status == Status::Offline) {
+        return false;
+    }
+
+    if (!_user->isValid()) {
+        return false;
+    }
+
+    QSharedPointer<UserDataRequest> request;
+    request->setMap(_user->getMap());
+    request->setId(_user->getId());
+    request->setRequestCmd(UserDataRequestCmd::Save);
+
+    return sendData(request, _address);
 }
 
 int Client::status() const {
@@ -22,9 +62,20 @@ QString Client::lastMessage() const {
     return _lastMessage;
 }
 
-void Client::handleIncomingData(Package pkg, const QHostAddress&  sender) {
-    auto cmd = QSharedPointer<UserDataRequest>::create(pkg);
+void Client::handleIncomingData(QSharedPointer<AbstractData> obj,
+                                const QHostAddress&) {
 
+    auto userData = obj.dynamicCast<UserData>();
+
+    if (userData.isNull()) {
+        return;
+    }
+
+    if (_user->mail() == userData->mail()
+            && _user->passSHA256() == userData->passSHA256()) {
+        _user = userData;
+        setStatus(Status::Logined);
+    }
 
 }
 
@@ -34,6 +85,24 @@ void Client::setLastMessage(QString lastMessage) {
 
     _lastMessage = lastMessage;
     emit lastMessageChanged(_lastMessage);
+}
+
+void Client::socketStateChanged(QAbstractSocket::SocketState state) {
+    if (state < QAbstractSocket::ConnectedState) {
+        setStatus(Status::Offline);
+
+    } else if (_status != Logined) {
+        setStatus(Status::Online);
+    }
+
+    emit statusChanged(static_cast<int>(_status));
+}
+
+void Client::setStatus(Client::Status status) {
+    if (status != _status) {
+        _status = status;
+        emit statusChanged(_status);
+    }
 }
 
 }

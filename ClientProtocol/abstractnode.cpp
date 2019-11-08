@@ -73,14 +73,14 @@ void AbstractNode::unBan(const QHostAddress &target) {
 }
 
 void AbstractNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
-    QAbstractSocket *socket;
+    QTcpSocket *socket;
     if (mode == SslMode::NoSSL) {
         socket = new QTcpSocket(nullptr);
     } else {
         socket = new QSslSocket(nullptr);
     }
 
-    registerSocket(socket);
+    registerSocket(socket, &ip);
     socket->connectToHost(ip, port);
 }
 
@@ -235,14 +235,19 @@ QSharedPointer<AbstractNodeInfo> AbstractNode::createNodeInfo(QAbstractSocket *s
     return QSharedPointer<AbstractNodeInfo>::create(socket);
 }
 
-bool AbstractNode::registerSocket(QAbstractSocket *socket) {
+bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) {
 
     if (connectionsCount() >= maxPendingConnections()) {
         return false;
     }
 
     auto info = createNodeInfo(socket);
-    _connections[info->id()] = {info, {}};
+
+    if (clientAddress)
+        _connections[*clientAddress] = {info, {}};
+    else
+        _connections[info->id()] = {info, {}};
+
 
     connect(socket, &QAbstractSocket::readyRead, this, &AbstractNode::avelableBytes);
     connect(socket, &QAbstractSocket::disconnected, this, &AbstractNode::handleDisconnected);
@@ -296,7 +301,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     return sendet;
 }
 
-bool AbstractNode::sendResponse(const QWeakPointer<AbstractData> resp, const QHostAddress &addere,
+bool AbstractNode::sendData(const QWeakPointer<AbstractData> resp, const QHostAddress &addere,
                                 const Header *req) {
     auto client = getInfoPtr(addere).toStrongRef();
 
@@ -319,7 +324,7 @@ bool AbstractNode::sendResponse(const QWeakPointer<AbstractData> resp, const QHo
         convert = responce->toPackage(pkg);
     }
 
-    if (convert) {
+    if (!convert) {
         QuasarAppUtils::Params::verboseLog("Response not sent because dont create package from object",
                                            QuasarAppUtils::Error);
         return false;

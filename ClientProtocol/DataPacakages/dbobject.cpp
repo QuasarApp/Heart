@@ -75,8 +75,7 @@ bool DBObject::exec(QSqlQuery *query) const {
 }
 
 bool DBObject::isValid() const {
-    return AbstractData::isValid() && _tableName.size() &&
-            _id > -1;
+    return AbstractData::isValid() && _tableName.size();
 }
 
 int DBObject::getId() const {

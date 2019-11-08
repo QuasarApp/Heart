@@ -172,7 +172,8 @@ protected:
      * @param socket
      * @return
      */
-    virtual bool registerSocket(QAbstractSocket *socket);
+    virtual bool registerSocket(QAbstractSocket *socket,
+                                const QHostAddress *clientAddress = nullptr);
 
     /**
      * @brief parsePackage
@@ -197,7 +198,7 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendResponse(const QWeakPointer<AbstractData> resp,  const QHostAddress& addere,
+    virtual bool sendData(const QWeakPointer<AbstractData> resp,  const QHostAddress& addere,
                               const Header *req = nullptr);
 
     /**
@@ -278,6 +279,7 @@ private slots:
 
     void avelableBytes();
     void handleDisconnected();
+
 
 private:
     SslMode _mode;

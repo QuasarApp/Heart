@@ -5,9 +5,8 @@
 
 namespace ClientProtocol {
 
-AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct, ClientProtocol::NodeType type) {
+AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct) {
     setSct(sct);
-    setType(type);
 }
 
 AbstractNodeInfo::~AbstractNodeInfo() {}
@@ -21,7 +20,6 @@ void AbstractNodeInfo::disconnect() {
         _sct->close();
         _sct->deleteLater();
         _sct = nullptr;
-        _type = NodeType::Undefined;
     }
 }
 
@@ -63,16 +61,8 @@ void AbstractNodeInfo::setTrust(int trust) {
     }
 }
 
-NodeType AbstractNodeInfo::type() const {
-    return _type;
-}
-
-void AbstractNodeInfo::setType(const NodeType &type) {
-    _type = type;
-}
-
 bool AbstractNodeInfo::isValid() const {
-    return _sct && _type != NodeType::Undefined;
+    return _sct;
 }
 
 QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {

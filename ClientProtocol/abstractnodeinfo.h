@@ -19,16 +19,6 @@ enum class TrustNode: unsigned char {
 };
 
 /**
- * @brief The NodeType enum
- */
-enum class NodeType {
-    Undefined,
-    Client,
-    Node,
-    Server
-};
-
-/**
  * @brief The AbstractNodeInfo class
  */
 class CLIENTPROTOCOLSHARED_EXPORT AbstractNodeInfo
@@ -40,7 +30,7 @@ public:
      * @brief AbstractNodeInfo
      * @param sct socket of connection
      */
-    AbstractNodeInfo(QAbstractSocket *sct = nullptr, NodeType type = NodeType::Client);
+    AbstractNodeInfo(QAbstractSocket *sct = nullptr);
 
     /**
      * @brief ~AbstractNodeInfo
@@ -81,12 +71,6 @@ public:
     virtual void unBan();
 
     /**
-     * @brief type
-     * @return
-     */
-    NodeType type() const;
-
-    /**
      * @brief trust
      * @return rtust
      */
@@ -125,18 +109,10 @@ protected:
      */
     void setSct(QAbstractSocket *sct);
 
-
-    /**
-     * @brief setType
-     * @param type type of connection node
-     */
-    void setType(const NodeType &type);
-
 private:
 
     QHostAddress _id;
     QAbstractSocket *_sct = nullptr;
-    NodeType _type = NodeType::Undefined;
     int _trust = static_cast<int>(TrustNode::Default);
 
 };
