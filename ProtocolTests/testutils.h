@@ -16,12 +16,17 @@ public:
                               const QByteArray &pass,
                               bool sendResult,
                               bool loginResult);
+
+    static bool connectFunc(ClientProtocol::Client &cli,
+                     const QString &address,
+                     unsigned short port);
 //    static bool getState(ServerProtocol::Client &cli, QVariantMap &state);
 //    static bool unBanFunc(ServerProtocol::Client &cli, const QHostAddress &address);
 //    static bool banFunc(ServerProtocol::Client &cli, const QHostAddress &address);
 //    static bool reconnectFunc(ClientProtocol::Client &cli);
 //    static bool registerFunc(ClientProtocol::Client &cli, const QString &login,
-//                             const QByteArray &pass, bool sendResult, bool loginResult);
+    //                             const QByteArray &pass, bool sendResult, bool loginResult);
+
 };
 
 #endif // TESTUTILS_H

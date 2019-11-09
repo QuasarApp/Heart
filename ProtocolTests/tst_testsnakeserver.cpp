@@ -89,7 +89,7 @@ void testProtockol::testUser() {
     QVERIFY(server.run(TEST_LOCAL_HOST, TEST_PORT));
     ClientProtocol::Client client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
 
-    QVERIFY(client.connectClient());
+    QVERIFY(TestUtils::connectFunc(client, TEST_LOCAL_HOST, TEST_PORT));
 
     QVERIFY(TestUtils::loginFunc(client, "user", "123", true, true));
     QVERIFY(TestUtils::loginFunc(client, "user", "124", true, false));

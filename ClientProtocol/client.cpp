@@ -94,8 +94,6 @@ void Client::socketStateChanged(QAbstractSocket::SocketState state) {
     } else if (_status != Logined) {
         setStatus(Status::Online);
     }
-
-    emit statusChanged(static_cast<int>(_status));
 }
 
 void Client::setStatus(Client::Status status) {
