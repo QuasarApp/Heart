@@ -1,9 +1,9 @@
 #ifndef TESTUTILS_H
 #define TESTUTILS_H
 
-#include <clientprotocol.h>
+#include <networkprotocol.h>
 
-namespace ClientProtocol {
+namespace NetworkProtocol {
     class Client;
 }
 class TestUtils
@@ -11,13 +11,13 @@ class TestUtils
 public:
     TestUtils();
     static bool wait(const bool &forWait, int msec);
-    static bool loginFunc(ClientProtocol::Client &cli,
+    static bool loginFunc(NetworkProtocol::Client &cli,
                               const QString &login,
                               const QByteArray &pass,
                               bool sendResult,
                               bool loginResult);
 
-    static bool connectFunc(ClientProtocol::Client &cli,
+    static bool connectFunc(NetworkProtocol::Client &cli,
                      const QString &address,
                      unsigned short port);
 //    static bool getState(ServerProtocol::Client &cli, QVariantMap &state);

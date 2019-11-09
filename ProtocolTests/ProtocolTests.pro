@@ -6,7 +6,7 @@ CONFIG -= app_bundle
 
 TEMPLATE = app
 
-TARGET = serverTests
+TARGET = networkTests
 
 SOURCES += \
     testutils.cpp \
@@ -20,7 +20,7 @@ CONFIG(release, debug|release): {
 }
 
 include($$PWD/../QuasarAppLib/QuasarLib.pri)
-include($$PWD/../ClientProtocol/ClientProtocol.pri)
+include($$PWD/../NetworkProtocol/NetworkProtocol.pri)
 
 
 HEADERS += \
@@ -29,7 +29,7 @@ HEADERS += \
 deployTest.commands = cqtdeployer -bin $$DESTDIR clear -qmake $$QMAKE_QMAKE -targetDir $$PWD/deployTests -libDir $$PWD/../../ -recursiveDepth 5
 
 test.depends = deployTest
-test.commands = $$PWD/deployTests/serverTests.sh
+test.commands = $$PWD/deployTests/networkTests.sh
 
 QMAKE_EXTRA_TARGETS += \
     deployTest \

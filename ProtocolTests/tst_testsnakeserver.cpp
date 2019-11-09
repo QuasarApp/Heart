@@ -4,7 +4,7 @@
 #include <quasarapp.h>
 #include <QCoreApplication>
 #include <QCryptographicHash>
-#include <clientprotocol.h>
+#include <networkprotocol.h>
 #include <abstractdata.h>
 #include <badrequest.h>
 #include <package.h>
@@ -46,28 +46,27 @@ testProtockol::~testProtockol() {
 }
 
 void testProtockol::initTestCase() {
-    ClientProtocol::initClientProtockol();
 }
 
 void testProtockol::testPakageData() {
-    ClientProtocol::BadRequest bad;
-    ClientProtocol::BadRequest bad1;
-    ClientProtocol::BadRequest bad2;
+    NetworkProtocol::BadRequest bad;
+    NetworkProtocol::BadRequest bad1;
+    NetworkProtocol::BadRequest bad2;
 
     QVERIFY(bad.cmd() == bad1.cmd() && bad.cmd() == bad2.cmd());
 
-    ClientProtocol::Package pkg;
+    NetworkProtocol::Package pkg;
 
     QVERIFY(bad.toPackage(pkg));
 
-    ClientProtocol::BadRequest res(pkg);
+    NetworkProtocol::BadRequest res(pkg);
 
     QVERIFY(bad.cmd() == res.cmd());
 
 }
 
 void testProtockol::testBaseNode() {
-    ClientProtocol::BaseNode node, node2;
+    NetworkProtocol::BaseNode node, node2;
 
     const int port1 = TEST_PORT + 1;
     const int port2 = TEST_PORT + 2;
@@ -85,9 +84,9 @@ void testProtockol::testBaseNode() {
 }
 
 void testProtockol::testUser() {
-    ClientProtocol::BaseNode server;
+    NetworkProtocol::BaseNode server;
     QVERIFY(server.run(TEST_LOCAL_HOST, TEST_PORT));
-    ClientProtocol::Client client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+    NetworkProtocol::Client client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
 
     QVERIFY(TestUtils::connectFunc(client, TEST_LOCAL_HOST, TEST_PORT));
 
