@@ -34,4 +34,12 @@ QDataStream &operator>>(QDataStream &stream, StreamBase &obj) {
     return (&obj)->fromStream(stream);
 }
 
+QDataStream &operator<<(QDataStream &stream, const StreamBase *obj) {
+    return obj->toStream(stream);
+}
+
+QDataStream &operator>>(QDataStream &stream, StreamBase *obj) {
+    return obj->fromStream(stream);
+}
+
 }
