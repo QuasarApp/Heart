@@ -49,7 +49,7 @@ public:
      * @param obj
      * @return stream
      */
-    friend QDataStream& operator<< (QDataStream& stream, const StreamBase* obj);
+    friend QDataStream& operator<< (QDataStream& stream, const StreamBase& obj);
 
     /**
      * @brief operator >> it is wraper over fromStream
@@ -57,7 +57,7 @@ public:
      * @param obj
      * @return
      */
-    friend QDataStream& operator>> (QDataStream& stream, StreamBase* obj);
+    friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
 
 };
