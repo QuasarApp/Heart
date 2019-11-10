@@ -15,7 +15,7 @@ CONFIG(release, debug|release): {
     NETWORKPROTOCOL_LIB_OUTPUT_DIR="$$PWD/build/debug"
 }
 
-LIBS += -L$$NETWORKPROTOCOL_LIB_OUTPUT_DIR -lClientProtocol
+LIBS += -L$$NETWORKPROTOCOL_LIB_OUTPUT_DIR -lNetworkProtocol
 
 include($$PWD/NetworkProtocolIncludes.pri)
 

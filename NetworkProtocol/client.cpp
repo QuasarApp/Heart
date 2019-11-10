@@ -8,6 +8,10 @@ Client::Client(const QHostAddress &address, unsigned short port) {
     setHost(address, port);
 }
 
+Client::Client(const QString &address, unsigned short port) {
+    setHost(QHostAddress(address), port);
+}
+
 bool Client::connectClient() {
     connectToHost(_address, _port);
 

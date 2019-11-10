@@ -20,6 +20,8 @@ public:
     };
 
     explicit Client(const QHostAddress& address, unsigned short port);
+    explicit Client(const QString& address, unsigned short port);
+
     bool connectClient();
     void setHost(const QHostAddress& address, unsigned short port);
     bool login(const QString& userMail, const QByteArray& rawPath);

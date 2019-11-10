@@ -19,7 +19,6 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-include($$PWD/../QuasarAppLib/QuasarLib.pri)
 include($$PWD/../NetworkProtocol/NetworkProtocol.pri)
 
 

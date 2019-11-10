@@ -38,9 +38,6 @@ CONFIG(release, debug|release): {
     DESTDIR = $$PWD/build/debug
 }
 
-include($$PWD/../QuasarAppLib/QuasarLib.pri)
-
-
 SOURCES += \
     DataPacakages/abstractdata.cpp \
     DataPacakages/availabledata.cpp \

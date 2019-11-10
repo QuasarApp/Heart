@@ -29,13 +29,6 @@ public:
     QByteArray toBytes() const;
 
     /**
-     * @brief getMap
-     * @return return QVarianMap of object
-     */
-    QVariantMap getMap() const;
-
-
-    /**
      * @brief fromStream
      * @param stream
      * @return stream
@@ -48,6 +41,24 @@ public:
      * @return stream
      */
     virtual QDataStream& toStream(QDataStream& stream) const = 0;
+
+
+    /**
+     * @brief operator << it is wraper over toStream
+     * @param stream
+     * @param obj
+     * @return stream
+     */
+    friend QDataStream& operator<< (QDataStream& stream, const StreamBase* obj);
+
+    /**
+     * @brief operator >> it is wraper over fromStream
+     * @param stream
+     * @param obj
+     * @return
+     */
+    friend QDataStream& operator>> (QDataStream& stream, StreamBase* obj);
+
 
 };
 }
