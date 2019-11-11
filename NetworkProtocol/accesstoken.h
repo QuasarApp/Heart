@@ -53,6 +53,8 @@ public:
     friend QDataStream& operator<<(QDataStream& stream, const AccessToken& token);
     friend QDataStream& operator>>(QDataStream& stream, AccessToken& token);
     bool operator == (const AccessToken& other) const;
+    bool operator != (const AccessToken& other) const;
+
     AccessToken &operator =(const AccessToken& other);
 
     friend unsigned int qHash(const AccessToken& token);

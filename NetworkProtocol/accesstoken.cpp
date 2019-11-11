@@ -35,6 +35,10 @@ bool AccessToken::operator ==(const AccessToken &other) const {
     return _data == other._data;
 }
 
+bool AccessToken::operator !=(const AccessToken &other) const {
+    return !operator==(other);
+}
+
 AccessToken& AccessToken::operator =(const AccessToken &other) = default;
 
 QDataStream &AccessToken::fromStream(QDataStream &stream) {
