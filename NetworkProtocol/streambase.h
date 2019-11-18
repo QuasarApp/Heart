@@ -60,22 +60,6 @@ public:
     friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
 
-    /**
-     * @brief operator << it is wraper over toStream
-     * @param stream
-     * @param obj
-     * @return stream
-     */
-    friend QDataStream& operator<< (QDataStream& stream, const StreamBase* obj);
-
-    /**
-     * @brief operator >> it is wraper over fromStream
-     * @param stream
-     * @param obj
-     * @return
-     */
-    friend QDataStream& operator>> (QDataStream& stream, StreamBase* obj);
-
 
 
 };
