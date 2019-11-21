@@ -85,12 +85,6 @@ protected:
      */
     virtual QVariantMap& toVariantMap(QVariantMap& map) const;
 
-    /**
-     * @brief fromQuery
-     * @param query
-     * @return
-     */
-    virtual bool exec(QSqlQuery *query) const;
 
 };
 }

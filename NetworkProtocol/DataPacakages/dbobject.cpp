@@ -62,18 +62,6 @@ QVariantMap &DBObject::toVariantMap(QVariantMap &map) const {
     return map;
 }
 
-bool DBObject::exec(QSqlQuery *query) const {
-    if (!query->exec()) {
-        return false;
-    }
-
-    if (!query->next()) {
-        return false;
-    }
-
-    return true;
-}
-
 bool DBObject::isValid() const {
     return AbstractData::isValid() && _tableName.size();
 }

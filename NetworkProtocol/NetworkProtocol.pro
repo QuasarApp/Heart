@@ -44,6 +44,7 @@ SOURCES += \
     DataPacakages/availabledatarequest.cpp \
     DataPacakages/badrequest.cpp \
     DataPacakages/dbobject.cpp \
+    DataPacakages/request.cpp \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
     accesstoken.cpp \
@@ -60,6 +61,7 @@ SOURCES += \
     iobjectprovider.cpp \
     networkprotocol.cpp \
     package.cpp \
+    ratingusernode.cpp \
     sqldbcache.cpp \
     sqldbwriter.cpp \
     streambase.cpp \
@@ -72,6 +74,7 @@ HEADERS += \
     DataPacakages/availabledatarequest.h \
     DataPacakages/badrequest.h \
     DataPacakages/dbobject.h \
+    DataPacakages/request.h \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
     accesstoken.h \
@@ -90,6 +93,7 @@ HEADERS += \
     networkprotocol.h \
     networkprotocol_global.h \
     package.h \
+    ratingusernode.h \
     sqldbcache.h \
     sqldbwriter.h \
     streambase.h \

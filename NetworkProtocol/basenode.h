@@ -91,32 +91,6 @@ protected:
      */
     bool parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
 
-    /**
-     * @brief workWithUserRequest
-     * @return
-     */
-    virtual bool workWithUserRequest(QWeakPointer<UserDataRequest>,
-                                     const QHostAddress &addere,
-                             const Header *rHeader = nullptr);
-
-    /**
-     * @brief registerNewUser
-     * @param user
-     * @param address
-     * @return
-     */
-    bool registerNewUser(QWeakPointer<UserDataRequest> user, const QHostAddress& address);
-
-    /**
-     * @brief loginUser
-     * @param user
-     * @param address
-     * @return
-     */
-    bool loginUser(const QWeakPointer<UserDataRequest> &user,
-                   const QWeakPointer<DBObject>& userdb,
-                   const QHostAddress& address);
-
 
     /**
      * @brief hashgenerator
@@ -126,6 +100,7 @@ protected:
 
     QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
+    QWeakPointer<SqlDBCache> db() const;
 private:
     QSharedPointer<SqlDBCache> _db;
 };

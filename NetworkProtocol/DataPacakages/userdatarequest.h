@@ -1,6 +1,7 @@
 #ifndef USERDATAREQUEST_H
 #define USERDATAREQUEST_H
 
+#include "request.h"
 #include "userdata.h"
 
 
@@ -14,14 +15,11 @@ enum class UserDataRequestCmd: unsigned char {
     Delete
 };
 
-class NETWORKPROTOCOLSHARED_EXPORT UserDataRequest: public UserData
+class NETWORKPROTOCOLSHARED_EXPORT UserDataRequest: public UserData, public Request
 {
 public:
     UserDataRequest();
     UserDataRequest(const Package& package);
-
-    UserDataRequestCmd requestCmd() const;
-    void setRequestCmd(const UserDataRequestCmd &requestCmd);
 
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream);
@@ -32,9 +30,6 @@ public:
 
     // DBObject interface
     void clear();
-
-private:
-    UserDataRequestCmd _requestCmd = UserDataRequestCmd::Invalid;
 
 };
 

@@ -53,7 +53,7 @@ bool Client::syncUserData() {
     QSharedPointer<UserDataRequest> request;
     request->setMap(_user->getMap());
     request->setId(_user->getId());
-    request->setRequestCmd(UserDataRequestCmd::Save);
+    request->setRequestCmd(static_cast<unsigned char>(UserDataRequestCmd::Save));
 
     return sendData(request, _address);
 }

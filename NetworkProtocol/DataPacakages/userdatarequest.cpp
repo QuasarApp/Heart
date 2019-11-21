@@ -14,38 +14,28 @@ UserDataRequest::UserDataRequest(const Package &package):
 
 }
 
-UserDataRequestCmd UserDataRequest::requestCmd() const {
-    return _requestCmd;
-}
-
-void UserDataRequest::setRequestCmd(const UserDataRequestCmd &requestCmd) {
-    _requestCmd = requestCmd;
-}
-
 QDataStream &UserDataRequest::fromStream(QDataStream &stream) {
     UserData::fromStream(stream);
-    unsigned char cmd;
-    stream >> cmd;
-    _requestCmd = static_cast<UserDataRequestCmd>(cmd);
+    stream >> requestCmd;
 
     return stream;
 }
 
 QDataStream &UserDataRequest::toStream(QDataStream &stream) const {
     UserData::toStream(stream);
-    stream << static_cast<unsigned char>(_requestCmd);
+    stream << requestCmd;
 
     return stream;
 }
 
 bool UserDataRequest::isValid() const {
     return  UserData::isValid() &&
-            _requestCmd > UserDataRequestCmd::Invalid &&
-            _requestCmd <= UserDataRequestCmd::Delete;
+            requestCmd > static_cast<unsigned char>(UserDataRequestCmd::Invalid) &&
+            requestCmd <= static_cast<unsigned char>(UserDataRequestCmd::Delete);
 }
 
 void UserDataRequest::clear() {
     UserData::clear();
-    _requestCmd = UserDataRequestCmd::Invalid;
+    requestCmd = static_cast<unsigned char>(UserDataRequestCmd::Invalid);
 }
 }
