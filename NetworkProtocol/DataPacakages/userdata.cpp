@@ -62,6 +62,10 @@ QVariantMap UserData::extraData() const {
     return _extraData;
 }
 
+QVariantMap &UserData::extraData() {
+    return _extraData;
+}
+
 void UserData::setExtraData(const QVariantMap &extraData) {
     _extraData = extraData;
 }

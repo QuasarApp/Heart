@@ -33,6 +33,8 @@ public:
     void setOnlineTime(int onlineTime);
 
     QVariantMap extraData() const;
+    QVariantMap& extraData();
+
     void setExtraData(const QVariantMap &extraData);
 
     // StreamBase interface
