@@ -45,6 +45,7 @@ SOURCES += \
     DataPacakages/badrequest.cpp \
     DataPacakages/dbobject.cpp \
     DataPacakages/request.cpp \
+    DataPacakages/transportdata.cpp \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
     accesstoken.cpp \
@@ -75,6 +76,7 @@ HEADERS += \
     DataPacakages/badrequest.h \
     DataPacakages/dbobject.h \
     DataPacakages/request.h \
+    DataPacakages/transportdata.h \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
     accesstoken.h \

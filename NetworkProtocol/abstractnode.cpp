@@ -255,7 +255,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
     return true;
 }
 
-bool AbstractNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) {
+ParserResult AbstractNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) {
 
     auto senderPtr = sender.toStrongRef();
 
@@ -263,19 +263,19 @@ bool AbstractNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInf
         QuasarAppUtils::Params::verboseLog("sender socket is not valid!",
                                            QuasarAppUtils::Error);
         changeTrust(senderPtr->id(), LOGICK_ERROOR);
-        return false;
+        return ParserResult::Error;
     }
 
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::verboseLog("incomming package is not valid!",
                                            QuasarAppUtils::Error);
         changeTrust(senderPtr->id(), CRITICAL_ERROOR);
-        return false;
+        return ParserResult::Error;
     }
 
 
 
-    return true;
+    return ParserResult::NotProcessed;
 }
 
 bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {

@@ -1,5 +1,5 @@
 #include "basenodeinfo.h"
-#include "ratinguserserver.h"
+#include "ratingusernode.h"
 #include "sqldbcache.h"
 
 #include <badrequest.h>
@@ -8,15 +8,16 @@
 
 namespace NetworkProtocol {
 
-RatingUserServer::RatingUserServer() {
+RatingUserNode::RatingUserNode() {
 
 }
 
-bool RatingUserServer::parsePackage(const Package &pkg,
+ParserResult RatingUserNode::parsePackage(const Package &pkg,
                                     QWeakPointer<AbstractNodeInfo> sender) {
 
-    if (!BaseNode::parsePackage(pkg, sender)) {
-        return false;
+    auto parentResult = BaseNode::parsePackage(pkg, sender);
+    if (parentResult != ParserResult::NotProcessed) {
+        return parentResult;
     }
 
     auto strongSender = sender.toStrongRef();
@@ -26,32 +27,35 @@ bool RatingUserServer::parsePackage(const Package &pkg,
 
         if (!cmd->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
-            return false;
+            return ParserResult::Error;
         }
 
         if (!workWithUserRequest(cmd, strongSender->id(), &pkg.hdr)) {
             badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
         }
 
     } else if (UserData().cmd() == pkg.hdr.command) {
         auto obj = QSharedPointer<UserData>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
         }
 
         emit incomingData(obj, strongSender->id());
+        return ParserResult::Processed;
 
     }
 
-    return true;
+    return ParserResult::NotProcessed;
 
 }
 
-QVariantMap RatingUserServer::defaultDbParams() const {
+QVariantMap RatingUserNode::defaultDbParams() const {
     return BaseNode::defaultDbParams();
 }
 
-bool RatingUserServer::registerNewUser(QWeakPointer<UserDataRequest> user,
+bool RatingUserNode::registerNewUser(QWeakPointer<UserDataRequest> user,
                                        const QHostAddress& address) {
     auto strongUser = user.toStrongRef();
 
@@ -80,7 +84,7 @@ bool RatingUserServer::registerNewUser(QWeakPointer<UserDataRequest> user,
     return true;
 }
 
-bool RatingUserServer::loginUser(const QWeakPointer<UserDataRequest>& user,
+bool RatingUserNode::loginUser(const QWeakPointer<UserDataRequest>& user,
                          const QWeakPointer<DBObject>& userdb,
                          const QHostAddress& address) {
     auto strongUser = user.toStrongRef();
@@ -116,7 +120,7 @@ bool RatingUserServer::loginUser(const QWeakPointer<UserDataRequest>& user,
     return false;
 }
 
-bool RatingUserServer::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
+bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
                                            const QHostAddress &addere,
                                            const Header *rHeader) {
 

@@ -5,7 +5,7 @@
 
 namespace NetworkProtocol {
 
-class AvailableData : public AbstractData
+class NETWORKPROTOCOLSHARED_EXPORT AvailableData : public AbstractData
 {
 public:
     AvailableData();

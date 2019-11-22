@@ -89,7 +89,7 @@ protected:
      * @param sender
      * @return
      */
-    bool parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
+    ParserResult parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
 
 
     /**

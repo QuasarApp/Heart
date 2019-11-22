@@ -17,6 +17,18 @@ class QSslConfiguration;
 
 namespace NetworkProtocol {
 
+/**
+ * @brief The ParserResult enum
+ * Error - parser detect a errorob package
+ * NotProcessed - the parser does not know what to do with the package or has not finished processing it.
+ * Processed - the parser finished processing correctly
+ */
+enum class ParserResult {
+    Error = 0,
+    NotProcessed = 1,
+    Processed = 2
+};
+
 enum class SslMode {
     NoSSL,
     InitFromSystem,
@@ -179,9 +191,9 @@ protected:
      * @brief parsePackage
      * @param pkg
      * @param sender
-     * @return
+     * @return item of ParserResult ()
      */
-    virtual bool parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender);
+    virtual ParserResult parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender);
 
     /**
      * @brief sendPackage

@@ -15,7 +15,7 @@ public:
 
     // AbstractNode interface
 protected:
-    bool parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
+    ParserResult parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
     QVariantMap defaultDbParams() const override;
     bool workWithUserRequest(QWeakPointer<UserDataRequest>, const QHostAddress &addere, const Header *rHeader);
 

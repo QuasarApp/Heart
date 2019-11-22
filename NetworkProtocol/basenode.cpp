@@ -73,9 +73,11 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
     _db = QSharedPointer<SqlDBCache>(cache);
 }
 
-bool BaseNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) {
-    if (!AbstractNode::parsePackage(pkg, sender)) {
-        return false;
+ParserResult BaseNode::parsePackage(const Package &pkg,
+                                    QWeakPointer<AbstractNodeInfo> sender) {
+    auto parentResult = AbstractNode::parsePackage(pkg, sender);
+    if (parentResult != ParserResult::NotProcessed) {
+        return parentResult;
     }
 
     auto strongSender = sender.toStrongRef();
@@ -84,8 +86,10 @@ bool BaseNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> s
         auto cmd = QSharedPointer<BadRequest>::create(pkg);
         emit requestError(cmd->err());
 
+        return ParserResult::Processed;
+
     }
-    return true;
+    return ParserResult::NotProcessed;
 
 }
 
