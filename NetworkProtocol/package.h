@@ -36,6 +36,11 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package {
     virtual QByteArray toBytes() const;
 
     /**
+     * @brief fromBytes
+     * @return bytes array to packag
+     */
+    virtual void fromBytes(const QByteArray &array);
+    /**
      * @brief reset - reset all data and set for package invalid status
      */
     virtual void reset();

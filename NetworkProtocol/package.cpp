@@ -36,6 +36,14 @@ QByteArray Package::toBytes() const {
     return res;
 }
 
+void Package::fromBytes(const QByteArray& array) {
+    reset();
+    memcpy(&hdr,
+           array.data(), sizeof(Header));
+
+    data.append(array.mid(sizeof(Header)));
+}
+
 void Package::reset() {
     hdr.reset();
     data.clear();

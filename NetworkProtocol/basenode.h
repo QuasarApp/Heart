@@ -11,7 +11,7 @@ class SqlDBCache;
 class SqlDBWriter;
 class UserData;
 class UserDataRequest;
-
+class AvailableDataRequest;
 /**
  * @brief The BaseNode class - base inplementation of nodes
  */
@@ -101,8 +101,14 @@ protected:
     QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
     QWeakPointer<SqlDBCache> db() const;
+
+
 private:
     QSharedPointer<SqlDBCache> _db;
+    bool workWithAvailableDataRequest(QWeakPointer<AvailableDataRequest> rec,
+                                      const QHostAddress &addere,
+                                      const Header *rHeader);
+
 };
 
 }

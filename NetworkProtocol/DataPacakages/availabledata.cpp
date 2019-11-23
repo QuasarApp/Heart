@@ -8,6 +8,11 @@ AvailableData::AvailableData() {
 
 }
 
+
+AvailableData::AvailableData(const Package &pkg):AbstractData(pkg) {
+
+}
+
 QDataStream &AvailableData::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
     stream >> _data;

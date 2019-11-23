@@ -12,6 +12,7 @@ public:
 
 protected:
     unsigned char requestCmd = 0;
+
 };
 }
 #endif // IREQUEST_H

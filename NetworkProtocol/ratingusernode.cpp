@@ -34,6 +34,8 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
             badRequest(strongSender->id(), pkg.hdr);
             return ParserResult::Error;
         }
+        return ParserResult::Processed;
+
 
     } else if (UserData().cmd() == pkg.hdr.command) {
         auto obj = QSharedPointer<UserData>::create(pkg);

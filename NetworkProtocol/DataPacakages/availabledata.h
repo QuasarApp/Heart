@@ -9,6 +9,7 @@ class NETWORKPROTOCOLSHARED_EXPORT AvailableData : public AbstractData
 {
 public:
     AvailableData();
+    AvailableData(const Package& pkg);
 
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream);

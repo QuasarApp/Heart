@@ -2,11 +2,12 @@
 #define CLIENT_H
 
 #include "basenode.h"
+#include "ratingusernode.h"
 
 namespace NetworkProtocol {
 
 
-class NETWORKPROTOCOLSHARED_EXPORT Client: public BaseNode
+class NETWORKPROTOCOLSHARED_EXPORT Client: public RatingUserNode
 {
     Q_OBJECT
     Q_PROPERTY(int status READ status NOTIFY statusChanged)

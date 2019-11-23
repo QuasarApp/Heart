@@ -12,4 +12,5 @@ unsigned char Request::getRequestCmd() const {
 void Request::setRequestCmd(unsigned char value) {
     requestCmd = value;
 }
+
 }
