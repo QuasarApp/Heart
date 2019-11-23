@@ -17,47 +17,6 @@
 
 namespace NetworkProtocol {
 
-
-QString SqlDBWriter::tablesListMySql() {
-    return "show tables";
-}
-
-QString SqlDBWriter::tablesListSqlite() {
-    return "SELECT name FROM sqlite_master WHERE type ='table' AND name NOT LIKE 'sqlite_%'";
-}
-
-QString SqlDBWriter::describeQueryMySql(const QString &tabme) {
-    return QString("describe %0").arg(tabme);
-}
-
-QString SqlDBWriter::describeQuerySqlite(const QString &tabme) {
-    return  QString("pragma table_info('%0')").arg(tabme);
-}
-
-QString SqlDBWriter::getTablesQuery() {
-    auto driver = _config["DBDriver"].toString();
-
-    if (driver.contains("QSQLITE")) {
-        return tablesListSqlite();
-    } else if (driver.contains("QMYSQL")) {
-        return tablesListMySql();
-    }
-
-    return "";
-}
-
-QString SqlDBWriter::describeQuery(const QString &tabme) {
-    auto driver = _config["DBDriver"].toString();
-
-    if (driver.contains("QSQLITE")) {
-        return describeQuerySqlite(tabme);
-    } else if (driver.contains("QMYSQL")) {
-        return describeQueryMySql(tabme);
-    }
-
-    return "";
-}
-
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);
     bool result = true;
@@ -101,31 +60,6 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
         }
 
         f.close();
-
-        if (result && !(sq->prepare(getTablesQuery()) && sq->exec())) {
-            QuasarAppUtils::Params::verboseLog("init database error: " +sq->lastError().text(),
-                                               QuasarAppUtils::Error);
-        }
-
-        QStringList tables;
-        while(sq->next()) {
-            tables.push_back(sq->value(0).toString());
-        }
-
-        for(auto &table : tables) {
-            if (!(sq->prepare(describeQuery(table)) && sq->exec())) {
-                QuasarAppUtils::Params::verboseLog("init database error: " +sq->lastError().text(),
-                                                   QuasarAppUtils::Error);
-                continue;
-            }
-
-            DbTableBase tableInfo = {table, {}};
-            while (sq->next()) {
-                tableInfo.keys[sq->value(0).toString()] = getType(sq->value(1).toString());
-            }
-
-            _dbStruct[table] = tableInfo;
-        }
         return result;
     }
     return false;
@@ -233,8 +167,6 @@ bool SqlDBWriter::initDb(const QVariantMap &params) {
         db.setPort(params["DBPort"].toInt());
     }
 
-    query = QSqlQuery(db);
-
     if (!db.open()) {
         QuasarAppUtils::Params::verboseLog(db.lastError().text(),
                                            QuasarAppUtils::Error);
@@ -244,6 +176,7 @@ bool SqlDBWriter::initDb(const QVariantMap &params) {
     if (params.contains("DBInitFile")) {
         auto path = QFileInfo(params["DBInitFile"].toString()).absoluteFilePath();
 
+        QSqlQuery query(db);
         if (!exec(&query, path)) {
             return false;
         }
@@ -292,160 +225,19 @@ bool SqlDBWriter::deleteObject(const QString& table, int id) {
 SqlDBWriter::~SqlDBWriter() {
 }
 
-
-#define c(x) str.contains(x, Qt::CaseInsensitive)
-QVariant::Type SqlDBWriter::getType(const QString &str) {
-
-    if (str.isEmpty() || c(" BINARY") || c(" BLOB") || c(" TINYBLOB") || c(" MEDIUMBLOB") || c(" LONGBLOB")) {
-        return QVariant::ByteArray;
-    } else if (c(" INT")) {
-        return QVariant::Int;
-    } else if (c(" VARCHAR") || c(" TEXT") || c(" TINYTEXT") || c(" MEDIUMTEXT") || c(" LONGTEXT")) {
-        return QVariant::String;
-    } else if (c(" FLOAT") || c(" DOUBLE") || c(" REAL")) {
-        return QVariant::Double;
-    } else if (c(" BOOL")) {
-        return QVariant::Bool;
-    } else if (c(" DATETIME")) {
-        return QVariant::DateTime;
-    } else if (c(" DATE")) {
-        return QVariant::Date;
-    } else if (c(" TIME")) {
-        return QVariant::Time;
-    }
-
-    return QVariant::ByteArray;
-}
-
-bool SqlDBWriter::generateHeaderOfQuery(QString& retQuery,
-                                        const DbTableBase &tableStruct) const {
-
-    retQuery = "";
-    if (!tableStruct.isValid()) {
-        return false;
-    }
-
-    for (auto it = tableStruct.keys.begin(); it != tableStruct.keys.end(); ++it) {
-        retQuery += it.key() + ", ";
-    }
-
-    return true;
-}
-
-bool SqlDBWriter::generateSourceOfQuery(QString &retQuery,
-                                        QList<QPair<QString, QVariant> > &retBindValue,
-                                        const DbTableBase &tableStruct,
-                                        const QVariantMap& dataMap) const {
-
-    retQuery = "";
-    retBindValue.clear();
-
-    if (!tableStruct.isValid()) {
-        return false;
-    }
-
-    for (auto it = tableStruct.keys.begin(); it != tableStruct.keys.end(); ++it) {
-        auto type = it.value();
-        if (type != QVariant::UserType) {
-
-            switch (type) {
-            case QVariant::String:
-            case QVariant::Int:
-            case QVariant::Double:  {
-                retQuery += "'" + dataMap.value(it.key()).toString() + "', ";
-                break;
-            }
-            case QVariant::Time: {
-                retQuery += "'" + dataMap.value(it.key()).toDate().toString("HH:mm:ss") + "', ";
-                break;
-
-            }
-            case QVariant::DateTime: {
-                retQuery += "'" + dataMap.value(it.key()).toDateTime().toString("yyyy-MM-dd HH:mm:ss") + "', ";
-                break;
-            }
-            case QVariant::Date: {
-                retQuery += "'" + dataMap.value(it.key()).toDate().toString("yyyy-MM-dd") + "', ";
-                break;
-            }
-            case QVariant::ByteArray: {
-                auto bindValue = it.key() + "bytes";
-                retQuery += ":" + bindValue + ", ";
-                retBindValue.push_back({bindValue, dataMap.value(it.key())});
-
-                break;
-            }
-            default: {
-                break;
-            }
-
-            }
-
-        }
-    }
-
-    return true;
-}
-
-bool SqlDBWriter::getBaseQueryString(QString queryString, QSqlQuery *query,
-                                     const DbTableBase& tableStruct,
-                                     const QVariantMap& objMap) const {
-
-    if (!tableStruct.isValid()) {
-        return false;
-    }
-
-    queryString = queryString.arg(tableStruct.name);
-
-    QString temp = "";
-    if (!generateHeaderOfQuery(temp, tableStruct)) {
-        return false;
-    }
-
-    queryString = queryString.arg(temp);
-
-    if (objMap.isEmpty()) {
-        // prepare only header
-        return true;
-    }
-
-    temp = "";
-    QList<QPair<QString, QVariant> > bindValues;
-
-    if (!generateSourceOfQuery(temp, bindValues, tableStruct, objMap)) {
-        return false;
-    }
-
-    queryString = queryString.arg(temp);
-
-    if (!query->prepare(queryString)) {
-        return false;
-    }
-
-    for (auto &i: bindValues) {
-        query->bindValue(i.first, i.second);
-    }
-
-    return true;
-}
-
 bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {
 
     QSqlQuery q(db);
-
-    QString queryString = "INSERT IGNORE INTO %0(%1) VALUES (%2)";
 
     auto obj = ptr.toStrongRef();
     if (obj.isNull())
         return false;
 
-    if (!getBaseQueryString(queryString, &q,
-                            _dbStruct.value(obj->tableName()),
-                            obj->getMap())) {
+    if (obj->save(q)) {
         return false;
     }
 
-    return q.exec();
+    return true;
 }
 
 bool SqlDBWriter::selectQuery(QList<QSharedPointer<DBObject>>& returnList,

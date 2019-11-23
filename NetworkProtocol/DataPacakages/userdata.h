@@ -40,8 +40,6 @@ public:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    void fromVariantMap(const QVariantMap &map) override;
-    QVariantMap &toVariantMap(QVariantMap &map) const override;
 
     void clear() override;
     bool isValid() const override;

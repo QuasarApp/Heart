@@ -62,6 +62,11 @@ public:
      */
     virtual QSharedPointer<DBObject> factory() = 0;
 
+    virtual bool select(QSqlQuery& q) = 0;
+    virtual bool save(QSqlQuery& q) = 0;
+    virtual bool remove(QSqlQuery& q) = 0;
+
+
 protected:
 
     QString _tableName;
@@ -70,20 +75,6 @@ protected:
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-
-    /**
-     * @brief fromVariantMap
-     * @param map
-     * @return
-     */
-    virtual void fromVariantMap(const QVariantMap &map);
-
-    /**
-     * @brief toVariantMap
-     * @param map
-     * @return
-     */
-    virtual QVariantMap& toVariantMap(QVariantMap& map) const;
 
 
 };

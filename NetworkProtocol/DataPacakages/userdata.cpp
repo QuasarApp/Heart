@@ -98,32 +98,6 @@ QDataStream &UserData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-void UserData::fromVariantMap(const QVariantMap &map) {
-    DBObject::fromVariantMap(map);
-
-    _name = map.value("name").toString();
-    _passSHA256 = map.value("pass").toString();
-    _mail = map.value("gmail").toString();
-    _lastOnline = map.value("lastOnline").toInt();
-    _onlineTime = map.value("onlinetime").toInt();
-    _extraData = map.value("data").toMap();
-
-    return;
-}
-
-QVariantMap &UserData::toVariantMap(QVariantMap &map) const {
-    DBObject::toVariantMap(map);
-
-    map["name"] = _name;
-    map["pass"] = _passSHA256;
-    map["gmail"] = _mail;
-    map["lastOnline"] = _lastOnline;
-    map["onlinetime"] = _onlineTime;
-    map["data"] = _extraData;
-
-    return map;
-}
-
 void UserData::clear() {
     _name = "";
     _passSHA256 = "";

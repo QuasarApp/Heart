@@ -27,15 +27,6 @@ class NETWORKPROTOCOLSHARED_EXPORT SqlDBWriter : public iObjectProvider
 {
 private:
 
-    QString tablesListMySql();
-    QString tablesListSqlite();
-
-    QString describeQueryMySql(const QString& tabme);
-    QString describeQuerySqlite(const QString& tabme);
-
-    QString getTablesQuery();
-    QString describeQuery(const QString& tabme);
-
     bool exec(QSqlQuery *sq, const QString &sqlFile);
 
     bool initSuccessful = false;
@@ -81,46 +72,8 @@ protected:
      */
     virtual QVariantMap defaultInitPararm() const;
 
-    /**
-     * @brief getType
-     * @param str
-     * @return
-     */
-    virtual QVariant::Type getType(const QString& str);
-
-    QSqlQuery query;
     QSqlDatabase db;
     QHash<QString, DbTableBase> _dbStruct;
-
-    /**
-     * @brief generateHeaderOfQuery - generate list of columns header for update
-     * @param retQuery return value
-     * @return true if all good
-     */
-    virtual bool generateHeaderOfQuery(QString& retQuery,
-                                       const DbTableBase& tableStruct) const;
-
-    /**
-     * @brief generateSourceOfQuery - enerate list of columns header for update
-     * @param retQuery return value
-     * @param retBindValue list of bind value, after invoce of this method need invoce
-     * @return
-     */
-    virtual bool generateSourceOfQuery(QString& retQuery,
-                                       QList<QPair<QString, QVariant> > &retBindValue,
-                                       const DbTableBase& tableStruct,
-                                       const QVariantMap &map) const;
-
-    /**
-     * @brief getBaseQueryString private implementation of getQueryMethods
-     * @param queryString
-     * @param query
-     * @return
-     */
-    virtual bool getBaseQueryString(QString queryString,
-                                    QSqlQuery *query,
-                                    const DbTableBase &tableStruct,
-                                    const QVariantMap &objMap = {}) const;
 
     // 0 - table name
     // 1 - headers of update values

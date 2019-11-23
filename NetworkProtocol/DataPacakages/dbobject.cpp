@@ -17,15 +17,6 @@ DBObject::~DBObject() {
 
 }
 
-QVariantMap DBObject::getMap() const {
-    QVariantMap map;
-    return toVariantMap(map);
-}
-
-void DBObject::setMap(const QVariantMap& map) {
-    fromVariantMap(map);
-}
-
 QString DBObject::tableName() const {
     return _tableName;
 }
@@ -48,18 +39,6 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
     stream << _tableName;
     stream << _id;
     return stream;
-}
-
-void DBObject::fromVariantMap(const QVariantMap &map) {
-    if (map.contains("id")) {
-        _id = map.value("id").toInt();
-    }
-
-    return;
-}
-
-QVariantMap &DBObject::toVariantMap(QVariantMap &map) const {
-    return map;
 }
 
 bool DBObject::isValid() const {
