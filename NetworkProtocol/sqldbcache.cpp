@@ -85,22 +85,24 @@ void SqlDBCache::setWriter(QWeakPointer<SqlDBWriter> writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(const QString &table, int id, QSharedPointer<DBObject> *result) {
+bool SqlDBCache::getObject(QWeakPointer<DBObject> &obj) {
 
-    if (!result) {
-        return false;
-    }
+    auto ref = obj.toStrongRef();
 
-    if (result->isNull())
+    if (ref.isNull())
         return false;
+
+    int id = ref->getId();
+    auto table = ref->tableName();
 
     auto& tableObj = _cache[table];
 
+
     if (!tableObj.contains(id) && !_writer.isNull() && _writer->isValid()) {
-        if (!_writer->getObject(table, id, result)) {
+        if (!_writer->getObject(obj)) {
             return false;
         }
-        _cache[table][id] = *result;
+        _cache[table][id] = ref;
         return true;
     }
 
@@ -111,18 +113,11 @@ bool SqlDBCache::getObject(const QString &table, int id, QSharedPointer<DBObject
         return false;
     }
 
-    *result = sptr;
+    obj = sptr;
     return true;
 }
 
-bool SqlDBCache::getObjects(const QString &table, const QString &key, QVariant val, QList<QSharedPointer<DBObject> > &result) {
-    if (_writer.isNull() || !_writer->isValid())
-        return false;
-
-    return _writer->getObjects(table, key, val, result);
-}
-
-bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
+bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
 
     auto ptr = saveObject.toStrongRef();
 
@@ -130,7 +125,7 @@ bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
         return false;
     }
 
-    _cache[ptr->tableName()][ptr->getId()] = saveObject;
+    _cache[ptr->tableName()][ptr->getId()] = ptr;
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
         if (!_writer.isNull() && _writer->isValid()) {
@@ -146,11 +141,16 @@ bool SqlDBCache::saveObject(QWeakPointer<DBObject> saveObject) {
 
 }
 
-bool SqlDBCache::deleteObject(const QString &table, int id) {
-    deleteFromCache(table, id);
+bool SqlDBCache::deleteObject(const QWeakPointer<DBObject> &delObj) {
+    auto ref =  delObj.toStrongRef();
+
+    if (ref.isNull())
+        return false;
+
+    deleteFromCache(ref->tableName(), ref->getId());
 
     if (_writer && _writer->isValid()) {
-        return _writer->deleteObject(table, id);
+        return _writer->deleteObject(delObj);
     }
 
     return false;

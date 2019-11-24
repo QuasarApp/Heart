@@ -14,30 +14,30 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     moveToThread(own);
 }
 
-bool AsyncSqlDbWriter::saveObject(QWeakPointer<DBObject> saveObject) {
+bool AsyncSqlDbWriter::saveObject(const QWeakPointer<DBObject>& saveObject) {
    return QMetaObject::invokeMethod(this,
                               "handleSaveObject",
                               Qt::QueuedConnection,
-                              Q_ARG(QWeakPointer<DBObject>, saveObject));
+                              Q_ARG(QSharedPointer<DBObject>, saveObject.toStrongRef()));
 
 }
 
-bool AsyncSqlDbWriter::deleteObject(const QString &table, int id) {
+bool AsyncSqlDbWriter::deleteObject(const QWeakPointer<DBObject>& deleteObject) {
     return QMetaObject::invokeMethod(this,
-                               "handleSaveObject",
+                               "handleDeleteObject",
                                Qt::QueuedConnection,
-                               Q_ARG(QString, table), Q_ARG(int, id));
+                               Q_ARG(QSharedPointer<DBObject>, deleteObject.toStrongRef()));
 }
 
-void AsyncSqlDbWriter::handleSaveObject(QWeakPointer<DBObject> saveObject) {
+void AsyncSqlDbWriter::handleSaveObject(QSharedPointer<DBObject> saveObject) {
     if (!SqlDBWriter::saveObject(saveObject)) {
         QuasarAppUtils::Params::verboseLog("AsyncSqlDbWriter: save object fail!",
                                            QuasarAppUtils::Error);
     }
 }
 
-void AsyncSqlDbWriter::handleDeleteObject(const QString &table, int id) {
-    if (!SqlDBWriter::deleteObject(table, id)) {
+void AsyncSqlDbWriter::handleDeleteObject(QSharedPointer<DBObject> deleteObject) {
+    if (!SqlDBWriter::deleteObject(deleteObject)) {
         QuasarAppUtils::Params::verboseLog("AsyncSqlDbWriter: delete object fail!",
                                            QuasarAppUtils::Error);
     }

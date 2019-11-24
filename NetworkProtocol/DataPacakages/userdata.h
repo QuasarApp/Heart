@@ -41,6 +41,10 @@ public:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
+    bool select(QSqlQuery &q) override;
+    bool save(QSqlQuery &q) override;
+    bool remove(QSqlQuery &q) override;
+
     void clear() override;
     bool isValid() const override;
     QSharedPointer<DBObject> factory() override;
@@ -49,12 +53,19 @@ public:
     const AccessToken& token() const;
     void setToken(const AccessToken &token);
 
+
+
+    int points() const;
+    void setPoints(int points);
+
 protected:
     QString _name;
     QString _passSHA256;
     QString _mail;
     int _lastOnline; // unix time
     int _onlineTime; // unix time
+    int _points;
+
     QVariantMap _extraData;
     AccessToken _token;
 

@@ -191,22 +191,22 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(QWeakPointer<DBObject> obj) {
+bool SqlDBWriter::getObject(const QWeakPointer<DBObject>& obj) {
     return selectQuery(obj);
 }
 
-bool SqlDBWriter::saveObject(QSharedPointer<DBObject> saveObject) {
+bool SqlDBWriter::saveObject(const QWeakPointer<DBObject> &saveObject) {
     return saveQuery(saveObject);
 }
 
-bool SqlDBWriter::deleteObject(QSharedPointer<DBObject> deleteObject) {
+bool SqlDBWriter::deleteObject(const QWeakPointer<DBObject> &deleteObject) {
     return deleteQuery(deleteObject);
 }
 
 SqlDBWriter::~SqlDBWriter() {
 }
 
-bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {QSharedPointer
+bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {
 
     QSqlQuery q(db);
 
@@ -214,14 +214,10 @@ bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {QSharedPoi
     if (obj.isNull())
         return false;
 
-    if (obj->save(q)) {
-        return false;
-    }
-
-    return true;
+    return obj->save(q);
 }
 
-bool SqlDBWriter::selectQuery(QWeakPointer<DBObject>& obj) {
+bool SqlDBWriter::selectQuery(const QWeakPointer<DBObject>& obj) {
     auto ref = obj.toStrongRef();
 
     if (ref.isNull())
@@ -231,31 +227,11 @@ bool SqlDBWriter::selectQuery(QWeakPointer<DBObject>& obj) {
     return ref->remove(query);
 }
 
-bool SqlDBWriter::deleteQuery(QSharedPointer<DBObject> deleteObject) const {
+bool SqlDBWriter::deleteQuery(const QWeakPointer<DBObject> &deleteObject) const {
     QSqlQuery query(db);
-    return deleteObject->remove(query);
-}
+    auto ref = deleteObject.toStrongRef();
 
-bool SqlDBWriter::checkTableStruct(const QWeakPointer<DBObject> &ptr) {
-    auto obj = ptr.toStrongRef();
-
-    if (obj.isNull() || !obj->isValid())
-        return false;
-
-    auto map = obj->getMap();
-    auto tableStruct = _dbStruct.value(obj->tableName());
-
-    if (!tableStruct.isValid()) {
-        return false;
-    }
-
-    for (auto it = tableStruct.keys.begin(); it != tableStruct.keys.end(); ++it) {
-        if (!map.contains(it.key())) {
-            return false;
-        }
-    }
-
-    return true;
+    return ref->remove(query);
 }
 
 }

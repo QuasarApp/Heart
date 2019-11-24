@@ -20,26 +20,19 @@ public:
      * After the invoke this object well contain current data.
      * @return
      */
-    virtual bool getObject(QWeakPointer<DBObject> obj) = 0;
-
-//    /**
-//     * @brief getObject
-//     * @return list of pointers to findet objects
-//     */
-//    virtual bool getObjects(const QString &table, const QString& key,
-//                            QVariant val, QList<QSharedPointer<DBObject>> &result) = 0;
+    virtual bool getObject(QWeakPointer<DBObject>& obj) = 0;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(QSharedPointer<DBObject> saveObject) = 0;
+    virtual bool saveObject(const QWeakPointer<DBObject>& saveObject) = 0;
 
     /**
      * @brief deleteObject
      * @return
      */
-    virtual bool deleteObject(QSharedPointer<DBObject> deleteObject) = 0;
+    virtual bool deleteObject(const QWeakPointer<DBObject>& saveObject) = 0;
 
 };
 

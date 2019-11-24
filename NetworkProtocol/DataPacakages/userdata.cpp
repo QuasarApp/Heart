@@ -2,6 +2,7 @@
 
 #include <QDataStream>
 #include <QSharedPointer>
+#include <QSqlQuery>
 
 namespace NetworkProtocol {
 
@@ -98,6 +99,47 @@ QDataStream &UserData::toStream(QDataStream &stream) const {
     return stream;
 }
 
+bool UserData::select(QSqlQuery &q) {
+    QString query;
+
+    if (getId() > 0) {
+        query = "SELECT * from '" + tableName() +
+        "' where id='" + QString::number(getId()) + "'";
+    } else {
+        query = "SELECT * from '" + tableName() +
+        "' where gmail='" + QString::number(getId()) + "'";
+    }
+
+    if (!q.prepare(query))
+        return false;
+
+    if (!q.exec())
+        return false;
+
+    if (!q.next())
+        return false;
+
+    setId(q.value("id").toInt());
+    _name = q.value("name").toString();
+    _passSHA256 = q.value("pass").toString();
+    _mail = q.value("gmail").toString();
+    _lastOnline = q.value("lastOnline").toString();
+    _onlineTime = q.value("onlinetime").toString();
+    _name = q.value("points").toString();
+    _name = q.value("data").toString();
+
+    return isValid();
+
+}
+
+bool UserData::save(QSqlQuery &q) {
+
+}
+
+bool UserData::remove(QSqlQuery &q) {
+
+}
+
 void UserData::clear() {
     _name = "";
     _passSHA256 = "";
@@ -123,6 +165,16 @@ const AccessToken &UserData::token() const {
 
 void UserData::setToken(const AccessToken &token) {
     _token = token;
+}
+
+int UserData::points() const
+{
+    return _points;
+}
+
+void UserData::setPoints(int points)
+{
+    _points = points;
 }
 
 }
