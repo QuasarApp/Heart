@@ -63,6 +63,7 @@ public:
     virtual QSharedPointer<DBObject> factory() = 0;
 
     virtual bool select(QSqlQuery& q) = 0;
+    virtual bool selectGroup(QSqlQuery& q, QList<QSharedPointer<DBObject>>& returnLis) = 0;
     virtual bool save(QSqlQuery& q) = 0;
     virtual bool remove(QSqlQuery& q) = 0;
 

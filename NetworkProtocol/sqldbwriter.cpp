@@ -66,7 +66,7 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
 }
 
 bool SqlDBWriter::enableFK() {
-
+    QSqlQuery query(db);
     QString request = QString("PRAGMA foreign_keys = ON");
     if (!query.exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query.lastError().text());
@@ -78,6 +78,7 @@ bool SqlDBWriter::enableFK() {
 
 bool SqlDBWriter::disableFK() {
 
+    QSqlQuery query(db);
     QString request = QString("PRAGMA foreign_keys = OFF");
     if (!query.exec(request)) {
         QuasarAppUtils::Params::verboseLog("request error : " + query.lastError().text());
@@ -190,42 +191,22 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(const QString& table, int id, QSharedPointer<DBObject> *result) {
-
-    QList<QSharedPointer<DBObject>> res;
-    if(!getObjects(table, "id", id, res) && !res.size()) {
-        return false;
-    }
-
-    *result = res.first().toWeakRef();
-
-    return true;
-
+bool SqlDBWriter::getObject(QWeakPointer<DBObject> obj) {
+    return selectQuery(obj);
 }
 
-bool SqlDBWriter::getObjects(const QString &table, const QString &key,
-                             QVariant val, QList<QSharedPointer<DBObject> > &result) {
-
-    if (!_dbStruct.contains(table)) {
-        return false;
-    }
-
-    return selectQuery(result, table, key, val);
-}
-
-
-bool SqlDBWriter::saveObject(QWeakPointer<DBObject> saveObject) {
+bool SqlDBWriter::saveObject(QSharedPointer<DBObject> saveObject) {
     return saveQuery(saveObject);
 }
 
-bool SqlDBWriter::deleteObject(const QString& table, int id) {
-    return deleteQuery(table, id);
+bool SqlDBWriter::deleteObject(QSharedPointer<DBObject> deleteObject) {
+    return deleteQuery(deleteObject);
 }
 
 SqlDBWriter::~SqlDBWriter() {
 }
 
-bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {
+bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {QSharedPointer
 
     QSqlQuery q(db);
 
@@ -240,74 +221,19 @@ bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {
     return true;
 }
 
-bool SqlDBWriter::selectQuery(QList<QSharedPointer<DBObject>>& returnList,
-                              const QString& table,
-                              const QString &key,
-                              const QVariant &val) {
+bool SqlDBWriter::selectQuery(QWeakPointer<DBObject>& obj) {
+    auto ref = obj.toStrongRef();
 
-    if (!val.isValid()) {
+    if (ref.isNull())
         return false;
-    }
-
-
-
-    QString queryString;
-    if (key == "id") {
-        queryString = "SELECT (%1) from %0 where id=" + val.toString();
-    } else {
-        queryString = "SELECT * from %0 where " + key + "='" + val.toString() + "'";
-    }
 
     QSqlQuery query(db);
-
-    auto tableStruct = _dbStruct.value(table);
-
-    if (!getBaseQueryString(queryString, &query,
-                            tableStruct)) {
-        return false;
-    }
-
-    if (!query.exec()) {
-        return false;
-    }
-
-    QSqlRecord record = query.record();
-
-    returnList.clear();
-    while (query.next()) {
-        QVariantMap initMap;
-
-        for (int i = 0; i < record.count(); ++i ) {
-            initMap[record.fieldName(i)] = record.value(i);
-        }
-
-        auto obj = DbObjectsFactory::factory(table);
-        if (!checkTableStruct(obj)) {
-
-            QuasarAppUtils::Params::verboseLog("object from factory have non valid structure",
-                                               QuasarAppUtils::Error);
-            continue;
-        }
-
-        obj->setMap(initMap);
-
-        if (obj->isValid())
-            returnList.push_back(obj);
-
-    }
-    return returnList.size();
+    return ref->remove(query);
 }
 
-bool SqlDBWriter::deleteQuery(const QString& table, int id) const {
-
-    QString queryString = "DELETE FROM %0 where id=" + QString::number(id);
+bool SqlDBWriter::deleteQuery(QSharedPointer<DBObject> deleteObject) const {
     QSqlQuery query(db);
-
-    if (!getBaseQueryString(queryString, &query, _dbStruct.value(table))) {
-        return false;
-    }
-
-    return query.exec();
+    return deleteObject->remove(query);
 }
 
 bool SqlDBWriter::checkTableStruct(const QWeakPointer<DBObject> &ptr) {

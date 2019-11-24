@@ -88,15 +88,9 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(QList<QSharedPointer<DBObject>>& returnList,
-                             const QString& table,
-                             const QString &key,
-                             const QVariant &val);
+    virtual bool selectQuery(QWeakPointer<NetworkProtocol::DBObject> &obj);
 
-    virtual bool deleteQuery(const QString &table, int id) const;
-
-    virtual bool checkTableStruct(const QWeakPointer<DBObject> &ptr);
-
+    virtual bool deleteQuery(QSharedPointer<NetworkProtocol::DBObject> deleteObject) const;
 
 public:
     SqlDBWriter();
@@ -125,33 +119,31 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(const QString &table, int id, QSharedPointer<DBObject> *result) override;
+    bool getObject(QWeakPointer<NetworkProtocol::DBObject> obj) override;
 
 
-    /**
-     * @brief getObjects
-     * @param table
-     * @param key - the key by which the value will be searched
-     * @param val - value for compare
-     * @param result list of db objects (ret value)
-     * @return true if all good
-     */
-    bool getObjects(const QString &table, const QString &key,
-                    QVariant val, QList<QSharedPointer<DBObject> > &result) override;
+//    /**
+//     * @brief getObjects
+//     * @param table
+//     * @param key - the key by which the value will be searched
+//     * @param val - value for compare
+//     * @param result list of db objects (ret value)
+//     * @return true if all good
+//     */
+//    bool getObjects(const QString &table, const QString &key,
+//                    QVariant val, QList<QSharedPointer<DBObject> > &result) override;
 
     /**
      * @brief saveObject
      * @return
      */
-    bool saveObject(QWeakPointer<DBObject> saveObject) override;
+    bool saveObject(QSharedPointer<NetworkProtocol::DBObject> saveObject) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const QString &table, int id) override;
-
-
+    bool deleteObject(QSharedPointer<NetworkProtocol::DBObject> deleteObject) override;
 
     virtual ~SqlDBWriter() override;
 
