@@ -123,10 +123,10 @@ bool UserData::select(QSqlQuery &q) {
     _name = q.value("name").toString();
     _passSHA256 = q.value("pass").toString();
     _mail = q.value("gmail").toString();
-    _lastOnline = q.value("lastOnline").toString();
-    _onlineTime = q.value("onlinetime").toString();
-    _name = q.value("points").toString();
-    _name = q.value("data").toString();
+    _lastOnline = q.value("lastOnline").toInt();
+    _onlineTime = q.value("onlinetime").toInt();
+    _points = q.value("points").toInt();
+    _extraData = q.value("data").toMap();
 
     return isValid();
 
@@ -167,13 +167,11 @@ void UserData::setToken(const AccessToken &token) {
     _token = token;
 }
 
-int UserData::points() const
-{
+int UserData::points() const {
     return _points;
 }
 
-void UserData::setPoints(int points)
-{
+void UserData::setPoints(int points) {
     _points = points;
 }
 
