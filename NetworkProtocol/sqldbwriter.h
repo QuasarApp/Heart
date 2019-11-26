@@ -88,7 +88,7 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(const QWeakPointer<DBObject> &obj);
+    virtual bool selectQuery(const QSharedPointer<DBObject> &obj);
 
     virtual bool deleteQuery(const QWeakPointer<DBObject>& deleteObject) const;
 
@@ -119,7 +119,7 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(const QWeakPointer<DBObject> &obj) override;
+    bool getObject(QSharedPointer<DBObject> &obj) override;
 
     /**
      * @brief saveObject

@@ -126,7 +126,10 @@ bool UserData::select(QSqlQuery &q) {
     _lastOnline = q.value("lastOnline").toInt();
     _onlineTime = q.value("onlinetime").toInt();
     _points = q.value("points").toInt();
-    _extraData = q.value("data").toMap();
+
+    auto array = q.value("data").toByteArray();
+    QDataStream s(&array, QIODevice::ReadWrite);
+    s >> _extraData;
 
     return isValid();
 
@@ -134,10 +137,40 @@ bool UserData::select(QSqlQuery &q) {
 
 bool UserData::save(QSqlQuery &q) {
 
+    QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
+
+    queryString = queryString.arg(tableName());
+
+    queryString = queryString.arg(
+                "name, pass, gmail, lastOnline, onlinetime, points, data");
+
+    QString values;
+
+    values += "'" + _name + "', ";
+    values += "'" + _passSHA256 + "', ";
+    values += "'" + _mail + "', ";
+    values += "'" + QString::number(_lastOnline) + "', ";
+    values += "'" + QString::number(_onlineTime) + "', ";
+    values += "'" + QString::number(_points) + "', ";
+    values += ":bytes";
+
+    if (!q.prepare(queryString)) {
+        return false;
+    }
+
+    queryString = queryString.arg(values);
+
+    QByteArray array;
+    QDataStream s(&array, QIODevice::ReadWrite);
+    s << _extraData;
+
+    q.bindValue(":bytes", array);
+
+    return q.exec();
 }
 
 bool UserData::remove(QSqlQuery &q) {
-
+    return DBObject::remove(q);
 }
 
 void UserData::clear() {

@@ -85,15 +85,12 @@ void SqlDBCache::setWriter(QWeakPointer<SqlDBWriter> writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(QWeakPointer<DBObject> &obj) {
-
-    auto ref = obj.toStrongRef();
-
-    if (ref.isNull())
+bool SqlDBCache::getObject(QSharedPointer<DBObject> &obj) {
+    if (obj.isNull())
         return false;
 
-    int id = ref->getId();
-    auto table = ref->tableName();
+    int id = obj->getId();
+    auto table = obj->tableName();
 
     auto& tableObj = _cache[table];
 
@@ -102,7 +99,7 @@ bool SqlDBCache::getObject(QWeakPointer<DBObject> &obj) {
         if (!_writer->getObject(obj)) {
             return false;
         }
-        _cache[table][id] = ref;
+        _cache[table][id] = obj;
         return true;
     }
 

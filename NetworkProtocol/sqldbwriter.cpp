@@ -191,7 +191,7 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(const QWeakPointer<DBObject>& obj) {
+bool SqlDBWriter::getObject(QSharedPointer<DBObject>& obj) {
     return selectQuery(obj);
 }
 
@@ -217,14 +217,12 @@ bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {
     return obj->save(q);
 }
 
-bool SqlDBWriter::selectQuery(const QWeakPointer<DBObject>& obj) {
-    auto ref = obj.toStrongRef();
-
-    if (ref.isNull())
+bool SqlDBWriter::selectQuery(const QSharedPointer<DBObject>& obj) {
+    if (obj.isNull())
         return false;
 
     QSqlQuery query(db);
-    return ref->remove(query);
+    return obj->remove(query);
 }
 
 bool SqlDBWriter::deleteQuery(const QWeakPointer<DBObject> &deleteObject) const {

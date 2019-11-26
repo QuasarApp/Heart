@@ -155,8 +155,8 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
             return false;
         }
 
-        QSharedPointer<DBObject> res;
-        if (!_db->getObject(request->tableName(), request->getId(), &res)) {
+        auto res = QSharedPointer<UserData>::create().dynamicCast<DBObject>();
+        if (!_db->getObject(res)) {
             return false;
         }
 
@@ -199,38 +199,19 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
 
     case UserDataRequestCmd::Login: {
 
-        QList<QSharedPointer<DBObject>> res;
-        if (!_db->getObjects(request->tableName(), "gmail", request->mail(), res)) {
+        auto res = QSharedPointer<UserData>::create().dynamicCast<DBObject>();
+        if (!_db->getObject(res)) {
             return false;
         }
 
-        if (res.isEmpty()) {
+        if (res->isValid()) {
             // register a new user;
             if (!registerNewUser(request, addere)) {
                 return false;
             }
-        } else if (res.size() == 1) {
-            // login oldUser
-            if (!loginUser(request, res.value(1), addere)) {
-                return false;
-            }
         } else {
-            QuasarAppUtils::Params::verboseLog("user " + request->mail() + " have a clone user",
-                                               QuasarAppUtils::Error);
-
-            for (auto obj: res) {
-                if (!obj.isNull()) {
-                    QuasarAppUtils::Params::verboseLog("delete user " + QString::number(obj->getId()) + " from database",
-                                                       QuasarAppUtils::Info);
-
-                    if (!_db->deleteObject(obj->tableName(), obj->getId())) {
-                        QuasarAppUtils::Params::verboseLog("delete user " + QString::number(obj->getId()) + " fail",
-                                                           QuasarAppUtils::Error);
-                    }
-                }
-            }
-
-            if (!registerNewUser(request, addere)) {
+            // login oldUser
+            if (!loginUser(request, res, addere)) {
                 return false;
             }
         }
@@ -246,7 +227,7 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
 
     case UserDataRequestCmd::Delete: {
 
-        if(!_db->deleteObject(request->tableName(), request->getId())) {
+        if(!_db->deleteObject(request)) {
             QuasarAppUtils::Params::verboseLog("do not deleted object from database!" + addere.toString(),
                                                QuasarAppUtils::Error);
             return false;

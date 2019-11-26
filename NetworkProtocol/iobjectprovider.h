@@ -20,7 +20,7 @@ public:
      * After the invoke this object well contain current data.
      * @return
      */
-    virtual bool getObject(QWeakPointer<DBObject>& obj) = 0;
+    virtual bool getObject(QSharedPointer<DBObject>& obj) = 0;
 
     /**
      * @brief saveObject

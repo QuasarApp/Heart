@@ -25,6 +25,17 @@ void DBObject::setTableName(const QString &tableName) {
     _tableName = tableName;
 }
 
+bool DBObject::remove(QSqlQuery &q) {
+    QString queryString = "DELETE FROM %0 where id=" + QString::number(getId());
+    queryString = queryString.arg(tableName());
+
+    if (!q.prepare(queryString)) {
+        return false;
+    }
+
+    return q.exec();
+}
+
 QDataStream &DBObject::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 

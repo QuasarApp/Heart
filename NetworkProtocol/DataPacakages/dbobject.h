@@ -41,17 +41,6 @@ public:
      */
     virtual void clear();
 
-    /**
-     * @brief getMap
-     * @return map of object
-     */
-    QVariantMap getMap() const;
-    /**
-     * @brief seyMap
-     * @return set map for this object
-     */
-    void setMap(const QVariantMap &map);
-
     QString tableName() const;
 
     void setTableName(const QString &tableName);
