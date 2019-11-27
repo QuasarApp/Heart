@@ -46,6 +46,7 @@ public:
     void setWriter(QWeakPointer<SqlDBWriter> writer);
 
     bool getObject(QSharedPointer<DBObject> &obj) override;
+    QSharedPointer<DBObject> &getObjectFromCache(const QString& table, int id);
 
     bool saveObject(const QWeakPointer<DBObject>& saveObject) override;
     bool deleteObject(const QWeakPointer<DBObject>& delObj) override;

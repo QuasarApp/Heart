@@ -4,6 +4,7 @@
 #include <dbtablebase.h>
 #include "abstractdata.h"
 #include "networkprotocol_global.h"
+#include "dbaddress.h"
 
 class QSqlQuery;
 
@@ -19,6 +20,8 @@ public:
      * @brief DBObject
      */
     DBObject(const QString& tableName);
+    DBObject(const QString& tableName, const Package& package);
+
     ~DBObject() override;
 
     //// AbstractData interface
@@ -54,6 +57,8 @@ public:
     virtual bool select(QSqlQuery& q) = 0;
     virtual bool save(QSqlQuery& q) = 0;
     virtual bool remove(QSqlQuery& q) = 0;
+
+    DbAddress dbAddress() const;
 
 
 protected:

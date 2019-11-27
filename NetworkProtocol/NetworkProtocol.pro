@@ -50,9 +50,12 @@ SOURCES += \
     DataPacakages/transportdata.cpp \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
+    DataPacakages/websocket.cpp \
+    DataPacakages/websocketsubscriptions.cpp \
     accesstoken.cpp \
     client.cpp \
     databaseaddress.cpp \
+    dbaddress.cpp \
     dbobjectsfactory.cpp \
     dbtablebase.cpp \
     abstractnode.cpp \
@@ -69,6 +72,7 @@ SOURCES += \
     sqldbcache.cpp \
     sqldbwriter.cpp \
     streambase.cpp \
+    websocketcontroller.cpp \
     workstate.cpp
 
 
@@ -84,9 +88,12 @@ HEADERS += \
     DataPacakages/transportdata.h \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
+    DataPacakages/websocket.h \
+    DataPacakages/websocketsubscriptions.h \
     accesstoken.h \
     client.h \
     databaseaddress.h \
+    dbaddress.h \
     dbobjectsfactory.h \
     dbtablebase.h \
     abstractnode.h \
@@ -105,6 +112,7 @@ HEADERS += \
     sqldbcache.h \
     sqldbwriter.h \
     streambase.h \
+    websocketcontroller.h \
     workstate.h
 
 include($$PWD/NetworkProtocolIncludes.pri)

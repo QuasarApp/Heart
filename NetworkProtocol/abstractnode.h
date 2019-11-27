@@ -298,6 +298,7 @@ private:
     QSslConfiguration _ssl;
     QHash<QHostAddress, NodeInfoData> _connections;
 
+    friend class WebSocketController;
 
 };
 }

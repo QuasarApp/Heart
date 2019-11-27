@@ -13,6 +13,11 @@ DBObject::DBObject(const QString &tableName) {
     _tableName = tableName;
 }
 
+DBObject::DBObject(const QString &tableName, const Package &package):
+    AbstractData(package) {
+    _tableName = tableName;
+}
+
 DBObject::~DBObject() {
 
 }
@@ -23,6 +28,10 @@ QString DBObject::tableName() const {
 
 void DBObject::setTableName(const QString &tableName) {
     _tableName = tableName;
+}
+
+DbAddress DBObject::dbAddress() const {
+    return {tableName(), getId()};
 }
 
 bool DBObject::remove(QSqlQuery &q) {
@@ -67,6 +76,5 @@ void DBObject::setId(int id) {
 void DBObject::clear() {
     _id = -1;
 }
-
 
 }

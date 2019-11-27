@@ -3,6 +3,7 @@
 #include "basenodeinfo.h"
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
+#include "websocketcontroller.h"
 
 #include <badrequest.h>
 #include <userdata.h>
@@ -10,6 +11,8 @@
 #include <quasarapp.h>
 #include <transportdata.h>
 #include <availabledatarequest.h>
+#include <websocket.h>
+#include <websocketsubscriptions.h>
 
 namespace NetworkProtocol {
 
@@ -131,6 +134,29 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         emit incomingData(obj, strongSender->id());
         return ParserResult::Processed;
 
+    } else if (WebSocket().cmd() == pkg.hdr.command) {
+        auto obj = QSharedPointer<WebSocket>::create(pkg);
+        if (!obj->isValid()) {
+            badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        if (!workWithSubscribe(obj, strongSender->id())) {
+            badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        return ParserResult::Processed;
+
+    } else if (WebSocketSubscriptions().cmd() == pkg.hdr.command) {
+        auto obj = QSharedPointer<WebSocketSubscriptions>::create(pkg);
+        if (!obj->isValid()) {
+            badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        emit incomingData(obj, strongSender->id());
+        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
@@ -168,6 +194,48 @@ QSharedPointer<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socke
 
 QWeakPointer<SqlDBCache> BaseNode::db() const {
     return _db;
+}
+
+// TO-DO
+bool BaseNode::workWithSubscribe(QWeakPointer<WebSocket> rec,
+                                 const QHostAddress &address) {
+
+    auto obj = rec.toStrongRef();
+    if (obj.isNull())
+        return false;
+
+    auto info = getInfoPtr(address).toStrongRef();
+    if (info.isNull())
+        return false;
+
+    auto _db = db().toStrongRef();
+
+    if (_db.isNull())
+        return false;
+
+    switch (static_cast<WebSocketRequest>(obj->getRequestCmd())) {
+
+    case WebSocketRequest::Subscribe: {
+        return _webSocketWorker->subscribe(info, {obj->tableName(), obj->getId()});
+    }
+
+    case WebSocketRequest::Unsubscribe: {
+        _webSocketWorker->unsubscribe(info, {obj->tableName(), obj->getId()});
+        return true;
+    }
+
+    case WebSocketRequest::SubscribeList: {
+
+        auto resp = QSharedPointer<WebSocketSubscriptions>::create();
+        resp->setAddresses(_webSocketWorker->list(info));
+
+        return sendData(resp, address);
+    }
+
+    default: break;
+    }
+
+    return false;
 }
 
 QVariantMap BaseNode::defaultDbParams() const {

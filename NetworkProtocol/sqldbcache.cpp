@@ -114,6 +114,11 @@ bool SqlDBCache::getObject(QSharedPointer<DBObject> &obj) {
     return true;
 }
 
+QSharedPointer<DBObject> &SqlDBCache::getObjectFromCache(const QString &table, int id) {
+    auto& tableObj = _cache[table];
+    return tableObj[id];
+}
+
 bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
 
     auto ptr = saveObject.toStrongRef();

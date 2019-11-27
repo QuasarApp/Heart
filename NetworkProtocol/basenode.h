@@ -12,6 +12,8 @@ class SqlDBWriter;
 class UserData;
 class UserDataRequest;
 class AvailableDataRequest;
+class WebSocket;
+class WebSocketController;
 /**
  * @brief The BaseNode class - base inplementation of nodes
  */
@@ -102,6 +104,8 @@ protected:
 
     QWeakPointer<SqlDBCache> db() const;
 
+    bool workWithSubscribe(QWeakPointer<WebSocket> rec,
+                           const QHostAddress &address);
 
 private:
     QSharedPointer<SqlDBCache> _db;
@@ -109,6 +113,7 @@ private:
                                       const QHostAddress &addere,
                                       const Header *rHeader);
 
+    WebSocketController *_webSocketWorker = nullptr;
 };
 
 }
