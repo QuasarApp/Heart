@@ -127,17 +127,25 @@ bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
         return false;
     }
 
+    // bug : pointer is rewrited!!!!
     _cache[ptr->tableName()][ptr->getId()] = ptr;
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
         if (!_writer.isNull() && _writer->isValid()) {
-            return _writer->saveObject(saveObject);
+            if (!_writer->saveObject(saveObject)) {
+                return false;
+            }
+
+            emit sigItemChanged(ptr);
+
+            return true;
         }
     } else {
         _needToSaveCache[ptr->tableName()].push_back(ptr->getId());
         globalUpdateDataBase(_mode);
     }
 
+    emit sigItemChanged(ptr);
     return true;
 
 

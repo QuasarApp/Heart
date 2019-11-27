@@ -13,12 +13,14 @@
 #include <availabledatarequest.h>
 #include <websocket.h>
 #include <websocketsubscriptions.h>
+#include <websocketcontroller.h>
 
 namespace NetworkProtocol {
 
 BaseNode::BaseNode(NetworkProtocol::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
+    _webSocketWorker = new WebSocketController(this);
 }
 
 bool BaseNode::intSqlDb(QString DBparamsFile,
@@ -76,6 +78,9 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
 
     cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
     _db = QSharedPointer<SqlDBCache>(cache);
+
+    connect(_db.data(), &SqlDBCache::sigItemChanged,
+            _webSocketWorker, &WebSocketController::handleItemChanged);
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,

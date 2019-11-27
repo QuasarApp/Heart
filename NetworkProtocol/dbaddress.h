@@ -13,13 +13,14 @@ public:
     DbAddress() = default;
     DbAddress(const QString& address, int id);
 
-    friend bool operator== (const DbAddress& left, const DbAddress& other);
 
     QString table;
     int id;
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
+
+    friend bool operator== (const DbAddress& left, const DbAddress& other);
 };
 
 qint64 qHash(const DbAddress& address);

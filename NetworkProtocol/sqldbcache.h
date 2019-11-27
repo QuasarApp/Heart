@@ -114,7 +114,7 @@ private:
     virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 signals:
-    void sigItemChanged(int id, QWeakPointer<DBObject> obj);
+    void sigItemChanged(QWeakPointer<DBObject> obj);
 
 };
 
