@@ -45,13 +45,10 @@ public:
      */
     void setWriter(QWeakPointer<SqlDBWriter> writer);
 
-    bool getObject(const QString &table, int id, QSharedPointer<DBObject> *result) override;
-    bool getObjects(const QString &table,
-                    const QString &key,
-                    QVariant val,
-                    QList<QSharedPointer<DBObject>> &result) override;
-    bool saveObject(QWeakPointer<DBObject> saveObject) override;
-    bool deleteObject(const QString &table, int id) override;
+    bool getObject(QSharedPointer<DBObject> &obj) override;
+
+    bool saveObject(const QWeakPointer<DBObject>& saveObject) override;
+    bool deleteObject(const QWeakPointer<DBObject>& delObj) override;
 
     /**
      * @brief getUpdateInterval of SqlDBCasheWriteMode::Default mode

@@ -16,28 +16,23 @@ public:
 
     /**
      * @brief getObject
+     * obj - dbobject with own query of select.
+     * After the invoke this object well contain current data.
      * @return
      */
-    virtual bool getObject(const QString &table, int id, QSharedPointer<DBObject> *result) = 0;
-
-    /**
-     * @brief getObject
-     * @return list of pointers to findet objects
-     */
-    virtual bool getObjects(const QString &table, const QString& key,
-                            QVariant val, QList<QSharedPointer<DBObject>> &result) = 0;
+    virtual bool getObject(QSharedPointer<DBObject>& obj) = 0;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(QWeakPointer<DBObject> saveObject) = 0;
+    virtual bool saveObject(const QWeakPointer<DBObject>& saveObject) = 0;
 
     /**
      * @brief deleteObject
      * @return
      */
-    virtual bool deleteObject(const QString &table, int id) = 0;
+    virtual bool deleteObject(const QWeakPointer<DBObject>& saveObject) = 0;
 
 };
 

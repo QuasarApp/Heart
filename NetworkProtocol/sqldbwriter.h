@@ -27,15 +27,6 @@ class NETWORKPROTOCOLSHARED_EXPORT SqlDBWriter : public iObjectProvider
 {
 private:
 
-    QString tablesListMySql();
-    QString tablesListSqlite();
-
-    QString describeQueryMySql(const QString& tabme);
-    QString describeQuerySqlite(const QString& tabme);
-
-    QString getTablesQuery();
-    QString describeQuery(const QString& tabme);
-
     bool exec(QSqlQuery *sq, const QString &sqlFile);
 
     bool initSuccessful = false;
@@ -81,46 +72,8 @@ protected:
      */
     virtual QVariantMap defaultInitPararm() const;
 
-    /**
-     * @brief getType
-     * @param str
-     * @return
-     */
-    virtual QVariant::Type getType(const QString& str);
-
-    QSqlQuery query;
     QSqlDatabase db;
     QHash<QString, DbTableBase> _dbStruct;
-
-    /**
-     * @brief generateHeaderOfQuery - generate list of columns header for update
-     * @param retQuery return value
-     * @return true if all good
-     */
-    virtual bool generateHeaderOfQuery(QString& retQuery,
-                                       const DbTableBase& tableStruct) const;
-
-    /**
-     * @brief generateSourceOfQuery - enerate list of columns header for update
-     * @param retQuery return value
-     * @param retBindValue list of bind value, after invoce of this method need invoce
-     * @return
-     */
-    virtual bool generateSourceOfQuery(QString& retQuery,
-                                       QList<QPair<QString, QVariant> > &retBindValue,
-                                       const DbTableBase& tableStruct,
-                                       const QVariantMap &map) const;
-
-    /**
-     * @brief getBaseQueryString private implementation of getQueryMethods
-     * @param queryString
-     * @param query
-     * @return
-     */
-    virtual bool getBaseQueryString(QString queryString,
-                                    QSqlQuery *query,
-                                    const DbTableBase &tableStruct,
-                                    const QVariantMap &objMap = {}) const;
 
     // 0 - table name
     // 1 - headers of update values
@@ -135,15 +88,9 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(QList<QSharedPointer<DBObject>>& returnList,
-                             const QString& table,
-                             const QString &key,
-                             const QVariant &val);
+    virtual bool selectQuery(const QSharedPointer<DBObject> &obj);
 
-    virtual bool deleteQuery(const QString &table, int id) const;
-
-    virtual bool checkTableStruct(const QWeakPointer<DBObject> &ptr);
-
+    virtual bool deleteQuery(const QWeakPointer<DBObject>& deleteObject) const;
 
 public:
     SqlDBWriter();
@@ -172,33 +119,19 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(const QString &table, int id, QSharedPointer<DBObject> *result) override;
-
-
-    /**
-     * @brief getObjects
-     * @param table
-     * @param key - the key by which the value will be searched
-     * @param val - value for compare
-     * @param result list of db objects (ret value)
-     * @return true if all good
-     */
-    bool getObjects(const QString &table, const QString &key,
-                    QVariant val, QList<QSharedPointer<DBObject> > &result) override;
+    bool getObject(QSharedPointer<DBObject> &obj) override;
 
     /**
      * @brief saveObject
      * @return
      */
-    bool saveObject(QWeakPointer<DBObject> saveObject) override;
+    bool saveObject(const QWeakPointer<DBObject> & saveObject) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const QString &table, int id) override;
-
-
+    bool deleteObject(const QWeakPointer<DBObject> &deleteObject) override;
 
     virtual ~SqlDBWriter() override;
 

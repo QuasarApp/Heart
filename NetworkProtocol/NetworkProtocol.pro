@@ -44,6 +44,8 @@ SOURCES += \
     DataPacakages/availabledatarequest.cpp \
     DataPacakages/badrequest.cpp \
     DataPacakages/dbobject.cpp \
+    DataPacakages/globaldbobject.cpp \
+    DataPacakages/ratingtable.cpp \
     DataPacakages/request.cpp \
     DataPacakages/transportdata.cpp \
     DataPacakages/userdata.cpp \
@@ -62,6 +64,7 @@ SOURCES += \
     iobjectprovider.cpp \
     networkprotocol.cpp \
     package.cpp \
+    ratingtablewriter.cpp \
     ratingusernode.cpp \
     sqldbcache.cpp \
     sqldbwriter.cpp \
@@ -75,6 +78,8 @@ HEADERS += \
     DataPacakages/availabledatarequest.h \
     DataPacakages/badrequest.h \
     DataPacakages/dbobject.h \
+    DataPacakages/globaldbobject.h \
+    DataPacakages/ratingtable.h \
     DataPacakages/request.h \
     DataPacakages/transportdata.h \
     DataPacakages/userdata.h \
@@ -95,6 +100,7 @@ HEADERS += \
     networkprotocol.h \
     networkprotocol_global.h \
     package.h \
+    ratingtablewriter.h \
     ratingusernode.h \
     sqldbcache.h \
     sqldbwriter.h \

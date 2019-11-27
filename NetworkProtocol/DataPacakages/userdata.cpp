@@ -2,6 +2,7 @@
 
 #include <QDataStream>
 #include <QSharedPointer>
+#include <QSqlQuery>
 
 namespace NetworkProtocol {
 
@@ -98,30 +99,78 @@ QDataStream &UserData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-void UserData::fromVariantMap(const QVariantMap &map) {
-    DBObject::fromVariantMap(map);
+bool UserData::select(QSqlQuery &q) {
+    QString query;
 
-    _name = map.value("name").toString();
-    _passSHA256 = map.value("pass").toString();
-    _mail = map.value("gmail").toString();
-    _lastOnline = map.value("lastOnline").toInt();
-    _onlineTime = map.value("onlinetime").toInt();
-    _extraData = map.value("data").toMap();
+    if (getId() > 0) {
+        query = "SELECT * from '" + tableName() +
+        "' where id='" + QString::number(getId()) + "'";
+    } else {
+        query = "SELECT * from '" + tableName() +
+        "' where gmail='" + QString::number(getId()) + "'";
+    }
 
-    return;
+    if (!q.prepare(query))
+        return false;
+
+    if (!q.exec())
+        return false;
+
+    if (!q.next())
+        return false;
+
+    setId(q.value("id").toInt());
+    _name = q.value("name").toString();
+    _passSHA256 = q.value("pass").toString();
+    _mail = q.value("gmail").toString();
+    _lastOnline = q.value("lastOnline").toInt();
+    _onlineTime = q.value("onlinetime").toInt();
+    _points = q.value("points").toInt();
+
+    auto array = q.value("data").toByteArray();
+    QDataStream s(&array, QIODevice::ReadWrite);
+    s >> _extraData;
+
+    return isValid();
+
 }
 
-QVariantMap &UserData::toVariantMap(QVariantMap &map) const {
-    DBObject::toVariantMap(map);
+bool UserData::save(QSqlQuery &q) {
 
-    map["name"] = _name;
-    map["pass"] = _passSHA256;
-    map["gmail"] = _mail;
-    map["lastOnline"] = _lastOnline;
-    map["onlinetime"] = _onlineTime;
-    map["data"] = _extraData;
+    QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
 
-    return map;
+    queryString = queryString.arg(tableName());
+
+    queryString = queryString.arg(
+                "name, pass, gmail, lastOnline, onlinetime, points, data");
+
+    QString values;
+
+    values += "'" + _name + "', ";
+    values += "'" + _passSHA256 + "', ";
+    values += "'" + _mail + "', ";
+    values += "'" + QString::number(_lastOnline) + "', ";
+    values += "'" + QString::number(_onlineTime) + "', ";
+    values += "'" + QString::number(_points) + "', ";
+    values += ":bytes";
+
+    if (!q.prepare(queryString)) {
+        return false;
+    }
+
+    queryString = queryString.arg(values);
+
+    QByteArray array;
+    QDataStream s(&array, QIODevice::ReadWrite);
+    s << _extraData;
+
+    q.bindValue(":bytes", array);
+
+    return q.exec();
+}
+
+bool UserData::remove(QSqlQuery &q) {
+    return DBObject::remove(q);
 }
 
 void UserData::clear() {
@@ -149,6 +198,14 @@ const AccessToken &UserData::token() const {
 
 void UserData::setToken(const AccessToken &token) {
     _token = token;
+}
+
+int UserData::points() const {
+    return _points;
+}
+
+void UserData::setPoints(int points) {
+    _points = points;
 }
 
 }
