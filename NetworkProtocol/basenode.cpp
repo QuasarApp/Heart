@@ -29,22 +29,14 @@ bool BaseNode::intSqlDb(QString DBparamsFile,
 
     initDefaultDbObjects(cache, writer);
 
-    if (!_db->init(DBparamsFile)) {
-        return false;
-    }
+    QVariantMap params;
 
-    return true;
-}
-
-bool BaseNode::intSqlDb(QVariantMap params, SqlDBCache *cache, SqlDBWriter *writer) {
-
-    initDefaultDbObjects(cache, writer);
-
-    if (params.isEmpty()) {
+    if (DBparamsFile.isEmpty()) {
         params = defaultDbParams();
+        return _db->init(params);
     }
 
-    if (!_db->init(params)) {
+    if (!_db->init(DBparamsFile)) {
         return false;
     }
 

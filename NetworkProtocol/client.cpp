@@ -12,7 +12,7 @@ Client::Client(const QString &address, unsigned short port) {
     setHost(QHostAddress(address), port);
 }
 
-bool Client::connectClient() {
+bool Client::connectClient(bool async) {
     connectToHost(_address, _port);
 
     auto info = getInfoPtr(_address).toStrongRef();
@@ -23,6 +23,9 @@ bool Client::connectClient() {
 
     connect(info->sct(), &QAbstractSocket::stateChanged,
             this, &Client::socketStateChanged);
+
+    if (!async)
+        return info->sct()->waitForConnected();
 
     return true;
 

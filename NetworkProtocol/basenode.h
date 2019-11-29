@@ -36,14 +36,7 @@ public:
      * @param writer - new SqlDBWriter
      * @return true if all good
      */
-    virtual bool intSqlDb( QString DBparamsFile,
-                           SqlDBCache * cache = nullptr,
-                           SqlDBWriter* writer = nullptr);
-
-    /**
-      * params it is map of data base params if it option is empty then params get from defaultDbParams function
-    */
-    virtual bool intSqlDb( QVariantMap params = {},
+    virtual bool intSqlDb( QString DBparamsFile = "",
                            SqlDBCache * cache = nullptr,
                            SqlDBWriter* writer = nullptr);
 
