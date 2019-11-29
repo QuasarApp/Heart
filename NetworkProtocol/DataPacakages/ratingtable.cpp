@@ -5,8 +5,17 @@
 #include <QSqlQuery>
 
 namespace NetworkProtocol {
-RatingTable::RatingTable():DBObjectQuery("users") {}
-RatingTable::RatingTable(const Package &package):DBObjectQuery("users", package){}
+
+int RatingTable::id = 0;
+QString RatingTable::table = "users";
+
+
+RatingTable::RatingTable():DBObjectQuery(table) {
+    setId(id);
+}
+RatingTable::RatingTable(const Package &package):DBObjectQuery(table, package) {
+    setId(id);
+}
 
 QDataStream &RatingTable::fromStream(QDataStream &stream) {
     DBObjectQuery::fromStream(stream);
@@ -76,6 +85,14 @@ void RatingTable::clear() {
 
     DBObjectQuery::clear();
 
+}
+
+const QMap<short, UserRecord>& RatingTable::data() const {
+    return _data;
+}
+
+DbAddress RatingTable::getDBAddress() {
+    return {table, id};
 }
 
 }

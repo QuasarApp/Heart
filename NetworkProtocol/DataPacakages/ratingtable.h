@@ -24,6 +24,12 @@ public:
     bool isValid() const;
     void clear();
 
+    const QMap<short, UserRecord> &data() const;
+
+    static QString table;
+    static int id;
+    static DbAddress getDBAddress();
+
 private:
     QMap<short, UserRecord> _data;
 

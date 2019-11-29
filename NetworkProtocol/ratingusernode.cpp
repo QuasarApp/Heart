@@ -5,6 +5,7 @@
 #include <badrequest.h>
 #include <userdatarequest.h>
 #include <quasarapp.h>
+#include <ratingtable.h>
 
 namespace NetworkProtocol {
 
@@ -47,6 +48,16 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
         emit incomingData(obj, strongSender->id());
         return ParserResult::Processed;
 
+    } else if (RatingTable().cmd() == pkg.hdr.command) {
+
+        auto obj = QSharedPointer<RatingTable>::create(pkg);
+        if (!obj->isValid()) {
+            badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        emit incomingData(obj, strongSender->id());
+        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;

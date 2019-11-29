@@ -68,7 +68,6 @@ SOURCES += \
     iobjectprovider.cpp \
     networkprotocol.cpp \
     package.cpp \
-    ratingtablewriter.cpp \
     ratingusernode.cpp \
     sqldbcache.cpp \
     sqldbwriter.cpp \
@@ -109,7 +108,6 @@ HEADERS += \
     networkprotocol.h \
     networkprotocol_global.h \
     package.h \
-    ratingtablewriter.h \
     ratingusernode.h \
     sqldbcache.h \
     sqldbwriter.h \
