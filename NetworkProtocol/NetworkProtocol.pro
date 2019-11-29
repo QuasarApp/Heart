@@ -44,12 +44,13 @@ SOURCES += \
     DataPacakages/availabledatarequest.cpp \
     DataPacakages/badrequest.cpp \
     DataPacakages/dbobject.cpp \
-    DataPacakages/globaldbobject.cpp \
+    DataPacakages/dbobjectquery.cpp \
     DataPacakages/ratingtable.cpp \
     DataPacakages/request.cpp \
     DataPacakages/transportdata.cpp \
     DataPacakages/userdata.cpp \
     DataPacakages/userdatarequest.cpp \
+    DataPacakages/userrecord.cpp \
     DataPacakages/websocket.cpp \
     DataPacakages/websocketsubscriptions.cpp \
     accesstoken.cpp \
@@ -82,12 +83,13 @@ HEADERS += \
     DataPacakages/availabledatarequest.h \
     DataPacakages/badrequest.h \
     DataPacakages/dbobject.h \
-    DataPacakages/globaldbobject.h \
+    DataPacakages/dbobjectquery.h \
     DataPacakages/ratingtable.h \
     DataPacakages/request.h \
     DataPacakages/transportdata.h \
     DataPacakages/userdata.h \
     DataPacakages/userdatarequest.h \
+    DataPacakages/userrecord.h \
     DataPacakages/websocket.h \
     DataPacakages/websocketsubscriptions.h \
     accesstoken.h \

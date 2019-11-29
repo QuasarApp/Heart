@@ -30,6 +30,10 @@ void DBObject::setTableName(const QString &tableName) {
     _tableName = tableName;
 }
 
+bool DBObject::isCached() const {
+    return true;
+}
+
 DbAddress DBObject::dbAddress() const {
     return {tableName(), getId()};
 }

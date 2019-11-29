@@ -86,6 +86,13 @@ protected:
     virtual void deleteFromCache(const QString &table, int id);
 
     /**
+     * @brief saveToCache
+     * @param obj
+     */
+    virtual void saveToCache(QSharedPointer<DBObject> &obj);
+
+
+    /**
      * @brief getMode
      * @return
      */

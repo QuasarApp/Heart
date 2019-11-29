@@ -94,16 +94,20 @@ bool SqlDBCache::getObject(QSharedPointer<DBObject> &obj) {
 
     auto& tableObj = _cache[table];
 
-
     if (!tableObj.contains(id) && !_writer.isNull() && _writer->isValid()) {
         if (!_writer->getObject(obj)) {
             return false;
         }
-        _cache[table][id] = obj;
+
+        saveToCache(obj);
         return true;
     }
 
     auto &sptr = tableObj[id];
+
+    if (!sptr->isCached() && _writer->getObject(sptr)) {
+        saveToCache(sptr);
+    }
 
     if (!sptr->isValid()) {
         deleteFromCache(table, id);
@@ -127,16 +131,13 @@ bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
         return false;
     }
 
-    // bug : pointer is rewrited!!!!
-    _cache[ptr->tableName()][ptr->getId()] = ptr;
+    saveToCache(ptr);
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
         if (!_writer.isNull() && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
-
-            emit sigItemChanged(ptr);
 
             return true;
         }
@@ -145,9 +146,7 @@ bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
         globalUpdateDataBase(_mode);
     }
 
-    emit sigItemChanged(ptr);
     return true;
-
 
 }
 
@@ -192,6 +191,14 @@ void SqlDBCache::deleteFromCache(const QString &table, int id) {
     if (tableObj.isEmpty()) {
         _cache.remove(table);
     }
+}
+
+void SqlDBCache::saveToCache(QSharedPointer<DBObject> &obj) {
+
+    // bug : pointer is rewrited!!!!
+    _cache[obj->tableName()][obj->getId()] = obj;
+    emit sigItemChanged(obj);
+
 }
 
 SqlDBCasheWriteMode SqlDBCache::getMode() const {

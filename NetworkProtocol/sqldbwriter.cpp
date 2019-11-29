@@ -222,7 +222,7 @@ bool SqlDBWriter::selectQuery(const QSharedPointer<DBObject>& obj) {
         return false;
 
     QSqlQuery query(db);
-    return obj->remove(query);
+    return obj->select(query);
 }
 
 bool SqlDBWriter::deleteQuery(const QWeakPointer<DBObject> &deleteObject) const {

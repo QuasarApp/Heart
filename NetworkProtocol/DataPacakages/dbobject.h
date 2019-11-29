@@ -57,6 +57,8 @@ public:
     virtual bool select(QSqlQuery& q) = 0;
     virtual bool save(QSqlQuery& q) = 0;
     virtual bool remove(QSqlQuery& q) = 0;
+    virtual bool isCached() const;
+
 
     DbAddress dbAddress() const;
 
