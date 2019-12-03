@@ -26,6 +26,9 @@ private:
 public:
     testProtockol();
 
+    void connectTest(NetworkProtocol::Client *cli, NetworkProtocol::BaseNode *serv);
+    void testLogin(NetworkProtocol::Client *cli);
+
     ~testProtockol();
 
 private slots:
@@ -34,11 +37,23 @@ private slots:
     void testBaseNode();
     void testUser();
 
+
 };
 
 testProtockol::testProtockol() {
     QuasarAppUtils::Params::setArg("verbose", 3);
 
+}
+
+void testProtockol::connectTest(NetworkProtocol::Client *cli, NetworkProtocol::BaseNode *serv) {
+    QVERIFY(serv->run(TEST_LOCAL_HOST, TEST_PORT));
+    QVERIFY(TestUtils::connectFunc(cli, TEST_LOCAL_HOST, TEST_PORT));
+}
+
+
+void testProtockol::testLogin(NetworkProtocol::Client* cli) {
+    QVERIFY(TestUtils::loginFunc(cli, "user", "123", true, true));
+    QVERIFY(TestUtils::loginFunc(cli, "user", "124", true, false));
 }
 
 testProtockol::~testProtockol() {
@@ -84,16 +99,27 @@ void testProtockol::testBaseNode() {
 }
 
 void testProtockol::testUser() {
-    NetworkProtocol::BaseNode *server = new NetworkProtocol::BaseNode();
-    QVERIFY(server->run(TEST_LOCAL_HOST, TEST_PORT));
-    NetworkProtocol::Client * client = new NetworkProtocol::Client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+    int argc =0;
+    char * argv[] = {nullptr};
 
-    QVERIFY(TestUtils::connectFunc(client, TEST_LOCAL_HOST, TEST_PORT));
+    QCoreApplication app(argc, argv);
 
-    QVERIFY(TestUtils::loginFunc(client, "user", "123", true, true));
-    QVERIFY(TestUtils::loginFunc(client, "user", "124", true, false));
+    QTimer::singleShot(0, [&app, this]() {
 
-    delete server;
+        NetworkProtocol::BaseNode *server = new NetworkProtocol::BaseNode();
+        NetworkProtocol::Client * client = new NetworkProtocol::Client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+
+        connectTest(client, server);
+        testLogin(client);
+
+        delete server;
+        delete client;
+
+        app.exit(0);
+    });
+
+    app.exec();
+
 
 }
 

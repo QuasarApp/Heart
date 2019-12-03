@@ -34,7 +34,7 @@ bool funcPrivate(std::function<bool()> requestFunc,
             return false;
         }
 
-        if (!TestUtils::wait(received, 5000))
+        if (!TestUtils::wait(received, 1000))
             return false;
 
         QObject::disconnect(m_connection);
@@ -104,7 +104,7 @@ bool TestUtils::connectFunc(
 
     auto wraper = [&cli, address, port](){
         cli->setHost(QHostAddress(address), port);
-        return cli->connectClient(false);
+        return cli->connectClient();
     };
 
     return funcPrivateConnect(wraper, cli);
