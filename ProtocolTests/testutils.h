@@ -11,13 +11,13 @@ class TestUtils
 public:
     TestUtils();
     static bool wait(const bool &forWait, int msec);
-    static bool loginFunc(NetworkProtocol::Client &cli,
+    static bool loginFunc(NetworkProtocol::Client *cli,
                               const QString &login,
                               const QByteArray &pass,
                               bool sendResult,
                               bool loginResult);
 
-    static bool connectFunc(NetworkProtocol::Client &cli,
+    static bool connectFunc(NetworkProtocol::Client *cli,
                      const QString &address,
                      unsigned short port);
 //    static bool getState(ServerProtocol::Client &cli, QVariantMap &state);

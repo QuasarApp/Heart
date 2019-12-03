@@ -14,7 +14,7 @@
 #include "testutils.h"
 
 #define TEST_LOCAL_HOST "127.0.0.1"
-#define TEST_PORT 1234
+#define TEST_PORT 27777
 
 class testProtockol : public QObject
 {
@@ -84,14 +84,16 @@ void testProtockol::testBaseNode() {
 }
 
 void testProtockol::testUser() {
-    NetworkProtocol::BaseNode server;
-    QVERIFY(server.run(TEST_LOCAL_HOST, TEST_PORT));
-    NetworkProtocol::Client client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+    NetworkProtocol::BaseNode *server = new NetworkProtocol::BaseNode();
+    QVERIFY(server->run(TEST_LOCAL_HOST, TEST_PORT));
+    NetworkProtocol::Client * client = new NetworkProtocol::Client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
 
     QVERIFY(TestUtils::connectFunc(client, TEST_LOCAL_HOST, TEST_PORT));
 
     QVERIFY(TestUtils::loginFunc(client, "user", "123", true, true));
     QVERIFY(TestUtils::loginFunc(client, "user", "124", true, false));
+
+    delete server;
 
 }
 
