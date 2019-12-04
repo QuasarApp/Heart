@@ -8,11 +8,13 @@ namespace NetworkProtocol {
 
 UserData::UserData():
     DBObject("users") {
+    generateId<decltype (this)>();
+
 
 }
 
-UserData::UserData(const Package &package): DBObject("users") {
-    fromBytes(package.data);
+UserData::UserData(const Package &package): DBObject("users", package) {
+    generateId<decltype (this)>();
 }
 
 UserData::~UserData() {

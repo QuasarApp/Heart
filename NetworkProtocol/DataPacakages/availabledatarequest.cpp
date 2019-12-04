@@ -2,12 +2,12 @@
 namespace NetworkProtocol {
 
 AvailableDataRequest::AvailableDataRequest() {
-
+    generateId<decltype (this)>();
 }
 
 
 AvailableDataRequest::AvailableDataRequest(const Package &pkg):AvailableData(pkg) {
-
+    generateId<decltype (this)>();
 }
 AccessToken AvailableDataRequest::token() const
 {

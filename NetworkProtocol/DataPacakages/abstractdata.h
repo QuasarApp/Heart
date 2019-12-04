@@ -16,7 +16,7 @@ private:
     /**
      * @brief _cmd - unique id of class using in Header of package for identification.
      */
-    unsigned int _cmd = 0;
+    unsigned short _cmd = 0;
 
 protected:
     /**
@@ -40,7 +40,10 @@ protected:
      * @brief generateId
      * @return generate cmd function
      */
-    virtual unsigned int generateId();
+    template<typename T>
+    void generateId() {
+        _cmd = qHash(typeid(T).name()) % std::numeric_limits<unsigned short>::max();
+    }
 
 public:
 

@@ -6,11 +6,13 @@ namespace NetworkProtocol {
 
 UserDataRequest::UserDataRequest()
     : UserData() {
+    generateId<decltype (this)>();
 
 }
 
 UserDataRequest::UserDataRequest(const Package &package):
     UserData(package) {
+    generateId<decltype (this)>();
 
 }
 

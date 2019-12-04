@@ -5,11 +5,16 @@
 namespace NetworkProtocol {
 
 DBObjectQuery::DBObjectQuery(const QString& table):
-    DBObject(table) {}
+    DBObject(table) {
+    generateId<decltype (this)>();
+
+}
 
 NetworkProtocol::DBObjectQuery::DBObjectQuery(const QString& table,
                                               const NetworkProtocol::Package &package):
-    DBObject(table, package) {}
+    DBObject(table, package) {
+    generateId<decltype (this)>();
+}
 
 short DBObjectQuery::updateIntervalSec() const {
     return _updateIntervalSec;

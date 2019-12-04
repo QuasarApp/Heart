@@ -11,7 +11,7 @@ bool Header::isValid() const {
         return false;
     }
 
-    return true;
+    return command && size;
 }
 
 void Header::reset() {

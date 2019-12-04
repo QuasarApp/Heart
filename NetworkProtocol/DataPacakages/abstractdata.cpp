@@ -3,6 +3,7 @@
 #include <QMap>
 #include <typeinfo>
 #include "networkprotocol.h"
+#include <limits>
 
 namespace NetworkProtocol {
 
@@ -11,7 +12,7 @@ unsigned int AbstractData::cmd() const {
 }
 
 AbstractData::AbstractData() {
-    _cmd = static_cast<unsigned int>(generateId());
+    _cmd = 0;
 }
 
 AbstractData::AbstractData(const NetworkProtocol::Package &package):
@@ -22,10 +23,6 @@ AbstractData::AbstractData(const NetworkProtocol::Package &package):
 
 bool AbstractData::fromBytes(const QByteArray &data) {
     return StreamBase::fromBytes(data);
-}
-
-unsigned int AbstractData::generateId() {
-    return qHash(typeid(*this).name());
 }
 
 QByteArray AbstractData::toBytes() const {

@@ -6,11 +6,15 @@ namespace NetworkProtocol{
 
 
 BadRequest::BadRequest(const QString &err):AbstractData() {
+    generateId<decltype (this)>();
+
     setErr(err);
+
 }
 
 BadRequest::BadRequest(const Package &package):
     AbstractData(package) {
+    generateId<decltype (this)>();
 
 }
 

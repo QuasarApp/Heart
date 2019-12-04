@@ -11,9 +11,11 @@ QString RatingTable::table = "users";
 
 
 RatingTable::RatingTable():DBObjectQuery(table) {
+    generateId<decltype (this)>();
     setId(id);
 }
 RatingTable::RatingTable(const Package &package):DBObjectQuery(table, package) {
+    generateId<decltype (this)>();
     setId(id);
 }
 

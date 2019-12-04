@@ -19,9 +19,11 @@ public:
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
+
 private:
 
     AccessToken _token;
+
 
 };
 

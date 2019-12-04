@@ -4,10 +4,14 @@
 #include <QSharedPointer>
 namespace NetworkProtocol {
 
-WebSocket::WebSocket(): DBObject(""){}
+WebSocket::WebSocket(): DBObject(""){
+    generateId<decltype (this)>();
+
+}
 
 WebSocket::WebSocket(const Package &package):
     DBObject("", package) {
+    generateId<decltype (this)>();
 
 }
 

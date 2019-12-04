@@ -106,7 +106,7 @@ void testProtockol::testUser() {
 
     QTimer::singleShot(0, [&app, this]() {
 
-        NetworkProtocol::BaseNode *server = new NetworkProtocol::BaseNode();
+        NetworkProtocol::RatingUserNode *server = new NetworkProtocol::RatingUserNode();
         NetworkProtocol::Client * client = new NetworkProtocol::Client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
 
         connectTest(client, server);

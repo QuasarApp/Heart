@@ -5,8 +5,14 @@
 namespace NetworkProtocol {
 
 
+UserRecord::UserRecord()
+{
+    generateId<decltype (this)>();
+}
+
 UserRecord::UserRecord(const Package &package):
     AbstractData(package) {
+    generateId<decltype (this)>();
 
 }
 

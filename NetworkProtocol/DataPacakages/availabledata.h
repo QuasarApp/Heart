@@ -26,6 +26,8 @@ public:
 private:
     QHash<QString, QList<int>> _data;
 
+
+
 };
 
 }

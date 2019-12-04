@@ -5,12 +5,12 @@
 namespace NetworkProtocol {
 
 AvailableData::AvailableData() {
-
+    generateId<decltype (this)>();
 }
 
 
 AvailableData::AvailableData(const Package &pkg):AbstractData(pkg) {
-
+    generateId<AvailableData>();
 }
 
 QDataStream &AvailableData::fromStream(QDataStream &stream) {
@@ -26,7 +26,7 @@ QDataStream &AvailableData::toStream(QDataStream &stream) const {
 }
 
 bool AvailableData::isValid() const {
-    return _data.size();
+    return AbstractData::isValid() && _data.size();
 }
 
 QHash<QString, QList<int> > AvailableData::data() const {

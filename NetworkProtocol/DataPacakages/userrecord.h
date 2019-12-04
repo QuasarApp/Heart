@@ -13,7 +13,7 @@ namespace NetworkProtocol {
 class NETWORKPROTOCOLSHARED_EXPORT UserRecord : public AbstractData
 {
 public:
-    UserRecord() = default;
+    UserRecord();
     UserRecord(const Package& package);
 
     QDataStream &fromStream(QDataStream &stream);

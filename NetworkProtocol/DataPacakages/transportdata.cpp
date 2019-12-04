@@ -2,10 +2,12 @@
 namespace NetworkProtocol {
 
 TransportData::TransportData() {
+    generateId<decltype (this)>();
 
 }
 
 TransportData::TransportData(const Package &package):AbstractData(package) {
+    generateId<decltype (this)>();
 
 }
 
