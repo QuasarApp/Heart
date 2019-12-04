@@ -127,7 +127,7 @@ bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
 
     auto ptr = saveObject.toStrongRef();
 
-    if (!(ptr.isNull() && ptr->isValid())) {
+    if (ptr.isNull() || !ptr->isValid()) {
         return false;
     }
 

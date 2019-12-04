@@ -5,14 +5,14 @@
 namespace NetworkProtocol {
 WebSocketSubscriptions::WebSocketSubscriptions()
 {
-    generateId<decltype (this)>();
+    INIT_COMMAND
 
 }
 
 WebSocketSubscriptions::WebSocketSubscriptions(const NetworkProtocol::Package &package):
-    AbstractData(package)
+    WebSocketSubscriptions()
 {
-    generateId<decltype (this)>();
+    fromBytes(package.data);
 
 }
 

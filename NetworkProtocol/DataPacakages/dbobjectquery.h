@@ -9,7 +9,6 @@ class NETWORKPROTOCOLSHARED_EXPORT DBObjectQuery : public DBObject
 {
 public:
     DBObjectQuery(const QString& table);
-    DBObjectQuery(const QString& table, const Package& package);
 
     short updateIntervalSec() const;
     void setUpdateIntervalSec(short updateIntervalSec);

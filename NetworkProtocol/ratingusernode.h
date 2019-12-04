@@ -27,7 +27,7 @@ private:
      * @param address
      * @return
      */
-    bool registerNewUser(QWeakPointer<UserDataRequest> user,
+    bool registerNewUser(const QWeakPointer<UserDataRequest> &user,
                          const QHostAddress &address);
 
     /**

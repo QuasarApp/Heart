@@ -5,13 +5,13 @@
 namespace NetworkProtocol {
 
 WebSocket::WebSocket(): DBObject(""){
-    generateId<decltype (this)>();
+    INIT_COMMAND
 
 }
 
 WebSocket::WebSocket(const Package &package):
-    DBObject("", package) {
-    generateId<decltype (this)>();
+    WebSocket() {
+    fromBytes(package.data);
 
 }
 

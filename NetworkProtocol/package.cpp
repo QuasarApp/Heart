@@ -12,8 +12,8 @@ bool Package::isValid() const {
         return false;
     }
 
-    auto rawint = data.mid(0, 4);
-    unsigned int cmd;
+    auto rawint = data.mid(0, sizeof (decltype (hdr.command)));
+    decltype (hdr.command) cmd;
     memcpy(&cmd, rawint.data(), sizeof (cmd));
 
     if (data.size() && hdr.command != cmd) {

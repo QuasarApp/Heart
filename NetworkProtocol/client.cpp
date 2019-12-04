@@ -34,11 +34,12 @@ void Client::setHost(const QHostAddress &address, unsigned short port) {
 }
 
 bool Client::login(const QString &userMail, const QByteArray &rawPath) {
-    _user = QSharedPointer<UserData>::create();
-    _user->setMail(userMail);
-    _user->setPassSHA256(hashgenerator(rawPath));
+    auto user = QSharedPointer<UserDataRequest>::create();
+    user->setMail(userMail);
+    user->setPassSHA256(hashgenerator(rawPath));
+    user->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
 
-    return sendData(_user, _address);
+    return sendData(user, _address);
 }
 
 bool Client::syncUserData() {

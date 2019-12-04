@@ -64,7 +64,7 @@ void testProtockol::initTestCase() {
 }
 
 void testProtockol::testPakageData() {
-    NetworkProtocol::BadRequest bad;
+    NetworkProtocol::BadRequest bad("Test");
     NetworkProtocol::BadRequest bad1;
     NetworkProtocol::BadRequest bad2;
 
@@ -77,6 +77,7 @@ void testProtockol::testPakageData() {
     NetworkProtocol::BadRequest res(pkg);
 
     QVERIFY(bad.cmd() == res.cmd());
+    QVERIFY(bad.err() == res.err());
 
 }
 

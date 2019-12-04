@@ -4,25 +4,25 @@
 
 namespace NetworkProtocol {
 /**
- * @brief The Header struct 12 byte
+ * @brief The Header struct 6 byte
  */
 #pragma pack(push, 1)
 struct NETWORKPROTOCOLSHARED_EXPORT Header {
     /**
      * @brief size - size of package data (not header)
      */
-    int size;
+    unsigned short size;
 
     /**
      * @brief command of pacage
      */
-    unsigned int command;
+    unsigned short command;
 
     /**
      * @brief command of pacage see Command (rquest from client)
      * the server should write to which command it responds
      */
-    unsigned int triggerCommnad;
+    unsigned short triggerCommnad;
 
     /**
      * @brief Header default constructor

@@ -4,6 +4,8 @@
 
 #include <streambase.h>
 
+#define INIT_COMMAND generateId<decltype (*this)>();
+
 namespace NetworkProtocol {
 
 /**
@@ -23,12 +25,6 @@ protected:
      * @brief AbstractData
      */
     explicit AbstractData();
-
-    /**
-     * @brief AbstractData
-     * @param package
-     */
-    explicit AbstractData(const Package& package);
 
     /**
      * @brief fromBytes - private initialisation of object from byte array
@@ -66,7 +62,7 @@ public:
      * @param trigeredCommand - old cmd
      * @return retorn package object created from this object.
      */
-    bool toPackage(Package &package, unsigned int trigeredCommand = 0) const;
+    bool toPackage(Package &package, unsigned short trigeredCommand = 0) const;
 
     /**
      * @brief fromStream

@@ -5,12 +5,11 @@
 namespace NetworkProtocol {
 
 AvailableData::AvailableData() {
-    generateId<decltype (this)>();
+    INIT_COMMAND
 }
 
-
-AvailableData::AvailableData(const Package &pkg):AbstractData(pkg) {
-    generateId<AvailableData>();
+AvailableData::AvailableData(const Package &pkg):AvailableData() {
+    fromBytes(pkg.toBytes());
 }
 
 QDataStream &AvailableData::fromStream(QDataStream &stream) {

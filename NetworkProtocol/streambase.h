@@ -20,7 +20,7 @@ public:
      * @brief fromBytes - private initialisation of object from byte array
      * @return true if all good
      */
-    bool fromBytes(const QByteArray&data);
+    bool fromBytes(const QByteArray &data);
 
     /**
      * @brief toBytes

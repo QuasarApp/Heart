@@ -15,12 +15,6 @@ AbstractData::AbstractData() {
     _cmd = 0;
 }
 
-AbstractData::AbstractData(const NetworkProtocol::Package &package):
-    AbstractData() {
-
-    fromBytes(package.data);
-}
-
 bool AbstractData::fromBytes(const QByteArray &data) {
     return StreamBase::fromBytes(data);
 }
@@ -30,7 +24,7 @@ QByteArray AbstractData::toBytes() const {
 }
 
 bool AbstractData::toPackage(Package &package,
-                        unsigned int trigeredCommand) const {
+                        unsigned short trigeredCommand) const {
 
     if (!isValid()) {
         return false;
@@ -40,7 +34,7 @@ bool AbstractData::toPackage(Package &package,
 
     package.hdr.command = _cmd;
     package.hdr.triggerCommnad = trigeredCommand;
-    package.hdr.size = package.data.size();
+    package.hdr.size = static_cast<unsigned short>(package.data.size());
 
     return package.isValid();
 }

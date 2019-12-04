@@ -6,14 +6,13 @@ namespace NetworkProtocol {
 
 UserDataRequest::UserDataRequest()
     : UserData() {
-    generateId<decltype (this)>();
+    INIT_COMMAND
 
 }
 
 UserDataRequest::UserDataRequest(const Package &package):
-    UserData(package) {
-    generateId<decltype (this)>();
-
+    UserDataRequest() {
+    fromBytes(package.data);
 }
 
 QDataStream &UserDataRequest::fromStream(QDataStream &stream) {

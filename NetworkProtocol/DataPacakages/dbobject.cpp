@@ -13,11 +13,6 @@ DBObject::DBObject(const QString &tableName) {
     _tableName = tableName;
 }
 
-DBObject::DBObject(const QString &tableName, const Package &package):
-    AbstractData(package) {
-    _tableName = tableName;
-}
-
 DBObject::~DBObject() {
 
 }

@@ -11,12 +11,11 @@ QString RatingTable::table = "users";
 
 
 RatingTable::RatingTable():DBObjectQuery(table) {
-    generateId<decltype (this)>();
+    INIT_COMMAND
     setId(id);
 }
-RatingTable::RatingTable(const Package &package):DBObjectQuery(table, package) {
-    generateId<decltype (this)>();
-    setId(id);
+RatingTable::RatingTable(const Package &package):RatingTable() {
+    fromBytes(package.data);
 }
 
 QDataStream &RatingTable::fromStream(QDataStream &stream) {

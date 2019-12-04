@@ -57,7 +57,7 @@ public:
 
     AccessToken &operator =(const AccessToken& other);
 
-    friend unsigned int qHash(const AccessToken& token);
+    friend uint qHash(const AccessToken& token);
 
 private:
     QByteArray _data;
@@ -69,8 +69,6 @@ private:
 
     QByteArray generate(const QByteArray &user);
 };
-
-uint qHash(const AccessToken& token);
 
 }
 

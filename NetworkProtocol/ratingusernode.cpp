@@ -68,7 +68,8 @@ QVariantMap RatingUserNode::defaultDbParams() const {
     return BaseNode::defaultDbParams();
 }
 
-bool RatingUserNode::registerNewUser(QWeakPointer<UserDataRequest> user,
+// bug : user register with id -1 it is all permision to write into all users table.
+bool RatingUserNode::registerNewUser(const QWeakPointer<UserDataRequest>& user,
                                        const QHostAddress& address) {
     auto strongUser = user.toStrongRef();
 
@@ -211,18 +212,16 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
     case UserDataRequestCmd::Login: {
 
         auto res = QSharedPointer<UserData>::create().dynamicCast<DBObject>();
-        if (!_db->getObject(res)) {
-            return false;
-        }
+        _db->getObject(res);
 
         if (res->isValid()) {
-            // register a new user;
-            if (!registerNewUser(request, addere)) {
+            // login oldUser
+            if (!loginUser(request, res, addere)) {
                 return false;
             }
         } else {
-            // login oldUser
-            if (!loginUser(request, res, addere)) {
+            // register a new user;
+            if (!registerNewUser(request, addere)) {
                 return false;
             }
         }

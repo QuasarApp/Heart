@@ -7,13 +7,12 @@ namespace NetworkProtocol {
 
 UserRecord::UserRecord()
 {
-    generateId<decltype (this)>();
+    INIT_COMMAND
 }
 
 UserRecord::UserRecord(const Package &package):
-    AbstractData(package) {
-    generateId<decltype (this)>();
-
+    UserRecord() {
+    fromBytes(package.data);
 }
 
 QDataStream &NetworkProtocol::UserRecord::fromStream(QDataStream &stream) {

@@ -20,7 +20,6 @@ public:
      * @brief DBObject
      */
     DBObject(const QString& tableName);
-    DBObject(const QString& tableName, const Package& package);
 
     ~DBObject() override;
 
