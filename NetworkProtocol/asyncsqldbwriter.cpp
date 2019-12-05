@@ -2,6 +2,7 @@
 
 #include <QMetaMethod>
 #include <QThread>
+#include <dbobject.h>
 #include <quasarapp.h>
 
 namespace NetworkProtocol {
@@ -14,19 +15,23 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     moveToThread(own);
 }
 
-bool AsyncSqlDbWriter::saveObject(const QWeakPointer<DBObject>& saveObject) {
-   return QMetaObject::invokeMethod(this,
+bool AsyncSqlDbWriter::saveObject(const QWeakPointer<AbstractData>& saveObject) {
+    auto obj = saveObject.toStrongRef();
+    auto z = obj.dynamicCast<DBObject>();
+    return QMetaObject::invokeMethod(this,
                               "handleSaveObject",
                               Qt::QueuedConnection,
-                              Q_ARG(QSharedPointer<DBObject>, saveObject.toStrongRef()));
+                              Q_ARG(QSharedPointer<DBObject>,
+                                    z));
 
 }
 
-bool AsyncSqlDbWriter::deleteObject(const QWeakPointer<DBObject>& deleteObject) {
+bool AsyncSqlDbWriter::deleteObject(const QWeakPointer<AbstractData>& deleteObject) {
     return QMetaObject::invokeMethod(this,
                                "handleDeleteObject",
                                Qt::QueuedConnection,
-                               Q_ARG(QSharedPointer<DBObject>, deleteObject.toStrongRef()));
+                               Q_ARG(QSharedPointer<DBObject>,
+                                     deleteObject.toStrongRef().dynamicCast<DBObject>()));
 }
 
 void AsyncSqlDbWriter::handleSaveObject(QSharedPointer<DBObject> saveObject) {

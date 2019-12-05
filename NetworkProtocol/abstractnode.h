@@ -193,7 +193,7 @@ protected:
      * @param sender
      * @return item of ParserResult ()
      */
-    virtual ParserResult parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender);
+    virtual ParserResult parsePackage(const Package &pkg, const QWeakPointer<AbstractNodeInfo> &sender);
 
     /**
      * @brief sendPackage
@@ -210,7 +210,7 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendData(const QWeakPointer<AbstractData> resp,  const QHostAddress& addere,
+    virtual bool sendData(const QWeakPointer<AbstractData> &resp,  const QHostAddress& addere,
                               const Header *req = nullptr);
 
     /**

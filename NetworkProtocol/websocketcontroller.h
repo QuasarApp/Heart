@@ -29,10 +29,10 @@ public:
     const QSet<DbAddress> &list(QSharedPointer<AbstractNodeInfo> node);
 
 public slots:
-    void handleItemChanged(const QWeakPointer<DBObject>& item);
+    void handleItemChanged(const QWeakPointer<AbstractData> &item);
 
 private:
-    void foreachSubscribers(const QSharedPointer<DBObject> &item,
+    void foreachSubscribers(const QWeakPointer<AbstractData> &item,
                             const QSet<QSharedPointer<AbstractNodeInfo>> &subscribersList);
 
     QHash<DbAddress, QSet<QSharedPointer<AbstractNodeInfo>>> _subscribs;

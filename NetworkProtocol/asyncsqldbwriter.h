@@ -16,8 +16,8 @@ public:
     AsyncSqlDbWriter(QObject* ptr = nullptr);
 
     // iObjectProvider interface
-    bool saveObject(const QWeakPointer<DBObject> &saveObject) override;
-    bool deleteObject(const QWeakPointer<DBObject> & deleteObject) override;
+    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
+    bool deleteObject(const QWeakPointer<AbstractData> & deleteObject) override;
 
 private slots:
     void handleSaveObject(QSharedPointer<DBObject> saveObject);

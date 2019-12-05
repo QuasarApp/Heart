@@ -84,7 +84,8 @@ protected:
      * @param sender
      * @return
      */
-    ParserResult parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
+    ParserResult parsePackage(const Package &pkg,
+                              const QWeakPointer<AbstractNodeInfo> &sender) override;
 
 
     /**
@@ -97,12 +98,12 @@ protected:
 
     QWeakPointer<SqlDBCache> db() const;
 
-    bool workWithSubscribe(QWeakPointer<WebSocket> rec,
+    bool workWithSubscribe(const QWeakPointer<AbstractData> &rec,
                            const QHostAddress &address);
 
 private:
     QSharedPointer<SqlDBCache> _db;
-    bool workWithAvailableDataRequest(QWeakPointer<AvailableDataRequest> rec,
+    bool workWithAvailableDataRequest(const QWeakPointer<AbstractData> &rec,
                                       const QHostAddress &addere,
                                       const Header *rHeader);
 

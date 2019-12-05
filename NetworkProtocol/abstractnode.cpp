@@ -255,7 +255,8 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
     return true;
 }
 
-ParserResult AbstractNode::parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) {
+ParserResult AbstractNode::parsePackage(const Package &pkg,
+                                        const QWeakPointer<AbstractNodeInfo> &sender) {
 
     auto senderPtr = sender.toStrongRef();
 
@@ -301,7 +302,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     return sendet;
 }
 
-bool AbstractNode::sendData(const QWeakPointer<AbstractData> resp, const QHostAddress &addere,
+bool AbstractNode::sendData(const QWeakPointer<AbstractData> &resp, const QHostAddress &addere,
                                 const Header *req) {
     auto client = getInfoPtr(addere).toStrongRef();
 

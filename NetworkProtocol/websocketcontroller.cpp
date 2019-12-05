@@ -32,16 +32,21 @@ const QSet<DbAddress> &WebSocketController::list(
     return _items[node];
 }
 
-void WebSocketController::handleItemChanged(const QWeakPointer<DBObject> &item) {
-    auto obj = item.toStrongRef();
+void WebSocketController::handleItemChanged(const QWeakPointer<AbstractData> &item) {
+    auto obj = item.toStrongRef().dynamicCast<DBObject>();
     if (obj.isNull() || !obj->isValid())
         return;
 
     foreachSubscribers(item, _subscribs.value(obj->dbAddress()));
 }
 
-void WebSocketController::foreachSubscribers(const QSharedPointer<DBObject> &item,
+void WebSocketController::foreachSubscribers(const QWeakPointer<AbstractData> &item,
                                              const QSet<QSharedPointer<AbstractNodeInfo>> &subscribersList) {
+
+    auto ref = item.toStrongRef().dynamicCast<DBObject>();
+
+    if (ref.isNull())
+        return;
 
     for (auto &&subscriber : subscribersList) {
 
@@ -51,7 +56,7 @@ void WebSocketController::foreachSubscribers(const QSharedPointer<DBObject> &ite
                                                    QuasarAppUtils::Warning);
             }
         } else {
-            unsubscribe(subscriber, item->dbAddress());
+            unsubscribe(subscriber, ref->dbAddress());
         }
     }
 }

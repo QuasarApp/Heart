@@ -81,7 +81,7 @@ QWeakPointer<SqlDBWriter> SqlDBCache::writer() const {
     return _writer;
 }
 
-void SqlDBCache::setWriter(QWeakPointer<SqlDBWriter> writer) {
+void SqlDBCache::setWriter(const QWeakPointer<SqlDBWriter> &writer) {
     _writer = writer;
 }
 
@@ -123,9 +123,9 @@ QSharedPointer<DBObject> &SqlDBCache::getObjectFromCache(const QString &table, i
     return tableObj[id];
 }
 
-bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
+bool SqlDBCache::saveObject(const QWeakPointer<AbstractData>& saveObject) {
 
-    auto ptr = saveObject.toStrongRef();
+    auto ptr = saveObject.toStrongRef().dynamicCast<DBObject>();
 
     if (ptr.isNull() || !ptr->isValid()) {
         return false;
@@ -150,8 +150,8 @@ bool SqlDBCache::saveObject(const QWeakPointer<DBObject>& saveObject) {
 
 }
 
-bool SqlDBCache::deleteObject(const QWeakPointer<DBObject> &delObj) {
-    auto ref =  delObj.toStrongRef();
+bool SqlDBCache::deleteObject(const QWeakPointer<AbstractData> &delObj) {
+    auto ref = delObj.toStrongRef().dynamicCast<DBObject>();
 
     if (ref.isNull())
         return false;
@@ -193,10 +193,15 @@ void SqlDBCache::deleteFromCache(const QString &table, int id) {
     }
 }
 
-void SqlDBCache::saveToCache(QSharedPointer<DBObject> &obj) {
+void SqlDBCache::saveToCache(const QWeakPointer<AbstractData> &obj) {
+
+    auto ref = obj.toStrongRef().dynamicCast<DBObject>();
+
+    if (ref.isNull())
+        return;
 
     // bug : pointer is rewrited!!!!
-    _cache[obj->tableName()][obj->getId()] = obj;
+    _cache[ref->tableName()][ref->getId()] = ref;
     emit sigItemChanged(obj);
 
 }

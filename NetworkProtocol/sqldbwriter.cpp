@@ -195,22 +195,22 @@ bool SqlDBWriter::getObject(QSharedPointer<DBObject>& obj) {
     return selectQuery(obj);
 }
 
-bool SqlDBWriter::saveObject(const QWeakPointer<DBObject> &saveObject) {
+bool SqlDBWriter::saveObject(const QWeakPointer<AbstractData> &saveObject) {
     return saveQuery(saveObject);
 }
 
-bool SqlDBWriter::deleteObject(const QWeakPointer<DBObject> &deleteObject) {
+bool SqlDBWriter::deleteObject(const QWeakPointer<AbstractData> &deleteObject) {
     return deleteQuery(deleteObject);
 }
 
 SqlDBWriter::~SqlDBWriter() {
 }
 
-bool SqlDBWriter::saveQuery(const QWeakPointer<DBObject>& ptr) const {
+bool SqlDBWriter::saveQuery(const QWeakPointer<AbstractData>& ptr) const {
 
     QSqlQuery q(db);
 
-    auto obj = ptr.toStrongRef();
+    auto obj = ptr.toStrongRef().dynamicCast<DBObject>();
     if (obj.isNull())
         return false;
 
@@ -225,9 +225,9 @@ bool SqlDBWriter::selectQuery(const QSharedPointer<DBObject>& obj) {
     return obj->select(query);
 }
 
-bool SqlDBWriter::deleteQuery(const QWeakPointer<DBObject> &deleteObject) const {
+bool SqlDBWriter::deleteQuery(const QWeakPointer<AbstractData> &deleteObject) const {
     QSqlQuery query(db);
-    auto ref = deleteObject.toStrongRef();
+    auto ref = deleteObject.toStrongRef().dynamicCast<DBObject>();
 
     return ref->remove(query);
 }

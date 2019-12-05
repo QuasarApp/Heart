@@ -76,7 +76,7 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
-                                    QWeakPointer<AbstractNodeInfo> sender) {
+                                    const QWeakPointer<AbstractNodeInfo>& sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
@@ -160,7 +160,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 }
 
-bool BaseNode::workWithAvailableDataRequest(QWeakPointer<AvailableDataRequest> rec,
+bool BaseNode::workWithAvailableDataRequest(const QWeakPointer<AbstractData> &rec,
                                             const QHostAddress &address,
                                             const Header *rHeader) {
 
@@ -194,10 +194,10 @@ QWeakPointer<SqlDBCache> BaseNode::db() const {
 }
 
 // TO-DO
-bool BaseNode::workWithSubscribe(QWeakPointer<WebSocket> rec,
+bool BaseNode::workWithSubscribe(const QWeakPointer<AbstractData> &rec,
                                  const QHostAddress &address) {
 
-    auto obj = rec.toStrongRef();
+    auto obj = rec.toStrongRef().dynamicCast<UserDataRequest>();
     if (obj.isNull())
         return false;
 

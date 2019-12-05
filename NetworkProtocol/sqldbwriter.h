@@ -19,7 +19,7 @@ class PlayerDBData;
 namespace NetworkProtocol {
 
 class DBObject;
-
+class AbstractData;
 /**
  * @brief The SqlDBWriter class
  */
@@ -78,7 +78,7 @@ protected:
     // 0 - table name
     // 1 - headers of update values
     // 2 - update values
-    virtual bool saveQuery(const QWeakPointer<DBObject> &ptr) const;
+    virtual bool saveQuery(const QWeakPointer<AbstractData> &ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters
@@ -90,7 +90,7 @@ protected:
      */
     virtual bool selectQuery(const QSharedPointer<DBObject> &obj);
 
-    virtual bool deleteQuery(const QWeakPointer<DBObject>& deleteObject) const;
+    virtual bool deleteQuery(const QWeakPointer<AbstractData> &deleteObject) const;
 
 public:
     SqlDBWriter();
@@ -125,13 +125,13 @@ public:
      * @brief saveObject
      * @return
      */
-    bool saveObject(const QWeakPointer<DBObject> & saveObject) override;
+    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const QWeakPointer<DBObject> &deleteObject) override;
+    bool deleteObject(const QWeakPointer<AbstractData> &deleteObject) override;
 
     virtual ~SqlDBWriter() override;
 

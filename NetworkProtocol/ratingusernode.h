@@ -15,9 +15,11 @@ public:
 
     // AbstractNode interface
 protected:
-    ParserResult parsePackage(const Package &pkg, QWeakPointer<AbstractNodeInfo> sender) override;
+    ParserResult parsePackage(const Package &pkg, const QWeakPointer<AbstractNodeInfo> &sender) override;
     QVariantMap defaultDbParams() const override;
-    bool workWithUserRequest(QWeakPointer<UserDataRequest>, const QHostAddress &addere, const Header *rHeader);
+    bool workWithUserRequest(const QWeakPointer<AbstractData> &,
+                             const QHostAddress &addere,
+                             const Header *rHeader);
 
 private:
 
@@ -27,7 +29,7 @@ private:
      * @param address
      * @return
      */
-    bool registerNewUser(const QWeakPointer<UserDataRequest> &user,
+    bool registerNewUser(const QWeakPointer<AbstractData> &user,
                          const QHostAddress &address);
 
     /**
@@ -36,8 +38,9 @@ private:
      * @param address
      * @return
      */
-    bool loginUser(const QWeakPointer<UserDataRequest> &user,
-                   const QWeakPointer<DBObject> &userdb, const QHostAddress &address);
+    bool loginUser(const QWeakPointer<AbstractData> &user,
+                   const QWeakPointer<AbstractData> &userdb,
+                   const QHostAddress &address);
 };
 
 }

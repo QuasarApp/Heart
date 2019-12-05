@@ -7,6 +7,7 @@
 namespace NetworkProtocol {
 
 class DBObject;
+class AbstractData;
 
 class NETWORKPROTOCOLSHARED_EXPORT iObjectProvider
 {
@@ -26,13 +27,13 @@ public:
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(const QWeakPointer<DBObject>& saveObject) = 0;
+    virtual bool saveObject(const QWeakPointer<AbstractData>& saveObject) = 0;
 
     /**
      * @brief deleteObject
      * @return
      */
-    virtual bool deleteObject(const QWeakPointer<DBObject>& saveObject) = 0;
+    virtual bool deleteObject(const QWeakPointer<AbstractData>& saveObject) = 0;
 
 };
 

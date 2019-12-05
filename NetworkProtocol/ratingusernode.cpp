@@ -14,7 +14,7 @@ RatingUserNode::RatingUserNode() {
 }
 
 ParserResult RatingUserNode::parsePackage(const Package &pkg,
-                                    QWeakPointer<AbstractNodeInfo> sender) {
+                                    const QWeakPointer<AbstractNodeInfo> &sender) {
 
     auto parentResult = BaseNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
@@ -69,9 +69,9 @@ QVariantMap RatingUserNode::defaultDbParams() const {
 }
 
 // bug : user register with id -1 it is all permision to write into all users table.
-bool RatingUserNode::registerNewUser(const QWeakPointer<UserDataRequest>& user,
+bool RatingUserNode::registerNewUser(const QWeakPointer<AbstractData>& user,
                                        const QHostAddress& address) {
-    auto strongUser = user.toStrongRef();
+    auto strongUser = user.toStrongRef().dynamicCast<UserData>();
 
     if (strongUser.isNull()) {
         return false;
@@ -98,10 +98,10 @@ bool RatingUserNode::registerNewUser(const QWeakPointer<UserDataRequest>& user,
     return true;
 }
 
-bool RatingUserNode::loginUser(const QWeakPointer<UserDataRequest>& user,
-                         const QWeakPointer<DBObject>& userdb,
+bool RatingUserNode::loginUser(const QWeakPointer<AbstractData>& user,
+                         const QWeakPointer<AbstractData>& userdb,
                          const QHostAddress& address) {
-    auto strongUser = user.toStrongRef();
+    auto strongUser = user.toStrongRef().dynamicCast<UserData>();
 
     if (strongUser.isNull()) {
         return false;
@@ -134,11 +134,11 @@ bool RatingUserNode::loginUser(const QWeakPointer<UserDataRequest>& user,
     return false;
 }
 
-bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
+bool RatingUserNode::workWithUserRequest(const QWeakPointer<AbstractData> &rec,
                                            const QHostAddress &addere,
                                            const Header *rHeader) {
 
-    auto request = rec.toStrongRef();
+    auto request = rec.toStrongRef().dynamicCast<UserDataRequest>();
 
     if (request.isNull())
         return false;
@@ -192,13 +192,13 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
             return false;
         }
 
-        if(!_db->saveObject(request)) {
+        if(!_db->saveObject(rec)) {
             QuasarAppUtils::Params::verboseLog("do not saved object in database!" + addere.toString(),
                                                QuasarAppUtils::Error);
             return false;
         }
 
-        if (!sendData(request, addere, rHeader)) {
+        if (!sendData(rec, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
@@ -216,17 +216,17 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
 
         if (res->isValid()) {
             // login oldUser
-            if (!loginUser(request, res, addere)) {
+            if (!loginUser(rec, res, addere)) {
                 return false;
             }
         } else {
             // register a new user;
-            if (!registerNewUser(request, addere)) {
+            if (!registerNewUser(rec, addere)) {
                 return false;
             }
         }
 
-        if (!sendData(request, addere, rHeader)) {
+        if (!sendData(rec, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
@@ -237,14 +237,14 @@ bool RatingUserNode::workWithUserRequest(QWeakPointer<UserDataRequest> rec,
 
     case UserDataRequestCmd::Delete: {
 
-        if(!_db->deleteObject(request)) {
+        if(!_db->deleteObject(rec)) {
             QuasarAppUtils::Params::verboseLog("do not deleted object from database!" + addere.toString(),
                                                QuasarAppUtils::Error);
             return false;
         }
 
 
-        if (!sendData(request, addere, rHeader)) {
+        if (!sendData(rec, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;

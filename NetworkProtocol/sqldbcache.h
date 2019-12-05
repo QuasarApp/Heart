@@ -43,13 +43,13 @@ public:
      * @brief setWriter
      * @param writer
      */
-    void setWriter(QWeakPointer<SqlDBWriter> writer);
+    void setWriter(const QWeakPointer<SqlDBWriter> &writer);
 
     bool getObject(QSharedPointer<DBObject> &obj) override;
     QSharedPointer<DBObject> &getObjectFromCache(const QString& table, int id);
 
-    bool saveObject(const QWeakPointer<DBObject>& saveObject) override;
-    bool deleteObject(const QWeakPointer<DBObject>& delObj) override;
+    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
+    bool deleteObject(const QWeakPointer<AbstractData>& delObj) override;
 
     /**
      * @brief getUpdateInterval of SqlDBCasheWriteMode::Default mode
@@ -89,7 +89,7 @@ protected:
      * @brief saveToCache
      * @param obj
      */
-    virtual void saveToCache(QSharedPointer<DBObject> &obj);
+    virtual void saveToCache(const QWeakPointer<AbstractData> &obj);
 
 
     /**
@@ -121,7 +121,7 @@ private:
     virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 signals:
-    void sigItemChanged(QWeakPointer<DBObject> obj);
+    void sigItemChanged(const QWeakPointer<AbstractData> &obj);
 
 };
 
