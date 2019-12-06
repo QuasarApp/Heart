@@ -26,6 +26,7 @@ public:
 
     //// AbstractData interface
     bool isValid() const override;
+    bool copyFrom(const AbstractData *) override;
 
     /**
      * @brief getId
@@ -59,7 +60,6 @@ public:
     virtual bool remove(QSqlQuery& q) = 0;
     virtual bool isCached() const;
 
-
     DbAddress dbAddress() const;
 
 
@@ -71,7 +71,6 @@ protected:
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-
 
 };
 }

@@ -6,10 +6,16 @@ namespace NP {
 
 Client::Client(const QHostAddress &address, unsigned short port) {
     setHost(address, port);
+
+    connect(this, &BaseNode::incomingData,
+            this, &Client::handleIncomingData,
+            Qt::DirectConnection);
+
+    _user = SP<UserData>::create();
 }
 
-Client::Client(const QString &address, unsigned short port) {
-    setHost(QHostAddress(address), port);
+Client::Client(const QString &address, unsigned short port):
+    Client(QHostAddress(address), port){
 }
 
 bool Client::connectClient() {
@@ -39,7 +45,8 @@ bool Client::login(const QString &userMail, const QByteArray &rawPath) {
     user->setPassSHA256(hashgenerator(rawPath));
     user->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
 
-    return sendData(user, _address);
+
+    return _user->copyFrom(user.data()) && sendData(user, _address);
 }
 
 bool Client::syncUserData() {

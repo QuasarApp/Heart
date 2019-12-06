@@ -53,6 +53,10 @@ bool AbstractData::isValid() const {
     return _cmd;
 }
 
+bool AbstractData::copyFrom(const AbstractData *other) {
+    return other;
+}
+
 AbstractData::~AbstractData() {
 
 }

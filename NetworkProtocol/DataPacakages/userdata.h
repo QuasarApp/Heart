@@ -52,8 +52,7 @@ public:
 
     const AccessToken& token() const;
     void setToken(const AccessToken &token);
-
-
+    bool copyFrom(const AbstractData *) override;
 
     int points() const;
     void setPoints(int points);
@@ -68,6 +67,7 @@ protected:
 
     QVariantMap _extraData;
     AccessToken _token;
+
 
 };
 

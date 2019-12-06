@@ -65,6 +65,20 @@ bool DBObject::isValid() const {
     return AbstractData::isValid() && _tableName.size();
 }
 
+bool DBObject::copyFrom(const AbstractData * other) {
+    if (!AbstractData::copyFrom(other))
+        return false;
+
+    auto otherObject = dynamic_cast<const DBObject*>(other);
+    if (!otherObject)
+        return false;
+
+    this->_tableName = otherObject->_tableName;
+    this->_id = otherObject->_id;
+
+    return true;
+}
+
 int DBObject::getId() const {
     return _id;
 }

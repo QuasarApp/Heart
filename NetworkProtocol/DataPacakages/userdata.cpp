@@ -205,6 +205,25 @@ void UserData::setToken(const AccessToken &token) {
     _token = token;
 }
 
+bool UserData::copyFrom(const AbstractData * other) {
+    if (!DBObject::copyFrom(other))
+        return false;
+
+    auto otherUser = dynamic_cast<const UserData*>(other);
+    if (!otherUser)
+        return false;
+
+    this->_name = otherUser->_name;
+    this->_passSHA256 = otherUser->_passSHA256;
+    this->_mail = otherUser->_mail;
+    this->_lastOnline = otherUser->_lastOnline;
+    this->_onlineTime = otherUser->_onlineTime;
+    this->_extraData = otherUser->_extraData;
+    this->_points = otherUser->_points;
+
+    return true;
+}
+
 int UserData::points() const {
     return _points;
 }

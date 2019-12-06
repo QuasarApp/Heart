@@ -82,6 +82,14 @@ public:
      */
     virtual bool isValid() const;
 
+    /**
+     * @brief copyFrom this function try cast other object to this class type
+     * and invoke copy operation. cmd option is ignored;
+     * @param other
+     * @return true if all good
+     */
+    virtual bool copyFrom(const AbstractData*);
+
     virtual ~AbstractData() override;
 
 };

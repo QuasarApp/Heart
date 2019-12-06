@@ -212,18 +212,19 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
     case UserDataRequestCmd::Login: {
 
         auto res = SP<UserData>::create().dynamicCast<DBObject>();
-        _db->getObject(res);
+        res->copyFrom(request.data());
 
-        if (res->isValid()) {
+        if (_db->getObject(res)) {
             // login oldUser
             if (!loginUser(rec, res, addere)) {
                 return false;
             }
         } else {
             // register a new user;
-            if (!registerNewUser(rec, addere)) {
+            if (!registerNewUser(res, addere)) {
                 return false;
             }
+            _db->getObject(res);
         }
 
         if (!sendData(res, addere, rHeader)) {
