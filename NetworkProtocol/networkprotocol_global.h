@@ -2,6 +2,7 @@
 #define CLIENTPROTOCOL_GLOBAL_H
 
 #include <QtCore/qglobal.h>
+#include "defines.h"
 
 #if defined(NETWORKPROTOCOL_LIBRARY)
 #  define NETWORKPROTOCOLSHARED_EXPORT Q_DECL_EXPORT

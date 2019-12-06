@@ -5,7 +5,7 @@
 #include "userrecord.h"
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 class NETWORKPROTOCOLSHARED_EXPORT RatingTable : public DBObjectQuery
 {
@@ -16,7 +16,7 @@ public:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
-    QSharedPointer<DBObject> factory();
+    SP<DBObject> factory();
     bool select(QSqlQuery &q);
     bool save(QSqlQuery &q);
     bool remove(QSqlQuery &q);

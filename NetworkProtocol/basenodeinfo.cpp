@@ -2,7 +2,7 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
-namespace NetworkProtocol {
+namespace NP {
 
 bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid() && !_token.isValid();

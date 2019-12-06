@@ -5,7 +5,7 @@
 #include "request.h"
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 enum class WebSocketRequest {
     Invalied = 0,
@@ -27,7 +27,7 @@ public:
 
     bool isValid() const;
 
-    QSharedPointer<DBObject> factory();
+    SP<DBObject> factory();
     bool select(QSqlQuery &);
     bool save(QSqlQuery &);
     bool remove(QSqlQuery &);

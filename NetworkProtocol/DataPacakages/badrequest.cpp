@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol{
+namespace NP{
 
 
 BadRequest::BadRequest(const QString &err):AbstractData() {

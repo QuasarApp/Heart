@@ -4,7 +4,7 @@
 #include "basenode.h"
 #include "ratingusernode.h"
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 class NETWORKPROTOCOLSHARED_EXPORT Client: public RatingUserNode
@@ -32,7 +32,7 @@ public:
     Q_INVOKABLE QString lastMessage() const;
 
 private slots:
-    void handleIncomingData(QSharedPointer<AbstractData> obj, const QHostAddress &);
+    void handleIncomingData(SP<AbstractData> obj, const QHostAddress &);
     void setLastMessage(QString lastMessage);
     void socketStateChanged(QAbstractSocket::SocketState);
 
@@ -42,7 +42,7 @@ private:
     unsigned short _port;
 
     QString _lastMessage;
-    QSharedPointer<UserData> _user;
+    SP<UserData> _user;
 
     void setStatus(Status);
 

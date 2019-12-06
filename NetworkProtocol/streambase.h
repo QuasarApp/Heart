@@ -6,7 +6,7 @@
 #include "networkprotocol_global.h"
 
 class QDataStream;
-namespace NetworkProtocol {
+namespace NP {
 
 class Package;
 

@@ -3,7 +3,7 @@
 #include <QHash>
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 qint64 qHash(const DbAddress &address) {
     qint64 res = address.id;

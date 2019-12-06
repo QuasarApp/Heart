@@ -1,5 +1,5 @@
 #include "iobjectprovider.h"
-namespace NetworkProtocol {
+namespace NP {
 iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;

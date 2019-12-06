@@ -1,5 +1,5 @@
 #include "transportdata.h"
-namespace NetworkProtocol {
+namespace NP {
 
 TransportData::TransportData() {
     INIT_COMMAND

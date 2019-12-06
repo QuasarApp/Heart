@@ -113,7 +113,8 @@ HEADERS += \
     sqldbwriter.h \
     streambase.h \
     websocketcontroller.h \
-    workstate.h
+    workstate.h \
+    defines.h
 
 include($$PWD/NetworkProtocolIncludes.pri)
 

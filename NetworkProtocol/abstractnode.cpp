@@ -10,7 +10,7 @@
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
     QTcpServer(ptr) {
@@ -37,7 +37,7 @@ void AbstractNode::stop() {
     }
 }
 
-QWeakPointer<AbstractNodeInfo> AbstractNode::getInfoPtr(const QHostAddress &id) {
+WP<AbstractNodeInfo> AbstractNode::getInfoPtr(const QHostAddress &id) {
     if (!_connections.contains(id)) {
         return {nullptr};
     }
@@ -231,8 +231,8 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration() {
     return res;
 }
 
-QSharedPointer<AbstractNodeInfo> AbstractNode::createNodeInfo(QAbstractSocket *socket) const {
-    return QSharedPointer<AbstractNodeInfo>::create(socket);
+SP<AbstractNodeInfo> AbstractNode::createNodeInfo(QAbstractSocket *socket) const {
+    return SP<AbstractNodeInfo>::create(socket);
 }
 
 bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) {
@@ -256,7 +256,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
 }
 
 ParserResult AbstractNode::parsePackage(const Package &pkg,
-                                        const QWeakPointer<AbstractNodeInfo> &sender) {
+                                        const WP<AbstractNodeInfo> &sender) {
 
     auto senderPtr = sender.toStrongRef();
 
@@ -302,7 +302,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     return sendet;
 }
 
-bool AbstractNode::sendData(const QWeakPointer<AbstractData> &resp, const QHostAddress &addere,
+bool AbstractNode::sendData(const WP<AbstractData> &resp, const QHostAddress &addere,
                                 const Header *req) {
     auto client = getInfoPtr(addere).toStrongRef();
 

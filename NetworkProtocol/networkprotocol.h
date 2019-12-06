@@ -3,11 +3,15 @@
 
 #include "package.h"
 #include "config.h"
-#include "abstractnode.h"
-#include "abstractnodeinfo.h"
+#include "ratingtable.h"
 
-
-namespace NetworkProtocol {
+/**
+ * NP - Network protocol
+ * defirent values:
+ * SP - shared pointer
+ * WP  - weak pointer
+ */
+namespace NP {
 }
 
 #endif // CLIENTPROTOCOL_H

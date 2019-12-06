@@ -4,12 +4,12 @@
 #include <QSharedPointer>
 #include <QSqlQuery>
 
-namespace NetworkProtocol {
+namespace NP {
 
 UserData::UserData():
     DBObject("users") {
+    clear();
     INIT_COMMAND
-
 
 }
 
@@ -83,6 +83,7 @@ QDataStream &UserData::fromStream(QDataStream &stream) {
     stream >> _onlineTime;
     stream >> _extraData;
     stream >> _token;
+    stream >> _points;
 
     return stream;
 }
@@ -97,6 +98,7 @@ QDataStream &UserData::toStream(QDataStream &stream) const {
     stream << _onlineTime;
     stream << _extraData;
     stream << _token;
+    stream << _points;
 
     return stream;
 }
@@ -182,6 +184,7 @@ void UserData::clear() {
     _lastOnline = 0;
     _onlineTime = 0;
     _extraData = {};
+    _points = 0;
 
     DBObject::clear();
 }
@@ -190,8 +193,8 @@ bool UserData::isValid() const {
     return DBObject::isValid() && _mail.size();
 }
 
-QSharedPointer<DBObject> UserData::factory() {
-    return QSharedPointer<UserData>::create();
+SP<DBObject> UserData::factory() {
+    return SP<UserData>::create();
 }
 
 const AccessToken &UserData::token() const {

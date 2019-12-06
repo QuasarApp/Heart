@@ -6,7 +6,7 @@
 
 
 class QAbstractSocket;
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The TrustNode enum

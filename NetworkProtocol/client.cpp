@@ -2,7 +2,7 @@
 
 #include <userdata.h>
 #include <userdatarequest.h>
-namespace NetworkProtocol {
+namespace NP {
 
 Client::Client(const QHostAddress &address, unsigned short port) {
     setHost(address, port);
@@ -34,7 +34,7 @@ void Client::setHost(const QHostAddress &address, unsigned short port) {
 }
 
 bool Client::login(const QString &userMail, const QByteArray &rawPath) {
-    auto user = QSharedPointer<UserDataRequest>::create();
+    auto user = SP<UserDataRequest>::create();
     user->setMail(userMail);
     user->setPassSHA256(hashgenerator(rawPath));
     user->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
@@ -51,7 +51,7 @@ bool Client::syncUserData() {
         return false;
     }
 
-    QSharedPointer<UserDataRequest> request;
+    SP<UserDataRequest> request;
     *request.dynamicCast<UserData>() = *_user;
     request->setRequestCmd(static_cast<unsigned char>(UserDataRequestCmd::Save));
 
@@ -66,7 +66,7 @@ QString Client::lastMessage() const {
     return _lastMessage;
 }
 
-void Client::handleIncomingData(QSharedPointer<AbstractData> obj,
+void Client::handleIncomingData(SP<AbstractData> obj,
                                 const QHostAddress&) {
 
     auto userData = obj.dynamicCast<UserData>();

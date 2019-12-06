@@ -7,15 +7,15 @@
 #include <client.h>
 
 bool funcPrivate(std::function<bool()> requestFunc,
-            NetworkProtocol::BaseNode* node,
-            QSharedPointer<NetworkProtocol::AbstractData>* responce = nullptr,
+            NP::BaseNode* node,
+            SP<NP::AbstractData>* responce = nullptr,
             QHostAddress *responceSender = nullptr) {
 
         bool received = false;
         QMetaObject::Connection m_connection;
-        m_connection = QObject::connect(node, &NetworkProtocol::BaseNode::incomingData,
+        m_connection = QObject::connect(node, &NP::BaseNode::incomingData,
                          [ &received, responce, responceSender]
-                                        (QSharedPointer<NetworkProtocol::AbstractData> pkg,
+                                        (SP<NP::AbstractData> pkg,
                                         const QHostAddress& sender) {
 
             received = true;
@@ -34,7 +34,7 @@ bool funcPrivate(std::function<bool()> requestFunc,
             return false;
         }
 
-        if (!TestUtils::wait(received, 1000))
+        if (!TestUtils::wait(received, 10000))
             return false;
 
         QObject::disconnect(m_connection);
@@ -45,14 +45,14 @@ bool funcPrivate(std::function<bool()> requestFunc,
 
 
 bool funcPrivateConnect(std::function<bool()> requestFunc,
-            NetworkProtocol::Client* node) {
+            NP::Client* node) {
 
         bool connected = false;
         QMetaObject::Connection m_connection;
-        m_connection = QObject::connect(node, &NetworkProtocol::Client::statusChanged,
+        m_connection = QObject::connect(node, &NP::Client::statusChanged,
                          [ &connected](int new_status) {
 
-            connected = NetworkProtocol::Client::Status::Online == static_cast<NetworkProtocol::Client::Status>(new_status);
+            connected = NP::Client::Status::Online == static_cast<NP::Client::Status>(new_status);
 
         });
 
@@ -81,7 +81,7 @@ bool TestUtils::wait(const bool &forWait, int msec) {
 }
 
 bool TestUtils::loginFunc(
-        NetworkProtocol::Client *cli,
+        NP::Client *cli,
                     const QString& login,
                     const QByteArray& pass,
                     bool sendResult,
@@ -94,11 +94,11 @@ bool TestUtils::loginFunc(
         return !sendResult;
     }
 
-    return loginResult == (cli->status() == NetworkProtocol::Client::Logined);
+    return loginResult == (cli->status() == NP::Client::Logined);
 }
 
 bool TestUtils::connectFunc(
-        NetworkProtocol::Client *cli,
+        NP::Client *cli,
                     const QString& address,
                     unsigned short port) {
 

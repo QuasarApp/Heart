@@ -15,7 +15,7 @@
 #include <dbobject.h>
 #include <QSqlRecord>
 
-namespace NetworkProtocol {
+namespace NP {
 
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);
@@ -191,22 +191,22 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(QSharedPointer<DBObject>& obj) {
+bool SqlDBWriter::getObject(SP<DBObject>& obj) {
     return selectQuery(obj);
 }
 
-bool SqlDBWriter::saveObject(const QWeakPointer<AbstractData> &saveObject) {
+bool SqlDBWriter::saveObject(const WP<AbstractData> &saveObject) {
     return saveQuery(saveObject);
 }
 
-bool SqlDBWriter::deleteObject(const QWeakPointer<AbstractData> &deleteObject) {
+bool SqlDBWriter::deleteObject(const WP<AbstractData> &deleteObject) {
     return deleteQuery(deleteObject);
 }
 
 SqlDBWriter::~SqlDBWriter() {
 }
 
-bool SqlDBWriter::saveQuery(const QWeakPointer<AbstractData>& ptr) const {
+bool SqlDBWriter::saveQuery(const WP<AbstractData>& ptr) const {
 
     QSqlQuery q(db);
 
@@ -217,7 +217,7 @@ bool SqlDBWriter::saveQuery(const QWeakPointer<AbstractData>& ptr) const {
     return obj->save(q);
 }
 
-bool SqlDBWriter::selectQuery(const QSharedPointer<DBObject>& obj) {
+bool SqlDBWriter::selectQuery(const SP<DBObject>& obj) {
     if (obj.isNull())
         return false;
 
@@ -225,7 +225,7 @@ bool SqlDBWriter::selectQuery(const QSharedPointer<DBObject>& obj) {
     return obj->select(query);
 }
 
-bool SqlDBWriter::deleteQuery(const QWeakPointer<AbstractData> &deleteObject) const {
+bool SqlDBWriter::deleteQuery(const WP<AbstractData> &deleteObject) const {
     QSqlQuery query(db);
     auto ref = deleteObject.toStrongRef().dynamicCast<DBObject>();
 

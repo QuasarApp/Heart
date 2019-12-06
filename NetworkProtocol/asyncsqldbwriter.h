@@ -3,7 +3,7 @@
 
 #include "sqldbwriter.h"
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 /**
@@ -16,12 +16,12 @@ public:
     AsyncSqlDbWriter(QObject* ptr = nullptr);
 
     // iObjectProvider interface
-    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
-    bool deleteObject(const QWeakPointer<AbstractData> & deleteObject) override;
+    bool saveObject(const WP<AbstractData> &saveObject) override;
+    bool deleteObject(const WP<AbstractData> & deleteObject) override;
 
 private slots:
-    void handleSaveObject(QSharedPointer<DBObject> saveObject);
-    void handleDeleteObject(QSharedPointer<DBObject> deleteObject);
+    void handleSaveObject(SP<DBObject> saveObject);
+    void handleDeleteObject(SP<DBObject> deleteObject);
 
 };
 

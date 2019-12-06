@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 AvailableData::AvailableData() {
     INIT_COMMAND

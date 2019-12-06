@@ -5,10 +5,11 @@
 #include "abstractdata.h"
 #include "networkprotocol_global.h"
 #include "dbaddress.h"
+#include "defines.h"
 
 class QSqlQuery;
 
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The DBObject class
@@ -51,7 +52,7 @@ public:
      * @brief factory
      * @return self object pointer
      */
-    virtual QSharedPointer<DBObject> factory() = 0;
+    virtual SP<DBObject> factory() = 0;
 
     virtual bool select(QSqlQuery& q) = 0;
     virtual bool save(QSqlQuery& q) = 0;

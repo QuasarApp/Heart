@@ -1,5 +1,5 @@
 #include "availabledatarequest.h"
-namespace NetworkProtocol {
+namespace NP {
 
 AvailableDataRequest::AvailableDataRequest() {
     INIT_COMMAND

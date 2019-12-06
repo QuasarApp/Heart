@@ -3,7 +3,7 @@
 
 #include "abstractdata.h"
 
-namespace NetworkProtocol {
+namespace NP {
 
 class NETWORKPROTOCOLSHARED_EXPORT AvailableData : public AbstractData
 {

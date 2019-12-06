@@ -4,7 +4,7 @@
 #include <QHostAddress>
 #include <QList>
 
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The WorkState class

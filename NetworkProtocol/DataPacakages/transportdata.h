@@ -6,7 +6,7 @@
 #include <QHostAddress>
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 class NETWORKPROTOCOLSHARED_EXPORT TransportData: public AbstractData
 {

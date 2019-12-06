@@ -16,7 +16,7 @@ class QSqlDatabase;
 class QSqlQuery;
 class PlayerDBData;
 
-namespace NetworkProtocol {
+namespace NP {
 
 class DBObject;
 class AbstractData;
@@ -78,7 +78,7 @@ protected:
     // 0 - table name
     // 1 - headers of update values
     // 2 - update values
-    virtual bool saveQuery(const QWeakPointer<AbstractData> &ptr) const;
+    virtual bool saveQuery(const WP<AbstractData> &ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters
@@ -88,9 +88,9 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(const QSharedPointer<DBObject> &obj);
+    virtual bool selectQuery(const SP<DBObject> &obj);
 
-    virtual bool deleteQuery(const QWeakPointer<AbstractData> &deleteObject) const;
+    virtual bool deleteQuery(const WP<AbstractData> &deleteObject) const;
 
 public:
     SqlDBWriter();
@@ -119,25 +119,25 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(QSharedPointer<DBObject> &obj) override;
+    bool getObject(SP<DBObject> &obj) override;
 
     /**
      * @brief saveObject
      * @return
      */
-    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
+    bool saveObject(const WP<AbstractData> &saveObject) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const QWeakPointer<AbstractData> &deleteObject) override;
+    bool deleteObject(const WP<AbstractData> &deleteObject) override;
 
     virtual ~SqlDBWriter() override;
 
 
-    QHash<QString, QSharedPointer<DbTableBase> > getDbStruct() const;
-    void setDbStruct(const QHash<QString, QSharedPointer<DbTableBase> > &dbStruct);
+    QHash<QString, SP<DbTableBase> > getDbStruct() const;
+    void setDbStruct(const QHash<QString, SP<DbTableBase> > &dbStruct);
 };
 
 }

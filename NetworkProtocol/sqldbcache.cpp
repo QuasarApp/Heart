@@ -9,7 +9,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
@@ -77,15 +77,15 @@ SqlDBCache::~SqlDBCache() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
-QWeakPointer<SqlDBWriter> SqlDBCache::writer() const {
+WP<SqlDBWriter> SqlDBCache::writer() const {
     return _writer;
 }
 
-void SqlDBCache::setWriter(const QWeakPointer<SqlDBWriter> &writer) {
+void SqlDBCache::setWriter(const WP<SqlDBWriter> &writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(QSharedPointer<DBObject> &obj) {
+bool SqlDBCache::getObject(SP<DBObject> &obj) {
     if (obj.isNull())
         return false;
 
@@ -118,12 +118,12 @@ bool SqlDBCache::getObject(QSharedPointer<DBObject> &obj) {
     return true;
 }
 
-QSharedPointer<DBObject> &SqlDBCache::getObjectFromCache(const QString &table, int id) {
+SP<DBObject> &SqlDBCache::getObjectFromCache(const QString &table, int id) {
     auto& tableObj = _cache[table];
     return tableObj[id];
 }
 
-bool SqlDBCache::saveObject(const QWeakPointer<AbstractData>& saveObject) {
+bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
 
     auto ptr = saveObject.toStrongRef().dynamicCast<DBObject>();
 
@@ -150,7 +150,7 @@ bool SqlDBCache::saveObject(const QWeakPointer<AbstractData>& saveObject) {
 
 }
 
-bool SqlDBCache::deleteObject(const QWeakPointer<AbstractData> &delObj) {
+bool SqlDBCache::deleteObject(const WP<AbstractData> &delObj) {
     auto ref = delObj.toStrongRef().dynamicCast<DBObject>();
 
     if (ref.isNull())
@@ -193,7 +193,7 @@ void SqlDBCache::deleteFromCache(const QString &table, int id) {
     }
 }
 
-void SqlDBCache::saveToCache(const QWeakPointer<AbstractData> &obj) {
+void SqlDBCache::saveToCache(const WP<AbstractData> &obj) {
 
     auto ref = obj.toStrongRef().dynamicCast<DBObject>();
 

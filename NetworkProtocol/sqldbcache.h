@@ -10,7 +10,7 @@
 #include <networkprotocol.h>
 #include <QMutex>
 
-namespace NetworkProtocol {
+namespace NP {
 
 class SqlDBWriter;
 class DBObject;
@@ -37,19 +37,19 @@ public:
      * @brief writer
      * @return weak pointer to writer
      */
-    QWeakPointer<SqlDBWriter> writer() const;
+    WP<SqlDBWriter> writer() const;
 
     /**
      * @brief setWriter
      * @param writer
      */
-    void setWriter(const QWeakPointer<SqlDBWriter> &writer);
+    void setWriter(const WP<SqlDBWriter> &writer);
 
-    bool getObject(QSharedPointer<DBObject> &obj) override;
-    QSharedPointer<DBObject> &getObjectFromCache(const QString& table, int id);
+    bool getObject(SP<DBObject> &obj) override;
+    SP<DBObject> &getObjectFromCache(const QString& table, int id);
 
-    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
-    bool deleteObject(const QWeakPointer<AbstractData>& delObj) override;
+    bool saveObject(const WP<AbstractData> &saveObject) override;
+    bool deleteObject(const WP<AbstractData>& delObj) override;
 
     /**
      * @brief getUpdateInterval of SqlDBCasheWriteMode::Default mode
@@ -89,7 +89,7 @@ protected:
      * @brief saveToCache
      * @param obj
      */
-    virtual void saveToCache(const QWeakPointer<AbstractData> &obj);
+    virtual void saveToCache(const WP<AbstractData> &obj);
 
 
     /**
@@ -112,16 +112,16 @@ private:
 
     SqlDBCasheWriteMode _mode;
 
-    QSharedPointer<SqlDBWriter> _writer = nullptr;
+    SP<SqlDBWriter> _writer = nullptr;
 
-    QHash<QString, QHash <int, QSharedPointer<DBObject>>>  _cache;
+    QHash<QString, QHash <int, SP<DBObject>>>  _cache;
     QHash<QString, QList<int>>  _needToSaveCache;
 
     virtual void globalUpdateDataBasePrivate(qint64 currentTime);
     virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 signals:
-    void sigItemChanged(const QWeakPointer<AbstractData> &obj);
+    void sigItemChanged(const WP<AbstractData> &obj);
 
 };
 

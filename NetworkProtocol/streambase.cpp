@@ -3,7 +3,7 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 StreamBase::StreamBase() = default;

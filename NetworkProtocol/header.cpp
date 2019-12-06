@@ -1,6 +1,6 @@
 #include "header.h"
 
-namespace NetworkProtocol {
+namespace NP {
 Header::Header() {
     reset();
 }

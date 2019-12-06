@@ -4,7 +4,7 @@
 #include "streambase.h"
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 class NETWORKPROTOCOLSHARED_EXPORT DbAddress : public StreamBase {
 

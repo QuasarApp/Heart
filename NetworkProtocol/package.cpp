@@ -1,7 +1,7 @@
 #include "abstractdata.h"
 #include "package.h"
 
-namespace NetworkProtocol {
+namespace NP {
 
 Package::Package() {
     reset();

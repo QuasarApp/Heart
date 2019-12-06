@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 UserRecord::UserRecord()
@@ -15,14 +15,14 @@ UserRecord::UserRecord(const Package &package):
     fromBytes(package.data);
 }
 
-QDataStream &NetworkProtocol::UserRecord::fromStream(QDataStream &stream) {
+QDataStream &NP::UserRecord::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
     stream >> name;
     stream >> record;
     return stream;
 }
 
-QDataStream &NetworkProtocol::UserRecord::toStream(QDataStream &stream) const {
+QDataStream &NP::UserRecord::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
     stream << name;
     stream << record;

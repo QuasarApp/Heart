@@ -5,7 +5,7 @@
 
 #include <dbobject.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 class SqlDBCache;
 class SqlDBWriter;
@@ -64,7 +64,7 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
 signals:
-    void incomingData(QSharedPointer<AbstractData> pkg,
+    void incomingData(SP<AbstractData> pkg,
                       const QHostAddress&  sender);
 
     void requestError(QString msg);
@@ -85,7 +85,7 @@ protected:
      * @return
      */
     ParserResult parsePackage(const Package &pkg,
-                              const QWeakPointer<AbstractNodeInfo> &sender) override;
+                              const WP<AbstractNodeInfo> &sender) override;
 
 
     /**
@@ -94,16 +94,16 @@ protected:
      */
     virtual QString hashgenerator(const QByteArray &pass);
 
-    QSharedPointer<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
+    SP<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
-    QWeakPointer<SqlDBCache> db() const;
+    WP<SqlDBCache> db() const;
 
-    bool workWithSubscribe(const QWeakPointer<AbstractData> &rec,
+    bool workWithSubscribe(const WP<AbstractData> &rec,
                            const QHostAddress &address);
 
 private:
-    QSharedPointer<SqlDBCache> _db;
-    bool workWithAvailableDataRequest(const QWeakPointer<AbstractData> &rec,
+    SP<SqlDBCache> _db;
+    bool workWithAvailableDataRequest(const WP<AbstractData> &rec,
                                       const QHostAddress &addere,
                                       const Header *rHeader);
 

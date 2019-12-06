@@ -2,7 +2,7 @@
 #define ABSTRACTHEADER_H
 #include "networkprotocol_global.h"
 
-namespace NetworkProtocol {
+namespace NP {
 /**
  * @brief The Header struct 6 byte
  */

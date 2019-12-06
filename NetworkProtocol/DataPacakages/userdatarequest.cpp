@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 UserDataRequest::UserDataRequest()
     : UserData() {

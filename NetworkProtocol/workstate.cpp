@@ -2,7 +2,7 @@
 
 #include <QHostAddress>
 
-namespace NetworkProtocol{
+namespace NP{
 
 bool WorkState::getIsRun() const {
     return isRun;

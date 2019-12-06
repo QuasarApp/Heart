@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include <networkprotocol_global.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The AccessToken class - contains info about token and duration of token

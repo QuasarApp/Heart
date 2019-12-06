@@ -2,13 +2,13 @@
 
 #include <dbobject.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 DbObjectsFactory::DbObjectsFactory() {
 
 }
 
-QSharedPointer<DBObject> DbObjectsFactory::factory(const QString & table) {
+SP<DBObject> DbObjectsFactory::factory(const QString & table) {
     return instance()->_data.value(table)->factory();
 }
 
@@ -17,7 +17,7 @@ DbObjectsFactory *DbObjectsFactory::instance() {
     return i;
 }
 
-bool DbObjectsFactory::registerObject(const QString & key, QSharedPointer<DBObject> obj) {
+bool DbObjectsFactory::registerObject(const QString & key, SP<DBObject> obj) {
     if (obj.isNull())
         return false;
 

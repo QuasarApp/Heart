@@ -3,7 +3,7 @@
 #include "websocketcontroller.h"
 #include <quasarapp.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 WebSocketController::WebSocketController(AbstractNode *node) {
@@ -11,7 +11,7 @@ WebSocketController::WebSocketController(AbstractNode *node) {
     assert(_node);
 }
 
-bool WebSocketController::subscribe(QSharedPointer<AbstractNodeInfo> subscriber,
+bool WebSocketController::subscribe(SP<AbstractNodeInfo> subscriber,
                                     const DbAddress &item) {
 
     _subscribs[item].insert(subscriber);
@@ -20,7 +20,7 @@ bool WebSocketController::subscribe(QSharedPointer<AbstractNodeInfo> subscriber,
     return true;
 }
 
-void WebSocketController::unsubscribe(QSharedPointer<AbstractNodeInfo> subscriber,
+void WebSocketController::unsubscribe(SP<AbstractNodeInfo> subscriber,
                                       const DbAddress& item) {
     _subscribs[item].remove(subscriber);
     _items[subscriber].remove(item);
@@ -28,11 +28,11 @@ void WebSocketController::unsubscribe(QSharedPointer<AbstractNodeInfo> subscribe
 }
 
 const QSet<DbAddress> &WebSocketController::list(
-        QSharedPointer<AbstractNodeInfo> node) {
+        SP<AbstractNodeInfo> node) {
     return _items[node];
 }
 
-void WebSocketController::handleItemChanged(const QWeakPointer<AbstractData> &item) {
+void WebSocketController::handleItemChanged(const WP<AbstractData> &item) {
     auto obj = item.toStrongRef().dynamicCast<DBObject>();
     if (obj.isNull() || !obj->isValid())
         return;
@@ -40,8 +40,8 @@ void WebSocketController::handleItemChanged(const QWeakPointer<AbstractData> &it
     foreachSubscribers(item, _subscribs.value(obj->dbAddress()));
 }
 
-void WebSocketController::foreachSubscribers(const QWeakPointer<AbstractData> &item,
-                                             const QSet<QSharedPointer<AbstractNodeInfo>> &subscribersList) {
+void WebSocketController::foreachSubscribers(const WP<AbstractData> &item,
+                                             const QSet<SP<AbstractNodeInfo>> &subscribersList) {
 
     auto ref = item.toStrongRef().dynamicCast<DBObject>();
 

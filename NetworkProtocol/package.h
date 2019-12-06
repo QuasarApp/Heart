@@ -5,7 +5,7 @@
 
 #include <QByteArray>
 
-namespace NetworkProtocol {
+namespace NP {
 
 class Abstract;
 /**

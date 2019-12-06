@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 DBObjectQuery::DBObjectQuery(const QString& table):
     DBObject(table) {

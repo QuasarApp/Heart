@@ -4,7 +4,7 @@
 #include "basenode.h"
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 class RatingUserNode: public BaseNode
@@ -15,9 +15,9 @@ public:
 
     // AbstractNode interface
 protected:
-    ParserResult parsePackage(const Package &pkg, const QWeakPointer<AbstractNodeInfo> &sender) override;
+    ParserResult parsePackage(const Package &pkg, const WP<AbstractNodeInfo> &sender) override;
     QVariantMap defaultDbParams() const override;
-    bool workWithUserRequest(const QWeakPointer<AbstractData> &,
+    bool workWithUserRequest(const WP<AbstractData> &,
                              const QHostAddress &addere,
                              const Header *rHeader);
 
@@ -29,7 +29,7 @@ private:
      * @param address
      * @return
      */
-    bool registerNewUser(const QWeakPointer<AbstractData> &user,
+    bool registerNewUser(const WP<AbstractData> &user,
                          const QHostAddress &address);
 
     /**
@@ -38,8 +38,8 @@ private:
      * @param address
      * @return
      */
-    bool loginUser(const QWeakPointer<AbstractData> &user,
-                   const QWeakPointer<AbstractData> &userdb,
+    bool loginUser(const WP<AbstractData> &user,
+                   const WP<AbstractData> &userdb,
                    const QHostAddress &address);
 };
 

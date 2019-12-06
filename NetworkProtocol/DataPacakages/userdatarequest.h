@@ -5,7 +5,7 @@
 #include "userdata.h"
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 enum class UserDataRequestCmd: unsigned char {
     Invalid,

@@ -5,7 +5,7 @@
 
 #include <accesstoken.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The UserData class - is default implementation of users items of database
@@ -47,7 +47,7 @@ public:
 
     void clear() override;
     bool isValid() const override;
-    QSharedPointer<DBObject> factory() override;
+    SP<DBObject> factory() override;
 
 
     const AccessToken& token() const;

@@ -2,7 +2,7 @@
 #include <QCryptographicHash>
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 QByteArray AccessToken::generate(const QByteArray &entropy) {
 

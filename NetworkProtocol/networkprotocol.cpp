@@ -3,6 +3,6 @@
 #include <QDataStream>
 #include <QVariantMap>
 
-namespace NetworkProtocol {
+namespace NP {
 
 }

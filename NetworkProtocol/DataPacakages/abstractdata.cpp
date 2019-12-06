@@ -5,7 +5,7 @@
 #include "networkprotocol.h"
 #include <limits>
 
-namespace NetworkProtocol {
+namespace NP {
 
 unsigned int AbstractData::cmd() const {
     return _cmd;

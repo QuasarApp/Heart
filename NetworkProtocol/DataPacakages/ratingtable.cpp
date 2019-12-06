@@ -4,7 +4,7 @@
 #include <QSharedPointer>
 #include <QSqlQuery>
 
-namespace NetworkProtocol {
+namespace NP {
 
 int RatingTable::id = 0;
 QString RatingTable::table = "users";
@@ -34,8 +34,8 @@ QDataStream &RatingTable::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QSharedPointer<DBObject> RatingTable::factory() {
-    return QSharedPointer<RatingTable>::create();
+SP<DBObject> RatingTable::factory() {
+    return SP<RatingTable>::create();
 }
 
 bool RatingTable::select(QSqlQuery &q) {

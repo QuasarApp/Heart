@@ -4,21 +4,21 @@
 
 #include <QSharedPointer>
 
-namespace NetworkProtocol {
+namespace NP {
 
 class DBObject;
 
 class NETWORKPROTOCOLSHARED_EXPORT DbObjectsFactory
 {
 public:
-    static QSharedPointer<DBObject> factory(const QString&);
+    static SP<DBObject> factory(const QString&);
     static DbObjectsFactory* instance();
-    bool registerObject(const QString&key, QSharedPointer<DBObject> obj);
+    bool registerObject(const QString&key, SP<DBObject> obj);
 
 private:
     DbObjectsFactory();
 
-    QHash<QString, QSharedPointer<DBObject>> _data;
+    QHash<QString, SP<DBObject>> _data;
 
 };
 }

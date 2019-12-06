@@ -1,5 +1,5 @@
 #include "request.h"
-namespace NetworkProtocol {
+namespace NP {
 
 Request::Request() {
 

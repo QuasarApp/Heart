@@ -6,7 +6,7 @@
 #include <accesstoken.h>
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 class AvailableDataRequest :public AvailableData {
 public:

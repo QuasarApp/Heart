@@ -7,7 +7,7 @@
 
 #include "networkprotocol_global.h"
 
-namespace NetworkProtocol {
+namespace NP {
 
 class DBObject;
 

@@ -1,12 +1,11 @@
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
 #include "package.h"
-
 #include <streambase.h>
 
 #define INIT_COMMAND generateId<decltype (*this)>();
 
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The AbstractData class

@@ -1,7 +1,7 @@
 #ifndef IREQUEST_H
 #define IREQUEST_H
 
-namespace NetworkProtocol {
+namespace NP {
 
 class Request
 {

@@ -15,9 +15,9 @@
 #include <websocketsubscriptions.h>
 #include <websocketcontroller.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
-BaseNode::BaseNode(NetworkProtocol::SslMode mode, QObject *ptr):
+BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
     _webSocketWorker = new WebSocketController(this);
@@ -68,15 +68,15 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
         cache = new SqlDBCache();
     }
 
-    cache->setWriter(QSharedPointer<SqlDBWriter>(writer));
-    _db = QSharedPointer<SqlDBCache>(cache);
+    cache->setWriter(SP<SqlDBWriter>(writer));
+    _db = SP<SqlDBCache>(cache);
 
     connect(_db.data(), &SqlDBCache::sigItemChanged,
             _webSocketWorker, &WebSocketController::handleItemChanged);
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
-                                    const QWeakPointer<AbstractNodeInfo>& sender) {
+                                    const WP<AbstractNodeInfo>& sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
@@ -85,13 +85,13 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     auto strongSender = sender.toStrongRef();
 
     if (BadRequest().cmd() == pkg.hdr.command) {
-        auto cmd = QSharedPointer<BadRequest>::create(pkg);
+        auto cmd = SP<BadRequest>::create(pkg);
         emit requestError(cmd->err());
 
         return ParserResult::Processed;
 
     } else if (TransportData().cmd() == pkg.hdr.command) {
-        auto cmd = QSharedPointer<TransportData>::create(pkg);
+        auto cmd = SP<TransportData>::create(pkg);
 
         if (cmd->address() == serverAddress()) {
             return parsePackage(cmd->data(), sender);
@@ -107,7 +107,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
     } else if (AvailableDataRequest().cmd() == pkg.hdr.command) {
-        auto cmd = QSharedPointer<AvailableDataRequest>::create(pkg);
+        auto cmd = SP<AvailableDataRequest>::create(pkg);
 
         if (!cmd->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -122,7 +122,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 
     } else if (AvailableData().cmd() == pkg.hdr.command) {
-        auto obj = QSharedPointer<AvailableData>::create(pkg);
+        auto obj = SP<AvailableData>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
             return ParserResult::Error;
@@ -132,7 +132,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
     } else if (WebSocket().cmd() == pkg.hdr.command) {
-        auto obj = QSharedPointer<WebSocket>::create(pkg);
+        auto obj = SP<WebSocket>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
             return ParserResult::Error;
@@ -146,7 +146,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
     } else if (WebSocketSubscriptions().cmd() == pkg.hdr.command) {
-        auto obj = QSharedPointer<WebSocketSubscriptions>::create(pkg);
+        auto obj = SP<WebSocketSubscriptions>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
             return ParserResult::Error;
@@ -160,7 +160,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 }
 
-bool BaseNode::workWithAvailableDataRequest(const QWeakPointer<AbstractData> &rec,
+bool BaseNode::workWithAvailableDataRequest(const WP<AbstractData> &rec,
                                             const QHostAddress &address,
                                             const Header *rHeader) {
 
@@ -172,7 +172,7 @@ bool BaseNode::workWithAvailableDataRequest(const QWeakPointer<AbstractData> &re
     if (info.isNull())
         return false;
 
-    auto av = QSharedPointer<AvailableData>::create();
+    auto av = SP<AvailableData>::create();
     av->setData({});
 
     return sendData(av, address, rHeader);
@@ -185,16 +185,16 @@ QString BaseNode::hashgenerator(const QByteArray &pass) {
                 QCryptographicHash::Sha256);
 }
 
-QSharedPointer<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {
-    return  QSharedPointer<BaseNodeInfo>::create(socket);
+SP<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {
+    return  SP<BaseNodeInfo>::create(socket);
 }
 
-QWeakPointer<SqlDBCache> BaseNode::db() const {
+WP<SqlDBCache> BaseNode::db() const {
     return _db;
 }
 
 // TO-DO
-bool BaseNode::workWithSubscribe(const QWeakPointer<AbstractData> &rec,
+bool BaseNode::workWithSubscribe(const WP<AbstractData> &rec,
                                  const QHostAddress &address) {
 
     auto obj = rec.toStrongRef().dynamicCast<UserDataRequest>();
@@ -223,7 +223,7 @@ bool BaseNode::workWithSubscribe(const QWeakPointer<AbstractData> &rec,
 
     case WebSocketRequest::SubscribeList: {
 
-        auto resp = QSharedPointer<WebSocketSubscriptions>::create();
+        auto resp = SP<WebSocketSubscriptions>::create();
         resp->setAddresses(_webSocketWorker->list(info));
 
         return sendData(resp, address);

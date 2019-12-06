@@ -3,7 +3,7 @@
 #include "networkprotocol_global.h"
 #include <QString>
 
-namespace NetworkProtocol {
+namespace NP {
 
 struct NETWORKPROTOCOLSHARED_EXPORT DataBaseAddress
 {

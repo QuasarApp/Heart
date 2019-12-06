@@ -8,7 +8,7 @@
 #include <QByteArray>
 
 class QAbstractSocket;
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The Permission enum

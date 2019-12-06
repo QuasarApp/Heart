@@ -26,8 +26,8 @@ private:
 public:
     testProtockol();
 
-    void connectTest(NetworkProtocol::Client *cli, NetworkProtocol::BaseNode *serv);
-    void testLogin(NetworkProtocol::Client *cli);
+    void connectTest(NP::Client *cli, NP::BaseNode *serv);
+    void testLogin(NP::Client *cli);
 
     ~testProtockol();
 
@@ -45,13 +45,13 @@ testProtockol::testProtockol() {
 
 }
 
-void testProtockol::connectTest(NetworkProtocol::Client *cli, NetworkProtocol::BaseNode *serv) {
+void testProtockol::connectTest(NP::Client *cli, NP::BaseNode *serv) {
     QVERIFY(serv->run(TEST_LOCAL_HOST, TEST_PORT));
     QVERIFY(TestUtils::connectFunc(cli, TEST_LOCAL_HOST, TEST_PORT));
 }
 
 
-void testProtockol::testLogin(NetworkProtocol::Client* cli) {
+void testProtockol::testLogin(NP::Client* cli) {
     QVERIFY(TestUtils::loginFunc(cli, "user", "123", true, true));
     QVERIFY(TestUtils::loginFunc(cli, "user", "124", true, false));
 }
@@ -64,17 +64,17 @@ void testProtockol::initTestCase() {
 }
 
 void testProtockol::testPakageData() {
-    NetworkProtocol::BadRequest bad("Test");
-    NetworkProtocol::BadRequest bad1;
-    NetworkProtocol::BadRequest bad2;
+    NP::BadRequest bad("Test");
+    NP::BadRequest bad1;
+    NP::BadRequest bad2;
 
     QVERIFY(bad.cmd() == bad1.cmd() && bad.cmd() == bad2.cmd());
 
-    NetworkProtocol::Package pkg;
+    NP::Package pkg;
 
     QVERIFY(bad.toPackage(pkg));
 
-    NetworkProtocol::BadRequest res(pkg);
+    NP::BadRequest res(pkg);
 
     QVERIFY(bad.cmd() == res.cmd());
     QVERIFY(bad.err() == res.err());
@@ -82,7 +82,7 @@ void testProtockol::testPakageData() {
 }
 
 void testProtockol::testBaseNode() {
-    NetworkProtocol::BaseNode node, node2;
+    NP::BaseNode node, node2;
 
     const int port1 = TEST_PORT + 1;
     const int port2 = TEST_PORT + 2;
@@ -107,8 +107,8 @@ void testProtockol::testUser() {
 
     QTimer::singleShot(0, [&app, this]() {
 
-        NetworkProtocol::RatingUserNode *server = new NetworkProtocol::RatingUserNode();
-        NetworkProtocol::Client * client = new NetworkProtocol::Client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+        NP::RatingUserNode *server = new NP::RatingUserNode();
+        NP::Client * client = new NP::Client(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
 
         connectTest(client, server);
         testLogin(client);

@@ -3,7 +3,7 @@
 
 #include "dbobject.h"
 
-namespace NetworkProtocol {
+namespace NP {
 
 class NETWORKPROTOCOLSHARED_EXPORT DBObjectQuery : public DBObject
 {

@@ -3,7 +3,7 @@
 #include <QAbstractSocket>
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 
 AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct) {
     setSct(sct);

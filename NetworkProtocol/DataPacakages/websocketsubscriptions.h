@@ -7,7 +7,7 @@
 #include <dbaddress.h>
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 class NETWORKPROTOCOLSHARED_EXPORT WebSocketSubscriptions: public AbstractData
 {

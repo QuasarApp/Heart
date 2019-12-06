@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 #include <QSharedPointer>
-namespace NetworkProtocol {
+namespace NP {
 
 WebSocket::WebSocket(): DBObject(""){
     INIT_COMMAND
@@ -30,7 +30,7 @@ bool WebSocket::isValid() const {
             && AbstractData::isValid();
 }
 
-QSharedPointer<DBObject> WebSocket::factory() {return {nullptr};}
+SP<DBObject> WebSocket::factory() {return {nullptr};}
 
 bool WebSocket::select(QSqlQuery &) { return false; }
 

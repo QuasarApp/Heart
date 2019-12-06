@@ -6,7 +6,7 @@
 #include <dbobject.h>
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 class AbstractNodeInfo;
 class AbstractNode;
@@ -20,23 +20,23 @@ class NETWORKPROTOCOLSHARED_EXPORT WebSocketController : public QObject
 
 public:
     WebSocketController(AbstractNode *node);
-    bool subscribe(QSharedPointer<AbstractNodeInfo> subscriber,
+    bool subscribe(SP<AbstractNodeInfo> subscriber,
                    const DbAddress &item);
 
-    void unsubscribe(QSharedPointer<AbstractNodeInfo> subscriber,
+    void unsubscribe(SP<AbstractNodeInfo> subscriber,
                      const DbAddress &item);
 
-    const QSet<DbAddress> &list(QSharedPointer<AbstractNodeInfo> node);
+    const QSet<DbAddress> &list(SP<AbstractNodeInfo> node);
 
 public slots:
-    void handleItemChanged(const QWeakPointer<AbstractData> &item);
+    void handleItemChanged(const WP<AbstractData> &item);
 
 private:
-    void foreachSubscribers(const QWeakPointer<AbstractData> &item,
-                            const QSet<QSharedPointer<AbstractNodeInfo>> &subscribersList);
+    void foreachSubscribers(const WP<AbstractData> &item,
+                            const QSet<SP<AbstractNodeInfo>> &subscribersList);
 
-    QHash<DbAddress, QSet<QSharedPointer<AbstractNodeInfo>>> _subscribs;
-    QHash<QSharedPointer<AbstractNodeInfo>, QSet<DbAddress>> _items;
+    QHash<DbAddress, QSet<SP<AbstractNodeInfo>>> _subscribs;
+    QHash<SP<AbstractNodeInfo>, QSet<DbAddress>> _items;
 
     AbstractNode *_node = nullptr;
 

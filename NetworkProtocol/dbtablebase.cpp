@@ -2,7 +2,7 @@
 
 #include <QSet>
 
-namespace NetworkProtocol {
+namespace NP {
 
 
 QString DbTableBase::lastIdQuery() const {

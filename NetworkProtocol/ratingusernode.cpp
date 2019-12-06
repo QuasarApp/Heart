@@ -7,14 +7,14 @@
 #include <quasarapp.h>
 #include <ratingtable.h>
 
-namespace NetworkProtocol {
+namespace NP {
 
 RatingUserNode::RatingUserNode() {
 
 }
 
 ParserResult RatingUserNode::parsePackage(const Package &pkg,
-                                    const QWeakPointer<AbstractNodeInfo> &sender) {
+                                    const WP<AbstractNodeInfo> &sender) {
 
     auto parentResult = BaseNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
@@ -24,7 +24,7 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
     auto strongSender = sender.toStrongRef();
 
     if (UserDataRequest().cmd() == pkg.hdr.command) {
-        auto cmd = QSharedPointer<UserDataRequest>::create(pkg);
+        auto cmd = SP<UserDataRequest>::create(pkg);
 
         if (!cmd->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -39,7 +39,7 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
 
 
     } else if (UserData().cmd() == pkg.hdr.command) {
-        auto obj = QSharedPointer<UserData>::create(pkg);
+        auto obj = SP<UserData>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
             return ParserResult::Error;
@@ -50,7 +50,7 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
 
     } else if (RatingTable().cmd() == pkg.hdr.command) {
 
-        auto obj = QSharedPointer<RatingTable>::create(pkg);
+        auto obj = SP<RatingTable>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
             return ParserResult::Error;
@@ -69,7 +69,7 @@ QVariantMap RatingUserNode::defaultDbParams() const {
 }
 
 // bug : user register with id -1 it is all permision to write into all users table.
-bool RatingUserNode::registerNewUser(const QWeakPointer<AbstractData>& user,
+bool RatingUserNode::registerNewUser(const WP<AbstractData>& user,
                                        const QHostAddress& address) {
     auto strongUser = user.toStrongRef().dynamicCast<UserData>();
 
@@ -98,8 +98,8 @@ bool RatingUserNode::registerNewUser(const QWeakPointer<AbstractData>& user,
     return true;
 }
 
-bool RatingUserNode::loginUser(const QWeakPointer<AbstractData>& user,
-                         const QWeakPointer<AbstractData>& userdb,
+bool RatingUserNode::loginUser(const WP<AbstractData>& user,
+                         const WP<AbstractData>& userdb,
                          const QHostAddress& address) {
     auto strongUser = user.toStrongRef().dynamicCast<UserData>();
 
@@ -134,7 +134,7 @@ bool RatingUserNode::loginUser(const QWeakPointer<AbstractData>& user,
     return false;
 }
 
-bool RatingUserNode::workWithUserRequest(const QWeakPointer<AbstractData> &rec,
+bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
                                            const QHostAddress &addere,
                                            const Header *rHeader) {
 
@@ -167,7 +167,7 @@ bool RatingUserNode::workWithUserRequest(const QWeakPointer<AbstractData> &rec,
             return false;
         }
 
-        auto res = QSharedPointer<UserData>::create().dynamicCast<DBObject>();
+        auto res = SP<UserData>::create().dynamicCast<DBObject>();
         if (!_db->getObject(res)) {
             return false;
         }
@@ -211,7 +211,7 @@ bool RatingUserNode::workWithUserRequest(const QWeakPointer<AbstractData> &rec,
 
     case UserDataRequestCmd::Login: {
 
-        auto res = QSharedPointer<UserData>::create().dynamicCast<DBObject>();
+        auto res = SP<UserData>::create().dynamicCast<DBObject>();
         _db->getObject(res);
 
         if (res->isValid()) {
@@ -226,7 +226,7 @@ bool RatingUserNode::workWithUserRequest(const QWeakPointer<AbstractData> &rec,
             }
         }
 
-        if (!sendData(rec, addere, rHeader)) {
+        if (!sendData(res, addere, rHeader)) {
             QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;

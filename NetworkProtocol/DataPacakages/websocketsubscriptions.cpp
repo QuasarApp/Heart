@@ -2,14 +2,14 @@
 
 #include <QDataStream>
 
-namespace NetworkProtocol {
+namespace NP {
 WebSocketSubscriptions::WebSocketSubscriptions()
 {
     INIT_COMMAND
 
 }
 
-WebSocketSubscriptions::WebSocketSubscriptions(const NetworkProtocol::Package &package):
+WebSocketSubscriptions::WebSocketSubscriptions(const NP::Package &package):
     WebSocketSubscriptions()
 {
     fromBytes(package.data);

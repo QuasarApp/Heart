@@ -4,7 +4,7 @@
 #include "abstractdata.h"
 
 
-namespace NetworkProtocol {
+namespace NP {
 
 /**
  * @brief The UserRecord class

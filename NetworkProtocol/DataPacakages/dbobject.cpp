@@ -7,9 +7,10 @@
 #include <QSqlRecord>
 #include <QVariantMap>
 
-namespace NetworkProtocol {
+namespace NP {
 
 DBObject::DBObject(const QString &tableName) {
+    clear();
     _tableName = tableName;
 }
 
