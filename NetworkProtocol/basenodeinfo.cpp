@@ -5,7 +5,7 @@
 namespace NP {
 
 bool BaseNodeInfo::isValid() const {
-    return AbstractNodeInfo::isValid() && !_token.isValid();
+    return AbstractNodeInfo::isValid();
 }
 
 BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp):

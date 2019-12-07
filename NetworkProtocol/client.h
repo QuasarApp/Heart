@@ -26,6 +26,7 @@ public:
     bool connectClient();
     void setHost(const QHostAddress& address, unsigned short port);
     bool login(const QString& userMail, const QByteArray& rawPath);
+    bool logout();
     bool syncUserData();
 
     Q_INVOKABLE int status() const;

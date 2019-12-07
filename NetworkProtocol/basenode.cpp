@@ -87,6 +87,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     if (BadRequest().cmd() == pkg.hdr.command) {
         auto cmd = SP<BadRequest>::create(pkg);
         emit requestError(cmd->err());
+        emit incomingData(cmd, strongSender->id());
 
         return ParserResult::Processed;
 

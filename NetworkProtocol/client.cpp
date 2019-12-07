@@ -49,6 +49,14 @@ bool Client::login(const QString &userMail, const QByteArray &rawPath) {
     return _user->copyFrom(user.data()) && sendData(user, _address);
 }
 
+bool Client::logout() {
+    _user->setToken(AccessToken());
+
+    if (status() == Logined)
+        setStatus(Online);
+    return !_user->token().isValid();
+}
+
 bool Client::syncUserData() {
     if (_status == Status::Offline) {
         return false;

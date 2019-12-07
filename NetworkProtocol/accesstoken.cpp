@@ -27,8 +27,14 @@ AccessToken::AccessToken() = default;
 AccessToken::AccessToken(const AccessToken &other) = default;
 
 bool AccessToken::isValid() const {
-    return _duration > QDateTime::currentSecsSinceEpoch() &&
-            _data.size() == 32;
+    return (_duration > QDateTime::currentSecsSinceEpoch()) &&
+            (_data.size() == 32);
+}
+
+void AccessToken::clear()
+{
+    _data.clear();
+    _duration = 0;
 }
 
 bool AccessToken::operator ==(const AccessToken &other) const {

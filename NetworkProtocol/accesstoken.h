@@ -50,6 +50,11 @@ public:
      */
     bool isValid() const;
 
+    /**
+     * @brief clear - reset all data of token
+     */
+    void clear();
+
     friend QDataStream& operator<<(QDataStream& stream, const AccessToken& token);
     friend QDataStream& operator>>(QDataStream& stream, AccessToken& token);
     bool operator == (const AccessToken& other) const;

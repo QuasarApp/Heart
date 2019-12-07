@@ -50,10 +50,14 @@ void testProtockol::connectTest(NP::Client *cli, NP::BaseNode *serv) {
     QVERIFY(TestUtils::connectFunc(cli, TEST_LOCAL_HOST, TEST_PORT));
 }
 
-
 void testProtockol::testLogin(NP::Client* cli) {
     QVERIFY(TestUtils::loginFunc(cli, "user", "123", true, true));
+    QVERIFY(cli->logout());
     QVERIFY(TestUtils::loginFunc(cli, "user", "124", true, false));
+    QVERIFY(TestUtils::loginFunc(cli, "user", "124", true, false));
+    QVERIFY(TestUtils::loginFunc(cli, "user", "123", true, true));
+    QVERIFY(cli->logout());
+
 }
 
 testProtockol::~testProtockol() {
