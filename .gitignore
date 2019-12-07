@@ -28,6 +28,10 @@ ui_*.h
 *.jsc
 Makefile*
 *build-*
+ServerProtocol/build/
+ClientProtocol/build/
+ProtocolTests/build/
+NetworkProtocol/build/
 
 # Qt unit tests
 target_wrapper.*
