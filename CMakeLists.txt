@@ -10,6 +10,6 @@ project(MainNetworkProtocol)
 
 # Add sub directories
 add_subdirectory(QuasarAppLib)
-
+add_subdirectory(openssl-cmake)
 add_subdirectory(NetworkProtocol)
 
