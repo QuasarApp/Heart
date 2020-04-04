@@ -8,8 +8,12 @@
 cmake_minimum_required(VERSION 3.1)
 project(MainNetworkProtocol)
 
+include(QuasarAppLib/CMake/ccache.cmake)
+
 # Add sub directories
 add_subdirectory(QuasarAppLib)
 add_subdirectory(openssl-cmake)
 add_subdirectory(NetworkProtocol)
+add_subdirectory(ProtocolTests)
+
 

@@ -7,11 +7,9 @@
 
 cmake_minimum_required(VERSION 3.1)
 
-project(NetworkProtocol LANGUAGES CXX)
+project(NetworkProtocolTest LANGUAGES CXX)
 
 include(../QuasarAppLib/CMake/ProjectOut.cmake)
-include(../QuasarAppLib/CMake/Version.cmake)
-
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -19,15 +17,16 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(Qt5 COMPONENTS Core Test REQUIRED)
 
 file(GLOB SOURCE_CPP
     "*.cpp" "DataPacakages/*.cpp"
 )
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Network Qt5::Sql Qt5::Concurrent QuasarApp crypto ssl)
+add_executable(${PROJECT_NAME} ${SOURCE_CPP})
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Test NetworkProtocol)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/DataPacakages)
 
-setVersion(1 1 0)
+include(../QuasarAppLib/CMake/QuasarAppCITargets.cmake)
+initTests(${PROJECT_NAME})
