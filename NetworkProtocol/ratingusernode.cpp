@@ -150,7 +150,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
     auto _db = db().toStrongRef();
 
     if (_db.isNull()) {
-        QuasarAppUtils::Params::verboseLog("Server not inited (db is null)",
+        QuasarAppUtils::Params::log("Server not inited (db is null)",
                                            QuasarAppUtils::Error);
         return false;
     }
@@ -173,7 +173,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
         }
 
         if (!sendData(res, addere, rHeader)) {
-            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
         }
@@ -193,13 +193,13 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
         }
 
         if(!_db->saveObject(rec)) {
-            QuasarAppUtils::Params::verboseLog("do not saved object in database!" + addere.toString(),
+            QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
                                                QuasarAppUtils::Error);
             return false;
         }
 
         if (!sendData(rec, addere, rHeader)) {
-            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
         }
@@ -228,7 +228,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
         }
 
         if (!sendData(res, addere, rHeader)) {
-            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
         }
@@ -239,14 +239,14 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
     case UserDataRequestCmd::Delete: {
 
         if(!_db->deleteObject(rec)) {
-            QuasarAppUtils::Params::verboseLog("do not deleted object from database!" + addere.toString(),
+            QuasarAppUtils::Params::log("do not deleted object from database!" + addere.toString(),
                                                QuasarAppUtils::Error);
             return false;
         }
 
 
         if (!sendData(rec, addere, rHeader)) {
-            QuasarAppUtils::Params::verboseLog("responce not sendet to" + addere.toString(),
+            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
                                                QuasarAppUtils::Warning);
             return false;
         }

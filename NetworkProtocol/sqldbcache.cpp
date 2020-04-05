@@ -27,20 +27,20 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
                 if (!saveObject->isValid()) {
                     deleteFromCache(listIt.key(), id);
 
-                    QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
+                    QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
                                                        " db object is not valid! id=" + QString::number(id),
                                                        QuasarAppUtils::VerboseLvl::Error);
                     continue;
                 }
 
                  if (!_writer->saveObject(saveObject)) {
-                     QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
+                     QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
                                                         " work globalUpdateDataRelease!!! id=" +
                                                          QString::number(id),
                                                         QuasarAppUtils::VerboseLvl::Error);
                  }
 
-                 QuasarAppUtils::Params::verboseLog("writeUpdateItemIntoDB failed when"
+                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
                                                     " db writer is npt inited! ",
                                                     QuasarAppUtils::VerboseLvl::Error);
             }

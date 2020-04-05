@@ -52,7 +52,7 @@ void WebSocketController::foreachSubscribers(const WP<AbstractData> &item,
 
         if (!subscriber.isNull() && subscriber->isValid()) {
             if (!_node->sendData(item, subscriber->id())) {
-                QuasarAppUtils::Params::verboseLog("Send update failed for " + subscriber->id().toString(),
+                QuasarAppUtils::Params::log("Send update failed for " + subscriber->id().toString(),
                                                    QuasarAppUtils::Warning);
             }
         } else {

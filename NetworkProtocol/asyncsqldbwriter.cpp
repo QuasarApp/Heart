@@ -36,14 +36,14 @@ bool AsyncSqlDbWriter::deleteObject(const WP<AbstractData>& deleteObject) {
 
 void AsyncSqlDbWriter::handleSaveObject(SP<DBObject> saveObject) {
     if (!SqlDBWriter::saveObject(saveObject)) {
-        QuasarAppUtils::Params::verboseLog("AsyncSqlDbWriter: save object fail!",
+        QuasarAppUtils::Params::log("AsyncSqlDbWriter: save object fail!",
                                            QuasarAppUtils::Error);
     }
 }
 
 void AsyncSqlDbWriter::handleDeleteObject(SP<DBObject> deleteObject) {
     if (!SqlDBWriter::deleteObject(deleteObject)) {
-        QuasarAppUtils::Params::verboseLog("AsyncSqlDbWriter: delete object fail!",
+        QuasarAppUtils::Params::log("AsyncSqlDbWriter: delete object fail!",
                                            QuasarAppUtils::Error);
     }
 }
