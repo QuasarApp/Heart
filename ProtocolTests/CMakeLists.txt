@@ -8,6 +8,10 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(NetworkProtocolTest LANGUAGES CXX)
+if(TARGET ${PROJECT_NAME})
+  message("The ${PROJECT_NAME} arledy included in main Project")
+  return()
+endif()
 
 include(../QuasarAppLib/CMake/ProjectOut.cmake)
 
