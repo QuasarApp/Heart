@@ -20,4 +20,5 @@ add_subdirectory(openssl/cmake)
 add_subdirectory(NetworkProtocol)
 add_subdirectory(ProtocolTests)
 
+add_dependencies(NetworkProtocol openssl)
 
