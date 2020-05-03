@@ -2,6 +2,3 @@
 	path = QuasarAppLib
 	url = https://github.com/QuasarApp/QuasarAppLib.git
 
-[submodule "openssl"]
-	path = openssl
-	url = https://github.com/QuasarApp/openssl-cmake-1.git
