@@ -22,7 +22,7 @@ add_definitions(-DNETWORKPROTOCOL_LIBRARY)
 find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
 file(GLOB SOURCE_CPP
-    "*.cpp" "DataPacakages/*.cpp"
+    "*.cpp" "*.qrc" "DataPacakages/*.cpp"
 )
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_CPP})
