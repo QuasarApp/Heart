@@ -5,13 +5,9 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.10)
 
-project(NetworkProtocolTest LANGUAGES CXX)
-if(TARGET ${PROJECT_NAME})
-  message("The ${PROJECT_NAME} arledy included in main Project")
-  return()
-endif()
+set(CURRENT_PROJECT ${PROJECT_NAME}Test)
 
 include(../QuasarAppLib/CMake/ProjectOut.cmake)
 
@@ -27,12 +23,12 @@ file(GLOB SOURCE_CPP
     "*.cpp" "DataPacakages/*.cpp"
 )
 
-add_executable(${PROJECT_NAME} ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Test NetworkProtocol)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/DataPacakages)
+add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
+target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt5::Test NetworkProtocol)
+target_include_directories(${CURRENT_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(${CURRENT_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/DataPacakages)
 
 include(../QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 
-addTests("NetworkProtokol" ${PROJECT_NAME})
+addTests("NetworkProtokol" ${CURRENT_PROJECT})
 initTests()

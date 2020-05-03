@@ -5,8 +5,8 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.1)
-project(MainNetworkProtocol)
+cmake_minimum_required(VERSION 3.10)
+project(NetworkProtocol)
 if(TARGET ${PROJECT_NAME})
   message("The ${PROJECT_NAME} arledy included in main Project")
   return()

@@ -5,14 +5,7 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.1)
-
-project(NetworkProtocol LANGUAGES CXX)
-
-if(TARGET ${PROJECT_NAME})
-  message("The ${PROJECT_NAME} arledy included in main Project")
-  return()
-endif()
+cmake_minimum_required(VERSION 3.10)
 
 include(../QuasarAppLib/CMake/ProjectOut.cmake)
 include(../QuasarAppLib/CMake/Version.cmake)
@@ -23,6 +16,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+add_definitions(-DNETWORKPROTOCOL_LIBRARY)
 
 find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
