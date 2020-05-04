@@ -20,7 +20,12 @@ AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
-    if (!listen(QHostAddress(addres), port)) {
+    QHostAddress adr(addres);
+    if (addres.isEmpty()) {
+        adr = QHostAddress::Any;
+    }
+
+    if (!listen(adr, port)) {
         QuasarAppUtils::Params::log("Run fail " + this->errorString(),
                                            QuasarAppUtils::Error);
         return false;

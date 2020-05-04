@@ -48,7 +48,7 @@ public:
 
     /**
      * @brief run server on address an port
-     * @param addres
+     * @param addres - If address is empty then serve weel be listen all addreses of all interfaces
      * @param port
      * @return recomendet befor invoke this method call the intSqlDb.
      * If you skeap a call of intSqlDb method then data base inited with default parameters.

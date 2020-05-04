@@ -78,9 +78,9 @@ public:
 
     /**
      * @brief run
-     * @param addres
+     * @param addres - If address is empty then serve weel be listen all addreses of all interfaces
      * @param port
-     * @return
+     * @return true if all good
      */
     virtual bool run(const QString& addres, unsigned short port);
 
