@@ -14,6 +14,7 @@
 #include <QHash>
 #include <dbobject.h>
 #include <QSqlRecord>
+#include <QStandardPaths>
 
 namespace NP {
 
@@ -115,7 +116,6 @@ QVariantMap SqlDBWriter::defaultInitPararm() const {
     QVariantMap params;
     params["DBDriver"] = "QSQLITE";
     params["DBFile"] = DEFAULT_DB_PATH;
-
     return params;
 }
 
