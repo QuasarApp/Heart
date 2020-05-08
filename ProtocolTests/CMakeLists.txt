@@ -29,6 +29,5 @@ target_include_directories(${CURRENT_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/DataPacakages)
 
 include(../QuasarAppLib/CMake/QuasarAppCITargets.cmake)
-
-addTests("NetworkProtokol" ${CURRENT_PROJECT})
 initTests()
+addTests("NetworkProtokol" ${CURRENT_PROJECT})
