@@ -36,7 +36,7 @@ public:
      * @param writer - new SqlDBWriter
      * @return true if all good
      */
-    virtual bool intSqlDb( QString DBparamsFile = "",
+    virtual bool initSqlDb( QString DBparamsFile = "",
                            SqlDBCache * cache = nullptr,
                            SqlDBWriter* writer = nullptr);
 

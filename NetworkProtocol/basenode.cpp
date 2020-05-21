@@ -14,6 +14,7 @@
 #include <websocket.h>
 #include <websocketsubscriptions.h>
 #include <websocketcontroller.h>
+#include <QCoreApplication>
 
 namespace NP {
 
@@ -23,7 +24,7 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     _webSocketWorker = new WebSocketController(this);
 }
 
-bool BaseNode::intSqlDb(QString DBparamsFile,
+bool BaseNode::initSqlDb(QString DBparamsFile,
                         SqlDBCache *cache,
                         SqlDBWriter *writer) {
 
@@ -48,7 +49,7 @@ bool BaseNode::isSqlInited() const {
 }
 
 bool BaseNode::run(const QString &addres, unsigned short port) {
-    if (!isSqlInited() && !intSqlDb()) {
+    if (!isSqlInited() && !initSqlDb()) {
         return false;
     }
 
