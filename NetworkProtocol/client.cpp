@@ -21,9 +21,9 @@ Client::Client(const QHostAddress &address, unsigned short port):
 
 }
 
-Client::Client(const QString &address, unsigned short port):
+Client::Client(const QString &domain, unsigned short port):
     Client() {
-    setHost(address, port);
+    setHost(domain, port);
 }
 
 void Client::connectClient() {

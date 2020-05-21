@@ -6,7 +6,9 @@
 
 namespace NP {
 
-
+/**
+ * @brief The Client class - this is cleent inplementation of RegiserUserNode. This class support qml
+ */
 class NETWORKPROTOCOLSHARED_EXPORT Client: public RatingUserNode
 {
     Q_OBJECT
@@ -14,29 +16,98 @@ class NETWORKPROTOCOLSHARED_EXPORT Client: public RatingUserNode
     Q_PROPERTY(QString lastMessage READ lastMessage WRITE setLastMessage NOTIFY lastMessageChanged)
 
 public:
+
+    /**
+     * @brief The Status enum
+     */
     enum Status {
+        /// node if offline.
         Offline,
+
+        /// node is connected to host
         Online,
+
+        /// node logined seccussful
         Logined
     };
 
+    /**
+     * @brief Client
+     */
     explicit Client();
-    explicit Client(const QHostAddress& address, unsigned short port);
-    explicit Client(const QString& address, unsigned short port);
 
+    /**
+     * @brief Client - this constructor invoke a setHost method.
+     * @param address - ip address of remote host
+     * @param port - port of remote host
+     */
+    explicit Client(const QHostAddress& address, unsigned short port);
+
+    /**
+     * @brief Client - this constructor invoke a setHost method.
+     * @param domain - domain of remote host
+     * @param port port of remote host
+     */
+    explicit Client(const QString& domain, unsigned short port);
+
+    /**
+     * @brief connectClient - try connect to remote host uses information after call setHost method.
+     * @note if you use setHost for domain then connection attempt will be made after receiving the address from the dns server
+     *  else the connection will be established instantly.
+     */
     void connectClient();
 
-    void setHost(const QString &address, unsigned short port);
+    /**
+     * @brief setHost - this function set domain name of remote host, and after invoke the connectClient method try find a ip address on DNS server.
+     * @param domain - the domain address
+     * @param port - the port of remote host
+     */
+    void setHost(const QString &domain, unsigned short port);
+
+    /**
+     * @brief setHost - this function set ip address of remote host, and do not requarement DNS.
+     * @param address - the ip address of remote host
+     * @param por - the port of remote host.
+     */
     void setHost(const QHostAddress& address, unsigned short port);
 
+    /**
+     * @brief login - this method try login of user.
+     * @param userMail - the user email or unique id
+     * @param rawPath - this is string of user path (not hash)
+     * @return true if function finished successful
+     */
     bool login(const QString& userMail, const QByteArray& rawPath);
+
+    /**
+     * @brief logout - logaut from user acount
+     * @return true if function finished successful
+     */
     bool logout();
+
+    /**
+     * @brief syncUserData - this method send request for update user data to server (save current data)
+     * @return true if function finished successful
+     */
     bool syncUserData();
 
+    /**
+     * @brief status
+     * @return status of node
+     */
     Q_INVOKABLE int status() const;
+
+    /**
+     * @brief lastMessage
+     * @return last string massege
+     */
     Q_INVOKABLE QString lastMessage() const;
 
 protected:
+    /**
+     * @brief registerSocket this implementation connect new node to this object
+     * @return true if finished seccussful
+     */
     bool registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) override;
 
 private slots:
@@ -57,8 +128,17 @@ private:
 
 //    void handleNewSocketRegistered(QWeakPointer<AbstractNodeInfo> info);
 signals:
+
+    /**
+     * @brief statusChanged - this signal emited when client object changed online status.
+     * @param status
+     */
     void statusChanged(int status);
 
+    /**
+     * @brief lastMessageChanged - this signal emited when client have a new message
+     * @param lastMessage
+     */
     void lastMessageChanged(QString lastMessage);
 };
 
