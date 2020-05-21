@@ -15,6 +15,7 @@
 #include <dbobject.h>
 #include <QSqlRecord>
 #include <QStandardPaths>
+#include <QCoreApplication>
 
 namespace NP {
 

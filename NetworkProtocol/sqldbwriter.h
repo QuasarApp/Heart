@@ -10,6 +10,7 @@
 #include "dbtablebase.h"
 #include "iobjectprovider.h"
 #include <QVariant>
+#include <QCoreApplication>
 
 class QSqlQuery;
 class QSqlDatabase;
