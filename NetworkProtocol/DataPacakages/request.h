@@ -3,6 +3,9 @@
 
 namespace NP {
 
+/**
+ * @brief The Request class - base request methods for data packages
+ */
 class Request
 {
 public:

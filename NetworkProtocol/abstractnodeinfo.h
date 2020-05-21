@@ -6,15 +6,24 @@
 
 
 class QAbstractSocket;
+class QHostInfo;
+
 namespace NP {
 
 /**
  * @brief The TrustNode enum
  */
 enum class TrustNode: unsigned char {
+    /// undefined node
     Undefined = 0xFF,
+
+    /// general trust of node
     Default = 100,
+
+    /// this trusted of unbaned nodes
     Restore = 20,
+
+    /// node with this trusted is forbidden
     Baned = 0
 };
 
@@ -102,6 +111,18 @@ public:
      */
     virtual QDataStream& toStream(QDataStream& stream) const;
 
+    /**
+     * @brief info
+     * @return Host info of this node
+     */
+    QHostInfo *info() const;
+
+    /**
+     * @brief setInfo - set new temp info for this node
+     * @param info
+     */
+    void setInfo(const QHostInfo &info);
+
 protected:
     /**
      * @brief setSct
@@ -110,7 +131,7 @@ protected:
     void setSct(QAbstractSocket *sct);
 
 private:
-
+    QHostInfo *_info = nullptr;
     QHostAddress _id;
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);

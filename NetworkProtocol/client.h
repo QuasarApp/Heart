@@ -20,17 +20,24 @@ public:
         Logined
     };
 
+    explicit Client();
     explicit Client(const QHostAddress& address, unsigned short port);
     explicit Client(const QString& address, unsigned short port);
 
-    bool connectClient();
+    void connectClient();
+
+    void setHost(const QString &address, unsigned short port);
     void setHost(const QHostAddress& address, unsigned short port);
+
     bool login(const QString& userMail, const QByteArray& rawPath);
     bool logout();
     bool syncUserData();
 
     Q_INVOKABLE int status() const;
     Q_INVOKABLE QString lastMessage() const;
+
+protected:
+    bool registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) override;
 
 private slots:
     void handleIncomingData(SP<AbstractData> obj, const QHostAddress &);
@@ -39,6 +46,7 @@ private slots:
 
 private:
     Status _status = Offline;
+    QString _domain;
     QHostAddress _address;
     unsigned short _port;
 
@@ -47,6 +55,7 @@ private:
 
     void setStatus(Status);
 
+//    void handleNewSocketRegistered(QWeakPointer<AbstractNodeInfo> info);
 signals:
     void statusChanged(int status);
 

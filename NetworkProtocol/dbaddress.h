@@ -6,6 +6,9 @@
 
 namespace NP {
 
+/**
+ * @brief The DbAddress class - this is address of data base object
+ */
 class NETWORKPROTOCOLSHARED_EXPORT DbAddress : public StreamBase {
 
 public:

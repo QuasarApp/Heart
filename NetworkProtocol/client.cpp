@@ -1,11 +1,11 @@
 ﻿#include "client.h"
 
+#include <QHostInfo>
 #include <userdata.h>
 #include <userdatarequest.h>
 namespace NP {
 
-Client::Client(const QHostAddress &address, unsigned short port) {
-    setHost(address, port);
+Client::Client() {
 
     connect(this, &BaseNode::incomingData,
             this, &Client::handleIncomingData,
@@ -14,24 +14,28 @@ Client::Client(const QHostAddress &address, unsigned short port) {
     _user = SP<UserData>::create();
 }
 
-Client::Client(const QString &address, unsigned short port):
-    Client(QHostAddress(address), port){
+Client::Client(const QHostAddress &address, unsigned short port):
+    Client() {
+
+    setHost(address, port);
+
 }
 
-bool Client::connectClient() {
-    connectToHost(_address, _port);
+Client::Client(const QString &address, unsigned short port):
+    Client() {
+    setHost(address, port);
+}
 
-    auto info = getInfoPtr(_address).toStrongRef();
+void Client::connectClient() {
+    if (!_address.isNull())
+        connectToHost(_address, _port);
+    else
+        connectToHost(_domain, _port);
+}
 
-    if (info.isNull()) {
-        return false;
-    }
-
-    connect(info->sct(), &QAbstractSocket::stateChanged,
-            this, &Client::socketStateChanged);
-
-    return true;
-
+void Client::setHost(const QString &address, unsigned short port) {
+    _domain = address;
+    _port = port;
 }
 
 void Client::setHost(const QHostAddress &address, unsigned short port) {
@@ -79,6 +83,26 @@ int Client::status() const {
 
 QString Client::lastMessage() const {
     return _lastMessage;
+}
+
+bool Client::registerSocket(QAbstractSocket *socket, const QHostAddress *clientAddress) {
+
+    if (!BaseNode::registerSocket(socket, clientAddress)) {
+        return false;
+    }
+
+    auto info = getInfoPtr(*clientAddress);
+
+    if (info.isNull()) {
+        return false;
+    }
+
+    auto strongInfo = info.toStrongRef();
+
+    connect(strongInfo->sct(), &QAbstractSocket::stateChanged,
+            this, &Client::socketStateChanged);
+
+    return true;
 }
 
 void Client::handleIncomingData(SP<AbstractData> obj,

@@ -116,9 +116,21 @@ public:
     virtual void unBan(const QHostAddress& target);
 
     /**
-     * @brief connectToHost
+     * @brief connectToHost - connect to host node
+     * @param ip address of node
+     * @param port - port of node
+     * @param mode - mode see SslMode
      */
     virtual void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL);
+
+    /**
+     * @brief connectToHost - connect to host node. this method find ip address of domain befor connecting
+     * @param domain: address of node
+     * @param port - port of node
+     * @param mode - mode see SslMode
+     */
+    virtual void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
+
 
     /**
      * @brief port

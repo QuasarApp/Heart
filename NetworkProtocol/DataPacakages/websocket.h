@@ -7,13 +7,25 @@
 
 namespace NP {
 
+/**
+ * @brief The WebSocketRequest enum
+ */
 enum class WebSocketRequest {
+    /// Invalied data
     Invalied = 0,
+    /// subscribe to data
     Subscribe = 1,
+
+    /// unsubscribe
     Unsubscribe = 2,
+
+    /// get list of curennt subscribes
     SubscribeList = 3
 };
 
+/**
+ * @brief The WebSocket class - this class contains methods for work with stream data
+ */
 class NETWORKPROTOCOLSHARED_EXPORT WebSocket:
         public DBObject, public Request
 {

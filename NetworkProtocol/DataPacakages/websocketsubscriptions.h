@@ -9,6 +9,9 @@
 
 namespace NP {
 
+/**
+ * @brief The WebSocketSubscriptions class
+ */
 class NETWORKPROTOCOLSHARED_EXPORT WebSocketSubscriptions: public AbstractData
 {
 public:

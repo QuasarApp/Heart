@@ -12,7 +12,7 @@ class QSqlQuery;
 namespace NP {
 
 /**
- * @brief The DBObject class
+ * @brief The DBObject class- main class for work with data base.
  */
 class NETWORKPROTOCOLSHARED_EXPORT DBObject : public AbstractData
 {
@@ -26,7 +26,13 @@ public:
 
     //// AbstractData interface
     bool isValid() const override;
-    bool copyFrom(const AbstractData *) override;
+
+    /**
+     * @brief copyFrom get all data from other
+     * @arg other - other data package
+     * @return return true if method finished seccussful
+     */
+    bool copyFrom(const AbstractData * other) override;
 
     /**
      * @brief getId
@@ -45,8 +51,16 @@ public:
      */
     virtual void clear();
 
+    /**
+     * @brief tableName
+     * @return
+     */
     QString tableName() const;
 
+    /**
+     * @brief setTableName set the new table for this objec
+     * @param tableName
+     */
     void setTableName(const QString &tableName);
 
     /**

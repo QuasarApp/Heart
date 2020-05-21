@@ -94,15 +94,38 @@ protected:
      */
     virtual QString hashgenerator(const QByteArray &pass);
 
+    /**
+     * @brief createNodeInfo - this method create a new node from socket. override this mehod if you want to create a own clasess of nodes.
+     * @param socket
+     * @return pointer to new node info
+     */
     SP<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
 
+    /**
+     * @brief db
+     * @return pinter to data base
+     */
     WP<SqlDBCache> db() const;
 
+    /**
+     * @brief workWithSubscribe - this metod work work with subscribe commnads
+     * @param rec request data
+     * @param address sendet address
+     * @return true if data parsed seccusseful
+     */
     bool workWithSubscribe(const WP<AbstractData> &rec,
                            const QHostAddress &address);
 
 private:
     SP<SqlDBCache> _db;
+
+    /**
+     * @brief workWithAvailableDataRequest
+     * @param rec
+     * @param addere
+     * @param rHeader
+     * @return
+     */
     bool workWithAvailableDataRequest(const WP<AbstractData> &rec,
                                       const QHostAddress &addere,
                                       const Header *rHeader);

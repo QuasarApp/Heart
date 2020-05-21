@@ -2,6 +2,7 @@
 #include <QHostAddress>
 #include <QAbstractSocket>
 #include <QDataStream>
+#include <QHostInfo>
 
 namespace NP {
 
@@ -45,8 +46,26 @@ void AbstractNodeInfo::unBan() {
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
-    if (_sct)
+    if (_sct) {
         _id = _sct->peerAddress();
+
+        QHostInfo::lookupHost(_id.toString(), [this] (QHostInfo info){
+            if (dynamic_cast<AbstractNodeInfo*>(this)) {
+                setInfo(info);
+            }
+        });
+    }
+}
+
+void AbstractNodeInfo::setInfo(const QHostInfo &info) {
+    if (!_info)
+        _info = new QHostInfo();
+
+    *_info = info;
+}
+
+QHostInfo *AbstractNodeInfo::info() const {
+    return _info;
 }
 
 int AbstractNodeInfo::trust() const {

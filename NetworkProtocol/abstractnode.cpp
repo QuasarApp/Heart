@@ -1,5 +1,6 @@
 #include "abstractnode.h"
 #include "workstate.h"
+#include <QHostInfo>
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslKey>
@@ -87,6 +88,34 @@ void AbstractNode::connectToHost(const QHostAddress &ip, unsigned short port, Ss
 
     registerSocket(socket, &ip);
     socket->connectToHost(ip, port);
+}
+
+void AbstractNode::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
+    QHostInfo::lookupHost(domain, [this, port, mode, domain](QHostInfo info) {
+
+        if (info.error() != QHostInfo::NoError) {
+            QuasarAppUtils::Params::log("The domain name :" + domain + " has error: " + info.errorString(),
+                                        QuasarAppUtils::Error);
+            return;
+        }
+
+        if (info.addresses().size() > 1) {
+            QuasarAppUtils::Params::log("The domain name :" + domain + " has more 1 ip addresses.",
+                                        QuasarAppUtils::Warning);
+        }
+
+
+        connectToHost(info.addresses().first(), port, mode);
+        auto hostObject = getInfoPtr(info.addresses().first()).toStrongRef();
+
+        if (hostObject.isNull()) {
+            QuasarAppUtils::Params::log("The domain name :" + domain + " has connected bud not have network object!",
+                                        QuasarAppUtils::Error);
+            return;
+        }
+
+        hostObject->setInfo(info);
+    });
 }
 
 unsigned short AbstractNode::port() const {
