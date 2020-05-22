@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #ifndef ABSTRACTNODE_H
 #define ABSTRACTNODE_H
 
@@ -25,8 +32,11 @@ namespace NP {
  * Processed - the parser finished processing correctly
  */
 enum class ParserResult {
+    /// parser detect a errorob package
     Error = 0,
+    /// the parser does not know what to do with the package or has not finished processing it.
     NotProcessed = 1,
+    /// the parser finished processing correctly
     Processed = 2
 };
 
@@ -160,7 +170,11 @@ public:
      */
     virtual WorkState getWorkState() const;
 
-
+    /**
+     * @brief pareseResultToString
+     * @return string of pareseresult
+     */
+    QString pareseResultToString(const ParserResult& parseResult) const;
 protected:
 
     /**

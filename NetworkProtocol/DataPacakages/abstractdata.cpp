@@ -1,14 +1,26 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #include "abstractdata.h"
 #include <QDataStream>
 #include <QMap>
 #include <typeinfo>
 #include "networkprotocol.h"
 #include <limits>
+#include <quasarapp.h>
 
 namespace NP {
 
-unsigned int AbstractData::cmd() const {
+unsigned short AbstractData::cmd() const {
     return _cmd;
+}
+
+void AbstractData::setCmd(unsigned short cmd) {
+    _cmd = cmd;
 }
 
 AbstractData::AbstractData() {

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #include "abstractnode.h"
 #include "workstate.h"
 #include <QHostInfo>
@@ -429,6 +436,18 @@ WorkState AbstractNode::getWorkState() const {
 
 }
 
+QString AbstractNode::pareseResultToString(const ParserResult &parseResult) const {
+    switch (parseResult)
+    {
+    case ParserResult::Processed:
+        return "Processed";
+    case ParserResult::NotProcessed:
+        return "NotProcessed";
+
+    default: return "Error";
+    }
+}
+
 QString AbstractNode::getWorkStateString() const {
     if (isListening()) {
         if (connectionsCount() >= maxPendingConnections())
@@ -580,7 +599,21 @@ void AbstractNode::avelableBytes() {
     }
 
     if (val.pkg.isValid()) {
-        parsePackage(val.pkg, val.info);
+        auto parseResult = parsePackage(val.pkg, val.info);
+
+        if (parseResult != ParserResult::Processed) {
+            auto message = QString("Package not parsed! result: '%3'. header: size(%0) command(%1) triggerCommnad(%2).").
+                    arg(val.pkg.hdr.size).
+                    arg(val.pkg.hdr.command).
+                    arg(val.pkg.hdr.triggerCommnad).
+                    arg(pareseResultToString(parseResult));
+
+            QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
+
+            if (parseResult == ParserResult::NotProcessed) {
+                changeTrust(id, REQUEST_ERROR);
+            }
+        }
     }
 
     if (val.pkg.data.size() >= val.pkg.hdr.size) {

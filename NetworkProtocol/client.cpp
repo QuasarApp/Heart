@@ -1,4 +1,11 @@
-﻿#include "client.h"
+﻿/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
+#include "client.h"
 
 #include <QHostInfo>
 #include <userdata.h>
@@ -103,6 +110,15 @@ bool Client::registerSocket(QAbstractSocket *socket, const QHostAddress *clientA
             this, &Client::socketStateChanged);
 
     return true;
+}
+
+void Client::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
+    RatingUserNode::connectToHost(ip, port, mode);
+    setHost(ip, port);
+}
+
+void Client::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
+    RatingUserNode::connectToHost(domain, port, mode);
 }
 
 void Client::handleIncomingData(SP<AbstractData> obj,

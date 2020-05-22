@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #include "accesstoken.h"
 #include "basenode.h"
 #include "basenodeinfo.h"
@@ -85,14 +92,14 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
     auto strongSender = sender.toStrongRef();
 
-    if (BadRequest().cmd() == pkg.hdr.command) {
+    if (H_16<BadRequest>() == pkg.hdr.command) {
         auto cmd = SP<BadRequest>::create(pkg);
         emit requestError(cmd->err());
         emit incomingData(cmd, strongSender->id());
 
         return ParserResult::Processed;
 
-    } else if (TransportData().cmd() == pkg.hdr.command) {
+    } else if (H_16<TransportData>() == pkg.hdr.command) {
         auto cmd = SP<TransportData>::create(pkg);
 
         if (cmd->address() == serverAddress()) {
@@ -108,7 +115,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
         return ParserResult::Processed;
 
-    } else if (AvailableDataRequest().cmd() == pkg.hdr.command) {
+    } else if (H_16<AvailableDataRequest>() == pkg.hdr.command) {
         auto cmd = SP<AvailableDataRequest>::create(pkg);
 
         if (!cmd->isValid()) {
@@ -123,7 +130,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
 
-    } else if (AvailableData().cmd() == pkg.hdr.command) {
+    } else if (H_16<AvailableData>() == pkg.hdr.command) {
         auto obj = SP<AvailableData>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -133,7 +140,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         emit incomingData(obj, strongSender->id());
         return ParserResult::Processed;
 
-    } else if (WebSocket().cmd() == pkg.hdr.command) {
+    } else if (H_16<WebSocket>() == pkg.hdr.command) {
         auto obj = SP<WebSocket>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -147,7 +154,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
         return ParserResult::Processed;
 
-    } else if (WebSocketSubscriptions().cmd() == pkg.hdr.command) {
+    } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
         auto obj = SP<WebSocketSubscriptions>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);

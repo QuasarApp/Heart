@@ -1,9 +1,15 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
 #include "package.h"
 #include <streambase.h>
-
-#define INIT_COMMAND generateId<decltype (*this)>();
+#include <global.h>
 
 namespace NP {
 
@@ -32,13 +38,10 @@ protected:
     bool fromBytes(const QByteArray&);
 
     /**
-     * @brief generateId
-     * @return generate cmd function
+     * @brief setCmd
+     * @param cmd
      */
-    template<typename T>
-    void generateId() {
-        _cmd = qHash(typeid(T).name()) % std::numeric_limits<unsigned short>::max();
-    }
+    void setCmd(unsigned short cmd);
 
 public:
 
@@ -46,7 +49,7 @@ public:
      * @brief cmd
      * @return command of package
      */
-    unsigned int cmd() const;
+    unsigned short cmd() const;
 
     /**
      * @brief toBytes
@@ -97,5 +100,6 @@ public:
 
 }
 
+#define INIT_COMMAND setCmd(H_16<decltype (*this)>());
 
 #endif // ABSTRACTDATA_H

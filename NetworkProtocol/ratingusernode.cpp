@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #include "basenodeinfo.h"
 #include "ratingusernode.h"
 #include "sqldbcache.h"
@@ -23,7 +30,7 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
 
     auto strongSender = sender.toStrongRef();
 
-    if (UserDataRequest().cmd() == pkg.hdr.command) {
+    if (H_16<UserDataRequest>() == pkg.hdr.command) {
         auto cmd = SP<UserDataRequest>::create(pkg);
 
         if (!cmd->isValid()) {
@@ -38,7 +45,7 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
 
-    } else if (UserData().cmd() == pkg.hdr.command) {
+    } else if (H_16<UserData>() == pkg.hdr.command) {
         auto obj = SP<UserData>::create(pkg);
         if (!obj->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -48,7 +55,7 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
         emit incomingData(obj, strongSender->id());
         return ParserResult::Processed;
 
-    } else if (RatingTable().cmd() == pkg.hdr.command) {
+    } else if (H_16<RatingTable>() == pkg.hdr.command) {
 
         auto obj = SP<RatingTable>::create(pkg);
         if (!obj->isValid()) {

@@ -1,3 +1,10 @@
+/*
+ * Copyright (C) 2018-2020 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #ifndef CLIENT_H
 #define CLIENT_H
 
@@ -109,6 +116,15 @@ protected:
      * @return true if finished seccussful
      */
     bool registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) override;
+
+    /**
+     * @brief connectToHost this implementation update host information of client
+     * @param ip
+     * @param port
+     * @param mode
+     */
+    void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL) override;
+    void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL) override;
 
 private slots:
     void handleIncomingData(SP<AbstractData> obj, const QHostAddress &);
