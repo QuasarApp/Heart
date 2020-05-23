@@ -132,7 +132,7 @@ void Client::handleIncomingData(SP<AbstractData> obj,
 
     if (_user->mail() == userData->mail()
             && _user->passSHA256() == userData->passSHA256()) {
-        _user = userData;
+        _user->copyFrom(userData.data());
         setStatus(Status::Logined);
     }
 
@@ -153,6 +153,10 @@ void Client::socketStateChanged(QAbstractSocket::SocketState state) {
     } else if (_status != Logined) {
         setStatus(Status::Online);
     }
+}
+
+QSharedPointer<UserData> Client::user() const {
+    return _user;
 }
 
 void Client::setStatus(Client::Status status) {

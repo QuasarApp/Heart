@@ -5,8 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef USERDATA_H
-#define USERDATA_H
+#ifndef NP_USERDATA_H
+#define NP_USERDATA_H
 
 #include "dbobject.h"
 
@@ -80,4 +80,4 @@ protected:
 
 }
 
-#endif // USERDATA_H
+#endif // NP_USERDATA_H

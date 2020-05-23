@@ -110,6 +110,12 @@ public:
      */
     Q_INVOKABLE QString lastMessage() const;
 
+    /**
+     * @brief user
+     * @return get pointer to userData
+     */
+    QSharedPointer<UserData> user() const;
+
 protected:
     /**
      * @brief registerSocket this implementation connect new node to this object
