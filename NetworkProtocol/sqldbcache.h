@@ -53,7 +53,7 @@ public:
     void setWriter(const WP<SqlDBWriter> &writer);
 
     bool getObject(SP<DBObject> &obj) override;
-    SP<DBObject> &getObjectFromCache(const QString& table, int id);
+    DBObject* getObjectFromCache(const QString& table, int id);
 
     bool saveObject(const WP<AbstractData> &saveObject) override;
     bool deleteObject(const WP<AbstractData>& delObj) override;

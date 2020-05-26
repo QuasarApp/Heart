@@ -125,9 +125,12 @@ bool SqlDBCache::getObject(SP<DBObject> &obj) {
     return true;
 }
 
-SP<DBObject> &SqlDBCache::getObjectFromCache(const QString &table, int id) {
-    auto& tableObj = _cache[table];
-    return tableObj[id];
+DBObject* SqlDBCache::getObjectFromCache(const QString &table, int id) {
+    if (!_cache[table].contains(id)) {
+        return nullptr;
+    }
+
+    return _cache[table][id].data();
 }
 
 bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
@@ -136,6 +139,16 @@ bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
 
     if (ptr.isNull() || !ptr->isValid()) {
         return false;
+    }
+
+    if (ptr->getId() < 0) {
+        if (!_writer.isNull() && _writer->isValid()) {
+            if (!_writer->saveObject(saveObject)) {
+                return false;
+            }
+
+            return true;
+        }
     }
 
     saveToCache(ptr);

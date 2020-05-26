@@ -10,6 +10,8 @@
 #include <QDataStream>
 #include <QSharedPointer>
 #include <QSqlQuery>
+#include <quasarapp.h>
+#include <QSqlError>
 
 namespace NP {
 
@@ -118,7 +120,7 @@ bool UserData::select(QSqlQuery &q) {
         "' where id='" + QString::number(getId()) + "'";
     } else {
         query = "SELECT * from '" + tableName() +
-        "' where gmail='" + QString::number(getId()) + "'";
+        "' where gmail='" + _mail + "'";
     }
 
     if (!q.prepare(query))
@@ -165,11 +167,14 @@ bool UserData::save(QSqlQuery &q) {
     values += "'" + QString::number(_points) + "', ";
     values += ":bytes";
 
+    queryString = queryString.arg(values);
+
     if (!q.prepare(queryString)) {
+        QuasarAppUtils::Params::log("prepare sql query error: " + q.lastError().text() + " Driver: " + q.lastError().driverText(),
+                                    QuasarAppUtils::Debug);
         return false;
     }
 
-    queryString = queryString.arg(values);
 
     QByteArray array;
     QDataStream s(&array, QIODevice::ReadWrite);
@@ -177,7 +182,13 @@ bool UserData::save(QSqlQuery &q) {
 
     q.bindValue(":bytes", array);
 
-    return q.exec();
+    if (!q.exec()) {
+        QuasarAppUtils::Params::log("exec sql query error: " + q.lastError().text() + " Driver: " + q.lastError().driverText(),
+                                    QuasarAppUtils::Debug);
+        return false;
+    }
+
+    return true;
 }
 
 bool UserData::remove(QSqlQuery &q) {
@@ -197,7 +208,7 @@ void UserData::clear() {
 }
 
 bool UserData::isValid() const {
-    return DBObject::isValid() && _mail.size();
+    return DBObject::isValid() && (_mail.size() || _name.size());
 }
 
 SP<DBObject> UserData::factory() {

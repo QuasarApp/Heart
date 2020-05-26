@@ -76,15 +76,42 @@ public:
      */
     virtual SP<DBObject> factory() = 0;
 
+    /**
+     * @brief select - override this metod for get item from database
+     * @param q
+     * @return
+     */
     virtual bool select(QSqlQuery& q) = 0;
+
+    /**
+     * @brief save - override this method for save item into database
+     * @param q
+     * @return
+     */
     virtual bool save(QSqlQuery& q) = 0;
+
+    /**
+     * @brief remove - override this method for remove this item from database.
+     * the default implementatin remove item from id or primaryKey
+     * @param q
+     * @return
+     */
     virtual bool remove(QSqlQuery& q) = 0;
+
+    /**
+     * @brief isCached
+     * @return return true if item in cache. default implementation retun true only
+     */
     virtual bool isCached() const;
 
+    /**
+     * @brief dbAddress - unique address of item in database {id:table}
+     * @return
+     */
     DbAddress dbAddress() const;
 
-
 protected:
+
 
     QString _tableName;
     int _id = -1;
@@ -92,6 +119,7 @@ protected:
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
+
 
 };
 }

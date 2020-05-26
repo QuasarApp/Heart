@@ -84,13 +84,25 @@ public:
      * @param rawPath - this is string of user path (not hash)
      * @return true if function finished successful
      */
-    bool login(const QString& userMail, const QByteArray& rawPath);
+    virtual bool login(const QString& userMail, const QByteArray& rawPath);
+
+    /**
+     * @brief login - this method login with exits user data.
+     * @return true if function finished successful
+     */
+    virtual bool login();
 
     /**
      * @brief logout - logaut from user acount
      * @return true if function finished successful
      */
     bool logout();
+
+    /**
+     * @brief removeProfile - remove this account from server
+     * @return true if function finished successful
+     */
+    bool removeProfile();
 
     /**
      * @brief syncUserData - this method send request for update user data to server (save current data)
@@ -116,7 +128,16 @@ public:
      */
     QSharedPointer<UserData> user() const;
 
+    /**
+     * @brief setUser data - this method restore last userState. if use have token or password hash. client try reconnect to server.
+     * @param user new user data
+     */
+    bool setUser(const UserData *user);
+
+
 protected:
+    QHostAddress address() const;
+
     /**
      * @brief registerSocket this implementation connect new node to this object
      * @return true if finished seccussful

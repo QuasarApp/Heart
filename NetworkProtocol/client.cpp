@@ -55,9 +55,28 @@ bool Client::login(const QString &userMail, const QByteArray &rawPath) {
     user->setMail(userMail);
     user->setPassSHA256(hashgenerator(rawPath));
     user->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
+    _user->copyFrom(user.data());
+
+    return sendData(user, _address);
+}
+
+bool Client::login() {
+    if (_user->mail().size()) {
+
+        if (!(_user->token().isValid() || _user->passSHA256().size())) {
+            return false;
+        }
+
+        auto request = SP<UserDataRequest>::create();
+        request->copyFrom(_user.data());
+        request->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
+
+        return sendData(request, _address);
+
+    }
 
 
-    return _user->copyFrom(user.data()) && sendData(user, _address);
+    return false;
 }
 
 bool Client::logout() {
@@ -66,6 +85,25 @@ bool Client::logout() {
     if (status() == Logined)
         setStatus(Online);
     return !_user->token().isValid();
+}
+
+bool Client::removeProfile() {
+    if (_user->mail().size()) {
+
+        if (!(_user->token().isValid() || _user->passSHA256().size())) {
+            return false;
+        }
+
+        auto request = SP<UserDataRequest>::create();
+        request->copyFrom(_user.data());
+        request->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Delete));
+
+        return sendData(request, _address);
+
+    }
+
+
+    return false;
 }
 
 bool Client::syncUserData() {
@@ -130,8 +168,7 @@ void Client::handleIncomingData(SP<AbstractData> obj,
         return;
     }
 
-    if (_user->mail() == userData->mail()
-            && _user->passSHA256() == userData->passSHA256()) {
+    if (_user->mail() == userData->mail()) {
         _user->copyFrom(userData.data());
         setStatus(Status::Logined);
     }
@@ -155,8 +192,20 @@ void Client::socketStateChanged(QAbstractSocket::SocketState state) {
     }
 }
 
+QHostAddress Client::address() const {
+    return _address;
+}
+
 QSharedPointer<UserData> Client::user() const {
     return _user;
+}
+
+bool Client::setUser(const UserData *user) {
+    if (!_user->copyFrom(user)) {
+        return false;
+    }
+
+    return true;
 }
 
 void Client::setStatus(Client::Status status) {

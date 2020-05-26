@@ -621,6 +621,9 @@ void AbstractNode::avelableBytes() {
     }
 }
 
+/// @todo create a new system of drop error nodes.
+/// if node closed by error then this node need to reconnect. bud if node longer time in disconnect statuse then drop this node.
+///
 void AbstractNode::handleDisconnected() {
     auto _sender = dynamic_cast<QTcpSocket*>(sender());
 
