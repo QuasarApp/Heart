@@ -11,21 +11,11 @@
 #include "abstractnodeinfo.h"
 #include "accesstoken.h"
 #include "networkprotocol_global.h"
-
+#include "permisions.h"
 #include <QByteArray>
 
 class QAbstractSocket;
 namespace NP {
-
-/**
- * @brief The Permission enum
- * permision to data in database
- */
-enum class Permission {
-    NoPermission = 0x00,
-    Read = 0x01,
-    Write = 0x02,
-};
 
 /**
  * @brief The BaseNodeInfo class with tocken support

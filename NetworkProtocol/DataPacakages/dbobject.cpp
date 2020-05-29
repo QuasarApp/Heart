@@ -42,6 +42,10 @@ DbAddress DBObject::dbAddress() const {
 }
 
 bool DBObject::remove(QSqlQuery &q) {
+    if (_id <= 0) {
+        return false;
+    }
+
     QString queryString = "DELETE FROM %0 where id=" + QString::number(getId());
 
     queryString = queryString.arg(tableName());

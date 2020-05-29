@@ -2,5 +2,6 @@
     <qresource prefix="/sql">
         <file alias="default">Res/Default.sql</file>
         <file alias="defaultConfig">Res/DefaultDbConfig.json</file>
+        <file>UserPermisionsBaseDB.sql</file>
     </qresource>
 </RCC>

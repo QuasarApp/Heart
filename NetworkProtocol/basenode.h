@@ -24,7 +24,7 @@ class WebSocketController;
 /**
  * @brief The BaseNode class - base inplementation of nodes
  */
-class BaseNode : public AbstractNode
+class NETWORKPROTOCOLSHARED_EXPORT BaseNode : public AbstractNode
 {
     Q_OBJECT
 public:

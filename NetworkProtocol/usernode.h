@@ -1,29 +1,21 @@
-/*
- * Copyright (C) 2018-2020 QuasarApp.
- * Distributed under the lgplv3 software license, see the accompanying
- * Everyone is permitted to copy and distribute verbatim copies
- * of this license document, but changing it is not allowed.
-*/
-
-#ifndef RATINGUSERSERVER_H
-#define RATINGUSERSERVER_H
+#ifndef USERNODE_H
+#define USERNODE_H
 
 #include "basenode.h"
 
-
 namespace NP {
 
-
-class NETWORKPROTOCOLSHARED_EXPORT RatingUserNode: public BaseNode
+class NETWORKPROTOCOLSHARED_EXPORT UserNode: public BaseNode
 {
     Q_OBJECT
 public:
-    RatingUserNode();
+    UserNode();
 
     // AbstractNode interface
 protected:
     ParserResult parsePackage(const Package &pkg, const WP<AbstractNodeInfo> &sender) override;
     QVariantMap defaultDbParams() const override;
+
     bool workWithUserRequest(const WP<AbstractData> &,
                              const QHostAddress &addere,
                              const Header *rHeader);
@@ -49,6 +41,5 @@ private:
                    const WP<AbstractData> &userdb,
                    const QHostAddress &address);
 };
-
 }
-#endif // RATINGUSERSERVER_H
+#endif // USERNODE_H

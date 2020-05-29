@@ -23,6 +23,8 @@ class QSslCertificate;
 class QSslKey;
 class QSslConfiguration;
 
+#include "networkprotocol_global.h"
+
 namespace NP {
 
 /**
@@ -73,7 +75,7 @@ class Abstract;
 /**
  * @brief The AbstractNode class
  */
-class AbstractNode : public QTcpServer
+class NETWORKPROTOCOLSHARED_EXPORT AbstractNode : public QTcpServer
 {
     Q_OBJECT
 
