@@ -96,32 +96,21 @@ bool SqlDBCache::getObject(SP<DBObject> &obj) {
     if (obj.isNull())
         return false;
 
-    int id = obj->getId();
-    auto table = obj->tableName();
+    if(getFromCache(obj)) {
+        return true;
+    }
 
-    auto& tableObj = _cache[table];
-
-    if (!tableObj.contains(id) && !_writer.isNull() && _writer->isValid()) {
+    if (!_writer.isNull() && _writer->isValid()) {
         if (!_writer->getObject(obj)) {
             return false;
         }
 
-        saveToCache(obj);
+        if (obj->isCached()) {
+            saveToCache(obj);
+        }
         return true;
     }
 
-    auto &sptr = tableObj[id];
-
-    if (!sptr->isCached() && _writer->getObject(sptr)) {
-        saveToCache(sptr);
-    }
-
-    if (!sptr->isValid()) {
-        deleteFromCache(table, id);
-        return false;
-    }
-
-    obj = sptr;
     return true;
 }
 
@@ -176,7 +165,7 @@ bool SqlDBCache::deleteObject(const WP<AbstractData> &delObj) {
     if (ref.isNull())
         return false;
 
-    deleteFromCache(ref->tableName(), ref->getId());
+    deleteFromCache(delObj);
 
     if (_writer && _writer->isValid()) {
         return _writer->deleteObject(delObj);
@@ -204,12 +193,17 @@ bool SqlDBCache::init(const QVariantMap &params) {
     return _writer->initDb(params);
 }
 
-void SqlDBCache::deleteFromCache(const QString &table, int id) {
-    auto& tableObj = _cache[table];
-    tableObj.remove(id);
+void SqlDBCache::deleteFromCache(const WP<AbstractData> &delObj) {
+    auto ref = delObj.toStrongRef().dynamicCast<DBObject>();
+
+    if (ref.isNull())
+        return;
+
+    auto& tableObj = _cache[ref->tableName()];
+    tableObj.remove( ref->getId());
 
     if (tableObj.isEmpty()) {
-        _cache.remove(table);
+        _cache.remove(ref->tableName());
     }
 }
 
@@ -224,6 +218,24 @@ void SqlDBCache::saveToCache(const WP<AbstractData> &obj) {
     _cache[ref->tableName()][ref->getId()] = ref;
     emit sigItemChanged(obj);
 
+}
+
+bool SqlDBCache::getFromCache(SP<DBObject> &obj) {
+    if (obj.isNull())
+        return false;
+
+    int id = obj->getId();
+    auto table = obj->tableName();
+
+    auto& tableObj = _cache[table];
+
+    if (!tableObj.contains(id)) {
+        return false;
+    }
+
+     obj = tableObj[id];
+
+     return true;
 }
 
 SqlDBCasheWriteMode SqlDBCache::getMode() const {

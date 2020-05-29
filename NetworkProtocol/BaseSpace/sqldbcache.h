@@ -91,7 +91,7 @@ protected:
      * @param id in table of object
      * @return true if all good
      */
-    virtual void deleteFromCache(const QString &table, int id);
+    virtual void deleteFromCache(const QWeakPointer<AbstractData> &delObj);
 
     /**
      * @brief saveToCache
@@ -99,6 +99,12 @@ protected:
      */
     virtual void saveToCache(const WP<AbstractData> &obj);
 
+    /**
+     * @brief getFromCache -  get database objcet from cache.
+     * @param obj
+     * @return
+     */
+    virtual bool getFromCache(SP<DBObject> &obj);
 
     /**
      * @brief getMode

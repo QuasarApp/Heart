@@ -49,7 +49,7 @@ public:
      */
     bool remove(QSqlQuery &q) override;
 
-    QHash<PermisionData, Permission> getData() const;
+    const QHash<PermisionData, Permission>& getData() const;
     void setData(const QHash<PermisionData, Permission> &data);
     void insertData(const QHash<PermisionData, Permission> &data);
     void removeData(const QHash<PermisionData, Permission> &data);

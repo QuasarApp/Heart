@@ -175,7 +175,7 @@ QDataStream &UserPermision::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QHash<PermisionData, Permission> UserPermision::getData() const
+const QHash<PermisionData, Permission> &UserPermision::getData() const
 {
     return _data;
 }
