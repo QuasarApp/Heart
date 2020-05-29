@@ -9,7 +9,6 @@
 #define CLIENTPROTOCOL_H
 
 #include "package.h"
-#include "config.h"
 #include "ratingtable.h"
 
 /**

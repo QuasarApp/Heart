@@ -16,6 +16,7 @@
 #include <QVariantMap>
 #include <networkprotocol.h>
 #include <QMutex>
+#include "config.h"
 
 namespace NP {
 
