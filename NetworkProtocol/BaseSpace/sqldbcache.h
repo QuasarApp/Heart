@@ -118,21 +118,31 @@ protected:
      */
     void setMode(const SqlDBCasheWriteMode &mode);
 
-    QMutex _saveLaterMutex;
 
+    /**
+     * @brief globalUpdateDataBasePrivate
+     * @param currentTime
+     */
+    virtual void globalUpdateDataBasePrivate(qint64 currentTime);
+
+    /**
+     * @brief globalUpdateDataBase
+     * @param mode
+     */
+    virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
+
+    SP<SqlDBWriter> _writer = nullptr;
 private:
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
+    QMutex _saveLaterMutex;
 
     SqlDBCasheWriteMode _mode;
-
-    SP<SqlDBWriter> _writer = nullptr;
 
     QHash<QString, QHash <int, SP<DBObject>>>  _cache;
     QHash<QString, QList<int>>  _needToSaveCache;
 
-    virtual void globalUpdateDataBasePrivate(qint64 currentTime);
-    virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
+
 
 signals:
     void sigItemChanged(const WP<AbstractData> &obj);

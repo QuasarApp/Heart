@@ -1,15 +1,25 @@
 #ifndef USERNODEINFO_H
 #define USERNODEINFO_H
 
+#include <basenodeinfo.h>
+
+
 namespace NP {
 
 /**
  * @brief The UserNodeInfo class
  */
-class UserNodeInfo: public BaseNodeInfo
+class NETWORKPROTOCOLSHARED_EXPORT UserNodeInfo: public BaseNodeInfo
 {
 public:
-    UserNodeInfo();
+    explicit UserNodeInfo(QAbstractSocket * tcp = nullptr);
+    bool isValid() const override;
+
+    unsigned int userId() const;
+    void setUserId(unsigned int userId);
+
+private:
+    unsigned int _userId;
 };
 
 }

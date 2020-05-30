@@ -32,7 +32,7 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
             if (!saveObject.isNull() && !_writer.isNull() && _writer->isValid()) {
 
                 if (!saveObject->isValid()) {
-                    deleteFromCache(listIt.key(), id);
+                    deleteFromCache(saveObject);
 
                     QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
                                                        " db object is not valid! id=" + QString::number(id),

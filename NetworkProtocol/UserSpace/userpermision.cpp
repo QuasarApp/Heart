@@ -13,6 +13,11 @@ UserPermision::UserPermision():
 
 }
 
+UserPermision::UserPermision(const PermisionData &key, Permission value):
+    UserPermision() {
+    setData(key, value);
+}
+
 SP<DBObject> UserPermision::factory() {
     return SP<UserPermision>::create();
 }
@@ -191,10 +196,18 @@ void UserPermision::insertData(const QHash<PermisionData, Permission> &data) {
     }
 }
 
+void UserPermision::setData(const PermisionData &key, Permission value) {
+    _data[key] = value;
+}
+
 void UserPermision::removeData(const QHash<PermisionData, Permission> &data) {
     for ( auto it = data.begin(); it != data.end(); it++) {
         _data.remove(it.key());
     }
+}
+
+bool UserPermision::isHavePermision(const PermisionData &key, Permission value) {
+    return _data.value(key, Permission::NoPermission) >= value;
 }
 
 uint qHash(const NP::PermisionData &userPermision) {
