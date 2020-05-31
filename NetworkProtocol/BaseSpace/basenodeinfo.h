@@ -17,6 +17,8 @@
 class QAbstractSocket;
 namespace NP {
 
+class DbAddress;
+
 /**
  * @brief The BaseNodeInfo class with tocken support
  */
@@ -29,24 +31,19 @@ public:
     ~BaseNodeInfo() override;
 
     /**
-     * @brief token
-     * @return token
-     */
-    const AccessToken& token() const;
-
-    /**
-     * @brief setToken
-     * @param token set token
-     */
-    void setToken(const AccessToken &token);
-
-    /**
      * @brief permision return permision on table item of node
      * @param table name of table
      * @param id of item,
      * @return return permision
      */
     Permission permision(const QString& table, int id) const;
+
+    /**
+     * @brief permision - this is wraper of permision(const QString& table, int id)
+     * @param address see DbAddress
+     * @return permison of required object
+     */
+    Permission permision(const DbAddress& address) const;
 
     /**
      * @brief setPermision - set new permision for table object
@@ -56,8 +53,8 @@ public:
      */
     void setPermision(const QString& table, int id ,const Permission &permision);
 
+
 protected:
-    AccessToken _token;
     QHash<QString, QHash<int, Permission>> _permision;
 
 

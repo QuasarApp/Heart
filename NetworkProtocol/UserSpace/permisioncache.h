@@ -18,7 +18,8 @@ public:
     PermisionCache();
 
     bool checkPermision(const NP::UserNodeInfo &requestNode,
-                        const QWeakPointer<DBObject> &saveObject, Permission requiredPermision);
+                        const QWeakPointer<DBObject> &saveObject,
+                        Permission requiredPermision);
 
     bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
 

@@ -16,5 +16,4 @@ unsigned int UserNodeInfo::userId() const {
 void UserNodeInfo::setUserId(unsigned int userId) {
     _userId = userId;
 }
-
 }

@@ -38,4 +38,8 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
     stream << table;
     return stream;
 }
+
+bool DbAddress::isValid() const {
+    return id && table.size();
+}
 }

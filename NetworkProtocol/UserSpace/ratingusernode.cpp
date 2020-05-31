@@ -10,7 +10,7 @@
 #include "sqldbcache.h"
 
 #include <badrequest.h>
-#include <userdatarequest.h>
+#include <userrequest.h>
 #include <quasarapp.h>
 #include <ratingtable.h>
 
@@ -30,8 +30,8 @@ ParserResult RatingUserNode::parsePackage(const Package &pkg,
 
     auto strongSender = sender.toStrongRef();
 
-    if (H_16<UserDataRequest>() == pkg.hdr.command) {
-        auto cmd = SP<UserDataRequest>::create(pkg);
+    if (H_16<UserRequest>() == pkg.hdr.command) {
+        auto cmd = SP<UserRequest>::create(pkg);
 
         if (!cmd->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -145,7 +145,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
                                            const QHostAddress &addere,
                                            const Header *rHeader) {
 
-    auto request = rec.toStrongRef().dynamicCast<UserDataRequest>();
+    auto request = rec.toStrongRef().dynamicCast<UserRequest>();
 
     if (request.isNull())
         return false;
@@ -162,8 +162,8 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
         return false;
     }
 
-    switch (static_cast<UserDataRequestCmd>(request->getRequestCmd())) {
-    case UserDataRequestCmd::Get: {
+    switch (static_cast<UserRequestCmd>(request->getRequestCmd())) {
+    case UserRequestCmd::Get: {
 
         auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
         if (node.isNull()) {
@@ -188,7 +188,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
 
     }
 
-    case UserDataRequestCmd::Save: {
+    case UserRequestCmd::Save: {
 
         auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
         if (node.isNull()) {
@@ -216,7 +216,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
 
         // TODO
 
-    case UserDataRequestCmd::Login: {
+    case UserRequestCmd::Login: {
 
         auto res = SP<UserData>::create().dynamicCast<DBObject>();
         res->copyFrom(request.data());
@@ -243,7 +243,7 @@ bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
         break;
     }
 
-    case UserDataRequestCmd::Delete: {
+    case UserRequestCmd::Delete: {
 
         if(!_db->deleteObject(rec)) {
             QuasarAppUtils::Params::log("do not deleted object from database!" + addere.toString(),

@@ -16,7 +16,7 @@ protected:
     ParserResult parsePackage(const Package &pkg, const WP<AbstractNodeInfo> &sender) override;
     QVariantMap defaultDbParams() const override;
 
-    bool workWithUserRequest(const WP<AbstractData> &,
+    bool workWithUserRequest(const QSharedPointer<UserRequest> &,
                              const QHostAddress &addere,
                              const Header *rHeader);
 
@@ -26,10 +26,12 @@ private:
      * @brief registerNewUser
      * @param user
      * @param address
-     * @return
+     * @param if this value true then tocket create a mounth
+     * @return true if registaration finished sevvussful
      */
     bool registerNewUser(const WP<AbstractData> &user,
-                         const QHostAddress &address);
+                         const QHostAddress &address,
+                         bool rememberMe = false);
 
     /**
      * @brief loginUser

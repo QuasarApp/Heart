@@ -8,9 +8,9 @@
 
 namespace NP {
 
-UserBaseData::UserBaseData(): DBObject("Users")
-{
-
+UserBaseData::UserBaseData(): DBObject("Users") {
+    clear();
+    INIT_COMMAND
 }
 
 SP<DBObject> UserBaseData::factory() {
@@ -111,9 +111,15 @@ bool UserBaseData::remove(QSqlQuery &q) {
     return DBObject::remove(q);
 }
 
+bool UserBaseData::isValid() const {
+    return DBObject::isValid() && _name.size() &&
+            (_passSHA256.size() == 32 || _token.isValid());
+}
+
 void UserBaseData::clear() {
     _name = "";
     _passSHA256 = "";
+    _token.clear();
 
     DBObject::clear();
 }
@@ -124,6 +130,14 @@ QDataStream &UserBaseData::fromStream(QDataStream &stream) {
 
 QDataStream &UserBaseData::toStream(QDataStream &stream) const {
     return stream;
+}
+
+AccessToken UserBaseData::token() const {
+    return _token;
+}
+
+void UserBaseData::setToken(const AccessToken &token) {
+    _token = token;
 }
 
 }

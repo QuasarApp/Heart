@@ -9,7 +9,7 @@
 #define BASENODE_H
 
 #include "abstractnode.h"
-
+#include "permisions.h"
 #include <dbobject.h>
 
 namespace NP {
@@ -17,10 +17,12 @@ namespace NP {
 class SqlDBCache;
 class SqlDBWriter;
 class UserData;
-class UserDataRequest;
+class UserRequest;
 class AvailableDataRequest;
 class WebSocket;
 class WebSocketController;
+class DBDataRequest;
+
 /**
  * @brief The BaseNode class - base inplementation of nodes
  */
@@ -44,8 +46,8 @@ public:
      * @return true if all good
      */
     virtual bool initSqlDb( QString DBparamsFile = "",
-                           SqlDBCache * cache = nullptr,
-                           SqlDBWriter* writer = nullptr);
+                            SqlDBCache * cache = nullptr,
+                            SqlDBWriter* writer = nullptr);
 
     /**
      * @brief isSqlInited
@@ -123,6 +125,19 @@ protected:
     bool workWithSubscribe(const WP<AbstractData> &rec,
                            const QHostAddress &address);
 
+
+    /**
+     * @brief checkPermision - check permison of object for selected node
+     * @param requestNode - node
+     * @param objcet - address of required object
+     * @param requiredPermision - required permision
+     * @return true if the node have required permison for selected object
+     */
+    virtual bool checkPermision(const AbstractNodeInfo *requestNode,
+                                const DbAddress& object,
+                                const Permission& requiredPermision);
+    bool getRequest();
+
 private:
     SP<SqlDBCache> _db;
 
@@ -136,6 +151,18 @@ private:
     bool workWithAvailableDataRequest(const WP<AbstractData> &rec,
                                       const QHostAddress &addere,
                                       const Header *rHeader);
+
+    template<class RequestobjectType>
+    /**
+     * @brief workWithDataRequest
+     * @param rec
+     * @param addere
+     * @param rHeader
+     * @return
+     */
+    bool workWithDataRequest(const WP<AbstractData> &rec,
+                             const QHostAddress &addere,
+                             const Header *rHeader);
 
     WebSocketController *_webSocketWorker = nullptr;
 };

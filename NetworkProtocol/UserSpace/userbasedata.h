@@ -3,6 +3,8 @@
 
 #include "dbobject.h"
 
+#include <accesstoken.h>
+
 namespace NP {
 
 /**
@@ -28,12 +30,20 @@ public:
 
     void clear() override;
     bool remove(QSqlQuery &q) override;
+
+    bool isValid() const override;
+
+    AccessToken token() const;
+    void setToken(const AccessToken &token);
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override ;
     QDataStream &toStream(QDataStream &stream) const override;
 private:
     QString _name;
     QByteArray _passSHA256;
+    AccessToken _token;
+
 };
 }
 #endif // USERBASEDATA_H

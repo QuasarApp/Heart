@@ -9,24 +9,28 @@
 #define USERDATAREQUEST_H
 
 #include "request.h"
-#include "userdata.h"
+#include "userbasedata.h"
 
 
 namespace NP {
 
-enum class UserDataRequestCmd: unsigned char {
+/**
+ * @brief The UserRequestCmd enum - this command for general operation with user (it is delete and registration and login)
+ */
+enum class UserRequestCmd: unsigned char {
     Invalid,
-    Get,
     Login,
-    Save,
     Delete
 };
 
-class NETWORKPROTOCOLSHARED_EXPORT UserDataRequest: public UserData, public Request
+/**
+ * @brief The UserRequest class - this command for work with user (login and delete user from node)
+ */
+class NETWORKPROTOCOLSHARED_EXPORT UserRequest: public UserBaseData, public Request
 {
 public:
-    UserDataRequest();
-    UserDataRequest(const Package& package);
+    UserRequest();
+    UserRequest(const Package& package);
 
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream);

@@ -8,13 +8,14 @@
 #include "accesstoken.h"
 #include "basenode.h"
 #include "basenodeinfo.h"
+#include "dbdatarequest.h"
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
 #include "websocketcontroller.h"
 
 #include <badrequest.h>
 #include <userdata.h>
-#include <userdatarequest.h>
+#include <userrequest.h>
 #include <quasarapp.h>
 #include <transportdata.h>
 #include <availabledatarequest.h>
@@ -32,8 +33,8 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
 }
 
 bool BaseNode::initSqlDb(QString DBparamsFile,
-                        SqlDBCache *cache,
-                        SqlDBWriter *writer) {
+                         SqlDBCache *cache,
+                         SqlDBWriter *writer) {
 
     initDefaultDbObjects(cache, writer);
 
@@ -169,7 +170,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 }
 
-bool BaseNode::workWithAvailableDataRequest(const WP<AbstractData> &rec,
+bool BaseNode::workWithAvailableDataRequest(const QWeakPointer<AbstractData> &rec,
                                             const QHostAddress &address,
                                             const Header *rHeader) {
 
@@ -185,6 +186,102 @@ bool BaseNode::workWithAvailableDataRequest(const WP<AbstractData> &rec,
     av->setData({});
 
     return sendData(av, address, rHeader);
+
+}
+
+template <class RequestobjectType>
+bool BaseNode::workWithDataRequest(const QWeakPointer<AbstractData> &rec,
+                                   const QHostAddress &addere,
+                                   const Header *rHeader) {
+
+    auto request = rec.toStrongRef().dynamicCast<DBDataRequest>();
+
+    if (request.isNull())
+        return false;
+
+    if (!isListening()) {
+        return false;
+    }
+
+    auto _db = db().toStrongRef();
+
+    if (_db.isNull()) {
+        QuasarAppUtils::Params::log("Server not inited (db is null)",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    switch (static_cast<DBDataRequestCmd>(request->getRequestCmd())) {
+    case DBDataRequestCmd::Get: {
+
+        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+        if (node.isNull()) {
+            return false;
+        }
+
+        if (!checkPermision(node.data(), request->address(), Permission::Read)) {
+            return false;
+        }
+
+        auto res = SP<RequestobjectType>::create().template dynamicCast<DBObject>();
+        if (!_db->getObject(res)) {
+            return false;
+        }
+
+        if (!sendData(res, addere, rHeader)) {
+            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
+                                        QuasarAppUtils::Warning);
+            return false;
+        }
+        break;
+
+    }
+
+    case DBDataRequestCmd::Set: {
+
+        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+        if (node.isNull()) {
+            return false;
+        }
+
+        if (!checkPermision(node.data(), request->address(), Permission::Write)) {
+            return false;
+        }
+
+        if(!_db->saveObject(rec)) {
+            QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+
+        break;
+    }
+
+    case DBDataRequestCmd::Delete: {
+
+        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+        if (node.isNull()) {
+            return false;
+        }
+
+        if (!checkPermision(node.data(), request->address(), Permission::Write)) {
+            return false;
+        }
+
+        if(!_db->deleteObject(rec)) {
+            QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+
+        break;
+    }
+
+    default: return false;
+
+    }
+
+    return true;
 
 }
 
@@ -206,7 +303,7 @@ WP<SqlDBCache> BaseNode::db() const {
 bool BaseNode::workWithSubscribe(const WP<AbstractData> &rec,
                                  const QHostAddress &address) {
 
-    auto obj = rec.toStrongRef().dynamicCast<UserDataRequest>();
+    auto obj = rec.toStrongRef().dynamicCast<UserRequest>();
     if (obj.isNull())
         return false;
 
@@ -242,6 +339,22 @@ bool BaseNode::workWithSubscribe(const WP<AbstractData> &rec,
     }
 
     return false;
+}
+
+bool BaseNode::checkPermision(const AbstractNodeInfo *requestNode,
+                              const DbAddress& object,
+                              const Permission &requiredPermision) {
+
+    auto node = dynamic_cast<const BaseNodeInfo*>(requestNode);
+    if (!node) {
+        return false;
+    }
+
+    if (node->permision(object) < requiredPermision) {
+        return false;
+    }
+
+    return true;
 }
 
 QVariantMap BaseNode::defaultDbParams() const {

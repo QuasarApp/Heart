@@ -20,6 +20,7 @@ public:
 
 private:
     unsigned int _userId;
+
 };
 
 }

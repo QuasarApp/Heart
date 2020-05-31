@@ -9,7 +9,7 @@
 
 #include <QHostInfo>
 #include <userdata.h>
-#include <userdatarequest.h>
+#include <userrequest.h>
 namespace NP {
 
 Client::Client() {
@@ -51,10 +51,10 @@ void Client::setHost(const QHostAddress &address, unsigned short port) {
 }
 
 bool Client::login(const QString &userMail, const QByteArray &rawPath) {
-    auto user = SP<UserDataRequest>::create();
+    auto user = SP<UserRequest>::create();
     user->setMail(userMail);
     user->setPassSHA256(hashgenerator(rawPath));
-    user->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
+    user->setRequestCmd(static_cast<quint8>(UserRequestCmd::Login));
     _user->copyFrom(user.data());
 
     return sendData(user, _address);
@@ -67,9 +67,9 @@ bool Client::login() {
             return false;
         }
 
-        auto request = SP<UserDataRequest>::create();
+        auto request = SP<UserRequest>::create();
         request->copyFrom(_user.data());
-        request->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Login));
+        request->setRequestCmd(static_cast<quint8>(UserRequestCmd::Login));
 
         return sendData(request, _address);
 
@@ -94,9 +94,9 @@ bool Client::removeProfile() {
             return false;
         }
 
-        auto request = SP<UserDataRequest>::create();
+        auto request = SP<UserRequest>::create();
         request->copyFrom(_user.data());
-        request->setRequestCmd(static_cast<quint8>(UserDataRequestCmd::Delete));
+        request->setRequestCmd(static_cast<quint8>(UserRequestCmd::Delete));
 
         return sendData(request, _address);
 
@@ -115,9 +115,9 @@ bool Client::syncUserData() {
         return false;
     }
 
-    SP<UserDataRequest> request;
+    SP<UserRequest> request;
     *request.dynamicCast<UserData>() = *_user;
-    request->setRequestCmd(static_cast<unsigned char>(UserDataRequestCmd::Save));
+    request->setRequestCmd(static_cast<unsigned char>(UserRequestCmd::Save));
 
     return sendData(request, _address);
 }

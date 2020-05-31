@@ -1,9 +1,9 @@
 #include "usernode.h"
 #include <quasarapp.h>
-#include <userdatarequest.h>
+#include <userrequest.h>
 #include <badrequest.h>
 #include "sqldbcache.h"
-#include "basenodeinfo.h"
+#include "usernodeinfo.h"
 
 namespace NP {
 
@@ -22,8 +22,8 @@ ParserResult UserNode::parsePackage(const Package &pkg,
 
     auto strongSender = sender.toStrongRef();
 
-    if (H_16<UserDataRequest>() == pkg.hdr.command) {
-        auto cmd = SP<UserDataRequest>::create(pkg);
+    if (H_16<UserRequest>() == pkg.hdr.command) {
+        auto cmd = SP<UserRequest>::create(pkg);
 
         if (!cmd->isValid()) {
             badRequest(strongSender->id(), pkg.hdr);
@@ -37,26 +37,6 @@ ParserResult UserNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
 
-    } else if (H_16<UserData>() == pkg.hdr.command) {
-        auto obj = SP<UserData>::create(pkg);
-        if (!obj->isValid()) {
-            badRequest(strongSender->id(), pkg.hdr);
-            return ParserResult::Error;
-        }
-
-        emit incomingData(obj, strongSender->id());
-        return ParserResult::Processed;
-
-    } else if (H_16<RatingTable>() == pkg.hdr.command) {
-
-        auto obj = SP<RatingTable>::create(pkg);
-        if (!obj->isValid()) {
-            badRequest(strongSender->id(), pkg.hdr);
-            return ParserResult::Error;
-        }
-
-        emit incomingData(obj, strongSender->id());
-        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
@@ -69,24 +49,21 @@ QVariantMap UserNode::defaultDbParams() const {
 
 // bug : user register with id -1 it is all permision to write into all users table.
 bool UserNode::registerNewUser(const WP<AbstractData>& user,
-                                       const QHostAddress& address) {
-    auto strongUser = user.toStrongRef().dynamicCast<UserData>();
+                               const QHostAddress& address,
+                               bool rememberMe) {
+    auto strongUser = user.toStrongRef().dynamicCast<UserBaseData>();
 
     if (strongUser.isNull()) {
         return false;
     }
 
-    auto node = getInfoPtr(address).toStrongRef().dynamicCast<BaseNodeInfo>();
+    auto node = getInfoPtr(address).toStrongRef().dynamicCast<UserNodeInfo>();
     if (node.isNull()) {
         return false;
     }
 
-    AccessToken token = AccessToken(AccessToken::Day);
-
+    AccessToken token = AccessToken((rememberMe)? AccessToken::Month : AccessToken::Day);
     strongUser->setToken(token);
-    node->setToken(token);
-    node->setPermision(strongUser->tableName(), strongUser->getId(),
-                       Permission::Read | Permission::Write);
 
     auto _db = db().toStrongRef();
 
@@ -94,38 +71,36 @@ bool UserNode::registerNewUser(const WP<AbstractData>& user,
         return false;
     }
 
+    node->setUserId(strongUser->getId());
+
     return true;
 }
 
 bool UserNode::loginUser(const WP<AbstractData>& user,
                          const WP<AbstractData>& userdb,
                          const QHostAddress& address) {
-    auto strongUser = user.toStrongRef().dynamicCast<UserData>();
+    auto strongUser = user.toStrongRef().dynamicCast<UserBaseData>();
 
     if (strongUser.isNull()) {
         return false;
     }
 
-    auto node = getInfoPtr(address).toStrongRef().dynamicCast<BaseNodeInfo>();
+    auto strongUserDB = userdb.toStrongRef().dynamicCast<UserBaseData>();
+
+    auto node = getInfoPtr(address).toStrongRef().dynamicCast<UserNodeInfo>();
     if (node.isNull()) {
         return false;
     }
 
-    if (node->token().isValid()) {
-
-        if (node->token() == strongUser->token()) {
-            node->setPermision(strongUser->tableName(), strongUser->getId(),
-                               Permission::Read | Permission::Write);
-            return true;
-        }
+    if (strongUserDB->token().isValid() &&
+            strongUser->token() == strongUserDB->token()) {
+        node->setUserId(strongUserDB->getId());
+        return true;
     }
-
-    auto strongUserDB = userdb.toStrongRef().dynamicCast<UserData>();
 
     if (!strongUserDB.isNull() && strongUserDB->isValid() ) {
         if (strongUserDB->passSHA256() == strongUser->passSHA256()) {
-            node->setPermision(strongUser->tableName(), strongUser->getId(),
-                               Permission::Read | Permission::Write);
+            node->setUserId(strongUserDB->getId());
             return true;
         }
     }
@@ -133,11 +108,9 @@ bool UserNode::loginUser(const WP<AbstractData>& user,
     return false;
 }
 
-bool UserNode::workWithUserRequest(const WP<AbstractData> &rec,
-                                           const QHostAddress &addere,
-                                           const Header *rHeader) {
-
-    auto request = rec.toStrongRef().dynamicCast<UserDataRequest>();
+bool UserNode::workWithUserRequest(const SP<UserRequest> &request,
+                                   const QHostAddress &addere,
+                                   const Header *rHeader) {
 
     if (request.isNull())
         return false;
@@ -150,72 +123,20 @@ bool UserNode::workWithUserRequest(const WP<AbstractData> &rec,
 
     if (_db.isNull()) {
         QuasarAppUtils::Params::log("Server not inited (db is null)",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
-    switch (static_cast<UserDataRequestCmd>(request->getRequestCmd())) {
-    case UserDataRequestCmd::Get: {
+    switch (static_cast<UserRequestCmd>(request->getRequestCmd())) {
 
-        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-        if (node.isNull()) {
-            return false;
-        }
+    case UserRequestCmd::Login: {
 
-        if (node->permision(request->tableName(), request->getId()) < Permission::Read) {
-            return false;
-        }
-
-        auto res = SP<UserData>::create().dynamicCast<DBObject>();
-        if (!_db->getObject(res)) {
-            return false;
-        }
-
-        if (!sendData(res, addere, rHeader)) {
-            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
-                                               QuasarAppUtils::Warning);
-            return false;
-        }
-        break;
-
-    }
-
-    case UserDataRequestCmd::Save: {
-
-        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-        if (node.isNull()) {
-            return false;
-        }
-
-        if (node->permision(request->tableName(), request->getId()) < Permission::Write) {
-            return false;
-        }
-
-        if(!_db->saveObject(rec)) {
-            QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
-                                               QuasarAppUtils::Error);
-            return false;
-        }
-
-        if (!sendData(rec, addere, rHeader)) {
-            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
-                                               QuasarAppUtils::Warning);
-            return false;
-        }
-
-        break;
-    }
-
-        // TODO
-
-    case UserDataRequestCmd::Login: {
-
-        auto res = SP<UserData>::create().dynamicCast<DBObject>();
+        auto res = SP<UserBaseData>::create().dynamicCast<DBObject>();
         res->copyFrom(request.data());
 
         if (_db->getObject(res)) {
             // login oldUser
-            if (!loginUser(rec, res, addere)) {
+            if (!loginUser(request, res, addere)) {
                 return false;
             }
         } else {
@@ -228,25 +149,18 @@ bool UserNode::workWithUserRequest(const WP<AbstractData> &rec,
 
         if (!sendData(res, addere, rHeader)) {
             QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
-                                               QuasarAppUtils::Warning);
+                                        QuasarAppUtils::Warning);
             return false;
         }
 
         break;
     }
 
-    case UserDataRequestCmd::Delete: {
+    case UserRequestCmd::Delete: {
 
-        if(!_db->deleteObject(rec)) {
+        if(!_db->deleteObject(request)) {
             QuasarAppUtils::Params::log("do not deleted object from database!" + addere.toString(),
-                                               QuasarAppUtils::Error);
-            return false;
-        }
-
-
-        if (!sendData(rec, addere, rHeader)) {
-            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
-                                               QuasarAppUtils::Warning);
+                                        QuasarAppUtils::Error);
             return false;
         }
 
