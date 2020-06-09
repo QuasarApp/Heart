@@ -9,17 +9,35 @@ namespace NP {
 /**
  * @brief The UserNodeInfo class
  */
+
+class UserBaseData;
+
 class NETWORKPROTOCOLSHARED_EXPORT UserNodeInfo: public BaseNodeInfo
 {
 public:
     explicit UserNodeInfo(QAbstractSocket * tcp = nullptr);
     bool isValid() const override;
 
-    unsigned int userId() const;
-    void setUserId(unsigned int userId);
+    /**
+     * @brief destUserId
+     * @return id of
+     */
+    unsigned int destUserId() const;
+    void setDestUserId(unsigned int destUserId);
+
+    UserBaseData *getCurrentUserData() const;
+    void setCurrentUserData(UserBaseData *value);
 
 private:
-    unsigned int _userId;
+    /**
+     * @brief _destUserId - destanation node userid
+     */
+    unsigned int _destUserId;
+
+    /**
+     * @brief currentUserData - current node user data.
+     */
+    UserBaseData * currentUserData = nullptr;
 
 };
 

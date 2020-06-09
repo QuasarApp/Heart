@@ -6,6 +6,7 @@
 */
 
 #include "basenodeinfo.h"
+#include "permisions.h"
 #include "dbaddress.h"
 #include <QTcpSocket>
 #include <QHostAddress>
@@ -21,14 +22,15 @@ BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp):
 
 BaseNodeInfo::~BaseNodeInfo(){}
 
-Permission BaseNodeInfo::permision(const QString &table, int id) const {
+int BaseNodeInfo::permision(const QString &table, int id) const {
     auto allTablePermision = _permision.value(table).value(-1);
     auto itemPermision = _permision.value(table).value(id);
 
-    return std::max(allTablePermision, itemPermision);
+    return std::max(static_cast<int>(allTablePermision),
+                    static_cast<int>(itemPermision));
 }
 
-Permission BaseNodeInfo::permision(const DbAddress &address) const {
+int BaseNodeInfo::permision(const DbAddress &address) const {
     return permision(address.table, address.id);
 }
 

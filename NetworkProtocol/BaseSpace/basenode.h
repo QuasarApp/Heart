@@ -9,7 +9,6 @@
 #define BASENODE_H
 
 #include "abstractnode.h"
-#include "permisions.h"
 #include <dbobject.h>
 
 namespace NP {
@@ -22,6 +21,18 @@ class AvailableDataRequest;
 class WebSocket;
 class WebSocketController;
 class DBDataRequest;
+
+/**
+ * @brief The DBOperationResult enum
+ */
+enum class DBOperationResult {
+    /// Node do not know about this operaio
+    Unnow,
+    /// Node allow this operation and exec it
+    Allowed,
+    /// Node forbid this operation.
+    Forbidden,
+};
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -54,6 +65,7 @@ public:
      * @return return true if intSqlDb invocked correctly;
      */
     bool isSqlInited() const;
+
 
     /**
      * @brief run server on address an port
@@ -135,8 +147,54 @@ protected:
      */
     virtual bool checkPermision(const AbstractNodeInfo *requestNode,
                                 const DbAddress& object,
-                                const Permission& requiredPermision);
-    bool getRequest();
+                                const int &requiredPermision);
+
+
+
+    template<class RequestobjectType>
+    /**
+     * @brief workWithDataRequest
+     * @param rec
+     * @param addere
+     * @param rHeader
+     * @return
+     */
+    bool workWithDataRequest(const WP<AbstractData> &rec,
+                             const QHostAddress &addere,
+                             const Header *rHeader);
+
+    /**
+     * @brief deleteObject - delete objcet from dataBase
+     * @param rec
+     * @param addere
+     * @return operation status
+     */
+    DBOperationResult deleteObject(const QWeakPointer<AbstractData> &rec,
+                      const QHostAddress &addere);
+
+    /**
+     * @brief getObject - general object for get object
+     * @param res - result object
+     * @param requiredNodeAdderess
+     * @param dbObject
+     * @return operation status
+     */
+    DBOperationResult getObject(SP<DBObject>& res,
+                   const QHostAddress &requiredNodeAdderess,
+                   const DbAddress& dbObject);
+
+
+    /**
+     * @brief setObject
+     * @param saveObject
+     * @param requiredNodeAddere
+     * @param dbObject
+     * @return operation status
+     */
+    DBOperationResult setObject(const WP<AbstractData> &saveObject,
+                   const QHostAddress &requiredNodeAddere,
+                   const DbAddress& dbObject);
+
 
 private:
     SP<SqlDBCache> _db;
@@ -152,20 +210,10 @@ private:
                                       const QHostAddress &addere,
                                       const Header *rHeader);
 
-    template<class RequestobjectType>
-    /**
-     * @brief workWithDataRequest
-     * @param rec
-     * @param addere
-     * @param rHeader
-     * @return
-     */
-    bool workWithDataRequest(const WP<AbstractData> &rec,
-                             const QHostAddress &addere,
-                             const Header *rHeader);
 
     WebSocketController *_webSocketWorker = nullptr;
 };
+
 
 }
 #endif // BASENODE_H

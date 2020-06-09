@@ -5,8 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef CLIENTPROTOCOL_GLOBAL_H
-#define CLIENTPROTOCOL_GLOBAL_H
+#ifndef NETWORKPROTOCOL_GLOBAL_H
+#define NETWORKPROTOCOL_GLOBAL_H
 
 #include <QtCore/qglobal.h>
 #include "defines.h"
@@ -17,4 +17,4 @@
 #  define NETWORKPROTOCOLSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // CLIENTPROTOCOL_GLOBAL_H
+#endif // NETWORKPROTOCOL_GLOBAL_H

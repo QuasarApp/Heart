@@ -9,9 +9,11 @@
 #include "basenode.h"
 #include "basenodeinfo.h"
 #include "dbdatarequest.h"
+#include "deleteobjectrequest.h"
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
 #include "websocketcontroller.h"
+#include "permisions.h"
 
 #include <badrequest.h>
 #include <userdata.h>
@@ -141,6 +143,14 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         emit incomingData(obj, strongSender->id());
         return ParserResult::Processed;
 
+    } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
+        auto obj = SP<DeleteObjectRequest>::create(pkg).dynamicCast<AbstractData>();
+
+        if (!deleteObject(obj, strongSender->id())) {
+            return ParserResult::Error;
+        }
+        return ParserResult::Processed;
+
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
         auto obj = SP<WebSocket>::create(pkg);
         if (!obj->isValid()) {
@@ -214,21 +224,12 @@ bool BaseNode::workWithDataRequest(const QWeakPointer<AbstractData> &rec,
     switch (static_cast<DBDataRequestCmd>(request->getRequestCmd())) {
     case DBDataRequestCmd::Get: {
 
-        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-        if (node.isNull()) {
+        auto obj = SP<RequestobjectType>::create().template dynamicCast<DBObject>();
+        if (!getObject(obj, addere, request->address())) {
             return false;
         }
 
-        if (!checkPermision(node.data(), request->address(), Permission::Read)) {
-            return false;
-        }
-
-        auto res = SP<RequestobjectType>::create().template dynamicCast<DBObject>();
-        if (!_db->getObject(res)) {
-            return false;
-        }
-
-        if (!sendData(res, addere, rHeader)) {
+        if (!sendData(obj, addere, rHeader)) {
             QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
                                         QuasarAppUtils::Warning);
             return false;
@@ -239,38 +240,7 @@ bool BaseNode::workWithDataRequest(const QWeakPointer<AbstractData> &rec,
 
     case DBDataRequestCmd::Set: {
 
-        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-        if (node.isNull()) {
-            return false;
-        }
-
-        if (!checkPermision(node.data(), request->address(), Permission::Write)) {
-            return false;
-        }
-
-        if(!_db->saveObject(rec)) {
-            QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
-                                        QuasarAppUtils::Error);
-            return false;
-        }
-
-        break;
-    }
-
-    case DBDataRequestCmd::Delete: {
-
-        auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-        if (node.isNull()) {
-            return false;
-        }
-
-        if (!checkPermision(node.data(), request->address(), Permission::Write)) {
-            return false;
-        }
-
-        if(!_db->deleteObject(rec)) {
-            QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
-                                        QuasarAppUtils::Error);
+        if(!setObject(rec, addere, request->address())) {
             return false;
         }
 
@@ -343,7 +313,7 @@ bool BaseNode::workWithSubscribe(const WP<AbstractData> &rec,
 
 bool BaseNode::checkPermision(const AbstractNodeInfo *requestNode,
                               const DbAddress& object,
-                              const Permission &requiredPermision) {
+                              const int &requiredPermision) {
 
     auto node = dynamic_cast<const BaseNodeInfo*>(requestNode);
     if (!node) {
@@ -364,6 +334,82 @@ QVariantMap BaseNode::defaultDbParams() const {
         {"DBFilePath", DEFAULT_DB_PATH},
         {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
     };
+}
+
+DBOperationResult NP::BaseNode::getObject(QSharedPointer<DBObject> &res,
+                             const QHostAddress &requiredNodeAdderess,
+                             const DbAddress& objcetAddress) {
+
+    auto node = getInfoPtr(requiredNodeAdderess).toStrongRef().dynamicCast<BaseNodeInfo>();
+    if (node.isNull()) {
+        return false;
+    }
+
+    if (!checkPermision(node.data(), objcetAddress, static_cast<int>(Permission::Read))) {
+        return false;
+    }
+
+    return _db->getObject(res);
+}
+
+DBOperationResult BaseNode::setObject(const QWeakPointer<AbstractData> &saveObject,
+                         const QHostAddress &requiredNodeAdderess,
+                         const DbAddress &dbObject) {
+
+    auto node = getInfoPtr(requiredNodeAdderess).toStrongRef().dynamicCast<BaseNodeInfo>();
+    if (node.isNull()) {
+        return false;
+    }
+
+    if (!checkPermision(node.data(), dbObject, static_cast<int>(Permission::Write))) {
+        return false;
+    }
+
+    if(!_db->saveObject(saveObject)) {
+        QuasarAppUtils::Params::log("do not saved object in database!" + requiredNodeAdderess.toString(),
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    return true;
+}
+
+DBOperationResult BaseNode::deleteObject(const QWeakPointer<AbstractData> &rec,
+                            const QHostAddress &addere) {
+
+    auto request = rec.toStrongRef().dynamicCast<DeleteObjectRequest>();
+
+    if (request.isNull())
+        return false;
+
+    if (!isListening()) {
+        return false;
+    }
+
+    auto _db = db().toStrongRef();
+
+    if (_db.isNull()) {
+        QuasarAppUtils::Params::log("Server not inited (db is null)",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
+    if (node.isNull()) {
+        return false;
+    }
+
+    if (!checkPermision(node.data(), request->address(), static_cast<int>(Permission::Write))) {
+        return false;
+    }
+
+    if(!_db->deleteObject(rec)) {
+        QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    return true;
 }
 
 }

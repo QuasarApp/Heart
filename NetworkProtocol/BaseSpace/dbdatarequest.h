@@ -11,11 +11,8 @@
 #include "dbrequest.h"
 
 #include <abstractdata.h>
-#include <QSharedPointer>
 
 namespace NP {
-
-class DBObject;
 
 /**
  * @brief The DBDataRequestCmd enum
@@ -26,9 +23,7 @@ enum DBDataRequestCmd : unsigned char {
     /// Get object from node db
     Get,
     /// save new data to node db
-    Set,
-    /// delete data from node db
-    Delete
+    Set
 };
 
 /**

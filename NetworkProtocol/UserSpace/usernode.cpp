@@ -37,6 +37,17 @@ ParserResult UserNode::parsePackage(const Package &pkg,
         return ParserResult::Processed;
 
 
+    } else if (H_16<UserBaseData>() == pkg.hdr.command)  {
+        auto cmd = SP<UserBaseData>::create(pkg);
+
+        if (!cmd->isValid()) {
+            badRequest(strongSender->id(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+
+
+        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
@@ -134,7 +145,7 @@ bool UserNode::workWithUserRequest(const SP<UserRequest> &request,
         auto res = SP<UserBaseData>::create().dynamicCast<DBObject>();
         res->copyFrom(request.data());
 
-        if (_db->getObject(res)) {
+        if (getObject(res, addere, res->dbAddress())) {
             // login oldUser
             if (!loginUser(request, res, addere)) {
                 return false;
@@ -144,7 +155,8 @@ bool UserNode::workWithUserRequest(const SP<UserRequest> &request,
             if (!registerNewUser(res, addere)) {
                 return false;
             }
-            _db->getObject(res);
+
+            getObject(res, addere, res->dbAddress());
         }
 
         if (!sendData(res, addere, rHeader)) {

@@ -36,14 +36,14 @@ public:
      * @param id of item,
      * @return return permision
      */
-    Permission permision(const QString& table, int id) const;
+    int permision(const QString& table, int id) const;
 
     /**
      * @brief permision - this is wraper of permision(const QString& table, int id)
      * @param address see DbAddress
      * @return permison of required object
      */
-    Permission permision(const DbAddress& address) const;
+    int permision(const DbAddress& address) const;
 
     /**
      * @brief setPermision - set new permision for table object

@@ -9,11 +9,20 @@ bool UserNodeInfo::isValid() const {
     return BaseNodeInfo::isValid();
 }
 
-unsigned int UserNodeInfo::userId() const {
-    return _userId;
+unsigned int UserNodeInfo::destUserId() const {
+    return _destUserId;
 }
 
-void UserNodeInfo::setUserId(unsigned int userId) {
-    _userId = userId;
+void UserNodeInfo::setDestUserId(unsigned int destUserId) {
+    _destUserId = destUserId;
 }
+
+UserBaseData *UserNodeInfo::getCurrentUserData() const {
+    return currentUserData;
+}
+
+void UserNodeInfo::setCurrentUserData(UserBaseData *value) {
+    currentUserData = value;
+}
+
 }

@@ -24,8 +24,8 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QByteArray passSHA256() const;
-    void setPassSHA256(const QByteArray &passSHA256);
+    QByteArray pubKeyRSA2048() const;
+    void setPubKeyRSA2048(const QByteArray &pubKeyRSA2048);
     bool copyFrom(const AbstractData *) override;
 
     void clear() override;
@@ -41,7 +41,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 private:
     QString _name;
-    QByteArray _passSHA256;
+    QByteArray _pubKeyRSA2048;
     AccessToken _token;
 
 };

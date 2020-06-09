@@ -5,8 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef CLIENTPROTOCOL_H
-#define CLIENTPROTOCOL_H
+#ifndef NETWORKPROTOCOL_H
+#define NETWORKPROTOCOL_H
 
 #include "package.h"
 #include "ratingtable.h"
@@ -20,4 +20,4 @@
 namespace NP {
 }
 
-#endif // CLIENTPROTOCOL_H
+#endif // NETWORKPROTOCOL_H

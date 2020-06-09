@@ -40,9 +40,9 @@ bool UserBaseData::select(QSqlQuery &q) {
     setId(q.value("id").toInt());
     _name = q.value("userName").toString();
 
-    auto array = q.value("pass").toByteArray();
+    auto array = q.value("pubKey").toByteArray();
     QDataStream s(&array, QIODevice::ReadWrite);
-    s >> _passSHA256;
+    s >> _pubKeyRSA2048;
 
     return isValid();
 }
@@ -53,12 +53,12 @@ bool UserBaseData::save(QSqlQuery &q) {
     queryString = queryString.arg(tableName());
 
     queryString = queryString.arg(
-                "userName, pass");
+                "userName, pubKey");
 
     QString values;
 
     values += "'" + _name + "', ";
-    values += "'" + _passSHA256 + "', ";
+    values += "'" + _pubKeyRSA2048 + "', ";
 
     queryString = queryString.arg(values);
 
@@ -85,12 +85,12 @@ void UserBaseData::setName(const QString &name) {
     _name = name;
 }
 
-QByteArray UserBaseData::passSHA256() const {
-    return _passSHA256;
+QByteArray UserBaseData::pubKeyRSA2048() const {
+    return _pubKeyRSA2048;
 }
 
-void UserBaseData::setPassSHA256(const QByteArray &passSHA256) {
-    _passSHA256 = passSHA256;
+void UserBaseData::setPubKeyRSA2048(const QByteArray &pubKeyRSA2048) {
+    _pubKeyRSA2048 = pubKeyRSA2048;
 }
 
 bool UserBaseData::copyFrom(const AbstractData * other) {
@@ -102,7 +102,7 @@ bool UserBaseData::copyFrom(const AbstractData * other) {
         return false;
 
     this->_name = otherUser->_name;
-    this->_passSHA256 = otherUser->_passSHA256;
+    this->_pubKeyRSA2048 = otherUser->_pubKeyRSA2048;
 
     return true;
 }
@@ -113,12 +113,12 @@ bool UserBaseData::remove(QSqlQuery &q) {
 
 bool UserBaseData::isValid() const {
     return DBObject::isValid() && _name.size() &&
-            (_passSHA256.size() == 32 || _token.isValid());
+            (_pubKeyRSA2048.size() == 32 || _token.isValid());
 }
 
 void UserBaseData::clear() {
     _name = "";
-    _passSHA256 = "";
+    _pubKeyRSA2048 = "";
     _token.clear();
 
     DBObject::clear();
