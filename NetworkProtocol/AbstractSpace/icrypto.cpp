@@ -18,22 +18,22 @@ ICrypto::~ICrypto() {
     delete  _keysMutex;
 }
 
-CryptoPairKeys &&ICrypto::getNextPair(int timeout) {
+CryptoPairKeys ICrypto::getNextPair(int timeout) {
     if (_keyPoolSize <= 0) {
-        return std::move(CryptoPairKeys{});
+        return CryptoPairKeys{};
     }
 
     start();
 
     if (!waitForGeneratekey(timeout)) {
-        return std::move(CryptoPairKeys{});
+        return CryptoPairKeys{};
     }
 
     _keysMutex->lock();
     auto key = _keys.takeFirst();
     _keysMutex->unlock();
 
-    return std::move(key);
+    return key;
 }
 
 int ICrypto::getKeyPoolSize() const {

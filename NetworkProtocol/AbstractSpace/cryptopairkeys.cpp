@@ -1,8 +1,12 @@
 #include "cryptopairkeys.h"
 namespace NP {
-
 CryptoPairKeys::CryptoPairKeys() {
 
+}
+
+CryptoPairKeys::CryptoPairKeys(const QByteArray &pubKey, const QByteArray &privKey) {
+    setPrivKey(privKey);
+    setPublicKey(pubKey);
 }
 
 bool CryptoPairKeys::isValid() {

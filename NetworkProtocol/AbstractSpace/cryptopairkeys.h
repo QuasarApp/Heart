@@ -13,6 +13,8 @@ class NETWORKPROTOCOLSHARED_EXPORT CryptoPairKeys
 {
 public:
     CryptoPairKeys();
+    CryptoPairKeys(const QByteArray& pubKey, const QByteArray& privKey);
+
     /**
      * @brief isValid
      * @return true if this objcet contains pair keys

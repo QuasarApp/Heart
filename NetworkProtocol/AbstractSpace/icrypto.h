@@ -1,8 +1,10 @@
-#ifndef CRYPTO_H
-#define CRYPTO_H
+#ifndef ICRYPTO_H
+#define ICRYPTO_H
 
 #include <QList>
 #include <QThread>
+#include "networkprotocol_global.h"
+
 class QMutex;
 
 namespace NP {
@@ -12,7 +14,7 @@ class CryptoPairKeys;
 /**
  * @brief The ICrypto class provide cryptografu functionality
  */
-class ICrypto : public QThread
+class NETWORKPROTOCOLSHARED_EXPORT ICrypto : public QThread
 {
     Q_OBJECT
 public:
@@ -26,7 +28,7 @@ public:
      * @param timeout_msec - timeout in milisecunds. default is 30000
      * @return pair of keys.
      */
-    CryptoPairKeys &&getNextPair(int timeout_msec = 30000);
+    NP::CryptoPairKeys getNextPair(int timeout_msec = 30000);
 
     /**
      * @brief getKeyPoolSize
@@ -46,7 +48,7 @@ protected:
      * @note Override this method for create of new class with new keys type.
      * @return
      */
-    virtual CryptoPairKeys &&generate() const;
+    virtual CryptoPairKeys generate() const;
 
     void run() override;
 private:
