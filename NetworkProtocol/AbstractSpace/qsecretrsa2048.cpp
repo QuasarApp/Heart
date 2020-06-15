@@ -4,40 +4,50 @@
 
 namespace NP {
 
-QSecretRSA2048::QSecretRSA2048(const QList<QByteArray> &genesises) {
-    for (const auto &genesis: genesises) {
-        _genesisKeys[genesis] = {};
-    }
+QSecretRSA2048::QSecretRSA2048() {
+    qtSecret = new QRSAEncryption(QRSAEncryption::RSA_2048);
 }
 
-CryptoPairKeys QSecretRSA2048::getFromGenesis(const QByteArray &genesis) {
-    return _genesisKeys.value(genesis);
-}
-
-CryptoPairKeys QSecretRSA2048::generate() const {
+CryptoPairKeys QSecretRSA2048::generate(const QByteArray &genesis) const {
     QByteArray pubKey;
     QByteArray privKey;
 
-    QRSAEncryption::generatePairKey(pubKey, privKey, QRSAEncryption::RSA_2048);
+    qtSecret->generatePairKey(pubKey, privKey, genesis);
 
     return {pubKey, privKey};
 }
 
-void QSecretRSA2048::run() {
-    ICrypto::run();
+bool QSecretRSA2048::crypt(QByteArray *data,
+                           const QByteArray &publicKey) {
+    *data = qtSecret->encode(*data, publicKey);
 
-    for ( auto genesis = _genesisKeys.begin(); genesis != _genesisKeys.end(); ++genesis) {
-        if (genesis.value().isValid())
-            continue;
-
-        QByteArray pubKey;
-        QByteArray privKey;
-
-        QRSAEncryption::generatePairKey(pubKey, privKey, QRSAEncryption::RSA_2048);
-
-        _genesisKeys[genesis.key()] = {pubKey, privKey};
-    }
+    return data->size();
 }
 
+bool QSecretRSA2048::decrypt(QByteArray *cryptedData,
+                             const QByteArray &privateKey) {
+    *cryptedData = qtSecret->decode(*cryptedData, privateKey);
+
+    return cryptedData->size();
+}
+
+bool QSecretRSA2048::sign(QByteArray *data,
+                          const QByteArray &privateKey) {
+
+    *data = qtSecret->signMessage(*data, privateKey);
+    return data->size();
+
+}
+
+bool QSecretRSA2048::check(const QByteArray &signedData,
+                           const QByteArray &publicKey) {
+
+    return qtSecret->checkSignMessage(signedData, publicKey);
+}
+
+
+QSecretRSA2048::~QSecretRSA2048() {
+    delete qtSecret;
+}
 
 }

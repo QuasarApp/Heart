@@ -5,6 +5,8 @@
 
 #include <QHash>
 
+class QRSAEncryption;
+
 namespace NP {
 
 /**
@@ -13,16 +15,22 @@ namespace NP {
 class NETWORKPROTOCOLSHARED_EXPORT QSecretRSA2048: public ICrypto
 {
     Q_OBJECT
-public:
-    QSecretRSA2048(const QList<QByteArray>& genesises);
-    CryptoPairKeys getFromGenesis(const QByteArray& genesis);
+
     // ICrypto interface
+public:
+    QSecretRSA2048();
+    ~QSecretRSA2048() override;
+    bool crypt(QByteArray *data, const QByteArray &publicKey) override;
+    bool decrypt(QByteArray *cryptedData, const QByteArray &privateKey) override;
+    bool sign(QByteArray *data, const QByteArray &privateKey) override;
+    bool check(const QByteArray &signedData, const QByteArray &publicKey) override;
+
 protected:
-    CryptoPairKeys generate() const override;
-    void run() override;
+    CryptoPairKeys generate(const QByteArray& genesis = {}) const override;
+
 
 private:
-    QHash <QByteArray, CryptoPairKeys > _genesisKeys;
+    QRSAEncryption *qtSecret = nullptr;
 };
 }
 #endif // QSECRETRSA2048_H
