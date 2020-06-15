@@ -18,19 +18,19 @@ ICrypto::~ICrypto() {
     delete  _keysMutex;
 }
 
-CryptoPairKeys ICrypto::getNextPair(int timeout) {
+CryptoPairKeys ICrypto::getNextPair(const QByteArray& genesis, int timeout) {
     if (_keyPoolSize <= 0) {
         return CryptoPairKeys{};
     }
 
     start();
 
-    if (!waitForGeneratekey(timeout)) {
+    if (!waitForGeneratekey(genesis, timeout)) {
         return CryptoPairKeys{};
     }
 
     _keysMutex->lock();
-    auto key = _keys.takeFirst();
+    auto key = _keys.values(genesis).takeFirst();
     _keysMutex->unlock();
 
     return key;
@@ -48,28 +48,53 @@ void ICrypto::setKeyPoolSize(int keyPoolSize) {
     start();
 }
 
+void ICrypto::setGenesisList(const QList<QByteArray>& list) {
+    _keysMutex->lock();
+    for (const auto& i : list) {
+        _keys.insert(i, {});
+    }
+    _keysMutex->unlock();
+
+    start();
+}
+
 void ICrypto::run() {
     _keyPoolSizeMutex->lock();
     int size =  _keyPoolSize ;
     _keyPoolSizeMutex->unlock();
 
-    while (size > _keys.size()) {
-        auto &&keys = generate();
+    for (auto it = _keys.begin(); it != _keys.end(); ++it) {
+        if (it.key() != RAND_KEY) {
+            if (it.value().isValid())
+                continue;
 
-        _keysMutex->lock();
-        _keys.push_back(keys);
-        _keysMutex->unlock();
+            auto &&keys = generate(it.key());
+
+            _keysMutex->lock();
+            _keys.insertMulti(it.key(), keys);
+            _keysMutex->unlock();
+
+        } else {
+
+            while (size > _keys.size()) {
+                auto &&keys = generate();
+
+                _keysMutex->lock();
+                _keys.insertMulti(RAND_KEY, keys);
+                _keysMutex->unlock();
+            }
+        }
     }
 }
 
-bool ICrypto::waitForGeneratekey(int timeout) const {
+bool ICrypto::waitForGeneratekey(const QByteArray& genesis, int timeout) const {
 
     auto waitFor = timeout + QDateTime::currentMSecsSinceEpoch();
-    while (!_keys.size() && waitFor > QDateTime::currentMSecsSinceEpoch()) {
+    while (!_keys.values(genesis).size() && waitFor > QDateTime::currentMSecsSinceEpoch()) {
         QCoreApplication::processEvents();
     }
 
-    return _keys.size();
+    return _keys.values(genesis).size();
 }
 
 }
