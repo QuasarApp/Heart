@@ -15,7 +15,6 @@
 #include <QAbstractSocket>
 #include <QSslConfiguration>
 #include <QTcpServer>
-#include <qrsapairkey.h>
 #include "abstractdata.h"
 #include "workstate.h"
 #include "defines.h"
@@ -24,6 +23,8 @@ class QSslCertificate;
 class QSslKey;
 class QSslConfiguration;
 
+#include "cryptopairkeys.h"
+#include "icrypto.h"
 #include "networkprotocol_global.h"
 
 namespace NP {
@@ -87,7 +88,8 @@ public:
      * @param ssl
      * @param ptr
      */
-    AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
+    AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);    
+    ~AbstractNode() override;
 
     /**
      * @brief run
@@ -163,8 +165,10 @@ public:
      */
     QSslConfiguration getSslConfig() const;
 
-    ~AbstractNode() override;
-
+    /**
+     * @brief getMode
+     * @return
+     */
     SslMode getMode() const;
 
     /**
@@ -178,12 +182,6 @@ public:
      * @return string of pareseresult
      */
     QString pareseResultToString(const ParserResult& parseResult) const;
-
-    /**
-     * @brief getNodeKey
-     * @return
-     */
-    QRSAPairKey getNodeKey() const;
 
     /**
      * @brief nodeId
@@ -346,7 +344,6 @@ private:
     SslMode _mode;
     QSslConfiguration _ssl;
     QHash<QHostAddress, NodeInfoData> _connections;
-    QRSAPairKey _nodeKey;
 
     friend class WebSocketController;
 

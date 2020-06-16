@@ -31,13 +31,6 @@ void AbstractNodeInfo::disconnect() {
     }
 }
 
-QHostAddress AbstractNodeInfo::id() const {
-    if (_sct)
-        return (_sct->peerAddress());
-
-    return _id;
-}
-
 void AbstractNodeInfo::ban() {
     _trust = static_cast<int>(TrustNode::Baned);
     disconnect();
@@ -54,14 +47,25 @@ void AbstractNodeInfo::unBan() {
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
     if (_sct) {
-        _id = _sct->peerAddress();
+        setNetworkAddress(_sct->peerAddress());
 
-        QHostInfo::lookupHost(_id.toString(), [this] (QHostInfo info){
+        QHostInfo::lookupHost(networkAddress().toString(), [this] (QHostInfo info){
             if (dynamic_cast<AbstractNodeInfo*>(this)) {
                 setInfo(info);
             }
         });
     }
+}
+
+QHostAddress AbstractNodeInfo::networkAddress() const {
+    if (_sct->isValid())
+        return _sct->peerAddress();
+
+    return _networkAddress;
+}
+
+void AbstractNodeInfo::setNetworkAddress(const QHostAddress &networkAddress) {
+    _networkAddress = networkAddress;
 }
 
 void AbstractNodeInfo::setInfo(const QHostInfo &info) {
@@ -92,12 +96,12 @@ bool AbstractNodeInfo::isValid() const {
 }
 
 QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
-    stream >> _id;
+    stream >> _networkAddress;
     return stream;
 }
 
 QDataStream &AbstractNodeInfo::toStream(QDataStream &stream) const {
-    stream << id();
+    stream << _networkAddress;
     return stream;
 }
 

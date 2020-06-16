@@ -65,12 +65,6 @@ public:
     virtual void disconnect();
 
     /**
-     * @brief id
-     * @return unique id of socket
-     */
-    virtual QHostAddress id() const;
-
-    /**
      * @brief ban this node
      */
     virtual void ban();
@@ -130,6 +124,18 @@ public:
      */
     void setInfo(const QHostInfo &info);
 
+    /**
+     * @brief networkAddress
+     * @return network adderess of node
+     */
+    QHostAddress networkAddress() const;
+
+    /**
+     * @brief setNetworkAddress - update network address
+     * @param networkAddress - new address
+     */
+    void setNetworkAddress(const QHostAddress &networkAddress);
+
 protected:
     /**
      * @brief setSct
@@ -139,7 +145,8 @@ protected:
 
 private:
     QHostInfo *_info = nullptr;
-    QHostAddress _id;
+    QHostAddress _networkAddress;
+
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
 

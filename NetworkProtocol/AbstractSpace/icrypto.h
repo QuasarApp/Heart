@@ -86,7 +86,37 @@ public:
      */
     void setGenesisList(const QList<QByteArray> &list);
 
+    /**
+     * @brief storageLocation
+     * @default QStandardPaths::DataLocation/KeysStorage
+     * @return parth to storage location of crypto keys
+     */
+    QString storageLocation() const;
+
+    /**
+     * @brief setStorageLocation set a new path for storage location of keys.
+     * @param value - new path
+     */
+    void setStorageLocation(const QString &value);
+
 protected:
+
+    /**
+     * @brief toStorage - save key from genesis into local storage.
+     * @param genesis - genesis of key pair
+     * @note override this method if you want to change storage location or method of save of keys.
+     * @return true if key saved successful
+     */
+    virtual bool toStorage(const QByteArray& genesis);
+
+    /**
+     * @brief fromStorage - load keys from local storage
+     * @param genesis - genesis of key pair
+     * @return true if key pair saved seccussful.
+     */
+    virtual bool fromStorage(const QByteArray& genesis);
+
+
     /**
      * @brief generate a new key. Default implementation do nothing.
      * @note Override this method for create of new class with new keys type.
@@ -105,12 +135,17 @@ private:
      */
     bool waitForGeneratekey(const QByteArray &genesis = RAND_KEY, int timeout = 30000) const;
 
-    QMultiHash<QByteArray, CryptoPairKeys> _keys;
+    /**
+     * @brief loadAllKeysFromStorage
+     */
+    void loadAllKeysFromStorage();
+
+    QHash<QByteArray, CryptoPairKeys> _keys;
     int _keyPoolSize = 1;
 
     QMutex *_keyPoolSizeMutex = nullptr;
     QMutex *_keysMutex = nullptr;
-
+    QString _storageLocation;
 
 };
 

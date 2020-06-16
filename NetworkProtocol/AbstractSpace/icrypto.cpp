@@ -3,14 +3,22 @@
 #include <QCoreApplication>
 
 #include <QDateTime>
+#include <QFile>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QCryptographicHash>
+#include <QDataStream>
+#include <QStandardPaths>
+#include <QDir>
 
 namespace NP {
 
 ICrypto::ICrypto() {
     _keyPoolSizeMutex = new QMutex();
     _keysMutex = new QMutex();
+    _storageLocation = QStandardPaths::locate(QStandardPaths::DataLocation, "") + "/KeysStorage";
+
+    loadAllKeysFromStorage();
 }
 
 ICrypto::~ICrypto() {
@@ -58,6 +66,50 @@ void ICrypto::setGenesisList(const QList<QByteArray>& list) {
     start();
 }
 
+bool ICrypto::toStorage(const QByteArray &genesis) {
+    auto pair = _keys.value(genesis);
+    auto filePath = storageLocation() + "/" +
+            QCryptographicHash::hash(genesis, QCryptographicHash::Md5).toBase64();
+
+    QFile key(filePath);
+
+    if (!key.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        return false;
+    }
+
+    QDataStream stream(&key);
+
+    stream << pair.publicKey();
+    stream << pair.privKey();
+
+    key.close();
+
+    return true;
+}
+
+bool ICrypto::fromStorage(const QByteArray &genesis) {
+    auto filePath = genesis;
+
+    QFile key(filePath);
+
+    if (!key.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+        return false;
+    }
+
+    QDataStream stream(&key);
+
+    QByteArray pubKey, privKey;
+
+    stream >> pubKey;
+    stream >> privKey;
+
+    key.close();
+
+    _keys[genesis] = CryptoPairKeys{pubKey, privKey};
+
+    return _keys[genesis].isValid();
+}
+
 void ICrypto::run() {
     _keyPoolSizeMutex->lock();
     int size =  _keyPoolSize ;
@@ -95,6 +147,22 @@ bool ICrypto::waitForGeneratekey(const QByteArray& genesis, int timeout) const {
     }
 
     return _keys.values(genesis).size();
+}
+
+void ICrypto::loadAllKeysFromStorage() {
+    auto list = QDir(storageLocation()).entryInfoList();
+
+    for (const auto& file: list ) {
+        fromStorage(file.absoluteFilePath().toLatin1());
+    }
+}
+
+QString ICrypto::storageLocation() const {
+    return _storageLocation;
+}
+
+void ICrypto::setStorageLocation(const QString &value) {
+    _storageLocation = value;
 }
 
 }

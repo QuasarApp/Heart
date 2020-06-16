@@ -198,6 +198,7 @@ protected:
 
 private:
     SP<SqlDBCache> _db;
+    ICrypto *_nodeKeys = nullptr;
 
     /**
      * @brief workWithAvailableDataRequest

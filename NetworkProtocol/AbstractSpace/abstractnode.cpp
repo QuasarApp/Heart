@@ -6,6 +6,7 @@
 */
 
 #include "abstractnode.h"
+#include "qsecretrsa2048.h"
 #include "workstate.h"
 #include <QHostInfo>
 #include <QSslCertificate>
@@ -24,7 +25,6 @@ namespace NP {
 AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
     QTcpServer(ptr) {
 
-    _nodeKey = QRSAEncryption::generatePairKey(QRSAEncryption::Rsa::RSA_2048, {});
     _mode = mode;
 
     setMode(_mode);
@@ -137,6 +137,7 @@ QHostAddress AbstractNode::address() const {
 }
 
 AbstractNode::~AbstractNode() {
+//    delete _nodeKeys;
     stop();
 }
 
@@ -159,52 +160,6 @@ bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
         return false;
 
     return true;
-}
-
-bool
-
-bool generate_key() {
-    int				ret = 0;
-    RSA				*r = NULL;
-    BIGNUM			*bne = NULL;
-    BIO				*bp_public = NULL, *bp_private = NULL;
-
-    int				bits = 2048;
-    unsigned long	e = RSA_F4;
-
-    // 1. generate rsa key
-    bne = BN_new();
-    ret = BN_set_word(bne,e);
-    if(ret != 1){
-        goto free_all;
-    }
-
-    r = RSA_new();
-    ret = RSA_generate_key_ex(r, bits, bne, NULL);
-    if(ret != 1){
-        goto free_all;
-    }
-
-    // 2. save public key
-    bp_public = BIO_new_file("public.pem", "w+");
-    ret = PEM_write_bio_RSAPublicKey(bp_public, r);
-    if(ret != 1){
-        goto free_all;
-    }
-
-    // 3. save private key
-    bp_private = BIO_new_file("private.pem", "w+");
-    ret = PEM_write_bio_RSAPrivateKey(bp_private, r, NULL, NULL, 0, NULL, NULL);
-
-    // 4. free
-free_all:
-
-    BIO_free_all(bp_public);
-    BIO_free_all(bp_private);
-    RSA_free(r);
-    BN_free(bne);
-
-    return (ret == 1);
 }
 
 bool AbstractNode::generateSslDataPrivate(const SslSrtData &data, QSslCertificate& r_srt, QSslKey& r_key) {
@@ -336,7 +291,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
     if (clientAddress)
         _connections[*clientAddress] = {info, {}};
     else
-        _connections[info->id()] = {info, {}};
+        _connections[info->networkAddress()] = {info, {}};
 
 
     connect(socket, &QAbstractSocket::readyRead, this, &AbstractNode::avelableBytes);
@@ -353,14 +308,14 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
     if (senderPtr.isNull() || !senderPtr->isValid()) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
                                            QuasarAppUtils::Error);
-        changeTrust(senderPtr->id(), LOGICK_ERROOR);
+        changeTrust(senderPtr->networkAddress(), LOGICK_ERROOR);
         return ParserResult::Error;
     }
 
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::log("incomming package is not valid!",
                                            QuasarAppUtils::Error);
-        changeTrust(senderPtr->id(), CRITICAL_ERROOR);
+        changeTrust(senderPtr->networkAddress(), CRITICAL_ERROOR);
         return ParserResult::Error;
     }
 
@@ -695,14 +650,23 @@ void AbstractNode::handleDisconnected() {
                                        QuasarAppUtils::Error);
 }
 
-QRSAPairKey AbstractNode::getNodeKey() const {
-    return _nodeKey;
-}
+//QByteArray AbstractNode::nodeId() const {
+//    auto keys = _nodeKeys->getNextPair();
+//    auto signedKey =  keys.publicKey();
+//    if (!_nodeKeys->sign(&signedKey, keys.privKey())) {
+//        QuasarAppUtils::Params::log("System error. Generate nodeId failed",
+//                                    QuasarAppUtils::Error);
+//        return {};
+//    }
 
-bool AbstractNode::checkNodeId(const QByteArray &nodeId) const {
-    auto key = QRSAEncryption::message(nodeId);
-    return QRSAEncryption::checkSignMessage(nodeId, key, QRSAEncryption::getKeyRsaType(key));
-}
+//    return QCryptographicHash::hash(signedKey, QCryptographicHash::Sha256);
+//}
+
+//bool AbstractNode::checkNodeId(const QByteArray &nodeId) const {
+//    getInfo()
+//    auto key = QRSAEncryption::message(nodeId);
+//    return QRSAEncryption::checkSignMessage(nodeId, key, QRSAEncryption::getKeyRsaType(key));
+//}
 
 SslMode AbstractNode::getMode() const {
     return _mode;

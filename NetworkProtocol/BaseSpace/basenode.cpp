@@ -25,6 +25,7 @@
 #include <websocketsubscriptions.h>
 #include <websocketcontroller.h>
 #include <QCoreApplication>
+#include <qsecretrsa2048.h>
 
 namespace NP {
 
@@ -32,6 +33,9 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
     _webSocketWorker = new WebSocketController(this);
+
+    _nodeKeys = new QSecretRSA2048();
+    _nodeKeys->start();
 }
 
 bool BaseNode::initSqlDb(QString DBparamsFile,
@@ -67,7 +71,7 @@ bool BaseNode::run(const QString &addres, unsigned short port) {
 }
 
 BaseNode::~BaseNode() {
-
+    delete _nodeKeys;
 }
 
 void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
@@ -98,7 +102,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     if (H_16<BadRequest>() == pkg.hdr.command) {
         auto cmd = SP<BadRequest>::create(pkg);
         emit requestError(cmd->err());
-        emit incomingData(cmd, strongSender->id());
+        emit incomingData(cmd, strongSender->networkAddress());
 
         return ParserResult::Processed;
 
@@ -112,7 +116,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         auto receiver = getInfoPtr(cmd->address()).toStrongRef();
 
         if (!receiver.isNull()) {
-            sendData(cmd, receiver->id());
+            sendData(cmd, receiver->networkAddress());
             return ParserResult::Processed;
         }
 
@@ -122,12 +126,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         auto cmd = SP<AvailableDataRequest>::create(pkg);
 
         if (!cmd->isValid()) {
-            badRequest(strongSender->id(), pkg.hdr);
+            badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        if (!workWithAvailableDataRequest(cmd, strongSender->id(), &pkg.hdr)) {
-            badRequest(strongSender->id(), pkg.hdr);
+        if (!workWithAvailableDataRequest(cmd, strongSender->networkAddress(), &pkg.hdr)) {
+            badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
         return ParserResult::Processed;
@@ -136,17 +140,17 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<AvailableData>() == pkg.hdr.command) {
         auto obj = SP<AvailableData>::create(pkg);
         if (!obj->isValid()) {
-            badRequest(strongSender->id(), pkg.hdr);
+            badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        emit incomingData(obj, strongSender->id());
+        emit incomingData(obj, strongSender->networkAddress());
         return ParserResult::Processed;
 
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
         auto obj = SP<DeleteObjectRequest>::create(pkg).dynamicCast<AbstractData>();
 
-        if (!deleteObject(obj, strongSender->id())) {
+        if (!deleteObject(obj, strongSender->networkAddress())) {
             return ParserResult::Error;
         }
         return ParserResult::Processed;
@@ -154,12 +158,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
         auto obj = SP<WebSocket>::create(pkg);
         if (!obj->isValid()) {
-            badRequest(strongSender->id(), pkg.hdr);
+            badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        if (!workWithSubscribe(obj, strongSender->id())) {
-            badRequest(strongSender->id(), pkg.hdr);
+        if (!workWithSubscribe(obj, strongSender->networkAddress())) {
+            badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
@@ -168,11 +172,11 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
         auto obj = SP<WebSocketSubscriptions>::create(pkg);
         if (!obj->isValid()) {
-            badRequest(strongSender->id(), pkg.hdr);
+            badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        emit incomingData(obj, strongSender->id());
+        emit incomingData(obj, strongSender->networkAddress());
         return ParserResult::Processed;
     }
 
