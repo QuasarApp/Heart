@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) 2018-2020 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
@@ -17,7 +17,6 @@
 #include <QTcpServer>
 #include "abstractdata.h"
 #include "workstate.h"
-#include "defines.h"
 
 class QSslCertificate;
 class QSslKey;
@@ -54,7 +53,7 @@ enum class SslMode {
  * @brief The NodeInfoData struct
  */
 struct NodeInfoData {
-    SP<AbstractNodeInfo> info;
+    AbstractNodeInfo *info = nullptr;
     Package pkg;
 };
 
@@ -107,16 +106,16 @@ public:
     /**
      * @brief getInfo
      * @param id of selected node
-     * @return pointer to information about node
+     * @return pointer to information about node. if address not found return nullpt
      */
-    virtual WP<AbstractNodeInfo> getInfoPtr(const QHostAddress &id);
+    virtual AbstractNodeInfo* getInfoPtr(const QHostAddress &id);
 
     /**
-     * @brief getInfo
+     * @brief getInfoPtr
      * @param id peer adders
-     * @return information about Node
+     * @return pointer to information about node. if address not found return nullpt
      */
-    virtual AbstractNodeInfo getInfo(const QHostAddress &id) const;
+    virtual const AbstractNodeInfo* getInfoPtr(const QHostAddress &id) const;
 
     /**
      * @brief ban
@@ -224,7 +223,7 @@ protected:
      * @return nodeinfo for new connection
      * override this metho for set your own nodeInfo objects;
      */
-    virtual SP<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const;
+    virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket) const;
 
     /**
      * @brief registerSocket
@@ -240,7 +239,7 @@ protected:
      * @param sender
      * @return item of ParserResult ()
      */
-    virtual ParserResult parsePackage(const Package &pkg, const WP<AbstractNodeInfo> &sender);
+    virtual ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo* sender);
 
     /**
      * @brief sendPackage
@@ -257,11 +256,11 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendData(const WP<AbstractData> &resp,  const QHostAddress& addere,
+    virtual bool sendData(const AbstractData* resp,  const QHostAddress& addere,
                               const Header *req = nullptr);
 
     /**
-     * @brief badRequest
+     * @brief badRequestu
      * @param address
      * @param req
      * @param msg - message of error

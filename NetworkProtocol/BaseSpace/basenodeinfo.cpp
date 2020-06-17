@@ -38,4 +38,12 @@ void BaseNodeInfo::setPermision(const QString &table, int id, const Permission &
     _permision[table][id] = permision;
 }
 
+bool BaseNodeInfo::isHavePermisonRecord(const QString &table, int id) const {
+    return _permision.contains(table) && _permision.value(table).contains(id);
+}
+
+bool BaseNodeInfo::isHavePermisonRecord(const DbAddress &address) const {
+    return  isHavePermisonRecord(address.table, address.id);
+}
+
 }

@@ -49,12 +49,12 @@ public:
     QDataStream &toStream(QDataStream &stream) const override;
 
     bool select(QSqlQuery &q) override;
-    bool save(QSqlQuery &q) override;
-    bool remove(QSqlQuery &q) override;
+    bool save(QSqlQuery &q) const override;
+    bool remove(QSqlQuery &q) const override;
 
     void clear() override;
     bool isValid() const override;
-    SP<DBObject> factory() override;
+    UserData *factory() override;
 
 
     const AccessToken& token() const;

@@ -159,7 +159,7 @@ void Client::connectToHost(const QString &domain, unsigned short port, SslMode m
     RatingUserNode::connectToHost(domain, port, mode);
 }
 
-void Client::handleIncomingData(SP<AbstractData> obj,
+void Client::handleIncomingData(AbstractData *obj,
                                 const QHostAddress&) {
 
     auto userData = obj.dynamicCast<UserData>();

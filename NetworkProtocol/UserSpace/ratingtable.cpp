@@ -41,8 +41,8 @@ QDataStream &RatingTable::toStream(QDataStream &stream) const {
     return stream;
 }
 
-SP<DBObject> RatingTable::factory() {
-    return SP<RatingTable>::create();
+DBObject *RatingTable::factory() {
+    return new RatingTable();
 }
 
 bool RatingTable::select(QSqlQuery &q) {

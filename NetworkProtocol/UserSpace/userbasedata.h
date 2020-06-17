@@ -17,9 +17,9 @@ public:
 
     // DBObject interface
 public:
-    QSharedPointer<DBObject> factory() override;
+    DBObject* factory() override;
     bool select(QSqlQuery &q) override;
-    bool save(QSqlQuery &q) override;
+    bool save(QSqlQuery &q) const override;
 
     QString name() const;
     void setName(const QString &name);
@@ -29,7 +29,7 @@ public:
     bool copyFrom(const AbstractData *) override;
 
     void clear() override;
-    bool remove(QSqlQuery &q) override;
+    bool remove(QSqlQuery &q) const override;
 
     bool isValid() const override;
 

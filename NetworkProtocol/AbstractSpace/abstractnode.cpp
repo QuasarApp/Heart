@@ -53,35 +53,31 @@ void AbstractNode::stop() {
     }
 }
 
-WP<AbstractNodeInfo> AbstractNode::getInfoPtr(const QHostAddress &id) {
+AbstractNodeInfo *AbstractNode::getInfoPtr(const QHostAddress &id) {
     if (!_connections.contains(id)) {
-        return {nullptr};
+        return nullptr;
     }
 
-    return _connections[id].info;
+    return dynamic_cast<AbstractNodeInfo*>(_connections[id].info);
 }
 
-AbstractNodeInfo AbstractNode::getInfo(const QHostAddress &id) const{
-    auto info = _connections.value(id).info;
+const AbstractNodeInfo *AbstractNode::getInfoPtr(const QHostAddress &id) const {
+    if (!_connections.contains(id)) {
+        return nullptr;
+    }
 
-    if (info.isNull())
-        return {};
-
-    return *_connections.value(id).info.get();
+    return dynamic_cast<AbstractNodeInfo*>(_connections[id].info);
 }
 
 void AbstractNode::ban(const QHostAddress &target) {
-
     auto info = getInfoPtr(target);
+    if (info)
+        _connections[target].info->ban();
 
-    if (info.isNull())
-        _connections[target] = NodeInfoData{};
-
-    _connections[target].info->ban();
 }
 
 void AbstractNode::unBan(const QHostAddress &target) {
-    if (!_connections.contains(target) || _connections[target].info.isNull()) {
+    if (!_connections.contains(target) || _connections[target].info) {
         return;
     }
 
@@ -116,9 +112,9 @@ void AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
 
 
         connectToHost(info.addresses().first(), port, mode);
-        auto hostObject = getInfoPtr(info.addresses().first()).toStrongRef();
+        auto hostObject = getInfoPtr(info.addresses().first());
 
-        if (hostObject.isNull()) {
+        if (hostObject) {
             QuasarAppUtils::Params::log("The domain name :" + domain + " has connected bud not have network object!",
                                         QuasarAppUtils::Error);
             return;
@@ -276,8 +272,8 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration() {
     return res;
 }
 
-SP<AbstractNodeInfo> AbstractNode::createNodeInfo(QAbstractSocket *socket) const {
-    return SP<AbstractNodeInfo>::create(socket);
+AbstractNodeInfo *AbstractNode::createNodeInfo(QAbstractSocket *socket) const {
+    return new AbstractNodeInfo(socket);
 }
 
 bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) {
@@ -301,21 +297,19 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
 }
 
 ParserResult AbstractNode::parsePackage(const Package &pkg,
-                                        const WP<AbstractNodeInfo> &sender) {
+                                        const AbstractNodeInfo *sender) {
 
-    auto senderPtr = sender.toStrongRef();
-
-    if (senderPtr.isNull() || !senderPtr->isValid()) {
+    if (sender || !sender->isValid()) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
                                            QuasarAppUtils::Error);
-        changeTrust(senderPtr->networkAddress(), LOGICK_ERROOR);
+        changeTrust(sender->networkAddress(), LOGICK_ERROOR);
         return ParserResult::Error;
     }
 
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::log("incomming package is not valid!",
                                            QuasarAppUtils::Error);
-        changeTrust(senderPtr->networkAddress(), CRITICAL_ERROOR);
+        changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
         return ParserResult::Error;
     }
 
@@ -347,27 +341,26 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     return sendet;
 }
 
-bool AbstractNode::sendData(const WP<AbstractData> &resp, const QHostAddress &addere,
+bool AbstractNode::sendData(const AbstractData *resp, const QHostAddress &addere,
                                 const Header *req) {
-    auto client = getInfoPtr(addere).toStrongRef();
+    auto client = getInfoPtr(addere);
 
-    if (client.isNull()) {
+    if (client) {
         QuasarAppUtils::Params::log("Response not sent because client == null",
                                            QuasarAppUtils::Error);
         return false;
     }
 
-    auto responce = resp.toStrongRef();
-    if (responce.isNull()) {
+    if (resp) {
         return false;
     }
 
     Package pkg;
     bool convert = false;
     if (req) {
-        convert = responce->toPackage(pkg, req->command);
+        convert = resp->toPackage(pkg, req->command);
     } else {
-        convert = responce->toPackage(pkg);
+        convert = resp->toPackage(pkg);
     }
 
     if (!convert) {
@@ -388,9 +381,9 @@ bool AbstractNode::sendData(const WP<AbstractData> &resp, const QHostAddress &ad
 
 void AbstractNode::badRequest(const QHostAddress &address, const Header &req,
                               const QString msg) {
-    auto client = getInfoPtr(address).toStrongRef();
+    auto client = getInfoPtr(address);
 
-    if (client.isNull()) {
+    if (client) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
                                            " because client == null",
@@ -495,13 +488,13 @@ int AbstractNode::connectionsCount() const {
 }
 
 bool AbstractNode::isBaned(QAbstractSocket *socket) const {
-    auto info = getInfo(socket->peerAddress());
+    auto info = getInfoPtr(socket->peerAddress());
 
-    if (!info.isValid()) {
+    if (info && !info->isValid()) {
         return false;
     }
 
-    return info.isBaned();
+    return info->isBaned();
 }
 
 void AbstractNode::incomingConnection(qintptr handle) {
@@ -514,8 +507,8 @@ void AbstractNode::incomingConnection(qintptr handle) {
 }
 
 bool AbstractNode::changeTrust(const QHostAddress &id, int diff) {
-    auto ptr = getInfoPtr(id).toStrongRef();
-    if (ptr.isNull()) {
+    auto ptr = getInfoPtr(id);
+    if (ptr) {
         return false;
     }
 
@@ -634,8 +627,8 @@ void AbstractNode::handleDisconnected() {
     if (_sender) {
         // log error
 
-        auto ptr = getInfoPtr(_sender->peerAddress()).toStrongRef();
-        if (!ptr.isNull()) {
+        auto ptr = getInfoPtr(_sender->peerAddress());
+        if (!ptr) {
             ptr->disconnect();
         } else {
             QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"

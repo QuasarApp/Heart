@@ -18,8 +18,8 @@ UserPermision::UserPermision(const PermisionData &key, Permission value):
     setData(key, value);
 }
 
-SP<DBObject> UserPermision::factory() {
-    return SP<UserPermision>::create();
+DBObject *UserPermision::factory() {
+    return new UserPermision();
 }
 
 bool UserPermision::copyFrom(const AbstractData * other) {
@@ -34,7 +34,7 @@ bool UserPermision::copyFrom(const AbstractData * other) {
     return true;
 }
 
-bool UserPermision::remove(QSqlQuery &q) {
+bool UserPermision::remove(QSqlQuery &q) const {
     if (!DBObject::remove(q)) {
 
         if (!_data.size()) {
@@ -139,7 +139,7 @@ bool UserPermision::select(QSqlQuery &q) {
     return isValid();
 }
 
-bool UserPermision::save(QSqlQuery &q) {
+bool UserPermision::save(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES ";
 
     queryString = queryString.arg(tableName());

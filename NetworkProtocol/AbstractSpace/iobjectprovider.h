@@ -10,7 +10,6 @@
 #include "networkprotocol_global.h"
 
 #include <QSharedPointer>
-#include "defines.h"
 
 namespace NP {
 
@@ -29,19 +28,19 @@ public:
      * After the invoke this object well contain current data.
      * @return
      */
-    virtual bool getObject(SP<DBObject>& obj) = 0;
+    virtual bool getObject(DBObject *obj) = 0;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(const WP<AbstractData>& saveObject) = 0;
+    virtual bool saveObject(const DBObject* saveObject) = 0;
 
     /**
      * @brief deleteObject
      * @return
      */
-    virtual bool deleteObject(const WP<AbstractData>& saveObject) = 0;
+    virtual bool deleteObject(const DBObject* obj) = 0;
 
 };
 

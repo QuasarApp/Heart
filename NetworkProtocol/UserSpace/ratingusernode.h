@@ -22,9 +22,9 @@ public:
 
     // AbstractNode interface
 protected:
-    ParserResult parsePackage(const Package &pkg, const WP<AbstractNodeInfo> &sender) override;
+    ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
     QVariantMap defaultDbParams() const override;
-    bool workWithUserRequest(const WP<AbstractData> &,
+    bool workWithUserRequest(const AbstractData*,
                              const QHostAddress &addere,
                              const Header *rHeader);
 
@@ -36,7 +36,7 @@ private:
      * @param address
      * @return
      */
-    bool registerNewUser(const WP<AbstractData> &user,
+    bool registerNewUser(const AbstractData* user,
                          const QHostAddress &address);
 
     /**
@@ -45,8 +45,8 @@ private:
      * @param address
      * @return
      */
-    bool loginUser(const WP<AbstractData> &user,
-                   const WP<AbstractData> &userdb,
+    bool loginUser(const AbstractData* user,
+                   const AbstractData* userdb,
                    const QHostAddress &address);
 };
 

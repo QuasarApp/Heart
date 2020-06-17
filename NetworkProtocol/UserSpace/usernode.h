@@ -13,10 +13,10 @@ public:
 
     // AbstractNode interface
 protected:
-    ParserResult parsePackage(const Package &pkg, const WP<AbstractNodeInfo> &sender) override;
+    ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
     QVariantMap defaultDbParams() const override;
 
-    bool workWithUserRequest(const QSharedPointer<UserRequest> &,
+    bool workWithUserRequest(const UserRequest* req,
                              const QHostAddress &addere,
                              const Header *rHeader);
 
@@ -29,7 +29,7 @@ private:
      * @param if this value true then tocket create a mounth
      * @return true if registaration finished sevvussful
      */
-    bool registerNewUser(const WP<AbstractData> &user,
+    bool registerNewUser(const AbstractData *user,
                          const QHostAddress &address,
                          bool rememberMe = false);
 
@@ -39,8 +39,8 @@ private:
      * @param address
      * @return
      */
-    bool loginUser(const WP<AbstractData> &user,
-                   const WP<AbstractData> &userdb,
+    bool loginUser(const AbstractData* user,
+                   const AbstractData* userdb,
                    const QHostAddress &address);
 };
 }

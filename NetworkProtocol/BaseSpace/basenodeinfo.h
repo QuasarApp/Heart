@@ -53,6 +53,23 @@ public:
      */
     void setPermision(const QString& table, int id ,const Permission &permision);
 
+    /**
+     * @brief isHavePermisonRecord - check record about permision lvl of this node
+     * @param table - neme of table of checked bject
+     * @param id - id of checked object
+     * @return true if re
+     */
+    bool isHavePermisonRecord(const QString& table, int id) const;
+
+
+    /**
+     * @brief isHavePermisonRecord - check record about permision lvl of this node
+     * @param table - neme of table of checked bject
+     * @param id - id of checked object
+     * @return true if re
+     */
+    bool isHavePermisonRecord(const DbAddress& address) const;
+
 
 protected:
     QHash<QString, QHash<int, Permission>> _permision;

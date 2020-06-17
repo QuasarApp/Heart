@@ -5,7 +5,6 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "dbobjectsfactory.h"
 #include "dbtablebase.h"
 #include "sqldbwriter.h"
 
@@ -199,45 +198,44 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(SP<DBObject>& obj) {
+bool SqlDBWriter::getObject(DBObject* obj) {
     return selectQuery(obj);
 }
 
-bool SqlDBWriter::saveObject(const WP<AbstractData> &saveObject) {
-    return saveQuery(saveObject);
+bool SqlDBWriter::saveObject(const DBObject* ptr) {
+    return saveQuery(ptr);
 }
 
-bool SqlDBWriter::deleteObject(const WP<AbstractData> &deleteObject) {
-    return deleteQuery(deleteObject);
+bool SqlDBWriter::deleteObject(const DBObject* ptr) {
+    return deleteQuery(ptr);
 }
 
 SqlDBWriter::~SqlDBWriter() {
 }
 
-bool SqlDBWriter::saveQuery(const WP<AbstractData>& ptr) const {
+bool SqlDBWriter::saveQuery(const DBObject* ptr) const {
+    if (ptr)
+        return false;
 
     QSqlQuery q(db);
 
-    auto obj = ptr.toStrongRef().dynamicCast<DBObject>();
-    if (obj.isNull())
-        return false;
-
-    return obj->save(q);
+    return ptr->save(q);
 }
 
-bool SqlDBWriter::selectQuery(const SP<DBObject>& obj) {
-    if (obj.isNull())
+bool SqlDBWriter::selectQuery(DBObject* obj) {
+    if (obj)
         return false;
 
     QSqlQuery query(db);
     return obj->select(query);
 }
 
-bool SqlDBWriter::deleteQuery(const WP<AbstractData> &deleteObject) const {
-    QSqlQuery query(db);
-    auto ref = deleteObject.toStrongRef().dynamicCast<DBObject>();
+bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
+    if (deleteObject)
+        return false;
 
-    return ref->remove(query);
+    QSqlQuery query(db);
+    return deleteObject->remove(query);
 }
 
 }

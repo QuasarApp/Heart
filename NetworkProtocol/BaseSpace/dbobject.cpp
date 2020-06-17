@@ -41,7 +41,7 @@ DbAddress DBObject::dbAddress() const {
     return {tableName(), getId()};
 }
 
-bool DBObject::remove(QSqlQuery &q) {
+bool DBObject::remove(QSqlQuery &q) const {
     if (_id <= 0) {
         return false;
     }

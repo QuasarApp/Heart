@@ -13,8 +13,8 @@ UserBaseData::UserBaseData(): DBObject("Users") {
     INIT_COMMAND
 }
 
-SP<DBObject> UserBaseData::factory() {
-    return SP<UserBaseData>::create();
+DBObject* UserBaseData::factory() {
+    return new UserBaseData();
 }
 
 bool UserBaseData::select(QSqlQuery &q) {
@@ -47,7 +47,7 @@ bool UserBaseData::select(QSqlQuery &q) {
     return isValid();
 }
 
-bool UserBaseData::save(QSqlQuery &q) {
+bool UserBaseData::save(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
 
     queryString = queryString.arg(tableName());
@@ -107,7 +107,7 @@ bool UserBaseData::copyFrom(const AbstractData * other) {
     return true;
 }
 
-bool UserBaseData::remove(QSqlQuery &q) {
+bool UserBaseData::remove(QSqlQuery &q) const {
     return DBObject::remove(q);
 }
 

@@ -29,7 +29,7 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
             auto saveObject = _cache.value(listIt.key()).value(id);
 
-            if (!saveObject.isNull() && !_writer.isNull() && _writer->isValid()) {
+            if (!saveObject && !_writer && _writer->isValid()) {
 
                 if (!saveObject->isValid()) {
                     deleteFromCache(saveObject);
@@ -84,23 +84,23 @@ SqlDBCache::~SqlDBCache() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
-WP<SqlDBWriter> SqlDBCache::writer() const {
+SqlDBWriter *SqlDBCache::writer() const {
     return _writer;
 }
 
-void SqlDBCache::setWriter(const WP<SqlDBWriter> &writer) {
+void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(SP<DBObject> &obj) {
-    if (obj.isNull())
+bool SqlDBCache::getObject(DBObject *obj) {
+    if (obj)
         return false;
 
     if(getFromCache(obj)) {
         return true;
     }
 
-    if (!_writer.isNull() && _writer->isValid()) {
+    if (!_writer && _writer->isValid()) {
         if (!_writer->getObject(obj)) {
             return false;
         }
@@ -119,19 +119,17 @@ DBObject* SqlDBCache::getObjectFromCache(const QString &table, int id) {
         return nullptr;
     }
 
-    return _cache[table][id].data();
+    return dynamic_cast<DBObject*>(_cache[table][id]);;
 }
 
-bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
+bool SqlDBCache::saveObject(const DBObject *saveObject) {
 
-    auto ptr = saveObject.toStrongRef().dynamicCast<DBObject>();
-
-    if (ptr.isNull() || !ptr->isValid()) {
+    if (saveObject || !saveObject->isValid()) {
         return false;
     }
 
-    if (ptr->getId() < 0) {
-        if (!_writer.isNull() && _writer->isValid()) {
+    if (saveObject->getId() < 0) {
+        if (!_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
@@ -140,10 +138,10 @@ bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
         }
     }
 
-    saveToCache(ptr);
+    saveToCache(saveObject);
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
-        if (!_writer.isNull() && _writer->isValid()) {
+        if (!_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
@@ -151,7 +149,7 @@ bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
             return true;
         }
     } else {
-        _needToSaveCache[ptr->tableName()].push_back(ptr->getId());
+        _needToSaveCache[saveObject->tableName()].push_back(saveObject->getId());
         globalUpdateDataBase(_mode);
     }
 
@@ -159,10 +157,9 @@ bool SqlDBCache::saveObject(const WP<AbstractData>& saveObject) {
 
 }
 
-bool SqlDBCache::deleteObject(const WP<AbstractData> &delObj) {
-    auto ref = delObj.toStrongRef().dynamicCast<DBObject>();
+bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
-    if (ref.isNull())
+    if (delObj)
         return false;
 
     deleteFromCache(delObj);
@@ -177,7 +174,7 @@ bool SqlDBCache::deleteObject(const WP<AbstractData> &delObj) {
 
 bool SqlDBCache::init(const QString &initDbParams) {
 
-    if (_writer.isNull()) {
+    if (_writer) {
         return false;
     }
 
@@ -186,42 +183,37 @@ bool SqlDBCache::init(const QString &initDbParams) {
 
 bool SqlDBCache::init(const QVariantMap &params) {
 
-    if (_writer.isNull()) {
+    if (_writer) {
         return false;
     }
 
     return _writer->initDb(params);
 }
 
-void SqlDBCache::deleteFromCache(const WP<AbstractData> &delObj) {
-    auto ref = delObj.toStrongRef().dynamicCast<DBObject>();
-
-    if (ref.isNull())
+void SqlDBCache::deleteFromCache(const DBObject *delObj) {
+    if (delObj)
         return;
 
-    auto& tableObj = _cache[ref->tableName()];
-    tableObj.remove( ref->getId());
+    auto& tableObj = _cache[delObj->tableName()];
+    tableObj.remove( delObj->getId());
 
     if (tableObj.isEmpty()) {
-        _cache.remove(ref->tableName());
+        _cache.remove(delObj->tableName());
     }
 }
 
-void SqlDBCache::saveToCache(const WP<AbstractData> &obj) {
-
-    auto ref = obj.toStrongRef().dynamicCast<DBObject>();
-
-    if (ref.isNull())
+void SqlDBCache::saveToCache(const DBObject *obj) {
+    if (obj)
         return;
 
     // bug : pointer is rewrited!!!!
-    _cache[ref->tableName()][ref->getId()] = ref;
+    _cache[obj->tableName()][obj->getId()] = const_cast<DBObject*>(obj);
     emit sigItemChanged(obj);
 
 }
 
-bool SqlDBCache::getFromCache(SP<DBObject> &obj) {
-    if (obj.isNull())
+bool SqlDBCache::getFromCache(DBObject *obj) {
+    if (obj)
         return false;
 
     int id = obj->getId();

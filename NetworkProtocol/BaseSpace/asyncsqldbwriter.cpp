@@ -22,33 +22,31 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     moveToThread(own);
 }
 
-bool AsyncSqlDbWriter::saveObject(const WP<AbstractData>& saveObject) {
-    auto obj = saveObject.toStrongRef();
-    auto z = obj.dynamicCast<DBObject>();
+bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
     return QMetaObject::invokeMethod(this,
                               "handleSaveObject",
                               Qt::QueuedConnection,
-                              Q_ARG(SP<DBObject>,
-                                    z));
+                              Q_ARG(const DBObject *,
+                                    saveObject));
 
 }
 
-bool AsyncSqlDbWriter::deleteObject(const WP<AbstractData>& deleteObject) {
+bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
     return QMetaObject::invokeMethod(this,
                                "handleDeleteObject",
                                Qt::QueuedConnection,
-                               Q_ARG(SP<DBObject>,
-                                     deleteObject.toStrongRef().dynamicCast<DBObject>()));
+                               Q_ARG(const DBObject *,
+                                     deleteObject));
 }
 
-void AsyncSqlDbWriter::handleSaveObject(SP<DBObject> saveObject) {
+void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject) {
     if (!SqlDBWriter::saveObject(saveObject)) {
         QuasarAppUtils::Params::log("AsyncSqlDbWriter: save object fail!",
                                            QuasarAppUtils::Error);
     }
 }
 
-void AsyncSqlDbWriter::handleDeleteObject(SP<DBObject> deleteObject) {
+void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject) {
     if (!SqlDBWriter::deleteObject(deleteObject)) {
         QuasarAppUtils::Params::log("AsyncSqlDbWriter: delete object fail!",
                                            QuasarAppUtils::Error);

@@ -12,19 +12,14 @@ PermisionCache::PermisionCache()
 }
 
 bool PermisionCache::checkPermision(const UserNodeInfo &requestNode,
-                                    const QWeakPointer<DBObject> &object,
+                                    const DBObject &object,
                                     Permission requiredPermision) {
 
 
-    auto ref = object.toStrongRef();
-
-    if (!ref.isNull())
-        return false;
-
     PermisionData data;
     data._userId = requestNode.userId();
-    data._objectTable = ref->tableName();
-    data._idObject = ref->getId();
+    data._objectTable = object.tableName();
+    data._idObject = object.getId();
 
     auto permision = SP<UserPermision>::create(data);
     auto request = permision.dynamicCast<DBObject>();
@@ -35,7 +30,7 @@ bool PermisionCache::checkPermision(const UserNodeInfo &requestNode,
     return requestNode.isValid() && permision->isHavePermision(data, requiredPermision);
 }
 
-bool PermisionCache::saveObject(const QWeakPointer<AbstractData> &saveObject) {
+bool PermisionCache::saveObject(const DBObject *saveObject) {
     auto value = saveObject.toStrongRef().dynamicCast<UserPermision>();
 
     if (value.isNull()) {
@@ -79,7 +74,7 @@ void PermisionCache::deleteFromCache(const WP<AbstractData> &delObj) {
     }
 }
 
-void PermisionCache::saveToCache(const QWeakPointer<AbstractData> &obj) {
+void PermisionCache::saveToCache(const DBObject *obj) {
 
     auto value = obj.toStrongRef().dynamicCast<UserPermision>();
 

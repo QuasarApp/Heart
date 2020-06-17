@@ -23,12 +23,12 @@ public:
     AsyncSqlDbWriter(QObject* ptr = nullptr);
 
     // iObjectProvider interface
-    bool saveObject(const WP<AbstractData> &saveObject) override;
-    bool deleteObject(const WP<AbstractData> & deleteObject) override;
+    bool saveObject(const DBObject* saveObject) override;
+    bool deleteObject(const DBObject* deleteObject) override;
 
 private slots:
-    void handleSaveObject(SP<DBObject> saveObject);
-    void handleDeleteObject(SP<DBObject> deleteObject);
+    void handleSaveObject(const DBObject* saveObject);
+    void handleDeleteObject(const DBObject* deleteObject);
 
 };
 

@@ -23,7 +23,7 @@ public:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
-    SP<DBObject> factory();
+    DBObject* factory();
     bool select(QSqlQuery &q);
     bool save(QSqlQuery &q);
     bool remove(QSqlQuery &q);

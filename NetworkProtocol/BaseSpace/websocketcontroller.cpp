@@ -18,7 +18,7 @@ WebSocketController::WebSocketController(AbstractNode *node) {
     assert(_node);
 }
 
-bool WebSocketController::subscribe(SP<AbstractNodeInfo> subscriber,
+bool WebSocketController::subscribe(AbstractNodeInfo *subscriber,
                                     const DbAddress &item) {
 
     _subscribs[item].insert(subscriber);
@@ -27,19 +27,18 @@ bool WebSocketController::subscribe(SP<AbstractNodeInfo> subscriber,
     return true;
 }
 
-void WebSocketController::unsubscribe(SP<AbstractNodeInfo> subscriber,
+void WebSocketController::unsubscribe(AbstractNodeInfo *subscriber,
                                       const DbAddress& item) {
     _subscribs[item].remove(subscriber);
     _items[subscriber].remove(item);
 
 }
 
-const QSet<DbAddress> &WebSocketController::list(
-        SP<AbstractNodeInfo> node) {
+const QSet<DbAddress> &WebSocketController::list(AbstractNodeInfo *node) {
     return _items[node];
 }
 
-void WebSocketController::handleItemChanged(const WP<AbstractData> &item) {
+void WebSocketController::handleItemChanged(const AbstractData *item) {
     auto obj = item.toStrongRef().dynamicCast<DBObject>();
     if (obj.isNull() || !obj->isValid())
         return;
@@ -47,8 +46,8 @@ void WebSocketController::handleItemChanged(const WP<AbstractData> &item) {
     foreachSubscribers(item, _subscribs.value(obj->dbAddress()));
 }
 
-void WebSocketController::foreachSubscribers(const WP<AbstractData> &item,
-                                             const QSet<SP<AbstractNodeInfo>> &subscribersList) {
+void WebSocketController::foreachSubscribers(const AbstractData *item,
+                                             const QSet<AbstractNodeInfo *> &subscribersList) {
 
     auto ref = item.toStrongRef().dynamicCast<DBObject>();
 

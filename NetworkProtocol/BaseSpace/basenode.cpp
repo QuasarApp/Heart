@@ -59,7 +59,7 @@ bool BaseNode::initSqlDb(QString DBparamsFile,
 }
 
 bool BaseNode::isSqlInited() const {
-    return !_db.isNull();
+    return _db;
 }
 
 bool BaseNode::run(const QString &addres, unsigned short port) {
@@ -83,77 +83,86 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
         cache = new SqlDBCache();
     }
 
-    cache->setWriter(SP<SqlDBWriter>(writer));
-    _db = SP<SqlDBCache>(cache);
+    cache->setWriter(writer);
+    _db = cache;
 
-    connect(_db.data(), &SqlDBCache::sigItemChanged,
+    connect(_db, &SqlDBCache::sigItemChanged,
             _webSocketWorker, &WebSocketController::handleItemChanged);
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
-                                    const WP<AbstractNodeInfo>& sender) {
+                                    const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    auto strongSender = sender.toStrongRef();
-
     if (H_16<BadRequest>() == pkg.hdr.command) {
-        auto cmd = SP<BadRequest>::create(pkg);
-        emit requestError(cmd->err());
-        emit incomingData(cmd, strongSender->networkAddress());
+        BadRequest cmd(pkg);
+        emit requestError(cmd.err());
+        emit incomingData(&cmd, sender->networkAddress());
 
         return ParserResult::Processed;
 
     } else if (H_16<TransportData>() == pkg.hdr.command) {
-        auto cmd = SP<TransportData>::create(pkg);
+        TransportData cmd(pkg);
 
-        if (cmd->address() == serverAddress()) {
-            return parsePackage(cmd->data(), sender);
+        if (cmd.address() == serverAddress()) {
+            return parsePackage(cmd.data(), sender);
         }
 
-        auto receiver = getInfoPtr(cmd->address()).toStrongRef();
+        auto receiver = getInfoPtr(cmd.address());
 
-        if (!receiver.isNull()) {
-            sendData(cmd, receiver->networkAddress());
+        if (!receiver) {
+            sendData(&cmd, receiver->networkAddress());
             return ParserResult::Processed;
         }
 
         return ParserResult::Processed;
 
     } else if (H_16<AvailableDataRequest>() == pkg.hdr.command) {
-        auto cmd = SP<AvailableDataRequest>::create(pkg);
+        AvailableDataRequest cmd(pkg);
 
-        if (!cmd->isValid()) {
-            badRequest(strongSender->networkAddress(), pkg.hdr);
+        if (!cmd.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        if (!workWithAvailableDataRequest(cmd, strongSender->networkAddress(), &pkg.hdr)) {
-            badRequest(strongSender->networkAddress(), pkg.hdr);
+        if (!workWithAvailableDataRequest(&cmd, sender->networkAddress(), &pkg.hdr)) {
+            badRequest(sender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
         return ParserResult::Processed;
 
 
     } else if (H_16<AvailableData>() == pkg.hdr.command) {
-        auto obj = SP<AvailableData>::create(pkg);
-        if (!obj->isValid()) {
-            badRequest(strongSender->networkAddress(), pkg.hdr);
+        AvailableData obj(pkg);
+        if (!obj.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        emit incomingData(obj, strongSender->networkAddress());
+        emit incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
 
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
-        auto obj = SP<DeleteObjectRequest>::create(pkg).dynamicCast<AbstractData>();
+        DeleteObjectRequest obj(pkg);
 
-        if (!deleteObject(obj, strongSender->networkAddress())) {
+        DBOperationResult result = deleteObject(&obj, sender->networkAddress());
+
+        switch (result) {
+        case DBOperationResult::Forbidden:
             return ParserResult::Error;
+
+        case DBOperationResult::Unknown: {
+            // TO DO Work with request for netwotk.
+            return ParserResult::Processed;
         }
-        return ParserResult::Processed;
+        case DBOperationResult::Allowed: {
+            return ParserResult::Processed;
+        }
+        }
+
 
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
         auto obj = SP<WebSocket>::create(pkg);
@@ -265,16 +274,16 @@ QString BaseNode::hashgenerator(const QByteArray &pass) {
                 QCryptographicHash::Sha256);
 }
 
-SP<AbstractNodeInfo> BaseNode::createNodeInfo(QAbstractSocket *socket) const {
+AbstractNodeInfo *BaseNode::createNodeInfo(QAbstractSocket *socket) const {
     return  SP<BaseNodeInfo>::create(socket);
 }
 
-WP<SqlDBCache> BaseNode::db() const {
+SqlDBCache *BaseNode::db() const {
     return _db;
 }
 
 // TO-DO
-bool BaseNode::workWithSubscribe(const WP<AbstractData> &rec,
+bool BaseNode::workWithSubscribe(const AbstractData *rec,
                                  const QHostAddress &address) {
 
     auto obj = rec.toStrongRef().dynamicCast<UserRequest>();
@@ -315,20 +324,25 @@ bool BaseNode::workWithSubscribe(const WP<AbstractData> &rec,
     return false;
 }
 
-bool BaseNode::checkPermision(const AbstractNodeInfo *requestNode,
+DBOperationResult BaseNode::checkPermision(const AbstractNodeInfo *requestNode,
                               const DbAddress& object,
                               const int &requiredPermision) {
 
+
     auto node = dynamic_cast<const BaseNodeInfo*>(requestNode);
     if (!node) {
-        return false;
+        return DBOperationResult::Forbidden;
+    }
+
+    if (!node->isHavePermisonRecord(object)) {
+        return DBOperationResult::Unknown;
     }
 
     if (node->permision(object) < requiredPermision) {
-        return false;
+        return DBOperationResult::Forbidden;
     }
 
-    return true;
+    return DBOperationResult::Allowed;
 }
 
 QVariantMap BaseNode::defaultDbParams() const {
@@ -340,210 +354,85 @@ QVariantMap BaseNode::defaultDbParams() const {
     };
 }
 
-DBOperationResult NP::BaseNode::getObject(QSharedPointer<DBObject> &res,
+DBOperationResult NP::BaseNode::getObject(DBObject *res,
                              const QHostAddress &requiredNodeAdderess,
                              const DbAddress& objcetAddress) {
 
-    auto node = getInfoPtr(requiredNodeAdderess).toStrongRef().dynamicCast<BaseNodeInfo>();
-    if (node.isNull()) {
-        return false;
+    auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(requiredNodeAdderess));
+    if (node) {
+        return DBOperationResult::Forbidden;
     }
 
-    if (!checkPermision(node.data(), objcetAddress, static_cast<int>(Permission::Read))) {
-        return false;
+    auto permision = checkPermision(node, objcetAddress, static_cast<int>(Permission::Read));
+    if (permision != DBOperationResult::Allowed) {
+        return permision;
     }
 
-    return _db->getObject(res);
+    if (!_db->getObject(res)) {
+        return DBOperationResult::Forbidden;
+    }
+
+    return DBOperationResult::Allowed;
 }
 
-DBOperationResult BaseNode::setObject(const QWeakPointer<AbstractData> &saveObject,
+DBOperationResult BaseNode::setObject(const DBObject *saveObject,
                          const QHostAddress &requiredNodeAdderess,
                          const DbAddress &dbObject) {
 
-    auto node = getInfoPtr(requiredNodeAdderess).toStrongRef().dynamicCast<BaseNodeInfo>();
-    if (node.isNull()) {
-        return false;
+    auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(requiredNodeAdderess));
+    if (node) {
+        return DBOperationResult::Forbidden;
     }
 
-    if (!checkPermision(node.data(), dbObject, static_cast<int>(Permission::Write))) {
-        return false;
+    auto permision = checkPermision(node, dbObject, static_cast<int>(Permission::Write));
+    if (permision != DBOperationResult::Allowed) {
+        return permision;
     }
 
     if(!_db->saveObject(saveObject)) {
         QuasarAppUtils::Params::log("do not saved object in database!" + requiredNodeAdderess.toString(),
                                     QuasarAppUtils::Error);
-        return false;
+        return DBOperationResult::Forbidden;
     }
 
-    return true;
+    return DBOperationResult::Allowed;
 }
 
-DBOperationResult BaseNode::deleteObject(const QWeakPointer<AbstractData> &rec,
+DBOperationResult BaseNode::deleteObject(const AbstractData* rec,
                             const QHostAddress &addere) {
 
-    auto request = rec.toStrongRef().dynamicCast<DeleteObjectRequest>();
+    auto request = dynamic_cast<const DeleteObjectRequest*>(rec);
 
-    if (request.isNull())
-        return false;
+    if (request)
+        return DBOperationResult::Forbidden;
 
     if (!isListening()) {
-        return false;
+        return DBOperationResult::Unknown;
     }
 
-    auto _db = db().toStrongRef();
-
-    if (_db.isNull()) {
+    if (_db) {
         QuasarAppUtils::Params::log("Server not inited (db is null)",
                                     QuasarAppUtils::Error);
-        return false;
+        return DBOperationResult::Unknown;
     }
 
-    auto node = getInfoPtr(addere).toStrongRef().dynamicCast<BaseNodeInfo>();
-    if (node.isNull()) {
-        return false;
+    auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(addere));
+    if (node) {
+        return DBOperationResult::Forbidden;
     }
 
-    if (!checkPermision(node.data(), request->address(), static_cast<int>(Permission::Write))) {
-        return false;
+    auto permision = checkPermision(node, request->dbAddress(), static_cast<int>(Permission::Write));
+    if (permision != DBOperationResult::Allowed) {
+        return permision;
     }
 
-    if(!_db->deleteObject(rec)) {
+    if(!_db->deleteObject(request)) {
         QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
                                     QuasarAppUtils::Error);
-        return false;
+        return permision;
     }
 
-    return true;
-}
-
-bool BaseNode::workWithUserRequest(const SP<UserRequest> &request,
-                                   const QHostAddress &addere,
-                                   const Header *rHeader) {
-
-    if (request.isNull())
-        return false;
-
-    if (!isListening()) {
-        return false;
-    }
-
-    auto _db = db().toStrongRef();
-
-    if (_db.isNull()) {
-        QuasarAppUtils::Params::log("Server not inited (db is null)",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    switch (static_cast<UserRequestCmd>(request->getRequestCmd())) {
-
-    case UserRequestCmd::Login: {
-
-        auto res = SP<UserBaseData>::create().dynamicCast<DBObject>();
-        res->copyFrom(request.data());
-
-        if (getObject(res, addere, res->dbAddress())) {
-            // login oldUser
-            if (!loginUser(request, res, addere)) {
-                return false;
-            }
-        } else {
-            // register a new user;
-            if (!registerNewUser(res, addere)) {
-                return false;
-            }
-
-            getObject(res, addere, res->dbAddress());
-        }
-
-        if (!sendData(res, addere, rHeader)) {
-            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
-                                        QuasarAppUtils::Warning);
-            return false;
-        }
-
-        break;
-    }
-
-    case UserRequestCmd::Delete: {
-
-        if(!_db->deleteObject(request)) {
-            QuasarAppUtils::Params::log("do not deleted object from database!" + addere.toString(),
-                                        QuasarAppUtils::Error);
-            return false;
-        }
-
-        break;
-    }
-    default: return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-bool BaseNode::loginUser(const WP<AbstractData>& user,
-                         const WP<AbstractData>& userdb,
-                         const QHostAddress& address) {
-    auto strongUser = user.toStrongRef().dynamicCast<UserBaseData>();
-
-    if (strongUser.isNull()) {
-        return false;
-    }
-
-    auto strongUserDB = userdb.toStrongRef().dynamicCast<UserBaseData>();
-
-    auto node = getInfoPtr(address).toStrongRef().dynamicCast<UserNodeInfo>();
-    if (node.isNull()) {
-        return false;
-    }
-
-    if (strongUserDB->token().isValid() &&
-            strongUser->token() == strongUserDB->token()) {
-        node->setUserId(strongUserDB->getId());
-        return true;
-    }
-
-    if (!strongUserDB.isNull() && strongUserDB->isValid() ) {
-        if (strongUserDB->passSHA256() == strongUser->passSHA256()) {
-            node->setUserId(strongUserDB->getId());
-            return true;
-        }
-    }
-
-    return false;
-}
-
-// bug : user register with id -1 it is all permision to write into all users table.
-bool BaseNode::registerNewUser(const WP<AbstractData>& user,
-                               const QHostAddress& address,
-                               bool rememberMe) {
-    auto strongUser = user.toStrongRef().dynamicCast<UserBaseData>();
-
-    if (strongUser.isNull()) {
-        return false;
-    }
-
-    auto node = getInfoPtr(address).toStrongRef().dynamicCast<UserNodeInfo>();
-    if (node.isNull()) {
-        return false;
-    }
-
-    AccessToken token = AccessToken((rememberMe)? AccessToken::Month : AccessToken::Day);
-    strongUser->setToken(token);
-
-    auto _db = db().toStrongRef();
-
-    if (!_db->saveObject(user)) {
-        return false;
-    }
-
-    node->setUserId(strongUser->getId());
-
-    return true;
+    return DBOperationResult::Allowed;
 }
 
 }

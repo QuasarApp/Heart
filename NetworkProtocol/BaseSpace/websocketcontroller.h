@@ -28,23 +28,23 @@ class NETWORKPROTOCOLSHARED_EXPORT WebSocketController : public QObject
 
 public:
     WebSocketController(AbstractNode *node);
-    bool subscribe(SP<AbstractNodeInfo> subscriber,
+    bool subscribe(AbstractNodeInfo* subscriber,
                    const DbAddress &item);
 
-    void unsubscribe(SP<AbstractNodeInfo> subscriber,
+    void unsubscribe(AbstractNodeInfo* subscriber,
                      const DbAddress &item);
 
-    const QSet<DbAddress> &list(SP<AbstractNodeInfo> node);
+    const QSet<DbAddress> &list(AbstractNodeInfo* node);
 
 public slots:
-    void handleItemChanged(const WP<AbstractData> &item);
+    void handleItemChanged(const AbstractData* item);
 
 private:
-    void foreachSubscribers(const WP<AbstractData> &item,
-                            const QSet<SP<AbstractNodeInfo>> &subscribersList);
+    void foreachSubscribers(const AbstractData *item,
+                            const QSet<AbstractNodeInfo*> &subscribersList);
 
-    QHash<DbAddress, QSet<SP<AbstractNodeInfo>>> _subscribs;
-    QHash<SP<AbstractNodeInfo>, QSet<DbAddress>> _items;
+    QHash<DbAddress, QSet<AbstractNodeInfo*>> _subscribs;
+    QHash<AbstractNodeInfo*, QSet<DbAddress>> _items;
 
     AbstractNode *_node = nullptr;
 

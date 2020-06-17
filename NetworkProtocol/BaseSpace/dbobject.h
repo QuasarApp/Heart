@@ -12,7 +12,6 @@
 #include "abstractdata.h"
 #include "networkprotocol_global.h"
 #include "dbaddress.h"
-#include "defines.h"
 
 class QSqlQuery;
 
@@ -74,7 +73,7 @@ public:
      * @brief factory
      * @return self object pointer
      */
-    virtual SP<DBObject> factory() = 0;
+    virtual DBObject* factory() = 0;
 
     /**
      * @brief select - override this metod for get item from database
@@ -88,7 +87,7 @@ public:
      * @param q
      * @return
      */
-    virtual bool save(QSqlQuery& q) = 0;
+    virtual bool save(QSqlQuery& q) const = 0 ;
 
     /**
      * @brief remove - override this method for remove this item from database.
@@ -96,7 +95,7 @@ public:
      * @param q
      * @return
      */
-    virtual bool remove(QSqlQuery& q) = 0;
+    virtual bool remove(QSqlQuery& q) const = 0;
 
     /**
      * @brief isCached

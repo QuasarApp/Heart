@@ -18,16 +18,16 @@ public:
     PermisionCache();
 
     bool checkPermision(const NP::UserNodeInfo &requestNode,
-                        const QWeakPointer<DBObject> &saveObject,
+                        const DBObject &saveObject,
                         Permission requiredPermision);
 
-    bool saveObject(const QWeakPointer<AbstractData> &saveObject) override;
+    bool saveObject(const DBObject *saveObject) override;
 
     // SqlDBCache interface
 protected:
-    void deleteFromCache(const QWeakPointer<AbstractData> &delObj) override;
-    void saveToCache(const QWeakPointer<AbstractData> &obj) override;
-    bool getFromCache(QSharedPointer<DBObject> &obj) override;
+    void deleteFromCache(const DBObject* delObj) override;
+    void saveToCache(const DBObject*obj) override;
+    bool getFromCache(DBObject* obj) override;
 
 private:
     QHash<PermisionData, Permission> _permisions;

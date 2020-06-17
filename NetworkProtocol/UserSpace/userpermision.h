@@ -48,7 +48,7 @@ public:
      */
     explicit UserPermision(const PermisionData &key, Permission value = Permission::NoPermission);
 
-    SP<DBObject> factory() override;
+    DBObject* factory() override;
 
     /**
      * @brief select - this implementation get all permisons data from user or object
@@ -62,7 +62,7 @@ public:
      * @param q
      * @return true if sunctions finished successful
      */
-    bool save(QSqlQuery &q) override;
+    bool save(QSqlQuery &q) const override;
 
     /**
      * @brief getCacheId - generate id from user premisionTable and objectid for hash table of cache.
@@ -87,7 +87,7 @@ public:
      * @param q
      * @return true if function finished seccessful
      */
-    bool remove(QSqlQuery &q) override;
+    bool remove(QSqlQuery &q) const override;
 
     /**
      * @brief getData

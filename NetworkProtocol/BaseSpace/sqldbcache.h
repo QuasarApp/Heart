@@ -45,19 +45,19 @@ public:
      * @brief writer
      * @return weak pointer to writer
      */
-    WP<SqlDBWriter> writer() const;
+    SqlDBWriter* writer() const;
 
     /**
      * @brief setWriter
      * @param writer
      */
-    void setWriter(const WP<SqlDBWriter> &writer);
+    void setWriter(SqlDBWriter* writer);
 
-    bool getObject(SP<DBObject> &obj) override;
+    bool getObject(DBObject *obj) override;
     DBObject* getObjectFromCache(const QString& table, int id);
 
-    bool saveObject(const WP<AbstractData> &saveObject) override;
-    bool deleteObject(const WP<AbstractData>& delObj) override;
+    bool saveObject(const DBObject* saveObject) override;
+    bool deleteObject(const DBObject* delObj) override;
 
     /**
      * @brief getUpdateInterval of SqlDBCasheWriteMode::Default mode
@@ -91,20 +91,20 @@ protected:
      * @param id in table of object
      * @return true if all good
      */
-    virtual void deleteFromCache(const QWeakPointer<AbstractData> &delObj);
+    virtual void deleteFromCache(const DBObject *delObj);
 
     /**
      * @brief saveToCache
      * @param obj
      */
-    virtual void saveToCache(const WP<AbstractData> &obj);
+    virtual void saveToCache(const DBObject *obj);
 
     /**
      * @brief getFromCache -  get database objcet from cache.
      * @param obj
      * @return
      */
-    virtual bool getFromCache(SP<DBObject> &obj);
+    virtual bool getFromCache(DBObject* obj);
 
     /**
      * @brief getMode
@@ -131,7 +131,7 @@ protected:
      */
     virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
-    SP<SqlDBWriter> _writer = nullptr;
+    SqlDBWriter* _writer = nullptr;
 private:
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
@@ -139,13 +139,13 @@ private:
 
     SqlDBCasheWriteMode _mode;
 
-    QHash<QString, QHash <int, SP<DBObject>>>  _cache;
+    QHash<QString, QHash <int, DBObject*>>  _cache;
     QHash<QString, QList<int>>  _needToSaveCache;
 
 
 
 signals:
-    void sigItemChanged(const WP<AbstractData> &obj);
+    void sigItemChanged(const DBObject *obj);
 
 };
 

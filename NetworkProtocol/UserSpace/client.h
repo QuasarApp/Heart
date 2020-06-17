@@ -154,7 +154,7 @@ protected:
     void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL) override;
 
 private slots:
-    void handleIncomingData(SP<AbstractData> obj, const QHostAddress &);
+    void handleIncomingData(AbstractData* obj, const QHostAddress &);
     void setLastMessage(QString lastMessage);
     void socketStateChanged(QAbstractSocket::SocketState);
 
@@ -165,7 +165,7 @@ private:
     unsigned short _port;
 
     QString _lastMessage;
-    SP<UserData> _user;
+    UserData* _user;
 
     void setStatus(Status);
 

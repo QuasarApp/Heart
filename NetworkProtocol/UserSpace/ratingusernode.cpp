@@ -21,7 +21,7 @@ RatingUserNode::RatingUserNode() {
 }
 
 ParserResult RatingUserNode::parsePackage(const Package &pkg,
-                                    const WP<AbstractNodeInfo> &sender) {
+                                    const AbstractNodeInfo *sender) {
 
     auto parentResult = BaseNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
@@ -76,7 +76,7 @@ QVariantMap RatingUserNode::defaultDbParams() const {
 }
 
 // bug : user register with id -1 it is all permision to write into all users table.
-bool RatingUserNode::registerNewUser(const WP<AbstractData>& user,
+bool RatingUserNode::registerNewUser(const AbstractData *user,
                                        const QHostAddress& address) {
     auto strongUser = user.toStrongRef().dynamicCast<UserData>();
 
@@ -105,8 +105,8 @@ bool RatingUserNode::registerNewUser(const WP<AbstractData>& user,
     return true;
 }
 
-bool RatingUserNode::loginUser(const WP<AbstractData>& user,
-                         const WP<AbstractData>& userdb,
+bool RatingUserNode::loginUser(const AbstractData *user,
+                         const AbstractData *userdb,
                          const QHostAddress& address) {
     auto strongUser = user.toStrongRef().dynamicCast<UserData>();
 
@@ -141,7 +141,7 @@ bool RatingUserNode::loginUser(const WP<AbstractData>& user,
     return false;
 }
 
-bool RatingUserNode::workWithUserRequest(const WP<AbstractData> &rec,
+bool RatingUserNode::workWithUserRequest(const AbstractData *rec,
                                            const QHostAddress &addere,
                                            const Header *rHeader) {
 

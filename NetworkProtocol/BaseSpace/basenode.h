@@ -27,7 +27,7 @@ class DBDataRequest;
  */
 enum class DBOperationResult {
     /// Node do not know about this operaio
-    Unnow,
+    Unknown,
     /// Node allow this operation and exec it
     Allowed,
     /// Node forbid this operation.
@@ -85,7 +85,7 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
 signals:
-    void incomingData(SP<AbstractData> pkg,
+    void incomingData(AbstractData* pkg,
                       const QHostAddress&  sender);
 
     void requestError(QString msg);
@@ -106,7 +106,7 @@ protected:
      * @return
      */
     ParserResult parsePackage(const Package &pkg,
-                              const WP<AbstractNodeInfo> &sender) override;
+                              const AbstractNodeInfo* sender) override;
 
 
     /**
@@ -120,13 +120,13 @@ protected:
      * @param socket
      * @return pointer to new node info
      */
-    SP<AbstractNodeInfo> createNodeInfo(QAbstractSocket *socket) const override;
+    AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket) const override;
 
     /**
      * @brief db
      * @return pinter to data base
      */
-    WP<SqlDBCache> db() const;
+    SqlDBCache* db() const;
 
     /**
      * @brief workWithSubscribe - this metod work work with subscribe commnads
@@ -134,7 +134,7 @@ protected:
      * @param address sendet address
      * @return true if data parsed seccusseful
      */
-    bool workWithSubscribe(const WP<AbstractData> &rec,
+    bool workWithSubscribe(const AbstractData* rec,
                            const QHostAddress &address);
 
 
@@ -145,7 +145,7 @@ protected:
      * @param requiredPermision - required permision
      * @return true if the node have required permison for selected object
      */
-    virtual bool checkPermision(const AbstractNodeInfo *requestNode,
+    virtual DBOperationResult checkPermision(const AbstractNodeInfo *requestNode,
                                 const DbAddress& object,
                                 const int &requiredPermision);
 
@@ -159,7 +159,7 @@ protected:
      * @param rHeader
      * @return
      */
-    bool workWithDataRequest(const WP<AbstractData> &rec,
+    bool workWithDataRequest(const AbstractData* rec,
                              const QHostAddress &addere,
                              const Header *rHeader);
 
@@ -169,7 +169,7 @@ protected:
      * @param addere
      * @return operation status
      */
-    DBOperationResult deleteObject(const QWeakPointer<AbstractData> &rec,
+    DBOperationResult deleteObject(const AbstractData *rec,
                       const QHostAddress &addere);
 
     /**
@@ -179,7 +179,7 @@ protected:
      * @param dbObject
      * @return operation status
      */
-    DBOperationResult getObject(SP<DBObject>& res,
+    DBOperationResult getObject(DBObject* res,
                    const QHostAddress &requiredNodeAdderess,
                    const DbAddress& dbObject);
 
@@ -191,13 +191,13 @@ protected:
      * @param dbObject
      * @return operation status
      */
-    DBOperationResult setObject(const WP<AbstractData> &saveObject,
+    DBOperationResult setObject(const DBObject* saveObject,
                    const QHostAddress &requiredNodeAddere,
                    const DbAddress& dbObject);
 
 
 private:
-    SP<SqlDBCache> _db;
+    SqlDBCache *_db = nullptr;
     ICrypto *_nodeKeys = nullptr;
 
     /**
@@ -207,7 +207,7 @@ private:
      * @param rHeader
      * @return
      */
-    bool workWithAvailableDataRequest(const WP<AbstractData> &rec,
+    bool workWithAvailableDataRequest(const AbstractData *rec,
                                       const QHostAddress &addere,
                                       const Header *rHeader);
 

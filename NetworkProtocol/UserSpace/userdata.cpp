@@ -148,7 +148,7 @@ bool UserData::select(QSqlQuery &q) {
 
 }
 
-bool UserData::save(QSqlQuery &q) {
+bool UserData::save(QSqlQuery &q) const {
 
     QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
 
@@ -191,7 +191,7 @@ bool UserData::save(QSqlQuery &q) {
     return true;
 }
 
-bool UserData::remove(QSqlQuery &q) {
+bool UserData::remove(QSqlQuery &q) const {
     return DBObject::remove(q);
 }
 
@@ -211,8 +211,8 @@ bool UserData::isValid() const {
     return DBObject::isValid() && (_mail.size() || _name.size());
 }
 
-SP<DBObject> UserData::factory() {
-    return SP<UserData>::create();
+UserData* UserData::factory() {
+    return new UserData;
 }
 
 const AccessToken &UserData::token() const {

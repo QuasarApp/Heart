@@ -86,7 +86,7 @@ protected:
     // 0 - table name
     // 1 - headers of update values
     // 2 - update values
-    virtual bool saveQuery(const WP<AbstractData> &ptr) const;
+    virtual bool saveQuery(const NP::DBObject *ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters
@@ -96,9 +96,9 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(const SP<DBObject> &obj);
+    virtual bool selectQuery(NP::DBObject *obj);
 
-    virtual bool deleteQuery(const WP<AbstractData> &deleteObject) const;
+    virtual bool deleteQuery(const NP::DBObject *deleteObject) const;
 
 public:
     SqlDBWriter();
@@ -127,25 +127,22 @@ public:
      * @brief getObject
      * @return
      */
-    bool getObject(SP<DBObject> &obj) override;
+    bool getObject(DBObject* obj) override;
 
     /**
      * @brief saveObject
      * @return
      */
-    bool saveObject(const WP<AbstractData> &saveObject) override;
+    bool saveObject(const NP::DBObject *ptr) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const WP<AbstractData> &deleteObject) override;
+    bool deleteObject(const NP::DBObject *ptr) override;
 
     virtual ~SqlDBWriter() override;
 
-
-    QHash<QString, SP<DbTableBase> > getDbStruct() const;
-    void setDbStruct(const QHash<QString, SP<DbTableBase> > &dbStruct);
 };
 
 }

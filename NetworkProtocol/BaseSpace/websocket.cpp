@@ -37,12 +37,12 @@ bool WebSocket::isValid() const {
             && AbstractData::isValid();
 }
 
-SP<DBObject> WebSocket::factory() {return {nullptr};}
+DBObject *WebSocket::factory() {return nullptr;}
 
 bool WebSocket::select(QSqlQuery &) { return false; }
 
-bool WebSocket::save(QSqlQuery &) { return false; }
+bool WebSocket::save(QSqlQuery &) const { return false; }
 
-bool WebSocket::remove(QSqlQuery &) { return false; }
+bool WebSocket::remove(QSqlQuery &) const { return false; }
 
 }

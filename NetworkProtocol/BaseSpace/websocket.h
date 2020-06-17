@@ -41,15 +41,15 @@ public:
     WebSocket(const Package& package);
 
 
-    QDataStream &fromStream(QDataStream &stream);
-    QDataStream &toStream(QDataStream &stream) const;
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 
-    bool isValid() const;
+    bool isValid() const override;
 
-    SP<DBObject> factory();
-    bool select(QSqlQuery &);
-    bool save(QSqlQuery &);
-    bool remove(QSqlQuery &);
+    DBObject* factory() override;
+    bool select(QSqlQuery &) override;
+    bool save(QSqlQuery &) const override;
+    bool remove(QSqlQuery &) const override;
 };
 
 }
