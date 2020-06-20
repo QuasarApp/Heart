@@ -5,7 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "abstractnode.h"
+#include "basenode.h"
 #include "abstractnodeinfo.h"
 #include "websocketcontroller.h"
 #include <quasarapp.h>
@@ -13,12 +13,12 @@
 namespace NP {
 
 
-WebSocketController::WebSocketController(AbstractNode *node) {
+WebSocketController::WebSocketController(BaseNode *node) {
     _node = node;
     assert(_node);
 }
 
-bool WebSocketController::subscribe(AbstractNodeInfo *subscriber,
+bool WebSocketController::subscribe(const QByteArray& subscriber,
                                     const DbAddress &item) {
 
     _subscribs[item].insert(subscriber);
@@ -27,42 +27,36 @@ bool WebSocketController::subscribe(AbstractNodeInfo *subscriber,
     return true;
 }
 
-void WebSocketController::unsubscribe(AbstractNodeInfo *subscriber,
+void WebSocketController::unsubscribe(const QByteArray &subscriber,
                                       const DbAddress& item) {
     _subscribs[item].remove(subscriber);
     _items[subscriber].remove(item);
 
 }
 
-const QSet<DbAddress> &WebSocketController::list(AbstractNodeInfo *node) {
-    return _items[node];
+const QSet<DbAddress> &WebSocketController::list(const QByteArray &subscriber) {
+    return _items[subscriber];
 }
 
-void WebSocketController::handleItemChanged(const AbstractData *item) {
-    auto obj = item.toStrongRef().dynamicCast<DBObject>();
-    if (obj.isNull() || !obj->isValid())
+void WebSocketController::handleItemChanged(const DBObject *item) {
+    auto obj = dynamic_cast<const DBObject*>(item);
+    if (obj)
         return;
 
     foreachSubscribers(item, _subscribs.value(obj->dbAddress()));
 }
 
-void WebSocketController::foreachSubscribers(const AbstractData *item,
-                                             const QSet<AbstractNodeInfo *> &subscribersList) {
+void WebSocketController::foreachSubscribers(const DBObject *item,
+                                             const QSet<QByteArray> &subscribersList) {
 
-    auto ref = item.toStrongRef().dynamicCast<DBObject>();
-
-    if (ref.isNull())
+    if (!dynamic_cast<const DBObject*>(item))
         return;
 
-    for (auto &&subscriber : subscribersList) {
+    for (const auto &subscriber : subscribersList) {
 
-        if (!subscriber.isNull() && subscriber->isValid()) {
-            if (!_node->sendData(item, subscriber->id())) {
-                QuasarAppUtils::Params::log("Send update failed for " + subscriber->id().toString(),
-                                                   QuasarAppUtils::Warning);
-            }
-        } else {
-            unsubscribe(subscriber, ref->dbAddress());
+        if (!_node->sendDataToId(item, subscriber)) {
+            QuasarAppUtils::Params::log("Send update failed for " + subscriber.toBase64(),
+                                               QuasarAppUtils::Warning);
         }
     }
 }

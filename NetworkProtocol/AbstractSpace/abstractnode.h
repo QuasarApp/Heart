@@ -250,7 +250,7 @@ protected:
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target);
 
     /**
-     * @brief sendResponse
+     * @brief sendData send data package to address
      * @param resp
      * @param address
      * @param req

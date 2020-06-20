@@ -354,6 +354,47 @@ QVariantMap BaseNode::defaultDbParams() const {
     };
 }
 
+bool BaseNode::sendDataToId(const AbstractData *resp,
+                            const QByteArray &nodeId,
+                            const Header *req) {
+    To Do
+
+//    auto client = getInfoPtr(addere);
+
+//    if (client) {
+//        QuasarAppUtils::Params::log("Response not sent because client == null",
+//                                           QuasarAppUtils::Error);
+//        return false;
+//    }
+
+//    if (resp) {
+//        return false;
+//    }
+
+//    Package pkg;
+//    bool convert = false;
+//    if (req) {
+//        convert = resp->toPackage(pkg, req->command);
+//    } else {
+//        convert = resp->toPackage(pkg);
+//    }
+
+//    if (!convert) {
+//        QuasarAppUtils::Params::log("Response not sent because dont create package from object",
+//                                           QuasarAppUtils::Error);
+//        return false;
+//    }
+
+
+//    if (!sendPackage(pkg, client->sct())) {
+//        QuasarAppUtils::Params::log("Response not sent!",
+//                                           QuasarAppUtils::Error);
+//        return false;
+//    }
+
+//    return true;
+}
+
 DBOperationResult NP::BaseNode::getObject(DBObject *res,
                              const QHostAddress &requiredNodeAdderess,
                              const DbAddress& objcetAddress) {

@@ -10,8 +10,9 @@ DeleteObjectRequest::DeleteObjectRequest(const Package &pkg):
 
 DeleteObjectRequest::DeleteObjectRequest(const DbAddress &address):
     DBObject(address.table) {
+
     INIT_COMMAND
-            setId(address.id);
+    setId(address.id);
 }
 
 DBObject *DeleteObjectRequest::factory() {

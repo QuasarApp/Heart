@@ -84,6 +84,15 @@ public:
      */
     virtual QVariantMap defaultDbParams() const;
 
+    /**
+     * @brief sendDataToId - send data to node or clientby them id
+     * @param resp - responce package
+     * @param nodeId - id of target node
+     * @param req - header of request
+     * @return true if data sendet seccussful
+     */
+    virtual bool sendDataToId(const AbstractData* resp, const QByteArray& nodeId,
+                              const Header *req = nullptr);
 signals:
     void incomingData(AbstractData* pkg,
                       const QHostAddress&  sender);
@@ -146,8 +155,8 @@ protected:
      * @return true if the node have required permison for selected object
      */
     virtual DBOperationResult checkPermision(const AbstractNodeInfo *requestNode,
-                                const DbAddress& object,
-                                const int &requiredPermision);
+                                             const DbAddress& object,
+                                             const int &requiredPermision);
 
 
 
@@ -170,7 +179,7 @@ protected:
      * @return operation status
      */
     DBOperationResult deleteObject(const AbstractData *rec,
-                      const QHostAddress &addere);
+                                   const QHostAddress &addere);
 
     /**
      * @brief getObject - general object for get object
@@ -180,8 +189,8 @@ protected:
      * @return operation status
      */
     DBOperationResult getObject(DBObject* res,
-                   const QHostAddress &requiredNodeAdderess,
-                   const DbAddress& dbObject);
+                                const QHostAddress &requiredNodeAdderess,
+                                const DbAddress& dbObject);
 
 
     /**
@@ -192,8 +201,8 @@ protected:
      * @return operation status
      */
     DBOperationResult setObject(const DBObject* saveObject,
-                   const QHostAddress &requiredNodeAddere,
-                   const DbAddress& dbObject);
+                                const QHostAddress &requiredNodeAddere,
+                                const DbAddress& dbObject);
 
 
 private:

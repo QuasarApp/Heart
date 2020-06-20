@@ -8,40 +8,26 @@
 #ifndef DBDATAREQUEST_H
 #define DBDATAREQUEST_H
 
-#include "dbrequest.h"
-
-#include <abstractdata.h>
+#include "dbobject.h"
 
 namespace NP {
 
 /**
- * @brief The DBDataRequestCmd enum
+ * @brief The DBDataRequest class this is request of db object.
  */
-enum DBDataRequestCmd : unsigned char {
-    /// Invalid data
-    Invalid = 0,
-    /// Get object from node db
-    Get,
-    /// save new data to node db
-    Set
-};
-
-/**
- * @brief The DBDataRequest class this is request of db object
- */
-class NETWORKPROTOCOLSHARED_EXPORT DBDataRequest: public AbstractData, public DBRequest
+class NETWORKPROTOCOLSHARED_EXPORT DBDataRequest: public DBObject
 {
 public:
     /**
      * @brief DBDataRequest - creaste empty invalid object
+     * @param pkg
      */
-    explicit DBDataRequest();
+    explicit DBDataRequest(const Package &pkg);
     /**
      * @brief DBDataRequest
-     * @param cmd see DBDataRequestCmd
      * @param address - addrerss of object in database see DbAddress
      */
-    explicit DBDataRequest(DBDataRequestCmd cmd, const DbAddress& address);
+    explicit DBDataRequest(const DbAddress& address);
 
 
     QDataStream &fromStream(QDataStream &stream) override;
