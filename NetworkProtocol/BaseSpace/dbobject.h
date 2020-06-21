@@ -110,17 +110,7 @@ public:
      * @return
      */
     DbAddress dbAddress() const;
-
-    /**
-     * @brief checkDBId - check data base id.
-     * @param id
-     * @return true if id is valid
-     */
-    static bool checkDBId(const DbId& id);
-
 protected:
-
-
     QString _tableName;
     DbId _id;
 

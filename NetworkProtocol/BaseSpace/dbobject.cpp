@@ -41,12 +41,8 @@ DbAddress DBObject::dbAddress() const {
     return {tableName(), getId()};
 }
 
-bool DBObject::checkDBId(const DbId &id) {
-    return id.size() == 32;
-}
-
 bool DBObject::remove(QSqlQuery &q) const {
-    if (checkDBId(_id)) {
+    if (_id.isValid()) {
         return false;
     }
 

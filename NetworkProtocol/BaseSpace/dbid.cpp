@@ -34,6 +34,10 @@ bool DbId::isValid() const {
     return _data.size() == 32;
 }
 
+bool DbId::clear() {
+    _data.clear();
+}
+
 QDataStream &DbId::fromStream(QDataStream &stream) {
     stream >> _data;
     return stream;
