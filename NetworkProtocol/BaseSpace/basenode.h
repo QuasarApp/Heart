@@ -22,17 +22,6 @@ class WebSocket;
 class WebSocketController;
 class DBDataRequest;
 
-/**
- * @brief The DBOperationResult enum
- */
-enum class DBOperationResult {
-    /// Node do not know about this operaio
-    Unknown,
-    /// Node allow this operation and exec it
-    Allowed,
-    /// Node forbid this operation.
-    Forbidden,
-};
 
 /**
  * @brief The BaseNode class - base inplementation of nodes

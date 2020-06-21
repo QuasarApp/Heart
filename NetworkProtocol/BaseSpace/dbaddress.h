@@ -9,7 +9,8 @@
 #define DBADDRESS_H
 
 #include "streambase.h"
-
+#include "basedefines.h"
+#include "dbid.h"
 
 namespace NP {
 
@@ -21,11 +22,11 @@ class NETWORKPROTOCOLSHARED_EXPORT DbAddress : public StreamBase {
 public:
 
     DbAddress() = default;
-    DbAddress(const QString& address, int id);
+    DbAddress(const QString& address, const DbId& id);
 
 
     QString table;
-    int id;
+    DbId id;
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;

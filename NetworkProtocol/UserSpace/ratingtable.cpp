@@ -76,11 +76,11 @@ bool RatingTable::select(QSqlQuery &q) {
     return isValid();
 }
 
-bool RatingTable::save(QSqlQuery &) {
+bool RatingTable::save(QSqlQuery &) const {
     return true;
 }
 
-bool RatingTable::remove(QSqlQuery &) {
+bool RatingTable::remove(QSqlQuery &) const {
     return true;
 }
 

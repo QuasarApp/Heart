@@ -190,6 +190,13 @@ bool SqlDBCache::init(const QVariantMap &params) {
     return _writer->initDb(params);
 }
 
+DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
+                                             const DBObject &object,
+                                             Permission requiredPermision) {
+
+    getObject()
+}
+
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     if (delObj)
         return;

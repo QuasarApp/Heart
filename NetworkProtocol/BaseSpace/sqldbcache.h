@@ -17,6 +17,7 @@
 #include <networkprotocol.h>
 #include <QMutex>
 #include "config.h"
+#include <permisions.h>
 
 namespace NP {
 
@@ -28,6 +29,19 @@ enum class SqlDBCasheWriteMode: int {
     On_New_Thread = 0x1,
     Force = 0x2,
 } ;
+
+/**
+ * @brief The DBOperationResult enum
+ */
+enum class DBOperationResult {
+    /// Node do not know about this operaio
+    Unknown,
+    /// Node allow this operation and exec it
+    Allowed,
+    /// Node forbid this operation.
+    Forbidden,
+};
+
 
 /**
  * @brief The SqlDBCache class it is db cache and bridge for DbWriters
@@ -82,6 +96,17 @@ public:
      * @return
      */\
     virtual bool init(const QVariantMap &params);
+
+    /**
+     * @brief checkPermision - check permision of clientId for object.
+     * @param id - id of node or client
+     * @param object - target object
+     * @param requiredPermision - requirement permision of object
+     * @return operation result see DBOperationResult
+     */
+    virtual DBOperationResult checkPermision(const QByteArray& id,
+                                             const DBObject &object,
+                                             Permission requiredPermision);
 
 protected:
 

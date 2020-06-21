@@ -25,8 +25,8 @@ public:
 
     DBObject* factory();
     bool select(QSqlQuery &q);
-    bool save(QSqlQuery &q);
-    bool remove(QSqlQuery &q);
+    bool save(QSqlQuery &q) const;
+    bool remove(QSqlQuery &q) const;
 
     bool isValid() const;
     void clear();

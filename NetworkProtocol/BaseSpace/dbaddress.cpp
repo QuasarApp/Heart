@@ -13,12 +13,10 @@
 namespace NP {
 
 qint64 qHash(const DbAddress &address) {
-    qint64 res = address.id;
-    res <<= 32;
-    return res + qHash(address.table);
+    return qHash(address.id.toRaw() + address.table);
 }
 
-DbAddress::DbAddress(const QString &address, int id) {
+DbAddress::DbAddress(const QString &address, const DbId &id) {
     this->table = address;
     this->id = id;
 }
@@ -40,6 +38,6 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
 }
 
 bool DbAddress::isValid() const {
-    return id && table.size();
+    return id.isValid() && table.size();
 }
 }

@@ -12,10 +12,12 @@
 #include "abstractdata.h"
 #include "networkprotocol_global.h"
 #include "dbaddress.h"
+#include "basedefines.h"
 
 class QSqlQuery;
 
 namespace NP {
+
 
 /**
  * @brief The DBObject class- main class for work with data base.
@@ -44,13 +46,13 @@ public:
      * @brief getId
      * @return id of objcet
      */
-    int getId() const;
+    DbId getId() const;
 
     /**
-     * @brief getId
-     * @return id of objcet
+     * @brief setId - set new id for db object
+     * @param id
      */
-    void setId(int);
+    void setId(const DbId& id);
 
     /**
      * @brief clear
@@ -95,7 +97,7 @@ public:
      * @param q
      * @return
      */
-    virtual bool remove(QSqlQuery& q) const = 0;
+    virtual bool remove(QSqlQuery& q) const;
 
     /**
      * @brief isCached
@@ -109,11 +111,18 @@ public:
      */
     DbAddress dbAddress() const;
 
+    /**
+     * @brief checkDBId - check data base id.
+     * @param id
+     * @return true if id is valid
+     */
+    static bool checkDBId(const DbId& id);
+
 protected:
 
 
     QString _tableName;
-    int _id = -1;
+    DbId _id;
 
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;

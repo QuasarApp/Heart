@@ -41,12 +41,16 @@ DbAddress DBObject::dbAddress() const {
     return {tableName(), getId()};
 }
 
+bool DBObject::checkDBId(const DbId &id) {
+    return id.size() == 32;
+}
+
 bool DBObject::remove(QSqlQuery &q) const {
-    if (_id <= 0) {
+    if (checkDBId(_id)) {
         return false;
     }
 
-    QString queryString = "DELETE FROM %0 where id=" + QString::number(getId());
+    QString queryString = "DELETE FROM %0 where id=" + getId().toBase64();
 
     queryString = queryString.arg(tableName());
 
@@ -91,16 +95,16 @@ bool DBObject::copyFrom(const AbstractData * other) {
     return true;
 }
 
-int DBObject::getId() const {
+DbId DBObject::getId() const {
     return _id;
 }
 
-void DBObject::setId(int id) {
+void DBObject::setId(const DbId& id) {
     _id = id;
 }
 
 void DBObject::clear() {
-    _id = -1;
+    _id.clear();
 }
 
 }
