@@ -8,6 +8,7 @@
 #include "sqldbcache.h"
 #include "quasarapp.h"
 #include "sqldbwriter.h"
+#include "nodeobject.h"
 
 #include <networkprotocol.h>
 #include <dbobject.h>
@@ -194,7 +195,15 @@ DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
                                              const DBObject &object,
                                              Permission requiredPermision) {
 
-    getObject()
+    NodeObject node(id);
+    if (!getObject(&node)) {
+        return DBOperationResult::Unknown;
+    }
+
+    NodeObject node(id);
+
+
+    node.
 }
 
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {

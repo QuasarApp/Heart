@@ -210,17 +210,6 @@ bool UserPermision::isHavePermision(const PermisionData &key, Permission value) 
     return _data.value(key, Permission::NoPermission) >= value;
 }
 
-uint qHash(const NP::PermisionData &userPermision) {
-
-    QByteArray data;
-    QDataStream stream(&data, QIODevice::WriteOnly);
-
-    stream << userPermision._userId;
-    stream << userPermision._objectTable;
-    stream << userPermision._idObject;
-    return qHash(data);
-}
-
 bool operator ==(const PermisionData &left, const PermisionData &right) {
     return left._userId == right._userId &&
             left._idObject == right._idObject &&

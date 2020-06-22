@@ -5,31 +5,6 @@
 
 namespace NP {
 
-/**
- * @brief The PermisionData struct
- */
-struct PermisionData {
-    /// user id (first part of key)
-    unsigned int _userId = 0;
-
-    /// table of target object (second part of key)
-    QString _objectTable;
-
-    /// check object id (third part of key)
-    unsigned int _idObject = 0;
-
-    /// this member not part of the key
-    Permission _lvl = Permission::NoPermission;
-
-    friend bool operator == (const PermisionData& left, const PermisionData& right);
-};
-
-/**
- * @brief qHash - calc unique key of PermisionData
- * @param userPermision
- * @return unique key
- */
-uint qHash(const PermisionData& userPermision);
 
 /**
  * @brief The UserPermision class

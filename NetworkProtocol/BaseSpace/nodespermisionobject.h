@@ -5,32 +5,27 @@
  * of this license document, but changing it is not allowed.
 */
 
-
-#ifndef NODEOBJECT_H
-#define NODEOBJECT_H
+#ifndef NODESPERMISIONOBJECT_H
+#define NODESPERMISIONOBJECT_H
 
 #include "dbobject.h"
-
 
 namespace NP {
 
 /**
- * @brief The NodeObject class - database structure of node
+ * @brief The NodesPermisionObject class - database object of permisions of node
  */
-class NETWORKPROTOCOLSHARED_EXPORT NodeObject: public DBObject
+class NETWORKPROTOCOLSHARED_EXPORT NodesPermisionObject: public DBObject
 {
 public:
-    NodeObject();
-    NodeObject(const Package& pkg);
-    NodeObject(const QByteArray& id);
+    NodesPermisionObject();
+    NodesPermisionObject(const Package& pkg);
+    NodesPermisionObject(const QByteArray& id);
 
     // DBObject interface
     DBObject *factory() override;
     bool select(QSqlQuery &q) override;
     bool save(QSqlQuery &q) const override;
-
-private:
-    QByteArray _publickKey;
 };
 }
-#endif // NODEOBJECT_H
+#endif // NODESPERMISIONOBJECT_H

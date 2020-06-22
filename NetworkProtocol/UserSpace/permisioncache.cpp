@@ -89,7 +89,7 @@ void PermisionCache::saveToCache(const DBObject *obj) {
     }
 }
 
-bool PermisionCache::getFromCache(SP<DBObject> &obj) {
+bool PermisionCache::getFromCache(DBObject *obj) {
     auto value = obj.dynamicCast<UserPermision>();
 
     if (value.isNull()) {

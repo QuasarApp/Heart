@@ -8,6 +8,7 @@
 #ifndef SQLDBCASHE_H
 #define SQLDBCASHE_H
 
+#include "dbcachekey.h"
 #include "iobjectprovider.h"
 
 #include <QMap>
@@ -164,8 +165,8 @@ private:
 
     SqlDBCasheWriteMode _mode;
 
-    QHash<QString, QHash <int, DBObject*>>  _cache;
-    QHash<QString, QList<int>>  _needToSaveCache;
+    QHash<DBCacheKey, DBObject*>  _cache;
+    QSet<DBCacheKey>  _needToSaveCache;
 
 
 

@@ -23,6 +23,11 @@ NodeObject::NodeObject(const Package &pkg):
     fromBytes(pkg.toBytes());
 }
 
+NodeObject::NodeObject(const QByteArray &id):
+    NodeObject() {
+    setId(id);
+}
+
 DBObject *NodeObject::factory() {
     return new NodeObject;
 }
