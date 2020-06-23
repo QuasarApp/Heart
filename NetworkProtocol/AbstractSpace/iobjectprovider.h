@@ -23,12 +23,19 @@ public:
     virtual ~iObjectProvider();
 
     /**
-     * @brief getObject
-     * obj - dbobject with own query of select.
-     * After the invoke this object well contain current data.
-     * @return
+     * @brief getObject - this method return pointer to DBObject created by select method of template object.
+     * @param obj - template object with a select db request.
+     * @return return pointer to DBObject ot nullptr id object not exits.
      */
-    virtual bool getObject(DBObject *obj) = 0;
+    DBObject *getObject(DBObject *obj);;
+
+    /**
+     * @brief getAllObjects - executable select method of objects and return list of all selected objects
+     * @param obj - template object with select request.
+     * @param result - return value, list of selected objects.
+     * @return true if objects have in db else false.
+     */
+    virtual bool getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) = 0;
 
     /**
      * @brief saveObject

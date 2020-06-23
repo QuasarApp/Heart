@@ -9,6 +9,11 @@ bool operator ==(const PermisionData &left, const PermisionData &right) {
     return left._id == right._id && left._address == right._address;
 }
 
+PermisionData::PermisionData(const DbId &subject, const DbAddress &objcet) {
+    setId(subject);
+    setAddress(objcet);
+}
+
 unsigned int PermisionData::hash() const {
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);

@@ -9,6 +9,8 @@
 #ifndef DBCACHEKEY_H
 #define DBCACHEKEY_H
 
+#include "dbid.h"
+
 #include <networkprotocol_global.h>
 
 namespace NP {
@@ -22,10 +24,43 @@ class NETWORKPROTOCOLSHARED_EXPORT DBCacheKey
 {
 public:
     DBCacheKey();
+    DBCacheKey(AbstractKey *ptr);
+
     ~DBCacheKey();
+
+    /**
+     * @brief castedValue
+     * @return casted pointer to data of the object key
+     */
+    template <class VALUE>
+    const VALUE* castedValue() const {
+        return dynamic_cast<VALUE*>(this->value());
+    }
 
     AbstractKey *value() const;
     void setValue(AbstractKey *value);
+
+    /**
+     * @brief create - create key from value
+     * @param value - value
+     * @return key
+     */
+    template <class KeyType, class VALUE>
+    static DBCacheKey create(const VALUE& value) {
+        return DBCacheKey(new KeyType(value));
+    }
+
+    /**
+     * @brief table - return the table name from value of key. If the value is null then return a empty string
+     * @return name of table of object
+     */
+    QString table() const;
+
+    /**
+     * @brief id - return dbId of object from value. If the value is null then reruen a notValid id.
+     * @return dbid of object
+     */
+    DbId id() const;
 
 private:
     AbstractKey * _value = nullptr;

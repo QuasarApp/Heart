@@ -96,7 +96,7 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(NP::DBObject *obj);
+    virtual bool selectQuery(const DBObject &requestObject, QList<DBObject *> &result);
 
     virtual bool deleteQuery(const NP::DBObject *deleteObject) const;
 
@@ -124,10 +124,12 @@ public:
     virtual bool isValid() const;
 
     /**
-     * @brief getObject
-     * @return
+     * @brief getAllObjects - executable select method of objects and return list of all selected objects
+     * @param obj - template object with select request.
+     * @param result - return value, list of selected objects.
+     * @return true if objects have in db else false.
      */
-    bool getObject(DBObject* obj) override;
+    bool getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) override;
 
     /**
      * @brief saveObject

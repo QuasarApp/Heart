@@ -69,7 +69,7 @@ public:
     void setWriter(SqlDBWriter* writer);
 
     bool getObject(DBObject *obj) override;
-    DBObject* getObjectFromCache(const QString& table, int id);
+    DBObject* getObjectFromCache(const DBCacheKey &key);
 
     bool saveObject(const DBObject* saveObject) override;
     bool deleteObject(const DBObject* delObj) override;

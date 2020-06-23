@@ -20,11 +20,13 @@ class NETWORKPROTOCOLSHARED_EXPORT DbAddressKey: public DbAddress, public Abstra
 {
 public:
     DbAddressKey();
+    DbAddressKey(const DbAddress& address);
     DbAddressKey(const QString& address, const DbId& id);
 
-    // AbstractKey interface
-public:
     unsigned int hash() const override;
+
+    const DbId &id() const override;
+    const QString &table() const override;
 };
 }
 #endif // DBADDRESSKEY_H

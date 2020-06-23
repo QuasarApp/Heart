@@ -8,6 +8,7 @@
 #ifndef NODESPERMISIONOBJECT_H
 #define NODESPERMISIONOBJECT_H
 
+#include "dbcachekey.h"
 #include "dbobject.h"
 
 namespace NP {
@@ -26,6 +27,9 @@ public:
     DBObject *factory() override;
     bool select(QSqlQuery &q) override;
     bool save(QSqlQuery &q) const override;
+
+private:
+    QHash<DBCacheKey, Permision> _permisions;
 };
 }
 #endif // NODESPERMISIONOBJECT_H

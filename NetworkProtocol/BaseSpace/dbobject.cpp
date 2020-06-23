@@ -5,6 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
+#include "dbaddresskey.h"
+#include "dbcachekey.h"
 #include "dbobject.h"
 #include "dbtablebase.h"
 #include <QDataStream>
@@ -33,28 +35,45 @@ void DBObject::setTableName(const QString &tableName) {
     _tableName = tableName;
 }
 
-bool DBObject::isCached() const {
-    return true;
-}
-
-DbAddress DBObject::dbAddress() const {
-    return {tableName(), getId()};
-}
-
-bool DBObject::remove(QSqlQuery &q) const {
+bool DBObject::prepareSelectQuery(QSqlQuery &q) const {
     if (_id.isValid()) {
         return false;
     }
 
+    QString queryString = "SELECT * FROM %0 WHERE id='" + getId().toBase64() + "'";
+
+    queryString = queryString.arg(tableName());
+
+    return q.prepare(queryString);
+}
+
+bool DBObject::fromSqlRecord(const QSqlRecord &q) {
+    if (q.contains("id")) {
+        setId(q.value("id").toString());
+        return true;
+    }
+
+    return false;
+}
+
+bool DBObject::isCached() const {
+    return true;
+}
+
+DBCacheKey DBObject::dbKey() const {
+    return DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()});
+}
+
+bool DBObject::prepareRemoveQuery(QSqlQuery &q) const {
+    if (_id.isValid()) {
+        return false;
+    }
+    
     QString queryString = "DELETE FROM %0 where id=" + getId().toBase64();
 
     queryString = queryString.arg(tableName());
 
-    if (!q.prepare(queryString)) {
-        return false;
-    }
-
-    return q.exec();
+    return q.prepare(queryString);
 }
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {

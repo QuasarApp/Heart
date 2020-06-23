@@ -24,16 +24,23 @@ public:
     DbAddress() = default;
     DbAddress(const QString& address, const DbId& id);
 
-
-    QString table;
-    DbId id;
-
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
     friend bool operator== (const DbAddress& left, const DbAddress& other);
 
     bool isValid() const;
+
+    const QString& table() const;
+    void setTable(const QString &table);
+
+    const DbId &id() const;
+    void setId(const DbId &id);
+
+private:
+
+    QString _table;
+    DbId _id;
 };
 
 qint64 qHash(const DbAddress& address);

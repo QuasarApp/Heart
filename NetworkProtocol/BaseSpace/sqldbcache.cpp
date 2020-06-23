@@ -9,6 +9,8 @@
 #include "quasarapp.h"
 #include "sqldbwriter.h"
 #include "nodeobject.h"
+#include "dbaddresskey.h"
+#include "permisiondata.h"
 
 #include <networkprotocol.h>
 #include <dbobject.h>
@@ -115,12 +117,12 @@ bool SqlDBCache::getObject(DBObject *obj) {
     return true;
 }
 
-DBObject* SqlDBCache::getObjectFromCache(const QString &table, int id) {
-    if (!_cache[table].contains(id)) {
+DBObject* SqlDBCache::getObjectFromCache(const DBCacheKey& key) {
+    if (!_cache.contains(key)) {
         return nullptr;
     }
 
-    return dynamic_cast<DBObject*>(_cache[table][id]);;
+    return dynamic_cast<DBObject*>(_cache[key]);
 }
 
 bool SqlDBCache::saveObject(const DBObject *saveObject) {
@@ -129,7 +131,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
         return false;
     }
 
-    if (saveObject->getId() < 0) {
+    if (saveObject->getId().isValid()) {
         if (!_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
@@ -150,7 +152,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
             return true;
         }
     } else {
-        _needToSaveCache[saveObject->tableName()].push_back(saveObject->getId());
+        _needToSaveCache.insert(DBCacheKey::create<DbAddressKey>(saveObject->dbAddress()));
         globalUpdateDataBase(_mode);
     }
 
@@ -200,8 +202,11 @@ DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
         return DBOperationResult::Unknown;
     }
 
-    NodeObject node(id);
+    PermisionData permissionKey(id, object.dbAddress());
 
+    if (!getObject(&permissionKey)) {
+        return DBOperationResult::Unknown;
+    }
 
     node.
 }
@@ -210,12 +215,7 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     if (delObj)
         return;
 
-    auto& tableObj = _cache[delObj->tableName()];
-    tableObj.remove( delObj->getId());
-
-    if (tableObj.isEmpty()) {
-        _cache.remove(delObj->tableName());
-    }
+    _cache.remove(DBCacheKey::create<DbAddressKey>(delObj->dbAddress()));
 }
 
 void SqlDBCache::saveToCache(const DBObject *obj) {
@@ -223,7 +223,7 @@ void SqlDBCache::saveToCache(const DBObject *obj) {
         return;
 
     // bug : pointer is rewrited!!!!
-    _cache[obj->tableName()][obj->getId()] = const_cast<DBObject*>(obj);
+    _cache[DBCacheKey::create<DbAddressKey>(obj->dbAddress())] = const_cast<DBObject*>(obj);
     emit sigItemChanged(obj);
 
 }
@@ -232,17 +232,13 @@ bool SqlDBCache::getFromCache(DBObject *obj) {
     if (obj)
         return false;
 
-    int id = obj->getId();
-    auto table = obj->tableName();
+    auto address = DBCacheKey::create<DbAddressKey>(obj->dbAddress());
 
-    auto& tableObj = _cache[table];
-
-    if (!tableObj.contains(id)) {
+    if (!_cache.contains(address)) {
         return false;
     }
 
-     obj = tableObj[id];
-
+     obj = _cache[address];
      return true;
 }
 

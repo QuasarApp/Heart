@@ -9,11 +9,14 @@
 namespace NP {
 
 /**
- * @brief The PermisionData class
+ * @brief The PermisionData class- this class provide unique key for permison of subject (id) to object (address).
  */
 class NETWORKPROTOCOLSHARED_EXPORT PermisionData: public AbstractKey {
 
 public:
+
+    PermisionData() = default;
+    PermisionData(const DbId& subject, const DbAddress& objcet);
 
     friend bool operator == (const PermisionData& left, const PermisionData& right);
 

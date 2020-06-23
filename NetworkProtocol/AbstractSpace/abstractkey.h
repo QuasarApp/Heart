@@ -9,6 +9,8 @@
 #define ABSTRACTKEY_H
 #include "networkprotocol_global.h"
 
+#include <dbid.h>
+
 namespace NP {
 
 /**
@@ -18,8 +20,36 @@ class NETWORKPROTOCOLSHARED_EXPORT AbstractKey
 {
 public:
     AbstractKey();
+
+    /**
+     * @brief AbstractKey
+     * @param cusomHash - custom hash
+     */
+    AbstractKey(unsigned int cusomHash);
+
     virtual ~AbstractKey() = default;
-    virtual unsigned int hash() const = 0;
+    virtual unsigned int hash() const;
+
+    /**
+     * @brief id - this method return id of object
+     * @return dbid of object.
+     */
+    virtual const DbId& id() const = 0;
+
+    /**
+     * @brief table - this method return table name of object
+     * @return table name
+     */
+    virtual const QString& table() const = 0;
+
+    /**
+     * @brief setCustomHash - set custom hash for key. if custom hash is 0 then hash function return hash from objrct
+     * @param customHash
+     */
+    void setCustomHash(unsigned int customHash);
+
+private:
+    unsigned int _customHash = 0;
 };
 
 

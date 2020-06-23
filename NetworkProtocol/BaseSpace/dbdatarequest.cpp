@@ -16,10 +16,10 @@ DBDataRequest::DBDataRequest(const Package &pkg):
 }
 
 DBDataRequest::DBDataRequest(const DbAddress &address):
-    DBObject(address.table) {
+    DBObject(address.table()) {
 
     INIT_COMMAND
-    setId(address.id);
+    setId(address.id());
 }
 
 QDataStream &DBDataRequest::fromStream(QDataStream &stream) {

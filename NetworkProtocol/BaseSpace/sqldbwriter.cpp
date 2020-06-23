@@ -198,8 +198,8 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getObject(DBObject* obj) {
-    return selectQuery(obj);
+bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) {
+    return selectQuery(templateObject, result);
 }
 
 bool SqlDBWriter::saveObject(const DBObject* ptr) {
@@ -219,15 +219,57 @@ bool SqlDBWriter::saveQuery(const DBObject* ptr) const {
 
     QSqlQuery q(db);
 
-    return ptr->save(q);
+    if (!ptr->prepareSaveQuery(q)) {
+
+        QuasarAppUtils::Params::log("prepare sql error: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
+
+        return false;
+    }
+
+    if (!q.exec()) {
+
+        QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
+
+        return false;
+    }
+
+    return true;
 }
 
-bool SqlDBWriter::selectQuery(DBObject* obj) {
-    if (obj)
-        return false;
+bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<DBObject *> &result) {
 
     QSqlQuery query(db);
-    return obj->select(query);
+
+    if (!requestObject.prepareSelectQuery(query)) {
+        QuasarAppUtils::Params::log("prepare sql error: " + query.lastError().text(),
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    if (!query.exec()) {
+        QuasarAppUtils::Params::log("exec sql error: " + query.lastError().text(),
+                                    QuasarAppUtils::Error);
+        return false;
+
+    }
+
+    while (query.next()) {
+        auto newObject = requestObject.factory();
+
+        if (!newObject)
+            return false;
+
+        if (!newObject->fromSqlRecord(query.record())) {
+            QuasarAppUtils::Params::log("Init sql object error.",
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+        result.push_back(newObject);
+    }
+
+    return result.size();
 }
 
 bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
@@ -235,7 +277,21 @@ bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
         return false;
 
     QSqlQuery query(db);
-    return deleteObject->remove(query);
+
+    if (!deleteObject->prepareRemoveQuery(query)) {
+        QuasarAppUtils::Params::log("prepare sql error: " + query.lastError().text(),
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    if (!query.exec()) {
+        QuasarAppUtils::Params::log("exec sql error: " + query.lastError().text(),
+                                    QuasarAppUtils::Error);
+        return false;
+
+    }
+
+    return true;
 }
 
 }

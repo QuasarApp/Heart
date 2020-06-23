@@ -7,12 +7,14 @@
 
 #ifndef DBOBJECT_H
 #define DBOBJECT_H
+#include <QSqlRecord>
 #include <QVariantMap>
 #include <dbtablebase.h>
 #include "abstractdata.h"
 #include "networkprotocol_global.h"
 #include "dbaddress.h"
 #include "basedefines.h"
+#include "dbcachekey.h"
 
 class QSqlQuery;
 
@@ -75,29 +77,41 @@ public:
      * @brief factory
      * @return self object pointer
      */
-    virtual DBObject* factory() = 0;
+    virtual DBObject* factory() const = 0;
 
     /**
-     * @brief select - override this metod for get item from database
+     * @brief prepareSelectQuery - override this metod for get item from database
+     *  this method need to prepare a query for selected data.
+     *  the default implementation generate default select: "select * from [table] where id=[id]"
+     * @param q - query object
+     * @return true if query is prepared seccussful
+     */
+    virtual bool prepareSelectQuery(QSqlQuery& q) const;
+
+    /**
+     * @brief fromSqlRecord- this method need to init this object from executed sqlRecord.
+     *  default implementation get general dbObject information ( id and table name )
+     * @param q - sql record
+     * @return true if method finished succesful
+     */
+    virtual bool fromSqlRecord(const QSqlRecord& q);
+
+    /**
+     * @brief prepareSaveQuery - override this method for save item into database
+     *  this method need to prepare a query for selected data.
      * @param q
      * @return
      */
-    virtual bool select(QSqlQuery& q) = 0;
+    virtual bool prepareSaveQuery(QSqlQuery& q) const = 0 ;
 
     /**
-     * @brief save - override this method for save item into database
+     * @brief prepareRemoveQuery - override this method for remove this item from database.
+     *  this method need to prepare a query for remove this object.
+     *  the default implementatin remove item from id or primaryKey
      * @param q
      * @return
      */
-    virtual bool save(QSqlQuery& q) const = 0 ;
-
-    /**
-     * @brief remove - override this method for remove this item from database.
-     * the default implementatin remove item from id or primaryKey
-     * @param q
-     * @return
-     */
-    virtual bool remove(QSqlQuery& q) const;
+    virtual bool prepareRemoveQuery(QSqlQuery& q) const;
 
     /**
      * @brief isCached
@@ -107,9 +121,10 @@ public:
 
     /**
      * @brief dbAddress - unique address of item in database {id:table}
-     * @return
+     *  default implementation
+     * @return unique key of this object
      */
-    DbAddress dbAddress() const;
+    virtual DBCacheKey dbKey() const;
 protected:
     QString _tableName;
     DbId _id;

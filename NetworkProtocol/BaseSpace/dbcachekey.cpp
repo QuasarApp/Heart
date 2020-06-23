@@ -13,6 +13,10 @@ namespace NP {
 
 DBCacheKey::DBCacheKey() {}
 
+DBCacheKey::DBCacheKey(AbstractKey * ptr) {
+    setValue(ptr);
+}
+
 DBCacheKey::~DBCacheKey() {
     if (_value)
         delete _value;
@@ -24,6 +28,20 @@ AbstractKey *DBCacheKey::value() const {
 
 void DBCacheKey::setValue(AbstractKey *value) {
     _value = value;
+}
+
+QString DBCacheKey::table() const {
+    if (_value)
+        return _value->table();
+
+    return "";
+}
+
+DbId DBCacheKey::id() const {
+    if (_value)
+        return _value->id();
+
+    return {};
 }
 
 uint hash(const DBCacheKey &key) {
