@@ -25,12 +25,27 @@ public:
     NodeObject(const QByteArray& id);
 
     // DBObject interface
-    DBObject *factory() override;
-    bool select(QSqlQuery &q) override;
-    bool save(QSqlQuery &q) const override;
+    DBObject *factory() const override;
+    bool prepareSaveQuery(QSqlQuery &q) const override;
+    bool fromSqlRecord(const QSqlRecord &q) override;
+
+    QByteArray publickKey() const;
+    void setPublickKey(const QByteArray &publickKey);
+
+    // AbstractData interface
+    bool isValid() const override;
+    bool copyFrom(const AbstractData *) override;
+
+protected:
+
+    // StreamBase interface
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 
 private:
     QByteArray _publickKey;
+
+
 };
 }
 #endif // NODEOBJECT_H

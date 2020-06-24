@@ -28,37 +28,11 @@ NodeObject::NodeObject(const QByteArray &id):
     setId(id);
 }
 
-DBObject *NodeObject::factory() {
+DBObject *NodeObject::factory() const {
     return new NodeObject;
 }
 
-bool NodeObject::select(QSqlQuery &q) {
-    QString query;
-
-    if (getId().isValid()) {
-        query = "SELECT * from '" + tableName() +
-        "' where id='" +getId().toBase64() + "'";
-    } else {
-        query = "SELECT * from '" + tableName() +
-        "' where pubKey='" + _publickKey + "'";
-    }
-
-    if (!q.prepare(query))
-        return false;
-
-    if (!q.exec())
-        return false;
-
-    if (!q.next())
-        return false;
-
-    setId(q.value("id").toString());
-    _publickKey = q.value("pubKey").toByteArray();
-
-    return isValid();
-}
-
-bool NodeObject::save(QSqlQuery &q) const {
+bool NodeObject::prepareSaveQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
     queryString = queryString.arg(tableName());
     queryString = queryString.arg("id, pubKey");
@@ -70,17 +44,56 @@ bool NodeObject::save(QSqlQuery &q) const {
 
     queryString = queryString.arg(values);
 
-    if (!q.prepare(queryString)) {
-        QuasarAppUtils::Params::log("prepare sql query error: " + q.lastError().text() + " Driver: " + q.lastError().driverText(),
-                                    QuasarAppUtils::Debug);
+    return q.prepare(queryString);
+}
+
+bool NodeObject::fromSqlRecord(const QSqlRecord &q) {
+    if (!DBObject::fromSqlRecord(q)) {
         return false;
     }
 
-    if (!q.exec()) {
-        QuasarAppUtils::Params::log("exec sql query error: " + q.lastError().text() + " Driver: " + q.lastError().driverText(),
-                                    QuasarAppUtils::Debug);
+    setPublickKey(q.value("pubKey").toByteArray());
+
+    return isValid();
+}
+
+QByteArray NodeObject::publickKey() const {
+    return _publickKey;
+}
+
+void NodeObject::setPublickKey(const QByteArray &publickKey) {
+    _publickKey = publickKey;
+}
+
+QDataStream &NodeObject::fromStream(QDataStream &stream) {
+    DBObject::fromStream(stream);
+
+    stream >> _publickKey;
+
+    return stream;
+}
+
+QDataStream &NodeObject::toStream(QDataStream &stream) const {
+    DBObject::toStream(stream);
+
+    stream << _publickKey;
+
+    return stream;
+}
+
+bool NodeObject::isValid() const {
+    return DBObject::isValid() && _publickKey.size() == 256;
+}
+
+bool NodeObject::copyFrom(const AbstractData * other) {
+    if (!DBObject::copyFrom(other))
         return false;
-    }
+
+    auto otherObject = dynamic_cast<const NodeObject*>(other);
+    if (!otherObject)
+        return false;
+
+    this->_publickKey = otherObject->_publickKey;
 
     return true;
 }

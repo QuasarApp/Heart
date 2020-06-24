@@ -13,21 +13,22 @@ namespace NP {
 
 DBCacheKey::DBCacheKey() {}
 
-DBCacheKey::DBCacheKey(AbstractKey * ptr) {
-    setValue(ptr);
+DBCacheKey::DBCacheKey(const AbstractKey *ptr, bool fOnlyWraper) {
+    setValue(ptr, fOnlyWraper);
 }
 
 DBCacheKey::~DBCacheKey() {
-    if (_value)
+    if (_value && !_onlyWraper)
         delete _value;
 }
 
-AbstractKey *DBCacheKey::value() const {
+const AbstractKey *DBCacheKey::value() const {
     return _value;
 }
 
-void DBCacheKey::setValue(AbstractKey *value) {
+void DBCacheKey::setValue(const AbstractKey *value, bool fOnlyWraper) {
     _value = value;
+    _onlyWraper = fOnlyWraper;
 }
 
 QString DBCacheKey::table() const {
@@ -42,6 +43,14 @@ DbId DBCacheKey::id() const {
         return _value->id();
 
     return {};
+}
+
+QString DBCacheKey::toString() const {
+    return QString("table:%0 id:%1").arg(id().toBase64(), table());
+}
+
+bool DBCacheKey::isValid() const {
+    return _value && _value->isValid();
 }
 
 uint hash(const DBCacheKey &key) {

@@ -25,35 +25,32 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     QMutexLocker lock(&_saveLaterMutex);
 
-    for (auto listIt = _needToSaveCache.begin(); listIt != _needToSaveCache.end(); ++listIt ) {
+    for (auto it = _needToSaveCache.begin(); it != _needToSaveCache.end(); ++it ) {
 
-        auto list = listIt.value();
-        for (int id: list) {
+        if (!_writer && _writer->isValid()) {
 
-            auto saveObject = _cache.value(listIt.key()).value(id);
+            auto obj = getFromCache(*it);
 
-            if (!saveObject && !_writer && _writer->isValid()) {
+            if (!obj->isValid()) {
+                deleteFromCache(obj);
 
-                if (!saveObject->isValid()) {
-                    deleteFromCache(saveObject);
-
-                    QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                       " db object is not valid! id=" + QString::number(id),
-                                                       QuasarAppUtils::VerboseLvl::Error);
-                    continue;
-                }
-
-                 if (!_writer->saveObject(saveObject)) {
-                     QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                        " work globalUpdateDataRelease!!! id=" +
-                                                         QString::number(id),
-                                                        QuasarAppUtils::VerboseLvl::Error);
-                 }
-
-                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                    " db writer is npt inited! ",
-                                                    QuasarAppUtils::VerboseLvl::Error);
+                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                                   " db object is not valid! key=" + it->toString(),
+                                                   QuasarAppUtils::VerboseLvl::Error);
+                continue;
             }
+
+             if (!_writer->saveObject(obj)) {
+                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                                    " work globalUpdateDataRelease!!! key=" + it->toString(),
+                                                    QuasarAppUtils::VerboseLvl::Error);
+             }
+        } else {
+
+            QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                               " db writer is npt inited! ",
+                                               QuasarAppUtils::VerboseLvl::Error);
+            return;
         }
     }
 
@@ -95,16 +92,16 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getObject(DBObject *obj) {
-    if (obj)
-        return false;
+bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) {
 
-    if(getFromCache(obj)) {
+    DBObject* obj = getFromCache(templateObject.dbKey());
+    if(obj) {
+        result.push_back(obj);
         return true;
     }
 
     if (!_writer && _writer->isValid()) {
-        if (!_writer->getObject(obj)) {
+        if (!_writer->getAllObjects(templateObject, result)) {
             return false;
         }
 
@@ -114,7 +111,7 @@ bool SqlDBCache::getObject(DBObject *obj) {
         return true;
     }
 
-    return true;
+    return false;
 }
 
 DBObject* SqlDBCache::getObjectFromCache(const DBCacheKey& key) {
@@ -152,7 +149,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
             return true;
         }
     } else {
-        _needToSaveCache.insert(DBCacheKey::create<DbAddressKey>(saveObject->dbAddress()));
+        _needToSaveCache.insert(saveObject->dbKey());
         globalUpdateDataBase(_mode);
     }
 
@@ -202,7 +199,7 @@ DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
         return DBOperationResult::Unknown;
     }
 
-    PermisionData permissionKey(id, object.dbAddress());
+    PermisionData permission(id, object.dbAddress());
 
     if (!getObject(&permissionKey)) {
         return DBOperationResult::Unknown;
@@ -215,31 +212,28 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     if (delObj)
         return;
 
-    _cache.remove(DBCacheKey::create<DbAddressKey>(delObj->dbAddress()));
+    _cache.remove(delObj->dbKey());
 }
 
 void SqlDBCache::saveToCache(const DBObject *obj) {
     if (obj)
         return;
 
+    // TO DO Fix this bug
     // bug : pointer is rewrited!!!!
-    _cache[DBCacheKey::create<DbAddressKey>(obj->dbAddress())] = const_cast<DBObject*>(obj);
+    _cache[obj->dbKey()] = const_cast<DBObject*>(obj);
     emit sigItemChanged(obj);
 
 }
 
-bool SqlDBCache::getFromCache(DBObject *obj) {
-    if (obj)
-        return false;
+DBObject* SqlDBCache::getFromCache(const DBCacheKey &objKey) {
 
-    auto address = DBCacheKey::create<DbAddressKey>(obj->dbAddress());
-
-    if (!_cache.contains(address)) {
-        return false;
+    if (!_cache.contains(objKey)) {
+        return nullptr;
     }
+// TO DO add validation for object
 
-     obj = _cache[address];
-     return true;
+     return _cache[objKey];
 }
 
 SqlDBCasheWriteMode SqlDBCache::getMode() const {

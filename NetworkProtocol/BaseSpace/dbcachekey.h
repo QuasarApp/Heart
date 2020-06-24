@@ -24,7 +24,13 @@ class NETWORKPROTOCOLSHARED_EXPORT DBCacheKey
 {
 public:
     DBCacheKey();
-    DBCacheKey(AbstractKey *ptr);
+    /**
+     * @brief DBCacheKey
+     * @param ptr - pointer to value
+     * @param fOnltWraper - if this value set be true then destructor of DBCacheKey not remove pointer of value.
+     *  by Default this is false.
+     */
+    DBCacheKey(const AbstractKey *ptr, bool fOnltWraper = false);
 
     ~DBCacheKey();
 
@@ -37,8 +43,19 @@ public:
         return dynamic_cast<VALUE*>(this->value());
     }
 
-    AbstractKey *value() const;
-    void setValue(AbstractKey *value);
+    /**
+     * @brief value
+     * @return
+     */
+    const AbstractKey *value() const;
+
+    /**
+     * @brief setValue - set value of key.
+     * @param value 0 pointer of value.
+     * @param fOnltWraper - if this value set be true then destructor of DBCacheKey not remove pointer of value.
+     *  by Default this is false.
+     */
+    void setValue(const AbstractKey *value, bool fOnlyWraper = false);
 
     /**
      * @brief create - create key from value
@@ -62,8 +79,21 @@ public:
      */
     DbId id() const;
 
+    /**
+     * @brief toString
+     * @return string value of this key
+     */
+    QString toString() const;
+
+    /**
+     * @brief isValid -
+     * @return
+     */
+    bool isValid() const;
+
 private:
-    AbstractKey * _value = nullptr;
+    const AbstractKey * _value = nullptr;
+    bool _onlyWraper = false;
 };
 
 uint hash(const DBCacheKey& key);

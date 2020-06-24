@@ -43,6 +43,12 @@ public:
     virtual const QString& table() const = 0;
 
     /**
+     * @brief isValid
+     * @return true if key is valid
+     */
+    virtual bool isValid() const = 0;
+
+    /**
      * @brief setCustomHash - set custom hash for key. if custom hash is 0 then hash function return hash from objrct
      * @param customHash
      */

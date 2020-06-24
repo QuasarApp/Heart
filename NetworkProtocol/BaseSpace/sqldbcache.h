@@ -68,7 +68,7 @@ public:
      */
     void setWriter(SqlDBWriter* writer);
 
-    bool getObject(DBObject *obj) override;
+    bool getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) override;
     DBObject* getObjectFromCache(const DBCacheKey &key);
 
     bool saveObject(const DBObject* saveObject) override;
@@ -127,10 +127,10 @@ protected:
 
     /**
      * @brief getFromCache -  get database objcet from cache.
-     * @param obj
-     * @return
+     * @param objKey
+     * @return object from cache. if object with objKey not exits return nullptr
      */
-    virtual bool getFromCache(DBObject* obj);
+    virtual DBObject* getFromCache(const DBCacheKey &objKey);
 
     /**
      * @brief getMode
