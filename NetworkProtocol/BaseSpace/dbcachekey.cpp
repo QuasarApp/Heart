@@ -13,6 +13,11 @@ namespace NP {
 
 DBCacheKey::DBCacheKey() {}
 
+DBCacheKey::DBCacheKey(DBCacheKey &&other) {
+    this->_value = other._value;
+    other._value = nullptr;
+}
+
 DBCacheKey::DBCacheKey(const AbstractKey *ptr, bool fOnlyWraper) {
     setValue(ptr, fOnlyWraper);
 }

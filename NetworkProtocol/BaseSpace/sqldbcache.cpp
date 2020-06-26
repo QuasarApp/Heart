@@ -11,6 +11,7 @@
 #include "nodeobject.h"
 #include "dbaddresskey.h"
 #include "permisiondata.h"
+#include "nodespermisionobject.h"
 
 #include <networkprotocol.h>
 #include <dbobject.h>
@@ -194,18 +195,23 @@ DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
                                              const DBObject &object,
                                              Permission requiredPermision) {
 
-    NodeObject node(id);
-    if (!getObject(&node)) {
+    NodeObject *node = getObject(NodeObject{id});
+    if (!node) {
         return DBOperationResult::Unknown;
     }
 
-    PermisionData permission(id, object.dbAddress());
+    NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object.dbAddress()}));
 
-    if (!getObject(&permissionKey)) {
+    if (!permision) {
         return DBOperationResult::Unknown;
     }
 
-    node.
+    if (permision->permisions() < requiredPermision) {
+        return DBOperationResult::Forbidden;
+    }
+
+    return DBOperationResult::Allowed;
+
 }
 
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {

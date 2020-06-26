@@ -12,10 +12,10 @@ public:
     explicit DeleteObjectRequest(const Package& pkg);
     explicit DeleteObjectRequest(const DbAddress& address);;
 
-    DBObject *factory();
-    bool select(QSqlQuery &q);
-    bool save(QSqlQuery &q) const;
-    bool remove(QSqlQuery &q) const;
+    DBObject *factory() const override;
+    bool prepareSelectQuery(QSqlQuery &q) const override;
+    bool prepareSaveQuery(QSqlQuery &q) const override;
+    bool prepareRemoveQuery(QSqlQuery &q) const override;
 };
 }
 #endif // DELETEOBJECTREQUEST_H

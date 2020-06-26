@@ -61,7 +61,11 @@ bool DBObject::isCached() const {
 }
 
 DBCacheKey DBObject::dbKey() const {
-    return DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()});
+    return std::move(DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()}));
+}
+
+DbAddress DBObject::dbAddress() const {
+    return DbAddress{tableName(), getId()};
 }
 
 bool DBObject::prepareRemoveQuery(QSqlQuery &q) const {

@@ -24,6 +24,20 @@ class NETWORKPROTOCOLSHARED_EXPORT DBCacheKey
 {
 public:
     DBCacheKey();
+
+    /**
+     * @brief DBCacheKey - copy constructor
+     * @param other
+     */
+    DBCacheKey(const DBCacheKey& other) = delete;
+
+
+    /**
+     * @brief DBCacheKey - move constructor
+     * @param other
+     */
+    DBCacheKey(DBCacheKey&& other);
+
     /**
      * @brief DBCacheKey
      * @param ptr - pointer to value

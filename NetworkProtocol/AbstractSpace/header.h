@@ -9,6 +9,8 @@
 #define ABSTRACTHEADER_H
 #include "networkprotocol_global.h"
 
+#include <dbid.h>
+
 namespace NP {
 /**
  * @brief The Header struct 6 byte
@@ -30,6 +32,11 @@ struct NETWORKPROTOCOLSHARED_EXPORT Header {
      * the server should write to which command it responds
      */
     unsigned short triggerCommnad;
+
+    /**
+     * @brief _sender
+     */
+    DbId sender;
 
     /**
      * @brief Header default constructor

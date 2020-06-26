@@ -13,17 +13,13 @@ Header::Header() {
 }
 
 bool Header::isValid() const {
-
-    if (sizeof (*this) != 6) {
-        return false;
-    }
-
-    return command && size;
+    return command && size && sender.isValid();
 }
 
 void Header::reset() {
     size = 0;
     command = 0;
     triggerCommnad = 0;
+    sender.clear();
 }
 }

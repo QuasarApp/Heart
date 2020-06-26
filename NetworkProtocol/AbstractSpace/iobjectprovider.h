@@ -27,7 +27,8 @@ public:
      * @param obj - template object with a select db request.
      * @return return pointer to DBObject ot nullptr id object not exits.
      */
-    DBObject *getObject(DBObject *obj);;
+    template<class TYPE>
+    TYPE *getObject(const TYPE &templateVal);
 
     /**
      * @brief getAllObjects - executable select method of objects and return list of all selected objects

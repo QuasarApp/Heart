@@ -12,6 +12,7 @@
 #include <QHash>
 #include <QSharedPointer>
 #include <dbobject.h>
+#include <dbid.h>
 
 namespace NP {
 
@@ -27,24 +28,24 @@ class NETWORKPROTOCOLSHARED_EXPORT WebSocketController : public QObject
 
 public:
     WebSocketController(BaseNode *node);
-    bool subscribe(const QByteArray &subscriber,
+    bool subscribe(const DbId &subscriber,
                    const DbAddress &item);
 
-    void unsubscribe(const QByteArray &subscriber,
+    void unsubscribe(const DbId &subscriber,
                      const DbAddress &item);
 
-    const QSet<DbAddress> &list(const QByteArray& subscriber);
+    const QSet<DbAddress> &list(const DbId& subscriber);
 
 public slots:
     void handleItemChanged(const DBObject* item);
 
 private:
     void foreachSubscribers(const DBObject *item,
-                            const QSet<QByteArray> &subscribersList);
+                            const QSet<DbId> &subscribersList);
 
     /// subscribers it is nodes or clients
-    QHash<DbAddress, QSet<QByteArray>> _subscribs;
-    QHash<QByteArray, QSet<DbAddress>> _items;
+    QHash<DbAddress, QSet<DbId>> _subscribs;
+    QHash<DbId, QSet<DbAddress>> _items;
 
     BaseNode *_node = nullptr;
 

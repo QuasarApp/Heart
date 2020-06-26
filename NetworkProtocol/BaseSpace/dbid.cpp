@@ -31,11 +31,18 @@ QByteArray DbId::toRaw() const {
 }
 
 bool DbId::isValid() const {
-    return _data.size() == 32;
+    return _data.size() == 33;
 }
 
-bool DbId::clear() {
+void DbId::clear() {
     _data.clear();
+}
+
+unsigned char DbId::prefix() const {
+    if (_data.size())
+        return _data[0];
+
+    return 0;
 }
 
 QDataStream &DbId::fromStream(QDataStream &stream) {

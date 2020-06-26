@@ -14,6 +14,7 @@
 #include "sqldbwriter.h"
 #include "websocketcontroller.h"
 #include "permisions.h"
+#include "nodeobject.h"
 
 #include <badrequest.h>
 #include <userdata.h>
@@ -100,7 +101,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     if (H_16<BadRequest>() == pkg.hdr.command) {
         BadRequest cmd(pkg);
         emit requestError(cmd.err());
-        emit incomingData(&cmd, sender->networkAddress());
+        emit incomingData(&cmd, pkg.hdr.sender);
 
         return ParserResult::Processed;
 
@@ -142,13 +143,13 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
             return ParserResult::Error;
         }
 
-        emit incomingData(&obj, sender->networkAddress());
+        emit incomingData(&obj, pkg.hdr.sender);
         return ParserResult::Processed;
 
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
         DeleteObjectRequest obj(pkg);
 
-        DBOperationResult result = deleteObject(&obj, sender->networkAddress());
+        DBOperationResult result = deleteObject(&obj, pkg.hdr.sender);
 
         switch (result) {
         case DBOperationResult::Forbidden:
@@ -165,22 +166,23 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
-        auto obj = SP<WebSocket>::create(pkg);
-        if (!obj->isValid()) {
-            badRequest(strongSender->networkAddress(), pkg.hdr);
+        WebSocket obj(pkg);
+        //auto obj = SP<WebSocket>::create();
+        if (!obj.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        if (!workWithSubscribe(obj, strongSender->networkAddress())) {
-            badRequest(strongSender->networkAddress(), pkg.hdr);
+        if (!workWithSubscribe(obj, pkg.hdr.sender)) {
+            badRequest(sender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
 
         return ParserResult::Processed;
 
     } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
-        auto obj = SP<WebSocketSubscriptions>::create(pkg);
-        if (!obj->isValid()) {
+        WebSocketSubscriptions obj(pkg);
+        if (!obj.isValid()) {
             badRequest(strongSender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
         }
@@ -283,39 +285,36 @@ SqlDBCache *BaseNode::db() const {
 }
 
 // TO-DO
-bool BaseNode::workWithSubscribe(const AbstractData *rec,
-                                 const QHostAddress &address) {
+bool BaseNode::workWithSubscribe(const WebSocket &rec,
+                                 const DbId &clientOrNodeid) {
 
-    auto obj = rec.toStrongRef().dynamicCast<UserRequest>();
-    if (obj.isNull())
+
+    NodeObject *node = getObject(NodeObject{clientOrNodeid});
+
+    if (node)
         return false;
 
-    auto info = getInfoPtr(address).toStrongRef();
-    if (info.isNull())
+    auto _db = db();
+    if (_db)
         return false;
 
-    auto _db = db().toStrongRef();
-
-    if (_db.isNull())
-        return false;
-
-    switch (static_cast<WebSocketRequest>(obj->getRequestCmd())) {
+    switch (static_cast<WebSocketRequest>(rec.getRequestCmd())) {
 
     case WebSocketRequest::Subscribe: {
-        return _webSocketWorker->subscribe(info, {obj->tableName(), obj->getId()});
+        return _webSocketWorker->subscribe(clientOrNodeid, rec.dbAddress());
     }
 
     case WebSocketRequest::Unsubscribe: {
-        _webSocketWorker->unsubscribe(info, {obj->tableName(), obj->getId()});
+        _webSocketWorker->unsubscribe(clientOrNodeid, rec.dbAddress());
         return true;
     }
 
     case WebSocketRequest::SubscribeList: {
 
-        auto resp = SP<WebSocketSubscriptions>::create();
-        resp->setAddresses(_webSocketWorker->list(info));
+        WebSocketSubscriptions resp;
+        resp.setAddresses(_webSocketWorker->list(clientOrNodeid));
 
-        return sendData(resp, address);
+        return sendDataToId(&resp, clientOrNodeid);
     }
 
     default: break;
@@ -325,8 +324,8 @@ bool BaseNode::workWithSubscribe(const AbstractData *rec,
 }
 
 DBOperationResult BaseNode::checkPermision(const AbstractNodeInfo *requestNode,
-                              const DbAddress& object,
-                              const int &requiredPermision) {
+                                           const DbAddress& object,
+                                           const int &requiredPermision) {
 
 
     auto node = dynamic_cast<const BaseNodeInfo*>(requestNode);
@@ -354,50 +353,50 @@ QVariantMap BaseNode::defaultDbParams() const {
     };
 }
 
-bool BaseNode::sendDataToId(const AbstractData *resp,
+bool BaseNode::sendDataToId(const DbId *resp,
                             const QByteArray &nodeId,
                             const Header *req) {
     To Do
 
-//    auto client = getInfoPtr(addere);
+            //    auto client = getInfoPtr(addere);
 
-//    if (client) {
-//        QuasarAppUtils::Params::log("Response not sent because client == null",
-//                                           QuasarAppUtils::Error);
-//        return false;
-//    }
+            //    if (client) {
+            //        QuasarAppUtils::Params::log("Response not sent because client == null",
+            //                                           QuasarAppUtils::Error);
+            //        return false;
+            //    }
 
-//    if (resp) {
-//        return false;
-//    }
+            //    if (resp) {
+            //        return false;
+            //    }
 
-//    Package pkg;
-//    bool convert = false;
-//    if (req) {
-//        convert = resp->toPackage(pkg, req->command);
-//    } else {
-//        convert = resp->toPackage(pkg);
-//    }
+            //    Package pkg;
+            //    bool convert = false;
+            //    if (req) {
+            //        convert = resp->toPackage(pkg, req->command);
+            //    } else {
+            //        convert = resp->toPackage(pkg);
+            //    }
 
-//    if (!convert) {
-//        QuasarAppUtils::Params::log("Response not sent because dont create package from object",
-//                                           QuasarAppUtils::Error);
-//        return false;
-//    }
+            //    if (!convert) {
+            //        QuasarAppUtils::Params::log("Response not sent because dont create package from object",
+            //                                           QuasarAppUtils::Error);
+            //        return false;
+            //    }
 
 
-//    if (!sendPackage(pkg, client->sct())) {
-//        QuasarAppUtils::Params::log("Response not sent!",
-//                                           QuasarAppUtils::Error);
-//        return false;
-//    }
+            //    if (!sendPackage(pkg, client->sct())) {
+            //        QuasarAppUtils::Params::log("Response not sent!",
+            //                                           QuasarAppUtils::Error);
+            //        return false;
+            //    }
 
-//    return true;
+            //    return true;
 }
 
 DBOperationResult NP::BaseNode::getObject(DBObject *res,
-                             const QHostAddress &requiredNodeAdderess,
-                             const DbAddress& objcetAddress) {
+                                          const QHostAddress &requiredNodeAdderess,
+                                          const DbAddress& objcetAddress) {
 
     auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(requiredNodeAdderess));
     if (node) {
@@ -417,8 +416,8 @@ DBOperationResult NP::BaseNode::getObject(DBObject *res,
 }
 
 DBOperationResult BaseNode::setObject(const DBObject *saveObject,
-                         const QHostAddress &requiredNodeAdderess,
-                         const DbAddress &dbObject) {
+                                      const QHostAddress &requiredNodeAdderess,
+                                      const DbAddress &dbObject) {
 
     auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(requiredNodeAdderess));
     if (node) {
@@ -440,7 +439,7 @@ DBOperationResult BaseNode::setObject(const DBObject *saveObject,
 }
 
 DBOperationResult BaseNode::deleteObject(const AbstractData* rec,
-                            const QHostAddress &addere) {
+                                         const QHostAddress &addere) {
 
     auto request = dynamic_cast<const DeleteObjectRequest*>(rec);
 

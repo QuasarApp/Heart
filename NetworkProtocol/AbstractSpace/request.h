@@ -8,12 +8,14 @@
 #ifndef IREQUEST_H
 #define IREQUEST_H
 
+#include "networkprotocol_global.h"
+
 namespace NP {
 
 /**
  * @brief The Request class - base request methods for data packages
  */
-class Request
+class NETWORKPROTOCOLSHARED_EXPORT Request
 {
 public:
     Request();

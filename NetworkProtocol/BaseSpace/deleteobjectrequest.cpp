@@ -9,27 +9,27 @@ DeleteObjectRequest::DeleteObjectRequest(const Package &pkg):
 }
 
 DeleteObjectRequest::DeleteObjectRequest(const DbAddress &address):
-    DBObject(address.table) {
+    DBObject(address.table()) {
 
     INIT_COMMAND
-    setId(address.id);
+    setId(address.id());
 }
 
-DBObject *DeleteObjectRequest::factory() {
+DBObject *DeleteObjectRequest::factory() const {
     return new DeleteObjectRequest(DbAddress());
 }
 
-bool DeleteObjectRequest::select(QSqlQuery &q) {
+bool DeleteObjectRequest::prepareSelectQuery(QSqlQuery &q) const {
     Q_UNUSED(q)
     return false;
 }
 
-bool DeleteObjectRequest::save(QSqlQuery &q) const {
+bool DeleteObjectRequest::prepareSaveQuery(QSqlQuery &q) const {
     Q_UNUSED(q)
     return false;
 }
 
-bool DeleteObjectRequest::remove(QSqlQuery &q) const {
-    return DBObject::remove(q);
+bool DeleteObjectRequest::prepareRemoveQuery(QSqlQuery &q) const {
+    return DBObject::prepareRemoveQuery(q);
 }
 }

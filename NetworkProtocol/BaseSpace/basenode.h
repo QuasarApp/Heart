@@ -80,11 +80,11 @@ public:
      * @param req - header of request
      * @return true if data sendet seccussful
      */
-    virtual bool sendDataToId(const AbstractData* resp, const QByteArray& nodeId,
+    virtual bool sendDataToId(const DbId *resp, const QByteArray& nodeId,
                               const Header *req = nullptr);
 signals:
     void incomingData(AbstractData* pkg,
-                      const QHostAddress&  sender);
+                      const DbId&  sender);
 
     void requestError(QString msg);
 
@@ -132,8 +132,8 @@ protected:
      * @param address sendet address
      * @return true if data parsed seccusseful
      */
-    bool workWithSubscribe(const AbstractData* rec,
-                           const QHostAddress &address);
+    bool workWithSubscribe(const WebSocket &rec,
+                           const DbId &clientOrNodeid);
 
 
     /**

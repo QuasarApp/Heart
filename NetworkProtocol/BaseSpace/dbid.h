@@ -15,7 +15,7 @@ namespace NP {
 
 /**
  * @brief The DbId class. General class for work with database id.
- * Database id is hash (sha256) from object value.
+ * Database id is '1byte of prefix + hash (sha256)' from object value.
  */
 class NETWORKPROTOCOLSHARED_EXPORT DbId: public StreamBase
 {
@@ -60,7 +60,13 @@ public:
      * @brief clear
      * @return
      */
-    bool clear();
+    void clear();
+
+    /**
+     * @brief prefix - return prefix of id. if id is not valid return 0.
+     * @return prefix of id
+     */
+    unsigned char prefix() const;
 
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;

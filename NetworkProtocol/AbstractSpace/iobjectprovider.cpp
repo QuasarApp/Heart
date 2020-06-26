@@ -14,9 +14,15 @@ iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;
 
-DBObject *iObjectProvider::getObject(DBObject *obj) {
+template<class TYPE>
+TYPE *iObjectProvider::getObject(const TYPE &templateVal) {
+
+    if (!dynamic_cast<DBObject*>(&templateVal)) {
+        return nullptr;
+    }
+
     QList<DBObject *> list;
-    if (!getAllObjects(obj, list)) {
+    if (!getAllObjects(templateVal, list)) {
         return nullptr;
     }
 
@@ -30,7 +36,16 @@ DBObject *iObjectProvider::getObject(DBObject *obj) {
         delete list[i];
     }
 
-    return list.first();
+    TYPE* result = dynamic_cast<TYPE*>(list.first());
+    if (!result && list.first()) {
+        QuasarAppUtils::Params::log("getObject method returned object with deffirent type of TYPE,"
+                                    " check getAllObjects merhod",
+                                    QuasarAppUtils::Error);
+
+        delete list.first();
+    }
+
+    return result;
 }
 
 }

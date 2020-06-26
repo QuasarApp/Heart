@@ -125,6 +125,13 @@ public:
      * @return unique key of this object
      */
     virtual DBCacheKey dbKey() const;
+
+    /**
+     * @brief dbAddress
+     * @return
+     */
+    DbAddress dbAddress() const;
+
 protected:
     QString _tableName;
     DbId _id;
