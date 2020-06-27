@@ -191,8 +191,8 @@ bool SqlDBCache::init(const QVariantMap &params) {
     return _writer->initDb(params);
 }
 
-DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
-                                             const DBObject &object,
+DBOperationResult SqlDBCache::checkPermision(const DbId &id,
+                                             const DbAddress &object,
                                              Permission requiredPermision) {
 
     NodeObject *node = getObject(NodeObject{id});
@@ -200,7 +200,7 @@ DBOperationResult SqlDBCache::checkPermision(const QByteArray &id,
         return DBOperationResult::Unknown;
     }
 
-    NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object.dbAddress()}));
+    NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object}));
 
     if (!permision) {
         return DBOperationResult::Unknown;

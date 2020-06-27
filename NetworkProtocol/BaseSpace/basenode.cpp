@@ -13,8 +13,8 @@
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
 #include "websocketcontroller.h"
-#include "permisions.h"
 #include "nodeobject.h"
+#include "nodespermisionobject.h"
 
 #include <badrequest.h>
 #include <userdata.h>
@@ -125,12 +125,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         AvailableDataRequest cmd(pkg);
 
         if (!cmd.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(pkg.hdr);
             return ParserResult::Error;
         }
 
-        if (!workWithAvailableDataRequest(&cmd, sender->networkAddress(), &pkg.hdr)) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+        if (!workWithAvailableDataRequest(&cmd, &pkg.hdr)) {
+            badRequest(pkg.hdr);
             return ParserResult::Error;
         }
         return ParserResult::Processed;
@@ -139,7 +139,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<AvailableData>() == pkg.hdr.command) {
         AvailableData obj(pkg);
         if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(pkg.hdr);
             return ParserResult::Error;
         }
 
@@ -167,14 +167,13 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
         WebSocket obj(pkg);
-        //auto obj = SP<WebSocket>::create();
         if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(pkg.hdr);
             return ParserResult::Error;
         }
 
         if (!workWithSubscribe(obj, pkg.hdr.sender)) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(pkg.hdr);
             return ParserResult::Error;
         }
 
@@ -183,11 +182,11 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
         WebSocketSubscriptions obj(pkg);
         if (!obj.isValid()) {
-            badRequest(strongSender->networkAddress(), pkg.hdr);
+            badRequest(pkg.hdr);
             return ParserResult::Error;
         }
 
-        emit incomingData(obj, strongSender->networkAddress());
+        emit incomingData(&obj, pkg.hdr.sender);
         return ParserResult::Processed;
     }
 
@@ -195,17 +194,17 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 }
 
-bool BaseNode::workWithAvailableDataRequest(const QWeakPointer<AbstractData> &rec,
-                                            const QHostAddress &address,
+bool BaseNode::workWithAvailableDataRequest(const AbstractData *rec,
                                             const Header *rHeader) {
 
-    auto obj = rec.toStrongRef();
-    if (obj.isNull())
+    if (!rec)
         return false;
 
-    auto info = getInfoPtr(address).toStrongRef().dynamicCast<BaseNodeInfo>();
-    if (info.isNull())
+    auto info = getObject(NodeObject(rHeader->sender));
+    if (!info)
         return false;
+
+
 
     auto av = SP<AvailableData>::create();
     av->setData({});
@@ -314,34 +313,13 @@ bool BaseNode::workWithSubscribe(const WebSocket &rec,
         WebSocketSubscriptions resp;
         resp.setAddresses(_webSocketWorker->list(clientOrNodeid));
 
-        return sendDataToId(&resp, clientOrNodeid);
+        return sendData(&resp, clientOrNodeid);
     }
 
     default: break;
     }
 
     return false;
-}
-
-DBOperationResult BaseNode::checkPermision(const AbstractNodeInfo *requestNode,
-                                           const DbAddress& object,
-                                           const int &requiredPermision) {
-
-
-    auto node = dynamic_cast<const BaseNodeInfo*>(requestNode);
-    if (!node) {
-        return DBOperationResult::Forbidden;
-    }
-
-    if (!node->isHavePermisonRecord(object)) {
-        return DBOperationResult::Unknown;
-    }
-
-    if (node->permision(object) < requiredPermision) {
-        return DBOperationResult::Forbidden;
-    }
-
-    return DBOperationResult::Allowed;
 }
 
 QVariantMap BaseNode::defaultDbParams() const {
@@ -353,9 +331,16 @@ QVariantMap BaseNode::defaultDbParams() const {
     };
 }
 
-bool BaseNode::sendDataToId(const DbId *resp,
-                            const QByteArray &nodeId,
-                            const Header *req) {
+bool BaseNode::sendData(const AbstractData *resp,
+                        const QHostAddress &addere,
+                        const Header *req) {
+
+    return AbstractNode::sendData(resp, addere, req);
+}
+
+bool BaseNode::sendData(const AbstractData *resp,
+                        const DbId &nodeId,
+                        const Header *req) {
     To Do
 
             //    auto client = getInfoPtr(addere);
@@ -394,82 +379,104 @@ bool BaseNode::sendDataToId(const DbId *resp,
             //    return true;
 }
 
-DBOperationResult NP::BaseNode::getObject(DBObject *res,
-                                          const QHostAddress &requiredNodeAdderess,
-                                          const DbAddress& objcetAddress) {
+void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {
+    AbstractNode::badRequest(address, req, msg);
+}
 
-    auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(requiredNodeAdderess));
-    if (node) {
-        return DBOperationResult::Forbidden;
+void BaseNode::badRequest(const Header &req, const QString msg) {
+    auto client = getObject(NodeObject{req.sender});
+
+    if (!client) {
+
+        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+                                    " because client == null",
+                                    QuasarAppUtils::Error);
+        return;
     }
 
-    auto permision = checkPermision(node, objcetAddress, static_cast<int>(Permission::Read));
-    if (permision != DBOperationResult::Allowed) {
-        return permision;
+    if (!changeTrust(req.sender, REQUEST_ERROR)) {
+
+        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+                                    " because trust not changed",
+                                    QuasarAppUtils::Error);
+
+        return;
+    }
+
+    auto bad = BadRequest(msg);
+    if (!sendData(&bad, req.sender, &req)) {
+        return;
+    }
+
+    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
+                                req.sender.toBase64(),
+                                QuasarAppUtils::Info);
+}
+
+bool BaseNode::changeTrust(const QHostAddress &id, int diff) {
+    return AbstractNode::changeTrust(id, diff);
+}
+
+bool BaseNode::changeTrust(const DbId &id, int diff) {
+    To Do
+}
+
+DBOperationResult NP::BaseNode::getObject(const NP::DbId &requester,
+                                          const DbAddress& objcetAddress,
+                                          const NP::DBObject *res) const {
+
+    if (!_db) {
+        return DBOperationResult::Unknown;
+    }
+
+    auto permisionResult = _db->checkPermision(requester, objcetAddress, Permission::Read);
+    if (permisionResult != DBOperationResult::Allowed) {
+        return permisionResult;
     }
 
     if (!_db->getObject(res)) {
-        return DBOperationResult::Forbidden;
+        return DBOperationResult::Unknown;
     }
 
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult BaseNode::setObject(const DBObject *saveObject,
-                                      const QHostAddress &requiredNodeAdderess,
-                                      const DbAddress &dbObject) {
+DBOperationResult BaseNode::setObject(const DbId &requester,
+                                      const DBObject *saveObject) {
 
-    auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(requiredNodeAdderess));
-    if (node) {
-        return DBOperationResult::Forbidden;
+    if (!_db) {
+        return DBOperationResult::Unknown;
     }
 
-    auto permision = checkPermision(node, dbObject, static_cast<int>(Permission::Write));
-    if (permision != DBOperationResult::Allowed) {
-        return permision;
+    auto permisionResult = _db->checkPermision(requester,
+                                               saveObject->dbAddress(),
+                                               Permission::Write);
+    if (permisionResult != DBOperationResult::Allowed) {
+        return permisionResult;
     }
 
-    if(!_db->saveObject(saveObject)) {
-        QuasarAppUtils::Params::log("do not saved object in database!" + requiredNodeAdderess.toString(),
-                                    QuasarAppUtils::Error);
-        return DBOperationResult::Forbidden;
+    if (!_db->saveObject(saveObject)) {
+        return DBOperationResult::Unknown;
     }
 
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult BaseNode::deleteObject(const AbstractData* rec,
-                                         const QHostAddress &addere) {
+DBOperationResult BaseNode::deleteObject(const DbId &requester,
+                                         const DBObject *dbObject) {
 
-    auto request = dynamic_cast<const DeleteObjectRequest*>(rec);
-
-    if (request)
-        return DBOperationResult::Forbidden;
-
-    if (!isListening()) {
+    if (!_db) {
         return DBOperationResult::Unknown;
     }
 
-    if (_db) {
-        QuasarAppUtils::Params::log("Server not inited (db is null)",
-                                    QuasarAppUtils::Error);
+    auto permisionResult = _db->checkPermision(requester, dbObject->dbAddress(),
+                                               Permission::Write);
+    if (permisionResult != DBOperationResult::Allowed) {
+        return permisionResult;
+    }
+
+    if (!_db->deleteObject(dbObject)) {
         return DBOperationResult::Unknown;
-    }
-
-    auto node = dynamic_cast<BaseNodeInfo*>(getInfoPtr(addere));
-    if (node) {
-        return DBOperationResult::Forbidden;
-    }
-
-    auto permision = checkPermision(node, request->dbAddress(), static_cast<int>(Permission::Write));
-    if (permision != DBOperationResult::Allowed) {
-        return permision;
-    }
-
-    if(!_db->deleteObject(request)) {
-        QuasarAppUtils::Params::log("do not saved object in database!" + addere.toString(),
-                                    QuasarAppUtils::Error);
-        return permision;
     }
 
     return DBOperationResult::Allowed;

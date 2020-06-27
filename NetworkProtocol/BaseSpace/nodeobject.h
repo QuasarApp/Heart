@@ -36,6 +36,9 @@ public:
     bool isValid() const override;
     bool copyFrom(const AbstractData *) override;
 
+    int trust() const;
+    void setTrust(int trust);
+
 protected:
 
     // StreamBase interface
@@ -44,6 +47,7 @@ protected:
 
 private:
     QByteArray _publickKey;
+    int _trust;
 
 
 };

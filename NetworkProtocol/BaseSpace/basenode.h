@@ -21,7 +21,8 @@ class AvailableDataRequest;
 class WebSocket;
 class WebSocketController;
 class DBDataRequest;
-
+class DbAddress;
+class DbId;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -74,14 +75,60 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
     /**
+     * @brief sendData - send data to an ip address
+     * @param resp
+     * @param addere
+     * @param req
+     * @return true if a function finished seccussful
+     */
+    bool sendData(const AbstractData *resp,
+                  const QHostAddress &addere,
+                  const Header *req = nullptr) override;
+
+    /**
      * @brief sendDataToId - send data to node or clientby them id
      * @param resp - responce package
      * @param nodeId - id of target node
      * @param req - header of request
      * @return true if data sendet seccussful
      */
-    virtual bool sendDataToId(const DbId *resp, const QByteArray& nodeId,
-                              const Header *req = nullptr);
+    virtual bool sendData(const AbstractData *resp, const DbId &nodeId,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief badRequest -send bad request and change trus for ip address
+     * @param address
+     * @param req
+     * @param msg
+     */
+    void badRequest(const QHostAddress &address, const Header &req,
+                    const QString msg = "") override;
+
+    /**
+     * @brief badRequest - send bad request to node with id
+     * @param req - header of an accepted request.
+     * @param msg
+     */
+    virtual void badRequest(const Header &req,
+                            const QString msg = "");
+
+    /**
+     * @brief changeTrust - change trust of ip address
+     * @param id - ip address of node
+     * @param diff
+     */
+    bool changeTrust(const QHostAddress &id, int diff) override;
+
+    /**
+     * @brief changeTrust change trus of node with id.
+     * @param id
+     * @param diff
+     * @return true if functin finished seccussful
+     */
+    virtual bool changeTrust(const DbId &id, int diff);
+
+
+
 signals:
     void incomingData(AbstractData* pkg,
                       const DbId&  sender);
@@ -89,6 +136,7 @@ signals:
     void requestError(QString msg);
 
 protected:
+
 
     /**
      * @brief initDefaultDbObjects create default cache and db writer if pointer is null
@@ -135,20 +183,6 @@ protected:
     bool workWithSubscribe(const WebSocket &rec,
                            const DbId &clientOrNodeid);
 
-
-    /**
-     * @brief checkPermision - check permison of object for selected node
-     * @param requestNode - node
-     * @param objcet - address of required object
-     * @param requiredPermision - required permision
-     * @return true if the node have required permison for selected object
-     */
-    virtual DBOperationResult checkPermision(const AbstractNodeInfo *requestNode,
-                                             const DbAddress& object,
-                                             const int &requiredPermision);
-
-
-
     template<class RequestobjectType>
     /**
      * @brief workWithDataRequest
@@ -162,24 +196,25 @@ protected:
                              const Header *rHeader);
 
     /**
-     * @brief deleteObject - delete objcet from dataBase
-     * @param rec
-     * @param addere
-     * @return operation status
+     * @brief deleteObject - delete object by address dbObject
+     * @param requester - reqester.
+     * @param dbObject
+     * @return result of operation (allow, forbiden unknown)
      */
-    DBOperationResult deleteObject(const AbstractData *rec,
-                                   const QHostAddress &addere);
+    DBOperationResult deleteObject(const DbId &requester,
+                                   const DBObject *dbObject);
 
     /**
      * @brief getObject - general object for get object
-     * @param res - result object
+     *  this function check permishen to requested object and set new object to res if access granted.
      * @param requiredNodeAdderess
      * @param dbObject
+     * @param res - result object
      * @return operation status
      */
-    DBOperationResult getObject(DBObject* res,
-                                const QHostAddress &requiredNodeAdderess,
-                                const DbAddress& dbObject);
+    DBOperationResult getObject(const DbId &requester,
+                                const DbAddress& dbObject,
+                                const DBObject* res) const;
 
 
     /**
@@ -189,9 +224,8 @@ protected:
      * @param dbObject
      * @return operation status
      */
-    DBOperationResult setObject(const DBObject* saveObject,
-                                const QHostAddress &requiredNodeAddere,
-                                const DbAddress& dbObject);
+    DBOperationResult setObject(const DbId &requester,
+                                const DBObject *saveObject);
 
 
 private:
@@ -206,7 +240,6 @@ private:
      * @return
      */
     bool workWithAvailableDataRequest(const AbstractData *rec,
-                                      const QHostAddress &addere,
                                       const Header *rHeader);
 
 

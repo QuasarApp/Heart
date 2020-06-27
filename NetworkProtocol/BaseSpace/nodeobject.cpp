@@ -40,7 +40,8 @@ bool NodeObject::prepareSaveQuery(QSqlQuery &q) const {
     QString values;
 
     values += "'" + getId().toBase64() + "', ";
-    values += "'" + _publickKey + "'";
+    values += "'" + _publickKey + "', ";
+    values +=  QString::number(_trust);
 
     queryString = queryString.arg(values);
 
@@ -53,6 +54,7 @@ bool NodeObject::fromSqlRecord(const QSqlRecord &q) {
     }
 
     setPublickKey(q.value("pubKey").toByteArray());
+    setTrust(q.value("_trust").toInt());
 
     return isValid();
 }
@@ -79,6 +81,18 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     stream << _publickKey;
 
     return stream;
+}
+
+int NodeObject::trust() const {
+    return _trust;
+}
+
+void NodeObject::changeTrust(int diff) {
+    _trust += diff;
+}
+
+void NodeObject::setTrust(int trust) {
+    _trust = trust;
 }
 
 bool NodeObject::isValid() const {

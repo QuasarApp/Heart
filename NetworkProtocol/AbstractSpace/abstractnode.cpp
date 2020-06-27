@@ -38,7 +38,7 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
 
     if (!listen(adr, port)) {
         QuasarAppUtils::Params::log("Run fail " + this->errorString(),
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
@@ -133,7 +133,7 @@ QHostAddress AbstractNode::address() const {
 }
 
 AbstractNode::~AbstractNode() {
-//    delete _nodeKeys;
+    //    delete _nodeKeys;
     stop();
 }
 
@@ -261,7 +261,7 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration() {
     if (!generateSslDataPrivate(sslData, crt, pkey)) {
 
         QuasarAppUtils::Params::log("fail to create ssl certificate. node svitch to InitFromSystem mode",
-                                           QuasarAppUtils::Warning);
+                                    QuasarAppUtils::Warning);
 
         return res;
     }
@@ -301,14 +301,14 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
 
     if (sender || !sender->isValid()) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         changeTrust(sender->networkAddress(), LOGICK_ERROOR);
         return ParserResult::Error;
     }
 
     if (!pkg.isValid()) {
         QuasarAppUtils::Params::log("incomming package is not valid!",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
         return ParserResult::Error;
     }
@@ -325,13 +325,13 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
 
     if (!target || !target->isValid()) {
         QuasarAppUtils::Params::log("destination server not valid!",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
     if (!target->waitForConnected()) {
         QuasarAppUtils::Params::log("no connected to server! " + target->errorString(),
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
@@ -341,13 +341,14 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
     return sendet;
 }
 
-bool AbstractNode::sendData(const AbstractData *resp, const QHostAddress &addere,
-                                const Header *req) {
+bool AbstractNode::sendData(const AbstractData *resp,
+                            const QHostAddress &addere,
+                            const Header *req) {
     auto client = getInfoPtr(addere);
 
     if (client) {
         QuasarAppUtils::Params::log("Response not sent because client == null",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
@@ -365,14 +366,14 @@ bool AbstractNode::sendData(const AbstractData *resp, const QHostAddress &addere
 
     if (!convert) {
         QuasarAppUtils::Params::log("Response not sent because dont create package from object",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
 
     if (!sendPackage(pkg, client->sct())) {
         QuasarAppUtils::Params::log("Response not sent!",
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
     }
 
@@ -386,40 +387,28 @@ void AbstractNode::badRequest(const QHostAddress &address, const Header &req,
     if (client) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                           " because client == null",
-                                           QuasarAppUtils::Error);
+                                    " because client == null",
+                                    QuasarAppUtils::Error);
         return;
     }
 
     if (!changeTrust(address, REQUEST_ERROR)) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                           " because trust not changed",
-                                           QuasarAppUtils::Error);
+                                    " because trust not changed",
+                                    QuasarAppUtils::Error);
 
         return;
     }
 
     auto bad = BadRequest(msg);
-    Package pcg;
-
-    if (!bad.toPackage(pcg, req.command)) {
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                           " because package not created",
-                                           QuasarAppUtils::Error);
-    }
-
-    if (!sendPackage(pcg, client->sct())) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                           " because karma not changed",
-                                           QuasarAppUtils::Error);
+    if (!sendData(&bad, address, &req)) {
         return;
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                       client->sct()->peerAddress().toString(),
-                                       QuasarAppUtils::Info);
+                                client->sct()->peerAddress().toString(),
+                                QuasarAppUtils::Info);
 }
 
 WorkState AbstractNode::getWorkState() const {
@@ -478,7 +467,7 @@ int AbstractNode::connectionsCount() const {
         if (i.info->sct()) {
             if (!i.info->sct()->isValid()) {
                 QuasarAppUtils::Params::log("connection count, findet not valid socket",
-                                                   QuasarAppUtils::Warning);
+                                            QuasarAppUtils::Warning);
             }
 
             count++;
@@ -539,13 +528,13 @@ void AbstractNode::incomingSsl(qintptr socketDescriptor) {
         });
 
         connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-            [socket](const QList<QSslError> &errors){
+                [socket](const QList<QSslError> &errors){
 
-                for (auto &error : errors) {
-                    QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
-                }
+            for (auto &error : errors) {
+                QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
+            }
 
-                socket->deleteLater();
+            socket->deleteLater();
         });
 
         socket->startServerEncryption();
@@ -632,15 +621,15 @@ void AbstractNode::handleDisconnected() {
             ptr->disconnect();
         } else {
             QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                               " address not valid",
-                                               QuasarAppUtils::Error);
+                                        " address not valid",
+                                        QuasarAppUtils::Error);
         }
         return;
     }
 
     QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                       "dynamic_cast fail!",
-                                       QuasarAppUtils::Error);
+                                "dynamic_cast fail!",
+                                QuasarAppUtils::Error);
 }
 
 //QByteArray AbstractNode::nodeId() const {

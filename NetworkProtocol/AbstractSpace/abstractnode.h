@@ -311,7 +311,7 @@ protected:
      * @param diff
      * @return true if all good
      */
-    bool changeTrust(const QHostAddress& id, int diff);
+    virtual bool changeTrust(const QHostAddress& id, int diff);
 
     /**
     * @brief incomingConnection for ssl sockets

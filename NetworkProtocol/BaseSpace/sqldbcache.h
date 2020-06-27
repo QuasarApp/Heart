@@ -32,19 +32,6 @@ enum class SqlDBCasheWriteMode: int {
 } ;
 
 /**
- * @brief The DBOperationResult enum
- */
-enum class DBOperationResult {
-    /// Node do not know about this operaio
-    Unknown,
-    /// Node allow this operation and exec it
-    Allowed,
-    /// Node forbid this operation.
-    Forbidden,
-};
-
-
-/**
  * @brief The SqlDBCache class it is db cache and bridge for DbWriters
  */
 class NETWORKPROTOCOLSHARED_EXPORT SqlDBCache: public QObject, public iObjectProvider
@@ -105,8 +92,8 @@ public:
      * @param requiredPermision - requirement permision of object
      * @return operation result see DBOperationResult
      */
-    virtual DBOperationResult checkPermision(const QByteArray& id,
-                                             const DBObject &object,
+    virtual DBOperationResult checkPermision(const DbId &id,
+                                             const DbAddress &object,
                                              Permission requiredPermision);
 
 protected:
