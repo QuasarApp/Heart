@@ -37,6 +37,7 @@ public:
     bool copyFrom(const AbstractData *) override;
 
     int trust() const;
+    void changeTrust(int diff);
     void setTrust(int trust);
 
 protected:
