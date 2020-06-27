@@ -239,7 +239,7 @@ private:
      * @param rHeader
      * @return
      */
-    bool workWithAvailableDataRequest(const AbstractData *rec,
+    bool workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                       const Header *rHeader);
 
 

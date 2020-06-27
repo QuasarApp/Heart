@@ -10,32 +10,21 @@
 
 #include "dbobject.h"
 
+#include <request.h>
+
+
 namespace NP {
+
+enum class DBRequest  {
+    Get,
+    Update,
+    Set
+};
 
 /**
  * @brief The DBDataRequest class this is request of db object.
  */
-class NETWORKPROTOCOLSHARED_EXPORT DBDataRequest: public DBObject
-{
-public:
-    /**
-     * @brief DBDataRequest - creaste empty invalid object
-     * @param pkg
-     */
-    explicit DBDataRequest(const Package &pkg);
-    /**
-     * @brief DBDataRequest
-     * @param address - addrerss of object in database see DbAddress
-     */
-    explicit DBDataRequest(const DbAddress& address);
-
-
-    QDataStream &fromStream(QDataStream &stream) override;
-    QDataStream &toStream(QDataStream &stream) const override;
-
-
-    bool isValid() const override;
-    bool copyFrom(const AbstractData *) override;
+class NETWORKPROTOCOLSHARED_EXPORT DBDataRequest: public Request {
 
 };
 }

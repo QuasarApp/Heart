@@ -129,7 +129,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
             return ParserResult::Error;
         }
 
-        if (!workWithAvailableDataRequest(&cmd, &pkg.hdr)) {
+        if (!workWithAvailableDataRequest(cmd, &pkg.hdr)) {
             badRequest(pkg.hdr);
             return ParserResult::Error;
         }
@@ -149,7 +149,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
         DeleteObjectRequest obj(pkg);
 
-        DBOperationResult result = deleteObject(&obj, pkg.hdr.sender);
+        DBOperationResult result = deleteObject(pkg.hdr.sender, &obj);
 
         switch (result) {
         case DBOperationResult::Forbidden:
@@ -194,7 +194,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 }
 
-bool BaseNode::workWithAvailableDataRequest(const AbstractData *rec,
+bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                             const Header *rHeader) {
 
     if (!rec)
@@ -213,62 +213,6 @@ bool BaseNode::workWithAvailableDataRequest(const AbstractData *rec,
 
 }
 
-template <class RequestobjectType>
-bool BaseNode::workWithDataRequest(const QWeakPointer<AbstractData> &rec,
-                                   const QHostAddress &addere,
-                                   const Header *rHeader) {
-
-    auto request = rec.toStrongRef().dynamicCast<DBDataRequest>();
-
-    if (request.isNull())
-        return false;
-
-    if (!isListening()) {
-        return false;
-    }
-
-    auto _db = db().toStrongRef();
-
-    if (_db.isNull()) {
-        QuasarAppUtils::Params::log("Server not inited (db is null)",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    switch (static_cast<DBDataRequestCmd>(request->getRequestCmd())) {
-    case DBDataRequestCmd::Get: {
-
-        auto obj = SP<RequestobjectType>::create().template dynamicCast<DBObject>();
-        if (!getObject(obj, addere, request->address())) {
-            return false;
-        }
-
-        if (!sendData(obj, addere, rHeader)) {
-            QuasarAppUtils::Params::log("responce not sendet to" + addere.toString(),
-                                        QuasarAppUtils::Warning);
-            return false;
-        }
-        break;
-
-    }
-
-    case DBDataRequestCmd::Set: {
-
-        if(!setObject(rec, addere, request->address())) {
-            return false;
-        }
-
-        break;
-    }
-
-    default: return false;
-
-    }
-
-    return true;
-
-}
-
 QString BaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
@@ -276,7 +220,7 @@ QString BaseNode::hashgenerator(const QByteArray &pass) {
 }
 
 AbstractNodeInfo *BaseNode::createNodeInfo(QAbstractSocket *socket) const {
-    return  SP<BaseNodeInfo>::create(socket);
+    return  new BaseNodeInfo(socket);
 }
 
 SqlDBCache *BaseNode::db() const {
@@ -286,12 +230,6 @@ SqlDBCache *BaseNode::db() const {
 // TO-DO
 bool BaseNode::workWithSubscribe(const WebSocket &rec,
                                  const DbId &clientOrNodeid) {
-
-
-    NodeObject *node = getObject(NodeObject{clientOrNodeid});
-
-    if (node)
-        return false;
 
     auto _db = db();
     if (_db)
@@ -384,15 +322,6 @@ void BaseNode::badRequest(const QHostAddress &address, const Header &req, const 
 }
 
 void BaseNode::badRequest(const Header &req, const QString msg) {
-    auto client = getObject(NodeObject{req.sender});
-
-    if (!client) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because client == null",
-                                    QuasarAppUtils::Error);
-        return;
-    }
 
     if (!changeTrust(req.sender, REQUEST_ERROR)) {
 
@@ -418,7 +347,29 @@ bool BaseNode::changeTrust(const QHostAddress &id, int diff) {
 }
 
 bool BaseNode::changeTrust(const DbId &id, int diff) {
-    To Do
+    if (!_db)
+        return false;
+
+    auto client = _db->getObject(NodeObject{id});
+
+    if (!client) {
+
+        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+                                    " because client == null",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    client->changeTrust(diff);
+
+    if (!_db->saveObject(client)) {
+        return false;
+    }
+
+    // to do
+    // send all network that node id is trusted changed
+
+    return true;
 }
 
 DBOperationResult NP::BaseNode::getObject(const NP::DbId &requester,
