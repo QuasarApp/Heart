@@ -11,7 +11,7 @@
 
 namespace NP {
 
-AvailableData::AvailableData() {
+AvailableData::AvailableData(): DBObject("") {
     INIT_COMMAND
 }
 
@@ -35,15 +35,52 @@ bool AvailableData::isValid() const {
     return AbstractData::isValid() && _data.size();
 }
 
-QHash<QString, QList<int> > AvailableData::data() const {
+bool AvailableData::copyFrom(const AbstractData * other) {
+    if (!DBObject::copyFrom(other))
+        return false;
+
+    auto otherObject = dynamic_cast<const AvailableData*>(other);
+    if (!otherObject)
+        return false;
+
+    this->_data = otherObject->_data;
+    return true;
+}
+
+void AvailableData::clear() {
+    DBObject::clear();
+    _data.clear();
+}
+
+DBObject *AvailableData::factory() const {
+    return new AvailableData;
+}
+
+PrepareResult AvailableData::prepareSelectQuery(QSqlQuery &) const {
+    return PrepareResult::Disabled;
+}
+
+PrepareResult AvailableData::prepareSaveQuery(QSqlQuery &) const {
+    return PrepareResult::Disabled;
+}
+
+PrepareResult AvailableData::prepareRemoveQuery(QSqlQuery &) const {
+    return PrepareResult::Disabled;
+}
+
+bool AvailableData::isCached() const {
+    return false;
+}
+
+QList<DbId> AvailableData::data() const {
     return _data;
 }
 
-void AvailableData::setData(const QHash<QString, QList<int> > &data) {
+void AvailableData::setData(const QList<DbId> &data) {
     _data = data;
 }
 
-QList<int>& AvailableData::operator[](const QString &key) {
+DbId& AvailableData::operator[]( int key) {
     return _data[key];
 }
 

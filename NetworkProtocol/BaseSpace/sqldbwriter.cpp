@@ -5,7 +5,6 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "dbtablebase.h"
 #include "sqldbwriter.h"
 
 #include <QRegularExpression>
@@ -219,79 +218,94 @@ bool SqlDBWriter::saveQuery(const DBObject* ptr) const {
 
     QSqlQuery q(db);
 
-    if (!ptr->prepareSaveQuery(q)) {
+    auto prepare = [ptr](QSqlQuery&q) {
+        return ptr->prepareSaveQuery(q);
+    };
 
-        QuasarAppUtils::Params::log("prepare sql error: " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
+    auto cb = [](){return true;};
 
-        return false;
-    }
-
-    if (!q.exec()) {
-
-        QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
-
-        return false;
-    }
-
-    return true;
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<DBObject *> &result) {
 
-    QSqlQuery query(db);
+    QSqlQuery q(db);
+    auto prepare = [&requestObject](QSqlQuery&q) {
+        return requestObject.prepareSelectQuery(q);
+    };
 
-    if (!requestObject.prepareSelectQuery(query)) {
-        QuasarAppUtils::Params::log("prepare sql error: " + query.lastError().text(),
-                                    QuasarAppUtils::Error);
-        return false;
-    }
+    auto cb = [&q, &requestObject, &result]() -> bool {
+        while (q.next()) {
+            auto newObject = requestObject.factory();
 
-    if (!query.exec()) {
-        QuasarAppUtils::Params::log("exec sql error: " + query.lastError().text(),
-                                    QuasarAppUtils::Error);
-        return false;
+            if (!newObject)
+                return false;
 
-    }
-
-    while (query.next()) {
-        auto newObject = requestObject.factory();
-
-        if (!newObject)
-            return false;
-
-        if (!newObject->fromSqlRecord(query.record())) {
-            QuasarAppUtils::Params::log("Init sql object error.",
-                                        QuasarAppUtils::Error);
-            return false;
+            if (!newObject->fromSqlRecord(q.record())) {
+                QuasarAppUtils::Params::log("Init sql object error.",
+                                            QuasarAppUtils::Error);
+                return false;
+            }
+            result.push_back(newObject);
         }
-        result.push_back(newObject);
-    }
 
-    return result.size();
+        return result.size();
+    };
+
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
     if (deleteObject)
         return false;
 
-    QSqlQuery query(db);
+    QSqlQuery q(db);
 
-    if (!deleteObject->prepareRemoveQuery(query)) {
-        QuasarAppUtils::Params::log("prepare sql error: " + query.lastError().text(),
+    auto prepare = [deleteObject](QSqlQuery&q) {
+        return deleteObject->prepareRemoveQuery(q);
+    };
+
+    auto cb = []() -> bool {
+        return true;
+    };
+
+    return workWithQuery(q, prepare, cb);
+}
+
+bool SqlDBWriter::workWithQuery(QSqlQuery &q,
+                               const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
+                               const std::function<bool ()> &cb) const {
+
+    switch (prepareFunc(q)) {
+    case PrepareResult::Success: {
+
+        if (!q.exec()) {
+
+            QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+
+            return false;
+        }
+
+        return cb();
+    }
+    case PrepareResult::Disabled: {
+        QuasarAppUtils::Params::log("call disabled operator! ",
+                                    QuasarAppUtils::Warning);
+        return true;
+    }
+
+    case PrepareResult::Fail: {
+        QuasarAppUtils::Params::log("prepare sql error: " + q.lastError().text(),
                                     QuasarAppUtils::Error);
+
         return false;
     }
 
-    if (!query.exec()) {
-        QuasarAppUtils::Params::log("exec sql error: " + query.lastError().text(),
-                                    QuasarAppUtils::Error);
-        return false;
-
     }
 
-    return true;
+    return false;
+
 }
 
 }

@@ -35,16 +35,20 @@ void DBObject::setTableName(const QString &tableName) {
     _tableName = tableName;
 }
 
-bool DBObject::prepareSelectQuery(QSqlQuery &q) const {
+PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
     if (_id.isValid()) {
-        return false;
+        return PrepareResult::Fail;
     }
 
     QString queryString = "SELECT * FROM %0 WHERE id='" + getId().toBase64() + "'";
 
     queryString = queryString.arg(tableName());
 
-    return q.prepare(queryString);
+    if (!q.prepare(queryString)) {
+        return PrepareResult::Fail;
+    }
+
+    return PrepareResult::Success;
 }
 
 bool DBObject::fromSqlRecord(const QSqlRecord &q) {
@@ -61,23 +65,27 @@ bool DBObject::isCached() const {
 }
 
 DBCacheKey DBObject::dbKey() const {
-    return std::move(DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()}));
+    return DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()});
 }
 
 DbAddress DBObject::dbAddress() const {
     return DbAddress{tableName(), getId()};
 }
 
-bool DBObject::prepareRemoveQuery(QSqlQuery &q) const {
+PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
     if (_id.isValid()) {
-        return false;
+        return PrepareResult::Fail;
     }
     
     QString queryString = "DELETE FROM %0 where id=" + getId().toBase64();
 
     queryString = queryString.arg(tableName());
 
-    return q.prepare(queryString);
+    if (!q.prepare(queryString)) {
+        return PrepareResult::Fail;
+    }
+
+    return PrepareResult::Success;
 }
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {

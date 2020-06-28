@@ -19,11 +19,13 @@
 #include <QMutex>
 #include "config.h"
 #include <permisions.h>
+#include "basedefines.h"
 
 namespace NP {
 
 class SqlDBWriter;
 class DBObject;
+class DbAddress;
 
 enum class SqlDBCasheWriteMode: int {
     Default = 0x0,

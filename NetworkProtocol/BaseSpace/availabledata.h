@@ -8,30 +8,43 @@
 #ifndef GETAVAILABLEDATA_H
 #define GETAVAILABLEDATA_H
 
-#include "abstractdata.h"
+#include "dbobject.h"
 
 namespace NP {
 
-class NETWORKPROTOCOLSHARED_EXPORT AvailableData : public AbstractData
+class NETWORKPROTOCOLSHARED_EXPORT AvailableData : public DBObject
 {
 public:
     AvailableData();
     AvailableData(const Package& pkg);
 
-    // StreamBase interface
-    QDataStream &fromStream(QDataStream &stream);
-    QDataStream &toStream(QDataStream &stream) const;
+    QList<DbId> data() const;
+    void setData(const QList<DbId> &data);
+
+    DbId& operator[](int key);
 
     // AbstractData interface
-    bool isValid() const;
+    bool isValid() const override;
+    bool copyFrom(const AbstractData *) override;
 
-    QHash<QString, QList<int> > data() const;
-    void setData(const QHash<QString, QList<int> > &data);
+    // DBObject interface
+    void clear() override;
+    DBObject *factory() const override;
+    PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
+    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
+    PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
 
-    QList<int>& operator[](const QString& key);
+    bool isCached() const override;
+
+protected:
+    // StreamBase interface
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    QHash<QString, QList<int>> _data;
+    QList<DbId> _data;
+
+
 
 
 

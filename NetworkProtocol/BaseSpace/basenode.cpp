@@ -17,8 +17,6 @@
 #include "nodespermisionobject.h"
 
 #include <badrequest.h>
-#include <userdata.h>
-#include <userrequest.h>
 #include <quasarapp.h>
 #include <transportdata.h>
 #include <availabledatarequest.h>
@@ -197,8 +195,8 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                             const Header *rHeader) {
 
-    if (!rec)
-        return false;
+
+
 
     auto info = getObject(NodeObject(rHeader->sender));
     if (!info)

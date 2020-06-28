@@ -9,7 +9,6 @@
 #define DBOBJECT_H
 #include <QSqlRecord>
 #include <QVariantMap>
-#include <dbtablebase.h>
 #include "abstractdata.h"
 #include "networkprotocol_global.h"
 #include "dbaddress.h"
@@ -20,6 +19,17 @@ class QSqlQuery;
 
 namespace NP {
 
+/**
+ * @brief The PrepareResult enum - result of work prepare sql query
+ */
+enum class PrepareResult {
+    /// prepare finished fail.
+    Fail,
+    /// prepare finished succussful
+    Success,
+    /// prepare disabled for method. Use this case for disable prepare method for object without errors.
+    Disabled,
+};
 
 /**
  * @brief The DBObject class- main class for work with data base.
@@ -86,7 +96,7 @@ public:
      * @param q - query object
      * @return true if query is prepared seccussful
      */
-    virtual bool prepareSelectQuery(QSqlQuery& q) const;
+    virtual PrepareResult prepareSelectQuery(QSqlQuery& q) const;
 
     /**
      * @brief fromSqlRecord- this method need to init this object from executed sqlRecord.
@@ -102,7 +112,7 @@ public:
      * @param q
      * @return
      */
-    virtual bool prepareSaveQuery(QSqlQuery& q) const = 0 ;
+    virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const = 0 ;
 
     /**
      * @brief prepareRemoveQuery - override this method for remove this item from database.
@@ -111,7 +121,7 @@ public:
      * @param q
      * @return
      */
-    virtual bool prepareRemoveQuery(QSqlQuery& q) const;
+    virtual PrepareResult prepareRemoveQuery(QSqlQuery& q) const;
 
     /**
      * @brief isCached
