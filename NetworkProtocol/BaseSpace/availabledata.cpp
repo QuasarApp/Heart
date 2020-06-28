@@ -6,12 +6,15 @@
 */
 
 #include "availabledata.h"
+#include "permisiondata.h"
 
 #include <QDataStream>
+#include <QSqlQuery>
 
 namespace NP {
 
-AvailableData::AvailableData(): DBObject("") {
+AvailableData::AvailableData():
+    DBObject("NodesPermisions") {
     INIT_COMMAND
 }
 
@@ -56,8 +59,20 @@ DBObject *AvailableData::factory() const {
     return new AvailableData;
 }
 
-PrepareResult AvailableData::prepareSelectQuery(QSqlQuery &) const {
-    return PrepareResult::Disabled;
+PrepareResult AvailableData::prepareSelectQuery(QSqlQuery &q) const {
+
+    if (!getId().isValid()) {
+        return PrepareResult::Fail;
+    }
+
+    QString queryString = "SELECT objectTable,objectId FROM %0 WHERE nodeId='" + getId().toBase64() + "'";
+    queryString = queryString.arg(tableName());
+
+    if (q.prepare(queryString))
+        return PrepareResult::Success;
+
+    return PrepareResult::Fail;
+
 }
 
 PrepareResult AvailableData::prepareSaveQuery(QSqlQuery &) const {
@@ -72,15 +87,31 @@ bool AvailableData::isCached() const {
     return false;
 }
 
-QList<DbId> AvailableData::data() const {
+bool AvailableData::isBundle() const {
+    return true;
+}
+
+bool AvailableData::fromSqlRecord(const QSqlRecord &q) {
+    if (q.contains("objectTable") && q.contains("objectId")) {
+
+        DbAddress address{q.value("objectTable").toString(), q.value("objectId").toString()};
+        _data.push_back(address);
+        return true;
+    }
+
+    return false;
+
+}
+
+QList<DbAddress> AvailableData::data() const {
     return _data;
 }
 
-void AvailableData::setData(const QList<DbId> &data) {
+void AvailableData::setData(const QList<DbAddress> &data) {
     _data = data;
 }
 
-DbId& AvailableData::operator[]( int key) {
+DbAddress& AvailableData::operator[]( int key) {
     return _data[key];
 }
 

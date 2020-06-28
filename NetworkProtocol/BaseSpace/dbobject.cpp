@@ -64,6 +64,10 @@ bool DBObject::isCached() const {
     return true;
 }
 
+bool DBObject::isBundle() const {
+    return false;
+}
+
 DBCacheKey DBObject::dbKey() const {
     return DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()});
 }

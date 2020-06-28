@@ -30,9 +30,9 @@ public:
     bool copyFrom(const AbstractData *other) override;
 
     // DBObject interface
-    bool prepareSaveQuery(QSqlQuery &q) const override;
-    bool prepareRemoveQuery(QSqlQuery &q) const override;
-    bool prepareSelectQuery(QSqlQuery &q) const override;
+    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
+    PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
+    PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
     DBObject *factory() const override;
     DBCacheKey dbKey() const override;
 

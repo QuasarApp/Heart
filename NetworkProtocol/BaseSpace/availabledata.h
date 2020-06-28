@@ -18,10 +18,10 @@ public:
     AvailableData();
     AvailableData(const Package& pkg);
 
-    QList<DbId> data() const;
-    void setData(const QList<DbId> &data);
+    QList<DbAddress> data() const;
+    void setData(const QList<DbAddress> &data);
 
-    DbId& operator[](int key);
+    DbAddress& operator[](int key);
 
     // AbstractData interface
     bool isValid() const override;
@@ -35,6 +35,8 @@ public:
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
 
     bool isCached() const override;
+    bool isBundle() const override;
+    bool fromSqlRecord(const QSqlRecord &q);
 
 protected:
     // StreamBase interface
@@ -42,11 +44,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    QList<DbId> _data;
-
-
-
-
+    QList<DbAddress> _data;
 
 };
 

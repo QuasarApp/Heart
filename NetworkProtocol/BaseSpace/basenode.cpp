@@ -194,20 +194,16 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
 bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                             const Header *rHeader) {
-
-
-
-
-    auto info = getObject(NodeObject(rHeader->sender));
-    if (!info)
+    if (!_db)
         return false;
 
+    auto availableData = _db->getObject(rec);
+    if (!availableData)
+        return false;
 
+    //To-Do brodcast yhis request to all network
 
-    auto av = SP<AvailableData>::create();
-    av->setData({});
-
-    return sendData(av, address, rHeader);
+    return sendData(availableData, rHeader->sender, rHeader);
 
 }
 

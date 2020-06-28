@@ -47,9 +47,9 @@ public:
     bool isValid() const override;
 
     DBObject* factory() const override;
-    bool prepareSaveQuery(QSqlQuery &) const override;
-    bool prepareRemoveQuery(QSqlQuery &) const override;
-    bool prepareSelectQuery(QSqlQuery &) const override;
+    PrepareResult prepareSaveQuery(QSqlQuery &) const override;
+    PrepareResult prepareRemoveQuery(QSqlQuery &) const override;
+    PrepareResult prepareSelectQuery(QSqlQuery &) const override;
 };
 
 }

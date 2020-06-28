@@ -54,7 +54,7 @@ void WebSocketController::foreachSubscribers(const DBObject *item,
 
     for (const auto &subscriber : subscribersList) {
 
-        if (!_node->sendDataToId(item, subscriber)) {
+        if (!_node->sendData(item, subscriber)) {
             QuasarAppUtils::Params::log("Send update failed for " + subscriber.toBase64(),
                                                QuasarAppUtils::Warning);
         }

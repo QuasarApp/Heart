@@ -22,7 +22,7 @@ class NETWORKPROTOCOLSHARED_EXPORT DbAddress : public StreamBase {
 public:
 
     DbAddress() = default;
-    DbAddress(const QString& address, const DbId& id);
+    DbAddress(const QString& table, const DbId& id);
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;

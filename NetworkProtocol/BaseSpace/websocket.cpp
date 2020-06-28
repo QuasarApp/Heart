@@ -34,15 +34,15 @@ QDataStream &WebSocket::toStream(QDataStream &stream) const {
 
 bool WebSocket::isValid() const {
     return requestCmd > static_cast<int>(WebSocketRequest::Invalied)
-            && AbstractData::isValid() && _from.isValid();
+            && AbstractData::isValid();
 }
 
 DBObject *WebSocket::factory() const {return nullptr;}
 
-bool WebSocket::prepareSelectQuery(QSqlQuery &) const { return false; }
+PrepareResult WebSocket::prepareSelectQuery(QSqlQuery &) const { return PrepareResult::Disabled; }
 
-bool WebSocket::prepareSaveQuery(QSqlQuery &) const { return false; }
+PrepareResult WebSocket::prepareSaveQuery(QSqlQuery &) const { return PrepareResult::Disabled; }
 
-bool WebSocket::prepareRemoveQuery(QSqlQuery &)const { return false; }
+PrepareResult WebSocket::prepareRemoveQuery(QSqlQuery &)const { return PrepareResult::Disabled; }
 
 }

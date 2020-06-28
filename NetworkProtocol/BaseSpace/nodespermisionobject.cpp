@@ -14,7 +14,9 @@
 namespace NP {
 
 NodesPermisionObject::NodesPermisionObject():
-    DBObject("NodesPermisions") {}
+    DBObject("NodesPermisions") {
+    INIT_COMMAND
+}
 
 NodesPermisionObject::NodesPermisionObject(const Package &pkg):
     NodesPermisionObject() {
@@ -45,10 +47,10 @@ bool NodesPermisionObject::copyFrom(const AbstractData *other) {
     return true;
 }
 
-bool NodesPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
+PrepareResult NodesPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
 
     if (!isValid()) {
-        return false;
+        return PrepareResult::Fail;
     }
 
     QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
@@ -67,23 +69,27 @@ bool NodesPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
 
     queryString = queryString.arg(values);
 
-    return q.prepare(queryString);
+    if (q.prepare(queryString))
+        return PrepareResult::Success;
+    return PrepareResult::Fail;
 }
 
-bool NodesPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
+PrepareResult NodesPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
     if (!isValid()) {
-        return false;
+        return PrepareResult::Fail;
     }
 
     QString queryString = "DELETE FROM %0 where nodeId='%1' and objectTable='%2' and objectId='%3'";
     queryString = queryString.arg(tableName(), _key.id().toBase64(), _key.address().table(), _key.address().id().toBase64());
 
-    return q.prepare(queryString);
+    if (q.prepare(queryString))
+        return PrepareResult::Success;
+    return PrepareResult::Fail;
 }
 
-bool NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
+PrepareResult NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
     if (_key.isValid()) {
-        return false;
+        return PrepareResult::Fail;
     }
 
     QString queryString = "SELECT * FROM %0 WHERE";
@@ -110,7 +116,9 @@ bool NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
 
     queryString = queryString.arg(tableName());
 
-    return q.prepare(queryString);
+    if (q.prepare(queryString))
+        return PrepareResult::Success;
+    return PrepareResult::Fail;
 }
 
 DBObject *NodesPermisionObject::factory() const {

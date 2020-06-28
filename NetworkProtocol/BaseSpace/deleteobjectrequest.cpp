@@ -1,13 +1,6 @@
 #include "deleteobjectrequest.h"
 namespace NP {
 
-
-DeleteObjectRequest::DeleteObjectRequest(const Package &pkg):
-    DBObject("") {
-    fromBytes(pkg.toBytes());
-
-}
-
 DeleteObjectRequest::DeleteObjectRequest(const DbAddress &address):
     DBObject(address.table()) {
 
@@ -15,21 +8,27 @@ DeleteObjectRequest::DeleteObjectRequest(const DbAddress &address):
     setId(address.id());
 }
 
+DeleteObjectRequest::DeleteObjectRequest(const Package &pkg):
+    DBObject("") {
+    fromBytes(pkg.toBytes());
+
+}
+
 DBObject *DeleteObjectRequest::factory() const {
     return new DeleteObjectRequest(DbAddress());
 }
 
-bool DeleteObjectRequest::prepareSelectQuery(QSqlQuery &q) const {
+PrepareResult DeleteObjectRequest::prepareSelectQuery(QSqlQuery &q) const {
     Q_UNUSED(q)
-    return false;
+    return PrepareResult::Disabled;
 }
 
-bool DeleteObjectRequest::prepareSaveQuery(QSqlQuery &q) const {
+PrepareResult DeleteObjectRequest::prepareSaveQuery(QSqlQuery &q) const {
     Q_UNUSED(q)
-    return false;
+    return PrepareResult::Disabled;
 }
 
-bool DeleteObjectRequest::prepareRemoveQuery(QSqlQuery &q) const {
+PrepareResult DeleteObjectRequest::prepareRemoveQuery(QSqlQuery &q) const {
     return DBObject::prepareRemoveQuery(q);
 }
 }

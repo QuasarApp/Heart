@@ -26,7 +26,7 @@ public:
 
     // DBObject interface
     DBObject *factory() const override;
-    bool prepareSaveQuery(QSqlQuery &q) const override;
+    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
 
     QByteArray publickKey() const;

@@ -15,7 +15,7 @@
 namespace NP {
 
 NodeObject::NodeObject():DBObject("Nodes") {
-
+    INIT_COMMAND
 }
 
 NodeObject::NodeObject(const Package &pkg):
@@ -32,7 +32,7 @@ DBObject *NodeObject::factory() const {
     return new NodeObject;
 }
 
-bool NodeObject::prepareSaveQuery(QSqlQuery &q) const {
+PrepareResult NodeObject::prepareSaveQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
     queryString = queryString.arg(tableName());
     queryString = queryString.arg("id, pubKey");
@@ -45,7 +45,10 @@ bool NodeObject::prepareSaveQuery(QSqlQuery &q) const {
 
     queryString = queryString.arg(values);
 
-    return q.prepare(queryString);
+    if (q.prepare(queryString)) {
+        return PrepareResult::Success;
+    }
+    return PrepareResult::Fail;
 }
 
 bool NodeObject::fromSqlRecord(const QSqlRecord &q) {

@@ -235,18 +235,36 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<DBObject *> &
     };
 
     auto cb = [&q, &requestObject, &result]() -> bool {
-        while (q.next()) {
+
+        if (requestObject.isBundle()) {
             auto newObject = requestObject.factory();
 
             if (!newObject)
                 return false;
 
-            if (!newObject->fromSqlRecord(q.record())) {
-                QuasarAppUtils::Params::log("Init sql object error.",
-                                            QuasarAppUtils::Error);
-                return false;
+            while (q.next()) {
+                if (!newObject->fromSqlRecord(q.record())) {
+                    QuasarAppUtils::Params::log("Init sql object error.",
+                                                QuasarAppUtils::Error);
+                    return false;
+                }
             }
             result.push_back(newObject);
+
+        } else {
+            while (q.next()) {
+                auto newObject = requestObject.factory();
+
+                if (!newObject)
+                    return false;
+
+                if (!newObject->fromSqlRecord(q.record())) {
+                    QuasarAppUtils::Params::log("Init sql object error.",
+                                                QuasarAppUtils::Error);
+                    return false;
+                }
+                result.push_back(newObject);
+            }
         }
 
         return result.size();

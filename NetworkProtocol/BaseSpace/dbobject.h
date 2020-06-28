@@ -101,6 +101,7 @@ public:
     /**
      * @brief fromSqlRecord- this method need to init this object from executed sqlRecord.
      *  default implementation get general dbObject information ( id and table name )
+     * @note this method weel be invoke for one object. but if isBundle return 'true' then a function fromSqlRecord moust be invoked foreach all elements of list.
      * @param q - sql record
      * @return true if method finished succesful
      */
@@ -128,6 +129,14 @@ public:
      * @return return true if item in cache. default implementation retun true only
      */
     virtual bool isCached() const;
+
+    /**
+     * @brief isBundle
+     *  If thsi function return true then SqlDBWriter create only one object after invoked selectquery.
+     *  And if the selectquery function return a list of more 1 elements then a method fromSqlRecord moust be invoked foreach all elements of list.
+     * @return true if the object is a selection from a set of database object.
+     */
+    virtual bool isBundle() const;
 
     /**
      * @brief dbAddress - unique address of item in database {id:table}

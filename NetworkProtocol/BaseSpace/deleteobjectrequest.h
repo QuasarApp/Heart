@@ -13,9 +13,9 @@ public:
     explicit DeleteObjectRequest(const DbAddress& address);;
 
     DBObject *factory() const override;
-    bool prepareSelectQuery(QSqlQuery &q) const override;
-    bool prepareSaveQuery(QSqlQuery &q) const override;
-    bool prepareRemoveQuery(QSqlQuery &q) const override;
+    PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
+    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
+    PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
 };
 }
 #endif // DELETEOBJECTREQUEST_H

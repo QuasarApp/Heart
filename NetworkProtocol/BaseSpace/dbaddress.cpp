@@ -16,8 +16,8 @@ qint64 qHash(const DbAddress &address) {
     return qHash(address.id().toRaw() + address.table());
 }
 
-DbAddress::DbAddress(const QString &address, const DbId &id) {
-    this->_table = address;
+DbAddress::DbAddress(const QString &table, const DbId &id) {
+    this->_table = table;
     this->_id = id;
 }
 
