@@ -26,16 +26,36 @@ add_definitions(-DNETWORKPROTOCOL_LIBRARY)
 
 find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
-file(GLOB SOURCE_CPP
-    "*.cpp" "*.qrc"
-    "AbstractSpace/*.cpp" "AbstractSpace/*.qrc"
-    "BaseSpace/*.cpp" "BaseSpace/*.qrc"
-    "UserSpace/*.cpp" "UserSpace/*.qrc"
+if(NOT DEFINED BUILD_LVL)
+    set(BUILD_LVL 1)
+endif()
 
-    "AbstractSpace/Private/*.cpp" "AbstractSpace/Private/*.qrc"
-    "BaseSpace/Private/*.cpp" "BaseSpace/Private/*.qrc"
-    "UserSpace/Private/*.cpp" "UserSpace/Private/*.qrc"
-)
+if (${BUILD_LVL} GREATER_EQUAL 0)
+    message("BUILD LVL >= 0")
+    file(GLOB SOURCE_CPP_LVL_0
+        "*.cpp" "*.qrc"
+        "AbstractSpace/*.cpp" "AbstractSpace/*.qrc"
+        "AbstractSpace/Private/*.cpp" "AbstractSpace/Private/*.qrc"
+    )
+endif()
+
+if (${BUILD_LVL} GREATER_EQUAL 1)
+    message("BUILD LVL >= 1")
+    file(GLOB SOURCE_CPP_LVL_1
+        "BaseSpace/*.cpp" "BaseSpace/*.qrc"
+        "BaseSpace/Private/*.cpp" "BaseSpace/Private/*.qrc"
+    )
+endif()
+
+if (${BUILD_LVL} GREATER_EQUAL 2)
+    message("BUILD LVL >= 2")
+    file(GLOB SOURCE_CPP_LVL_2
+        "UserSpace/*.cpp" "UserSpace/*.qrc"
+        "UserSpace/Private/*.cpp" "UserSpace/Private/*.qrc"
+    )
+endif()
+
+set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_CPP})
 target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Network Qt5::Sql Qt5::Concurrent QuasarApp crypto ssl Qt-Secret)

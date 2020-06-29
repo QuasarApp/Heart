@@ -9,7 +9,6 @@
 #define NETWORKPROTOCOL_H
 
 #include "package.h"
-#include "ratingtable.h"
 
 /**
  * NP - Network protocol
