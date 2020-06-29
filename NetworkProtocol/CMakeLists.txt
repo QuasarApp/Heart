@@ -26,10 +26,6 @@ add_definitions(-DNETWORKPROTOCOL_LIBRARY)
 
 find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
-if(NOT DEFINED BUILD_LVL)
-    set(BUILD_LVL 1)
-endif()
-
 if (${BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
@@ -37,6 +33,11 @@ if (${BUILD_LVL} GREATER_EQUAL 0)
         "AbstractSpace/*.cpp" "AbstractSpace/*.qrc"
         "AbstractSpace/Private/*.cpp" "AbstractSpace/Private/*.qrc"
     )
+
+    set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace")
+    set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace/Private")
+
 endif()
 
 if (${BUILD_LVL} GREATER_EQUAL 1)
@@ -45,6 +46,10 @@ if (${BUILD_LVL} GREATER_EQUAL 1)
         "BaseSpace/*.cpp" "BaseSpace/*.qrc"
         "BaseSpace/Private/*.cpp" "BaseSpace/Private/*.qrc"
     )
+
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace")
+    set(PRIVATE_INCUDE_DIR ${PRIVATE_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace/Private")
+
 endif()
 
 if (${BUILD_LVL} GREATER_EQUAL 2)
@@ -53,20 +58,20 @@ if (${BUILD_LVL} GREATER_EQUAL 2)
         "UserSpace/*.cpp" "UserSpace/*.qrc"
         "UserSpace/Private/*.cpp" "UserSpace/Private/*.qrc"
     )
+
+
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace")
+    set(PRIVATE_INCUDE_DIR ${PRIVATE_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace/Private")
+
 endif()
 
 set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 add_library(${PROJECT_NAME} SHARED ${SOURCE_CPP})
 target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Network Qt5::Sql Qt5::Concurrent QuasarApp crypto ssl Qt-Secret)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace")
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace")
-target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace")
 
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace/Private")
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace/Private")
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace/Private")
+target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 
 setVersion(1 1 0)

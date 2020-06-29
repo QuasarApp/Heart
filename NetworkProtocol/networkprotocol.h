@@ -9,6 +9,7 @@
 #define NETWORKPROTOCOL_H
 
 #include "package.h"
+#include "abstractnode.h"
 
 /**
  * NP - Network protocol

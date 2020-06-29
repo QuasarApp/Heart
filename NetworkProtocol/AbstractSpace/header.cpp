@@ -13,13 +13,12 @@ Header::Header() {
 }
 
 bool Header::isValid() const {
-    return command && size && sender.isValid();
+    return command && size;
 }
 
 void Header::reset() {
     size = 0;
     command = 0;
     triggerCommnad = 0;
-    sender.clear();
 }
 }

@@ -17,16 +17,42 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Core Test REQUIRED)
+if (${BUILD_LVL} GREATER_EQUAL 0)
+    message("BUILD LVL >= 0")
+    file(GLOB SOURCE_CPP_LVL_0
+        "*.cpp" "*.qrc"
+        "AbstractSpace/*.cpp" "AbstractSpace/*.qrc"
+    )
+    set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace")
+endif()
 
-file(GLOB SOURCE_CPP
-    "*.cpp" "DataPacakages/*.cpp"
-)
+if (${BUILD_LVL} GREATER_EQUAL 1)
+    message("BUILD LVL >= 1")
+    file(GLOB SOURCE_CPP_LVL_1
+        "BaseSpace/*.cpp" "BaseSpace/*.qrc"
+    )
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace")
+
+endif()
+
+if (${BUILD_LVL} GREATER_EQUAL 2)
+    message("BUILD LVL >= 2")
+    file(GLOB SOURCE_CPP_LVL_2
+        "UserSpace/*.cpp" "UserSpace/*.qrc"
+    )
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace")
+
+endif()
+
+set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt5::Test NetworkProtocol)
-target_include_directories(${CURRENT_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(${CURRENT_PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/DataPacakages)
+
+target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
+target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
+
 
 include(../QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 initTests()

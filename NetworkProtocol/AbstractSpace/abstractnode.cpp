@@ -6,6 +6,7 @@
 */
 
 #include "abstractnode.h"
+#include "ping.h"
 #include "qsecretrsa2048.h"
 #include "workstate.h"
 #include <QHostInfo>
@@ -313,7 +314,17 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
         return ParserResult::Error;
     }
 
+    if (H_16<Ping>() == pkg.hdr.command) {
+        Ping cmd(pkg);
 
+        if (!cmd.ansver()) {
+            cmd.setAnsver(true);
+            sendData(&cmd, sender->networkAddress(), &pkg.hdr);
+        }
+
+        incomingData(&cmd, sender->networkAddress());
+        return ParserResult::Processed;
+    }
 
     return ParserResult::NotProcessed;
 }
@@ -474,6 +485,12 @@ int AbstractNode::connectionsCount() const {
         }
     }
     return count;
+}
+
+bool AbstractNode::ping(const QHostAddress &address) {
+    Ping cmd;
+    return sendData(&cmd, address);
+
 }
 
 bool AbstractNode::isBaned(QAbstractSocket *socket) const {
@@ -685,6 +702,12 @@ bool AbstractNode::setMode(const SslMode &mode) {
     }
 
     return true;
+
+}
+
+void AbstractNode::incomingData(AbstractData *pkg, const QHostAddress &sender) {
+    Q_UNUSED(pkg)
+    Q_UNUSED(sender)
 
 }
 

@@ -72,7 +72,6 @@ struct SslSrtData {
 #define REQUEST_ERROR   -5
 
 class Abstract;
-
 /**
  * @brief The AbstractNode class
  */
@@ -194,6 +193,19 @@ public:
      */
     bool checkNodeId(const QByteArray& nodeId) const;
 
+    /**
+     * @brief connectionsCount
+     * @return
+     */
+    int connectionsCount() const;
+
+    /**
+     * @brief ping - ping address for testing
+     * @param address - address of other node
+     * @return true if ping sendet
+     */
+    bool ping( const QHostAddress& address);
+
 protected:
 
     /**
@@ -287,12 +299,6 @@ protected:
     QList<QHostAddress> banedList() const;
 
     /**
-     * @brief connectionsCount
-     * @return
-     */
-    int connectionsCount() const;
-
-    /**
      * @brief isBaned
      * @param socket
      * @return
@@ -332,7 +338,14 @@ protected:
      */
     bool setMode(const SslMode &mode);
 
-
+    /**
+     * @brief incomingData - this signal invoked when node get command or ansver
+     * @param pkg - get package (in this implementation it is only the Ping command)
+     * @param sender - sender of the package
+     * @note override this method for get a signals.
+     */
+    virtual void incomingData(AbstractData* pkg,
+                      const QHostAddress&  sender);
 private slots:
 
     void avelableBytes();

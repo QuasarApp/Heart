@@ -123,7 +123,7 @@ protected:
      * @param genesis
      * @return crypto pair keys
      */
-    virtual CryptoPairKeys generate(const QByteArray& genesis = {}) const;
+    virtual CryptoPairKeys generate(const QByteArray& genesis = {}) const = 0;
 
     void run() override;
 private:
