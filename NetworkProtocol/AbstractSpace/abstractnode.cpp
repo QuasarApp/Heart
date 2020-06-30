@@ -115,7 +115,7 @@ void AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
         connectToHost(info.addresses().first(), port, mode);
         auto hostObject = getInfoPtr(info.addresses().first());
 
-        if (hostObject) {
+        if (!hostObject) {
             QuasarAppUtils::Params::log("The domain name :" + domain + " has connected bud not have network object!",
                                         QuasarAppUtils::Error);
             return;
@@ -300,7 +300,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
 ParserResult AbstractNode::parsePackage(const Package &pkg,
                                         const AbstractNodeInfo *sender) {
 
-    if (sender || !sender->isValid()) {
+    if (!(sender && sender->isValid())) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
                                     QuasarAppUtils::Error);
         changeTrust(sender->networkAddress(), LOGICK_ERROOR);
@@ -357,13 +357,13 @@ bool AbstractNode::sendData(const AbstractData *resp,
                             const Header *req) {
     auto client = getInfoPtr(addere);
 
-    if (client) {
+    if (!client) {
         QuasarAppUtils::Params::log("Response not sent because client == null",
                                     QuasarAppUtils::Error);
         return false;
     }
 
-    if (resp) {
+    if (!resp) {
         return false;
     }
 
@@ -395,7 +395,7 @@ void AbstractNode::badRequest(const QHostAddress &address, const Header &req,
                               const QString msg) {
     auto client = getInfoPtr(address);
 
-    if (client) {
+    if (!client) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
                                     " because client == null",
@@ -496,7 +496,7 @@ bool AbstractNode::ping(const QHostAddress &address) {
 bool AbstractNode::isBaned(QAbstractSocket *socket) const {
     auto info = getInfoPtr(socket->peerAddress());
 
-    if (info && !info->isValid()) {
+    if (!(info && info->isValid())) {
         return false;
     }
 
@@ -514,7 +514,7 @@ void AbstractNode::incomingConnection(qintptr handle) {
 
 bool AbstractNode::changeTrust(const QHostAddress &id, int diff) {
     auto ptr = getInfoPtr(id);
-    if (ptr) {
+    if (!ptr) {
         return false;
     }
 

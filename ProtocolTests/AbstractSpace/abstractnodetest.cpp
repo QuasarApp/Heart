@@ -28,9 +28,6 @@ private:
 AbstractNodeTest::AbstractNodeTest() {
     _nodeA = new NP::AbstractNode();
     _nodeB = new TestingClient();
-
-    _nodeA->listen(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
-
 }
 
 AbstractNodeTest::~AbstractNodeTest() {
@@ -45,6 +42,9 @@ void AbstractNodeTest::test() {
 }
 
 bool AbstractNodeTest::connectTest() {
+
+    _nodeA->listen(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+
     return connectFunc(_nodeB, TEST_LOCAL_HOST, TEST_PORT);
 }
 
