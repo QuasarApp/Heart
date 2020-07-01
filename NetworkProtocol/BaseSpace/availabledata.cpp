@@ -19,11 +19,11 @@ AvailableData::AvailableData():
 }
 
 AvailableData::AvailableData(const Package &pkg):AvailableData() {
-    fromBytes(pkg.toBytes());
+    fromBytes(pkg.data);
 }
 
 QDataStream &AvailableData::fromStream(QDataStream &stream) {
-    AbstractData::fromStream(stream);
+    DBObject::fromStream(stream);
     stream >> _data;
     return stream;
 }

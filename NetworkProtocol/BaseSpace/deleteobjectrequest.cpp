@@ -10,8 +10,7 @@ DeleteObjectRequest::DeleteObjectRequest(const DbAddress &address):
 
 DeleteObjectRequest::DeleteObjectRequest(const Package &pkg):
     DBObject("") {
-    fromBytes(pkg.toBytes());
-
+    fromBytes(pkg.data);
 }
 
 DBObject *DeleteObjectRequest::factory() const {

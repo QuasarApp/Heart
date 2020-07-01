@@ -9,6 +9,7 @@
 #define WEBSOCKETSUBSCRIPTIONS_H
 
 #include "abstractdata.h"
+#include "senderdata.h"
 
 #include <QSet>
 #include <dbaddress.h>
@@ -19,7 +20,7 @@ namespace NP {
 /**
  * @brief The WebSocketSubscriptions class
  */
-class NETWORKPROTOCOLSHARED_EXPORT WebSocketSubscriptions: public AbstractData
+class NETWORKPROTOCOLSHARED_EXPORT WebSocketSubscriptions: public AbstractData, public SenderData
 {
 public:
     WebSocketSubscriptions();

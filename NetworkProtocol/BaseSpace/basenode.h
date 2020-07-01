@@ -106,10 +106,11 @@ public:
 
     /**
      * @brief badRequest - send bad request to node with id
+     * @param address - id of target node or client
      * @param req - header of an accepted request.
      * @param msg
      */
-    virtual void badRequest(const Header &req,
+    virtual void badRequest(const DbId &address, const Header &req,
                             const QString msg = "");
 
     /**
@@ -127,13 +128,6 @@ public:
      */
     virtual bool changeTrust(const DbId &id, int diff);
 
-
-
-signals:
-    void incomingData(AbstractData* pkg,
-                      const DbId&  sender);
-
-    void requestError(QString msg);
 
 protected:
 
@@ -256,6 +250,8 @@ private:
     bool registerNewUser(const QWeakPointer<AbstractData> &user,
                          const QHostAddress &address,
                          bool rememberMe);
+
+
 };
 
 

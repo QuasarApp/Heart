@@ -15,7 +15,7 @@
 
 namespace NP {
 
-class AvailableDataRequest :public AvailableData {
+class NETWORKPROTOCOLSHARED_EXPORT AvailableDataRequest :public AvailableData {
 public:
     AvailableDataRequest();
     AvailableDataRequest(const Package &pkg);

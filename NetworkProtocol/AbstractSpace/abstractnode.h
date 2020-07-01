@@ -206,6 +206,9 @@ public:
      */
     bool ping( const QHostAddress& address);
 
+signals:
+    void requestError(QString msg);
+
 protected:
 
     /**

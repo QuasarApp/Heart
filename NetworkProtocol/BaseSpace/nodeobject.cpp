@@ -10,6 +10,7 @@
 #include <quasarapp.h>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QDataStream>
 
 
 namespace NP {
@@ -20,7 +21,7 @@ NodeObject::NodeObject():DBObject("Nodes") {
 
 NodeObject::NodeObject(const Package &pkg):
     NodeObject() {
-    fromBytes(pkg.toBytes());
+    fromBytes(pkg.data);
 }
 
 NodeObject::NodeObject(const DbId &id):
@@ -74,6 +75,7 @@ QDataStream &NodeObject::fromStream(QDataStream &stream) {
     DBObject::fromStream(stream);
 
     stream >> _publickKey;
+    stream >> _trust;
 
     return stream;
 }
@@ -82,7 +84,7 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     DBObject::toStream(stream);
 
     stream << _publickKey;
-
+    stream << _trust;
     return stream;
 }
 

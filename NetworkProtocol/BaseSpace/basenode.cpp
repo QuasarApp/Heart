@@ -15,6 +15,7 @@
 #include "websocketcontroller.h"
 #include "nodeobject.h"
 #include "nodespermisionobject.h"
+#include "badnoderequest.h"
 
 #include <badrequest.h>
 #include <quasarapp.h>
@@ -96,10 +97,11 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         return parentResult;
     }
 
-    if (H_16<BadRequest>() == pkg.hdr.command) {
-        BadRequest cmd(pkg);
+    if (H_16<BadNodeRequest>() == pkg.hdr.command) {
+        BadNodeRequest cmd(pkg);
+
+        incomingData(&cmd, sender->networkAddress());
         emit requestError(cmd.err());
-        emit incomingData(&cmd, pkg.hdr.sender);
 
         return ParserResult::Processed;
 
@@ -123,12 +125,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         AvailableDataRequest cmd(pkg);
 
         if (!cmd.isValid()) {
-            badRequest(pkg.hdr);
+            badRequest(cmd.senderID(), pkg.hdr);
             return ParserResult::Error;
         }
 
         if (!workWithAvailableDataRequest(cmd, &pkg.hdr)) {
-            badRequest(pkg.hdr);
+            badRequest(cmd.senderID(), pkg.hdr);
             return ParserResult::Error;
         }
         return ParserResult::Processed;
@@ -137,17 +139,17 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<AvailableData>() == pkg.hdr.command) {
         AvailableData obj(pkg);
         if (!obj.isValid()) {
-            badRequest(pkg.hdr);
+            badRequest(obj.senderID(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        emit incomingData(&obj, pkg.hdr.sender);
+        incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
 
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
         DeleteObjectRequest obj(pkg);
 
-        DBOperationResult result = deleteObject(pkg.hdr.sender, &obj);
+        DBOperationResult result = deleteObject(obj.senderID(), &obj);
 
         switch (result) {
         case DBOperationResult::Forbidden:
@@ -166,12 +168,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
         WebSocket obj(pkg);
         if (!obj.isValid()) {
-            badRequest(pkg.hdr);
+            badRequest(obj.senderID(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        if (!workWithSubscribe(obj, pkg.hdr.sender)) {
-            badRequest(pkg.hdr);
+        if (!workWithSubscribe(obj, obj.senderID())) {
+            badRequest(obj.senderID(), pkg.hdr);
             return ParserResult::Error;
         }
 
@@ -180,11 +182,11 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
         WebSocketSubscriptions obj(pkg);
         if (!obj.isValid()) {
-            badRequest(pkg.hdr);
+            badRequest(obj.senderID(), pkg.hdr);
             return ParserResult::Error;
         }
 
-        emit incomingData(&obj, pkg.hdr.sender);
+        incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
     }
 
@@ -203,7 +205,7 @@ bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
 
     //To-Do brodcast yhis request to all network
 
-    return sendData(availableData, rHeader->sender, rHeader);
+    return sendData(availableData, rec.senderID(), rHeader);
 
 }
 
@@ -315,9 +317,9 @@ void BaseNode::badRequest(const QHostAddress &address, const Header &req, const 
     AbstractNode::badRequest(address, req, msg);
 }
 
-void BaseNode::badRequest(const Header &req, const QString msg) {
+void BaseNode::badRequest(const DbId& address, const Header &req, const QString msg) {
 
-    if (!changeTrust(req.sender, REQUEST_ERROR)) {
+    if (!changeTrust(address, REQUEST_ERROR)) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
                                     " because trust not changed",
@@ -327,12 +329,12 @@ void BaseNode::badRequest(const Header &req, const QString msg) {
     }
 
     auto bad = BadRequest(msg);
-    if (!sendData(&bad, req.sender, &req)) {
+    if (!sendData(&bad, address, &req)) {
         return;
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                req.sender.toBase64(),
+                                address.toBase64(),
                                 QuasarAppUtils::Info);
 }
 

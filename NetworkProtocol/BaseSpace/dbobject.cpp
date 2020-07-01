@@ -8,7 +8,6 @@
 #include "dbaddresskey.h"
 #include "dbcachekey.h"
 #include "dbobject.h"
-#include "dbtablebase.h"
 #include <QDataStream>
 #include <QDateTime>
 #include <QSqlQuery>
@@ -97,6 +96,11 @@ QDataStream &DBObject::fromStream(QDataStream &stream) {
 
     stream >> _tableName;
     stream >> _id;
+
+    DbId senderNode;
+    stream >> senderNode;
+    setSenderID(senderNode);
+
     return stream;
 }
 
@@ -105,6 +109,8 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
 
     stream << _tableName;
     stream << _id;
+    stream << senderID();
+
     return stream;
 }
 
@@ -136,6 +142,7 @@ void DBObject::setId(const DbId& id) {
 
 void DBObject::clear() {
     _id.clear();
+    setNodeId({});
 }
 
 }

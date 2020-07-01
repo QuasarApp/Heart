@@ -20,7 +20,7 @@ NodesPermisionObject::NodesPermisionObject():
 
 NodesPermisionObject::NodesPermisionObject(const Package &pkg):
     NodesPermisionObject() {
-    fromBytes(pkg.toBytes());
+    fromBytes(pkg.data);
 
 }
 

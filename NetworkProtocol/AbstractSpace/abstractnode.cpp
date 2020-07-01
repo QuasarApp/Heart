@@ -324,6 +324,14 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
 
         incomingData(&cmd, sender->networkAddress());
         return ParserResult::Processed;
+    } else if (H_16<BadRequest>() == pkg.hdr.command) {
+        BadRequest cmd(pkg);
+
+        incomingData(&cmd, sender->networkAddress());
+        emit requestError(cmd.err());
+
+        return ParserResult::Processed;
+
     }
 
     return ParserResult::NotProcessed;

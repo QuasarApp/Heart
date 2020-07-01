@@ -14,6 +14,7 @@
 #include "dbaddress.h"
 #include "basedefines.h"
 #include "dbcachekey.h"
+#include "senderdata.h"
 
 class QSqlQuery;
 
@@ -34,7 +35,7 @@ enum class PrepareResult {
 /**
  * @brief The DBObject class- main class for work with data base.
  */
-class NETWORKPROTOCOLSHARED_EXPORT DBObject : public AbstractData
+class NETWORKPROTOCOLSHARED_EXPORT DBObject : public AbstractData, public SenderData
 {
 public:
     /**
@@ -150,6 +151,9 @@ public:
      * @return
      */
     DbAddress dbAddress() const;
+
+    DbId getNodeId() const;
+    void setNodeId(const DbId &nodeId);
 
 protected:
     QString _tableName;
