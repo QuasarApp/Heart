@@ -91,12 +91,12 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
             _webSocketWorker, &WebSocketController::handleItemChanged);
 }
 
-DbId BaseNode::nodeId() const {
+BaseId BaseNode::nodeId() const {
     auto keys = _nodeKeys->getNextPair();
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
 }
 
-bool BaseNode::checkNodeId(const DbId &nodeId) const {
+bool BaseNode::checkNodeId(const BaseId &nodeId) const {
     getInfo()
     auto key = QRSAEncryption::message(nodeId);
     return QRSAEncryption::checkSignMessage(nodeId, key, QRSAEncryption::getKeyRsaType(key));
@@ -237,7 +237,7 @@ SqlDBCache *BaseNode::db() const {
 
 // TO-DO
 bool BaseNode::workWithSubscribe(const WebSocket &rec,
-                                 const DbId &clientOrNodeid) {
+                                 const BaseId &clientOrNodeid) {
 
     auto _db = db();
     if (_db)
@@ -285,17 +285,33 @@ bool BaseNode::sendData(const AbstractData *resp,
 }
 
 bool BaseNode::sendData(const AbstractData *resp,
-                        const DbId &nodeId,
+                        const BaseId &nodeId,
                         const Header *req) {
-    To Do
 
+    auto nodes = connections();
+
+    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+        auto info = dynamic_cast<BaseNodeInfo*>(it.value().info);
+        if (info && info->isKnowAddress(nodeId)) {
+            return sendData(resp, it.key(), req);
+        }
+    }
+
+    TransportData data;
+    data.setTargetAddress(nodeId);
+    data.setData(*resp);
+    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+        sendData(&data, it.key(), req);
+    }
+
+    return false;
 }
 
 void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {
     AbstractNode::badRequest(address, req, msg);
 }
 
-void BaseNode::badRequest(const DbId& address, const Header &req, const QString msg) {
+void BaseNode::badRequest(const BaseId& address, const Header &req, const QString msg) {
 
     if (!changeTrust(address, REQUEST_ERROR)) {
 
@@ -320,7 +336,7 @@ bool BaseNode::changeTrust(const QHostAddress &id, int diff) {
     return AbstractNode::changeTrust(id, diff);
 }
 
-bool BaseNode::changeTrust(const DbId &id, int diff) {
+bool BaseNode::changeTrust(const BaseId &id, int diff) {
     if (!_db)
         return false;
 
@@ -346,7 +362,7 @@ bool BaseNode::changeTrust(const DbId &id, int diff) {
     return true;
 }
 
-DBOperationResult NP::BaseNode::getObject(const NP::DbId &requester,
+DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
                                           const DbAddress& objcetAddress,
                                           const NP::DBObject *res) const {
 
@@ -366,7 +382,7 @@ DBOperationResult NP::BaseNode::getObject(const NP::DbId &requester,
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult BaseNode::setObject(const DbId &requester,
+DBOperationResult BaseNode::setObject(const BaseId &requester,
                                       const DBObject *saveObject) {
 
     if (!_db) {
@@ -387,7 +403,7 @@ DBOperationResult BaseNode::setObject(const DbId &requester,
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult BaseNode::deleteObject(const DbId &requester,
+DBOperationResult BaseNode::deleteObject(const BaseId &requester,
                                          const DBObject *dbObject) {
 
     if (!_db) {

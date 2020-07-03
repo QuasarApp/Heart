@@ -22,7 +22,7 @@ class WebSocket;
 class WebSocketController;
 class DBDataRequest;
 class DbAddress;
-class DbId;
+class BaseId;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -92,7 +92,7 @@ public:
      * @param req - header of request
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(const AbstractData *resp, const DbId &nodeId,
+    virtual bool sendData(const AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr);
 
     /**
@@ -110,7 +110,7 @@ public:
      * @param req - header of an accepted request.
      * @param msg
      */
-    virtual void badRequest(const DbId &address, const Header &req,
+    virtual void badRequest(const BaseId &address, const Header &req,
                             const QString msg = "");
 
     /**
@@ -126,7 +126,7 @@ public:
      * @param diff
      * @return true if functin finished seccussful
      */
-    virtual bool changeTrust(const DbId &id, int diff);
+    virtual bool changeTrust(const BaseId &id, int diff);
 
 protected:
 
@@ -174,7 +174,7 @@ protected:
      * @return true if data parsed seccusseful
      */
     bool workWithSubscribe(const WebSocket &rec,
-                           const DbId &clientOrNodeid);
+                           const BaseId &clientOrNodeid);
 
     template<class RequestobjectType>
     /**
@@ -194,7 +194,7 @@ protected:
      * @param dbObject
      * @return result of operation (allow, forbiden unknown)
      */
-    DBOperationResult deleteObject(const DbId &requester,
+    DBOperationResult deleteObject(const BaseId &requester,
                                    const DBObject *dbObject);
 
     /**
@@ -205,7 +205,7 @@ protected:
      * @param res - result object
      * @return operation status
      */
-    DBOperationResult getObject(const DbId &requester,
+    DBOperationResult getObject(const BaseId &requester,
                                 const DbAddress& dbObject,
                                 const DBObject* res) const;
 
@@ -217,7 +217,7 @@ protected:
      * @param dbObject
      * @return operation status
      */
-    DBOperationResult setObject(const DbId &requester,
+    DBOperationResult setObject(const BaseId &requester,
                                 const DBObject *saveObject);
 
     /**
@@ -225,13 +225,13 @@ protected:
      * @param nodeId
      * @return
      */
-    bool checkNodeId(const DbId &nodeId) const;
+    bool checkNodeId(const BaseId &nodeId) const;
 
     /**
      * @brief nodeId
      * @return
      */
-    DbId nodeId() const;
+    BaseId nodeId() const;
 
 private:
     SqlDBCache *_db = nullptr;

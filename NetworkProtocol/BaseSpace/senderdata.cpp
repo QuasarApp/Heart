@@ -12,7 +12,7 @@ SenderData::SenderData() {
 
 }
 
-const DbId &SenderData::senderID() const {
+const BaseId &SenderData::senderID() const {
     return _senderID;
 }
 }

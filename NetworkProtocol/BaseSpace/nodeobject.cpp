@@ -24,7 +24,7 @@ NodeObject::NodeObject(const Package &pkg):
     fromBytes(pkg.data);
 }
 
-NodeObject::NodeObject(const DbId &id):
+NodeObject::NodeObject(const BaseId &id):
     NodeObject() {
     setId(id);
 }

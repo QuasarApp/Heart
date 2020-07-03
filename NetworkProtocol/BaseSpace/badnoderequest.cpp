@@ -39,7 +39,7 @@ bool BadNodeRequest::copyFrom(const AbstractData * other) {
 QDataStream &BadNodeRequest::fromStream(QDataStream &stream) {
     BadRequest::fromStream(stream);
 
-    DbId senderNode;
+    BaseId senderNode;
     stream >> senderNode;
     setSenderID(senderNode);
 

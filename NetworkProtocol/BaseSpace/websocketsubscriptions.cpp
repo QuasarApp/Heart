@@ -26,7 +26,7 @@ WebSocketSubscriptions::WebSocketSubscriptions(const NP::Package &package):
 QDataStream &WebSocketSubscriptions::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 
-    DbId senderNode;
+    BaseId senderNode;
     stream >> senderNode;
     setSenderID(senderNode);
 

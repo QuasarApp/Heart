@@ -5,8 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef DBID_H
-#define DBID_H
+#ifndef BaseId_H
+#define BaseId_H
 
 #include <QByteArray>
 #include <streambase.h>
@@ -14,15 +14,15 @@
 namespace NP {
 
 /**
- * @brief The DbId class. General class for work with database id.
+ * @brief The BaseId class. General class for work with database id.
  * Database id is '1byte of prefix + hash (sha256)' from object value.
  */
-class NETWORKPROTOCOLSHARED_EXPORT DbId: public StreamBase
+class NETWORKPROTOCOLSHARED_EXPORT BaseId: public StreamBase
 {
 public:
-    DbId();
-    DbId(const QByteArray& raw);
-    DbId(const QString& base64);
+    BaseId();
+    BaseId(const QByteArray& raw);
+    BaseId(const QString& base64);
 
     /**
      * @brief fromBase64
@@ -71,10 +71,10 @@ public:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
-    friend bool operator== (const DbId& left, const DbId& other);
+    friend bool operator== (const BaseId& left, const BaseId& other);
 
 private:
     QByteArray _data;
 };
 }
-#endif // DBID_H
+#endif // BaseId_H

@@ -97,7 +97,7 @@ QDataStream &DBObject::fromStream(QDataStream &stream) {
     stream >> _tableName;
     stream >> _id;
 
-    DbId senderNode;
+    BaseId senderNode;
     stream >> senderNode;
     setSenderID(senderNode);
 
@@ -132,11 +132,11 @@ bool DBObject::copyFrom(const AbstractData * other) {
     return true;
 }
 
-DbId DBObject::getId() const {
+BaseId DBObject::getId() const {
     return _id;
 }
 
-void DBObject::setId(const DbId& id) {
+void DBObject::setId(const BaseId& id) {
     _id = id;
 }
 

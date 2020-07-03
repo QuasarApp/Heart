@@ -701,4 +701,8 @@ void AbstractNode::incomingData(AbstractData *pkg, const QHostAddress &sender) {
 
 }
 
+const QHash<QHostAddress, NodeInfoData> &AbstractNode::connections() const {
+    return _connections;
+}
+
 }

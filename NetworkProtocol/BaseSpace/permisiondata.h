@@ -16,7 +16,7 @@ class NETWORKPROTOCOLSHARED_EXPORT PermisionData: public AbstractKey, public Str
 public:
 
     PermisionData() = default;
-    PermisionData(const DbId& subject, const DbAddress& objcet);
+    PermisionData(const BaseId& subject, const DbAddress& objcet);
 
     friend bool operator == (const PermisionData& left, const PermisionData& right);
 
@@ -28,11 +28,11 @@ public:
     unsigned int hash() const override;
 
 
-    const DbId & id() const override;
+    const BaseId & id() const override;
     const QString &table() const override;
     bool isValid() const override;
 
-    void setId(const DbId &Id);
+    void setId(const BaseId &Id);
 
     DbAddress address() const;
     void setAddress(const DbAddress &address);
@@ -45,7 +45,7 @@ protected:
 private:
 
     /// id  of user of node
-    DbId _id;
+    BaseId _id;
 
     /// table of target object (second part of key)
     DbAddress _address;

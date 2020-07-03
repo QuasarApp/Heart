@@ -94,7 +94,7 @@ public:
      * @param requiredPermision - requirement permision of object
      * @return operation result see DBOperationResult
      */
-    virtual DBOperationResult checkPermision(const DbId &id,
+    virtual DBOperationResult checkPermision(const BaseId &id,
                                              const DbAddress &object,
                                              Permission requiredPermision);
 

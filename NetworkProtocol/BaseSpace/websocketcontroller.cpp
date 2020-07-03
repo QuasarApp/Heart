@@ -18,7 +18,7 @@ WebSocketController::WebSocketController(BaseNode *node) {
     assert(_node);
 }
 
-bool WebSocketController::subscribe(const DbId& subscriber,
+bool WebSocketController::subscribe(const BaseId& subscriber,
                                     const DbAddress &item) {
 
     _subscribs[item].insert(subscriber);
@@ -27,14 +27,14 @@ bool WebSocketController::subscribe(const DbId& subscriber,
     return true;
 }
 
-void WebSocketController::unsubscribe(const DbId &subscriber,
+void WebSocketController::unsubscribe(const BaseId &subscriber,
                                       const DbAddress& item) {
     _subscribs[item].remove(subscriber);
     _items[subscriber].remove(item);
 
 }
 
-const QSet<DbAddress> &WebSocketController::list(const DbId &subscriber) {
+const QSet<DbAddress> &WebSocketController::list(const BaseId &subscriber) {
     return _items[subscriber];
 }
 
@@ -47,7 +47,7 @@ void WebSocketController::handleItemChanged(const DBObject *item) {
 }
 
 void WebSocketController::foreachSubscribers(const DBObject *item,
-                                             const QSet<DbId> &subscribersList) {
+                                             const QSet<BaseId> &subscribersList) {
 
     if (!dynamic_cast<const DBObject*>(item))
         return;

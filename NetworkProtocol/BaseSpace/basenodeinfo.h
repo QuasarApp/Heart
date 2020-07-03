@@ -10,6 +10,7 @@
 
 #include "abstractnodeinfo.h"
 #include "accesstoken.h"
+#include "baseid.h"
 #include "networkprotocol_global.h"
 #include "permisions.h"
 #include <QByteArray>
@@ -20,61 +21,34 @@ namespace NP {
 class DbAddress;
 
 /**
- * @brief The BaseNodeInfo class with tocken support
+ * @brief The BaseNodeInfo class contaisn list of nodes id of know this node.
  */
 class NETWORKPROTOCOLSHARED_EXPORT BaseNodeInfo: public AbstractNodeInfo {
 
 public:
-    bool isValid() const override;
 
+    /**
+     * @brief BaseNodeInfo - create node info from the tcp descriptor
+     * @param tcp - tcp socket dsscriptor
+     */
     explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr);
     ~BaseNodeInfo() override;
 
     /**
-     * @brief permision return permision on table item of node
-     * @param table name of table
-     * @param id of item,
-     * @return return permision
+     * @brief isValid
+     * @return true if node is valid.
      */
-    int permision(const QString& table, int id) const;
+    bool isValid() const override;
 
     /**
-     * @brief permision - this is wraper of permision(const QString& table, int id)
-     * @param address see DbAddress
-     * @return permison of required object
+     * @brief isKnowAddress
+     * @param address
+     * @return
      */
-    int permision(const DbAddress& address) const;
-
-    /**
-     * @brief setPermision - set new permision for table object
-     * @param table - table of set permision
-     * @param id - id of object( set -1 if you need set permision for all items of table)
-     * @param permision new value of permision
-     */
-    void setPermision(const QString& table, int id ,const Permission &permision);
-
-    /**
-     * @brief isHavePermisonRecord - check record about permision lvl of this node
-     * @param table - neme of table of checked bject
-     * @param id - id of checked object
-     * @return true if re
-     */
-    bool isHavePermisonRecord(const QString& table, int id) const;
-
-
-    /**
-     * @brief isHavePermisonRecord - check record about permision lvl of this node
-     * @param table - neme of table of checked bject
-     * @param id - id of checked object
-     * @return true if re
-     */
-    bool isHavePermisonRecord(const DbAddress& address) const;
-
+    bool isKnowAddress(const BaseId& address) const;
 
 protected:
-    QHash<QString, QHash<int, Permission>> _permision;
-
-
+    QSet<BaseId> _knowAddresses;
 };
 }
 

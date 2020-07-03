@@ -9,7 +9,7 @@
 #define ABSTRACTKEY_H
 #include "networkprotocol_global.h"
 
-#include <dbid.h>
+#include <baseid.h>
 
 namespace NP {
 
@@ -32,9 +32,9 @@ public:
 
     /**
      * @brief id - this method return id of object
-     * @return dbid of object.
+     * @return BaseId of object.
      */
-    virtual const DbId& id() const = 0;
+    virtual const BaseId& id() const = 0;
 
     /**
      * @brief table - this method return table name of object

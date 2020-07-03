@@ -7,6 +7,8 @@ namespace NP {
 
 NodeId::NodeId() = default;
 
+NodeId::NodeId(const BaseId &other):BaseId(other) {}
+
 NodeId::NodeId(const QByteArray &rawHashSha256) {
     if (rawHashSha256.size() !=  32) {
         QuasarAppUtils::Params::log("wrong parameters of the constructor NodeId!!",
@@ -21,6 +23,6 @@ bool NodeId::isNodeId(const QByteArray &raw) {
 }
 
 bool NodeId::isValid() const {
-    return DbId::isValid() && toRaw()[0] == NODE_ID;
+    return BaseId::isValid() && toRaw()[0] == NODE_ID;
 }
 }

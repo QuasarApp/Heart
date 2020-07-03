@@ -8,7 +8,7 @@
 #ifndef NODEID_H
 #define NODEID_H
 
-#include "dbid.h"
+#include "baseid.h"
 #include <QByteArray>
 
 
@@ -16,14 +16,15 @@ namespace NP {
 /**
  * @brief The NodeId class Wraper For Node Id. need for generate new ids from raw sha256 hashes
  */
-class NodeId: public DbId
+class NodeId: public BaseId
 {
 public:
     NodeId();
+    NodeId(const BaseId& other);
     NodeId(const QByteArray& rawHashSha256);
     static bool isNodeId(const QByteArray& raw);
 
-    // DbId interface
+    // BaseId interface
     bool isValid() const;
 };
 }

@@ -9,7 +9,7 @@ bool operator ==(const PermisionData &left, const PermisionData &right) {
     return left._id == right._id && left._address == right._address;
 }
 
-PermisionData::PermisionData(const DbId &subject, const DbAddress &objcet) {
+PermisionData::PermisionData(const BaseId &subject, const DbAddress &objcet) {
     setId(subject);
     setAddress(objcet);
 }
@@ -23,7 +23,7 @@ unsigned int PermisionData::hash() const {
     return qHash(data);
 }
 
-const DbId &PermisionData::id() const {
+const BaseId &PermisionData::id() const {
     return _id;
 }
 
@@ -57,7 +57,7 @@ QDataStream &PermisionData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-void PermisionData::setId(const DbId &Id) {
+void PermisionData::setId(const BaseId &Id) {
     _id = Id;
 }
 

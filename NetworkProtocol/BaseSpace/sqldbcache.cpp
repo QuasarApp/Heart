@@ -191,7 +191,7 @@ bool SqlDBCache::init(const QVariantMap &params) {
     return _writer->initDb(params);
 }
 
-DBOperationResult SqlDBCache::checkPermision(const DbId &id,
+DBOperationResult SqlDBCache::checkPermision(const BaseId &id,
                                              const DbAddress &object,
                                              Permission requiredPermision) {
 

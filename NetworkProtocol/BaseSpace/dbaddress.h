@@ -10,7 +10,7 @@
 
 #include "streambase.h"
 #include "basedefines.h"
-#include "dbid.h"
+#include "baseid.h"
 
 namespace NP {
 
@@ -22,7 +22,7 @@ class NETWORKPROTOCOLSHARED_EXPORT DbAddress : public StreamBase {
 public:
 
     DbAddress() = default;
-    DbAddress(const QString& table, const DbId& id);
+    DbAddress(const QString& table, const BaseId& id);
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
@@ -34,13 +34,13 @@ public:
     const QString& table() const;
     void setTable(const QString &table);
 
-    const DbId &id() const;
-    void setId(const DbId &id);
+    const BaseId &id() const;
+    void setId(const BaseId &id);
 
 private:
 
     QString _table;
-    DbId _id;
+    BaseId _id;
 };
 
 qint64 qHash(const DbAddress& address);

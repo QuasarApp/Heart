@@ -9,7 +9,7 @@
 #ifndef DBCACHEKEY_H
 #define DBCACHEKEY_H
 
-#include "dbid.h"
+#include "baseid.h"
 
 #include <networkprotocol_global.h>
 
@@ -88,10 +88,10 @@ public:
     QString table() const;
 
     /**
-     * @brief id - return dbId of object from value. If the value is null then reruen a notValid id.
-     * @return dbid of object
+     * @brief id - return BaseId of object from value. If the value is null then reruen a notValid id.
+     * @return BaseId of object
      */
-    DbId id() const;
+    BaseId id() const;
 
     /**
      * @brief toString

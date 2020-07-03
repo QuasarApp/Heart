@@ -23,7 +23,7 @@ public:
 
     const Package& data() const;
     void setData(const Package &data);
-
+    void setData(const AbstractData& data);
     bool isValid() const;
 
     NodeId targetAddress() const;

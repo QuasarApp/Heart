@@ -7,7 +7,7 @@
 
 #ifndef SENDERDATA_H
 #define SENDERDATA_H
-#include "dbid.h"
+#include "baseid.h"
 
 namespace NP {
 
@@ -18,11 +18,11 @@ class NETWORKPROTOCOLSHARED_EXPORT SenderData
 {
 public:
     SenderData();
-    const DbId& senderID() const;
-    void setSenderID(const DbId &senderID);
+    const BaseId& senderID() const;
+    void setSenderID(const BaseId &senderID);
 
 private:
-    DbId _senderID;
+    BaseId _senderID;
 };
 }
 #endif // SENDERDATA_H

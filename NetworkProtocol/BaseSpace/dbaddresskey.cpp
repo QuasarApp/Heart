@@ -10,7 +10,7 @@ DbAddressKey::DbAddressKey(const DbAddress &address):
 
 }
 
-DbAddressKey::DbAddressKey(const QString &address, const DbId &id):
+DbAddressKey::DbAddressKey(const QString &address, const BaseId &id):
    DbAddress(address, id) {
 
 }
@@ -19,7 +19,7 @@ unsigned int DbAddressKey::hash() const {
     return qHash(*static_cast<const DbAddress*>(this));
 }
 
-const DbId &DbAddressKey::id() const {
+const BaseId &DbAddressKey::id() const {
     return DbAddress::id();
 }
 

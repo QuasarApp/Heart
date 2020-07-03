@@ -59,13 +59,13 @@ public:
      * @brief getId
      * @return id of objcet
      */
-    DbId getId() const;
+    BaseId getId() const;
 
     /**
      * @brief setId - set new id for db object
      * @param id
      */
-    void setId(const DbId& id);
+    void setId(const BaseId& id);
 
     /**
      * @brief clear
@@ -152,12 +152,12 @@ public:
      */
     DbAddress dbAddress() const;
 
-    DbId getNodeId() const;
-    void setNodeId(const DbId &nodeId);
+    BaseId getNodeId() const;
+    void setNodeId(const BaseId &nodeId);
 
 protected:
     QString _tableName;
-    DbId _id;
+    BaseId _id;
 
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;

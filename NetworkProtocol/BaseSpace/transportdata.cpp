@@ -24,6 +24,12 @@ void TransportData::setData(const Package &data) {
     _data = data;
 }
 
+void TransportData::setData(const AbstractData &data) {
+    Package pkg;
+    data.toPackage(pkg);
+    setData(pkg);
+}
+
 QDataStream &TransportData::fromStream(QDataStream &stream) {
     stream >> _targetAddress;
     QByteArray array;
@@ -38,6 +44,14 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
     stream << _data.toBytes();
 
     return stream;
+}
+
+NodeId TransportData::targetAddress() const {
+    return _targetAddress;
+}
+
+void TransportData::setTargetAddress(const NodeId &targetAddress) {
+    _targetAddress = targetAddress;
 }
 
 bool TransportData::isValid() const {

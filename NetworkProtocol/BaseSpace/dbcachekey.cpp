@@ -43,7 +43,7 @@ QString DBCacheKey::table() const {
     return "";
 }
 
-DbId DBCacheKey::id() const {
+BaseId DBCacheKey::id() const {
     if (_value)
         return _value->id();
 

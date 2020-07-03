@@ -13,37 +13,19 @@
 
 namespace NP {
 
-bool BaseNodeInfo::isValid() const {
-    return AbstractNodeInfo::isValid();
-}
 
 BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp):
     AbstractNodeInfo(tcp){}
 
-BaseNodeInfo::~BaseNodeInfo(){}
+BaseNodeInfo::~BaseNodeInfo() = default;
 
-int BaseNodeInfo::permision(const QString &table, int id) const {
-    auto allTablePermision = _permision.value(table).value(-1);
-    auto itemPermision = _permision.value(table).value(id);
 
-    return std::max(static_cast<int>(allTablePermision),
-                    static_cast<int>(itemPermision));
+bool BaseNodeInfo::isValid() const {
+    return AbstractNodeInfo::isValid();
 }
 
-int BaseNodeInfo::permision(const DbAddress &address) const {
-    return permision(address.table, address.id);
-}
-
-void BaseNodeInfo::setPermision(const QString &table, int id, const Permission &permision) {
-    _permision[table][id] = permision;
-}
-
-bool BaseNodeInfo::isHavePermisonRecord(const QString &table, int id) const {
-    return _permision.contains(table) && _permision.value(table).contains(id);
-}
-
-bool BaseNodeInfo::isHavePermisonRecord(const DbAddress &address) const {
-    return  isHavePermisonRecord(address.table, address.id);
+bool BaseNodeInfo::isKnowAddress(const BaseId &address) const {
+    return _knowAddresses.contains(address);
 }
 
 }

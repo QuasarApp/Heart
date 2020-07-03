@@ -349,6 +349,12 @@ protected:
      */
     virtual void incomingData(AbstractData* pkg,
                       const QHostAddress&  sender);
+
+    /**
+     * @brief connections - return hash map of all connections of this node.
+     * @return
+     */
+    const QHash<QHostAddress, NodeInfoData>& connections() const;
 private slots:
 
     void avelableBytes();

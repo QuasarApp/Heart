@@ -22,7 +22,7 @@ class NETWORKPROTOCOLSHARED_EXPORT NodeObject: public DBObject
 public:
     NodeObject();
     NodeObject(const Package& pkg);
-    NodeObject(const DbId& id);
+    NodeObject(const BaseId& id);
 
     // DBObject interface
     DBObject *factory() const override;
