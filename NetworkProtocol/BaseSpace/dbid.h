@@ -52,9 +52,9 @@ public:
 
     /**
      * @brief isValid
-     * @return
+     * @return true if object is valid
      */
-    bool isValid() const;
+    virtual bool isValid() const;
 
     /**
      * @brief clear

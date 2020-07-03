@@ -10,12 +10,10 @@ namespace NP {
 
 TransportData::TransportData() {
     INIT_COMMAND
-
 }
 
 TransportData::TransportData(const Package &package):TransportData() {
     fromBytes(package.data);
-
 }
 
 const Package &TransportData::data() const {
@@ -26,16 +24,8 @@ void TransportData::setData(const Package &data) {
     _data = data;
 }
 
-QHostAddress TransportData::address() const {
-    return _address;
-}
-
-void TransportData::setAddress(const QHostAddress &address) {
-    _address = address;
-}
-
 QDataStream &TransportData::fromStream(QDataStream &stream) {
-    stream >> _address;
+    stream >> _targetAddress;
     QByteArray array;
     stream >> array;
     _data.fromBytes(array);
@@ -44,13 +34,13 @@ QDataStream &TransportData::fromStream(QDataStream &stream) {
 }
 
 QDataStream &TransportData::toStream(QDataStream &stream) const {
-    stream << _address;
+    stream << _targetAddress;
     stream << _data.toBytes();
 
     return stream;
 }
 
 bool TransportData::isValid() const {
-    return !_address.isNull() && _data.isValid();
+    return  _data.isValid() && _targetAddress.isValid();
 }
 }

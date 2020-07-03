@@ -9,32 +9,33 @@
 #define TRANSPORTDATA_H
 
 #include "abstractdata.h"
-
-#include <QHostAddress>
-
+#include "nodeid.h"
+#include "senderdata.h"
 
 namespace NP {
 
-class NETWORKPROTOCOLSHARED_EXPORT TransportData: public AbstractData
+class NETWORKPROTOCOLSHARED_EXPORT TransportData: public AbstractData, public SenderData
 {
 
 public:
-    TransportData();
-    TransportData(const Package& package);
+    explicit TransportData();
+    explicit TransportData(const Package& package);
 
     const Package& data() const;
     void setData(const Package &data);
 
-    QHostAddress address() const;
-    void setAddress(const QHostAddress &address);
-
     bool isValid() const;
 
+    NodeId targetAddress() const;
+    void setTargetAddress(const NodeId &targetAddress);
+
+protected:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
+
 private:
     Package _data;
-    QHostAddress _address;
+    NodeId _targetAddress;
 
 
 };

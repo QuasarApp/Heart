@@ -1,9 +1,7 @@
 #include "dbid.h"
 namespace NP {
 
-DbId::DbId() {
-
-}
+DbId::DbId() = default;
 
 DbId::DbId(const QByteArray &raw) {
     fromRaw(raw);

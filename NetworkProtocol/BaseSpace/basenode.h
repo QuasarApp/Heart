@@ -128,7 +128,6 @@ public:
      */
     virtual bool changeTrust(const DbId &id, int diff);
 
-
 protected:
 
 
@@ -221,6 +220,18 @@ protected:
     DBOperationResult setObject(const DbId &requester,
                                 const DBObject *saveObject);
 
+    /**
+     * @brief checkNodeId - verify
+     * @param nodeId
+     * @return
+     */
+    bool checkNodeId(const DbId &nodeId) const;
+
+    /**
+     * @brief nodeId
+     * @return
+     */
+    DbId nodeId() const;
 
 private:
     SqlDBCache *_db = nullptr;
@@ -250,7 +261,6 @@ private:
     bool registerNewUser(const QWeakPointer<AbstractData> &user,
                          const QHostAddress &address,
                          bool rememberMe);
-
 
 };
 

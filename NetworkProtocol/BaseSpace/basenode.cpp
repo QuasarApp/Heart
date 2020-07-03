@@ -16,6 +16,7 @@
 #include "nodeobject.h"
 #include "nodespermisionobject.h"
 #include "badnoderequest.h"
+#include "nodeid.h"
 
 #include <badrequest.h>
 #include <quasarapp.h>
@@ -88,6 +89,17 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
 
     connect(_db, &SqlDBCache::sigItemChanged,
             _webSocketWorker, &WebSocketController::handleItemChanged);
+}
+
+DbId BaseNode::nodeId() const {
+    auto keys = _nodeKeys->getNextPair();
+    return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
+}
+
+bool BaseNode::checkNodeId(const DbId &nodeId) const {
+    getInfo()
+    auto key = QRSAEncryption::message(nodeId);
+    return QRSAEncryption::checkSignMessage(nodeId, key, QRSAEncryption::getKeyRsaType(key));
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
@@ -277,40 +289,6 @@ bool BaseNode::sendData(const AbstractData *resp,
                         const Header *req) {
     To Do
 
-            //    auto client = getInfoPtr(addere);
-
-            //    if (client) {
-            //        QuasarAppUtils::Params::log("Response not sent because client == null",
-            //                                           QuasarAppUtils::Error);
-            //        return false;
-            //    }
-
-            //    if (resp) {
-            //        return false;
-            //    }
-
-            //    Package pkg;
-            //    bool convert = false;
-            //    if (req) {
-            //        convert = resp->toPackage(pkg, req->command);
-            //    } else {
-            //        convert = resp->toPackage(pkg);
-            //    }
-
-            //    if (!convert) {
-            //        QuasarAppUtils::Params::log("Response not sent because dont create package from object",
-            //                                           QuasarAppUtils::Error);
-            //        return false;
-            //    }
-
-
-            //    if (!sendPackage(pkg, client->sct())) {
-            //        QuasarAppUtils::Params::log("Response not sent!",
-            //                                           QuasarAppUtils::Error);
-            //        return false;
-            //    }
-
-            //    return true;
 }
 
 void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {

@@ -657,24 +657,6 @@ void AbstractNode::handleDisconnected() {
                                 QuasarAppUtils::Error);
 }
 
-//QByteArray AbstractNode::nodeId() const {
-//    auto keys = _nodeKeys->getNextPair();
-//    auto signedKey =  keys.publicKey();
-//    if (!_nodeKeys->sign(&signedKey, keys.privKey())) {
-//        QuasarAppUtils::Params::log("System error. Generate nodeId failed",
-//                                    QuasarAppUtils::Error);
-//        return {};
-//    }
-
-//    return QCryptographicHash::hash(signedKey, QCryptographicHash::Sha256);
-//}
-
-//bool AbstractNode::checkNodeId(const QByteArray &nodeId) const {
-//    getInfo()
-//    auto key = QRSAEncryption::message(nodeId);
-//    return QRSAEncryption::checkSignMessage(nodeId, key, QRSAEncryption::getKeyRsaType(key));
-//}
-
 SslMode AbstractNode::getMode() const {
     return _mode;
 }
