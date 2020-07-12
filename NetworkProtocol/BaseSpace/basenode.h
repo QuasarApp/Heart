@@ -83,7 +83,7 @@ public:
      */
     bool sendData(const AbstractData *resp,
                   const QHostAddress &addere,
-                  const Header *req = nullptr) override;
+                  const Header *req = nullptr) const override;
 
     /**
      * @brief sendDataToId - send data to node or clientby them id
@@ -93,7 +93,7 @@ public:
      * @return true if data sendet seccussful
      */
     virtual bool sendData(const AbstractData *resp, const BaseId &nodeId,
-                          const Header *req = nullptr);
+                          const Header *req = nullptr) const;
 
     /**
      * @brief badRequest -send bad request and change trus for ip address
@@ -219,13 +219,6 @@ protected:
      */
     DBOperationResult setObject(const BaseId &requester,
                                 const DBObject *saveObject);
-
-    /**
-     * @brief checkNodeId - verify
-     * @param nodeId
-     * @return
-     */
-    bool checkNodeId(const BaseId &nodeId) const;
 
     /**
      * @brief nodeId

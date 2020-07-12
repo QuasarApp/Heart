@@ -26,8 +26,8 @@ public:
     void setData(const AbstractData& data);
     bool isValid() const;
 
-    NodeId targetAddress() const;
-    void setTargetAddress(const NodeId &targetAddress);
+    BaseId targetAddress() const;
+    void setTargetAddress(const BaseId &targetAddress);
 
 protected:
     QDataStream &fromStream(QDataStream &stream);
@@ -35,7 +35,7 @@ protected:
 
 private:
     Package _data;
-    NodeId _targetAddress;
+    BaseId _targetAddress;
 
 
 };

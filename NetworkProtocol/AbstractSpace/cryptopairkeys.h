@@ -19,7 +19,7 @@ public:
      * @brief isValid
      * @return true if this objcet contains pair keys
      */
-    bool isValid();
+    bool isValid() const;
 
     QByteArray privKey() const;
     void setPrivKey(const QByteArray &privKey);
@@ -39,6 +39,8 @@ public:
      */
     void setBits(int bits);
 
+    friend bool operator != (const CryptoPairKeys& left, const CryptoPairKeys& right);
+    friend bool operator == (const CryptoPairKeys& left, const CryptoPairKeys& right);
 private:
     QByteArray _privKey;
     QByteArray _publicKey;

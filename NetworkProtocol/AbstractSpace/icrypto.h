@@ -28,11 +28,13 @@ public:
      * @brief getNextPair - take a one pair key from keys pool.
      * @warning If key pool is empty then this method frease a current thread for awiting f neg generated pair key.
      * @note if the key is not generated within the specified period of time, an invalid copy of the key pair will be returned.
+     * @param accsessKey - the byte array for get a acceses to key from storage.
      * @param genesis - set this params to empty for get random key pair or set the byte array for get a key pair for genesis array.
      * @param timeout_msec - timeout in milisecunds. default is 30000
      * @return pair of keys.
      */
-    CryptoPairKeys getNextPair(const QByteArray &genesis = RAND_KEY,
+    CryptoPairKeys getNextPair(const QByteArray& accsessKey,
+                               const QByteArray &genesis = RAND_KEY,
                                int timeout_msec = 30000);
 
     /**
@@ -140,11 +142,32 @@ private:
      */
     void loadAllKeysFromStorage();
 
-    QHash<QByteArray, CryptoPairKeys> _keys;
+    /**
+      * @brief genKey - this method add a new task for generate keys pair
+      * @param genesis - the byte array for generate new key
+      * @param accessKey - the byte array for get access of the keys pair.
+      * @note If the access key well be empty then accessKey = genesis.
+      *  If access key and genesis well be empty then this method return false.
+      * @return true if task of generation a new pair keys added seccussful else false.
+    */
+    bool genKey(const QByteArray& genesis, QByteArray accessKey = {});
+
+    /**
+     * @brief genRandomKey - generate a new random pair key
+     * @param accessKey - the byte array for get access of the keys pair.
+     * @return return true if task for generate new key pair added succesful.
+     */
+    bool genRandomKey(const QByteArray& accessKey);
+
+    QHash<QByteArray, QList<CryptoPairKeys>> _keys;
+    QHash<QByteArray, QByteArray> _generateTasks;
+
     int _keyPoolSize = 1;
 
     QMutex *_keyPoolSizeMutex = nullptr;
     QMutex *_keysMutex = nullptr;
+    QMutex *_taskMutex = nullptr;
+
     QString _storageLocation;
 
 };

@@ -262,7 +262,7 @@ protected:
      * @param target
      * @return
      */
-    virtual bool sendPackage(const Package &pkg, QAbstractSocket *target);
+    virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
     /**
      * @brief sendData send data package to address
@@ -272,7 +272,7 @@ protected:
      * @return
      */
     virtual bool sendData(const AbstractData* resp,  const QHostAddress& addere,
-                              const Header *req = nullptr);
+                              const Header *req = nullptr) const;
 
     /**
      * @brief badRequestu

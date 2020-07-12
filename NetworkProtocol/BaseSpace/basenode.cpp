@@ -28,6 +28,7 @@
 #include <QCoreApplication>
 #include <qsecretrsa2048.h>
 
+#define THIS_NODE "this_node_key"
 namespace NP {
 
 BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
@@ -92,14 +93,8 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
 }
 
 BaseId BaseNode::nodeId() const {
-    auto keys = _nodeKeys->getNextPair();
+    auto keys = _nodeKeys->getNextPair(THIS_NODE);
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
-}
-
-bool BaseNode::checkNodeId(const BaseId &nodeId) const {
-    getInfo()
-    auto key = QRSAEncryption::message(nodeId);
-    return QRSAEncryption::checkSignMessage(nodeId, key, QRSAEncryption::getKeyRsaType(key));
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
@@ -120,15 +115,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<TransportData>() == pkg.hdr.command) {
         TransportData cmd(pkg);
 
-        if (cmd.address() == serverAddress()) {
+        if (cmd.targetAddress() == nodeId()) {
             return parsePackage(cmd.data(), sender);
         }
 
-        auto receiver = getInfoPtr(cmd.address());
-
-        if (!receiver) {
-            sendData(&cmd, receiver->networkAddress());
-            return ParserResult::Processed;
+        if (!sendData(&cmd, cmd.targetAddress(), &pkg.hdr)) {
+            return ParserResult::Error;
         }
 
         return ParserResult::Processed;
@@ -279,14 +271,14 @@ QVariantMap BaseNode::defaultDbParams() const {
 
 bool BaseNode::sendData(const AbstractData *resp,
                         const QHostAddress &addere,
-                        const Header *req) {
+                        const Header *req) const {
 
     return AbstractNode::sendData(resp, addere, req);
 }
 
 bool BaseNode::sendData(const AbstractData *resp,
                         const BaseId &nodeId,
-                        const Header *req) {
+                        const Header *req) const {
 
     auto nodes = connections();
 

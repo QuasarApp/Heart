@@ -46,11 +46,11 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-NodeId TransportData::targetAddress() const {
+BaseId TransportData::targetAddress() const {
     return _targetAddress;
 }
 
-void TransportData::setTargetAddress(const NodeId &targetAddress) {
+void TransportData::setTargetAddress(const BaseId &targetAddress) {
     _targetAddress = targetAddress;
 }
 

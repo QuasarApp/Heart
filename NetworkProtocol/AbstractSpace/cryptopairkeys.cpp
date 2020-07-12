@@ -9,7 +9,7 @@ CryptoPairKeys::CryptoPairKeys(const QByteArray &pubKey, const QByteArray &privK
     setPublicKey(pubKey);
 }
 
-bool CryptoPairKeys::isValid() {
+bool CryptoPairKeys::isValid() const {
     return _privKey.size() && _publicKey.size();
 }
 
@@ -35,5 +35,13 @@ int CryptoPairKeys::bits() const {
 
 void CryptoPairKeys::setBits(int bits) {
     _bits = bits;
+}
+
+bool operator ==(const CryptoPairKeys &left, const CryptoPairKeys &right) {
+    return !(left != right);
+}
+
+bool operator !=(const CryptoPairKeys &left, const CryptoPairKeys &right) {
+    return left._privKey != right._privKey || left._publicKey != right._publicKey;
 }
 }

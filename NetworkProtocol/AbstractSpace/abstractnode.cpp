@@ -337,7 +337,7 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
     return ParserResult::NotProcessed;
 }
 
-bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
+bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) const {
     if (!pkg.isValid()) {
         return false;
     }
@@ -362,7 +362,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) {
 
 bool AbstractNode::sendData(const AbstractData *resp,
                             const QHostAddress &addere,
-                            const Header *req) {
+                            const Header *req) const {
     auto client = getInfoPtr(addere);
 
     if (!client) {
