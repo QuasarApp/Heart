@@ -48,7 +48,7 @@ public:
      * @brief toRaw
      * @return
      */
-    QByteArray toRaw() const;
+    const QByteArray& toRaw() const;
 
     /**
      * @brief isValid
@@ -77,4 +77,7 @@ private:
     QByteArray _data;
 };
 }
+
+uint qHash(const NP::BaseId& object);
+
 #endif // BaseId_H

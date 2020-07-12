@@ -24,6 +24,8 @@ public:
     bool decrypt(QByteArray *cryptedData, const QByteArray &privateKey) override;
     bool sign(QByteArray *data, const QByteArray &privateKey) override;
     bool check(const QByteArray &signedData, const QByteArray &publicKey) override;
+    QByteArray extractSign(const QByteArray &data) override;
+    QByteArray concatSign(const QByteArray &data, const QByteArray &sign) override;
 
 protected:
     CryptoPairKeys generate(const QByteArray& genesis = {}) const override;
@@ -31,6 +33,7 @@ protected:
 
 private:
     QRSAEncryption *qtSecret = nullptr;
+
 };
 }
 #endif // QSECRETRSA2048_H

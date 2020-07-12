@@ -17,6 +17,7 @@
 #include "nodespermisionobject.h"
 #include "badnoderequest.h"
 #include "nodeid.h"
+#include "sign.h"
 
 #include <badrequest.h>
 #include <quasarapp.h>
@@ -97,6 +98,19 @@ BaseId BaseNode::nodeId() const {
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
 }
 
+bool BaseNode::checkSignOfRequest(const AbstractData *request) {
+    auto object = dynamic_cast<const Sign*>(request);
+    auto dbObject = dynamic_cast<const SenderData*>(request);
+
+    if (!(object && dbObject)) {
+        return false;
+    }
+
+    auto node = _db->getObject(NodeObject{dbObject->senderID()});
+    return _nodeKeys->check(_nodeKeys->concatSign(object->dataForSigned(),
+                                                  object->sign()), node->publickKey());
+}
+
 ParserResult BaseNode::parsePackage(const Package &pkg,
                                     const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);
@@ -153,6 +167,11 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
         DeleteObjectRequest obj(pkg);
 
+        if (!checkSignOfRequest(&obj)) {
+            badRequest(obj.senderID(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
         DBOperationResult result = deleteObject(obj.senderID(), &obj);
 
         switch (result) {
@@ -171,6 +190,12 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
     } else if (H_16<WebSocket>() == pkg.hdr.command) {
         WebSocket obj(pkg);
+
+        if (!checkSignOfRequest(&obj)) {
+            badRequest(obj.senderID(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
         if (!obj.isValid()) {
             badRequest(obj.senderID(), pkg.hdr);
             return ParserResult::Error;
@@ -195,13 +220,16 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
     }
 
     return ParserResult::NotProcessed;
-
 }
 
 bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                             const Header *rHeader) {
     if (!_db)
         return false;
+
+    if (!checkSignOfRequest(&rec)) {
+        return false;
+    }
 
     auto availableData = _db->getObject(rec);
     if (!availableData)

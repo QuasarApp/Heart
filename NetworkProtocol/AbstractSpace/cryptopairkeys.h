@@ -1,15 +1,15 @@
 #ifndef CRYPTOPAIRKEYS_H
 #define CRYPTOPAIRKEYS_H
 
-#include <QByteArray>
-#include "networkprotocol_global.h"
+#include "streambase.h"
+
 
 namespace NP {
 
 /**
  * @brief The CryptoPairKeys class contains pair keys.
  */
-class NETWORKPROTOCOLSHARED_EXPORT CryptoPairKeys
+class NETWORKPROTOCOLSHARED_EXPORT CryptoPairKeys: public StreamBase
 {
 public:
     CryptoPairKeys();
@@ -41,11 +41,19 @@ public:
 
     friend bool operator != (const CryptoPairKeys& left, const CryptoPairKeys& right);
     friend bool operator == (const CryptoPairKeys& left, const CryptoPairKeys& right);
+
+    // StreamBase interface
+protected:
+    QDataStream &fromStream(QDataStream &stream);
+    QDataStream &toStream(QDataStream &stream) const;
+
 private:
     QByteArray _privKey;
     QByteArray _publicKey;
 
     int _bits;
+
+
 
 };
 }

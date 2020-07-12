@@ -23,6 +23,7 @@ class WebSocketController;
 class DBDataRequest;
 class DbAddress;
 class BaseId;
+class Sign;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -147,7 +148,6 @@ protected:
     ParserResult parsePackage(const Package &pkg,
                               const AbstractNodeInfo* sender) override;
 
-
     /**
      * @brief hashgenerator
      * @param pass
@@ -226,6 +226,13 @@ protected:
      */
     BaseId nodeId() const;
 
+    /**
+     * @brief checkSignOfRequest
+     * @param request - package
+     * @return true if request signed.
+     */
+    virtual bool checkSignOfRequest(const AbstractData *request);
+
 private:
     SqlDBCache *_db = nullptr;
     ICrypto *_nodeKeys = nullptr;
@@ -254,6 +261,7 @@ private:
     bool registerNewUser(const QWeakPointer<AbstractData> &user,
                          const QHostAddress &address,
                          bool rememberMe);
+
 
 };
 

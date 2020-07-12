@@ -45,6 +45,21 @@ bool QSecretRSA2048::check(const QByteArray &signedData,
     return qtSecret->checkSignMessage(signedData, publicKey);
 }
 
+QByteArray QSecretRSA2048::extractSign(const QByteArray &data) {
+
+    int end = data.lastIndexOf("-SIGN-");
+    int begin = data.lastIndexOf("-SIGN-", end);
+
+    if (end < 0 || begin < 0) {
+        return {};
+    }
+
+    return QByteArray::fromHex(data.mid(begin, begin - end));
+}
+
+QByteArray QSecretRSA2048::concatSign(const QByteArray &data, const QByteArray &sign) {
+    return data + "-SIGN-" + sign.toHex() + "-SIGN-";
+}
 
 QSecretRSA2048::~QSecretRSA2048() {
     delete qtSecret;

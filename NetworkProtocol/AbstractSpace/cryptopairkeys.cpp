@@ -1,4 +1,6 @@
 #include "cryptopairkeys.h"
+
+#include <QDataStream>
 namespace NP {
 CryptoPairKeys::CryptoPairKeys() {
 
@@ -35,6 +37,24 @@ int CryptoPairKeys::bits() const {
 
 void CryptoPairKeys::setBits(int bits) {
     _bits = bits;
+}
+
+QDataStream &CryptoPairKeys::fromStream(QDataStream &stream) {
+
+    stream >> _publicKey;
+    stream >> _privKey;
+    stream >> _bits;
+
+    return stream;
+}
+
+QDataStream &CryptoPairKeys::toStream(QDataStream &stream) const {
+    stream << _publicKey;
+    stream << _privKey;
+    stream << _bits;
+
+    return stream;
+
 }
 
 bool operator ==(const CryptoPairKeys &left, const CryptoPairKeys &right) {

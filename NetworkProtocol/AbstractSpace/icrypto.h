@@ -77,6 +77,20 @@ public:
     virtual bool sign(QByteArray* data, const QByteArray& privateKey) = 0;
 
     /**
+     * @brief extractSign - extract sign from signed byteArray
+     * @param data - signed message.
+     * @return return array of sign.
+     */
+    virtual QByteArray extractSign(const QByteArray& data) = 0;
+
+    /**
+     * @brief concatSign
+     * @param data - message data
+     * @return signed message
+     */
+    virtual QByteArray concatSign(const QByteArray& data, const QByteArray& sign) = 0;
+
+    /**
      * @brief check
      * @param publicKey
      * @return true if function finished seccussful and signedData is valid.

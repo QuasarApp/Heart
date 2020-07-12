@@ -24,7 +24,7 @@ QByteArray BaseId::toBase64() const {
     return _data.toBase64();
 }
 
-QByteArray BaseId::toRaw() const {
+const QByteArray& BaseId::toRaw() const {
     return _data;
 }
 
@@ -56,4 +56,8 @@ QDataStream &BaseId::toStream(QDataStream &stream) const {
 bool operator==(const BaseId &left, const BaseId &other) {
     return left._data == other._data;
 }
+}
+
+uint qHash(const NP::BaseId &object) {
+    return qHash(object.toRaw());
 }

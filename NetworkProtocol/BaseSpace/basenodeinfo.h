@@ -50,6 +50,7 @@ public:
 protected:
     QSet<BaseId> _knowAddresses;
 };
+
 }
 
 #endif // CONNECTIONINFO_H
