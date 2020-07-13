@@ -35,6 +35,14 @@ bool PermisionData::isValid() const {
     return address().isValid() && _id.isValid();
 }
 
+bool PermisionData::equal(const AbstractKey *other) const {
+    auto otherObject = dynamic_cast<const PermisionData*>(other);
+    if (!otherObject)
+        return false;
+
+    return _address == otherObject->_address && _id == otherObject->_id;
+}
+
 DbAddress PermisionData::address() const {
     return _address;
 }

@@ -56,8 +56,10 @@ QDataStream &BaseId::toStream(QDataStream &stream) const {
 bool operator==(const BaseId &left, const BaseId &other) {
     return left._data == other._data;
 }
-}
+
 
 uint qHash(const NP::BaseId &object) {
     return qHash(object.toRaw());
 }
+}
+

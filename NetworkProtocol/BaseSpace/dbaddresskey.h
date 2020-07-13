@@ -27,6 +27,10 @@ public:
 
     const BaseId &id() const override;
     const QString &table() const override;
+    bool equal(const AbstractKey *other) const override;
+
+    bool isValid() const override;
+
 };
 }
 #endif // DBADDRESSKEY_H

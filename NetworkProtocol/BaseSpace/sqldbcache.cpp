@@ -120,7 +120,7 @@ DBObject* SqlDBCache::getObjectFromCache(const DBCacheKey& key) {
         return nullptr;
     }
 
-    return dynamic_cast<DBObject*>(_cache[key]);
+    return dynamic_cast<DBObject*>(_cache.value(key));
 }
 
 bool SqlDBCache::saveObject(const DBObject *saveObject) {

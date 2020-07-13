@@ -31,6 +31,7 @@ public:
     const BaseId & id() const override;
     const QString &table() const override;
     bool isValid() const override;
+    bool equal(const AbstractKey *other) const override;
 
     void setId(const BaseId &Id);
 

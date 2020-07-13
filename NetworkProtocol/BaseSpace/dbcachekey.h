@@ -105,11 +105,15 @@ public:
      */
     bool isValid() const;
 
+    friend bool operator !=(const DBCacheKey& left, const DBCacheKey& right);
+    friend bool operator ==(const DBCacheKey& left, const DBCacheKey& right);
+
 private:
-    const AbstractKey * _value = nullptr;
+    const AbstractKey *_value = nullptr;
     bool _onlyWraper = false;
 };
 
-uint hash(const DBCacheKey& key);
+uint qHash(const NP::DBCacheKey& key);
 }
+
 #endif // DBCACHEKEY_H

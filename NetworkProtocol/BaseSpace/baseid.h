@@ -76,8 +76,11 @@ public:
 private:
     QByteArray _data;
 };
-}
+
 
 uint qHash(const NP::BaseId& object);
+
+}
+
 
 #endif // BaseId_H

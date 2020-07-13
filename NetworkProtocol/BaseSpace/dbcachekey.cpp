@@ -58,8 +58,19 @@ bool DBCacheKey::isValid() const {
     return _value && _value->isValid();
 }
 
-uint hash(const DBCacheKey &key) {
+bool operator ==(const DBCacheKey &left, const DBCacheKey &right) {
+    if (!left._value)
+        return left._value == right._value;
+    return left._value->equal(right._value);
+}
+
+bool operator !=(const DBCacheKey &left, const DBCacheKey &right) {
+    return !operator==(left, right);
+}
+
+uint qHash(const NP::DBCacheKey &key) {
     return key.value()->hash();
 }
 
 }
+

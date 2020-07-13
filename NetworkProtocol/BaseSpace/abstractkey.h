@@ -17,7 +17,7 @@ namespace NP {
  * @brief The Abstractkey class - this class provid one hash function for all keys of database objcets
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractKey
-{
+{   
 public:
     AbstractKey();
 
@@ -29,6 +29,7 @@ public:
 
     virtual ~AbstractKey() = default;
     virtual unsigned int hash() const;
+    virtual bool equal(const AbstractKey* other) const = 0;
 
     /**
      * @brief id - this method return id of object

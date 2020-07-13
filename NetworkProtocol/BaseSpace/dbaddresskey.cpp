@@ -26,4 +26,17 @@ const BaseId &DbAddressKey::id() const {
 const QString &DbAddressKey::table() const {
     return DbAddress::table();
 }
+
+bool DbAddressKey::equal(const AbstractKey *other) const {
+    auto otherObject = dynamic_cast<const DbAddressKey*>(other);
+
+    if (!otherObject)
+        return false;
+
+    return operator==(*static_cast<const DbAddress*>(this), *otherObject);
+}
+
+bool DbAddressKey::isValid() const {
+    return DbAddress::isValid();
+}
 }
