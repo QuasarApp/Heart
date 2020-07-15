@@ -152,9 +152,6 @@ public:
      */
     DbAddress dbAddress() const;
 
-    BaseId getNodeId() const;
-    void setNodeId(const BaseId &nodeId);
-
 protected:
     QString _tableName;
     BaseId _id;

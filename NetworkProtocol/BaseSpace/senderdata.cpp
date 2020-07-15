@@ -15,4 +15,8 @@ SenderData::SenderData() {
 const BaseId &SenderData::senderID() const {
     return _senderID;
 }
+
+void SenderData::setSenderID(const BaseId &senderID) {
+    _senderID = senderID;
+}
 }

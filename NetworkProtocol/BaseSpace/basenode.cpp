@@ -407,7 +407,25 @@ DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
 DBOperationResult BaseNode::getObjects(const BaseId &requester,
                                        const DBObject &templateObj,
                                        QList<DBObject *> *result) const {
-    to du
+    if (!_db && !result) {
+        return DBOperationResult::Unknown;
+    }
+
+    if (!_db->getAllObjects(templateObj, *result)) {
+        return DBOperationResult::Unknown;
+    }
+
+    for (const auto& obj: *result) {
+        if (!obj)
+            return DBOperationResult::Unknown;
+
+        auto permisionResult = _db->checkPermision(requester, obj->dbAddress(), Permission::Read);
+        if (permisionResult != DBOperationResult::Allowed) {
+            return permisionResult;
+        }
+    }
+
+    return DBOperationResult::Allowed;
 }
 
 DBOperationResult BaseNode::setObject(const BaseId &requester,

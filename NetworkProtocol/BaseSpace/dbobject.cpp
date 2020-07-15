@@ -142,7 +142,6 @@ void DBObject::setId(const BaseId& id) {
 
 void DBObject::clear() {
     _id.clear();
-    setNodeId({});
 }
 
 }
