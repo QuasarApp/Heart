@@ -9,7 +9,7 @@
 
 #include <QDataStream>
 #include <QSqlQuery>
-
+#include <dbcachekey.h>
 
 namespace NP {
 
@@ -125,8 +125,8 @@ DBObject *NodesPermisionObject::factory() const {
     return new NodesPermisionObject();
 }
 
-DBCacheKey NodesPermisionObject::dbKey() const {
-    return {&_key, true};
+uint NodesPermisionObject::dbKey() const {
+    return HASH_KEY(_key);
 }
 
 QDataStream &NodesPermisionObject::fromStream(QDataStream &stream) {

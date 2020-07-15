@@ -67,8 +67,8 @@ bool DBObject::isBundle() const {
     return false;
 }
 
-DBCacheKey DBObject::dbKey() const {
-    return DBCacheKey::create<DbAddressKey>(DbAddress{tableName(), getId()});
+uint DBObject::dbKey() const {
+    return HASH_KEY(DbAddressKey(tableName(), getId()));
 }
 
 DbAddress DBObject::dbAddress() const {

@@ -58,7 +58,6 @@ public:
     void setWriter(SqlDBWriter* writer);
 
     bool getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) override;
-    DBObject* getObjectFromCache(const DBCacheKey &key);
 
     bool saveObject(const DBObject* saveObject) override;
     bool deleteObject(const DBObject* delObj) override;
@@ -119,7 +118,7 @@ protected:
      * @param objKey
      * @return object from cache. if object with objKey not exits return nullptr
      */
-    virtual DBObject* getFromCache(const DBCacheKey &objKey);
+    virtual DBObject* getFromCache(uint objKey);
 
     /**
      * @brief getMode
@@ -154,8 +153,8 @@ private:
 
     SqlDBCasheWriteMode _mode;
 
-    QHash<DBCacheKey, DBObject*>  _cache;
-    QSet<DBCacheKey>  _needToSaveCache;
+    QHash<uint, DBObject*>  _cache;
+    QSet<uint>  _needToSaveCache;
 
 
 

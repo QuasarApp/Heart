@@ -383,23 +383,31 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
 }
 
 DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
-                                          const DbAddress& objcetAddress,
-                                          const NP::DBObject *res) const {
+                                          const NP::DBObject &templateObj,
+                                          DBObject** result) const {
 
-    if (!_db) {
+    if (!_db && !result) {
         return DBOperationResult::Unknown;
     }
 
-    auto permisionResult = _db->checkPermision(requester, objcetAddress, Permission::Read);
+    auto permisionResult = _db->checkPermision(requester, templateObj.dbAddress(), Permission::Read);
     if (permisionResult != DBOperationResult::Allowed) {
         return permisionResult;
     }
 
-    if (!_db->getObject(res)) {
+    auto obj = _db->getObject(templateObj);
+    if (!obj || (obj->dbAddress() != templateObj.dbAddress())) {
         return DBOperationResult::Unknown;
     }
 
+    *result = obj;
     return DBOperationResult::Allowed;
+}
+
+DBOperationResult BaseNode::getObjects(const BaseId &requester,
+                                       const DBObject &templateObj,
+                                       QList<DBObject *> *result) const {
+    to du
 }
 
 DBOperationResult BaseNode::setObject(const BaseId &requester,

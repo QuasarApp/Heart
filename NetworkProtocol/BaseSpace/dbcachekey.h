@@ -11,11 +11,11 @@
 
 #include "baseid.h"
 
+#include <abstractkey.h>
+#include <QHash>
 #include <networkprotocol_global.h>
 
 namespace NP {
-
-class AbstractKey;
 
 /**
  * @brief The DBCacheKey class - is database main key value
@@ -23,97 +23,61 @@ class AbstractKey;
 class NETWORKPROTOCOLSHARED_EXPORT DBCacheKey
 {
 public:
-    DBCacheKey();
 
     /**
-     * @brief DBCacheKey - copy constructor
-     * @param other
+     * @brief instance
+     * @return singleton of object
      */
-    DBCacheKey(const DBCacheKey& other) = delete;
+    static DBCacheKey* instance();
 
-
+    template <class TYPE = AbstractKey>
     /**
-     * @brief DBCacheKey - move constructor
-     * @param other
+     * @brief value - return vale from key
+     * @param key - hash of ke value
+     * @return value of key
      */
-    DBCacheKey(DBCacheKey&& other);
+    const TYPE* value(uint key) const {
+        return dynamic_cast<const TYPE*>(_data.value(key, nullptr));
+    }
 
+    template <class TYPE>
     /**
-     * @brief DBCacheKey
-     * @param ptr - pointer to value
-     * @param fOnltWraper - if this value set be true then destructor of DBCacheKey not remove pointer of value.
-     *  by Default this is false.
+     * @brief key - return hash key and save object into objects table
+     * @param value - the value of a key objekt
+     * @return hash of input value
      */
-    DBCacheKey(const AbstractKey *ptr, bool fOnltWraper = false);
+    uint key(const TYPE& value) {
+        auto object = dynamic_cast<const AbstractKey*>(&value);
 
-    ~DBCacheKey();
+        if (!object) {
+            return 0;
+        }
 
-    /**
-     * @brief castedValue
-     * @return casted pointer to data of the object key
-     */
-    template <class VALUE>
-    const VALUE* castedValue() const {
-        return dynamic_cast<VALUE*>(this->value());
+        uint hash = object->hash();
+        if (_data.contains(hash)) {
+            _data[hash] = new TYPE(value);
+        }
+        return hash;
     }
 
     /**
-     * @brief value
+     * @brief description - return string description of id
+     * @param hash
      * @return
      */
-    const AbstractKey *value() const;
+    QString description(uint hash) const;
 
-    /**
-     * @brief setValue - set value of key.
-     * @param value 0 pointer of value.
-     * @param fOnltWraper - if this value set be true then destructor of DBCacheKey not remove pointer of value.
-     *  by Default this is false.
-     */
-    void setValue(const AbstractKey *value, bool fOnlyWraper = false);
-
-    /**
-     * @brief create - create key from value
-     * @param value - value
-     * @return key
-     */
-    template <class KeyType, class VALUE>
-    static DBCacheKey create(const VALUE& value) {
-        return DBCacheKey(new KeyType(value));
-    }
-
-    /**
-     * @brief table - return the table name from value of key. If the value is null then return a empty string
-     * @return name of table of object
-     */
-    QString table() const;
-
-    /**
-     * @brief id - return BaseId of object from value. If the value is null then reruen a notValid id.
-     * @return BaseId of object
-     */
-    BaseId id() const;
-
-    /**
-     * @brief toString
-     * @return string value of this key
-     */
-    QString toString() const;
-
-    /**
-     * @brief isValid -
-     * @return
-     */
-    bool isValid() const;
-
-    friend bool operator !=(const DBCacheKey& left, const DBCacheKey& right);
-    friend bool operator ==(const DBCacheKey& left, const DBCacheKey& right);
 
 private:
-    const AbstractKey *_value = nullptr;
-    bool _onlyWraper = false;
+    QHash<uint, AbstractKey*> _data;
+    DBCacheKey();
+
 };
 
-uint qHash(const NP::DBCacheKey& key);
+#define HASH_KEY(X) DBCacheKey::instance()->key(X)
+#define VALUE_KEY(X) DBCacheKey::instance()->value(X)
+#define DESCRIPTION_KEY(X) DBCacheKey::instance()->description(X)
+
 }
 
 #endif // DBCACHEKEY_H

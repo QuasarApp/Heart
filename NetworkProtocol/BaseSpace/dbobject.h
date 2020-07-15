@@ -144,7 +144,7 @@ public:
      *  default implementation
      * @return unique key of this object
      */
-    virtual DBCacheKey dbKey() const;
+    virtual uint dbKey() const;
 
     /**
      * @brief dbAddress

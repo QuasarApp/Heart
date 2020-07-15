@@ -37,6 +37,10 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
     return stream;
 }
 
+bool operator!=(const DbAddress &left, const DbAddress &other) {
+    return !operator==(left, other);
+}
+
 bool DbAddress::isValid() const {
     return _id.isValid() && _table.size();
 }

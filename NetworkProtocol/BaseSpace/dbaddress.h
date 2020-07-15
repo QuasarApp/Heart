@@ -28,6 +28,7 @@ public:
     QDataStream &toStream(QDataStream &stream) const;
 
     friend bool operator== (const DbAddress& left, const DbAddress& other);
+    friend bool operator!= (const DbAddress& left, const DbAddress& other);
 
     bool isValid() const;
 

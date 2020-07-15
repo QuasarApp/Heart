@@ -19,16 +19,10 @@ namespace NP {
 class NETWORKPROTOCOLSHARED_EXPORT AbstractKey
 {   
 public:
-    AbstractKey();
-
-    /**
-     * @brief AbstractKey
-     * @param cusomHash - custom hash
-     */
-    AbstractKey(unsigned int cusomHash);
+    AbstractKey() = default;
 
     virtual ~AbstractKey() = default;
-    virtual unsigned int hash() const;
+    virtual unsigned int hash() const = 0;
     virtual bool equal(const AbstractKey* other) const = 0;
 
     /**
@@ -48,15 +42,6 @@ public:
      * @return true if key is valid
      */
     virtual bool isValid() const = 0;
-
-    /**
-     * @brief setCustomHash - set custom hash for key. if custom hash is 0 then hash function return hash from objrct
-     * @param customHash
-     */
-    void setCustomHash(unsigned int customHash);
-
-private:
-    unsigned int _customHash = 0;
 };
 
 

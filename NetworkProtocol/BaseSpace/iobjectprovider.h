@@ -10,6 +10,8 @@
 #include "networkprotocol_global.h"
 
 #include <QSharedPointer>
+#include <dbobject.h>
+#include <quasarapp.h>
 
 namespace NP {
 
@@ -28,7 +30,38 @@ public:
      * @return return pointer to DBObject ot nullptr id object not exits.
      */
     template<class TYPE>
-    TYPE *getObject(const TYPE &templateVal);
+    TYPE *getObject(const TYPE &templateVal) {
+
+        if (!dynamic_cast<const DBObject*>(&templateVal)) {
+            return nullptr;
+        }
+
+        QList<DBObject *> list;
+        if (!getAllObjects(templateVal, list)) {
+            return nullptr;
+        }
+
+        if (list.size() > 1) {
+            QuasarAppUtils::Params::log("getObject method returned more than one object,"
+                                        " the first object was selected as the result, all the rest were lost.",
+                                        QuasarAppUtils::Warning);
+        }
+
+        for (int i = 1; i < list.size(); ++i ) {
+            delete list[i];
+        }
+
+        TYPE* result = dynamic_cast<TYPE*>(list.first());
+        if (!result && list.first()) {
+            QuasarAppUtils::Params::log("getObject method returned object with deffirent type of TYPE,"
+                                        " check getAllObjects merhod",
+                                        QuasarAppUtils::Error);
+
+            delete list.first();
+        }
+
+        return result;
+    }
 
     /**
      * @brief getAllObjects - executable select method of objects and return list of all selected objects

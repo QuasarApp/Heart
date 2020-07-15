@@ -198,17 +198,29 @@ protected:
                                    const DBObject *dbObject);
 
     /**
-     * @brief getObject - general object for get object
+     * @brief getObject - general method for geting object wth check permisions
      *  this function check permishen to requested object and set new object to res if access granted.
-     * @param requiredNodeAdderess
-     * @param dbObject
-     * @param res - result object
+     * @param requester - requser  node or client
+     * @param templateObj - object with request
+     * @param result - pointer to pointer of result object
      * @return operation status
      */
     DBOperationResult getObject(const BaseId &requester,
-                                const DbAddress& dbObject,
-                                const DBObject* res) const;
+                                const DBObject &templateObj,
+                                DBObject **result) const;
 
+
+    /**
+     * @brief getObjects - general object for get object
+     *  this function check permishen to requested object and set new object to res if access granted.
+     * @param requester - requser  node or client
+     * @param templateObj - object with request
+     * @param result - pointer to list of pointers with result objects
+     * @return operation status
+     */
+    DBOperationResult getObjects(const BaseId &requester,
+                                 const DBObject &templateObj,
+                                 QList<DBObject *> *result) const;
 
     /**
      * @brief setObject

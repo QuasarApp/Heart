@@ -26,24 +26,24 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     QMutexLocker lock(&_saveLaterMutex);
 
-    for (auto it = _needToSaveCache.begin(); it != _needToSaveCache.end(); ++it ) {
+    for (uint it : _needToSaveCache) {
 
         if (!_writer && _writer->isValid()) {
 
-            auto obj = getFromCache(*it);
+            auto obj = getFromCache(it);
 
             if (!obj->isValid()) {
                 deleteFromCache(obj);
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                   " db object is not valid! key=" + it->toString(),
+                                                   " db object is not valid! key=" + DESCRIPTION_KEY(it),
                                                    QuasarAppUtils::VerboseLvl::Error);
                 continue;
             }
 
              if (!_writer->saveObject(obj)) {
                  QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                    " work globalUpdateDataRelease!!! key=" + it->toString(),
+                                                    " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it),
                                                     QuasarAppUtils::VerboseLvl::Error);
              }
         } else {
@@ -113,14 +113,6 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *
     }
 
     return false;
-}
-
-DBObject* SqlDBCache::getObjectFromCache(const DBCacheKey& key) {
-    if (!_cache.contains(key)) {
-        return nullptr;
-    }
-
-    return dynamic_cast<DBObject*>(_cache.value(key));
 }
 
 bool SqlDBCache::saveObject(const DBObject *saveObject) {
@@ -232,7 +224,7 @@ void SqlDBCache::saveToCache(const DBObject *obj) {
 
 }
 
-DBObject* SqlDBCache::getFromCache(const DBCacheKey &objKey) {
+DBObject* SqlDBCache::getFromCache(uint objKey) {
 
     if (!_cache.contains(objKey)) {
         return nullptr;
