@@ -1,10 +1,10 @@
-#include "abstractnodetest.h"
+#include "basenodetest.h"
 #include "testutils.h"
 
-#include <abstractnode.h>
+#include <basenode.h>
 #include <ping.h>
 
-class TestingClient: public NP::AbstractNode {
+class TestingBaseClient: public NP::BaseNode {
 
 
     // AbstractNode interface
@@ -26,34 +26,36 @@ private:
     NP::Ping _ping;
 };
 
-AbstractNodeTest::AbstractNodeTest() {
-    _nodeA = new NP::AbstractNode();
-    _nodeB = new TestingClient();
+BaseNodeTest::BaseNodeTest() {
+    _nodeA = new NP::BaseNode();
+    _nodeB = new TestingBaseClient();
 }
 
-AbstractNodeTest::~AbstractNodeTest() {
+BaseNodeTest::~BaseNodeTest() {
     delete _nodeA;
     delete _nodeB;
 }
 
-void AbstractNodeTest::test() {
+void BaseNodeTest::test() {
     QVERIFY(connectTest());
     QVERIFY(sendDataTest());
+
 }
 
-bool AbstractNodeTest::connectTest() {
+bool BaseNodeTest::connectTest() {
 
     _nodeA->listen(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+
     return connectFunc(_nodeB, TEST_LOCAL_HOST, TEST_PORT);
 }
 
-bool AbstractNodeTest::sendDataTest() {
+bool BaseNodeTest::sendDataTest() {
 
     auto request = [this](){
         return _nodeB->ping(QHostAddress(TEST_LOCAL_HOST));
     };
 
-    auto client = dynamic_cast<TestingClient*>(_nodeB);
+    auto client = dynamic_cast<TestingBaseClient*>(_nodeB);
 
     auto check = [client](){
         return client->getPing().ansver();

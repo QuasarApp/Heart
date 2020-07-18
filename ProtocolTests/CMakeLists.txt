@@ -17,6 +17,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_definitions(-DBUILD_LVL=${BUILD_LVL})
+
+
 if (${BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
@@ -46,6 +49,8 @@ if (${BUILD_LVL} GREATER_EQUAL 2)
 endif()
 
 set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
+
+message(SOURCE_CPP = ${SOURCE_CPP})
 
 add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt5::Test NetworkProtocol)

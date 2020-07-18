@@ -1,5 +1,14 @@
 #include <QtTest>
+
+#if BUILD_LVL >= 0
 #include "abstractnodetest.h"
+#endif
+#if BUILD_LVL >= 1
+#include <basenodetest.h>
+#endif
+#if BUILD_LVL >= 2
+#endif
+
 
 class testProtockol : public QObject
 {
@@ -21,7 +30,16 @@ private slots:
 };
 
 testProtockol::testProtockol() {
+
+#if BUILD_LVL >= 0
     _tests.push_back(new AbstractNodeTest);
+#endif
+#if BUILD_LVL >= 1
+    _tests.push_back(new BaseNodeTest);
+#endif
+#if BUILD_LVL >= 2
+    _tests.push_back(new AbstractNodeTest);
+#endif
 }
 
 testProtockol::~testProtockol() {
