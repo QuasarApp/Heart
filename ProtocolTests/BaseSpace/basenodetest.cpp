@@ -27,13 +27,17 @@ private:
 };
 
 BaseNodeTest::BaseNodeTest() {
-    _nodeA = new NP::BaseNode();
-    _nodeB = new TestingBaseClient();
+    _nodeA = new TestingBaseClient();
+    _nodeB = new NP::BaseNode();
+    _nodeC = new TestingBaseClient();
+
 }
 
 BaseNodeTest::~BaseNodeTest() {
     delete _nodeA;
     delete _nodeB;
+    delete _nodeC;
+
 }
 
 void BaseNodeTest::test() {
@@ -46,19 +50,33 @@ void BaseNodeTest::test() {
 }
 
 bool BaseNodeTest::connectNetworkTest() {
+    int nodeA = TEST_PORT + 0;
+    int nodeB = TEST_PORT + 1;
+    int nodeC = TEST_PORT + 2;
 
+
+    _nodeA->listen(QHostAddress(TEST_LOCAL_HOST), nodeA);
+    _nodeB->listen(QHostAddress(TEST_LOCAL_HOST), nodeB);
+    _nodeC->listen(QHostAddress(TEST_LOCAL_HOST), nodeC);
+
+    _nodeA->addNode(QHostAddress(TEST_LOCAL_HOST), nodeB);
+    _nodeB->addNode(QHostAddress(TEST_LOCAL_HOST), nodeC);
+
+
+
+    return false;
 }
 
 bool BaseNodeTest::transportDataTest() {
-
+    return false;
 }
 
 bool BaseNodeTest::performanceTest() {
-
+    return false;
 }
 
 bool BaseNodeTest::powerTest() {
-
+    return false;
 }
 
 

@@ -95,6 +95,10 @@ bool AbstractNodeInfo::isValid() const {
     return _sct;
 }
 
+bool AbstractNodeInfo::isConnected() const {
+    return isValid() && _sct->isOpen();
+}
+
 QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
     stream >> _networkAddress;
     return stream;

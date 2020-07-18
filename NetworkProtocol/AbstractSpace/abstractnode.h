@@ -144,6 +144,19 @@ public:
      */
     virtual void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
 
+    /**
+     * @brief addNode - add new node for connect
+     * @param nodeAdderess - the network addres of a new node.
+     * @param port - port of node
+     */
+    void addNode(const QHostAddress& nodeAdderess, int port);
+
+    /**
+     * @brief removeNode - remove node
+     * @param nodeAdderess - the adddress of removed node.
+     * @param port - port of node
+     */
+    void removeNode(const QHostAddress& nodeAdderess, int port);
 
     /**
      * @brief port
@@ -205,6 +218,12 @@ public:
      * @return true if ping sendet
      */
     bool ping( const QHostAddress& address);
+
+    /**
+     * @brief getKnowedNodes
+     * @return the set of konowed nodes.
+     */
+    const QHash<QHostAddress, int> &getKnowedNodes() const;
 
 signals:
     void requestError(QString msg);
@@ -362,11 +381,19 @@ private slots:
 
 
 private:
+
+    /**
+     * @brief reconnectAllKonowedNodes
+     */
+    void reconnectAllKonowedNodes();
+
     SslMode _mode;
     QSslConfiguration _ssl;
     QHash<QHostAddress, NodeInfoData> _connections;
+    QMultiHash<QHostAddress, int> _knowedNodes;
 
     friend class WebSocketController;
+
 
 };
 }

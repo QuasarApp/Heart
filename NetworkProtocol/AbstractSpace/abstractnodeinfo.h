@@ -99,6 +99,12 @@ public:
     virtual bool isValid() const;
 
     /**
+     * @brief isConnected
+     * @return true if the socket connected
+     */
+    virtual bool isConnected() const;
+
+    /**
      * @brief fromStream
      * @param stream
      * @return stream

@@ -18,6 +18,7 @@ public:
 private:
     NP::AbstractNode *_nodeA = nullptr;
     NP::AbstractNode *_nodeB = nullptr;
+    NP::AbstractNode *_nodeC = nullptr;
 
     /**
      * @brief connectNetworkTest

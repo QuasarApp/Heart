@@ -125,6 +125,19 @@ void AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
     });
 }
 
+void AbstractNode::addNode(const QHostAddress &nodeAdderess, int port) {
+    _knowedNodes.insert(nodeAdderess, port);
+    reconnectAllKonowedNodes();
+}
+
+void AbstractNode::removeNode(const QHostAddress &nodeAdderess, int port) {
+    _knowedNodes.remove(nodeAdderess, port);
+
+    if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
+        ptr->disconnect();
+    }
+}
+
 unsigned short AbstractNode::port() const {
     return serverPort();
 }
@@ -655,6 +668,19 @@ void AbstractNode::handleDisconnected() {
     QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
                                 "dynamic_cast fail!",
                                 QuasarAppUtils::Error);
+}
+
+void AbstractNode::reconnectAllKonowedNodes() {
+    for (auto it = _knowedNodes.begin(); it != _knowedNodes.end(); ++it) {
+        AbstractNodeInfo* info = getInfoPtr(it.key());
+        if (!(info && info->isConnected())) {
+            connectToHost(it.key(), it.value(), _mode);
+        }
+    }
+}
+
+const QHash<QHostAddress, int> &AbstractNode::getKnowedNodes() const {
+    return _knowedNodes;
 }
 
 SslMode AbstractNode::getMode() const {
