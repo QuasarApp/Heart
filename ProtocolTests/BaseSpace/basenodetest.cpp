@@ -37,29 +37,28 @@ BaseNodeTest::~BaseNodeTest() {
 }
 
 void BaseNodeTest::test() {
-    QVERIFY(connectTest());
-    QVERIFY(sendDataTest());
+    QVERIFY(connectNetworkTest());
+    QVERIFY(transportDataTest());
+
+    QVERIFY(performanceTest());
+    QVERIFY(powerTest());
 
 }
 
-bool BaseNodeTest::connectTest() {
+bool BaseNodeTest::connectNetworkTest() {
 
-    _nodeA->listen(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
-
-    return connectFunc(_nodeB, TEST_LOCAL_HOST, TEST_PORT);
 }
 
-bool BaseNodeTest::sendDataTest() {
+bool BaseNodeTest::transportDataTest() {
 
-    auto request = [this](){
-        return _nodeB->ping(QHostAddress(TEST_LOCAL_HOST));
-    };
-
-    auto client = dynamic_cast<TestingBaseClient*>(_nodeB);
-
-    auto check = [client](){
-        return client->getPing().ansver();
-    };
-
-    return funcPrivateConnect(request, check);
 }
+
+bool BaseNodeTest::performanceTest() {
+
+}
+
+bool BaseNodeTest::powerTest() {
+
+}
+
+

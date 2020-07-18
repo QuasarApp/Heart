@@ -19,8 +19,33 @@ private:
     NP::AbstractNode *_nodeA = nullptr;
     NP::AbstractNode *_nodeB = nullptr;
 
-    bool connectTest();
-    bool sendDataTest();
+    /**
+     * @brief connectNetworkTest
+     *  this test check nodes connections greatThen 3 node
+     * @return
+     */
+    bool connectNetworkTest();
+
+    /**
+     * @brief transportDataTest
+     *  this test create a small network and sending data to next route : A >> B >> C and C >> B >> A
+     * @return
+     */
+    bool transportDataTest();
+
+    /**
+     * @brief performanceTest
+     *  this test crate a big network from 100 or biger nodes count and send data for all nodes of network.
+     * @return
+     */
+    bool performanceTest();
+
+    /**
+     * @brief powerTest - this test create big network and create not valid nodes. After created the network a not valid nodes try conquer network.
+     * @return
+     */
+    bool powerTest();
+
 };
 
 #endif // BASENODETEST_H
