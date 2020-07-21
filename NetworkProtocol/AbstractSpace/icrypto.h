@@ -50,6 +50,12 @@ public:
     void setKeyPoolSize(int keyPoolSize);
 
     /**
+     * @brief isValid
+     * @return true if the crypto object has been initialized.
+     */
+    virtual bool isValid() const;
+
+    /**
      * @brief crypt
      * @param data - pointer to data array for crypting.
      * @note data as ben changed after call this method.
@@ -110,10 +116,22 @@ public:
     QString storageLocation() const;
 
     /**
-     * @brief setStorageLocation set a new path for storage location of keys.
+     * @brief initStorageLocation set a new path for storage location of keys.
      * @param value - new path
      */
-    void setStorageLocation(const QString &value);
+    bool initStorageLocation(const QString &value);
+
+    /**
+     * @brief initDefaultStorageLocation - the some as initStorageLocation, but set default
+     * path.
+     * @return true if the storage inited successful
+     */
+    bool initDefaultStorageLocation();
+
+    /**
+     * @brief clearStorage
+     */
+    void clearStorage() const;
 
 protected:
 
@@ -183,6 +201,8 @@ private:
     QMutex *_taskMutex = nullptr;
 
     QString _storageLocation;
+
+    bool _inited = false;
 
 };
 

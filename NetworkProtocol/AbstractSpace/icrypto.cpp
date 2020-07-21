@@ -14,13 +14,12 @@
 
 namespace NP {
 
+#define THIS_CLASS QString::fromLatin1(typeid(*this).name())
+
 ICrypto::ICrypto() {
     _keyPoolSizeMutex = new QMutex();
     _keysMutex = new QMutex();
     _taskMutex = new QMutex();
-    _storageLocation = QStandardPaths::locate(QStandardPaths::DataLocation, "") + "/KeysStorage";
-
-    loadAllKeysFromStorage();
 }
 
 ICrypto::~ICrypto() {
@@ -31,7 +30,8 @@ ICrypto::~ICrypto() {
 CryptoPairKeys ICrypto::getNextPair(const QByteArray &accsessKey,
                                     const QByteArray& genesis,
                                     int timeout) {
-    if (_keyPoolSize <= 0) {
+
+    if (_keyPoolSize <= 0 || !isValid()) {
         return CryptoPairKeys{};
     }
 
@@ -73,6 +73,10 @@ void ICrypto::setKeyPoolSize(int keyPoolSize) {
     start();
 }
 
+bool ICrypto::isValid() const {
+    return _inited;
+}
+
 void ICrypto::setGenesisList(const QList<QByteArray>& list) {
     _keysMutex->lock();
     for (const auto& i : list) {
@@ -98,8 +102,10 @@ bool ICrypto::toStorage(const QByteArray &genesis) {
 
     QDataStream stream(&key);
 
-    stream << value;
-
+    stream << static_cast<short>(value.size());
+    for (const auto& val : value) {
+        stream << val;
+    }
     key.close();
 
     return true;
@@ -119,6 +125,19 @@ bool ICrypto::fromStorage(const QByteArray &genesis) {
     QList<CryptoPairKeys> value;
     stream >> value;
 
+    short size = 0;
+    stream >> size;
+
+    while (size > 0) {
+        CryptoPairKeys pair{};
+        stream >> pair;
+
+        if (pair.isValid())
+            value.push_back(pair);
+
+        size--;
+    }
+
     key.close();
 
     _keys.insert(genesis, value);
@@ -127,6 +146,9 @@ bool ICrypto::fromStorage(const QByteArray &genesis) {
 }
 
 void ICrypto::run() { 
+
+    assert(!_storageLocation.isEmpty());
+
 
     for (auto it = _generateTasks.begin(); it != _generateTasks.end(); ++it) {
         const auto&  values = _keys.value(it.key());
@@ -165,7 +187,7 @@ bool ICrypto::waitForGeneratekey(const QByteArray& genesis, int timeout) const {
 }
 
 void ICrypto::loadAllKeysFromStorage() {
-    auto list = QDir(storageLocation()).entryInfoList();
+    auto list = QDir(storageLocation()).entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 
     for (const auto& file: list ) {
         fromStorage(file.absoluteFilePath().toLatin1());
@@ -194,22 +216,74 @@ QString ICrypto::storageLocation() const {
     return _storageLocation;
 }
 
-void ICrypto::setStorageLocation(const QString &value) {
+bool ICrypto::initStorageLocation(const QString &value) {
+    QFile version(value + "/version");
+
     if (!QFile::exists(value)) {
-        if (!QDir().mkpath(_storageLocation)) {
+
+        if (!QDir().mkpath(value)) {
             QuasarAppUtils::Params::log(" fail to create a key storagge. Into "
-                                        + _storageLocation,
-                                        QuasarAppUtils::Error);
-            return;
+                                        + value, QuasarAppUtils::Error);
+            return false;
         }
-        QFile::setPermissions(_storageLocation,
+
+        QFile::setPermissions(value,
                               QFile::Permission::ExeOwner |
                               QFile::Permission::ReadOwner |
                               QFile::Permission::WriteOwner);
 
+        QFile version(value + "/version");
+
+        if (!version.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+            return false;
+        }
+
+        QDataStream stream(&version);
+        stream << THIS_CLASS;
+        version.close();
+
+    } else {
+
+        if (!version.open(QIODevice::ReadOnly)) {
+            return false;
+        }
+
+        QDataStream stream(&version);
+        QString versionName;
+        stream >> versionName;
+        version.close();
+
+        if (THIS_CLASS != versionName) {
+            return false;
+        }
+
     }
+
     _storageLocation = value;
 
+    return _storageLocation.size();
+
+}
+
+bool ICrypto::initDefaultStorageLocation() {
+    auto storageLoation =
+            QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+            "/crypto/" + THIS_CLASS ;
+
+    if (!initStorageLocation(storageLoation)) {
+        QuasarAppUtils::Params::log("CryptoStorage not inited",
+                                    QuasarAppUtils::Error);
+
+        return false;
+    }
+
+    loadAllKeysFromStorage();
+
+    return _inited = true;
+}
+
+void ICrypto::clearStorage() const {
+    QDir::root().remove(storageLocation());
 }
 
 }

@@ -1,11 +1,12 @@
 #include "cryptopairkeys.h"
 #include "qsecretrsa2048.h"
+#include <QDir>
 #include <qrsaencryption.h>
 
 namespace NP {
 
 QSecretRSA2048::QSecretRSA2048() {
-    qtSecret = new QRSAEncryption(QRSAEncryption::RSA_2048);
+    qtSecret = new QRSAEncryption(QRSAEncryption::RSA_2048);    
 }
 
 CryptoPairKeys QSecretRSA2048::generate(const QByteArray &genesis) const {

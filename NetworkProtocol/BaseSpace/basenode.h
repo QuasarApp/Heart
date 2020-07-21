@@ -129,6 +129,20 @@ public:
      */
     virtual bool changeTrust(const BaseId &id, int diff);
 
+    /**
+     * @brief ping - ping node by node id
+     * @param address
+     * @return
+     */
+    bool ping( const BaseId& id);
+
+    /**
+     * @brief nodeId
+     * @return
+     */
+    BaseId nodeId() const;
+
+
 protected:
 
 
@@ -231,12 +245,6 @@ protected:
      */
     DBOperationResult setObject(const BaseId &requester,
                                 const DBObject *saveObject);
-
-    /**
-     * @brief nodeId
-     * @return
-     */
-    BaseId nodeId() const;
 
     /**
      * @brief checkSignOfRequest

@@ -9,10 +9,11 @@ CryptoPairKeys::CryptoPairKeys() {
 CryptoPairKeys::CryptoPairKeys(const QByteArray &pubKey, const QByteArray &privKey) {
     setPrivKey(privKey);
     setPublicKey(pubKey);
+    setBits(privKey.size() * 8);
 }
 
 bool CryptoPairKeys::isValid() const {
-    return _privKey.size() && _publicKey.size();
+    return _privKey.size() && _publicKey.size() && _bits % 8 && _bits > 1;
 }
 
 QByteArray CryptoPairKeys::privKey() const {

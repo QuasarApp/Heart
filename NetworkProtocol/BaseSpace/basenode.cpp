@@ -28,6 +28,7 @@
 #include <websocketcontroller.h>
 #include <QCoreApplication>
 #include <qsecretrsa2048.h>
+#include <ping.h>
 
 #define THIS_NODE "this_node_key"
 namespace NP {
@@ -380,6 +381,11 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
     // send all network that node id is trusted changed
 
     return true;
+}
+
+bool BaseNode::ping(const BaseId &id) {
+    Ping cmd;
+    return sendData(&cmd, id);
 }
 
 DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,

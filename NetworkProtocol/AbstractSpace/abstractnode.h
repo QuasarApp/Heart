@@ -195,18 +195,6 @@ public:
     QString pareseResultToString(const ParserResult& parseResult) const;
 
     /**
-     * @brief nodeId
-     * @return signed publicKey;
-     */
-    QByteArray nodeId() const;
-
-    /**
-     * @brief checkNodeId
-     * @return
-     */
-    bool checkNodeId(const QByteArray& nodeId) const;
-
-    /**
      * @brief connectionsCount
      * @return
      */

@@ -1,5 +1,6 @@
 #ifndef BASENODETEST_H
 #define BASENODETEST_H
+#include "basetestutils.h"
 #include "test.h"
 #include "testutils.h"
 
@@ -19,6 +20,14 @@ private:
     NP::AbstractNode *_nodeA = nullptr;
     NP::AbstractNode *_nodeB = nullptr;
     NP::AbstractNode *_nodeC = nullptr;
+
+    BaseTestUtils *_utils = nullptr;
+
+    /**
+     * @brief testICtypto - testing ictypto class
+     * @return
+     */
+    bool testICtypto();
 
     /**
      * @brief connectNetworkTest
