@@ -13,7 +13,7 @@ CryptoPairKeys::CryptoPairKeys(const QByteArray &pubKey, const QByteArray &privK
 }
 
 bool CryptoPairKeys::isValid() const {
-    return _privKey.size() && _publicKey.size() && _bits % 8 && _bits > 1;
+    return _privKey.size() && _publicKey.size() && !(_bits % 8) && _bits > 1;
 }
 
 QByteArray CryptoPairKeys::privKey() const {

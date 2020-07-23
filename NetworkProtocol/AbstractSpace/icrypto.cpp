@@ -38,6 +38,12 @@ CryptoPairKeys ICrypto::getNextPair(const QByteArray &accsessKey,
                                     const QByteArray& genesis,
                                     int timeout) {
 
+    if (!isInited() && genesis == RAND_KEY) {
+        QuasarAppUtils::Params::log("You want get the random crypto keys pair in a not initialized crypto object.",
+                                    QuasarAppUtils::Error);
+        return CryptoPairKeys{};
+    }
+
     if (_keyPoolSize <= 0) {
         return CryptoPairKeys{};
     }
@@ -81,6 +87,10 @@ void ICrypto::setKeyPoolSize(int keyPoolSize) {
 }
 
 bool ICrypto::isValid() const {
+    return isInited();
+}
+
+bool ICrypto::isInited() const {
     return _inited;
 }
 
@@ -103,8 +113,7 @@ bool ICrypto::toStorage(const QByteArray &genesis) const {
     QList<CryptoPairKeys> value = _keys.value(genesis);
     _keysMutex->unlock();
 
-    auto filePath = storageLocation() + "/" +
-            QCryptographicHash::hash(genesis, QCryptographicHash::Md5).toBase64();
+    auto filePath = storageLocation() + "/" + hashToBase64(keyOfKey(genesis));
 
     QFile key(filePath);
 
@@ -130,7 +139,7 @@ bool ICrypto::fromStorage(const QByteArray &genesis) {
 
     QFile key(filePath);
 
-    if (!key.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    if (!key.open(QIODevice::ReadOnly)) {
         return false;
     }
 
@@ -157,6 +166,10 @@ bool ICrypto::fromStorage(const QByteArray &genesis) {
     _keys.insert(genesis, value);
 
     return value.size();
+}
+
+QByteArray ICrypto::keyOfKey(const QByteArray &data) const {
+    return QCryptographicHash::hash(data, QCryptographicHash::Md4);
 }
 
 void ICrypto::run() { 
@@ -186,6 +199,15 @@ void ICrypto::run() {
         _keys[RAND_KEY].push_back(keys);
         _keysMutex->unlock();
     }
+}
+
+QString ICrypto::hashToBase64(const QByteArray& hash) const {
+    return hash.toBase64(QByteArray::Base64UrlEncoding);
+}
+
+QByteArray ICrypto::hashFromBase64(const QString& base64String) const {
+    return QByteArray::fromBase64(base64String.toLatin1(),
+                                  QByteArray::Base64UrlEncoding);
 }
 
 bool ICrypto::waitForGeneratekey(const QByteArray& genesis, int timeout) const {

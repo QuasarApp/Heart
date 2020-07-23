@@ -12,7 +12,7 @@ BaseId::BaseId(const QString &base64) {
 }
 
 bool BaseId::fromBase64(const QByteArray &base64) {
-    return fromRaw(QByteArray::fromBase64(base64));;
+    return fromRaw(QByteArray::fromBase64(base64, QByteArray::Base64UrlEncoding));
 }
 
 bool BaseId::fromRaw(const QByteArray &raw) {
@@ -21,7 +21,7 @@ bool BaseId::fromRaw(const QByteArray &raw) {
 }
 
 QByteArray BaseId::toBase64() const {
-    return _data.toBase64();
+    return _data.toBase64(QByteArray::Base64UrlEncoding);
 }
 
 const QByteArray& BaseId::toRaw() const {

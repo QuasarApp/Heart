@@ -51,9 +51,15 @@ public:
 
     /**
      * @brief isValid
-     * @return true if the crypto object has been initialized.
+     * @return true if the crypto object is valid.
      */
     virtual bool isValid() const;
+
+    /**
+     * @brief isInited
+     * @return true if the crypto object has been initialized.
+     */
+    virtual bool isInited() const;
 
     /**
      * @brief crypt
@@ -162,8 +168,31 @@ protected:
      */
     virtual CryptoPairKeys generate(const QByteArray& genesis = {}) const = 0;
 
+    /**
+     * @brief keyOfKey - this function calculate hash of an input data value.
+     *  @note this hash must have minimum size becouse the retun value well be using like a name of keys filis.
+     * @param data - input data value.
+     * @default this function use md4 method for calcHash.
+     * @return hash.
+     */
+    virtual QByteArray keyOfKey(const QByteArray& data) const;
+
+
+
     void run() override;
 private:
+
+    /**
+     * @brief hashToBase64
+     * @return
+     */
+    QString hashToBase64(const QByteArray &hash) const;
+
+    /**
+     * @brief hashFromBase64
+     * @return
+     */
+    QByteArray hashFromBase64(const QString &base64String) const;
 
     /**
      * @brief waitForGeneratekey
