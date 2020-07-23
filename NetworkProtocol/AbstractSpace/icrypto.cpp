@@ -23,15 +23,22 @@ ICrypto::ICrypto() {
 }
 
 ICrypto::~ICrypto() {
+
+    if (!saveStorage()) {
+        QuasarAppUtils::Params::log("save keys to storae is failed!",
+                                    QuasarAppUtils::Error);
+    }
+
     delete _keyPoolSizeMutex;
     delete  _keysMutex;
+    delete  _taskMutex;
 }
 
 CryptoPairKeys ICrypto::getNextPair(const QByteArray &accsessKey,
                                     const QByteArray& genesis,
                                     int timeout) {
 
-    if (_keyPoolSize <= 0 || !isValid()) {
+    if (_keyPoolSize <= 0) {
         return CryptoPairKeys{};
     }
 
@@ -87,8 +94,15 @@ void ICrypto::setGenesisList(const QList<QByteArray>& list) {
     start();
 }
 
-bool ICrypto::toStorage(const QByteArray &genesis) {
+bool ICrypto::toStorage(const QByteArray &genesis) const {
+
+    if (!isValid())
+        return false;
+
+    _keysMutex->lock();
     QList<CryptoPairKeys> value = _keys.value(genesis);
+    _keysMutex->unlock();
+
     auto filePath = storageLocation() + "/" +
             QCryptographicHash::hash(genesis, QCryptographicHash::Md5).toBase64();
 
@@ -147,8 +161,6 @@ bool ICrypto::fromStorage(const QByteArray &genesis) {
 
 void ICrypto::run() { 
 
-    assert(!_storageLocation.isEmpty());
-
 
     for (auto it = _generateTasks.begin(); it != _generateTasks.end(); ++it) {
         const auto&  values = _keys.value(it.key());
@@ -192,6 +204,16 @@ void ICrypto::loadAllKeysFromStorage() {
     for (const auto& file: list ) {
         fromStorage(file.absoluteFilePath().toLatin1());
     }
+}
+
+bool ICrypto::saveStorage() const {
+
+    bool result = true;
+    for (auto it = _keys.begin(); it != _keys.end(); ++it) {
+        result = result && toStorage(it.key());
+    }
+
+    return result;
 }
 
 bool ICrypto::genKey(const QByteArray &genesis, QByteArray accessKey) {
@@ -265,10 +287,14 @@ bool ICrypto::initStorageLocation(const QString &value) {
 
 }
 
-bool ICrypto::initDefaultStorageLocation() {
+bool ICrypto::initDefaultStorageLocation(const QString &dirName) {
     auto storageLoation =
             QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-            "/crypto/" + THIS_CLASS ;
+            "/crypto/" + dirName;
+
+    if (dirName.isEmpty()) {
+        storageLoation += THIS_CLASS;
+    }
 
     if (!initStorageLocation(storageLoation)) {
         QuasarAppUtils::Params::log("CryptoStorage not inited",

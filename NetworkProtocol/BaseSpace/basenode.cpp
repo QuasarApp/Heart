@@ -39,6 +39,7 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     _webSocketWorker = new WebSocketController(this);
 
     _nodeKeys = new QSecretRSA2048();
+    _nodeKeys->initDefaultStorageLocation(nodeId().toBase64());
     _nodeKeys->start();
 }
 

@@ -124,9 +124,12 @@ public:
     /**
      * @brief initDefaultStorageLocation - the some as initStorageLocation, but set default
      * path.
+     * @param dirName - it is name of storage location. If This parametr weel be empty then
+     * storage location set default dir name. By default is name of crypto class.
+     * @default default path of storage is '/QStandardPaths::AppDataLocation/crypto/dirName'
      * @return true if the storage inited successful
      */
-    bool initDefaultStorageLocation();
+    bool initDefaultStorageLocation(const QString& dirName = "");
 
     /**
      * @brief clearStorage
@@ -141,7 +144,7 @@ protected:
      * @note override this method if you want to change storage location or method of save of keys.
      * @return true if key saved successful
      */
-    virtual bool toStorage(const QByteArray& genesis);
+    virtual bool toStorage(const QByteArray& genesis) const;
 
     /**
      * @brief fromStorage - load keys from local storage
@@ -173,6 +176,12 @@ private:
      * @brief loadAllKeysFromStorage
      */
     void loadAllKeysFromStorage();
+
+    /**
+     * @brief saveStorage
+     * @return true if all keys has been saved in a storage.
+     */
+    bool saveStorage() const;
 
     /**
       * @brief genKey - this method add a new task for generate keys pair
