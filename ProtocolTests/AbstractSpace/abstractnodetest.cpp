@@ -43,7 +43,10 @@ void AbstractNodeTest::test() {
 
 bool AbstractNodeTest::connectTest() {
 
-    _nodeA->listen(QHostAddress(TEST_LOCAL_HOST), TEST_PORT);
+    if (!_nodeA->run(TEST_LOCAL_HOST, TEST_PORT)) {
+        return false;
+    }
+
     return connectFunc(_nodeB, TEST_LOCAL_HOST, TEST_PORT);
 }
 

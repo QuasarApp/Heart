@@ -67,6 +67,15 @@ public:
      */
     bool run(const QString &addres, unsigned short port) override;
 
+    /**
+     * @brief run server on address an port with local name of storage of keys
+     * @param addres - network address of node
+     * @param port - port of node
+     * @return true if node is deployed successful
+     */
+    virtual bool run(const QString &addres, unsigned short port,
+                     const QString &localNodeName);
+
     ~BaseNode() override;
 
     /**

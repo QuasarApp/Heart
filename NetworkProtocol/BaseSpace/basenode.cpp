@@ -37,10 +37,8 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
     _webSocketWorker = new WebSocketController(this);
-
     _nodeKeys = new QSecretRSA2048();
-    _nodeKeys->initDefaultStorageLocation(nodeId().toBase64());
-    _nodeKeys->start();
+
 }
 
 bool BaseNode::initSqlDb(QString DBparamsFile,
@@ -72,6 +70,26 @@ bool BaseNode::run(const QString &addres, unsigned short port) {
         return false;
     }
 
+    _nodeKeys->initDefaultStorageLocation();
+    _nodeKeys->start();
+
+    return AbstractNode::run(addres, port);
+}
+
+bool BaseNode::run(const QString &addres,
+                   unsigned short port,
+                   const QString &localNodeName) {
+
+    if (localNodeName.isEmpty())
+        return false;
+
+    if (!isSqlInited() && !initSqlDb()) {
+        return false;
+    }
+
+    _nodeKeys->initDefaultStorageLocation(localNodeName);
+    _nodeKeys->start();
+
     return AbstractNode::run(addres, port);
 }
 
@@ -96,6 +114,7 @@ void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
 }
 
 BaseId BaseNode::nodeId() const {
+
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
 }

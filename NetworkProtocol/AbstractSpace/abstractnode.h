@@ -371,6 +371,12 @@ private slots:
 private:
 
     /**
+      @note just disaable listen method in the node objects.
+     */
+    bool listen(const QHostAddress& address = QHostAddress::Any,
+                int port = 0);
+
+    /**
      * @brief reconnectAllKonowedNodes
      */
     void reconnectAllKonowedNodes();

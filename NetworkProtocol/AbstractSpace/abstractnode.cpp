@@ -670,6 +670,10 @@ void AbstractNode::handleDisconnected() {
                                 QuasarAppUtils::Error);
 }
 
+bool AbstractNode::listen(const QHostAddress &address, int port) {
+    return QTcpServer::listen(address, port);
+}
+
 void AbstractNode::reconnectAllKonowedNodes() {
     for (auto it = _knowedNodes.begin(); it != _knowedNodes.end(); ++it) {
         AbstractNodeInfo* info = getInfoPtr(it.key());
