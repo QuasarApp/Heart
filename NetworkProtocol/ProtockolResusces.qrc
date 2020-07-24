@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/sql">
-        <file alias="default">Res/Default.sql</file>
-        <file alias="defaultConfig">Res/DefaultDbConfig.json</file>
+        <file alias="default">UserSpace/Res/Default.sql</file>
+        <file alias="defaultConfig">UserSpace/Res/UserDbConfig.json</file>
+        <file>UserSpace/Res/UserDB.sql</file>
+        <file>BaseSpace/Res/DbConfig.json</file>
+        <file>BaseSpace/Res/BaseDB.sql</file>
     </qresource>
 </RCC>

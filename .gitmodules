@@ -2,3 +2,6 @@
 	path = QuasarAppLib
 	url = https://github.com/QuasarApp/QuasarAppLib.git
 
+[submodule "NetworkProtocol/Qt-Secret"]
+	path = NetworkProtocol/Qt-Secret
+	url = https://github.com/QuasarApp/Qt-Secret.git

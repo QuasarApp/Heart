@@ -5,19 +5,18 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef NETWORKPROTOCOL_H
-#define NETWORKPROTOCOL_H
-
-#include "package.h"
-#include "abstractnode.h"
-
-/**
- * NP - Network protocol
- * defirent values:
- * SP - shared pointer
- * WP  - weak pointer
- */
+#include "senderdata.h"
 namespace NP {
+
+SenderData::SenderData() {
+
 }
 
-#endif // NETWORKPROTOCOL_H
+const BaseId &SenderData::senderID() const {
+    return _senderID;
+}
+
+void SenderData::setSenderID(const BaseId &senderID) {
+    _senderID = senderID;
+}
+}

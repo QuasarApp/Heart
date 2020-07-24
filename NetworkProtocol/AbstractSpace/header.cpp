@@ -5,19 +5,20 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef NETWORKPROTOCOL_H
-#define NETWORKPROTOCOL_H
+#include "header.h"
 
-#include "package.h"
-#include "abstractnode.h"
-
-/**
- * NP - Network protocol
- * defirent values:
- * SP - shared pointer
- * WP  - weak pointer
- */
 namespace NP {
+Header::Header() {
+    reset();
 }
 
-#endif // NETWORKPROTOCOL_H
+bool Header::isValid() const {
+    return command && size;
+}
+
+void Header::reset() {
+    size = 0;
+    command = 0;
+    triggerCommnad = 0;
+}
+}

@@ -5,19 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef NETWORKPROTOCOL_H
-#define NETWORKPROTOCOL_H
+#include "dbdatarequest.h"
 
-#include "package.h"
-#include "abstractnode.h"
-
-/**
- * NP - Network protocol
- * defirent values:
- * SP - shared pointer
- * WP  - weak pointer
- */
 namespace NP {
-}
 
-#endif // NETWORKPROTOCOL_H
+}

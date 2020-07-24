@@ -5,19 +5,11 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef NETWORKPROTOCOL_H
-#define NETWORKPROTOCOL_H
+#include "iobjectprovider.h"
 
-#include "package.h"
-#include "abstractnode.h"
-
-/**
- * NP - Network protocol
- * defirent values:
- * SP - shared pointer
- * WP  - weak pointer
- */
 namespace NP {
-}
+iObjectProvider::iObjectProvider() = default;
 
-#endif // NETWORKPROTOCOL_H
+iObjectProvider::~iObjectProvider() = default;
+
+}
