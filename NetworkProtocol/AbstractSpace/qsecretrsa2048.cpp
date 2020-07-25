@@ -62,6 +62,10 @@ QByteArray QSecretRSA2048::concatSign(const QByteArray &data, const QByteArray &
     return data + "-SIGN-" + sign.toHex() + "-SIGN-";
 }
 
+bool QSecretRSA2048::isValid() const {
+    return qtSecret;
+}
+
 QSecretRSA2048::~QSecretRSA2048() {
     delete qtSecret;
 }

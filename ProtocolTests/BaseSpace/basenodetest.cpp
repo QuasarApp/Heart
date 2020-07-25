@@ -2,6 +2,7 @@
 #include "testutils.h"
 
 #include <basenode.h>
+#include <keystorage.h>
 #include <ping.h>
 #include <qsecretrsa2048.h>
 
@@ -56,7 +57,8 @@ void BaseNodeTest::test() {
 template<class Crypto>
 bool validationCrypto() {
     // create crypto oject
-    NP::ICrypto *crypto = new Crypto();
+    auto crypto = new NP::KeyStorage(new Crypto());
+
 
     // get test pair keys
     auto keys = crypto->getNextPair("TEST_KEY");
@@ -85,7 +87,7 @@ bool validationCrypto() {
     delete crypto;
 
     // second initialisin of crypto object
-    crypto = new Crypto;
+    crypto = new NP::KeyStorage(new Crypto());
 
     // check get generated key pair
     if (keys != crypto->getNextPair("TEST_KEY",  RAND_KEY, 0)) {
@@ -118,7 +120,7 @@ bool validationCrypto() {
 
     delete crypto;
 
-    crypto = new Crypto;
+    crypto = new NP::KeyStorage(new Crypto());
 
     auto lastKeys = crypto->getNextPair("key2", RAND_KEY, 0);
     return lastKeys == ThisIsKey2;

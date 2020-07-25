@@ -24,6 +24,7 @@ class DBDataRequest;
 class DbAddress;
 class BaseId;
 class Sign;
+class KeyStorage;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -264,7 +265,7 @@ protected:
 
 private:
     SqlDBCache *_db = nullptr;
-    ICrypto *_nodeKeys = nullptr;
+    KeyStorage *_nodeKeys = nullptr;
 
     /**
      * @brief workWithAvailableDataRequest

@@ -29,6 +29,7 @@
 #include <QCoreApplication>
 #include <qsecretrsa2048.h>
 #include <ping.h>
+#include <keystorage.h>
 
 #define THIS_NODE "this_node_key"
 namespace NP {
@@ -37,7 +38,7 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
     _webSocketWorker = new WebSocketController(this);
-    _nodeKeys = new QSecretRSA2048();
+    _nodeKeys = new KeyStorage(new QSecretRSA2048());
 
 }
 
