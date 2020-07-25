@@ -6,7 +6,8 @@
 #include "networkprotocol_global.h"
 #include <QByteArray>
 #include <QHash>
-#define RAND_KEY "QNP_RAND_KEY"
+#include <QSet>
+#define RAND_KEY ""
 
 class QMutex;
 
@@ -33,7 +34,7 @@ public:
      * @param timeout_msec - timeout in milisecunds. default is 30000
      * @return pair of keys.
      */
-    CryptoPairKeys getNextPair(const QByteArray& accsessKey,
+    CryptoPairKeys getNextPair(const QString &accsessKey,
                                const QByteArray &genesis = RAND_KEY,
                                int timeout_msec = 30000);
 
@@ -150,14 +151,14 @@ protected:
      * @note override this method if you want to change storage location or method of save of keys.
      * @return true if key saved successful
      */
-    virtual bool toStorage(const QByteArray& genesis) const;
+    virtual bool toStorage(const QString &genesis) const;
 
     /**
      * @brief fromStorage - load keys from local storage
      * @param genesis - genesis of key pair
      * @return true if key pair saved seccussful.
      */
-    virtual bool fromStorage(const QByteArray& genesis);
+    virtual bool fromStorage(const QByteArray& key);
 
 
     /**
@@ -168,39 +169,30 @@ protected:
      */
     virtual CryptoPairKeys generate(const QByteArray& genesis = {}) const = 0;
 
-    /**
-     * @brief keyOfKey - this function calculate hash of an input data value.
-     *  @note this hash must have minimum size becouse the retun value well be using like a name of keys filis.
-     * @param data - input data value.
-     * @default this function use md4 method for calcHash.
-     * @return hash.
-     */
-    virtual QByteArray keyOfKey(const QByteArray& data) const;
-
-
-
     void run() override;
+
+    /**
+     * @brief stop - stop generate keys.
+     */
+    void stop();
 private:
-
-    /**
-     * @brief hashToBase64
-     * @return
-     */
-    QString hashToBase64(const QByteArray &hash) const;
-
-    /**
-     * @brief hashFromBase64
-     * @return
-     */
-    QByteArray hashFromBase64(const QString &base64String) const;
 
     /**
      * @brief waitForGeneratekey
      * @param timeout
      * @return
      */
-    bool waitForGeneratekey(const QByteArray &genesis = RAND_KEY, int timeout = 30000) const;
+    bool waitForGeneratekey(const QString &key, int timeout = 30000) const;
 
+    bool waitForThreadFinished(int timeout = 30000) const;
+
+    /**
+     * @brief waitFor - base waint function
+     * @param checkFunc - this is lyambda of check event
+     * @param timeout - maximu time line of waiting of event
+     * @return true if event is checkFunc return true
+     */
+    bool waitFor(const std::function<bool()>& checkFunc, int timeout) const;
     /**
      * @brief loadAllKeysFromStorage
      */
@@ -214,23 +206,18 @@ private:
 
     /**
       * @brief genKey - this method add a new task for generate keys pair
-      * @param genesis - the byte array for generate new key
       * @param accessKey - the byte array for get access of the keys pair.
-      * @note If the access key well be empty then accessKey = genesis.
-      *  If access key and genesis well be empty then this method return false.
+      * @param genesis - the byte array for generate new key
+      * @note If access key well be empty then this method return false.
+      * @note for generate random key use a RAND_KEY genesis or empty value.
       * @return true if task of generation a new pair keys added seccussful else false.
     */
-    bool genKey(const QByteArray& genesis, QByteArray accessKey = {});
+    bool genKey(const QString &accessKey, const QByteArray& genesis = RAND_KEY);
 
-    /**
-     * @brief genRandomKey - generate a new random pair key
-     * @param accessKey - the byte array for get access of the keys pair.
-     * @return return true if task for generate new key pair added succesful.
-     */
-    bool genRandomKey(const QByteArray& accessKey);
+    QHash<QString, CryptoPairKeys> _keys;
+    QSet<CryptoPairKeys> _randomKeysPool;
 
-    QHash<QByteArray, QList<CryptoPairKeys>> _keys;
-    QHash<QByteArray, QByteArray> _generateTasks;
+    QHash<QString, QByteArray> _generateTasks;
 
     int _keyPoolSize = 1;
 
@@ -241,7 +228,10 @@ private:
     QString _storageLocation;
 
     bool _inited = false;
+    bool _stopGenerator = false;
 
+    void generateKeysByTasks();
+    void generateRandomKeys();
 };
 
 }

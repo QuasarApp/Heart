@@ -24,6 +24,9 @@ ICrypto::ICrypto() {
 
 ICrypto::~ICrypto() {
 
+    stop();
+    waitForThreadFinished(9000000);
+
     if (!saveStorage()) {
         QuasarAppUtils::Params::log("save keys to storae is failed!",
                                     QuasarAppUtils::Error);
@@ -34,7 +37,7 @@ ICrypto::~ICrypto() {
     delete  _taskMutex;
 }
 
-CryptoPairKeys ICrypto::getNextPair(const QByteArray &accsessKey,
+CryptoPairKeys ICrypto::getNextPair(const QString &accsessKey,
                                     const QByteArray& genesis,
                                     int timeout) {
 
@@ -48,30 +51,19 @@ CryptoPairKeys ICrypto::getNextPair(const QByteArray &accsessKey,
         return CryptoPairKeys{};
     }
 
-    if (genesis.isEmpty()) {
-        if (!genRandomKey(accsessKey)) {
-            return {};
-        }
-    } else {
-        if (!genKey(genesis, accsessKey)) {
-            return {};
-        }
+    if (!genKey(accsessKey, genesis)) {
+        return {};
     }
 
     start();
 
-    if (!waitForGeneratekey(genesis, timeout)) {
+    if (!waitForGeneratekey(accsessKey, timeout)) {
         return CryptoPairKeys{};
     }
 
     QMutexLocker locker(_keysMutex);
 
-    auto &list = _keys[genesis];
-
-    if (!list.size()) {
-        return {};
-    }
-    return list.takeFirst();
+    return _keys.value(accsessKey, {});
 }
 
 int ICrypto::getKeyPoolSize() const {
@@ -104,120 +96,126 @@ void ICrypto::setGenesisList(const QList<QByteArray>& list) {
     start();
 }
 
-bool ICrypto::toStorage(const QByteArray &genesis) const {
+bool ICrypto::toStorage(const QString &key) const {
 
     if (!isValid())
         return false;
 
     _keysMutex->lock();
-    QList<CryptoPairKeys> value = _keys.value(genesis);
+    CryptoPairKeys value = _keys.value(key);
     _keysMutex->unlock();
 
-    auto filePath = storageLocation() + "/" + hashToBase64(keyOfKey(genesis));
+    auto filePath = storageLocation() + "/" + key;
 
-    QFile key(filePath);
+    QFile file(filePath);
 
-    if (!key.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         return false;
     }
 
-    key.setPermissions(QFile::Permission::ReadOwner | QFile::Permission::WriteOwner);
+    file.setPermissions(QFile::Permission::ReadOwner | QFile::Permission::WriteOwner);
 
-    QDataStream stream(&key);
+    QDataStream stream(&file);
 
-    stream << static_cast<short>(value.size());
-    for (const auto& val : value) {
-        stream << val;
-    }
-    key.close();
+    stream << value;
+
+    file.close();
 
     return true;
 }
 
-bool ICrypto::fromStorage(const QByteArray &genesis) {
-    auto filePath = genesis;
+bool ICrypto::fromStorage(const QByteArray &key) {
+    auto filePath = storageLocation() + "/" + key;
 
-    QFile key(filePath);
+    QFile file(filePath);
 
-    if (!key.open(QIODevice::ReadOnly)) {
+    if (!file.open(QIODevice::ReadOnly)) {
         return false;
     }
 
-    QDataStream stream(&key);
+    QDataStream stream(&file);
 
-    QList<CryptoPairKeys> value;
+    CryptoPairKeys value;
     stream >> value;
 
-    short size = 0;
-    stream >> size;
+    file.close();
 
-    while (size > 0) {
-        CryptoPairKeys pair{};
-        stream >> pair;
+    _keys.insert(key, value);
 
-        if (pair.isValid())
-            value.push_back(pair);
-
-        size--;
-    }
-
-    key.close();
-
-    _keys.insert(genesis, value);
-
-    return value.size();
+    return value.isValid();
 }
 
-QByteArray ICrypto::keyOfKey(const QByteArray &data) const {
-    return QCryptographicHash::hash(data, QCryptographicHash::Md4);
-}
-
-void ICrypto::run() { 
-
-
+void ICrypto::generateKeysByTasks() {
     for (auto it = _generateTasks.begin(); it != _generateTasks.end(); ++it) {
-        const auto&  values = _keys.value(it.key());
-        if (values.size() && values.first().isValid())
+
+        if (_stopGenerator) {
+            return;
+        }
+
+        const auto&  value = _keys.value(it.key());
+        if (value.isValid())
             continue;
 
-        auto &&keys = generate((it.value() != RAND_KEY)? it.value(): "");
-
-
         _keysMutex->lock();
-        _keys[it.key()].push_back(keys);
+
+        if (it.value() == RAND_KEY && _randomKeysPool.size()) {
+            _keys[it.key()] = *_randomKeysPool.begin();
+            _randomKeysPool.erase(_randomKeysPool.begin());
+        } else {
+            _keys[it.key()] = generate(it.value());
+        }
+
         _keysMutex->unlock();
     }
+}
 
+void ICrypto::generateRandomKeys() {
     _keyPoolSizeMutex->lock();
-    int size =  _keyPoolSize ;
+    int size =  _keyPoolSize;
     _keyPoolSizeMutex->unlock();
 
-    while (size > _keys[RAND_KEY].size()) {
+    while (size > _randomKeysPool.size()) {
+
+        if ((_stopGenerator))
+            return;
+
         auto &&keys = generate();
 
         _keysMutex->lock();
-        _keys[RAND_KEY].push_back(keys);
+        _randomKeysPool.insert(keys);
         _keysMutex->unlock();
     }
 }
 
-QString ICrypto::hashToBase64(const QByteArray& hash) const {
-    return hash.toBase64(QByteArray::Base64UrlEncoding);
+void ICrypto::run() {
+
+    if (_stopGenerator) {
+        return;
+    }
+
+    generateKeysByTasks();
+    generateRandomKeys();
 }
 
-QByteArray ICrypto::hashFromBase64(const QString& base64String) const {
-    return QByteArray::fromBase64(base64String.toLatin1(),
-                                  QByteArray::Base64UrlEncoding);
+void ICrypto::stop() {
+    _stopGenerator = true;
 }
 
-bool ICrypto::waitForGeneratekey(const QByteArray& genesis, int timeout) const {
+bool ICrypto::waitForGeneratekey(const QString& key, int timeout) const {
+    return waitFor([this, &key](){return _keys.contains(key);}, timeout);
+}
 
+bool ICrypto::waitForThreadFinished(int timeout) const {
+    return waitFor([this](){return !isRunning();}, timeout);
+}
+
+bool ICrypto::waitFor(const std::function<bool()> &checkFunc, int timeout) const {
     auto waitFor = timeout + QDateTime::currentMSecsSinceEpoch();
-    while (!_keys[genesis].size() && waitFor > QDateTime::currentMSecsSinceEpoch()) {
+    while (!checkFunc() && waitFor > QDateTime::currentMSecsSinceEpoch()) {
         QCoreApplication::processEvents();
     }
 
-    return _keys[genesis].size();
+    return checkFunc();
 }
 
 void ICrypto::loadAllKeysFromStorage() {
@@ -238,21 +236,13 @@ bool ICrypto::saveStorage() const {
     return result;
 }
 
-bool ICrypto::genKey(const QByteArray &genesis, QByteArray accessKey) {
-    if (genesis.isEmpty())
-        return false;
+bool ICrypto::genKey(const QString &accessKey, const QByteArray &genesis) {
 
     if (accessKey.isEmpty())
-        accessKey = genesis;
+        return false;
 
     QMutexLocker locker(_taskMutex);
     _generateTasks.insert(accessKey, genesis);
-    return true;
-}
-
-bool ICrypto::genRandomKey(const QByteArray &accessKey) {
-    QMutexLocker locker(_taskMutex);
-    _generateTasks.insert(accessKey, RAND_KEY);
     return true;
 }
 

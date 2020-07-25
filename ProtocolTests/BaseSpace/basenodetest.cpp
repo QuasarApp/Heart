@@ -143,9 +143,9 @@ bool BaseNodeTest::connectNetworkTest() {
     auto _nodeBPtr = dynamic_cast<NP::BaseNode*>(_nodeB);
     auto _nodeCPtr = dynamic_cast<NP::BaseNode*>(_nodeC);
 
-    _nodeAPtr->run(TEST_LOCAL_HOST, nodeAPort);
-    _nodeBPtr->run(TEST_LOCAL_HOST, nodeBPort);
-    _nodeCPtr->run(TEST_LOCAL_HOST, nodeCPort);
+    _nodeAPtr->run(TEST_LOCAL_HOST, nodeAPort, "TestNodeA");
+    _nodeBPtr->run(TEST_LOCAL_HOST, nodeBPort, "TestNodeB");
+    _nodeCPtr->run(TEST_LOCAL_HOST, nodeCPort, "TestNodeC");
 
     auto nodeA = _nodeAPtr->nodeId();
     auto nodeB = _nodeBPtr->nodeId();

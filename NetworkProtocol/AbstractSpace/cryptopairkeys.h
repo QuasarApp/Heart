@@ -52,9 +52,8 @@ private:
     QByteArray _publicKey;
 
     int _bits;
-
-
-
 };
+
+    uint qHash(const CryptoPairKeys& value);
 }
 #endif // CRYPTOPAIRKEYS_H
