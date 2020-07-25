@@ -88,9 +88,13 @@ bool validationCrypto() {
 
     // second initialisin of crypto object
     crypto = new NP::KeyStorage(new Crypto());
+    if (!crypto->initDefaultStorageLocation()) {
+        delete crypto;
+        return false;
+    }
 
     // check get generated key pair
-    if (keys != crypto->getNextPair("TEST_KEY",  RAND_KEY, 0)) {
+    if (keys != crypto->getNextPair("TEST_KEY", 0)) {
         delete crypto;
         return false;
     }
@@ -121,6 +125,10 @@ bool validationCrypto() {
     delete crypto;
 
     crypto = new NP::KeyStorage(new Crypto());
+    if (!crypto->initDefaultStorageLocation()) {
+        delete crypto;
+        return false;
+    }
 
     auto lastKeys = crypto->getNextPair("key2", RAND_KEY, 0);
     return lastKeys == ThisIsKey2;

@@ -249,7 +249,7 @@ void KeyStorage::loadAllKeysFromStorage() {
     auto list = QDir(storageLocation()).entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 
     for (const auto& file: list ) {
-        fromStorage(file.absoluteFilePath().toLatin1());
+        fromStorage(file.fileName().toLatin1());
     }
 }
 
