@@ -84,6 +84,8 @@ bool BaseNode::run(const QString &addres,
     if (localNodeName.isEmpty())
         return false;
 
+    _localNodeName = localNodeName;
+
     if (!isSqlInited() && !initSqlDb()) {
         return false;
     }
@@ -314,7 +316,7 @@ QVariantMap BaseNode::defaultDbParams() const {
 
     return {
         {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH},
+        {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + DEFAULT_DB_NAME},
         {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
     };
 }

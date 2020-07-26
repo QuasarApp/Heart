@@ -329,11 +329,13 @@ bool KeyStorage::initStorageLocation(const QString &value) {
 bool KeyStorage::initDefaultStorageLocation(const QString &dirName) {
     auto storageLoation =
             QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-            "/crypto/" + dirName;
+            "/" + dirName;
 
     if (dirName.isEmpty()) {
         storageLoation += THE_CLASS(_cryptoMethod);
     }
+
+    storageLoation += "/crypto/";
 
     if (!initStorageLocation(storageLoation)) {
         QuasarAppUtils::Params::log("CryptoStorage not inited",

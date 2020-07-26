@@ -266,6 +266,7 @@ protected:
 private:
     SqlDBCache *_db = nullptr;
     KeyStorage *_nodeKeys = nullptr;
+    QString _localNodeName;
 
     /**
      * @brief workWithAvailableDataRequest

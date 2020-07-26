@@ -157,7 +157,7 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
     deleteFromCache(delObj);
 
-    if (_writer && _writer->isValid()) {
+    if (!_writer && _writer->isValid()) {
         return _writer->deleteObject(delObj);
     }
 
@@ -167,7 +167,7 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
 bool SqlDBCache::init(const QString &initDbParams) {
 
-    if (_writer) {
+    if (!_writer) {
         return false;
     }
 
@@ -176,7 +176,7 @@ bool SqlDBCache::init(const QString &initDbParams) {
 
 bool SqlDBCache::init(const QVariantMap &params) {
 
-    if (_writer) {
+    if (!_writer) {
         return false;
     }
 
@@ -207,7 +207,7 @@ DBOperationResult SqlDBCache::checkPermision(const BaseId &id,
 }
 
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {
-    if (delObj)
+    if (!delObj)
         return;
 
     _cache.remove(delObj->dbKey());
