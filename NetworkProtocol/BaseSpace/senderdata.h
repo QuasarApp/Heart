@@ -21,7 +21,7 @@ public:
     const BaseId& senderID() const;
     void setSenderID(const BaseId &senderID);
 
-private:
+protected:
     BaseId _senderID;
 };
 }

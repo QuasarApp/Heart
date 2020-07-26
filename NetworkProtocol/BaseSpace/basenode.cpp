@@ -8,7 +8,6 @@
 #include "accesstoken.h"
 #include "basenode.h"
 #include "basenodeinfo.h"
-#include "dbdatarequest.h"
 #include "deleteobjectrequest.h"
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
@@ -120,6 +119,14 @@ BaseId BaseNode::nodeId() const {
 
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
+}
+
+void BaseNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
+    AbstractNode::connectToHost(ip, port, mode);
+
+
+
+    return ;
 }
 
 bool BaseNode::checkSignOfRequest(const AbstractData *request) {
@@ -344,11 +351,12 @@ bool BaseNode::sendData(const AbstractData *resp,
     TransportData data;
     data.setTargetAddress(nodeId);
     data.setData(*resp);
+    bool result = false;
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        sendData(&data, it.key(), req);
+        result = result || sendData(&data, it.key(), req);
     }
 
-    return false;
+    return result;
 }
 
 void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {

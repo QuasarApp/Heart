@@ -20,7 +20,6 @@ class UserRequest;
 class AvailableDataRequest;
 class WebSocket;
 class WebSocketController;
-class DBDataRequest;
 class DbAddress;
 class BaseId;
 class Sign;
@@ -151,6 +150,15 @@ public:
      * @return
      */
     BaseId nodeId() const;
+
+    /**
+     * @brief connectToHost - this ovverided method diference betwn base implementation then it send a request for get node id.
+     * @param ip
+     * @param port
+     * @param mode
+     */
+    void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) override;
+
 
 
 protected:
@@ -292,7 +300,6 @@ private:
     bool registerNewUser(const QWeakPointer<AbstractData> &user,
                          const QHostAddress &address,
                          bool rememberMe);
-
 
 };
 

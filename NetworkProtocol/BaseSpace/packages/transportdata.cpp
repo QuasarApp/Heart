@@ -31,7 +31,11 @@ void TransportData::setData(const AbstractData &data) {
 }
 
 QDataStream &TransportData::fromStream(QDataStream &stream) {
+    AbstractData::fromStream(stream);
+
     stream >> _targetAddress;
+    stream >> _senderID;
+
     QByteArray array;
     stream >> array;
     _data.fromBytes(array);
@@ -40,7 +44,11 @@ QDataStream &TransportData::fromStream(QDataStream &stream) {
 }
 
 QDataStream &TransportData::toStream(QDataStream &stream) const {
+
+    AbstractData::toStream(stream);
+
     stream << _targetAddress;
+    stream << _senderID;
     stream << _data.toBytes();
 
     return stream;
