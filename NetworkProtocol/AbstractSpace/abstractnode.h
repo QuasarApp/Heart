@@ -134,7 +134,7 @@ public:
      * @param port - port of node
      * @param mode - mode see SslMode
      */
-    virtual void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL);
+    virtual bool connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL);
 
     /**
      * @brief connectToHost - connect to host node. this method find ip address of domain befor connecting
@@ -142,7 +142,7 @@ public:
      * @param port - port of node
      * @param mode - mode see SslMode
      */
-    virtual void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
+    virtual bool connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
 
     /**
      * @brief addNode - add new node for connect
@@ -362,6 +362,13 @@ protected:
      * @return
      */
     const QHash<QHostAddress, NodeInfoData>& connections() const;
+
+    /**
+     * @brief connectionRegistered Override this method for get registered incoming connections.
+     * @param info - connection information.
+     */
+    virtual void connectionRegistered(const AbstractNodeInfo *info);
+
 private slots:
 
     void avelableBytes();

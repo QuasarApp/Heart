@@ -29,6 +29,7 @@
 #include <qsecretrsa2048.h>
 #include <ping.h>
 #include <keystorage.h>
+#include <knowaddresses.h>
 
 #define THIS_NODE "this_node_key"
 namespace NP {
@@ -121,12 +122,15 @@ BaseId BaseNode::nodeId() const {
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
 }
 
-void BaseNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
-    AbstractNode::connectToHost(ip, port, mode);
+bool BaseNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
+    if (!AbstractNode::connectToHost(ip, port, mode))
+        return false;
 
+    if (!welcomeAddress(ip)) {
+        return false;
+    }
 
-
-    return ;
+    return true;
 }
 
 bool BaseNode::checkSignOfRequest(const AbstractData *request) {
@@ -140,6 +144,57 @@ bool BaseNode::checkSignOfRequest(const AbstractData *request) {
     auto node = _db->getObject(NodeObject{dbObject->senderID()});
     return _nodeKeys->check(_nodeKeys->concatSign(object->dataForSigned(),
                                                   object->sign()), node->publickKey());
+}
+
+NodeObject BaseNode::thisNode() const {
+    NodeObject res;
+    auto keys = _nodeKeys->getNextPair(THIS_NODE);
+
+    res.setPublickKey(keys.publicKey());
+    res.setTrust(0);
+
+    return res;
+}
+
+QSet<BaseId> BaseNode::myKnowAddresses() const {
+    QSet<BaseId> res;
+
+    for (const NodeInfoData &i : connections()) {
+        auto info = dynamic_cast<const BaseNodeInfo*>(i.info);
+        if (info && info->selfId().isValid()) {
+            res += info->selfId();
+        }
+    }
+
+    return res;
+}
+
+bool BaseNode::welcomeAddress(const QHostAddress& ip) const {
+    NodeObject self = thisNode();
+
+    if (!sendData(&self, ip)) {
+        return false;
+    }
+
+    if (connections().size()) {
+
+        auto knowAddresses = myKnowAddresses();
+        if (knowAddresses.size()) {
+            KnowAddresses addressesData;
+            addressesData.setKnowAddresses(knowAddresses);
+
+            if (!sendData(&addressesData, ip)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+
+}
+
+void BaseNode::connectionRegistered(const AbstractNodeInfo *info) {
+    welcomeAddress(info->networkAddress());
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
@@ -248,8 +303,33 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
         incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
-    }
+    } else if (H_16<NodeObject>() == pkg.hdr.command) {
+        NodeObject obj(pkg);
+        if (!obj.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
+            return ParserResult::Error;
+        }
 
+        if (!workWithNodeObjectData(obj, sender)) {
+            badRequest(obj.senderID(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        return ParserResult::Processed;
+    } else if (H_16<NodeObject>() == pkg.hdr.command) {
+        KnowAddresses obj(pkg);
+        if (!obj.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        if (!workWithKnowAddresses(obj, sender)) {
+            badRequest(sender->networkAddress(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        return ParserResult::Processed;
+    }
     return ParserResult::NotProcessed;
 }
 
@@ -270,6 +350,46 @@ bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
 
     return sendData(availableData, rec.senderID(), rHeader);
 
+}
+
+bool BaseNode::workWithNodeObjectData(NodeObject& node,
+                                      const AbstractNodeInfo* nodeInfo) {
+
+    if (!_db) {
+        return false;
+    }
+
+    auto localObjec = _db->getObject(node);
+
+    if (localObjec) {
+        node.setTrust(std::min(node.trust(), localObjec->trust()));
+    } else {
+        node.setTrust(0);
+    }
+
+    if (DBOperationResult::Allowed == setObject(nodeId(), &node)) {
+        return false;
+    };
+
+    auto peerNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
+    if (!peerNodeInfo)
+        return false;
+
+    peerNodeInfo->setSelfId(node.nodeId());
+
+    return true;
+}
+
+bool BaseNode::workWithKnowAddresses(const KnowAddresses &obj,
+                                     const AbstractNodeInfo *nodeInfo) {
+
+    auto peerNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
+    if (!peerNodeInfo)
+        return false;
+
+    peerNodeInfo->addKnowAddresses(obj.knowAddresses());
+
+    return true;
 }
 
 QString BaseNode::hashgenerator(const QByteArray &pass) {

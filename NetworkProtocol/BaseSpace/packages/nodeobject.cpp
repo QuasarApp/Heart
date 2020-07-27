@@ -11,6 +11,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDataStream>
+#include <QCryptographicHash>
+#include <nodeid.h>
 
 
 namespace NP {
@@ -98,6 +100,10 @@ void NodeObject::changeTrust(int diff) {
 
 void NodeObject::setTrust(int trust) {
     _trust = trust;
+}
+
+BaseId NodeObject::nodeId() const {
+    return NodeId(QCryptographicHash::hash(publickKey(), QCryptographicHash::Sha256));
 }
 
 bool NodeObject::isValid() const {

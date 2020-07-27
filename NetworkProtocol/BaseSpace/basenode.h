@@ -10,6 +10,7 @@
 
 #include "abstractnode.h"
 #include <dbobject.h>
+#include <nodeobject.h>
 
 namespace NP {
 
@@ -24,6 +25,7 @@ class DbAddress;
 class BaseId;
 class Sign;
 class KeyStorage;
+class KnowAddresses;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -157,7 +159,7 @@ public:
      * @param port
      * @param mode
      */
-    void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) override;
+    bool connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) override;
 
 
 
@@ -271,6 +273,32 @@ protected:
      */
     virtual bool checkSignOfRequest(const AbstractData *request);
 
+    /**
+     * @brief thisNode
+     * @return This node object value.
+     */
+    NodeObject thisNode() const;
+
+    /**
+     * @brief myKnowAddresses
+     * @return set of know addresses
+     */
+    QSet<BaseId> myKnowAddresses() const;
+
+    /**
+     * @brief welcomeAddress - this method send to the ip information about yaster self.
+     * @param ip - host address of the peer node obeject
+     * @return true if all iformation sendet succesful
+     */
+    virtual bool welcomeAddress(const QHostAddress &ip) const;
+
+    /**
+     * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
+     * @param info incominng node info.
+     */
+    void connectionRegistered(const AbstractNodeInfo *info) override;
+
+
 private:
     SqlDBCache *_db = nullptr;
     KeyStorage *_nodeKeys = nullptr;
@@ -286,6 +314,21 @@ private:
     bool workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                       const Header *rHeader);
 
+    /**
+     * @brief workWithNodeObjectData - this method working with received node object data.
+     * @param node
+     * @param nodeInfo
+     * @return true if function finished successful
+     */
+    bool workWithNodeObjectData(NodeObject &node, const AbstractNodeInfo *nodeInfo);
+
+    /**
+     * @brief workWithKnowAddresses
+     * @param node
+     * @param nodeInfo
+     * @return
+     */
+    bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
 
     WebSocketController *_webSocketWorker = nullptr;
 

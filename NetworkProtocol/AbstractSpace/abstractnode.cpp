@@ -85,7 +85,7 @@ void AbstractNode::unBan(const QHostAddress &target) {
     _connections[target].info->unBan();
 }
 
-void AbstractNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
+bool AbstractNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
     QTcpSocket *socket;
     if (mode == SslMode::NoSSL) {
         socket = new QTcpSocket(nullptr);
@@ -93,11 +93,16 @@ void AbstractNode::connectToHost(const QHostAddress &ip, unsigned short port, Ss
         socket = new QSslSocket(nullptr);
     }
 
-    registerSocket(socket, &ip);
+    if (!registerSocket(socket, &ip)) {
+        return false;
+    }
+
     socket->connectToHost(ip, port);
+
+    return true;
 }
 
-void AbstractNode::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
+bool AbstractNode::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
     QHostInfo::lookupHost(domain, [this, port, mode, domain](QHostInfo info) {
 
         if (info.error() != QHostInfo::NoError) {
@@ -112,7 +117,10 @@ void AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
         }
 
 
-        connectToHost(info.addresses().first(), port, mode);
+        if (!connectToHost(info.addresses().first(), port, mode)) {
+            return;
+        }
+
         auto hostObject = getInfoPtr(info.addresses().first());
 
         if (!hostObject) {
@@ -123,6 +131,8 @@ void AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
 
         hostObject->setInfo(info);
     });
+
+    return true;
 }
 
 void AbstractNode::addNode(const QHostAddress &nodeAdderess, int port) {
@@ -306,6 +316,8 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
 
     connect(socket, &QAbstractSocket::readyRead, this, &AbstractNode::avelableBytes);
     connect(socket, &QAbstractSocket::disconnected, this, &AbstractNode::handleDisconnected);
+
+    connectionRegistered(info);
 
     return true;
 }
@@ -733,6 +745,10 @@ void AbstractNode::incomingData(AbstractData *pkg, const QHostAddress &sender) {
 
 const QHash<QHostAddress, NodeInfoData> &AbstractNode::connections() const {
     return _connections;
+}
+
+void AbstractNode::connectionRegistered(const AbstractNodeInfo *info) {
+    Q_UNUSED(info);
 }
 
 }
