@@ -392,6 +392,10 @@ bool BaseNode::workWithKnowAddresses(const KnowAddresses &obj,
     return true;
 }
 
+bool BaseNode::workWithTransportData(AbstractData *transportData) {
+
+}
+
 QString BaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",

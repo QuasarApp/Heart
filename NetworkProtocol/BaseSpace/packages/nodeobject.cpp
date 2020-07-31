@@ -107,7 +107,7 @@ BaseId NodeObject::nodeId() const {
 }
 
 bool NodeObject::isValid() const {
-    return DBObject::isValid() && _publickKey.size() == 256;
+    return DBObject::isValid() && _publickKey.size() == 512;
 }
 
 bool NodeObject::copyFrom(const AbstractData * other) {

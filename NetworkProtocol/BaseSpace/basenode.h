@@ -330,19 +330,11 @@ private:
      */
     bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
 
+    bool workWithTransportData(AbstractData* transportData);
+
     WebSocketController *_webSocketWorker = nullptr;
 
-    bool workWithUserRequest(const QSharedPointer<UserRequest> &request,
-                             const QHostAddress &addere,
-                             const Header *rHeader);
 
-    bool loginUser(const QWeakPointer<AbstractData> &user,
-                   const QWeakPointer<AbstractData> &userdb,
-                   const QHostAddress &address);
-
-    bool registerNewUser(const QWeakPointer<AbstractData> &user,
-                         const QHostAddress &address,
-                         bool rememberMe);
 
 };
 

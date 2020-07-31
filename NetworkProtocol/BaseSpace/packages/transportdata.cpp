@@ -54,6 +54,43 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
     return stream;
 }
 
+QList<HostAddress> TransportData::route() const {
+    return _route;
+}
+
+void TransportData::setRoute(const QList<HostAddress> &route) {
+    _route = route;
+}
+
+void TransportData::addNodeToRoute(const HostAddress &route) {
+    _route.push_back(route);
+}
+
+bool TransportData::strip(const HostAddress &correntAddress,
+                          const HostAddress &availabelTarget) {
+
+    QList<HostAddress>::Iterator begin = _route.end();
+    QList<HostAddress>::Iterator end = _route.end();
+
+    for (auto it = _route.begin(); it != _route.end(); ++it) {
+        if (correntAddress == *it) {
+            begin = it;
+        }
+
+        if (availabelTarget == *it) {
+            end = it;
+            break;
+        }
+    }
+
+    if (begin != _route.end() && end != _route.end()) {
+        _route.erase(begin, end);
+        return true;
+    }
+
+    return false;
+}
+
 BaseId TransportData::targetAddress() const {
     return _targetAddress;
 }
