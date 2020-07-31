@@ -392,7 +392,40 @@ bool BaseNode::workWithKnowAddresses(const KnowAddresses &obj,
     return true;
 }
 
-bool BaseNode::workWithTransportData(AbstractData *transportData) {
+ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
+                                             const AbstractNodeInfo* sender,
+                                             const Package& pkg) {
+    auto cmd = dynamic_cast<TransportData*>(transportData);
+
+    if (!cmd)
+        return ParserResult::Error;
+
+    if (cmd->targetAddress() == nodeId()) {
+        return parsePackage(cmd->data(), sender);
+    }
+
+    // dead end. i am need to work with optimisation data of route in the another threade.
+    auto sendValue = [this, &cmd, &pkg](){
+
+        if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+            return false;
+        }
+
+        return true;
+    };
+
+    if (cmd->isRouteComplete()) {
+
+        int index = cmd->route().indexOf(address());
+
+        optimisationRoute(cmd->route()) ;
+    }
+
+    cmd->addNodeToRoute(address());
+
+    if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+        return ParserResult::Error;
+    }
 
 }
 

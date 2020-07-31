@@ -330,7 +330,7 @@ private:
      */
     bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
 
-    bool workWithTransportData(AbstractData* transportData);
+    ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
 
     WebSocketController *_webSocketWorker = nullptr;
 

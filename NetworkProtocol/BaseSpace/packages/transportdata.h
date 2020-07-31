@@ -39,7 +39,7 @@ public:
      * @brief route - is list of addresses of node was the TransportData has been moved.
      * @return
      */
-    QList<HostAddress> route() const;
+    const QList<HostAddress> &route() const;
     void setRoute(const QList<HostAddress> &route);
     void addNodeToRoute(const HostAddress &route);
 

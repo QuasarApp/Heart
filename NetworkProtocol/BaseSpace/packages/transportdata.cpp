@@ -54,7 +54,7 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QList<HostAddress> TransportData::route() const {
+const QList<HostAddress>& TransportData::route() const {
     return _route;
 }
 
