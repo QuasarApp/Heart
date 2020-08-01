@@ -159,8 +159,8 @@ NodeObject BaseNode::thisNode() const {
 QSet<BaseId> BaseNode::myKnowAddresses() const {
     QSet<BaseId> res;
 
-    for (const NodeInfoData &i : connections()) {
-        auto info = dynamic_cast<const BaseNodeInfo*>(i.info);
+    for (const AbstractNodeInfo *i : connections()) {
+        auto info = dynamic_cast<const BaseNodeInfo*>(i);
         if (info && info->selfId().isValid()) {
             res += info->selfId();
         }

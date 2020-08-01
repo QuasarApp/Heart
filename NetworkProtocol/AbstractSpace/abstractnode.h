@@ -13,6 +13,7 @@
 #include <openssl/evp.h>
 
 #include <QAbstractSocket>
+#include <QMutex>
 #include <QSslConfiguration>
 #include <QTcpServer>
 #include "abstractdata.h"
@@ -47,14 +48,6 @@ enum class SslMode {
     NoSSL,
     InitFromSystem,
     InitSelfSigned
-};
-
-/**
- * @brief The NodeInfoData struct
- */
-struct NodeInfoData {
-    AbstractNodeInfo *info = nullptr;
-    Package pkg;
 };
 
 /**
@@ -361,7 +354,7 @@ protected:
      * @brief connections - return hash map of all connections of this node.
      * @return
      */
-    const QHash<QHostAddress, NodeInfoData>& connections() const;
+    QHash<QHostAddress, AbstractNodeInfo*> connections() const;
 
     /**
      * @brief connectionRegistered Override this method for get registered incoming connections.
@@ -388,10 +381,23 @@ private:
      */
     void reconnectAllKonowedNodes();
 
+    /**
+     * @brief createNewThread - this method it is wraper of the parsePackage method.
+     *  the createNewThread invoke a parsePackage in the new thread.
+     * @param pkg
+     * @param sender
+     */
+    void createNewThread(const Package &pkg, const AbstractNodeInfo* sender);
+
     SslMode _mode;
     QSslConfiguration _ssl;
-    QHash<QHostAddress, NodeInfoData> _connections;
+    QHash<QHostAddress, AbstractNodeInfo*> _connections;
+    QHash<QHostAddress, Package> _packages;
+
     QMultiHash<QHostAddress, int> _knowedNodes;
+
+    mutable QMutex _connectionsMutex;
+    mutable QMutex _knowedNodesMutex;
 
     friend class WebSocketController;
 
