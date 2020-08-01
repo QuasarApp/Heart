@@ -20,6 +20,7 @@
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
+#include <QtConcurrent>
 
 namespace NP {
 
@@ -656,24 +657,8 @@ void AbstractNode::avelableBytes() {
         pkg.data.append(array.mid(sizeof(Header)));
     }
 
-    if (pkg.isValid()) {
-
-        auto parseResult = parsePackage(pkg, getInfoPtr(id));
-
-        if (parseResult != ParserResult::Processed) {
-            auto message = QString("Package not parsed! result: '%3'. header: size(%0) command(%1) triggerCommnad(%2).").
-                    arg(pkg.hdr.size).
-                    arg(pkg.hdr.command).
-                    arg(pkg.hdr.triggerCommnad).
-                    arg(pareseResultToString(parseResult));
-
-            QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
-
-            if (parseResult == ParserResult::NotProcessed) {
-                changeTrust(id, REQUEST_ERROR);
-            }
-        }
-    }
+    if (pkg.isValid())
+        newWork(pkg, getInfoPtr(id), id);
 
     if (pkg.data.size() >= pkg.hdr.size) {
         pkg.reset();
@@ -721,9 +706,34 @@ void AbstractNode::reconnectAllKonowedNodes() {
     }
 }
 
-void AbstractNode::createNewThread(const Package &pkg, const AbstractNodeInfo *sender) {
+void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
+                           const QHostAddress& id) {
 
+    if (!sender)
+        return;
+
+    auto executeObject = [pkg, sender, id, this]() {
+        ParserResult parseResult = parsePackage(pkg, sender);
+
+        if (parseResult != ParserResult::Processed) {
+            auto message = QString("Package not parsed! result: '%3'."
+                                   " header: size(%0) command(%1) triggerCommnad(%2).").
+                    arg(pkg.hdr.size).
+                    arg(pkg.hdr.command).
+                    arg(pkg.hdr.triggerCommnad).
+                    arg(pareseResultToString(parseResult));
+
+            QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
+
+            if (parseResult == ParserResult::NotProcessed) {
+                changeTrust(id, REQUEST_ERROR);
+            }
+        }
+    };
+
+    QtConcurrent::run(executeObject);
 }
+
 
 const QHash<QHostAddress, int> &AbstractNode::getKnowedNodes() const {
     return _knowedNodes;

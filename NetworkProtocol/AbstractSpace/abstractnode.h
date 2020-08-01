@@ -382,12 +382,12 @@ private:
     void reconnectAllKonowedNodes();
 
     /**
-     * @brief createNewThread - this method it is wraper of the parsePackage method.
-     *  the createNewThread invoke a parsePackage in the new thread.
+     * @brief newWork - this method it is wraper of the parsePackage method.
+     *  the newWork invoke a parsePackage in the new thread.
      * @param pkg
      * @param sender
      */
-    void createNewThread(const Package &pkg, const AbstractNodeInfo* sender);
+    void newWork(const Package &pkg, const AbstractNodeInfo* sender, const QHostAddress &id);
 
     SslMode _mode;
     QSslConfiguration _ssl;
