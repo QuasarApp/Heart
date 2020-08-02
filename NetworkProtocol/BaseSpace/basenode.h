@@ -10,6 +10,7 @@
 
 #include "abstractnode.h"
 #include <dbobject.h>
+#include <hostaddress.h>
 #include <nodeobject.h>
 
 namespace NP {
@@ -331,6 +332,13 @@ private:
     bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
 
     ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
+
+    /**
+     * @brief optimisationRoute
+     * @param route
+     * @return range of noneded nodes addresses
+     */
+    QPair<int, int> optimisationRoute(QList<HostAddress> &route) const;
 
     WebSocketController *_webSocketWorker = nullptr;
 

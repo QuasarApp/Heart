@@ -393,6 +393,16 @@ bool BaseNode::workWithKnowAddresses(const KnowAddresses &obj,
     return true;
 }
 
+QPair<int, int> BaseNode::optimisationRoute(QList<HostAddress>& route) const {
+    int index = std::max(route.indexOf(address()), 0);
+
+    for (int i = route.size() - 1; i > index ; --i) {
+
+    }
+
+    route.
+}
+
 ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
                                              const AbstractNodeInfo* sender,
                                              const Package& pkg) {
@@ -417,16 +427,23 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
 
     if (cmd->isRouteComplete()) {
 
-        int index = cmd->route().indexOf(address());
+        auto newRoute = cmd->route();
 
-        optimisationRoute(cmd->route()) ;
+        if (!optimisationRoute(newRoute)) {
+            return ParserResult::Error;
+        }
+
+        cmd->setRoute(newRoute);
+
+    } else {
+        cmd->addNodeToRoute(address());
     }
-
-    cmd->addNodeToRoute(address());
 
     if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
         return ParserResult::Error;
     }
+
+    return ParserResult::Processed;
 
 }
 
