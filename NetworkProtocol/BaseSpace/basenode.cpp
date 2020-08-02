@@ -17,6 +17,7 @@
 #include "badnoderequest.h"
 #include "nodeid.h"
 #include "sign.h"
+#include "asyncsqldbwriter.h"
 
 #include <badrequest.h>
 #include <quasarapp.h>
@@ -102,7 +103,7 @@ BaseNode::~BaseNode() {
 
 void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
     if (!writer) {
-        writer = new SqlDBWriter();
+        writer = new AsyncSqlDbWriter();
     }
 
     if (!cache) {

@@ -45,9 +45,6 @@ protected slots:
 
 private:
     bool waitFor(bool* condition, int timeout = 30000) const;
-
-    Qt::HANDLE _mainThreadId;
-
 };
 
 }

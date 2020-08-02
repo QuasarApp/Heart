@@ -21,12 +21,11 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
 {
     QThread *own = new QThread(this);
     moveToThread(own);
-    _mainThreadId = QThread::currentThreadId();
 
 }
 
 bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
-    if (QThread::currentThreadId() == _mainThreadId) {
+    if (QThread::currentThread() == thread()) {
         return SqlDBWriter::saveObject(saveObject);
     }
 
@@ -39,7 +38,7 @@ bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
 }
 
 bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
-    if (QThread::currentThreadId() == _mainThreadId) {
+    if (QThread::currentThread() == thread()) {
         return SqlDBWriter::deleteObject(deleteObject);
     }
 
@@ -52,7 +51,7 @@ bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
 
 bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<DBObject *> &result) {
 
-    if (QThread::currentThreadId() == _mainThreadId) {
+    if (QThread::currentThread() == thread()) {
         return SqlDBWriter::getAllObjects(templateObject, result);
     }
 

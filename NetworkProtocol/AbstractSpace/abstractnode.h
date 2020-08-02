@@ -29,6 +29,8 @@ class QSslConfiguration;
 
 namespace NP {
 
+class DataSender;
+
 /**
  * @brief The ParserResult enum
  * Error - parser detect a errorob package
@@ -367,7 +369,6 @@ private slots:
     void avelableBytes();
     void handleDisconnected();
 
-
 private:
 
     /**
@@ -393,6 +394,7 @@ private:
     QSslConfiguration _ssl;
     QHash<QHostAddress, AbstractNodeInfo*> _connections;
     QHash<QHostAddress, Package> _packages;
+    DataSender * _dataSender = nullptr;
 
     QMultiHash<QHostAddress, int> _knowedNodes;
 

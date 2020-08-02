@@ -150,6 +150,7 @@ protected:
     void setSct(QAbstractSocket *sct);
 
 private:
+
     QHostInfo *_info = nullptr;
     QHostAddress _networkAddress;
 

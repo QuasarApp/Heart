@@ -210,7 +210,9 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     if (!delObj)
         return;
 
+    _cacheMutex.lock();
     _cache.remove(delObj->dbKey());
+    _cacheMutex.unlock();
 }
 
 void SqlDBCache::saveToCache(const DBObject *obj) {
@@ -219,12 +221,18 @@ void SqlDBCache::saveToCache(const DBObject *obj) {
 
     // TO DO Fix this bug
     // bug : pointer is rewrited!!!!
+
+    _cacheMutex.lock();
     _cache[obj->dbKey()] = const_cast<DBObject*>(obj);
+    _cacheMutex.unlock();
+
     emit sigItemChanged(obj);
 
 }
 
 DBObject* SqlDBCache::getFromCache(uint objKey) {
+
+    QMutexLocker locker(&_cacheMutex);
 
     if (!_cache.contains(objKey)) {
         return nullptr;

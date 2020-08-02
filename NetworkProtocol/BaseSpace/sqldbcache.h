@@ -150,6 +150,7 @@ private:
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
     QMutex _saveLaterMutex;
+    QMutex _cacheMutex;
 
     SqlDBCasheWriteMode _mode;
 

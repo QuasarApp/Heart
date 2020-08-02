@@ -13,6 +13,7 @@
 #include <QSharedPointer>
 #include <dbobject.h>
 #include <baseid.h>
+#include <QMutex>
 
 namespace NP {
 
@@ -46,6 +47,9 @@ private:
     /// subscribers it is nodes or clients
     QHash<DbAddress, QSet<BaseId>> _subscribs;
     QHash<BaseId, QSet<DbAddress>> _items;
+
+    QMutex _subscribsMutex;
+    QMutex _itemsMutex;
 
     BaseNode *_node = nullptr;
 

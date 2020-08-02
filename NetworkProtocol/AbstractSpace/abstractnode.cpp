@@ -6,6 +6,7 @@
 */
 
 #include "abstractnode.h"
+#include "datasender.h"
 #include "ping.h"
 #include "qsecretrsa2048.h"
 #include "workstate.h"
@@ -20,6 +21,7 @@
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
+#include <QMetaObject>
 #include <QtConcurrent>
 
 namespace NP {
@@ -28,6 +30,8 @@ AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
     QTcpServer(ptr) {
 
     _mode = mode;
+
+    _dataSender = new DataSender();
 
     setMode(_mode);
 }
@@ -396,10 +400,12 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
         return false;
     }
 
-    auto bytes = pkg.toBytes();
-    bool sendet = bytes.size() == target->write(bytes);
+    return QMetaObject::invokeMethod(const_cast<DataSender*>(_dataSender),
+                                     "sendPackagePrivate",
+                                     Qt::QueuedConnection,
+                                     Q_ARG(QByteArray, pkg.toBytes()),
+                                     Q_ARG(QAbstractSocket*, target));
 
-    return sendet;
 }
 
 bool AbstractNode::sendData(const AbstractData *resp,
