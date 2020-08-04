@@ -6,6 +6,8 @@
 */
 
 #include "transportdata.h"
+#include <QCryptographicHash>
+#include <QDateTime>
 namespace NP {
 
 TransportData::TransportData() {
@@ -22,6 +24,12 @@ const Package &TransportData::data() const {
 
 void TransportData::setData(const Package &data) {
     _data = data;
+
+    QByteArray tmp = _data.data;
+    quint64 time = QDateTime::currentMSecsSinceEpoch();
+    tmp.insert(sizeof(time), reinterpret_cast<char*>(&time));
+
+    _packageId.fromRaw(QCryptographicHash::hash(tmp, QCryptographicHash::Sha256));
 }
 
 void TransportData::setData(const AbstractData &data) {
@@ -54,12 +62,27 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
     return stream;
 }
 
+BaseId TransportData::packageId() const {
+    return _packageId;
+}
+
 const QList<HostAddress>& TransportData::route() const {
     return _route;
 }
 
-void TransportData::setRoute(const QList<HostAddress> &route) {
+bool TransportData::setRoute(const QList<HostAddress> &route) {
+
+    QSet<HostAddress> test;
+    for (const auto& address: route) {
+        if (test.contains(address))
+            return false;
+
+        test.insert(address);
+    }
+
     _route = route;
+
+    return _route.size();
 }
 
 void TransportData::addNodeToRoute(const HostAddress &route) {
@@ -101,5 +124,9 @@ void TransportData::setTargetAddress(const BaseId &targetAddress) {
 
 bool TransportData::isValid() const {
     return  _data.isValid() && _targetAddress.isValid();
+}
+
+bool TransportData::isHaveRoute() const {
+    return isValid() && _route.size();
 }
 }

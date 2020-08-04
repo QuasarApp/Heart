@@ -18,6 +18,7 @@
 #include "nodeid.h"
 #include "sign.h"
 #include "asyncsqldbwriter.h"
+#include "router.h"
 
 #include <badrequest.h>
 #include <quasarapp.h>
@@ -40,6 +41,7 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
 
     _webSocketWorker = new WebSocketController(this);
     _nodeKeys = new KeyStorage(new QSecretRSA2048());
+    _router = new Router();
 
 }
 
@@ -393,59 +395,71 @@ bool BaseNode::workWithKnowAddresses(const KnowAddresses &obj,
     return true;
 }
 
-QPair<int, int> BaseNode::optimisationRoute(QList<HostAddress>& route) const {
-    int index = std::max(route.indexOf(address()), 0);
-
-    for (int i = route.size() - 1; i > index ; --i) {
-
-    }
-
-    route.
-}
-
 ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
                                              const AbstractNodeInfo* sender,
                                              const Package& pkg) {
+
+    // convert transoprt pakcage
     auto cmd = dynamic_cast<TransportData*>(transportData);
 
     if (!cmd)
         return ParserResult::Error;
 
+    // ignore processed packages
+    if (_router->isProcessed(cmd->packageId()))
+        return ParserResult::Processed;
+
+    // check distanation
     if (cmd->targetAddress() == nodeId()) {
         return parsePackage(cmd->data(), sender);
     }
 
-    // dead end. i am need to work with optimisation data of route in the another threade.
-    auto sendValue = [this, &cmd, &pkg](){
+    // check exists route
+    if (cmd->isHaveRoute()) {
 
-        if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
-            return false;
-        }
-
-        return true;
-    };
-
-    if (cmd->isRouteComplete()) {
-
+        // if package have a route then remove all nodes from sender to this node from route and update route
         auto newRoute = cmd->route();
+        if (!sender)
+            return ParserResult::Error;
 
-        if (!optimisationRoute(newRoute)) {
+        cmd->strip(sender->networkAddress(), address());
+        if (!cmd->setRoute(newRoute)) {
             return ParserResult::Error;
         }
 
-        cmd->setRoute(newRoute);
-
     } else {
+        // if command not have a route then add this node to end route
         cmd->addNodeToRoute(address());
     }
 
-    if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+    // save route for sender node from this node
+    auto routeFromHereToSender = cmd->route();
+    int index = routeFromHereToSender.indexOf(address());
+
+    if (index < 0) {
+        QuasarAppUtils::Params::log("own node no findet on route.",
+                                    QuasarAppUtils::Error);
+    }
+
+    routeFromHereToSender.erase(routeFromHereToSender.begin(), routeFromHereToSender.begin() + index);
+    _router->updateRoute(cmd->senderID(), routeFromHereToSender);
+
+    // send all nodes this package from distanation to this position
+    auto it = cmd->route().rbegin();
+    while (!sendData(cmd, *it, &pkg.hdr) && it != cmd->route().rend()) {
+        it++;
+    }
+
+    // send bodcast if route is invalid
+    if (it == cmd->route().rend() && ! sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
         return ParserResult::Error;
     }
 
+    _router->addProcesedPackage(cmd->packageId());
     return ParserResult::Processed;
 
 }
+
 
 QString BaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
@@ -517,21 +531,32 @@ bool BaseNode::sendData(const AbstractData *resp,
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        auto info = dynamic_cast<BaseNodeInfo*>(it.value().info);
+        auto info = dynamic_cast<BaseNodeInfo*>(it.value());
         if (info && info->isKnowAddress(nodeId)) {
             return sendData(resp, it.key(), req);
         }
     }
 
-    TransportData data;
-    data.setTargetAddress(nodeId);
-    data.setData(*resp);
-    bool result = false;
-    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        result = result || sendData(&data, it.key(), req);
+    auto brodcast = [this, &nodes, req](const AbstractData *data){
+        bool result = false;
+        for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+            result = result || sendData(data, it.key(), req);
+        }
+
+        return result;
+    };
+
+    if (resp->cmd() != H_16<TransportData>()) {
+        TransportData data;
+        data.setTargetAddress(nodeId);
+        data.setData(*resp);
+
+        return brodcast(&data);
     }
 
-    return result;
+    return brodcast(resp);
+
+
 }
 
 void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {

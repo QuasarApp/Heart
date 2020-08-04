@@ -18,4 +18,7 @@
 #define DEFAULT_DB_INIT_FILE_PATH ":/sql/BaseSpace/Res/BaseDB.sql"
 #define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
 
+#define ROUTE_COUNT_LIMIT 1000
+#define TRANSPORT_PACKAGES_CACHE 1000
+
 #endif // CONFIG_H

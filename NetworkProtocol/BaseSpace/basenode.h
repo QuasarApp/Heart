@@ -27,6 +27,7 @@ class BaseId;
 class Sign;
 class KeyStorage;
 class KnowAddresses;
+class Router;
 
 /**
  * @brief The BaseNode class - base inplementation of nodes
@@ -334,15 +335,18 @@ private:
     ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
 
     /**
-     * @brief optimisationRoute
-     * @param route
-     * @return range of noneded nodes addresses
+     * @brief optimizeRoute - this method reduces the size of the route by removing unnecessary nodes.
+     * @param node
+     * @param rawRoute
+     * @return
      */
-    QPair<int, int> optimisationRoute(QList<HostAddress> &route) const;
+    bool optimizeRoute(const BaseId& node,
+                       const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
+                       QList<HostAddress> rawRoute);
 
     WebSocketController *_webSocketWorker = nullptr;
 
-
+    Router *_router = nullptr;
 
 };
 

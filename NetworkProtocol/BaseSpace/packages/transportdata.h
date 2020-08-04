@@ -27,6 +27,7 @@ public:
     void setData(const Package &data);
     void setData(const AbstractData& data);
     bool isValid() const;
+    bool isHaveRoute() const;
 
     /**
      * @brief targetAddress - targetAddress
@@ -40,7 +41,13 @@ public:
      * @return
      */
     const QList<HostAddress> &route() const;
-    void setRoute(const QList<HostAddress> &route);
+
+    /**
+     * @brief setRoute - set and validate route.
+     * @param route
+     * @return true if a new route is valid
+     */
+    bool setRoute(const QList<HostAddress> &route);
     void addNodeToRoute(const HostAddress &route);
 
     /**
@@ -51,6 +58,12 @@ public:
      */
     bool strip(const HostAddress& correntAddress, const HostAddress& availabelTarget);
 
+    /**
+     * @brief packageId
+     * @return unique package id.
+     */
+    BaseId packageId() const;
+
 protected:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
@@ -59,6 +72,8 @@ private:
     Package _data;
     BaseId _targetAddress;
     QList<HostAddress> _route;
+    BaseId _packageId;
+
 
 
 };
