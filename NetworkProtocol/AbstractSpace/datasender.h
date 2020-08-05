@@ -23,7 +23,7 @@ public slots:
      * @param array
      * @param target
      */
-    void sendPackagePrivate(QByteArray array, QAbstractSocket * target) const;
+    void sendPackagePrivate(QByteArray array, void *target) const;
 };
 }
 #endif // DATASENDER_H

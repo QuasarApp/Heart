@@ -332,6 +332,13 @@ private:
      */
     bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
 
+    /**
+     * @brief workWithTransportData
+     * @param transportData
+     * @param sender
+     * @param pkg
+     * @return
+     */
     ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
 
     /**

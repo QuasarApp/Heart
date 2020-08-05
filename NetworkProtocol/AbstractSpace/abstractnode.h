@@ -399,5 +399,6 @@ private:
 
 
 };
+
 }
 #endif // ABSTRACTNODE_H

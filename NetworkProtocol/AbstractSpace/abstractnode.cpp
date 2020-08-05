@@ -151,10 +151,12 @@ bool AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
 
 void AbstractNode::addNode(const QHostAddress &nodeAdderess, int port) {
     _knowedNodesMutex.lock();
+
     _knowedNodes.insert(nodeAdderess, port);
+    reconnectAllKonowedNodes();
+
     _knowedNodesMutex.unlock();
 
-    reconnectAllKonowedNodes();
 }
 
 void AbstractNode::removeNode(const QHostAddress &nodeAdderess, int port) {
@@ -332,7 +334,8 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const QHostAddress* c
     _connectionsMutex.unlock();
 
     connect(socket, &QAbstractSocket::readyRead, this, &AbstractNode::avelableBytes);
-    connect(socket, &QAbstractSocket::disconnected, this, &AbstractNode::handleDisconnected);
+    connect(socket, &QAbstractSocket::disconnected, this, &AbstractNode::handleDisconnected,
+            Qt::QueuedConnection);
 
     connectionRegistered(info);
 
@@ -400,7 +403,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
                                      "sendPackagePrivate",
                                      Qt::QueuedConnection,
                                      Q_ARG(QByteArray, pkg.toBytes()),
-                                     Q_ARG(QAbstractSocket*, target));
+                                     Q_ARG(void*, target));
 
 }
 
@@ -697,8 +700,6 @@ bool AbstractNode::listen(const QHostAddress &address, int port) {
 }
 
 void AbstractNode::reconnectAllKonowedNodes() {
-
-    QMutexLocker locker(&_knowedNodesMutex);
 
     for (auto it = _knowedNodes.begin(); it != _knowedNodes.end(); ++it) {
         AbstractNodeInfo* info = getInfoPtr(it.key());

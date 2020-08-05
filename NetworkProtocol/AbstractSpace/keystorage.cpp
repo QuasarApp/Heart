@@ -27,7 +27,7 @@ KeyStorage::KeyStorage(ICrypto * cryptoMethod) {
 KeyStorage::~KeyStorage() {
 
     stop();
-    waitForThreadFinished(9000000);
+    waitForThreadFinished(30000);
 
     if (!saveStorage()) {
         QuasarAppUtils::Params::log("save keys to storae is failed!",
