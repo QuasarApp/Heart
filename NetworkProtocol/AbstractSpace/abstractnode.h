@@ -154,16 +154,10 @@ public:
     void removeNode(const QHostAddress& nodeAdderess, int port);
 
     /**
-     * @brief port
-     * @return current node port
-     */
-    unsigned short port() const;
-
-    /**
      * @brief address
      * @return return current adders
      */
-    QHostAddress address() const;
+    HostAddress address() const;
 
     /**
      * @brief getSslConfig

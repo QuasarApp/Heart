@@ -5,6 +5,11 @@ HostAddress::HostAddress() {
 
 }
 
+HostAddress::HostAddress(const QHostAddress &other, int port):
+    QHostAddress(other) {
+    setPort(port);
+}
+
 unsigned short HostAddress::port() const {
     return _port;
 }

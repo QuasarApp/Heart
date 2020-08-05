@@ -217,16 +217,8 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
     } else if (H_16<TransportData>() == pkg.hdr.command) {
         TransportData cmd(pkg);
+        return workWithTransportData(&cmd, sender, pkg);
 
-        if (cmd.targetAddress() == nodeId()) {
-            return parsePackage(cmd.data(), sender);
-        }
-
-        if (!sendData(&cmd, cmd.targetAddress(), &pkg.hdr)) {
-            return ParserResult::Error;
-        }
-
-        return ParserResult::Processed;
 
     } else if (H_16<AvailableDataRequest>() == pkg.hdr.command) {
         AvailableDataRequest cmd(pkg);

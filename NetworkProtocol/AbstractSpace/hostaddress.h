@@ -10,6 +10,7 @@ class NETWORKPROTOCOLSHARED_EXPORT HostAddress: public QHostAddress
 {
 public:
     explicit HostAddress();
+    explicit HostAddress(const QHostAddress& other, int port);
 
 
     unsigned short port() const;

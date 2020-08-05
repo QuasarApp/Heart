@@ -47,7 +47,7 @@ void AbstractNodeInfo::unBan() {
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
     if (_sct) {
-        setNetworkAddress(_sct->peerAddress());
+        setNetworkAddress(HostAddress{_sct->peerAddress(), _sct->peerPort()});
 
         QHostInfo::lookupHost(networkAddress().toString(), [this] (QHostInfo info){
             if (dynamic_cast<AbstractNodeInfo*>(this)) {
@@ -57,14 +57,14 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     }
 }
 
-QHostAddress AbstractNodeInfo::networkAddress() const {
+HostAddress AbstractNodeInfo::networkAddress() const {
     if (_sct->isValid())
-        return _sct->peerAddress();
+        return HostAddress{_sct->peerAddress(), _sct->peerPort()};
 
     return _networkAddress;
 }
 
-void AbstractNodeInfo::setNetworkAddress(const QHostAddress &networkAddress) {
+void AbstractNodeInfo::setNetworkAddress(const HostAddress &networkAddress) {
     _networkAddress = networkAddress;
 }
 

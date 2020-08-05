@@ -167,12 +167,8 @@ void AbstractNode::removeNode(const QHostAddress &nodeAdderess, int port) {
     }
 }
 
-unsigned short AbstractNode::port() const {
-    return serverPort();
-}
-
-QHostAddress AbstractNode::address() const {
-    return serverAddress();
+HostAddress AbstractNode::address() const {
+    return HostAddress{serverAddress(), serverPort()};
 }
 
 AbstractNode::~AbstractNode() {

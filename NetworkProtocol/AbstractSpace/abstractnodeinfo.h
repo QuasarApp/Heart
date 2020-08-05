@@ -7,6 +7,7 @@
 
 #ifndef ABSTRACTNODEINFO_H
 #define ABSTRACTNODEINFO_H
+#include "hostaddress.h"
 #include "networkprotocol_global.h"
 
 #include <QHostAddress>
@@ -134,13 +135,13 @@ public:
      * @brief networkAddress
      * @return network adderess of node
      */
-    QHostAddress networkAddress() const;
+    HostAddress networkAddress() const;
 
     /**
      * @brief setNetworkAddress - update network address
      * @param networkAddress - new address
      */
-    void setNetworkAddress(const QHostAddress &networkAddress);
+    void setNetworkAddress(const HostAddress &networkAddress);
 
 protected:
     /**
@@ -152,7 +153,7 @@ protected:
 private:
 
     QHostInfo *_info = nullptr;
-    QHostAddress _networkAddress;
+    HostAddress _networkAddress;
 
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
