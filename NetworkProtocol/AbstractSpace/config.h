@@ -13,7 +13,7 @@
 
 #define DEFAULT_PORT          3090
 
-#define DEFAULT_DB_NAME "NodeStorage.sqlite"
+#define DEFAULT_DB_NAME "Storage.sqlite"
 #define DEFAULT_DB_PATH QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
 #define DEFAULT_DB_INIT_FILE_PATH ":/sql/BaseSpace/Res/BaseDB.sql"
 #define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour

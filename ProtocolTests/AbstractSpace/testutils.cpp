@@ -15,7 +15,7 @@ bool TestUtils::funcPrivateConnect(const std::function<bool()> &requestFunc,
         return false;
     }
 
-    bool return_value = TestUtils::wait(checkFunc, 100000);
+    bool return_value = TestUtils::wait(checkFunc, 1000);
     QObject::disconnect(m_connection);
 
     return return_value;

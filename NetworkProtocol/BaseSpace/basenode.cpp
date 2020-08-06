@@ -504,7 +504,7 @@ QVariantMap BaseNode::defaultDbParams() const {
 
     return {
         {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + DEFAULT_DB_NAME},
+        {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + _localNodeName + "_" + DEFAULT_DB_NAME},
         {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
     };
 }
