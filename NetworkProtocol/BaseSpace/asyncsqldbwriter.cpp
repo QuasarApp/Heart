@@ -21,6 +21,7 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
 {
     QThread *own = new QThread(this);
     moveToThread(own);
+    own->start();
 
 }
 

@@ -46,11 +46,12 @@ BaseNodeTest::~BaseNodeTest() {
 
 void BaseNodeTest::test() {
     QVERIFY(testICtypto());
+    QVERIFY(powerTest());
     QVERIFY(connectNetworkTest());
     QVERIFY(transportDataTest());
 
     QVERIFY(performanceTest());
-    QVERIFY(powerTest());
+    QVERIFY(securityTest());
 
 }
 
@@ -143,6 +144,18 @@ bool BaseNodeTest::testICtypto() {
     return true;
 }
 
+bool BaseNodeTest::powerTest() {
+    auto _nodeAPtr = new NP::BaseNode();
+
+    if (!_nodeAPtr->run(TEST_LOCAL_HOST, TEST_PORT, "powerTest")) {
+        return false;
+    };
+
+    delete _nodeAPtr;
+
+    return true;
+}
+
 bool BaseNodeTest::connectNetworkTest() {
     int nodeAPort = TEST_PORT + 0;
     int nodeBPort = TEST_PORT + 1;
@@ -192,8 +205,9 @@ bool BaseNodeTest::performanceTest() {
     return false;
 }
 
-bool BaseNodeTest::powerTest() {
+bool BaseNodeTest::securityTest() {
     return false;
 }
+
 
 

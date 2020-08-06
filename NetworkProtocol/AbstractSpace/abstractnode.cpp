@@ -680,7 +680,7 @@ void AbstractNode::handleDisconnected() {
         // log error
 
         auto ptr = getInfoPtr(_sender->peerAddress());
-        if (!ptr) {
+        if (ptr) {
             ptr->disconnect();
         } else {
             QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"

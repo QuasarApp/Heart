@@ -9,7 +9,7 @@ namespace NP {
 
 /**
  * @brief The DataSender class - this class create a queue for sendet data to network.
- *  work on a own thread
+ *  work on a main thread
  */
 class DataSender: public QObject
 {
