@@ -25,7 +25,7 @@ protected:
     ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
     QVariantMap defaultDbParams() const override;
     bool workWithUserRequest(const AbstractData*,
-                             const QHostAddress &addere,
+                             const HostAddress &addere,
                              const Header *rHeader);
 
 private:
@@ -37,7 +37,7 @@ private:
      * @return
      */
     bool registerNewUser(const AbstractData* user,
-                         const QHostAddress &address);
+                         const HostAddress &address);
 
     /**
      * @brief loginUser
@@ -47,7 +47,7 @@ private:
      */
     bool loginUser(const AbstractData* user,
                    const AbstractData* userdb,
-                   const QHostAddress &address);
+                   const HostAddress &address);
 };
 
 }

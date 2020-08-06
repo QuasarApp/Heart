@@ -125,8 +125,8 @@ BaseId BaseNode::nodeId() const {
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
 }
 
-bool BaseNode::connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) {
-    if (!AbstractNode::connectToHost(ip, port, mode))
+bool BaseNode::connectToHost(const HostAddress &ip, SslMode mode) {
+    if (!AbstractNode::connectToHost(ip, mode))
         return false;
 
     if (!welcomeAddress(ip)) {
@@ -172,7 +172,7 @@ QSet<BaseId> BaseNode::myKnowAddresses() const {
     return res;
 }
 
-bool BaseNode::welcomeAddress(const QHostAddress& ip) const {
+bool BaseNode::welcomeAddress(const HostAddress& ip) const {
     NodeObject self = thisNode();
 
     if (!sendData(&self, ip)) {
@@ -510,7 +510,7 @@ QVariantMap BaseNode::defaultDbParams() const {
 }
 
 bool BaseNode::sendData(const AbstractData *resp,
-                        const QHostAddress &addere,
+                        const HostAddress &addere,
                         const Header *req) const {
 
     return AbstractNode::sendData(resp, addere, req);
@@ -551,7 +551,7 @@ bool BaseNode::sendData(const AbstractData *resp,
 
 }
 
-void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {
+void BaseNode::badRequest(const HostAddress &address, const Header &req, const QString msg) {
     AbstractNode::badRequest(address, req, msg);
 }
 
@@ -576,7 +576,7 @@ void BaseNode::badRequest(const BaseId& address, const Header &req, const QStrin
                                 QuasarAppUtils::Info);
 }
 
-bool BaseNode::changeTrust(const QHostAddress &id, int diff) {
+bool BaseNode::changeTrust(const HostAddress &id, int diff) {
     return AbstractNode::changeTrust(id, diff);
 }
 

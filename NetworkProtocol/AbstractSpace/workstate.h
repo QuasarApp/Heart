@@ -8,7 +8,7 @@
 #ifndef WORKSTATE_H
 #define WORKSTATE_H
 
-#include <QHostAddress>
+#include <hostaddress.h>
 #include <QList>
 
 namespace NP {
@@ -23,7 +23,7 @@ private:
     int maxConnectionCount = 0;
     bool isRun = false;
 
-    QList<QHostAddress> _banedList;
+    QList<HostAddress> _banedList;
 
     QString getWorkStateString() const;
 public:
@@ -67,13 +67,13 @@ public:
      * @brief getBanedList
      * @return list of id's of baned nodes
      */
-    QList<QHostAddress> getBanedList() const;
+    QList<HostAddress> getBanedList() const;
 
     /**
      * @brief setBanedList
      * @param banedList set new baned list
      */
-    void setBanedList(const QList<QHostAddress> &banedList);
+    void setBanedList(const QList<HostAddress> &banedList);
 
     /**
      * @brief getIsRun

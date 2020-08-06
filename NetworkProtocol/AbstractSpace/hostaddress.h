@@ -3,14 +3,22 @@
 #include "networkprotocol_global.h"
 
 #include <QHostAddress>
+#include "config.h"
 
 namespace NP {
 
+/**
+ * @brief The HostAddress class - this is Wraper of QHostAddress
+ */
 class NETWORKPROTOCOLSHARED_EXPORT HostAddress: public QHostAddress
 {
 public:
     explicit HostAddress();
-    explicit HostAddress(const QHostAddress& other, int port);
+    explicit HostAddress(const QHostAddress& other, int port = DEFAULT_PORT);
+    explicit HostAddress(const QString& other, int port = DEFAULT_PORT);
+    HostAddress(const SpecialAddress& other, int port = DEFAULT_PORT);
+
+    HostAddress(const HostAddress& other);
 
 
     unsigned short port() const;

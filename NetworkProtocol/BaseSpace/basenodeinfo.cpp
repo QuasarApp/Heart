@@ -9,7 +9,7 @@
 #include "permisions.h"
 #include "dbaddress.h"
 #include <QTcpSocket>
-#include <QHostAddress>
+#include <hostaddress.h>
 
 namespace NP {
 

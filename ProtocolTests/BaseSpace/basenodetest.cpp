@@ -16,7 +16,7 @@ public:
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const QHostAddress &sender) {
+    void incomingData(NP::AbstractData *pkg, const NP::HostAddress &sender) {
         Q_UNUSED(sender);
 
         auto ping = dynamic_cast<NP::Ping*>(pkg);
@@ -180,8 +180,8 @@ bool BaseNodeTest::connectNetworkTest() {
     auto nodeB = _nodeBPtr->nodeId();
     auto nodeC = _nodeCPtr->nodeId();
 
-    _nodeAPtr->addNode(QHostAddress(TEST_LOCAL_HOST), nodeBPort);
-    _nodeBPtr->addNode(QHostAddress(TEST_LOCAL_HOST), nodeCPort);
+    _nodeAPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeBPort));
+    _nodeBPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeCPort));
 
     auto request = [_nodeAPtr, nodeC]() {
         return _nodeAPtr->ping(nodeC);

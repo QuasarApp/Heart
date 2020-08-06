@@ -10,7 +10,7 @@
 #include "hostaddress.h"
 #include "networkprotocol_global.h"
 
-#include <QHostAddress>
+#include <hostaddress.h>
 
 
 class QAbstractSocket;

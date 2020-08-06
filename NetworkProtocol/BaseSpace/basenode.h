@@ -96,7 +96,7 @@ public:
      * @return true if a function finished seccussful
      */
     bool sendData(const AbstractData *resp,
-                  const QHostAddress &addere,
+                  const HostAddress &addere,
                   const Header *req = nullptr) const override;
 
     /**
@@ -115,7 +115,7 @@ public:
      * @param req
      * @param msg
      */
-    void badRequest(const QHostAddress &address, const Header &req,
+    void badRequest(const HostAddress &address, const Header &req,
                     const QString msg = "") override;
 
     /**
@@ -132,7 +132,7 @@ public:
      * @param id - ip address of node
      * @param diff
      */
-    bool changeTrust(const QHostAddress &id, int diff) override;
+    bool changeTrust(const HostAddress &id, int diff) override;
 
     /**
      * @brief changeTrust change trus of node with id.
@@ -161,7 +161,7 @@ public:
      * @param port
      * @param mode
      */
-    bool connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode) override;
+    bool connectToHost(const HostAddress &ip, SslMode mode) override;
 
 
 
@@ -221,7 +221,7 @@ protected:
      * @return
      */
     bool workWithDataRequest(const AbstractData* rec,
-                             const QHostAddress &addere,
+                             const HostAddress &addere,
                              const Header *rHeader);
 
     /**
@@ -292,7 +292,7 @@ protected:
      * @param ip - host address of the peer node obeject
      * @return true if all iformation sendet succesful
      */
-    virtual bool welcomeAddress(const QHostAddress &ip) const;
+    virtual bool welcomeAddress(const HostAddress &ip) const;
 
     /**
      * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.

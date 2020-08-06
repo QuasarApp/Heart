@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QVariantMap>
 #include <abstractnode.h>
+#include <hostaddress.h>
 
 bool TestUtils::funcPrivateConnect(const std::function<bool()> &requestFunc,
                                    const std::function<bool()> &checkFunc,
@@ -46,7 +47,7 @@ bool TestUtils::connectFunc(
         unsigned short port) {
 
     auto wraper = [&cli, address, port]() {
-        cli->connectToHost(QHostAddress(address), port);
+        cli->connectToHost(NP::HostAddress{address, port});
         return true;
     };
 

@@ -6,7 +6,7 @@
 */
 
 #include "abstractnodeinfo.h"
-#include <QHostAddress>
+#include <hostaddress.h>
 #include <QAbstractSocket>
 #include <QDataStream>
 #include <QHostInfo>

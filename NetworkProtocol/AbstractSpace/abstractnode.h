@@ -53,6 +53,16 @@ enum class SslMode {
 };
 
 /**
+ * @brief The ConnectionNodeState enum - This is status of known nodes envirement.
+ */
+enum class ConnectionNodeState {
+    //// a node with this status has already sent data about its environment.
+    Connected,
+    //// this node not sent data about its envirement
+    NotConnected,
+};
+
+/**
  * @brief The SslSrtData struct
  */
 struct SslSrtData {
@@ -61,6 +71,7 @@ struct SslSrtData {
     QString commonName = "Dev";
     long long endTime = 31536000L; //1 year
 };
+
 
 #define CRITICAL_ERROOR -50
 #define LOGICK_ERROOR   -20
@@ -102,34 +113,33 @@ public:
      * @param id of selected node
      * @return pointer to information about node. if address not found return nullpt
      */
-    virtual AbstractNodeInfo* getInfoPtr(const QHostAddress &id);
+    virtual AbstractNodeInfo* getInfoPtr(const HostAddress &id);
 
     /**
      * @brief getInfoPtr
      * @param id peer adders
      * @return pointer to information about node. if address not found return nullpt
      */
-    virtual const AbstractNodeInfo* getInfoPtr(const QHostAddress &id) const;
+    virtual const AbstractNodeInfo* getInfoPtr(const HostAddress &id) const;
 
     /**
      * @brief ban
      * @param target id of ban node
      */
-    virtual void ban(const QHostAddress& target);
+    virtual void ban(const HostAddress& target);
 
     /**
      * @brief unBan
      * @param target id of unban node
      */
-    virtual void unBan(const QHostAddress& target);
+    virtual void unBan(const HostAddress& target);
 
     /**
      * @brief connectToHost - connect to host node
-     * @param ip address of node
-     * @param port - port of node
+     * @param address -  address of node
      * @param mode - mode see SslMode
      */
-    virtual bool connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL);
+    virtual bool connectToHost(const HostAddress &address, SslMode mode = SslMode::NoSSL);
 
     /**
      * @brief connectToHost - connect to host node. this method find ip address of domain befor connecting
@@ -142,25 +152,23 @@ public:
     /**
      * @brief addNode - add new node for connect
      * @param nodeAdderess - the network addres of a new node.
-     * @param port - port of node
      */
-    void addNode(const QHostAddress& nodeAdderess, int port);
+    void addNode(const HostAddress& nodeAdderess);
 
     /**
      * @brief removeNode - remove node
      * @param nodeAdderess - the adddress of removed node.
-     * @param port - port of node
      */
-    void removeNode(const QHostAddress& nodeAdderess, int port);
+    void removeNode(const HostAddress& nodeAdderess);
 
     /**
-     * @brief address
+     * @brief address - address of this node
      * @return return current adders
      */
     HostAddress address() const;
 
     /**
-     * @brief getSslConfig
+     * @brief getSslConfig - configuration of this node.
      * @return current ssl configuration on this nod
      */
     QSslConfiguration getSslConfig() const;
@@ -194,13 +202,13 @@ public:
      * @param address - address of other node
      * @return true if ping sendet
      */
-    bool ping( const QHostAddress& address);
+    bool ping( const HostAddress& address);
 
     /**
      * @brief getKnowedNodes
      * @return the set of konowed nodes.
      */
-    const QHash<QHostAddress, int> &getKnowedNodes() const;
+    const QHash<HostAddress, ConnectionNodeState> &getKnowedNodes() const;
 
 signals:
     void requestError(QString msg);
@@ -242,7 +250,7 @@ protected:
      * @return
      */
     virtual bool registerSocket(QAbstractSocket *socket,
-                                const QHostAddress *clientAddress = nullptr);
+                                const HostAddress *clientAddress = nullptr);
 
     /**
      * @brief parsePackage
@@ -267,7 +275,7 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendData(const AbstractData* resp,  const QHostAddress& addere,
+    virtual bool sendData(const AbstractData* resp,  const HostAddress& addere,
                               const Header *req = nullptr) const;
 
     /**
@@ -276,7 +284,7 @@ protected:
      * @param req
      * @param msg - message of error
      */
-    virtual void badRequest(const QHostAddress &address, const Header &req,
+    virtual void badRequest(const HostAddress &address, const Header &req,
                             const QString msg = "");
 
     /**
@@ -295,7 +303,7 @@ protected:
      * @brief banedList
      * @return list of baned nodes
      */
-    QList<QHostAddress> banedList() const;
+    QList<HostAddress> banedList() const;
 
     /**
      * @brief isBaned
@@ -316,7 +324,7 @@ protected:
      * @param diff
      * @return true if all good
      */
-    virtual bool changeTrust(const QHostAddress& id, int diff);
+    virtual bool changeTrust(const HostAddress& id, int diff);
 
     /**
     * @brief incomingConnection for ssl sockets
@@ -344,13 +352,13 @@ protected:
      * @note override this method for get a signals.
      */
     virtual void incomingData(AbstractData* pkg,
-                      const QHostAddress&  sender);
+                      const HostAddress&  sender);
 
     /**
      * @brief connections - return hash map of all connections of this node.
      * @return
      */
-    QHash<QHostAddress, AbstractNodeInfo*> connections() const;
+    QHash<HostAddress, AbstractNodeInfo*> connections() const;
 
     /**
      * @brief connectionRegistered Override this method for get registered incoming connections.
@@ -368,8 +376,7 @@ private:
     /**
       @note just disaable listen method in the node objects.
      */
-    bool listen(const QHostAddress& address = QHostAddress::Any,
-                int port = 0);
+    bool listen(const HostAddress& address = HostAddress::Any);
 
     /**
      * @brief reconnectAllKonowedNodes
@@ -382,15 +389,15 @@ private:
      * @param pkg
      * @param sender
      */
-    void newWork(const Package &pkg, const AbstractNodeInfo* sender, const QHostAddress &id);
+    void newWork(const Package &pkg, const AbstractNodeInfo* sender, const HostAddress &id);
 
     SslMode _mode;
     QSslConfiguration _ssl;
-    QHash<QHostAddress, AbstractNodeInfo*> _connections;
-    QHash<QHostAddress, Package> _packages;
+    QHash<HostAddress, AbstractNodeInfo*> _connections;
+    QHash<HostAddress, Package> _packages;
     DataSender * _dataSender = nullptr;
 
-    QMultiHash<QHostAddress, int> _knowedNodes;
+    QMultiHash<HostAddress, ConnectionNodeState> _knowedNodes;
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _knowedNodesMutex;
