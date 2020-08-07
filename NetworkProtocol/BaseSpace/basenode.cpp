@@ -311,7 +311,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         }
 
         return ParserResult::Processed;
-    } else if (H_16<NodeObject>() == pkg.hdr.command) {
+    } else if (H_16<KnowAddresses>() == pkg.hdr.command) {
         KnowAddresses obj(pkg);
         if (!obj.isValid()) {
             badRequest(sender->networkAddress(), pkg.hdr);

@@ -370,7 +370,10 @@ private slots:
 
     void avelableBytes();
     void handleDisconnected();
-
+    /**
+     * @brief reconnectAllKonowedNodes
+     */
+    void reconnectAllKonowedNodes();
 private:
 
     /**
@@ -378,10 +381,7 @@ private:
      */
     bool listen(const HostAddress& address = HostAddress::Any);
 
-    /**
-     * @brief reconnectAllKonowedNodes
-     */
-    void reconnectAllKonowedNodes();
+
 
     /**
      * @brief newWork - this method it is wraper of the parsePackage method.
