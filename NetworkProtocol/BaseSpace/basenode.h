@@ -97,7 +97,7 @@ public:
      */
     bool sendData(const AbstractData *resp,
                   const HostAddress &addere,
-                  const Header *req = nullptr) const override;
+                  const Header *req = nullptr) override;
 
     /**
      * @brief sendDataToId - send data to node or clientby them id
@@ -107,7 +107,7 @@ public:
      * @return true if data sendet seccussful
      */
     virtual bool sendData(const AbstractData *resp, const BaseId &nodeId,
-                          const Header *req = nullptr) const;
+                          const Header *req = nullptr);
 
     /**
      * @brief badRequest -send bad request and change trus for ip address
@@ -292,7 +292,7 @@ protected:
      * @param ip - host address of the peer node obeject
      * @return true if all iformation sendet succesful
      */
-    virtual bool welcomeAddress(const HostAddress &ip) const;
+    virtual bool welcomeAddress(const HostAddress &ip);
 
     /**
      * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.

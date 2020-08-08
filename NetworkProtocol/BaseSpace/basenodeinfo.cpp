@@ -41,4 +41,8 @@ void BaseNodeInfo::addKnowAddresses(const QSet<BaseId> &newAddressses) {
     _knowAddresses += newAddressses;
 }
 
+bool BaseNodeInfo::confirmData() const {
+    return AbstractNodeInfo::confirmData() && _selfId.isValid();
+}
+
 }
