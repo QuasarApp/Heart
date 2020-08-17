@@ -19,13 +19,13 @@
 #include "abstractdata.h"
 #include "workstate.h"
 
-class QSslCertificate;
-class QSslKey;
-class QSslConfiguration;
-
 #include "cryptopairkeys.h"
 #include "icrypto.h"
 #include "networkprotocol_global.h"
+
+class QSslCertificate;
+class QSslKey;
+class QSslConfiguration;
 
 namespace NP {
 
@@ -53,16 +53,6 @@ enum class SslMode {
 };
 
 /**
- * @brief The ConnectionNodeState enum - This is status of known nodes envirement.
- */
-enum class ConnectionNodeState {
-    //// a node with this status has already sent data about its environment.
-    Connected,
-    //// this node not sent data about its envirement
-    NotConnected,
-};
-
-/**
  * @brief The SslSrtData struct
  */
 struct SslSrtData {
@@ -78,8 +68,11 @@ struct SslSrtData {
 #define REQUEST_ERROR   -5
 
 class Abstract;
+
 /**
- * @brief The AbstractNode class
+ * @brief The AbstractNode class - Abstract implementation of node.
+ *  this implementation have a methods for send and receive data messages,
+ *  and work with crypto method for crease a security connections betwin nodes.
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractNode : public QTcpServer
 {
@@ -208,7 +201,7 @@ public:
      * @brief getKnowedNodes
      * @return the set of konowed nodes.
      */
-    const QHash<HostAddress, ConnectionNodeState> &getKnowedNodes() const;
+    const QSet<HostAddress> &getKnowedNodes() const;
 
 signals:
     void requestError(QString msg);
@@ -276,7 +269,7 @@ protected:
      * @return
      */
     virtual bool sendData(const AbstractData* resp,  const HostAddress& addere,
-                              const Header *req = nullptr) const;
+                              const Header *req = nullptr);
 
     /**
      * @brief badRequestu
@@ -366,14 +359,21 @@ protected:
      */
     virtual void connectionRegistered(const AbstractNodeInfo *info);
 
+    /**
+     * @brief nodeStatusChanged - This method invoked when status of node chganged.
+     *  Base implementation do nothing. Override this method for add own functionality.
+     * @param node - address of changed node.
+     * @param status - new status of node.
+     *
+     */
+    virtual void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
+
 private slots:
 
     void avelableBytes();
     void handleDisconnected();
-    /**
-     * @brief reconnectAllKonowedNodes
-     */
-    void reconnectAllKonowedNodes();
+    void handleConnected();
+
 private:
 
     /**
@@ -381,7 +381,10 @@ private:
      */
     bool listen(const HostAddress& address = HostAddress::Any);
 
-
+    /**
+     * @brief reconnectAllKonowedNodes
+     */
+    void reconnectAllKonowedNodes();
 
     /**
      * @brief newWork - this method it is wraper of the parsePackage method.
@@ -391,16 +394,46 @@ private:
      */
     void newWork(const Package &pkg, const AbstractNodeInfo* sender, const HostAddress &id);
 
+
+    /**
+     * @brief nodeConfirmet - this metthod invoked when node is confirment.
+     * @param sender - node with new status;
+    */
+    void nodeConfirmet(const HostAddress &sender);
+
+    /**
+     * @brief addToSendPackageQueue - this method add pkg not queue for send data. All data sendet when node change own status to confirmed
+     * @param pkg - pakcage for send
+     * @param target - target node
+     */
+    void addToSendPackageQueue(const Package &pkg,
+                               const HostAddress &target);
+
+    /**
+     * @brief takeFromSendPackageQueue - take all packages for needet to send after confirment of the node
+     * @param node - address of target node
+     * @return list of needet to send pakcages from node
+     */
+    QList<Package> takeFromSendPackageQueue(const HostAddress& node);
+
+    /**
+     * @brief checkConfirmendOfNode - this method remove old not confirmed node.
+     * @param node - node address
+     */
+    void checkConfirmendOfNode(const HostAddress& node);
+
     SslMode _mode;
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, Package> _packages;
+    QHash<HostAddress, QList<Package>> _sendDataCache;
     DataSender * _dataSender = nullptr;
 
-    QMultiHash<HostAddress, ConnectionNodeState> _knowedNodes;
+    QSet<HostAddress> _knowedNodes;
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _knowedNodesMutex;
+    mutable QMutex _sendDataCacheMutex;
 
     friend class WebSocketController;
 

@@ -172,7 +172,7 @@ QSet<BaseId> BaseNode::myKnowAddresses() const {
     return res;
 }
 
-bool BaseNode::welcomeAddress(const HostAddress& ip) const {
+bool BaseNode::welcomeAddress(const HostAddress& ip) {
     NodeObject self = thisNode();
 
     if (!sendData(&self, ip)) {
@@ -511,14 +511,14 @@ QVariantMap BaseNode::defaultDbParams() const {
 
 bool BaseNode::sendData(const AbstractData *resp,
                         const HostAddress &addere,
-                        const Header *req) const {
+                        const Header *req) {
 
     return AbstractNode::sendData(resp, addere, req);
 }
 
 bool BaseNode::sendData(const AbstractData *resp,
                         const BaseId &nodeId,
-                        const Header *req) const {
+                        const Header *req) {
 
     auto nodes = connections();
 

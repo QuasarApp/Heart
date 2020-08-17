@@ -36,6 +36,19 @@ enum class TrustNode: unsigned char {
 };
 
 /**
+ * @brief The AbstractNodeState enum - This is status of known nodes.
+ */
+enum class NodeCoonectionStatus: int {
+    /// This node not sent data about its envirement
+    NotConnected,
+    /// The node with this status has already sent data about its environment.
+    Connected,
+    ///  The node confirmend. Node with it status sent a information
+    ///  requarement for confirm in to this node object.
+    Confirmed,
+};
+
+/**
  * @brief The AbstractNodeInfo class
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractNodeInfo
@@ -143,6 +156,24 @@ public:
      */
     void setNetworkAddress(const HostAddress &networkAddress);
 
+    /**
+     * @brief status - status of node connection
+     * @return connection status
+     */
+    NodeCoonectionStatus status() const;
+
+    /**
+     * @brief setStatus - set new value of status node
+     * @param status - new status
+     */
+    void setStatus(const NodeCoonectionStatus &status);
+
+    /**
+     * @brief confirmData - check all data of node and return true if node is confirmed
+     * @return true if node is confirmed
+     */
+    virtual bool confirmData() const;
+
 protected:
     /**
      * @brief setSct
@@ -157,6 +188,7 @@ private:
 
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
+    NodeCoonectionStatus _status = NodeCoonectionStatus::NotConnected;
 
 };
 

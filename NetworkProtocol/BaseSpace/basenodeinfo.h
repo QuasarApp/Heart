@@ -64,6 +64,12 @@ public:
      */
     void addKnowAddresses(const QSet<BaseId> &newAddressses);
 
+    /**
+     * @brief confirmData - this implementaton check self id of node.
+     * @return true if node contains valid self id.
+     */
+    bool confirmData() const override;
+
 protected:
     QSet<BaseId> _knowAddresses;
     BaseId _selfId;

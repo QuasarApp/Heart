@@ -57,6 +57,18 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     }
 }
 
+NodeCoonectionStatus AbstractNodeInfo::status() const {
+    return _status;
+}
+
+void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
+    _status = status;
+}
+
+bool AbstractNodeInfo::confirmData() const {
+    return _status != NodeCoonectionStatus::NotConnected;
+}
+
 HostAddress AbstractNodeInfo::networkAddress() const {
     if (_sct->isValid())
         return HostAddress{_sct->peerAddress(), _sct->peerPort()};
