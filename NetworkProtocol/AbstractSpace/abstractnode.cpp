@@ -156,10 +156,13 @@ bool AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
 void AbstractNode::addNode(const HostAddress &nodeAdderess) {
     _knowedNodesMutex.lock();
 
-    _knowedNodes.insert(nodeAdderess);
-    reconnectAllKonowedNodes();
-
+    _knowedNodes.insert(nodeAdderess, ConnectionNodeState::NotConnected);
     _knowedNodesMutex.unlock();
+
+
+    QMetaObject::invokeMethod(this,
+                              "reconnectAllKonowedNodes",
+                              Qt::QueuedConnection);
 
 }
 
