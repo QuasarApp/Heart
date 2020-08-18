@@ -48,6 +48,8 @@ enum class NodeCoonectionStatus: int {
     Confirmed,
 };
 
+uint qHash(NodeCoonectionStatus status);
+
 /**
  * @brief The AbstractNodeInfo class
  */

@@ -10,6 +10,8 @@
 #include <QFile>
 #include <QMutex>
 #include <QStandardPaths>
+#include "config.h"
+
 namespace NP {
 
 #define THE_CLASS(x) QString::fromLatin1(typeid(*x).name())
@@ -27,7 +29,7 @@ KeyStorage::KeyStorage(ICrypto * cryptoMethod) {
 KeyStorage::~KeyStorage() {
 
     stop();
-    waitForThreadFinished(30000);
+    waitForThreadFinished(WAIT_TIME);
 
     if (!saveStorage()) {
         QuasarAppUtils::Params::log("save keys to storae is failed!",

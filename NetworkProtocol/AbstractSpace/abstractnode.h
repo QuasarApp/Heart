@@ -13,9 +13,11 @@
 #include <openssl/evp.h>
 
 #include <QAbstractSocket>
+#include <QFutureWatcher>
 #include <QMutex>
 #include <QSslConfiguration>
 #include <QTcpServer>
+#include <QTimer>
 #include "abstractdata.h"
 #include "workstate.h"
 
@@ -368,11 +370,31 @@ protected:
      */
     virtual void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
 
+    /**
+     * @brief pushToQueue - This method add action to queue. When the node status will be equal 'triggerStatus' then node run a action method.
+     * @param node - node.
+     * @param action - lyamda function with action.
+     * @param triggerStatus - node status.
+     */
+    void pushToQueue(const std::function<void ()> &action,
+                     const HostAddress& node,
+                     NodeCoonectionStatus triggerStatus);
+
+    /**
+     * @brief takeFromQueue - take the list of actions of node. after invoke take elements will be removed.
+     * @param node - node
+     * @param triggerStatus - status of node
+     * @return list o actions
+     */
+    QList<std::function<void ()>> takeFromQueue(const HostAddress& node,
+                                                NodeCoonectionStatus triggerStatus);
 private slots:
 
     void avelableBytes();
     void handleDisconnected();
     void handleConnected();
+    void handleCheckConfirmendOfNode(HostAddress node);
+    void handleWorkerStoped();
 
 private:
 
@@ -402,21 +424,6 @@ private:
     void nodeConfirmet(const HostAddress &sender);
 
     /**
-     * @brief addToSendPackageQueue - this method add pkg not queue for send data. All data sendet when node change own status to confirmed
-     * @param pkg - pakcage for send
-     * @param target - target node
-     */
-    void addToSendPackageQueue(const Package &pkg,
-                               const HostAddress &target);
-
-    /**
-     * @brief takeFromSendPackageQueue - take all packages for needet to send after confirment of the node
-     * @param node - address of target node
-     * @return list of needet to send pakcages from node
-     */
-    QList<Package> takeFromSendPackageQueue(const HostAddress& node);
-
-    /**
      * @brief checkConfirmendOfNode - this method remove old not confirmed node.
      * @param node - node address
      */
@@ -426,14 +433,18 @@ private:
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, Package> _packages;
-    QHash<HostAddress, QList<Package>> _sendDataCache;
+
+    QHash<HostAddress, QHash<NodeCoonectionStatus, QList<std::function<void()>>>> _actionCache;
+
     DataSender * _dataSender = nullptr;
 
     QSet<HostAddress> _knowedNodes;
 
+    QSet<QFutureWatcher <bool>*> _workers;
+
     mutable QMutex _connectionsMutex;
     mutable QMutex _knowedNodesMutex;
-    mutable QMutex _sendDataCacheMutex;
+    mutable QMutex _actionCacheMutex;
 
     friend class WebSocketController;
 

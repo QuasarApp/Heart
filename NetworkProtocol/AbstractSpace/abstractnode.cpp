@@ -57,6 +57,11 @@ void AbstractNode::stop() {
     for (auto &&i : _connections) {
         i->disconnect();
     }
+
+    for (auto it: _workers) {
+        if (!it->isFinished())
+            it->cancel();
+    }
 }
 
 AbstractNodeInfo *AbstractNode::getInfoPtr(const HostAddress &id) {
@@ -163,7 +168,11 @@ void AbstractNode::removeNode(const HostAddress &nodeAdderess) {
     _knowedNodes.remove(nodeAdderess);
     _knowedNodesMutex.unlock();
 
-    takeFromSendPackageQueue(nodeAdderess);
+    for (int status = static_cast<int>(NodeCoonectionStatus::NotConnected);
+         status < static_cast<int>(NodeCoonectionStatus::Confirmed); ++status) {
+
+        takeFromQueue(nodeAdderess, static_cast<NodeCoonectionStatus>(status));
+    }
 
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
         ptr->disconnect();
@@ -344,10 +353,10 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     connect(socket, &QAbstractSocket::connected, this, &AbstractNode::handleConnected,
             Qt::QueuedConnection);
 
+
     // check node confirmed
-    QTimer::singleShot(30000, [this, cliAddress]() {
-        checkConfirmendOfNode(cliAddress);
-    });
+    QTimer::singleShot(WAIT_CONFIRM_TIME, this,
+                       std::bind(&AbstractNode::handleCheckConfirmendOfNode, this, cliAddress));
 
     connectionRegistered(info);
 
@@ -360,7 +369,6 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
     if (!(sender && sender->isValid())) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
                                     QuasarAppUtils::Error);
-        changeTrust(sender->networkAddress(), LOGICK_ERROOR);
         return ParserResult::Error;
     }
 
@@ -446,11 +454,6 @@ bool AbstractNode::sendData(const AbstractData *resp,
         QuasarAppUtils::Params::log("Response not sent because dont create package from object",
                                     QuasarAppUtils::Error);
         return false;
-    }
-
-    if (client->status() != NodeCoonectionStatus::Confirmed) {
-        addToSendPackageQueue(pkg, addere);
-        return true;
     }
 
     if (!sendPackage(pkg, client->sct())) {
@@ -700,6 +703,7 @@ void AbstractNode::handleDisconnected() {
             QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
                                         " address not valid",
                                         QuasarAppUtils::Error);
+            return;
         }
 
         ptr->setStatus(NodeCoonectionStatus::NotConnected);
@@ -726,6 +730,7 @@ void AbstractNode::handleConnected() {
             QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
                                         " address not valid",
                                         QuasarAppUtils::Error);
+            return;
         }
 
         ptr->setStatus(NodeCoonectionStatus::Connected);
@@ -737,6 +742,33 @@ void AbstractNode::handleConnected() {
     QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
                                 "dynamic_cast fail!",
                                 QuasarAppUtils::Error);
+}
+
+void AbstractNode::nodeConfirmet(const HostAddress& sender) {
+
+    auto ptr = getInfoPtr(sender);
+
+    if (!ptr) {
+        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
+                                    " address not valid",
+                                    QuasarAppUtils::Error);
+    }
+
+    ptr->setStatus(NodeCoonectionStatus::Confirmed);
+    nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::Confirmed);
+}
+
+void AbstractNode::handleCheckConfirmendOfNode(HostAddress node) {
+    checkConfirmendOfNode(node);
+}
+
+void AbstractNode::handleWorkerStoped() {
+    auto senderObject = dynamic_cast<QFutureWatcher <bool>*>(sender());
+
+    if (senderObject) {
+       _workers.remove(senderObject);
+       delete senderObject;
+    }
 }
 
 bool AbstractNode::listen(const HostAddress &address) {
@@ -776,16 +808,23 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
                 changeTrust(id, REQUEST_ERROR);
             }
 
-            return;
+            return false;
         }
 
         bool fConfirmed = sender->confirmData();
         if (fConfirmed && sender->status() != NodeCoonectionStatus::Confirmed) {
             nodeConfirmet(id);
         }
+
+        return true;
     };
 
-    QtConcurrent::run(executeObject);
+    auto worker = new QFutureWatcher <bool>();
+    worker->setFuture(QtConcurrent::run(executeObject));
+    _workers.insert(worker);
+
+    connect(worker, &QFutureWatcher<bool>::finished,
+            this, &AbstractNode::handleWorkerStoped);
 }
 
 
@@ -845,51 +884,40 @@ void AbstractNode::connectionRegistered(const AbstractNodeInfo *info) {
     Q_UNUSED(info);
 }
 
+void AbstractNode::pushToQueue(const std::function<void()>& action,
+                               const HostAddress &node,
+                               NodeCoonectionStatus triggerStatus) {
+
+    _actionCacheMutex.lock();
+    _actionCache[node][triggerStatus].push_back(action);
+    _actionCacheMutex.unlock();
+
+}
+
+QList<std::function<void ()> >
+AbstractNode::takeFromQueue(const HostAddress &node,
+                            NodeCoonectionStatus triggerStatus) {
+
+    _actionCacheMutex.lock();
+
+    auto list = _actionCache[node][triggerStatus];
+    _actionCache[node].remove(triggerStatus);
+
+    if (_actionCache[node].size() == 0)
+        _actionCache.remove(node);
+
+    _actionCacheMutex.unlock();
+
+    return list;
+}
+
 void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStatus status) {
 
-    if (status == NodeCoonectionStatus::Confirmed) {
-        QList<Package> packages = takeFromSendPackageQueue(node);
+    auto list = takeFromQueue(node, status);
 
-        for (const auto &package : packages) {
-            auto targetNode = getInfoPtr(node);
-
-            if (!targetNode) {
-                QuasarAppUtils::Params::log("fail send package to node: " + node.toString() +
-                                            " after confirmend. Fail to get socket of node");
-                continue;
-            }
-
-            if (!sendPackage(package, targetNode->sct())) {
-                QuasarAppUtils::Params::log("fail send package to node: " + node.toString() +
-                                            " after confirmend");
-            }
-        }
-
+    for (const auto &action : list) {
+        action();
     }
-}
-
-void AbstractNode::nodeConfirmet(const HostAddress& sender) {
-
-    auto ptr = getInfoPtr(sender);
-
-    if (!ptr) {
-        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                    " address not valid",
-                                    QuasarAppUtils::Error);
-    }
-
-    ptr->setStatus(NodeCoonectionStatus::Confirmed);
-    nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::Confirmed);
-}
-
-void AbstractNode::addToSendPackageQueue(const Package &pkg, const HostAddress& target) {
-    QMutexLocker loker(&_sendDataCacheMutex);
-    _sendDataCache[target].push_back(pkg);
-}
-
-QList<Package> AbstractNode::takeFromSendPackageQueue(const HostAddress &node) {
-    QMutexLocker loker(&_sendDataCacheMutex);
-    return _sendDataCache.take(node);
 }
 
 void AbstractNode::checkConfirmendOfNode(const HostAddress &node) {

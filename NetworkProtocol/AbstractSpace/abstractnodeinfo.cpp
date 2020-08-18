@@ -70,7 +70,7 @@ bool AbstractNodeInfo::confirmData() const {
 }
 
 HostAddress AbstractNodeInfo::networkAddress() const {
-    if (_sct->isValid())
+    if (isValid() && _sct->isValid())
         return HostAddress{_sct->peerAddress(), _sct->peerPort()};
 
     return _networkAddress;
@@ -119,6 +119,10 @@ QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
 QDataStream &AbstractNodeInfo::toStream(QDataStream &stream) const {
     stream << _networkAddress;
     return stream;
+}
+
+uint qHash(NodeCoonectionStatus status) {
+    return static_cast<uint>(status);
 }
 
 }

@@ -44,7 +44,13 @@ protected slots:
                                     bool *resultOfWork, bool *endOfWork = nullptr);
 
 private:
-    bool waitFor(bool* condition, int timeout = 30000) const;
+    /**
+     * @brief waitFor - The base wait function.
+     * @param condition - condition for wait
+     * @param timeout - maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @return true if condition is true.
+     */
+    bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
 };
 
 }

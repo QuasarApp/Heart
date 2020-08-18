@@ -7,6 +7,8 @@
 #include <QByteArray>
 #include <QHash>
 #include <QSet>
+#include "config.h"
+
 #define RAND_KEY ""
 
 class QMutex;
@@ -36,12 +38,12 @@ public:
      * @note if the key is not generated within the specified period of time, an invalid copy of the key pair will be returned.
      * @param accsessKey - the byte array for get a acceses to key from storage.
      * @param genesis - set this params to empty for get random key pair or set the byte array for get a key pair for genesis array.
-     * @param timeout_msec - timeout in milisecunds. default is 30000
+     * @param timeout_msec - timeout in milisecunds. default is WAIT_TIME (30000)
      * @return pair of keys.
      */
     CryptoPairKeys getNextPair(const QString &accsessKey,
                                const QByteArray &genesis = RAND_KEY,
-                               int timeout_msec = 30000);
+                               int timeout_msec = WAIT_TIME);
 
     /**
      * @brief getKeyPoolSize
@@ -165,6 +167,9 @@ protected:
      */
     virtual bool fromStorage(const QByteArray& key);
 
+    /**
+     * @brief run - start the key generator.
+     */
     void run() override;
 
     /**
@@ -175,12 +180,17 @@ private:
 
     /**
      * @brief waitForGeneratekey
+     * @param timeout - maximum time for generation new key. by default = WAIT_TIME (30000)
+     * @return true if key generated successful
+     */
+    bool waitForGeneratekey(const QString &key, int timeout = WAIT_TIME) const;
+
+    /**
+     * @brief waitForThreadFinished
      * @param timeout
      * @return
      */
-    bool waitForGeneratekey(const QString &key, int timeout = 30000) const;
-
-    bool waitForThreadFinished(int timeout = 30000) const;
+    bool waitForThreadFinished(int timeout = WAIT_TIME) const;
 
     /**
      * @brief waitFor - base waint function
@@ -189,6 +199,7 @@ private:
      * @return true if event is checkFunc return true
      */
     bool waitFor(const std::function<bool()>& checkFunc, int timeout) const;
+
     /**
      * @brief loadAllKeysFromStorage
      */
