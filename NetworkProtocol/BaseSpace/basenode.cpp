@@ -438,12 +438,12 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
 
     // send all nodes this package from distanation to this position
     auto it = cmd->route().rbegin();
-    while (!sendData(cmd, *it, &pkg.hdr) && it != cmd->route().rend()) {
+    while (it != cmd->route().rend() && !sendData(cmd, *it, &pkg.hdr)) {
         it++;
     }
 
     // send bodcast if route is invalid
-    if (it == cmd->route().rend() && ! sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+    if (it == cmd->route().rend() && !sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
         return ParserResult::Error;
     }
 
