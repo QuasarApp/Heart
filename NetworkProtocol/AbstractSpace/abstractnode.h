@@ -199,12 +199,6 @@ public:
      */
     bool ping( const HostAddress& address);
 
-    /**
-     * @brief getKnowedNodes
-     * @return the set of konowed nodes.
-     */
-    const QSet<HostAddress> &getKnowedNodes() const;
-
 signals:
     void requestError(QString msg);
 
@@ -396,17 +390,17 @@ private slots:
     void handleCheckConfirmendOfNode(HostAddress node);
     void handleWorkerStoped();
 
+    /**
+     * @brief connectNodePrivate
+     */
+    void connectNodePrivate(NP::HostAddress);
+
 private:
 
     /**
       @note just disaable listen method in the node objects.
      */
     bool listen(const HostAddress& address = HostAddress::Any);
-
-    /**
-     * @brief reconnectAllKonowedNodes
-     */
-    void reconnectAllKonowedNodes();
 
     /**
      * @brief newWork - this method it is wraper of the parsePackage method.
@@ -438,12 +432,9 @@ private:
 
     DataSender * _dataSender = nullptr;
 
-    QSet<HostAddress> _knowedNodes;
-
     QSet<QFutureWatcher <bool>*> _workers;
 
     mutable QMutex _connectionsMutex;
-    mutable QMutex _knowedNodesMutex;
     mutable QMutex _actionCacheMutex;
 
     friend class WebSocketController;

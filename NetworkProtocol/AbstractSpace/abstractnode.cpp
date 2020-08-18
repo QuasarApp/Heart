@@ -154,22 +154,15 @@ bool AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
 }
 
 void AbstractNode::addNode(const HostAddress &nodeAdderess) {
-    _knowedNodesMutex.lock();
-
-    _knowedNodes.insert(nodeAdderess, ConnectionNodeState::NotConnected);
-    _knowedNodesMutex.unlock();
-
 
     QMetaObject::invokeMethod(this,
-                              "reconnectAllKonowedNodes",
-                              Qt::QueuedConnection);
+                              "connectNodePrivate",
+                              Qt::QueuedConnection,
+                              Q_ARG(NP::HostAddress, nodeAdderess));
 
 }
 
 void AbstractNode::removeNode(const HostAddress &nodeAdderess) {
-    _knowedNodesMutex.lock();
-    _knowedNodes.remove(nodeAdderess);
-    _knowedNodesMutex.unlock();
 
     for (int status = static_cast<int>(NodeCoonectionStatus::NotConnected);
          status < static_cast<int>(NodeCoonectionStatus::Confirmed); ++status) {
@@ -558,12 +551,7 @@ int AbstractNode::connectionsCount() const {
     QMutexLocker locer(&_connectionsMutex);
 
     for (auto i : _connections) {
-        if (i->sct()) {
-            if (!i->sct()->isValid()) {
-                QuasarAppUtils::Params::log("connection count, findet not valid socket",
-                                            QuasarAppUtils::Warning);
-            }
-
+        if (i->isConnected()) {
             count++;
         }
     }
@@ -778,13 +766,11 @@ bool AbstractNode::listen(const HostAddress &address) {
     return QTcpServer::listen(address, address.port());
 }
 
-void AbstractNode::reconnectAllKonowedNodes() {
+void AbstractNode::connectNodePrivate(HostAddress address) {
 
-    for (auto it = _knowedNodes.begin(); it != _knowedNodes.end(); ++it) {
-        AbstractNodeInfo* info = getInfoPtr(*it);
-        if (!(info && info->isConnected())) {
-            connectToHost(*it, _mode);
-        }
+    AbstractNodeInfo* info = getInfoPtr(address);
+    if (!(info && info->isConnected())) {
+        connectToHost(address, _mode);
     }
 }
 
@@ -828,11 +814,6 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
 
     connect(worker, &QFutureWatcher<bool>::finished,
             this, &AbstractNode::handleWorkerStoped);
-}
-
-
-const QSet<HostAddress> &AbstractNode::getKnowedNodes() const {
-    return _knowedNodes;
 }
 
 SslMode AbstractNode::getMode() const {

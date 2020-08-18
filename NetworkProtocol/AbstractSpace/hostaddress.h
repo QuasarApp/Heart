@@ -27,5 +27,10 @@ public:
 private:
     unsigned short _port = 0;
 };
+
+uint qHash(const HostAddress& address);
 }
+
+Q_DECLARE_METATYPE(NP::HostAddress);
+
 #endif // HOSTADDRESS_H

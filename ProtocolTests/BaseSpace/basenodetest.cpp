@@ -180,8 +180,22 @@ bool BaseNodeTest::connectNetworkTest() {
     auto nodeB = _nodeBPtr->nodeId();
     auto nodeC = _nodeCPtr->nodeId();
 
-    _nodeAPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeBPort));
-    _nodeBPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeCPort));
+
+    auto addNodeRequest = [_nodeAPtr, nodeBPort, nodeCPort, _nodeBPtr, nodeC]() {
+        _nodeAPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeBPort));
+        _nodeBPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeCPort));
+        return true;
+    };
+
+    auto checkNode = [_nodeAPtr, _nodeBPtr](){
+        return _nodeAPtr->connectionsCount() && _nodeBPtr->connectionsCount();
+    };
+
+    if (!funcPrivateConnect(addNodeRequest, checkNode)) {
+        return false;
+    }
+
+    // need to wait for add node
 
     auto request = [_nodeAPtr, nodeC]() {
         return _nodeAPtr->ping(nodeC);

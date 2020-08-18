@@ -33,4 +33,9 @@ unsigned short HostAddress::port() const {
 void HostAddress::setPort(unsigned short port) {
     _port = port;
 }
+
+uint qHash(const HostAddress &address) {
+    return qHash(QString("%1:%2").arg(address.toString()).arg(address.port()));
+}
+
 }
