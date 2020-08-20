@@ -362,7 +362,29 @@ protected:
      * @param status - new status of node.
      *
      */
-    virtual void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
+    void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
+
+    /**
+     * @brief nodeConfirmend - thim method invocked when the node status changed to "confirmend"
+     *  default implementatio do nothing
+     * @param node - the address of changed node
+     */
+    virtual void nodeConfirmend(const HostAddress& node);
+
+    /**
+     * @brief nodeConnected thim method invocked when the node status changed to "connected"
+     *  default implementatio do nothing
+     * @param node
+     */
+    virtual void nodeConnected(const HostAddress& node);
+
+    /**
+     * @brief nodeConnected thim method invocked when the node status changed to "disconnected"
+     *  default implementatio do nothing
+     * @param node
+     */
+    virtual void nodeDisconnected(const HostAddress& node);
+
 
     /**
      * @brief pushToQueue - This method add action to queue. When the node status will be equal 'triggerStatus' then node run a action method.
@@ -415,7 +437,7 @@ private:
      * @brief nodeConfirmet - this metthod invoked when node is confirment.
      * @param sender - node with new status;
     */
-    void nodeConfirmet(const HostAddress &sender);
+    void nodeConfirmet(const HostAddress &node);
 
     /**
      * @brief checkConfirmendOfNode - this method remove old not confirmed node.

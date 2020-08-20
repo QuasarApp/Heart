@@ -200,6 +200,18 @@ void BaseNode::connectionRegistered(const AbstractNodeInfo *info) {
     welcomeAddress(info->networkAddress());
 }
 
+void BaseNode::nodeConfirmend(const HostAddress &node) {
+    AbstractNode::nodeConfirmend(node);
+
+    auto nodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(node));
+    if (!nodeInfo) {
+        return;
+    }
+
+    nodeInfo->selfId();
+    // to do
+}
+
 ParserResult BaseNode::parsePackage(const Package &pkg,
                                     const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);

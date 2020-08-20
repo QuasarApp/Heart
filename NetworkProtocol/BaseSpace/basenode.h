@@ -300,6 +300,12 @@ protected:
      */
     void connectionRegistered(const AbstractNodeInfo *info) override;
 
+    /**
+     * @brief nodeConfirmend - this implementation test nodes to double connections
+     * @param mode
+     */
+    void nodeConfirmend(const HostAddress& sender) override;
+
 
 private:
     SqlDBCache *_db = nullptr;

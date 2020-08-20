@@ -651,7 +651,7 @@ void AbstractNode::avelableBytes() {
         return;
     }
 
-    bug!!!!, peer port is random value or 0
+//    bug!!!!, peer port is random value or 0
     auto id = HostAddress{client->peerAddress(), client->peerPort()};
 
     if (!_connections.contains(id)) {
@@ -736,9 +736,9 @@ void AbstractNode::handleConnected() {
                                 QuasarAppUtils::Error);
 }
 
-void AbstractNode::nodeConfirmet(const HostAddress& sender) {
+void AbstractNode::nodeConfirmet(const HostAddress& node) {
 
-    auto ptr = getInfoPtr(sender);
+    auto ptr = getInfoPtr(node);
 
     if (!ptr) {
         QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
@@ -903,6 +903,26 @@ void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStat
     for (const auto &action : list) {
         action();
     }
+
+    if (status == NodeCoonectionStatus::NotConnected) {
+        nodeDisconnected(node);
+    } else if (status == NodeCoonectionStatus::Connected) {
+        nodeConnected(node);
+    } else if (status == NodeCoonectionStatus::Confirmed) {
+        nodeConfirmet(node);
+    }
+}
+
+void AbstractNode::nodeConfirmend(const HostAddress &node) {
+    Q_UNUSED(node);
+}
+
+void AbstractNode::nodeConnected(const HostAddress &node) {
+    Q_UNUSED(node);
+}
+
+void AbstractNode::nodeDisconnected(const HostAddress &node) {
+    Q_UNUSED(node);
 }
 
 void AbstractNode::checkConfirmendOfNode(const HostAddress &node) {
