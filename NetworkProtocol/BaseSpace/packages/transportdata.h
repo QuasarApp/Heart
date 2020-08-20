@@ -20,7 +20,8 @@ class NETWORKPROTOCOLSHARED_EXPORT TransportData: public AbstractData, public Se
 {
 
 public:
-    explicit TransportData();
+
+    explicit TransportData(const HostAddress& sender);
     explicit TransportData(const Package& package);
 
     const Package& data() const;
@@ -64,15 +65,24 @@ public:
      */
     BaseId packageId() const;
 
+    /**
+     * @brief completeRoute - set bool variable of route complete.
+     * @param fRouteIsComplete - new value for complete route default is true
+     */
+    void completeRoute(bool fRouteIsComplete = true);
+
 protected:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
 private:
+    explicit TransportData();
+
     Package _data;
     BaseId _targetAddress;
     QList<HostAddress> _route;
     BaseId _packageId;
+    bool _fRouteIsComplete = false;
 
 
 

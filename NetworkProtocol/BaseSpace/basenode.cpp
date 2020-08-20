@@ -406,45 +406,53 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
         return parsePackage(cmd->data(), sender);
     }
 
+    bool fRouteIsValid = false;
+
     // check exists route
     if (cmd->isHaveRoute()) {
 
         // if package have a route then remove all nodes from sender to this node from route and update route
-        auto newRoute = cmd->route();
         if (!sender)
             return ParserResult::Error;
 
         cmd->strip(sender->networkAddress(), address());
-        if (!cmd->setRoute(newRoute)) {
-            return ParserResult::Error;
+
+        // send this package to first available node of knownnodes route nodes
+        auto it = cmd->route().rbegin();
+        while (it != cmd->route().rend() && !sendData(cmd, *it, &pkg.hdr)) {
+            it++;
         }
 
+        fRouteIsValid = it != cmd->route().rend();
+
     } else {
-        // if command not have a route then add this node to end route
+        // if command not have a route or route is not completed then add this node to end route
         cmd->addNodeToRoute(address());
     }
 
     // save route for sender node from this node
-    auto routeFromHereToSender = cmd->route();
-    int index = routeFromHereToSender.indexOf(address());
+    auto routeFromSenderToHere = cmd->route();
+    int index = routeFromSenderToHere.indexOf(address());
 
     if (index < 0) {
         QuasarAppUtils::Params::log("own node no findet on route.",
                                     QuasarAppUtils::Error);
     }
 
-    routeFromHereToSender.erase(routeFromHereToSender.begin(), routeFromHereToSender.begin() + index);
-    _router->updateRoute(cmd->senderID(), routeFromHereToSender);
+    routeFromSenderToHere.erase(routeFromSenderToHere.begin(), routeFromSenderToHere.begin() + index);
+    // inversion route and update route to sender
+    _router->updateRoute(cmd->senderID(),
+    {routeFromSenderToHere.rbegin(), routeFromSenderToHere.rend()});
 
-    // send all nodes this package from distanation to this position
-    auto it = cmd->route().rbegin();
-    while (it != cmd->route().rend() && !sendData(cmd, *it, &pkg.hdr)) {
-        it++;
-    }
+    // remove invalid route nodes and fix exists route.
+    if (!fRouteIsValid) {
+        cmd->setRoute(routeFromSenderToHere);
+        cmd->completeRoute(false);
 
-    // send bodcast if route is invalid
-    if (it == cmd->route().rend() && !sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
-        return ParserResult::Error;
+        // send bodcast if route is invalid
+        if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+            return ParserResult::Error;
+        }
     }
 
     _router->addProcesedPackage(cmd->packageId());
@@ -539,7 +547,7 @@ bool BaseNode::sendData(const AbstractData *resp,
     };
 
     if (resp->cmd() != H_16<TransportData>()) {
-        TransportData data;
+        TransportData data(address());
         data.setTargetAddress(nodeId);
         data.setData(*resp);
 

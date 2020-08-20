@@ -651,6 +651,7 @@ void AbstractNode::avelableBytes() {
         return;
     }
 
+    bug!!!!, peer port is random value or 0
     auto id = HostAddress{client->peerAddress(), client->peerPort()};
 
     if (!_connections.contains(id)) {

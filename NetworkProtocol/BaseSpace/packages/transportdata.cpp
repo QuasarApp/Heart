@@ -7,6 +7,7 @@
 
 #include "transportdata.h"
 #include <QCryptographicHash>
+#include <QDataStream>
 #include <QDateTime>
 namespace NP {
 
@@ -14,8 +15,20 @@ TransportData::TransportData() {
     INIT_COMMAND
 }
 
-TransportData::TransportData(const Package &package):TransportData() {
+TransportData::TransportData(const HostAddress &sender):
+    TransportData() {
+
+    addNodeToRoute(sender);
+}
+
+TransportData::TransportData(const Package &package):
+    TransportData() {
+
     fromBytes(package.data);
+}
+
+void TransportData::completeRoute(bool fRouteIsComplete) {
+    _fRouteIsComplete = fRouteIsComplete;
 }
 
 const Package &TransportData::data() const {
@@ -43,6 +56,9 @@ QDataStream &TransportData::fromStream(QDataStream &stream) {
 
     stream >> _targetAddress;
     stream >> _senderID;
+    stream >> _packageId;
+    stream >> _fRouteIsComplete;
+    stream >> _route;
 
     QByteArray array;
     stream >> array;
@@ -57,6 +73,10 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
 
     stream << _targetAddress;
     stream << _senderID;
+    stream << _packageId;
+    stream << _fRouteIsComplete;
+    stream << _route;
+
     stream << _data.toBytes();
 
     return stream;
@@ -127,6 +147,6 @@ bool TransportData::isValid() const {
 }
 
 bool TransportData::isHaveRoute() const {
-    return isValid() && _route.size();
+    return isValid() && _route.size() && _fRouteIsComplete;
 }
 }
