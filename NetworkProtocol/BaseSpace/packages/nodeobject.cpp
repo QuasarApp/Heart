@@ -11,6 +11,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDataStream>
+#include <QCryptographicHash>
+#include <nodeid.h>
 
 
 namespace NP {
@@ -100,8 +102,12 @@ void NodeObject::setTrust(int trust) {
     _trust = trust;
 }
 
+BaseId NodeObject::nodeId() const {
+    return NodeId(QCryptographicHash::hash(publickKey(), QCryptographicHash::Sha256));
+}
+
 bool NodeObject::isValid() const {
-    return DBObject::isValid() && _publickKey.size() == 256;
+    return DBObject::isValid() && _publickKey.size() == 512;
 }
 
 bool NodeObject::copyFrom(const AbstractData * other) {

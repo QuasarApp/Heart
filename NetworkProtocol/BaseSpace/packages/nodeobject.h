@@ -40,6 +40,12 @@ public:
     void changeTrust(int diff);
     void setTrust(int trust);
 
+    /**
+     * @brief nodeId
+     * @return return node id from public key
+     */
+    BaseId nodeId() const;
+
 protected:
 
     // StreamBase interface

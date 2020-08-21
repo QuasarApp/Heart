@@ -7,9 +7,10 @@
 
 #ifndef ABSTRACTNODEINFO_H
 #define ABSTRACTNODEINFO_H
+#include "hostaddress.h"
 #include "networkprotocol_global.h"
 
-#include <QHostAddress>
+#include <hostaddress.h>
 
 
 class QAbstractSocket;
@@ -35,6 +36,21 @@ enum class TrustNode: unsigned char {
 };
 
 /**
+ * @brief The AbstractNodeState enum - This is status of known nodes.
+ */
+enum class NodeCoonectionStatus: int {
+    /// This node not sent data about its envirement
+    NotConnected,
+    /// The node with this status has already sent data about its environment.
+    Connected,
+    ///  The node confirmend. Node with it status sent a information
+    ///  requarement for confirm in to this node object.
+    Confirmed,
+};
+
+uint qHash(NodeCoonectionStatus status);
+
+/**
  * @brief The AbstractNodeInfo class
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractNodeInfo
@@ -45,8 +61,10 @@ public:
     /**
      * @brief AbstractNodeInfo
      * @param sct socket of connection
+     * @param address - address of socket
      */
-    AbstractNodeInfo(QAbstractSocket *sct = nullptr);
+    AbstractNodeInfo(QAbstractSocket *sct = nullptr,
+                     const HostAddress* address = nullptr);
 
     /**
      * @brief ~AbstractNodeInfo
@@ -134,13 +152,43 @@ public:
      * @brief networkAddress
      * @return network adderess of node
      */
-    QHostAddress networkAddress() const;
+    HostAddress networkAddress() const;
 
     /**
      * @brief setNetworkAddress - update network address
      * @param networkAddress - new address
      */
-    void setNetworkAddress(const QHostAddress &networkAddress);
+    void setNetworkAddress(const HostAddress &networkAddress);
+
+    /**
+     * @brief status - status of node connection
+     * @return connection status
+     */
+    NodeCoonectionStatus status() const;
+
+    /**
+     * @brief setStatus - set new value of status node
+     * @param status - new status
+     */
+    void setStatus(const NodeCoonectionStatus &status);
+
+    /**
+     * @brief confirmData - check all data of node and return true if node is confirmed
+     * @return true if node is confirmed
+     */
+    virtual bool confirmData() const;
+
+    /**
+     * @brief isLocal - return true if connectuion opened on this node.
+     * @return
+     */
+    bool isLocal() const;
+
+    /**
+     * @brief setIsLocal - set local status for this Node.
+     * @param isLocal
+     */
+    void setIsLocal(bool isLocal);
 
 protected:
     /**
@@ -150,11 +198,14 @@ protected:
     void setSct(QAbstractSocket *sct);
 
 private:
+
     QHostInfo *_info = nullptr;
-    QHostAddress _networkAddress;
+    HostAddress _networkAddress;
 
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
+    NodeCoonectionStatus _status = NodeCoonectionStatus::NotConnected;
+    bool _isLocal = false;
 
 };
 

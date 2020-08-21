@@ -8,7 +8,6 @@
 #include "accesstoken.h"
 #include "basenode.h"
 #include "basenodeinfo.h"
-#include "dbdatarequest.h"
 #include "deleteobjectrequest.h"
 #include "sqldbcache.h"
 #include "sqldbwriter.h"
@@ -18,6 +17,8 @@
 #include "badnoderequest.h"
 #include "nodeid.h"
 #include "sign.h"
+#include "asyncsqldbwriter.h"
+#include "router.h"
 
 #include <badrequest.h>
 #include <quasarapp.h>
@@ -29,6 +30,9 @@
 #include <QCoreApplication>
 #include <qsecretrsa2048.h>
 #include <ping.h>
+#include <keystorage.h>
+#include <knowaddresses.h>
+#include <longping.h>
 
 #define THIS_NODE "this_node_key"
 namespace NP {
@@ -37,7 +41,8 @@ BaseNode::BaseNode(NP::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
     _webSocketWorker = new WebSocketController(this);
-    _nodeKeys = new QSecretRSA2048();
+    _nodeKeys = new KeyStorage(new QSecretRSA2048());
+    _router = new Router();
 
 }
 
@@ -83,6 +88,8 @@ bool BaseNode::run(const QString &addres,
     if (localNodeName.isEmpty())
         return false;
 
+    _localNodeName = localNodeName;
+
     if (!isSqlInited() && !initSqlDb()) {
         return false;
     }
@@ -99,7 +106,7 @@ BaseNode::~BaseNode() {
 
 void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
     if (!writer) {
-        writer = new SqlDBWriter();
+        writer = new AsyncSqlDbWriter();
     }
 
     if (!cache) {
@@ -119,6 +126,17 @@ BaseId BaseNode::nodeId() const {
     return NodeId(QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256));
 }
 
+bool BaseNode::connectToHost(const HostAddress &ip, SslMode mode) {
+    if (!AbstractNode::connectToHost(ip, mode))
+        return false;
+
+    if (!welcomeAddress(ip)) {
+        return false;
+    }
+
+    return true;
+}
+
 bool BaseNode::checkSignOfRequest(const AbstractData *request) {
     auto object = dynamic_cast<const Sign*>(request);
     auto dbObject = dynamic_cast<const SenderData*>(request);
@@ -130,6 +148,94 @@ bool BaseNode::checkSignOfRequest(const AbstractData *request) {
     auto node = _db->getObject(NodeObject{dbObject->senderID()});
     return _nodeKeys->check(_nodeKeys->concatSign(object->dataForSigned(),
                                                   object->sign()), node->publickKey());
+}
+
+NodeObject BaseNode::thisNode() const {
+    NodeObject res;
+    auto keys = _nodeKeys->getNextPair(THIS_NODE);
+
+    res.setPublickKey(keys.publicKey());
+    res.setTrust(0);
+
+    return res;
+}
+
+QSet<BaseId> BaseNode::myKnowAddresses() const {
+    QSet<BaseId> res;
+
+    for (const AbstractNodeInfo *i : connections()) {
+        auto info = dynamic_cast<const BaseNodeInfo*>(i);
+        if (info && info->selfId().isValid()) {
+            res += info->selfId();
+        }
+    }
+
+    return res;
+}
+
+bool BaseNode::welcomeAddress(const HostAddress& ip) {
+    NodeObject self = thisNode();
+
+    if (!sendData(&self, ip)) {
+        return false;
+    }
+
+    if (connections().size()) {
+
+        auto knowAddresses = myKnowAddresses();
+        if (knowAddresses.size()) {
+            KnowAddresses addressesData;
+            addressesData.setKnowAddresses(knowAddresses);
+
+            if (!sendData(&addressesData, ip)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+
+}
+
+void BaseNode::connectionRegistered(const AbstractNodeInfo *info) {
+    welcomeAddress(info->networkAddress());
+}
+
+void BaseNode::nodeConfirmend(const HostAddress &node) {
+    AbstractNode::nodeConfirmend(node);
+
+    auto nodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(node));
+    if (!nodeInfo) {
+        return;
+    }
+
+    _connectionsMutex.lock();
+    BaseNodeInfo* oldNodeInfo = _connections.value(nodeInfo->selfId(), nullptr);
+    _connectionsMutex.unlock();
+
+    if (oldNodeInfo) {
+        removeNode(node);
+        return;
+    }
+
+    _connectionsMutex.lock();
+    _connections.insert(nodeInfo->selfId(), nodeInfo);
+    _connectionsMutex.unlock();
+
+
+}
+
+void BaseNode::nodeDisconnected(const HostAddress &node) {
+    AbstractNode::nodeDisconnected(node);
+
+    auto nodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(node));
+    if (!nodeInfo) {
+        return;
+    }
+
+    _connectionsMutex.lock();
+    _connections.remove(nodeInfo->selfId());
+    _connectionsMutex.unlock();
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
@@ -149,16 +255,8 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
     } else if (H_16<TransportData>() == pkg.hdr.command) {
         TransportData cmd(pkg);
+        return workWithTransportData(&cmd, sender, pkg);
 
-        if (cmd.targetAddress() == nodeId()) {
-            return parsePackage(cmd.data(), sender);
-        }
-
-        if (!sendData(&cmd, cmd.targetAddress(), &pkg.hdr)) {
-            return ParserResult::Error;
-        }
-
-        return ParserResult::Processed;
 
     } else if (H_16<AvailableDataRequest>() == pkg.hdr.command) {
         AvailableDataRequest cmd(pkg);
@@ -238,6 +336,42 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
         incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
+    } else if (H_16<NodeObject>() == pkg.hdr.command) {
+        NodeObject obj(pkg);
+        if (!obj.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        if (!workWithNodeObjectData(obj, sender)) {
+            badRequest(obj.senderID(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        return ParserResult::Processed;
+    } else if (H_16<KnowAddresses>() == pkg.hdr.command) {
+        KnowAddresses obj(pkg);
+        if (!obj.isValid()) {
+            badRequest(sender->networkAddress(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        if (!workWithKnowAddresses(obj, sender)) {
+            badRequest(sender->networkAddress(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        return ParserResult::Processed;
+    } else if (H_16<LongPing>() == pkg.hdr.command) {
+        LongPing cmd(pkg);
+
+        if (!cmd.ansver()) {
+            cmd.setAnsver(true);
+            sendData(&cmd, cmd.senderID(), &pkg.hdr);
+        }
+
+        incomingData(&cmd, sender->networkAddress());
+        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
@@ -262,14 +396,146 @@ bool BaseNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
 
 }
 
+bool BaseNode::workWithNodeObjectData(NodeObject& node,
+                                      const AbstractNodeInfo* nodeInfo) {
+
+    if (!_db) {
+        return false;
+    }
+
+    auto localObjec = _db->getObject(node);
+
+    if (localObjec) {
+        node.setTrust(std::min(node.trust(), localObjec->trust()));
+    } else {
+        node.setTrust(0);
+    }
+
+    if (DBOperationResult::Allowed == setObject(nodeId(), &node)) {
+        return false;
+    };
+
+    auto peerNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
+    if (!peerNodeInfo)
+        return false;
+
+    peerNodeInfo->setSelfId(node.nodeId());
+
+    return true;
+}
+
+bool BaseNode::workWithKnowAddresses(const KnowAddresses &obj,
+                                     const AbstractNodeInfo *nodeInfo) {
+
+    auto peerNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
+    if (!peerNodeInfo)
+        return false;
+
+    peerNodeInfo->addKnowAddresses(obj.knowAddresses());
+
+    return true;
+}
+
+ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
+                                             const AbstractNodeInfo* sender,
+                                             const Package& pkg) {
+
+    // convert transoprt pakcage
+    auto cmd = dynamic_cast<TransportData*>(transportData);
+
+    if (!cmd)
+        return ParserResult::Error;
+
+    // ignore processed packages
+    if (_router->isProcessed(cmd->packageId()))
+        return ParserResult::Processed;
+
+    // check distanation
+    if (cmd->targetAddress() == nodeId()) {
+
+        // inversion route and update route to sender
+        _router->updateRoute(cmd->senderID(),
+        {cmd->route().rbegin(), cmd->route().rend()});
+
+        return parsePackage(cmd->data(), sender);
+    }
+
+    bool fRouteIsValid = false;
+
+    // find route if transport command do not have own route.
+    if (!cmd->isHaveRoute() && _router->contains(cmd->targetAddress())) {
+        auto route = _router->getRoute(cmd->targetAddress());
+
+        auto cmdRute = cmd->route();
+
+        cmdRute.push_back(address());
+        cmdRute.append(route);
+
+        cmd->setRoute(cmdRute);
+    }
+
+    // check exists route
+    if (cmd->isHaveRoute()) {
+
+        // if package have a route then remove all nodes from sender to this node from route and update route
+        if (!sender)
+            return ParserResult::Error;
+
+        cmd->strip(sender->networkAddress(), address());
+
+        // send this package to first available node of knownnodes route nodes
+        auto it = cmd->route().rbegin();
+        while (it != cmd->route().rend() && !sendData(cmd, *it, &pkg.hdr)) {
+            it++;
+        }
+
+        fRouteIsValid = it != cmd->route().rend();
+
+    } else {
+        // if command not have a route or route is not completed then add this node to end route
+        cmd->addNodeToRoute(address());
+    }
+
+    // save route for sender node from this node
+    auto routeFromSenderToHere = cmd->route();
+    int index = routeFromSenderToHere.indexOf(address());
+
+    if (index < 0) {
+        QuasarAppUtils::Params::log("own node no findet on route.",
+                                    QuasarAppUtils::Error);
+    }
+
+    routeFromSenderToHere.erase(routeFromSenderToHere.begin(), routeFromSenderToHere.begin() + index);
+    // inversion route and update route to sender
+    _router->updateRoute(cmd->senderID(),
+    {routeFromSenderToHere.rbegin(), routeFromSenderToHere.rend()});
+
+    // remove invalid route nodes and fix exists route.
+    if (!fRouteIsValid) {
+        cmd->setRoute(routeFromSenderToHere);
+        cmd->completeRoute(false);
+
+        // send bodcast if route is invalid
+        if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+            return ParserResult::Error;
+        }
+    }
+
+    _router->addProcesedPackage(cmd->packageId());
+    return ParserResult::Processed;
+
+}
+
+
 QString BaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
                 QCryptographicHash::Sha256);
 }
 
-AbstractNodeInfo *BaseNode::createNodeInfo(QAbstractSocket *socket) const {
-    return  new BaseNodeInfo(socket);
+AbstractNodeInfo *BaseNode::createNodeInfo(QAbstractSocket *socket,
+                                           const HostAddress* clientAddress) const {
+    return  new BaseNodeInfo(socket, clientAddress);
 }
 
 SqlDBCache *BaseNode::db() const {
@@ -313,42 +579,60 @@ QVariantMap BaseNode::defaultDbParams() const {
 
     return {
         {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH},
+        {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + _localNodeName + "_" + DEFAULT_DB_NAME},
         {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
     };
 }
 
 bool BaseNode::sendData(const AbstractData *resp,
-                        const QHostAddress &addere,
-                        const Header *req) const {
+                        const HostAddress &addere,
+                        const Header *req) {
 
     return AbstractNode::sendData(resp, addere, req);
 }
 
 bool BaseNode::sendData(const AbstractData *resp,
                         const BaseId &nodeId,
-                        const Header *req) const {
+                        const Header *req) {
 
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        auto info = dynamic_cast<BaseNodeInfo*>(it.value().info);
+        auto info = dynamic_cast<BaseNodeInfo*>(it.value());
         if (info && info->isKnowAddress(nodeId)) {
             return sendData(resp, it.key(), req);
         }
     }
 
-    TransportData data;
-    data.setTargetAddress(nodeId);
-    data.setData(*resp);
-    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        sendData(&data, it.key(), req);
+    auto brodcast = [this, &nodes, req](const AbstractData *data){
+        bool result = false;
+        for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+            result = result || sendData(data, it.key(), req);
+        }
+
+        return result;
+    };
+
+
+    if (resp->cmd() != H_16<TransportData>()) {
+        TransportData data(address());
+        data.setTargetAddress(nodeId);
+        if (!data.setData(*resp)) {
+            return false;
+        }
+
+        data.setRoute(_router->getRoute(nodeId));
+        data.setSenderID(this->nodeId());
+
+        return brodcast(&data);
     }
 
-    return false;
+    return brodcast(resp);
+
+
 }
 
-void BaseNode::badRequest(const QHostAddress &address, const Header &req, const QString msg) {
+void BaseNode::badRequest(const HostAddress &address, const Header &req, const QString msg) {
     AbstractNode::badRequest(address, req, msg);
 }
 
@@ -373,7 +657,7 @@ void BaseNode::badRequest(const BaseId& address, const Header &req, const QStrin
                                 QuasarAppUtils::Info);
 }
 
-bool BaseNode::changeTrust(const QHostAddress &id, int diff) {
+bool BaseNode::changeTrust(const HostAddress &id, int diff) {
     return AbstractNode::changeTrust(id, diff);
 }
 
@@ -404,7 +688,7 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
 }
 
 bool BaseNode::ping(const BaseId &id) {
-    Ping cmd;
+    LongPing cmd(nodeId());
     return sendData(&cmd, id);
 }
 

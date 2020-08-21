@@ -6,15 +6,19 @@
 */
 
 #include "abstractnodeinfo.h"
-#include <QHostAddress>
+#include <hostaddress.h>
 #include <QAbstractSocket>
 #include <QDataStream>
 #include <QHostInfo>
 
 namespace NP {
 
-AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct) {
+AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct,
+                                   const HostAddress *address) {
     setSct(sct);
+    if (address)
+        setNetworkAddress(*address);
+
 }
 
 AbstractNodeInfo::~AbstractNodeInfo() {}
@@ -46,26 +50,49 @@ void AbstractNodeInfo::unBan() {
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
-    if (_sct) {
-        setNetworkAddress(_sct->peerAddress());
+    if (_sct && !_sct->peerAddress().isNull()) {
+        setNetworkAddress(HostAddress{_sct->peerAddress(), _sct->peerPort()});
+    }
+}
 
-        QHostInfo::lookupHost(networkAddress().toString(), [this] (QHostInfo info){
+void AbstractNodeInfo::setIsLocal(bool isLocal) {
+    _isLocal = isLocal;
+}
+
+NodeCoonectionStatus AbstractNodeInfo::status() const {
+    return _status;
+}
+
+void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
+    _status = status;
+}
+
+bool AbstractNodeInfo::confirmData() const {
+    return _status != NodeCoonectionStatus::NotConnected;
+}
+
+bool AbstractNodeInfo::isLocal() const {
+    return _isLocal;
+}
+
+HostAddress AbstractNodeInfo::networkAddress() const {
+    if (isValid() && _sct->isValid())
+        return HostAddress{_sct->peerAddress(), _sct->peerPort()};
+
+    return _networkAddress;
+}
+
+void AbstractNodeInfo::setNetworkAddress(const HostAddress &networkAddress) {
+
+    if (!networkAddress.isNull()) {
+        _networkAddress = networkAddress;
+
+        QHostInfo::lookupHost(_networkAddress.toString(), [this] (QHostInfo info){
             if (dynamic_cast<AbstractNodeInfo*>(this)) {
                 setInfo(info);
             }
         });
     }
-}
-
-QHostAddress AbstractNodeInfo::networkAddress() const {
-    if (_sct->isValid())
-        return _sct->peerAddress();
-
-    return _networkAddress;
-}
-
-void AbstractNodeInfo::setNetworkAddress(const QHostAddress &networkAddress) {
-    _networkAddress = networkAddress;
 }
 
 void AbstractNodeInfo::setInfo(const QHostInfo &info) {
@@ -107,6 +134,10 @@ QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
 QDataStream &AbstractNodeInfo::toStream(QDataStream &stream) const {
     stream << _networkAddress;
     return stream;
+}
+
+uint qHash(NodeCoonectionStatus status) {
+    return static_cast<uint>(status);
 }
 
 }

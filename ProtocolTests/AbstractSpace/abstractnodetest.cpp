@@ -14,7 +14,7 @@ public:
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const QHostAddress &sender) {
+    void incomingData(NP::AbstractData *pkg, const NP::HostAddress &sender) {
         Q_UNUSED(sender);
 
         auto ping = dynamic_cast<NP::Ping*>(pkg);
@@ -53,7 +53,7 @@ bool AbstractNodeTest::connectTest() {
 bool AbstractNodeTest::sendDataTest() {
 
     auto request = [this](){
-        return _nodeB->ping(QHostAddress(TEST_LOCAL_HOST));
+        return _nodeB->ping(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
     };
 
     auto client = dynamic_cast<TestingClient*>(_nodeB);

@@ -48,7 +48,7 @@ public:
      * @param address - ip address of remote host
      * @param port - port of remote host
      */
-    explicit Client(const QHostAddress& address, unsigned short port);
+    explicit Client(const HostAddress& address, unsigned short port);
 
     /**
      * @brief Client - this constructor invoke a setHost method.
@@ -76,7 +76,7 @@ public:
      * @param address - the ip address of remote host
      * @param por - the port of remote host.
      */
-    void setHost(const QHostAddress& address, unsigned short port);
+    void setHost(const HostAddress& address, unsigned short port);
 
     /**
      * @brief login - this method try login of user.
@@ -136,13 +136,13 @@ public:
 
 
 protected:
-    QHostAddress address() const;
+    HostAddress address() const;
 
     /**
      * @brief registerSocket this implementation connect new node to this object
      * @return true if finished seccussful
      */
-    bool registerSocket(QAbstractSocket *socket, const QHostAddress* clientAddress) override;
+    bool registerSocket(QAbstractSocket *socket, const HostAddress* clientAddress) override;
 
     /**
      * @brief connectToHost this implementation update host information of client
@@ -150,18 +150,18 @@ protected:
      * @param port
      * @param mode
      */
-    void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL) override;
+    void connectToHost(const HostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL) override;
     void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL) override;
 
 private slots:
-    void handleIncomingData(AbstractData* obj, const QHostAddress &);
+    void handleIncomingData(AbstractData* obj, const HostAddress &);
     void setLastMessage(QString lastMessage);
     void socketStateChanged(QAbstractSocket::SocketState);
 
 private:
     Status _status = Offline;
     QString _domain;
-    QHostAddress _address;
+    HostAddress _address;
     unsigned short _port;
 
     QString _lastMessage;

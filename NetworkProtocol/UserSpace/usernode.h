@@ -17,7 +17,7 @@ protected:
     QVariantMap defaultDbParams() const override;
 
     bool workWithUserRequest(const UserRequest* req,
-                             const QHostAddress &addere,
+                             const HostAddress &addere,
                              const Header *rHeader);
 
 private:
@@ -30,7 +30,7 @@ private:
      * @return true if registaration finished sevvussful
      */
     bool registerNewUser(const AbstractData *user,
-                         const QHostAddress &address,
+                         const HostAddress &address,
                          bool rememberMe = false);
 
     /**
@@ -41,7 +41,7 @@ private:
      */
     bool loginUser(const AbstractData* user,
                    const AbstractData* userdb,
-                   const QHostAddress &address);
+                   const HostAddress &address);
 };
 }
 #endif // USERNODE_H

@@ -10,6 +10,9 @@
 
 #include "abstractnode.h"
 #include <dbobject.h>
+#include <hostaddress.h>
+#include <nodeobject.h>
+
 
 namespace NP {
 
@@ -20,13 +23,17 @@ class UserRequest;
 class AvailableDataRequest;
 class WebSocket;
 class WebSocketController;
-class DBDataRequest;
 class DbAddress;
 class BaseId;
 class Sign;
+class KeyStorage;
+class KnowAddresses;
+class Router;
+class BaseNodeInfo;
 
 /**
- * @brief The BaseNode class - base inplementation of nodes
+ * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
+ *  BaseNode - is thread save class
  */
 class NETWORKPROTOCOLSHARED_EXPORT BaseNode : public AbstractNode
 {
@@ -92,8 +99,8 @@ public:
      * @return true if a function finished seccussful
      */
     bool sendData(const AbstractData *resp,
-                  const QHostAddress &addere,
-                  const Header *req = nullptr) const override;
+                  const HostAddress &addere,
+                  const Header *req = nullptr) override;
 
     /**
      * @brief sendDataToId - send data to node or clientby them id
@@ -103,7 +110,7 @@ public:
      * @return true if data sendet seccussful
      */
     virtual bool sendData(const AbstractData *resp, const BaseId &nodeId,
-                          const Header *req = nullptr) const;
+                          const Header *req = nullptr);
 
     /**
      * @brief badRequest -send bad request and change trus for ip address
@@ -111,7 +118,7 @@ public:
      * @param req
      * @param msg
      */
-    void badRequest(const QHostAddress &address, const Header &req,
+    void badRequest(const HostAddress &address, const Header &req,
                     const QString msg = "") override;
 
     /**
@@ -128,7 +135,7 @@ public:
      * @param id - ip address of node
      * @param diff
      */
-    bool changeTrust(const QHostAddress &id, int diff) override;
+    bool changeTrust(const HostAddress &id, int diff) override;
 
     /**
      * @brief changeTrust change trus of node with id.
@@ -150,6 +157,15 @@ public:
      * @return
      */
     BaseId nodeId() const;
+
+    /**
+     * @brief connectToHost - this ovverided method diference betwn base implementation then it send a request for get node id.
+     * @param ip
+     * @param port
+     * @param mode
+     */
+    bool connectToHost(const HostAddress &ip, SslMode mode) override;
+
 
 
 protected:
@@ -182,7 +198,7 @@ protected:
      * @param socket
      * @return pointer to new node info
      */
-    AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket) const override;
+    AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
 
     /**
      * @brief db
@@ -208,7 +224,7 @@ protected:
      * @return
      */
     bool workWithDataRequest(const AbstractData* rec,
-                             const QHostAddress &addere,
+                             const HostAddress &addere,
                              const Header *rHeader);
 
     /**
@@ -262,9 +278,48 @@ protected:
      */
     virtual bool checkSignOfRequest(const AbstractData *request);
 
+    /**
+     * @brief thisNode
+     * @return This node object value.
+     */
+    NodeObject thisNode() const;
+
+    /**
+     * @brief myKnowAddresses
+     * @return set of know addresses
+     */
+    QSet<BaseId> myKnowAddresses() const;
+
+    /**
+     * @brief welcomeAddress - this method send to the ip information about yaster self.
+     * @param ip - host address of the peer node obeject
+     * @return true if all iformation sendet succesful
+     */
+    virtual bool welcomeAddress(const HostAddress &ip);
+
+    /**
+     * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
+     * @param info incominng node info.
+     */
+    void connectionRegistered(const AbstractNodeInfo *info) override;
+
+    /**
+     * @brief nodeConfirmend - this implementation test nodes to double connections
+     * @param mode
+     */
+    void nodeConfirmend(const HostAddress& sender) override;
+
+    /**
+     * @brief nodeDisconnected - this implementation remove nodes info from connection cache
+     * @param sender
+     */
+    void nodeDisconnected(const HostAddress& node) override;
+
+
 private:
     SqlDBCache *_db = nullptr;
-    ICrypto *_nodeKeys = nullptr;
+    KeyStorage *_nodeKeys = nullptr;
+    QString _localNodeName;
 
     /**
      * @brief workWithAvailableDataRequest
@@ -276,21 +331,48 @@ private:
     bool workWithAvailableDataRequest(const AvailableDataRequest &rec,
                                       const Header *rHeader);
 
+    /**
+     * @brief workWithNodeObjectData - this method working with received node object data.
+     * @param node
+     * @param nodeInfo
+     * @return true if function finished successful
+     */
+    bool workWithNodeObjectData(NodeObject &node, const AbstractNodeInfo *nodeInfo);
+
+    /**
+     * @brief workWithKnowAddresses
+     * @param node
+     * @param nodeInfo
+     * @return
+     */
+    bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
+
+    /**
+     * @brief workWithTransportData
+     * @param transportData
+     * @param sender
+     * @param pkg
+     * @return
+     */
+    ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
+
+    /**
+     * @brief optimizeRoute - this method reduces the size of the route by removing unnecessary nodes.
+     * @param node
+     * @param rawRoute
+     * @return
+     */
+    bool optimizeRoute(const BaseId& node,
+                       const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
+                       QList<HostAddress> rawRoute);
 
     WebSocketController *_webSocketWorker = nullptr;
 
-    bool workWithUserRequest(const QSharedPointer<UserRequest> &request,
-                             const QHostAddress &addere,
-                             const Header *rHeader);
+    Router *_router = nullptr;
 
-    bool loginUser(const QWeakPointer<AbstractData> &user,
-                   const QWeakPointer<AbstractData> &userdb,
-                   const QHostAddress &address);
+    QHash<BaseId, BaseNodeInfo*> _connections;
 
-    bool registerNewUser(const QWeakPointer<AbstractData> &user,
-                         const QHostAddress &address,
-                         bool rememberMe);
-
+    mutable QMutex _connectionsMutex;
 
 };
 

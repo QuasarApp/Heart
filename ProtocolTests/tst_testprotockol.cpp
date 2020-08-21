@@ -54,6 +54,8 @@ void testProtockol::unitTests() {
     char * argv[] = {nullptr};
 
     QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName("TestQNP");
+    QCoreApplication::setOrganizationName("QuasarApp");
 
     QTimer::singleShot(0, [&app, this]() {
 

@@ -14,7 +14,7 @@ endif()
 
 find_package(Qt5 COMPONENTS Core Test REQUIRED)
 if(NOT DEFINED BUILD_LVL)
-    set(BUILD_LVL 0)
+    set(BUILD_LVL 1)
 endif()
 
 include(QuasarAppLib/CMake/ccache.cmake)
@@ -24,3 +24,7 @@ add_subdirectory(QuasarAppLib)
 add_subdirectory(NetworkProtocol)
 add_subdirectory(ProtocolTests)
 
+include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
+initAll()
+
+addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)

@@ -157,7 +157,7 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
     deleteFromCache(delObj);
 
-    if (_writer && _writer->isValid()) {
+    if (!_writer && _writer->isValid()) {
         return _writer->deleteObject(delObj);
     }
 
@@ -167,7 +167,7 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
 bool SqlDBCache::init(const QString &initDbParams) {
 
-    if (_writer) {
+    if (!_writer) {
         return false;
     }
 
@@ -176,7 +176,7 @@ bool SqlDBCache::init(const QString &initDbParams) {
 
 bool SqlDBCache::init(const QVariantMap &params) {
 
-    if (_writer) {
+    if (!_writer) {
         return false;
     }
 
@@ -207,10 +207,12 @@ DBOperationResult SqlDBCache::checkPermision(const BaseId &id,
 }
 
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {
-    if (delObj)
+    if (!delObj)
         return;
 
+    _cacheMutex.lock();
     _cache.remove(delObj->dbKey());
+    _cacheMutex.unlock();
 }
 
 void SqlDBCache::saveToCache(const DBObject *obj) {
@@ -219,12 +221,18 @@ void SqlDBCache::saveToCache(const DBObject *obj) {
 
     // TO DO Fix this bug
     // bug : pointer is rewrited!!!!
+
+    _cacheMutex.lock();
     _cache[obj->dbKey()] = const_cast<DBObject*>(obj);
+    _cacheMutex.unlock();
+
     emit sigItemChanged(obj);
 
 }
 
 DBObject* SqlDBCache::getFromCache(uint objKey) {
+
+    QMutexLocker locker(&_cacheMutex);
 
     if (!_cache.contains(objKey)) {
         return nullptr;

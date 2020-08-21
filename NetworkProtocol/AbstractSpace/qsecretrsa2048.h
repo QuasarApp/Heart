@@ -14,8 +14,6 @@ namespace NP {
  */
 class NETWORKPROTOCOLSHARED_EXPORT QSecretRSA2048: public ICrypto
 {
-    Q_OBJECT
-
     // ICrypto interface
 public:
     QSecretRSA2048();
@@ -27,12 +25,19 @@ public:
     QByteArray extractSign(const QByteArray &data) override;
     QByteArray concatSign(const QByteArray &data, const QByteArray &sign) override;
 
+    /**
+     * @brief isValid
+     * @return true if object is valid.
+     */
+    bool isValid() const override;
+
 protected:
     CryptoPairKeys generate(const QByteArray& genesis = {}) const override;
 
 
 private:
     QRSAEncryption *qtSecret = nullptr;
+
 
 };
 }

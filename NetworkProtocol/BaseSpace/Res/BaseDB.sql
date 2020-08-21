@@ -16,4 +16,4 @@ CREATE TABLE IF NOT EXISTS NodesPermisions (
             ON DELETE CASCADE
 
 );
-ALTER TABLE NodesPermisions ADD UNIQUE INDEX (nodeId, objectTable, objectId);
+CREATE UNIQUE INDEX IF NOT EXISTS NodesPermisionsIndex ON NodesPermisions(nodeId, objectTable, objectId);

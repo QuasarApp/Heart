@@ -21,20 +21,31 @@ WebSocketController::WebSocketController(BaseNode *node) {
 bool WebSocketController::subscribe(const BaseId& subscriber,
                                     const DbAddress &item) {
 
+    _subscribsMutex.lock();
     _subscribs[item].insert(subscriber);
+    _subscribsMutex.unlock();
+
+    _itemsMutex.lock();
     _items[subscriber].insert(item);
+    _itemsMutex.unlock();
 
     return true;
 }
 
 void WebSocketController::unsubscribe(const BaseId &subscriber,
                                       const DbAddress& item) {
+    _subscribsMutex.lock();
     _subscribs[item].remove(subscriber);
+    _subscribsMutex.unlock();
+
+    _itemsMutex.lock();
     _items[subscriber].remove(item);
+    _itemsMutex.unlock();
 
 }
 
 const QSet<DbAddress> &WebSocketController::list(const BaseId &subscriber) {
+    QMutexLocker locker(&_itemsMutex);
     return _items[subscriber];
 }
 
@@ -42,6 +53,8 @@ void WebSocketController::handleItemChanged(const DBObject *item) {
     auto obj = dynamic_cast<const DBObject*>(item);
     if (obj)
         return;
+
+    QMutexLocker locker(&_subscribsMutex);
 
     foreachSubscribers(item, _subscribs.value(obj->dbAddress()));
 }

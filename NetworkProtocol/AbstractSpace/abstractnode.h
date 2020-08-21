@@ -13,20 +13,25 @@
 #include <openssl/evp.h>
 
 #include <QAbstractSocket>
+#include <QFutureWatcher>
+#include <QMutex>
 #include <QSslConfiguration>
 #include <QTcpServer>
+#include <QTimer>
 #include "abstractdata.h"
 #include "workstate.h"
-
-class QSslCertificate;
-class QSslKey;
-class QSslConfiguration;
 
 #include "cryptopairkeys.h"
 #include "icrypto.h"
 #include "networkprotocol_global.h"
 
+class QSslCertificate;
+class QSslKey;
+class QSslConfiguration;
+
 namespace NP {
+
+class DataSender;
 
 /**
  * @brief The ParserResult enum
@@ -50,14 +55,6 @@ enum class SslMode {
 };
 
 /**
- * @brief The NodeInfoData struct
- */
-struct NodeInfoData {
-    AbstractNodeInfo *info = nullptr;
-    Package pkg;
-};
-
-/**
  * @brief The SslSrtData struct
  */
 struct SslSrtData {
@@ -67,13 +64,18 @@ struct SslSrtData {
     long long endTime = 31536000L; //1 year
 };
 
+
 #define CRITICAL_ERROOR -50
 #define LOGICK_ERROOR   -20
 #define REQUEST_ERROR   -5
 
 class Abstract;
+
 /**
- * @brief The AbstractNode class
+ * @brief The AbstractNode class - Abstract implementation of node.
+ *  this implementation have a methods for send and receive data messages,
+ *  and work with crypto method for crease a security connections betwin nodes.
+ *  AbstractNode - is thread save class
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractNode : public QTcpServer
 {
@@ -107,34 +109,33 @@ public:
      * @param id of selected node
      * @return pointer to information about node. if address not found return nullpt
      */
-    virtual AbstractNodeInfo* getInfoPtr(const QHostAddress &id);
+    virtual AbstractNodeInfo* getInfoPtr(const HostAddress &id);
 
     /**
      * @brief getInfoPtr
      * @param id peer adders
      * @return pointer to information about node. if address not found return nullpt
      */
-    virtual const AbstractNodeInfo* getInfoPtr(const QHostAddress &id) const;
+    virtual const AbstractNodeInfo* getInfoPtr(const HostAddress &id) const;
 
     /**
      * @brief ban
      * @param target id of ban node
      */
-    virtual void ban(const QHostAddress& target);
+    virtual void ban(const HostAddress& target);
 
     /**
      * @brief unBan
      * @param target id of unban node
      */
-    virtual void unBan(const QHostAddress& target);
+    virtual void unBan(const HostAddress& target);
 
     /**
      * @brief connectToHost - connect to host node
-     * @param ip address of node
-     * @param port - port of node
+     * @param address -  address of node
      * @param mode - mode see SslMode
      */
-    virtual void connectToHost(const QHostAddress &ip, unsigned short port, SslMode mode = SslMode::NoSSL);
+    virtual bool connectToHost(const HostAddress &address, SslMode mode = SslMode::NoSSL);
 
     /**
      * @brief connectToHost - connect to host node. this method find ip address of domain befor connecting
@@ -142,36 +143,28 @@ public:
      * @param port - port of node
      * @param mode - mode see SslMode
      */
-    virtual void connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
+    virtual bool connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
 
     /**
      * @brief addNode - add new node for connect
      * @param nodeAdderess - the network addres of a new node.
-     * @param port - port of node
      */
-    void addNode(const QHostAddress& nodeAdderess, int port);
+    void addNode(const HostAddress& nodeAdderess);
 
     /**
      * @brief removeNode - remove node
      * @param nodeAdderess - the adddress of removed node.
-     * @param port - port of node
      */
-    void removeNode(const QHostAddress& nodeAdderess, int port);
+    void removeNode(const HostAddress& nodeAdderess);
 
     /**
-     * @brief port
-     * @return current node port
-     */
-    unsigned short port() const;
-
-    /**
-     * @brief address
+     * @brief address - address of this node
      * @return return current adders
      */
-    QHostAddress address() const;
+    HostAddress address() const;
 
     /**
-     * @brief getSslConfig
+     * @brief getSslConfig - configuration of this node.
      * @return current ssl configuration on this nod
      */
     QSslConfiguration getSslConfig() const;
@@ -205,13 +198,7 @@ public:
      * @param address - address of other node
      * @return true if ping sendet
      */
-    bool ping( const QHostAddress& address);
-
-    /**
-     * @brief getKnowedNodes
-     * @return the set of konowed nodes.
-     */
-    const QHash<QHostAddress, int> &getKnowedNodes() const;
+    bool ping( const HostAddress& address);
 
 signals:
     void requestError(QString msg);
@@ -245,15 +232,17 @@ protected:
      * @return nodeinfo for new connection
      * override this metho for set your own nodeInfo objects;
      */
-    virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket) const;
+    virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket,
+                                             const HostAddress *clientAddress = nullptr) const;
 
     /**
-     * @brief registerSocket
-     * @param socket
-     * @return
+     * @brief registerSocket - this method registration new socket
+     * @param socket - socket pointer
+     * @param incoming - host address of socket. by default is nullptr.
+     *  Set this value for nodes created on this host
+     * @return return true if the scoeket has been registered successful
      */
-    virtual bool registerSocket(QAbstractSocket *socket,
-                                const QHostAddress *clientAddress = nullptr);
+    virtual bool registerSocket(QAbstractSocket *socket, const HostAddress* address = nullptr);
 
     /**
      * @brief parsePackage
@@ -278,8 +267,8 @@ protected:
      * @param req
      * @return
      */
-    virtual bool sendData(const AbstractData* resp,  const QHostAddress& addere,
-                              const Header *req = nullptr) const;
+    virtual bool sendData(const AbstractData* resp,  const HostAddress& addere,
+                              const Header *req = nullptr);
 
     /**
      * @brief badRequestu
@@ -287,7 +276,7 @@ protected:
      * @param req
      * @param msg - message of error
      */
-    virtual void badRequest(const QHostAddress &address, const Header &req,
+    virtual void badRequest(const HostAddress &address, const Header &req,
                             const QString msg = "");
 
     /**
@@ -306,7 +295,7 @@ protected:
      * @brief banedList
      * @return list of baned nodes
      */
-    QList<QHostAddress> banedList() const;
+    QList<HostAddress> banedList() const;
 
     /**
      * @brief isBaned
@@ -327,7 +316,7 @@ protected:
      * @param diff
      * @return true if all good
      */
-    virtual bool changeTrust(const QHostAddress& id, int diff);
+    virtual bool changeTrust(const HostAddress& id, int diff);
 
     /**
     * @brief incomingConnection for ssl sockets
@@ -355,40 +344,138 @@ protected:
      * @note override this method for get a signals.
      */
     virtual void incomingData(AbstractData* pkg,
-                      const QHostAddress&  sender);
+                      const HostAddress&  sender);
 
     /**
      * @brief connections - return hash map of all connections of this node.
      * @return
      */
-    const QHash<QHostAddress, NodeInfoData>& connections() const;
+    QHash<HostAddress, AbstractNodeInfo*> connections() const;
+
+    /**
+     * @brief connectionRegistered Override this method for get registered incoming connections.
+     * @param info - connection information.
+     */
+    virtual void connectionRegistered(const AbstractNodeInfo *info);
+
+    /**
+     * @brief nodeStatusChanged - This method invoked when status of node chganged.
+     *  Base implementation do nothing. Override this method for add own functionality.
+     * @param node - address of changed node.
+     * @param status - new status of node.
+     *
+     */
+    void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
+
+    /**
+     * @brief nodeConfirmend - thim method invocked when the node status changed to "confirmend"
+     *  default implementatio do nothing
+     * @param node - the address of changed node
+     */
+    virtual void nodeConfirmend(const HostAddress& node);
+
+    /**
+     * @brief nodeConnected thim method invocked when the node status changed to "connected"
+     *  default implementatio do nothing
+     * @param node
+     */
+    virtual void nodeConnected(const HostAddress& node);
+
+    /**
+     * @brief nodeConnected thim method invocked when the node status changed to "disconnected"
+     *  default implementatio do nothing
+     * @param node
+     */
+    virtual void nodeDisconnected(const HostAddress& node);
+
+
+    /**
+     * @brief pushToQueue - This method add action to queue. When the node status will be equal 'triggerStatus' then node run a action method.
+     * @param node - node.
+     * @param action - lyamda function with action.
+     * @param triggerStatus - node status.
+     */
+    void pushToQueue(const std::function<void ()> &action,
+                     const HostAddress& node,
+                     NodeCoonectionStatus triggerStatus);
+
+    /**
+     * @brief takeFromQueue - take the list of actions of node. after invoke take elements will be removed.
+     * @param node - node
+     * @param triggerStatus - status of node
+     * @return list o actions
+     */
+    QList<std::function<void ()>> takeFromQueue(const HostAddress& node,
+                                                NodeCoonectionStatus triggerStatus);
 private slots:
 
     void avelableBytes();
     void handleDisconnected();
+    void handleConnected();
+    void handleCheckConfirmendOfNode(HostAddress node);
 
+    /**
+     * @brief handleWorkerStoped
+     */
+    void handleWorkerStoped();
+
+    /**
+     * @brief handleForceRemoveNode - force remove connection.
+     * @param node
+     */
+    void handleForceRemoveNode(HostAddress node);
+
+    /**
+     * @brief connectNodePrivate
+     */
+    void connectNodePrivate(NP::HostAddress);
 
 private:
 
     /**
       @note just disaable listen method in the node objects.
      */
-    bool listen(const QHostAddress& address = QHostAddress::Any,
-                int port = 0);
+    bool listen(const HostAddress& address = HostAddress::Any);
 
     /**
-     * @brief reconnectAllKonowedNodes
+     * @brief newWork - this method it is wraper of the parsePackage method.
+     *  the newWork invoke a parsePackage in the new thread.
+     * @param pkg
+     * @param sender
      */
-    void reconnectAllKonowedNodes();
+    void newWork(const Package &pkg, const AbstractNodeInfo* sender, const HostAddress &id);
+
+
+    /**
+     * @brief nodeConfirmet - this metthod invoked when node is confirment.
+     * @param sender - node with new status;
+    */
+    void nodeConfirmet(const HostAddress &node);
+
+    /**
+     * @brief checkConfirmendOfNode - this method remove old not confirmed node.
+     * @param node - node address
+     */
+    void checkConfirmendOfNode(const HostAddress& node);
 
     SslMode _mode;
     QSslConfiguration _ssl;
-    QHash<QHostAddress, NodeInfoData> _connections;
-    QMultiHash<QHostAddress, int> _knowedNodes;
+    QHash<HostAddress, AbstractNodeInfo*> _connections;
+    QHash<HostAddress, Package> _packages;
+
+    QHash<HostAddress, QHash<NodeCoonectionStatus, QList<std::function<void()>>>> _actionCache;
+
+    DataSender * _dataSender = nullptr;
+
+    QSet<QFutureWatcher <bool>*> _workers;
+
+    mutable QMutex _connectionsMutex;
+    mutable QMutex _actionCacheMutex;
 
     friend class WebSocketController;
 
 
 };
+
 }
 #endif // ABSTRACTNODE_H

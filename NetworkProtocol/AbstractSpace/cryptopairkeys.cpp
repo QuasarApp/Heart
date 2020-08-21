@@ -65,4 +65,9 @@ bool operator ==(const CryptoPairKeys &left, const CryptoPairKeys &right) {
 bool operator !=(const CryptoPairKeys &left, const CryptoPairKeys &right) {
     return left._privKey != right._privKey || left._publicKey != right._publicKey;
 }
+
+uint qHash(const CryptoPairKeys &value) {
+    return qHash(value.privKey());
+}
+
 }

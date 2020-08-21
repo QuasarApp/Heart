@@ -31,7 +31,8 @@ public:
      * @brief BaseNodeInfo - create node info from the tcp descriptor
      * @param tcp - tcp socket dsscriptor
      */
-    explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr);
+    explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr,
+                          const HostAddress* clientAddress = nullptr);
     ~BaseNodeInfo() override;
 
     /**
@@ -47,8 +48,32 @@ public:
      */
     bool isKnowAddress(const BaseId& address) const;
 
+    /**
+     * @brief selfId - it is id of peer node
+     * @return
+     */
+    BaseId selfId() const;
+
+    /**
+     * @brief setSelfId
+     * @param selfId
+     */
+    void setSelfId(const BaseId &selfId);
+
+    /**
+     * @brief addKnowAddresses
+     */
+    void addKnowAddresses(const QSet<BaseId> &newAddressses);
+
+    /**
+     * @brief confirmData - this implementaton check self id of node.
+     * @return true if node contains valid self id.
+     */
+    bool confirmData() const override;
+
 protected:
     QSet<BaseId> _knowAddresses;
+    BaseId _selfId;
 };
 
 }

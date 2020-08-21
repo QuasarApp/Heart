@@ -30,6 +30,13 @@ private:
     bool testICtypto();
 
     /**
+     * @brief powerTest - this test just create a new object of node and distruct it.
+     *  check constructors and distructors of nodes objects.
+     * @return true if the test finished successful
+     */
+    bool powerTest();
+
+    /**
      * @brief connectNetworkTest
      *  this test check nodes connections greatThen 3 node
      * @return
@@ -51,10 +58,10 @@ private:
     bool performanceTest();
 
     /**
-     * @brief powerTest - this test create big network and create not valid nodes. After created the network a not valid nodes try conquer network.
+     * @brief securityTest - this test create big network and create not valid nodes. After created the network a not valid nodes try conquer network.
      * @return
      */
-    bool powerTest();
+    bool securityTest();
 
 };
 

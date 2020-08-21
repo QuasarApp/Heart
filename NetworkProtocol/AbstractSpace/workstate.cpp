@@ -7,7 +7,7 @@
 
 #include "workstate.h"
 
-#include <QHostAddress>
+#include <hostaddress.h>
 
 namespace NP{
 
@@ -68,11 +68,11 @@ void WorkState::setMaxConnectionCount(int value) {
     maxConnectionCount = value;
 }
 
-QList<QHostAddress> WorkState::getBanedList() const {
+QList<HostAddress> WorkState::getBanedList() const {
     return _banedList;
 }
 
-void WorkState::setBanedList(const QList<QHostAddress> &banedList) {
+void WorkState::setBanedList(const QList<HostAddress> &banedList) {
     _banedList = banedList;
 }
 }
