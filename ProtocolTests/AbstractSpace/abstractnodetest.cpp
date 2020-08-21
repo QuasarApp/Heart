@@ -53,7 +53,7 @@ bool AbstractNodeTest::connectTest() {
 bool AbstractNodeTest::sendDataTest() {
 
     auto request = [this](){
-        return _nodeB->ping(NP::HostAddress(TEST_LOCAL_HOST));
+        return _nodeB->ping(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
     };
 
     auto client = dynamic_cast<TestingClient*>(_nodeB);

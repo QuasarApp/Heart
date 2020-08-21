@@ -10,6 +10,7 @@ namespace NP {
 
 /**
  * @brief The Router class - this class contains routes of nodes and optimise exists routes
+ *  router - is thread save class.
  */
 class Router
 {
@@ -21,6 +22,14 @@ public:
      * @return return route to node from this node
      */
     QList<HostAddress> getRoute(const BaseId& node) const;
+
+    /**
+     * @brief contains - check contains route fo node id.
+     * @param node - id of node
+     * @return true if route findet.
+     */
+    bool contains(const BaseId& node) const;
+
 
     /**
      * @brief updateRoute - set a new route for a node if the new route is shorter than the old route

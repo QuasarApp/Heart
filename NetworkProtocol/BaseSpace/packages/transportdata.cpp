@@ -45,10 +45,14 @@ void TransportData::setData(const Package &data) {
     _packageId.fromRaw(QCryptographicHash::hash(tmp, QCryptographicHash::Sha256));
 }
 
-void TransportData::setData(const AbstractData &data) {
+bool TransportData::setData(const AbstractData &data) {
     Package pkg;
-    data.toPackage(pkg);
+    if (!data.toPackage(pkg)) {
+        return false;
+    }
+
     setData(pkg);
+    return true;
 }
 
 QDataStream &TransportData::fromStream(QDataStream &stream) {
@@ -101,12 +105,13 @@ bool TransportData::setRoute(const QList<HostAddress> &route) {
     }
 
     _route = route;
+    completeRoute(_route.size());
 
     return _route.size();
 }
 
-void TransportData::addNodeToRoute(const HostAddress &route) {
-    _route.push_back(route);
+void TransportData::addNodeToRoute(const HostAddress &node) {
+    _route.push_back(node);
 }
 
 bool TransportData::strip(const HostAddress &correntAddress,

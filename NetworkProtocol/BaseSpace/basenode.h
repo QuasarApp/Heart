@@ -13,6 +13,7 @@
 #include <hostaddress.h>
 #include <nodeobject.h>
 
+
 namespace NP {
 
 class SqlDBCache;
@@ -28,9 +29,11 @@ class Sign;
 class KeyStorage;
 class KnowAddresses;
 class Router;
+class BaseNodeInfo;
 
 /**
- * @brief The BaseNode class - base inplementation of nodes
+ * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
+ *  BaseNode - is thread save class
  */
 class NETWORKPROTOCOLSHARED_EXPORT BaseNode : public AbstractNode
 {
@@ -195,7 +198,7 @@ protected:
      * @param socket
      * @return pointer to new node info
      */
-    AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket) const override;
+    AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
 
     /**
      * @brief db
@@ -306,6 +309,12 @@ protected:
      */
     void nodeConfirmend(const HostAddress& sender) override;
 
+    /**
+     * @brief nodeDisconnected - this implementation remove nodes info from connection cache
+     * @param sender
+     */
+    void nodeDisconnected(const HostAddress& node) override;
+
 
 private:
     SqlDBCache *_db = nullptr;
@@ -360,6 +369,10 @@ private:
     WebSocketController *_webSocketWorker = nullptr;
 
     Router *_router = nullptr;
+
+    QHash<BaseId, BaseNodeInfo*> _connections;
+
+    mutable QMutex _connectionsMutex;
 
 };
 

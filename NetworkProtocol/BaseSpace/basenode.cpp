@@ -32,6 +32,7 @@
 #include <ping.h>
 #include <keystorage.h>
 #include <knowaddresses.h>
+#include <longping.h>
 
 #define THIS_NODE "this_node_key"
 namespace NP {
@@ -208,8 +209,33 @@ void BaseNode::nodeConfirmend(const HostAddress &node) {
         return;
     }
 
-    nodeInfo->selfId();
-    // to do
+    _connectionsMutex.lock();
+    BaseNodeInfo* oldNodeInfo = _connections.value(nodeInfo->selfId(), nullptr);
+    _connectionsMutex.unlock();
+
+    if (oldNodeInfo) {
+        removeNode(node);
+        return;
+    }
+
+    _connectionsMutex.lock();
+    _connections.insert(nodeInfo->selfId(), nodeInfo);
+    _connectionsMutex.unlock();
+
+
+}
+
+void BaseNode::nodeDisconnected(const HostAddress &node) {
+    AbstractNode::nodeDisconnected(node);
+
+    auto nodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(node));
+    if (!nodeInfo) {
+        return;
+    }
+
+    _connectionsMutex.lock();
+    _connections.remove(nodeInfo->selfId());
+    _connectionsMutex.unlock();
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
@@ -336,7 +362,18 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         }
 
         return ParserResult::Processed;
+    } else if (H_16<LongPing>() == pkg.hdr.command) {
+        LongPing cmd(pkg);
+
+        if (!cmd.ansver()) {
+            cmd.setAnsver(true);
+            sendData(&cmd, cmd.senderID(), &pkg.hdr);
+        }
+
+        incomingData(&cmd, sender->networkAddress());
+        return ParserResult::Processed;
     }
+
     return ParserResult::NotProcessed;
 }
 
@@ -415,10 +452,27 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
 
     // check distanation
     if (cmd->targetAddress() == nodeId()) {
+
+        // inversion route and update route to sender
+        _router->updateRoute(cmd->senderID(),
+        {cmd->route().rbegin(), cmd->route().rend()});
+
         return parsePackage(cmd->data(), sender);
     }
 
     bool fRouteIsValid = false;
+
+    // find route if transport command do not have own route.
+    if (!cmd->isHaveRoute() && _router->contains(cmd->targetAddress())) {
+        auto route = _router->getRoute(cmd->targetAddress());
+
+        auto cmdRute = cmd->route();
+
+        cmdRute.push_back(address());
+        cmdRute.append(route);
+
+        cmd->setRoute(cmdRute);
+    }
 
     // check exists route
     if (cmd->isHaveRoute()) {
@@ -479,8 +533,9 @@ QString BaseNode::hashgenerator(const QByteArray &pass) {
                 QCryptographicHash::Sha256);
 }
 
-AbstractNodeInfo *BaseNode::createNodeInfo(QAbstractSocket *socket) const {
-    return  new BaseNodeInfo(socket);
+AbstractNodeInfo *BaseNode::createNodeInfo(QAbstractSocket *socket,
+                                           const HostAddress* clientAddress) const {
+    return  new BaseNodeInfo(socket, clientAddress);
 }
 
 SqlDBCache *BaseNode::db() const {
@@ -558,10 +613,16 @@ bool BaseNode::sendData(const AbstractData *resp,
         return result;
     };
 
+
     if (resp->cmd() != H_16<TransportData>()) {
         TransportData data(address());
         data.setTargetAddress(nodeId);
-        data.setData(*resp);
+        if (!data.setData(*resp)) {
+            return false;
+        }
+
+        data.setRoute(_router->getRoute(nodeId));
+        data.setSenderID(this->nodeId());
 
         return brodcast(&data);
     }
@@ -627,7 +688,7 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
 }
 
 bool BaseNode::ping(const BaseId &id) {
-    Ping cmd;
+    LongPing cmd(nodeId());
     return sendData(&cmd, id);
 }
 

@@ -13,8 +13,12 @@
 
 namespace NP {
 
-AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct) {
+AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct,
+                                   const HostAddress *address) {
     setSct(sct);
+    if (address)
+        setNetworkAddress(*address);
+
 }
 
 AbstractNodeInfo::~AbstractNodeInfo() {}
@@ -46,15 +50,13 @@ void AbstractNodeInfo::unBan() {
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     _sct = sct;
-    if (_sct) {
+    if (_sct && !_sct->peerAddress().isNull()) {
         setNetworkAddress(HostAddress{_sct->peerAddress(), _sct->peerPort()});
-
-        QHostInfo::lookupHost(networkAddress().toString(), [this] (QHostInfo info){
-            if (dynamic_cast<AbstractNodeInfo*>(this)) {
-                setInfo(info);
-            }
-        });
     }
+}
+
+void AbstractNodeInfo::setIsLocal(bool isLocal) {
+    _isLocal = isLocal;
 }
 
 NodeCoonectionStatus AbstractNodeInfo::status() const {
@@ -69,6 +71,10 @@ bool AbstractNodeInfo::confirmData() const {
     return _status != NodeCoonectionStatus::NotConnected;
 }
 
+bool AbstractNodeInfo::isLocal() const {
+    return _isLocal;
+}
+
 HostAddress AbstractNodeInfo::networkAddress() const {
     if (isValid() && _sct->isValid())
         return HostAddress{_sct->peerAddress(), _sct->peerPort()};
@@ -77,7 +83,16 @@ HostAddress AbstractNodeInfo::networkAddress() const {
 }
 
 void AbstractNodeInfo::setNetworkAddress(const HostAddress &networkAddress) {
-    _networkAddress = networkAddress;
+
+    if (!networkAddress.isNull()) {
+        _networkAddress = networkAddress;
+
+        QHostInfo::lookupHost(_networkAddress.toString(), [this] (QHostInfo info){
+            if (dynamic_cast<AbstractNodeInfo*>(this)) {
+                setInfo(info);
+            }
+        });
+    }
 }
 
 void AbstractNodeInfo::setInfo(const QHostInfo &info) {

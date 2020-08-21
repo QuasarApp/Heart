@@ -14,11 +14,10 @@
 namespace NP {
 
 
-BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp):
-    AbstractNodeInfo(tcp){}
+BaseNodeInfo::BaseNodeInfo(QAbstractSocket *tcp, const HostAddress* address):
+    AbstractNodeInfo(tcp, address){}
 
 BaseNodeInfo::~BaseNodeInfo() = default;
-
 
 bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid();

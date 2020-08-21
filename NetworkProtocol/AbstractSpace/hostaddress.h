@@ -24,6 +24,9 @@ public:
     unsigned short port() const;
     void setPort(unsigned short port);
 
+    friend QDataStream& operator << (QDataStream& stream, const HostAddress& address);
+    friend QDataStream& operator >> (QDataStream& stream, HostAddress& address);
+
 private:
     unsigned short _port = 0;
 };

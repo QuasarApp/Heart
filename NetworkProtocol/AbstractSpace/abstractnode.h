@@ -75,6 +75,7 @@ class Abstract;
  * @brief The AbstractNode class - Abstract implementation of node.
  *  this implementation have a methods for send and receive data messages,
  *  and work with crypto method for crease a security connections betwin nodes.
+ *  AbstractNode - is thread save class
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractNode : public QTcpServer
 {
@@ -231,15 +232,17 @@ protected:
      * @return nodeinfo for new connection
      * override this metho for set your own nodeInfo objects;
      */
-    virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket) const;
+    virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket,
+                                             const HostAddress *clientAddress = nullptr) const;
 
     /**
-     * @brief registerSocket
-     * @param socket
-     * @return
+     * @brief registerSocket - this method registration new socket
+     * @param socket - socket pointer
+     * @param incoming - host address of socket. by default is nullptr.
+     *  Set this value for nodes created on this host
+     * @return return true if the scoeket has been registered successful
      */
-    virtual bool registerSocket(QAbstractSocket *socket,
-                                const HostAddress *clientAddress = nullptr);
+    virtual bool registerSocket(QAbstractSocket *socket, const HostAddress* address = nullptr);
 
     /**
      * @brief parsePackage
@@ -410,7 +413,17 @@ private slots:
     void handleDisconnected();
     void handleConnected();
     void handleCheckConfirmendOfNode(HostAddress node);
+
+    /**
+     * @brief handleWorkerStoped
+     */
     void handleWorkerStoped();
+
+    /**
+     * @brief handleForceRemoveNode - force remove connection.
+     * @param node
+     */
+    void handleForceRemoveNode(HostAddress node);
 
     /**
      * @brief connectNodePrivate

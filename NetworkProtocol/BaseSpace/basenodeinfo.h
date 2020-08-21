@@ -31,7 +31,8 @@ public:
      * @brief BaseNodeInfo - create node info from the tcp descriptor
      * @param tcp - tcp socket dsscriptor
      */
-    explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr);
+    explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr,
+                          const HostAddress* clientAddress = nullptr);
     ~BaseNodeInfo() override;
 
     /**

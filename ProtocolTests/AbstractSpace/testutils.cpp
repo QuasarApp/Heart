@@ -47,7 +47,7 @@ bool TestUtils::connectFunc(
         unsigned short port) {
 
     auto wraper = [&cli, address, port]() {
-        cli->connectToHost(NP::HostAddress{address, port});
+        cli->addNode(NP::HostAddress{address, port});
         return true;
     };
 

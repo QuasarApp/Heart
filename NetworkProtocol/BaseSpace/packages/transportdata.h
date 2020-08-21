@@ -26,7 +26,7 @@ public:
 
     const Package& data() const;
     void setData(const Package &data);
-    void setData(const AbstractData& data);
+    bool setData(const AbstractData& data);
     bool isValid() const;
     bool isHaveRoute() const;
 
@@ -49,7 +49,12 @@ public:
      * @return true if a new route is valid
      */
     bool setRoute(const QList<HostAddress> &route);
-    void addNodeToRoute(const HostAddress &route);
+
+    /**
+     * @brief addNodeToRoute - push back new node to route
+     * @param node - node address
+     */
+    void addNodeToRoute(const HostAddress &node);
 
     /**
      * @brief strip - this method remove a range addresses from route of transport data. from correntAddress to availabelTarget

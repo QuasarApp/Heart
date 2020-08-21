@@ -61,8 +61,10 @@ public:
     /**
      * @brief AbstractNodeInfo
      * @param sct socket of connection
+     * @param address - address of socket
      */
-    AbstractNodeInfo(QAbstractSocket *sct = nullptr);
+    AbstractNodeInfo(QAbstractSocket *sct = nullptr,
+                     const HostAddress* address = nullptr);
 
     /**
      * @brief ~AbstractNodeInfo
@@ -176,6 +178,18 @@ public:
      */
     virtual bool confirmData() const;
 
+    /**
+     * @brief isLocal - return true if connectuion opened on this node.
+     * @return
+     */
+    bool isLocal() const;
+
+    /**
+     * @brief setIsLocal - set local status for this Node.
+     * @param isLocal
+     */
+    void setIsLocal(bool isLocal);
+
 protected:
     /**
      * @brief setSct
@@ -191,6 +205,7 @@ private:
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
     NodeCoonectionStatus _status = NodeCoonectionStatus::NotConnected;
+    bool _isLocal = false;
 
 };
 

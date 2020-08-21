@@ -22,6 +22,7 @@
 #include <openssl/pem.h>
 #include <QMetaObject>
 #include <QtConcurrent>
+#include <closeconnection.h>
 
 namespace NP {
 
@@ -111,6 +112,7 @@ bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
         socket = new QSslSocket(nullptr);
     }
 
+
     if (!registerSocket(socket, &address)) {
         return false;
     }
@@ -171,7 +173,13 @@ void AbstractNode::removeNode(const HostAddress &nodeAdderess) {
     }
 
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
-        ptr->disconnect();
+
+        if (ptr->isLocal()) {
+            ptr->disconnect();
+        } else {
+            QTimer::singleShot(WAIT_CONFIRM_TIME, this,
+                               std::bind(&AbstractNode::handleForceRemoveNode, this, nodeAdderess));
+        }
     }
 }
 
@@ -319,8 +327,9 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration() {
     return res;
 }
 
-AbstractNodeInfo *AbstractNode::createNodeInfo(QAbstractSocket *socket) const {
-    return new AbstractNodeInfo(socket);
+AbstractNodeInfo *AbstractNode::createNodeInfo(QAbstractSocket *socket,
+                                               const HostAddress* clientAddress) const {
+    return new AbstractNodeInfo(socket, clientAddress);
 }
 
 bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* clientAddress) {
@@ -329,7 +338,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         return false;
     }
 
-    auto info = createNodeInfo(socket);
+    auto info = createNodeInfo(socket, clientAddress);
 
     _connectionsMutex.lock();
     HostAddress cliAddress;
@@ -337,6 +346,8 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         cliAddress = *clientAddress;
     else
         cliAddress = info->networkAddress();
+
+    info->setIsLocal(clientAddress);
 
     _connections[cliAddress] = info;
 
@@ -393,6 +404,12 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
 
         return ParserResult::Processed;
 
+    } else if (H_16<CloseConnection>() == pkg.hdr.command) {
+
+        if (sender->isLocal()) {
+            removeNode(sender->networkAddress());
+        }
+        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
@@ -632,8 +649,8 @@ void AbstractNode::incomingSsl(qintptr socketDescriptor) {
 }
 
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
-    QTcpSocket *socket = new QTcpSocket;
-    if (!isBaned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+    QTcpSocket *socket = new QTcpSocket();
+    if (socket->setSocketDescriptor(socketDescriptor) && !isBaned(socket)) {
         if (!registerSocket(socket)) {
             delete socket;
         }
@@ -760,6 +777,13 @@ void AbstractNode::handleWorkerStoped() {
     if (senderObject) {
        _workers.remove(senderObject);
        delete senderObject;
+    }
+}
+
+void AbstractNode::handleForceRemoveNode(HostAddress node) {
+    AbstractNodeInfo* info = getInfoPtr(node);
+    if (info) {
+        info->disconnect();
     }
 }
 
@@ -909,7 +933,7 @@ void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStat
     } else if (status == NodeCoonectionStatus::Connected) {
         nodeConnected(node);
     } else if (status == NodeCoonectionStatus::Confirmed) {
-        nodeConfirmet(node);
+        nodeConfirmend(node);
     }
 }
 
