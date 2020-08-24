@@ -15,6 +15,7 @@
 namespace NP {
 
 #define THE_CLASS(x) QString::fromLatin1(typeid(*x).name())
+#define VERSION_FILE "version"
 
 KeyStorage::KeyStorage(ICrypto * cryptoMethod) {
     _keyPoolSizeMutex = new QMutex();
@@ -175,7 +176,11 @@ bool KeyStorage::fromStorage(const QByteArray &key) {
 }
 
 void KeyStorage::generateKeysByTasks() {
-    for (auto it = _generateTasks.begin(); it != _generateTasks.end(); ++it) {
+    _taskMutex->lock();
+    auto tasks =  _generateTasks;
+    _taskMutex->unlock();
+
+    for (auto it = tasks.begin(); it != tasks.end(); ++it) {
 
         if (_stopGenerator) {
             return;
@@ -195,6 +200,12 @@ void KeyStorage::generateKeysByTasks() {
         }
 
         _keysMutex->unlock();
+
+
+        _taskMutex->lock();
+        _generateTasks.remove(it.key());
+        _taskMutex->unlock();
+
     }
 }
 
@@ -222,8 +233,20 @@ void KeyStorage::run() {
         return;
     }
 
-    generateKeysByTasks();
-    generateRandomKeys();
+    _keyPoolSizeMutex->lock();
+    int keyPoolSize = _keyPoolSize;
+    _keyPoolSizeMutex->unlock();
+
+    while ((_generateTasks.size() || keyPoolSize > _randomKeysPool.size())
+           && !_stopGenerator) {
+
+        generateKeysByTasks();
+        generateRandomKeys();
+
+        _keyPoolSizeMutex->lock();
+        keyPoolSize = _keyPoolSize;
+        _keyPoolSizeMutex->unlock();
+    }
 }
 
 void KeyStorage::stop() {
@@ -251,7 +274,9 @@ void KeyStorage::loadAllKeysFromStorage() {
     auto list = QDir(storageLocation()).entryInfoList(QDir::Files | QDir::NoDotAndDotDot);
 
     for (const auto& file: list ) {
-        fromStorage(file.fileName().toLatin1());
+        if (file.fileName() != VERSION_FILE) {
+            fromStorage(file.fileName().toLatin1());
+        }
     }
 }
 
@@ -280,7 +305,7 @@ QString KeyStorage::storageLocation() const {
 }
 
 bool KeyStorage::initStorageLocation(const QString &value) {
-    QFile version(value + "/version");
+    QFile version(value + "/" + VERSION_FILE);
 
     if (!QFile::exists(value)) {
 
@@ -295,7 +320,7 @@ bool KeyStorage::initStorageLocation(const QString &value) {
                               QFile::Permission::ReadOwner |
                               QFile::Permission::WriteOwner);
 
-        QFile version(value + "/version");
+        QFile version(value + "/" + VERSION_FILE);
 
         if (!version.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
             return false;

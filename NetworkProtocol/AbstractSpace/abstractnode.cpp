@@ -112,7 +112,6 @@ bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
         socket = new QSslSocket(nullptr);
     }
 
-
     if (!registerSocket(socket, &address)) {
         return false;
     }
@@ -360,6 +359,10 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     connect(socket, &QAbstractSocket::connected, this, &AbstractNode::handleConnected,
             Qt::QueuedConnection);
 
+    if (info->isConnected()) {
+        socket->connected();
+    }
+
 
     // check node confirmed
     QTimer::singleShot(WAIT_CONFIRM_TIME, this,
@@ -569,6 +572,19 @@ int AbstractNode::connectionsCount() const {
 
     for (auto i : _connections) {
         if (i->isConnected()) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int AbstractNode::confirmendCount() const {
+    int count = 0;
+
+    QMutexLocker locer(&_connectionsMutex);
+
+    for (auto i : _connections) {
+        if (i->status() == NodeCoonectionStatus::Confirmed) {
             count++;
         }
     }
@@ -792,11 +808,7 @@ bool AbstractNode::listen(const HostAddress &address) {
 }
 
 void AbstractNode::connectNodePrivate(HostAddress address) {
-
-    AbstractNodeInfo* info = getInfoPtr(address);
-    if (!(info && info->isConnected())) {
-        connectToHost(address, _mode);
-    }
+    connectToHost(address, _mode);
 }
 
 void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,

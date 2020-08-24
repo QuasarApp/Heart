@@ -130,10 +130,6 @@ bool BaseNode::connectToHost(const HostAddress &ip, SslMode mode) {
     if (!AbstractNode::connectToHost(ip, mode))
         return false;
 
-    if (!welcomeAddress(ip)) {
-        return false;
-    }
-
     return true;
 }
 
@@ -197,8 +193,11 @@ bool BaseNode::welcomeAddress(const HostAddress& ip) {
 
 }
 
-void BaseNode::connectionRegistered(const AbstractNodeInfo *info) {
-    welcomeAddress(info->networkAddress());
+void BaseNode::nodeConnected(const HostAddress &node) {
+    AbstractNode::nodeConnected(node);
+
+    welcomeAddress(node);
+
 }
 
 void BaseNode::nodeConfirmend(const HostAddress &node) {

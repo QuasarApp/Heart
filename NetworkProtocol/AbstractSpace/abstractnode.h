@@ -188,10 +188,16 @@ public:
     QString pareseResultToString(const ParserResult& parseResult) const;
 
     /**
-     * @brief connectionsCount
+     * @brief connectionsCount - return count fo connections (nodes with status connected)
      * @return
      */
     int connectionsCount() const;
+
+    /**
+     * @brief connectionsCount - return count of nodes with status confirmend
+     * @return
+     */
+    int confirmendCount() const;
 
     /**
      * @brief ping - ping address for testing

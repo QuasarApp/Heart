@@ -301,7 +301,7 @@ protected:
      * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
      * @param info incominng node info.
      */
-    void connectionRegistered(const AbstractNodeInfo *info) override;
+    void nodeConnected(const HostAddress& node) override;
 
     /**
      * @brief nodeConfirmend - this implementation test nodes to double connections

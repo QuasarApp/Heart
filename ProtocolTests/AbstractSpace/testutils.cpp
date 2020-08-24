@@ -8,7 +8,7 @@
 
 bool TestUtils::funcPrivateConnect(const std::function<bool()> &requestFunc,
                                    const std::function<bool()> &checkFunc,
-                                   const std::function<QMetaObject::Connection()> &connectFunction) {
+                                   const std::function<QMetaObject::Connection()> &connectFunction) const {
 
     QMetaObject::Connection m_connection = connectFunction();
     if (!requestFunc()) {
@@ -23,7 +23,7 @@ bool TestUtils::funcPrivateConnect(const std::function<bool()> &requestFunc,
 }
 
 bool TestUtils::funcPrivateConnect(const std::function<bool ()> &requestFunc,
-                                   const std::function<bool ()> &checkFunc) {
+                                   const std::function<bool ()> &checkFunc) const {
     return funcPrivateConnect(requestFunc, checkFunc, [](){return QMetaObject::Connection();});
 }
 
@@ -32,7 +32,7 @@ TestUtils::TestUtils()
 
 }
 
-bool TestUtils::wait(const std::function<bool()> &forWait, int msec) {
+bool TestUtils::wait(const std::function<bool()> &forWait, int msec) const {
     auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
     while (curmsec > QDateTime::currentMSecsSinceEpoch() && !forWait()) {
         QCoreApplication::processEvents();
@@ -44,7 +44,7 @@ bool TestUtils::wait(const std::function<bool()> &forWait, int msec) {
 bool TestUtils::connectFunc(
         NP::AbstractNode *cli,
         const QString& address,
-        unsigned short port) {
+        unsigned short port) const {
 
     auto wraper = [&cli, address, port]() {
         cli->addNode(NP::HostAddress{address, port});
