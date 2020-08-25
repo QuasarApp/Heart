@@ -13,13 +13,12 @@ public:
     BaseTestUtils();
 
     bool deployNewNode(NP::BaseNode* node) const;
-    NP::BaseNode* getCoreNode();
     QHash<NP::BaseId, NP::BaseNode*> generateNetworkNode(int count) const;
 
     NP::BaseNode *initNewNode() const;
 
 protected:
-    const NP::BaseNode* getCoreNode() const;
+    const NP::BaseNode* getCoreNode();
 private:
     int nextPort() const;
 

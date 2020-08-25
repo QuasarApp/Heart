@@ -24,6 +24,7 @@
 #include "cryptopairkeys.h"
 #include "icrypto.h"
 #include "networkprotocol_global.h"
+#include "receivedata.h"
 
 class QSslCertificate;
 class QSslKey;
@@ -467,7 +468,7 @@ private:
     SslMode _mode;
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;
-    QHash<HostAddress, Package> _packages;
+    QHash<HostAddress, ReceiveData> _receiveData;
 
     QHash<HostAddress, QHash<NodeCoonectionStatus, QList<std::function<void()>>>> _actionCache;
 

@@ -219,8 +219,8 @@ void BaseNode::nodeConfirmend(const HostAddress &node) {
 
     _connectionsMutex.lock();
     _connections.insert(nodeInfo->selfId(), nodeInfo);
-    _connectionsMutex.unlock();
 
+    _connectionsMutex.unlock();
 
 }
 

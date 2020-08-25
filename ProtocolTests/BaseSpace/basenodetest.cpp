@@ -210,9 +210,9 @@ bool BaseNodeTest::connectNetworkTest() {
 }
 
 bool BaseNodeTest::transportDataTest() {
-
-    auto network = generateNetworkNode(3);
     auto coreNode = getCoreNode();
+
+    auto network = generateNetworkNode(30);
 
     return network.size() && coreNode->confirmendCount() == 30;
 }

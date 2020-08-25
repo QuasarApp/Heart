@@ -4,7 +4,6 @@
 #include "test.h"
 
 BaseTestUtils::BaseTestUtils() {
-   coreNode = initNewNode();
 
 }
 
@@ -22,7 +21,11 @@ NP::BaseNode *BaseTestUtils::initNewNode() const {
     return node;
 }
 
-const NP::BaseNode *BaseTestUtils::getCoreNode() const {
+const NP::BaseNode *BaseTestUtils::getCoreNode() {
+    if (!coreNode)
+        coreNode = initNewNode();
+
+
     return coreNode;
 }
 
@@ -49,10 +52,6 @@ bool BaseTestUtils::deployNewNode(NP::BaseNode* node) const {
     }
 
     return true;
-}
-
-NP::BaseNode *BaseTestUtils::getCoreNode() {
-    return coreNode;
 }
 
 QHash<NP::BaseId, NP::BaseNode *>

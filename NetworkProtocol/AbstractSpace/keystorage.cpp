@@ -187,20 +187,20 @@ void KeyStorage::generateKeysByTasks() {
         }
 
         const auto&  value = _keys.value(it.key());
-        if (value.isValid())
-            continue;
+        if (!value.isValid()) {
 
-        _keysMutex->lock();
+            _keysMutex->lock();
 
-        if (it.value() == RAND_KEY && _randomKeysPool.size()) {
-            _keys[it.key()] = *_randomKeysPool.begin();
-            _randomKeysPool.erase(_randomKeysPool.begin());
-        } else {
-            _keys[it.key()] = _cryptoMethod->generate(it.value());
+            if (it.value() == RAND_KEY && _randomKeysPool.size()) {
+                _keys[it.key()] = *_randomKeysPool.begin();
+                _randomKeysPool.erase(_randomKeysPool.begin());
+            } else {
+                _keys[it.key()] = _cryptoMethod->generate(it.value());
+            }
+
+            _keysMutex->unlock();
+
         }
-
-        _keysMutex->unlock();
-
 
         _taskMutex->lock();
         _generateTasks.remove(it.key());

@@ -48,6 +48,12 @@ struct NETWORKPROTOCOLSHARED_EXPORT Header {
      * @brief reset - reset all data and set for header invalid status
      */
     void reset();
+
+    /**
+     * @brief toString - return string of header of package
+     * @return
+     */
+    QString toString() const;
 };
 #pragma pack(pop)
 
