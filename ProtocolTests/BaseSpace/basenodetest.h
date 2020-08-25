@@ -8,7 +8,7 @@
 #include <networkprotocol.h>
 
 
-class BaseNodeTest: public Test, protected TestUtils
+class BaseNodeTest: public Test, protected BaseTestUtils
 {
 public:
     BaseNodeTest();
@@ -20,8 +20,6 @@ private:
     NP::AbstractNode *_nodeA = nullptr;
     NP::AbstractNode *_nodeB = nullptr;
     NP::AbstractNode *_nodeC = nullptr;
-
-    BaseTestUtils *_utils = nullptr;
 
     /**
      * @brief testICtypto - testing ictypto class

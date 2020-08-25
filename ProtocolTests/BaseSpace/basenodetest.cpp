@@ -33,8 +33,6 @@ BaseNodeTest::BaseNodeTest() {
     _nodeB = new NP::BaseNode();
     _nodeC = new TestingBaseClient();
 
-    _utils = new BaseTestUtils();
-
 }
 
 BaseNodeTest::~BaseNodeTest() {
@@ -48,7 +46,7 @@ void BaseNodeTest::test() {
     QVERIFY(testICtypto());
     QVERIFY(powerTest());
     QVERIFY(connectNetworkTest());
-//    QVERIFY(transportDataTest());
+    QVERIFY(transportDataTest());
 
 //    QVERIFY(performanceTest());
 //    QVERIFY(securityTest());
@@ -188,7 +186,7 @@ bool BaseNodeTest::connectNetworkTest() {
     };
 
     auto checkNode = [_nodeAPtr, _nodeBPtr](){
-        return _nodeAPtr->connectionsCount() && _nodeBPtr->connectionsCount();
+        return _nodeAPtr->confirmendCount() && _nodeBPtr->confirmendCount();
     };
 
     if (!funcPrivateConnect(addNodeRequest, checkNode)) {
@@ -212,7 +210,11 @@ bool BaseNodeTest::connectNetworkTest() {
 }
 
 bool BaseNodeTest::transportDataTest() {
-    return false;
+    auto coreNode = getCoreNode();
+
+    auto network = generateNetworkNode(30);
+
+    return network.size() && coreNode->confirmendCount() == 30;
 }
 
 bool BaseNodeTest::performanceTest() {

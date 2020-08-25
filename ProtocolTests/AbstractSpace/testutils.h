@@ -9,18 +9,18 @@ class TestUtils
 {
 public:
     TestUtils();
-    bool wait(const std::function<bool()> &forWait, int msec);
+    bool wait(const std::function<bool()> &forWait, int msec) const;
 
     bool connectFunc(NP::AbstractNode *cli,
                      const QString &address,
-                     unsigned short port);
+                     unsigned short port) const;
 
     bool funcPrivateConnect(const std::function<bool ()> &requestFunc,
                             const std::function<bool ()> &checkFunc,
-                            const std::function<QMetaObject::Connection ()> &connectFunction);
+                            const std::function<QMetaObject::Connection ()> &connectFunction) const;
 
     bool funcPrivateConnect(const std::function<bool ()> &requestFunc,
-                            const std::function<bool ()> &checkFunc);
+                            const std::function<bool ()> &checkFunc) const;
 
 };
 

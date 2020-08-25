@@ -56,4 +56,10 @@ void Package::reset() {
     data.clear();
 }
 
+QString Package::toString() const {
+    return QString("Pakcage description: %0."
+                   " Data description: Data size - %1, Data: %2").
+            arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
+}
+
 }

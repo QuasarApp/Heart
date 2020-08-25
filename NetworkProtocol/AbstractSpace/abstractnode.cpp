@@ -112,7 +112,6 @@ bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
         socket = new QSslSocket(nullptr);
     }
 
-
     if (!registerSocket(socket, &address)) {
         return false;
     }
@@ -360,9 +359,13 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     connect(socket, &QAbstractSocket::connected, this, &AbstractNode::handleConnected,
             Qt::QueuedConnection);
 
+    if (info->isConnected()) {
+        socket->connected();
+    }
+
 
     // check node confirmed
-    QTimer::singleShot(WAIT_CONFIRM_TIME, this,
+    QTimer::singleShot(WAIT_TIME, this,
                        std::bind(&AbstractNode::handleCheckConfirmendOfNode, this, cliAddress));
 
     connectionRegistered(info);
@@ -575,6 +578,19 @@ int AbstractNode::connectionsCount() const {
     return count;
 }
 
+int AbstractNode::confirmendCount() const {
+    int count = 0;
+
+    QMutexLocker locer(&_connectionsMutex);
+
+    for (auto i : _connections) {
+        if (i->status() == NodeCoonectionStatus::Confirmed) {
+            count++;
+        }
+    }
+    return count;
+}
+
 bool AbstractNode::ping(const HostAddress &address) {
     Ping cmd;
     return sendData(&cmd, address);
@@ -668,33 +684,69 @@ void AbstractNode::avelableBytes() {
         return;
     }
 
-//    bug!!!!, peer port is random value or 0
     auto id = HostAddress{client->peerAddress(), client->peerPort()};
 
     if (!_connections.contains(id)) {
         return;
     }
 
-    auto &pkg = _packages[id];
+    auto &pkg = _receiveData[id]._pkg;
+    auto &hdrArray = _receiveData[id]._hdrArray;
 
+    int workIndex = 0;
     auto array = client->readAll();
-    if (pkg.hdr.isValid()) {
-        pkg.data.append(array);
 
-    } else {
-        pkg.reset();
+    // concat with old data of header.
+    array.insert(0, hdrArray);
+    hdrArray.clear();
 
-        memcpy(&pkg.hdr,
-               array.data(), sizeof(Header));
+    while (array.size() > workIndex) {
 
-        pkg.data.append(array.mid(sizeof(Header)));
-    }
+        unsigned int workSize = array.size() - workIndex;
 
-    if (pkg.isValid())
-        newWork(pkg, getInfoPtr(id), id);
+        if (pkg.hdr.isValid()) {
+            // CASE 1: The Package data is still not collected, but the header is already collected. performs full or partial filling of packet data.
 
-    if (pkg.data.size() >= pkg.hdr.size) {
-        pkg.reset();
+            unsigned int dataLength = std::min(pkg.hdr.size - pkg.data.size(),
+                                               array.size() - workIndex);
+            pkg.data.append(array.mid(workIndex + sizeof(Header), dataLength));
+
+            workIndex += dataLength;
+
+
+        } else if (workSize >= sizeof(Header)) {
+
+            // CASE 2: The header and package still do not exist and the amount of data allows you to create a new header. A header is created and will fill in all or part of the package data.
+
+            pkg.reset();
+
+            memcpy(&pkg.hdr,
+                   array.data() + workIndex, sizeof(Header));
+
+            unsigned int dataLength = std::min(static_cast<unsigned long>(pkg.hdr.size),
+                                               array.size() - sizeof(Header) - workIndex);
+
+            pkg.data.append(array.mid(workIndex + sizeof(Header), dataLength));
+            workIndex += sizeof(Header) + dataLength;
+
+        } else {
+            // CASE 3: There is not enough data to initialize the header. The data will be placed in temporary storage and will be processed the next time the data is received.
+
+            unsigned char dataLength = array.size() - workIndex;
+            hdrArray += array.mid(workIndex, dataLength);
+            workIndex += dataLength;
+        }
+
+        if (pkg.isValid()) {
+            newWork(pkg, getInfoPtr(id), id);
+        } else {
+            QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
+                                        QuasarAppUtils::Warning);
+        }
+
+        if (pkg.data.size() >= pkg.hdr.size) {
+            pkg.reset();
+        }
     }
 }
 
@@ -792,11 +844,7 @@ bool AbstractNode::listen(const HostAddress &address) {
 }
 
 void AbstractNode::connectNodePrivate(HostAddress address) {
-
-    AbstractNodeInfo* info = getInfoPtr(address);
-    if (!(info && info->isConnected())) {
-        connectToHost(address, _mode);
-    }
+    connectToHost(address, _mode);
 }
 
 void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,

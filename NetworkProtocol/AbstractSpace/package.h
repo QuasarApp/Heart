@@ -52,6 +52,12 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package {
      */
     virtual void reset();
 
+    /**
+     * @brief toString - convert pakcage information to string label
+     * @return string
+     */
+    QString toString() const;
+
     virtual ~Package() = default;
 
 };
