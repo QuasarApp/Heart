@@ -43,7 +43,7 @@ PrepareResult NodeObject::prepareSaveQuery(QSqlQuery &q) const {
     QString values;
 
     values += "'" + getId().toBase64() + "', ";
-    values += "'" + _publickKey + "', ";
+    values += "'" + _publickKey.toBase64(QByteArray::Base64UrlEncoding) + "', ";
     values +=  QString::number(_trust);
 
     queryString = queryString.arg(values);
@@ -59,7 +59,8 @@ bool NodeObject::fromSqlRecord(const QSqlRecord &q) {
         return false;
     }
 
-    setPublickKey(q.value("pubKey").toByteArray());
+    setPublickKey(QByteArray::fromBase64(q.value("pubKey").toByteArray(),
+                                         QByteArray::Base64UrlEncoding));
     setTrust(q.value("_trust").toInt());
 
     return isValid();
@@ -121,6 +122,10 @@ bool NodeObject::copyFrom(const AbstractData * other) {
     this->_publickKey = otherObject->_publickKey;
 
     return true;
+}
+
+QPair<QString, QString> NodeObject::altarnativeKey() const {
+    return {"pubKey", _publickKey.toBase64(QByteArray::Base64UrlEncoding)};
 }
 
 }

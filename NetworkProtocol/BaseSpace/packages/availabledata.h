@@ -36,7 +36,7 @@ public:
 
     bool isCached() const override;
     bool isBundle() const override;
-    bool fromSqlRecord(const QSqlRecord &q);
+    bool fromSqlRecord(const QSqlRecord &q) override;
 
 protected:
     // StreamBase interface

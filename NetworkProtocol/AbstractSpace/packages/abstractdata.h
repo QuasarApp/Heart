@@ -102,4 +102,5 @@ public:
 
 #define INIT_COMMAND setCmd(H_16<decltype (*this)>());
 
+
 #endif // ABSTRACTDATA_H

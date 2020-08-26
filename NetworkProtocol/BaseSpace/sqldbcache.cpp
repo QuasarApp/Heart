@@ -28,7 +28,7 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     for (uint it : _needToSaveCache) {
 
-        if (!_writer && _writer->isValid()) {
+        if (_writer && _writer->isValid()) {
 
             auto obj = getFromCache(it);
 
@@ -101,7 +101,7 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *
         return true;
     }
 
-    if (!_writer && _writer->isValid()) {
+    if (_writer && _writer->isValid()) {
         if (!_writer->getAllObjects(templateObject, result)) {
             return false;
         }
@@ -122,7 +122,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
     }
 
     if (saveObject->getId().isValid()) {
-        if (!_writer && _writer->isValid()) {
+        if (_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
@@ -134,7 +134,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
     saveToCache(saveObject);
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
-        if (!_writer && _writer->isValid()) {
+        if (_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
@@ -157,7 +157,7 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
     deleteFromCache(delObj);
 
-    if (!_writer && _writer->isValid()) {
+    if (_writer && _writer->isValid()) {
         return _writer->deleteObject(delObj);
     }
 

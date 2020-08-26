@@ -33,7 +33,7 @@ bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
     return QMetaObject::invokeMethod(this,
                                      "handleSaveObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const DBObject *,
+                                     Q_ARG(const NP::DBObject *,
                                            saveObject));
 
 }
@@ -46,7 +46,7 @@ bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
     return QMetaObject::invokeMethod(this,
                                      "handleDeleteObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const DBObject *,
+                                     Q_ARG(const NP::DBObject *,
                                            deleteObject));
 }
 
@@ -57,11 +57,39 @@ bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<DBObj
     }
 
     bool workOfEnd = false, workResult = false;
+
+
     bool invockeResult = QMetaObject::invokeMethod(this,
-                                                   "handleDeleteObject",
+                                                   "handleGetAllObject",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const DBObject &, templateObject),
-                                                   Q_ARG(QList<DBObject *> &, result),
+                                                   Q_ARG(const NP::DBObject *, &templateObject),
+                                                   Q_ARG(QList<NP::DBObject *> *, &result),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
+
+    if (!invockeResult)
+        return false;
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
+}
+
+bool AsyncSqlDbWriter::initDb(const QVariantMap &params) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::initDb(params);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "handleInitDb",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(const QVariantMap &, params),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
 
@@ -90,11 +118,11 @@ void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject) {
     }
 }
 
-void AsyncSqlDbWriter::handleGetAllObject(const DBObject &templateObject, QList<DBObject *> &result,
+void AsyncSqlDbWriter::handleGetAllObject(const DBObject *templateObject, QList<DBObject *> *result,
                                           bool *resultOfWork, bool *endOfWork) {
 
 
-    *resultOfWork = SqlDBWriter::getAllObjects(templateObject, result);
+    *resultOfWork = SqlDBWriter::getAllObjects(*templateObject, *result);
 
     if (endOfWork) {
         *endOfWork = true;
@@ -102,9 +130,19 @@ void AsyncSqlDbWriter::handleGetAllObject(const DBObject &templateObject, QList<
 
 }
 
+void AsyncSqlDbWriter::handleInitDb(const QVariantMap &params,
+                                    bool *resultOfWork, bool *endOfWork) {
+
+    *resultOfWork = SqlDBWriter::initDb(params);
+
+    if (endOfWork) {
+        *endOfWork = true;
+    }
+}
+
 bool AsyncSqlDbWriter::waitFor(bool *condition, int timeout) const {
     auto curmsec = QDateTime::currentMSecsSinceEpoch() + timeout;
-    while (curmsec > QDateTime::currentMSecsSinceEpoch() && *condition) {
+    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !*condition) {
         QCoreApplication::processEvents();
     }
     QCoreApplication::processEvents();

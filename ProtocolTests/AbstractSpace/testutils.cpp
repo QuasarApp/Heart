@@ -32,6 +32,10 @@ TestUtils::TestUtils()
 
 }
 
+TestUtils::~TestUtils() {
+
+}
+
 bool TestUtils::wait(const std::function<bool()> &forWait, int msec) const {
     auto curmsec = QDateTime::currentMSecsSinceEpoch() + msec;
     while (curmsec > QDateTime::currentMSecsSinceEpoch() && !forWait()) {

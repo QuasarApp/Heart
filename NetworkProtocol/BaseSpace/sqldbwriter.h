@@ -141,8 +141,8 @@ private:
     /**
      * @brief workWithQuery - this base function for all prepareQuery functions.
      * steps work : call prepareFunc, call exec , call cb.
-     * @param q
-     * @param prepareFunc
+     * @param q - query object with a request
+     * @param prepareFunc - function with pripare data for query
      * @param cb - call after success exec and prepare steps
      * @return true if all steps finished successful
      */

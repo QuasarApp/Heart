@@ -214,7 +214,11 @@ bool BaseNodeTest::transportDataTest() {
 
     auto network = generateNetworkNode(30);
 
-    return network.size() && coreNode->confirmendCount() == 30;
+    if (!(network.size() && coreNode->confirmendCount() == 30)) {
+        return false;
+    }
+
+    return true;
 }
 
 bool BaseNodeTest::performanceTest() {
