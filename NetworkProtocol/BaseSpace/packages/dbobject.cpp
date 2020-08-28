@@ -35,9 +35,6 @@ void DBObject::setTableName(const QString &tableName) {
 }
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
-    if (_id.isValid()) {
-        return PrepareResult::Fail;
-    }
 
     QString queryString = "SELECT * FROM %0 " + getWhereBlock();
 
@@ -86,18 +83,17 @@ QString DBObject::getWhereBlock() const {
         whereBlock += "id='" + getId().toBase64() + "'";
     } else {
         auto altKeys = altarnativeKey();
-        if (!altKeys.first.isEmpty()) {
-            whereBlock +=  altKeys.first + "='" + altKeys.second + "'";
+        if (altKeys.first.isEmpty()) {
+            return {};
         }
+        whereBlock +=  altKeys.first + "='" + altKeys.second + "'";
+
     }
 
     return whereBlock;
 }
 
 PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
-    if (_id.isValid()) {
-        return PrepareResult::Fail;
-    }
 
     QString queryString = "DELETE FROM %0 " + getWhereBlock();
 
