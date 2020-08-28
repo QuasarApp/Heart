@@ -166,10 +166,7 @@ public:
      */
     bool connectToHost(const HostAddress &ip, SslMode mode) override;
 
-
-
 protected:
-
 
     /**
      * @brief initDefaultDbObjects create default cache and db writer if pointer is null
@@ -315,11 +312,16 @@ protected:
      */
     void nodeDisconnected(const HostAddress& node) override;
 
+    /**
+     * @brief incomingData - this signal invoked when node get command or ansver
+     * @param pkg - received package
+     * @param sender - sender of the package
+     * @note override this method for get a signals.
+     */
+    virtual void incomingData(AbstractData* pkg,
+                      const BaseId&  sender);
 
 private:
-    SqlDBCache *_db = nullptr;
-    KeyStorage *_nodeKeys = nullptr;
-    QString _localNodeName;
 
     /**
      * @brief workWithAvailableDataRequest
@@ -365,6 +367,21 @@ private:
     bool optimizeRoute(const BaseId& node,
                        const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
                        QList<HostAddress> rawRoute);
+
+
+    /**
+     * @brief incomingData - this implementation move old incoming method into private section
+     *  becouse base node work with BaseID addresses.
+     * @warning Do not call this implementation on this class,
+     *  use the ncomingData(AbstractData* pkg, const HostAddress&  sender) implementation.
+     */
+    void incomingData(AbstractData* pkg,
+                      const HostAddress&  sender) override;
+
+
+    SqlDBCache *_db = nullptr;
+    KeyStorage *_nodeKeys = nullptr;
+    QString _localNodeName;
 
     WebSocketController *_webSocketWorker = nullptr;
 

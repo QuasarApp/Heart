@@ -237,6 +237,8 @@ void BaseNode::nodeDisconnected(const HostAddress &node) {
     _connectionsMutex.unlock();
 }
 
+void BaseNode::incomingData(AbstractData *, const BaseId &) {}
+
 ParserResult BaseNode::parsePackage(const Package &pkg,
                                     const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);
@@ -244,10 +246,17 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
         return parentResult;
     }
 
+    auto baseSender = dynamic_cast<const BaseNodeInfo*>(sender);
+    if (!baseSender) {
+        QuasarAppUtils::Params::log("Sender is not basenode info!",
+                                    QuasarAppUtils::Error);
+        return ParserResult::Error;
+    }
+
     if (H_16<BadNodeRequest>() == pkg.hdr.command) {
         BadNodeRequest cmd(pkg);
 
-        incomingData(&cmd, sender->networkAddress());
+        incomingData(&cmd, baseSender->selfId());
         emit requestError(cmd.err());
 
         return ParserResult::Processed;
@@ -279,7 +288,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
             return ParserResult::Error;
         }
 
-        incomingData(&obj, sender->networkAddress());
+        incomingData(&obj, baseSender->selfId());
         return ParserResult::Processed;
 
     } else if (H_16<DeleteObjectRequest>() == pkg.hdr.command) {
@@ -333,7 +342,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
             return ParserResult::Error;
         }
 
-        incomingData(&obj, sender->networkAddress());
+        incomingData(&obj, baseSender->selfId());
         return ParserResult::Processed;
     } else if (H_16<NodeObject>() == pkg.hdr.command) {
         NodeObject obj(pkg);
@@ -369,7 +378,7 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
             sendData(&cmd, cmd.senderID(), &pkg.hdr);
         }
 
-        incomingData(&cmd, sender->networkAddress());
+        incomingData(&cmd, baseSender->selfId());
         return ParserResult::Processed;
     }
 
@@ -523,6 +532,10 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
     _router->addProcesedPackage(cmd->packageId());
     return ParserResult::Processed;
 
+}
+
+void BaseNode::incomingData(AbstractData *pkg, const HostAddress &sender) {
+    AbstractNode::incomingData(pkg, sender);
 }
 
 
