@@ -419,7 +419,7 @@ bool BaseNode::workWithNodeObjectData(NodeObject& node,
         node.setTrust(0);
     }
 
-    if (DBOperationResult::Allowed == setObject(nodeId(), &node)) {
+    if (!db()->saveObject(&node)) {
         return false;
     };
 
@@ -537,7 +537,6 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
 void BaseNode::incomingData(AbstractData *pkg, const HostAddress &sender) {
     AbstractNode::incomingData(pkg, sender);
 }
-
 
 QString BaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
@@ -769,6 +768,11 @@ DBOperationResult BaseNode::setObject(const BaseId &requester,
     }
 
     return DBOperationResult::Allowed;
+}
+
+bool BaseNode::savePermision(const NodeObject& node,
+                             const NodesPermisionObject &permision) {
+    return false;
 }
 
 DBOperationResult BaseNode::deleteObject(const BaseId &requester,

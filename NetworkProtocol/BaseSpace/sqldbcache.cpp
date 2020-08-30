@@ -32,7 +32,7 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
             auto obj = getFromCache(it);
 
-            if (!obj->isValid()) {
+            if (!obj || !obj->isValid()) {
                 deleteFromCache(obj);
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
@@ -117,7 +117,7 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *
 
 bool SqlDBCache::saveObject(const DBObject *saveObject) {
 
-    if (saveObject || !saveObject->isValid()) {
+    if (!saveObject || !saveObject->isValid()) {
         return false;
     }
 
@@ -152,7 +152,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
 
 bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
-    if (delObj)
+    if (!delObj)
         return false;
 
     deleteFromCache(delObj);
@@ -216,7 +216,7 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
 }
 
 void SqlDBCache::saveToCache(const DBObject *obj) {
-    if (obj)
+    if (!obj)
         return;
 
     // TO DO Fix this bug

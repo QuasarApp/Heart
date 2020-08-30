@@ -30,6 +30,8 @@ class KeyStorage;
 class KnowAddresses;
 class Router;
 class BaseNodeInfo;
+class NodesPermisionObject;
+
 
 /**
  * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
@@ -268,6 +270,13 @@ protected:
     DBOperationResult setObject(const BaseId &requester,
                                 const DBObject *saveObject);
 
+    /**
+     * @brief savePermision - this method save a new changes in to permisions table.
+     *  Befor save new data node can be validate new data with consensus.
+     * @param permision - data of new permision
+     * @return true if new cghanges saved successful.
+     */
+    bool savePermision(const NodeObject &node, const NodesPermisionObject& permision);
     /**
      * @brief checkSignOfRequest
      * @param request - package
