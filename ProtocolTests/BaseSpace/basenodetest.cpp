@@ -16,7 +16,7 @@ public:
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const NP::HostAddress &sender) {
+    void incomingData(NP::AbstractData *pkg, const NP::BaseId &sender) {
         Q_UNUSED(sender);
 
         auto ping = dynamic_cast<NP::Ping*>(pkg);

@@ -215,18 +215,24 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     _cacheMutex.unlock();
 }
 
-void SqlDBCache::saveToCache(const DBObject *obj) {
+bool SqlDBCache::saveToCache(const DBObject *obj) {
     if (!obj)
-        return;
+        return false;
 
     // TO DO Fix this bug
     // bug : pointer is rewrited!!!!
 
     _cacheMutex.lock();
-    _cache[obj->dbKey()] = const_cast<DBObject*>(obj);
+    auto cloneObject = obj->factory();
+    if (!cloneObject->copyFrom(obj)) {
+        return false;
+    }
+    _cache[obj->dbKey()] = cloneObject;
     _cacheMutex.unlock();
 
     emit sigItemChanged(obj);
+
+    return true;
 
 }
 

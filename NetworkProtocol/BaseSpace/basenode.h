@@ -385,7 +385,7 @@ private:
      *  use the ncomingData(AbstractData* pkg, const HostAddress&  sender) implementation.
      */
     void incomingData(AbstractData* pkg,
-                      const HostAddress&  sender) override;
+                      const HostAddress&  sender) override final;
 
 
     SqlDBCache *_db = nullptr;
