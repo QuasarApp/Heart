@@ -1,4 +1,5 @@
 #include "basenodetest.h"
+#include "dbtestsnode.h"
 #include "testutils.h"
 
 #include <basenode.h>
@@ -44,6 +45,7 @@ BaseNodeTest::~BaseNodeTest() {
 
 void BaseNodeTest::test() {
     QVERIFY(testICtypto());
+    QVERIFY(dbTest());
     QVERIFY(powerTest());
     QVERIFY(connectNetworkTest());
     QVERIFY(transportDataTest());
@@ -152,6 +154,12 @@ bool BaseNodeTest::powerTest() {
     delete _nodeAPtr;
 
     return true;
+}
+
+bool BaseNodeTest::dbTest() {
+    auto node = new DbTestsNode;
+
+    return node->test();
 }
 
 bool BaseNodeTest::connectNetworkTest() {
