@@ -107,6 +107,7 @@ void BaseNode::stop() {
     if (db()) {
         auto writer = _db->writer();
         delete _db;
+        _db = nullptr;
         delete writer;
 
     }
