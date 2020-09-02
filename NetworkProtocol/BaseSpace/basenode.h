@@ -48,6 +48,7 @@ public:
      * @param ptr
      */
     BaseNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
+    ~BaseNode() override;
 
     /**
      * @brief intSqlDb - this function init database of node
@@ -85,7 +86,12 @@ public:
     virtual bool run(const QString &addres, unsigned short port,
                      const QString &localNodeName);
 
-    ~BaseNode() override;
+    /**
+     * @brief stop - this implementation stop work database and push to database all cache data.
+     */
+    void stop() override;
+
+
 
     /**
      * @brief defaultDbParams

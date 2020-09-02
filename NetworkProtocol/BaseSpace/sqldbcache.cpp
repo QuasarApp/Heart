@@ -15,6 +15,7 @@
 
 #include <networkprotocol.h>
 #include <dbobject.h>
+#include <asyncsqldbwriter.h>
 
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
@@ -28,6 +29,8 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     for (uint it : _needToSaveCache) {
 
+        auto async = dynamic_cast<AsyncSqlDbWriter*>(_writer);
+
         if (_writer && _writer->isValid()) {
 
             auto obj = getFromCache(it);
@@ -36,21 +39,29 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
                 deleteFromCache(obj);
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                   " db object is not valid! key=" + DESCRIPTION_KEY(it),
-                                                   QuasarAppUtils::VerboseLvl::Error);
+                                            " db object is not valid! key=" + DESCRIPTION_KEY(it),
+                                            QuasarAppUtils::VerboseLvl::Error);
                 continue;
             }
 
-             if (!_writer->saveObject(obj)) {
-                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                    " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it),
-                                                    QuasarAppUtils::VerboseLvl::Error);
-             }
+            bool saveResult = false;
+            if (async)
+                saveResult = async->saveObjectWithWait(obj);
+            else
+                saveResult = _writer->saveObject(obj);
+
+
+
+            if (!saveResult ) {
+                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                            " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it),
+                                            QuasarAppUtils::VerboseLvl::Error);
+            }
         } else {
 
             QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                               " db writer is npt inited! ",
-                                               QuasarAppUtils::VerboseLvl::Error);
+                                        " db writer is npt inited! ",
+                                        QuasarAppUtils::VerboseLvl::Error);
             return;
         }
     }
@@ -243,9 +254,9 @@ DBObject* SqlDBCache::getFromCache(uint objKey) {
     if (!_cache.contains(objKey)) {
         return nullptr;
     }
-// TO DO add validation for object
+    // TO DO add validation for object
 
-     return _cache[objKey];
+    return _cache[objKey];
 }
 
 SqlDBCasheWriteMode SqlDBCache::getMode() const {

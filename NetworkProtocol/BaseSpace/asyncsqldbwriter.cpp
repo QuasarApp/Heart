@@ -19,10 +19,14 @@ namespace NP {
 AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     QObject(ptr)
 {
-    QThread *own = new QThread(this);
-    moveToThread(own);
-    own->start();
+    _own = new QThread(this);
+    moveToThread(_own);
+    _own->start();
 
+}
+
+AsyncSqlDbWriter::~AsyncSqlDbWriter() {
+    _own->quit();
 }
 
 bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
@@ -33,8 +37,9 @@ bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
     return QMetaObject::invokeMethod(this,
                                      "handleSaveObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const NP::DBObject *,
-                                           saveObject));
+                                     Q_ARG(const NP::DBObject *, saveObject),
+                                     Q_ARG(bool *, nullptr),
+                                     Q_ARG(bool *, nullptr));
 
 }
 
@@ -46,8 +51,65 @@ bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
     return QMetaObject::invokeMethod(this,
                                      "handleDeleteObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const NP::DBObject *,
-                                           deleteObject));
+                                     Q_ARG(const NP::DBObject *, deleteObject),
+                                     Q_ARG(bool *, nullptr),
+                                     Q_ARG(bool *, nullptr));
+}
+
+bool AsyncSqlDbWriter::saveObjectWithWait(const DBObject *saveObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::saveObject(saveObject);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invoke = QMetaObject::invokeMethod(this,
+                                     "handleSaveObject",
+                                     Qt::QueuedConnection,
+                                     Q_ARG(const NP::DBObject *, saveObject),
+                                     Q_ARG(bool *, &workResult),
+                                     Q_ARG(bool *, &workOfEnd));
+
+    if (!invoke) {
+        QuasarAppUtils::Params::log("handleDeleteObject not invokecd", QuasarAppUtils::Debug);
+        return false;
+    }
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
+}
+
+bool AsyncSqlDbWriter::deleteObjectWithWait(const DBObject *deleteObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::deleteObject(deleteObject);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invoke = QMetaObject::invokeMethod(this,
+                                     "handleDeleteObject",
+                                     Qt::QueuedConnection,
+                                     Q_ARG(const NP::DBObject *, deleteObject),
+                                     Q_ARG(bool *, &workResult),
+                                     Q_ARG(bool *, &workOfEnd));
+
+    if (!invoke) {
+        QuasarAppUtils::Params::log("handleDeleteObject not invokecd", QuasarAppUtils::Debug);
+        return false;
+    }
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
 }
 
 bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<DBObject *> &result) {
@@ -104,17 +166,35 @@ bool AsyncSqlDbWriter::initDb(const QVariantMap &params) {
     return workResult;
 }
 
-void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject) {
-    if (!SqlDBWriter::saveObject(saveObject)) {
-        QuasarAppUtils::Params::log("AsyncSqlDbWriter: save object fail!",
-                                    QuasarAppUtils::Error);
+void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject, bool *resultOfWork, bool *endOfWork) {
+    if (resultOfWork) {
+        *resultOfWork = SqlDBWriter::saveObject(saveObject);
+
+        if (endOfWork) {
+            *endOfWork = true;
+        }
+
+    } else {
+        if (!SqlDBWriter::saveObject(saveObject)) {
+            QuasarAppUtils::Params::log("AsyncSqlDbWriter: save object fail!",
+                                        QuasarAppUtils::Error);
+        }
     }
 }
 
-void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject) {
-    if (!SqlDBWriter::deleteObject(deleteObject)) {
-        QuasarAppUtils::Params::log("AsyncSqlDbWriter: delete object fail!",
-                                    QuasarAppUtils::Error);
+void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject, bool *resultOfWork, bool *endOfWork) {
+    if (resultOfWork) {
+        *resultOfWork = SqlDBWriter::deleteObject(deleteObject);
+
+        if (endOfWork) {
+            *endOfWork = true;
+        }
+
+    } else {
+        if (!SqlDBWriter::deleteObject(deleteObject)) {
+            QuasarAppUtils::Params::log("AsyncSqlDbWriter: delete object fail!",
+                                        QuasarAppUtils::Error);
+        }
     }
 }
 

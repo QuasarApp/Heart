@@ -23,7 +23,7 @@ class AsyncSqlDbWriter :public QObject, public SqlDBWriter
     Q_OBJECT
 public:
     AsyncSqlDbWriter(QObject* ptr = nullptr);
-
+    ~AsyncSqlDbWriter();
     // iObjectProvider interface
     /**
      * @brief saveObject - save object in to database. This implementation work on own thread
@@ -38,6 +38,20 @@ public:
      * @return true if function finished successful
      */
     bool deleteObject(const DBObject* deleteObject) override;
+
+    /**
+     * @brief saveObjectWithWait - this is owerload of saveObject with wait results of a database thread.
+     * @param saveObject - ptr to object
+     * @return true if function finished successful
+     */
+    bool saveObjectWithWait(const DBObject* saveObject);
+
+    /**
+     * @brief deleteObjectWithWait - this is owerload of deleteObject with wait results of a database thread.
+     * @param deleteObject - ptr to object
+     * @return true if function finished successful
+     */
+    bool deleteObjectWithWait(const DBObject* deleteObject);
 
     /**
      * @brief getAllObjects - this implementation work on own thread and wait results in current thread.
@@ -59,13 +73,15 @@ protected slots:
      * @brief handleSaveObject - this method call SaveObject on own thread.
      * @param saveObject - object for save
      */
-    void handleSaveObject(const NP::DBObject* saveObject);
+    void handleSaveObject(const NP::DBObject* saveObject,
+                           bool *resultOfWork, bool *endOfWork);
 
     /**
      * @brief handleDeleteObject - this method call DeleteObject on own thread.
      * @param deleteObject object for delete
      */
-    void handleDeleteObject(const NP::DBObject* deleteObject);
+    void handleDeleteObject(const NP::DBObject* deleteObject,
+                            bool *resultOfWork, bool *endOfWork);
 
     /**
      * @brief the handleGetAllObject - this method call getAllObjects on own thread.
@@ -96,6 +112,7 @@ private:
      */
     bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
 
+    QThread *_own = nullptr;
 
 };
 

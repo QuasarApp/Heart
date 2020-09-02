@@ -101,7 +101,7 @@ public:
     virtual bool run(const QString& addres, unsigned short port);
 
     /**
-     * @brief stop stop this node
+     * @brief stop stop this node and close all connections.
      */
     virtual void stop();
 

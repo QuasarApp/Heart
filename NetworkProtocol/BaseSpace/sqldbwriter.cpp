@@ -210,6 +210,7 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr) {
 }
 
 SqlDBWriter::~SqlDBWriter() {
+    db.close();
 }
 
 bool SqlDBWriter::saveQuery(const DBObject* ptr) const {

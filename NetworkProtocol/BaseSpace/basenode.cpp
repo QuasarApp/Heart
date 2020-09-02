@@ -100,8 +100,22 @@ bool BaseNode::run(const QString &addres,
     return AbstractNode::run(addres, port);
 }
 
+void BaseNode::stop() {
+
+    AbstractNode::stop();
+
+    if (db()) {
+        auto writer = _db->writer();
+        delete _db;
+        delete writer;
+
+    }
+
+}
+
 BaseNode::~BaseNode() {
     delete _nodeKeys;
+    delete _router;
 }
 
 void BaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {

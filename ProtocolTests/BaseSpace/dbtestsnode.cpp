@@ -36,5 +36,13 @@ bool DbTestsNode::test() {
         return false;
     }
 
-    return true;
+    stop();
+
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+        return false;
+    }
+
+    objectFromDataBase = db()->getObject(testObjec);
+
+    return objectFromDataBase;
 }
