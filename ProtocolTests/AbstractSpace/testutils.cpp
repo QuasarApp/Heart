@@ -11,7 +11,7 @@ bool TestUtils::funcPrivateConnect(const std::function<bool()> &requestFunc,
                                    const std::function<QMetaObject::Connection()> &connectFunction) const {
 
     QMetaObject::Connection m_connection = connectFunction();
-    if (!requestFunc()) {
+    if (requestFunc && !requestFunc()) {
         QObject::disconnect(m_connection);
         return false;
     }

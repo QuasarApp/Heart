@@ -27,6 +27,7 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
 
 AsyncSqlDbWriter::~AsyncSqlDbWriter() {
     _own->quit();
+    _own->wait();
 }
 
 bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {

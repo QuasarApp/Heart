@@ -39,7 +39,8 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
                 deleteFromCache(obj);
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " db object is not valid! key=" + DESCRIPTION_KEY(it),
+                                            " db object is not valid! key=" + DESCRIPTION_KEY(it) +
+                                            " " + obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Error);
                 continue;
             }
@@ -54,7 +55,8 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
             if (!saveResult ) {
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it),
+                                            " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it) +
+                                            " " + obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Error);
             }
         } else {

@@ -95,6 +95,15 @@ BaseTestUtils::generateNetworkNode(int count) const {
         result.insert(i->nodeId(), i);
     }
 
+    auto check = [this, count](){
+        return coreNode->confirmendCount() == count;
+    };
+
+    if (!funcPrivateConnect(nullptr, check)) {
+        deinit();
+        return {};
+    }
+
     result.insert(coreNode->nodeId(), coreNode);
 
     return result;

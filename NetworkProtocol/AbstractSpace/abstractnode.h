@@ -478,6 +478,7 @@ private:
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _actionCacheMutex;
+    mutable QMutex _confirmNodeMutex;
 
     friend class WebSocketController;
 

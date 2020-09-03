@@ -29,7 +29,7 @@
 // Other settings
 #ifdef RELEASE_BUILD
     #define WAIT_TIME 30000
-    #define WAIT_RESPOCE_TIME 1000
+    #define WAIT_RESPOCE_TIME 10000
 #else
     #define WAIT_TIME 300000000
     #define WAIT_RESPOCE_TIME 100000000

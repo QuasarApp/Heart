@@ -873,10 +873,15 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
             return false;
         }
 
+        _confirmNodeMutex.lock();
+
         bool fConfirmed = sender->confirmData();
         if (fConfirmed && sender->status() != NodeCoonectionStatus::Confirmed) {
             nodeConfirmet(id);
         }
+
+        _confirmNodeMutex.unlock();
+
 
         return true;
     };
