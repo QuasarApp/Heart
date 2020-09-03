@@ -69,6 +69,12 @@ bool AbstractData::copyFrom(const AbstractData *other) {
     return other;
 }
 
+QString AbstractData::toString() const {
+    return QString("Object: type:%0, command:%1").
+            arg(typeid(this).name()).
+            arg(_cmd);
+}
+
 AbstractData::~AbstractData() {
 
 }

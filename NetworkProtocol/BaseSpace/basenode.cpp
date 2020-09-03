@@ -254,6 +254,18 @@ void BaseNode::nodeDisconnected(const HostAddress &node) {
 
 void BaseNode::incomingData(AbstractData *, const BaseId &) {}
 
+QString BaseNode::keyStorageLocation() const {
+    return _nodeKeys->storageLocation();
+}
+
+QString BaseNode::dbLocation() const {
+    if (db() && db()->writer()) {
+        return db()->writer()->databaseLocation();
+    }
+
+    return "";
+}
+
 ParserResult BaseNode::parsePackage(const Package &pkg,
                                     const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);

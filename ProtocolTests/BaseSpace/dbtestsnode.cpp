@@ -1,7 +1,7 @@
 #include "dbtestsnode.h"
 #include "test.h"
 #include "sqldbcache.h"
-
+#include <QFileInfo>
 #include <QFile>
 
 DbTestsNode::DbTestsNode():NP::BaseNode() {
@@ -9,8 +9,17 @@ DbTestsNode::DbTestsNode():NP::BaseNode() {
 }
 
 bool DbTestsNode::test() {
-    QString database = "~/.local/QuasarApp/TestQNP/DatabaseTestNode/DatabaseTestNode_Storage.sqlite";
-    if (QFile::exists(database) && !QFile::remove(database)) {
+
+
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+        return false;
+    }
+
+    QString database = dbLocation();
+    stop();
+
+
+    if (QFileInfo(database).exists() && !QFile::remove(database)) {
         return false;
     }
 
@@ -44,5 +53,9 @@ bool DbTestsNode::test() {
 
     objectFromDataBase = db()->getObject(testObjec);
 
-    return objectFromDataBase;
+    if (objectFromDataBase && objectFromDataBase->trust() == 0) {
+        return true;
+    }
+
+    return false;
 }

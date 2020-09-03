@@ -159,7 +159,13 @@ bool BaseNodeTest::powerTest() {
 bool BaseNodeTest::dbTest() {
     auto node = new DbTestsNode;
 
-    return node->test();
+    if (!node->test()) {
+        return false;
+    }
+
+    delete node;
+
+    return true;
 }
 
 bool BaseNodeTest::connectNetworkTest() {

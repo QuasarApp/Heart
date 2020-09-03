@@ -72,6 +72,13 @@ public:
      */
     bool deleteObject(const NP::DBObject *ptr) override;
 
+    /**
+     * @brief databaseLocation - return location of database.
+     * if it is sqllite then return path to db file else return database name.
+     * @return path or name of database.
+     */
+    QString databaseLocation() const;
+
     virtual ~SqlDBWriter() override;
 
 protected:

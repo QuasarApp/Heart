@@ -76,6 +76,11 @@ DbAddress DBObject::dbAddress() const {
     return DbAddress{tableName(), getId()};
 }
 
+QString DBObject::toString() const {
+    return AbstractData::toString() +
+            QString(" %0").arg(dbAddress().toString());
+}
+
 QString DBObject::getWhereBlock() const {
     QString whereBlock = "WHERE ";
 

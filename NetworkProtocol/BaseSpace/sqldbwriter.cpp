@@ -209,6 +209,10 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     return deleteQuery(ptr);
 }
 
+QString SqlDBWriter::databaseLocation() const {
+    return db.databaseName();
+}
+
 SqlDBWriter::~SqlDBWriter() {
     db.close();
 }

@@ -336,6 +336,18 @@ protected:
     virtual void incomingData(AbstractData* pkg,
                       const BaseId&  sender);
 
+    /**
+     * @brief keyStorageLocation - return location of storagge of keys.
+     * @return path to the location of keys storage
+     */
+    QString keyStorageLocation() const;
+
+    /**
+     * @brief dbLocation - return location of database of node.
+     * @return path to the location of database
+     */
+    QString dbLocation() const;
+
 private:
 
     /**

@@ -161,6 +161,13 @@ public:
      */
     DbAddress dbAddress() const;
 
+    /**
+     * @brief toString - return a string implementation fo this object
+     * @return string of object
+     */
+    QString toString() const override;
+
+
 protected:
     QString _tableName;
     BaseId _id;
@@ -172,6 +179,7 @@ protected:
 
 private:
     QString getWhereBlock() const;
+
 };
 }
 

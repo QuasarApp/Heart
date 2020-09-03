@@ -117,9 +117,14 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *
             return false;
         }
 
-        if (obj->isCached()) {
-            saveToCache(obj);
+        for (auto object: result) {
+            if (object->isCached() && !saveToCache(object)) {
+                QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
+                                            object->toString(),
+                                            QuasarAppUtils::Warning);
+            }
         }
+
         return true;
     }
 

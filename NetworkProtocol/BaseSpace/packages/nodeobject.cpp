@@ -65,7 +65,7 @@ bool NodeObject::fromSqlRecord(const QSqlRecord &q) {
 
     setPublickKey(QByteArray::fromBase64(q.value("pubKey").toByteArray(),
                                          QByteArray::Base64UrlEncoding));
-    setTrust(q.value("_trust").toInt());
+    setTrust(q.value("trust").toInt());
 
     return isValid();
 }
@@ -124,6 +124,7 @@ bool NodeObject::copyFrom(const AbstractData * other) {
         return false;
 
     this->_publickKey = otherObject->_publickKey;
+    this->_trust = otherObject->_trust;
 
     return true;
 }
