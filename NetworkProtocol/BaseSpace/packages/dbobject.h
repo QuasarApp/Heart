@@ -135,7 +135,7 @@ public:
 
     /**
      * @brief isBundle
-     *  If thsi function return true then SqlDBWriter create only one object after invoked selectquery.
+     *  If this function return true then SqlDBWriter create only one object after invoked selectquery.
      *  And if the selectquery function return a list of more 1 elements then a method fromSqlRecord moust be invoked foreach all elements of list.
      * @return true if the object is a selection from a set of database object.
      */
@@ -160,6 +160,12 @@ public:
      * @return
      */
     DbAddress dbAddress() const;
+
+    /**
+     * @brief clone - this nethod create a new object. The new Object is cone of current object.
+     * @return return clone of current object
+     */
+    DBObject* clone() const;
 
     /**
      * @brief toString - return a string implementation fo this object

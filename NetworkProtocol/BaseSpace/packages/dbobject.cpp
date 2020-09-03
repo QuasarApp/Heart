@@ -76,6 +76,16 @@ DbAddress DBObject::dbAddress() const {
     return DbAddress{tableName(), getId()};
 }
 
+DBObject *DBObject::clone() const {
+    auto cloneObject = factory();
+    if (!cloneObject->copyFrom(this)) {
+        delete cloneObject;
+        return nullptr;
+    }
+
+    return cloneObject;
+}
+
 QString DBObject::toString() const {
     return AbstractData::toString() +
             QString(" %0").arg(dbAddress().toString());
