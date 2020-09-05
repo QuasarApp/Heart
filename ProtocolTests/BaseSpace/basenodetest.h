@@ -35,6 +35,12 @@ private:
     bool powerTest();
 
     /**
+     * @brief dbTest - test base functions of database of nodes.
+     * @return true if test finished successful.
+     */
+    bool dbTest();
+
+    /**
      * @brief connectNetworkTest
      *  this test check nodes connections greatThen 3 node
      * @return

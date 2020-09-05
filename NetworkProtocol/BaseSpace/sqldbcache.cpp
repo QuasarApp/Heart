@@ -15,6 +15,7 @@
 
 #include <networkprotocol.h>
 #include <dbobject.h>
+#include <asyncsqldbwriter.h>
 
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
@@ -28,29 +29,41 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     for (uint it : _needToSaveCache) {
 
-        if (!_writer && _writer->isValid()) {
+        auto async = dynamic_cast<AsyncSqlDbWriter*>(_writer);
+
+        if (_writer && _writer->isValid()) {
 
             auto obj = getFromCache(it);
 
-            if (!obj->isValid()) {
+            if (!obj || !obj->isValid()) {
                 deleteFromCache(obj);
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                   " db object is not valid! key=" + DESCRIPTION_KEY(it),
-                                                   QuasarAppUtils::VerboseLvl::Error);
+                                            " db object is not valid! key=" + DESCRIPTION_KEY(it) +
+                                            " " + obj->toString(),
+                                            QuasarAppUtils::VerboseLvl::Error);
                 continue;
             }
 
-             if (!_writer->saveObject(obj)) {
-                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                                    " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it),
-                                                    QuasarAppUtils::VerboseLvl::Error);
-             }
+            bool saveResult = false;
+            if (async)
+                saveResult = async->saveObjectWithWait(obj);
+            else
+                saveResult = _writer->saveObject(obj);
+
+
+
+            if (!saveResult ) {
+                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                            " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it) +
+                                            " " + obj->toString(),
+                                            QuasarAppUtils::VerboseLvl::Error);
+            }
         } else {
 
             QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                               " db writer is npt inited! ",
-                                               QuasarAppUtils::VerboseLvl::Error);
+                                        " db writer is npt inited! ",
+                                        QuasarAppUtils::VerboseLvl::Error);
             return;
         }
     }
@@ -101,14 +114,19 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *
         return true;
     }
 
-    if (!_writer && _writer->isValid()) {
+    if (_writer && _writer->isValid()) {
         if (!_writer->getAllObjects(templateObject, result)) {
             return false;
         }
 
-        if (obj->isCached()) {
-            saveToCache(obj);
+        for (auto object: result) {
+            if (object->isCached() && !saveToCache(object)) {
+                QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
+                                            object->toString(),
+                                            QuasarAppUtils::Warning);
+            }
         }
+
         return true;
     }
 
@@ -117,12 +135,12 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *
 
 bool SqlDBCache::saveObject(const DBObject *saveObject) {
 
-    if (saveObject || !saveObject->isValid()) {
+    if (!saveObject || !saveObject->isValid()) {
         return false;
     }
 
     if (saveObject->getId().isValid()) {
-        if (!_writer && _writer->isValid()) {
+        if (_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
@@ -134,7 +152,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
     saveToCache(saveObject);
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
-        if (!_writer && _writer->isValid()) {
+        if (_writer && _writer->isValid()) {
             if (!_writer->saveObject(saveObject)) {
                 return false;
             }
@@ -152,12 +170,12 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
 
 bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
-    if (delObj)
+    if (!delObj)
         return false;
 
     deleteFromCache(delObj);
 
-    if (!_writer && _writer->isValid()) {
+    if (_writer && _writer->isValid()) {
         return _writer->deleteObject(delObj);
     }
 
@@ -215,18 +233,24 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     _cacheMutex.unlock();
 }
 
-void SqlDBCache::saveToCache(const DBObject *obj) {
-    if (obj)
-        return;
+bool SqlDBCache::saveToCache(const DBObject *obj) {
+    if (!obj)
+        return false;
 
     // TO DO Fix this bug
     // bug : pointer is rewrited!!!!
 
     _cacheMutex.lock();
-    _cache[obj->dbKey()] = const_cast<DBObject*>(obj);
+    auto cloneObject = obj->factory();
+    if (!cloneObject->copyFrom(obj)) {
+        return false;
+    }
+    _cache[obj->dbKey()] = cloneObject;
     _cacheMutex.unlock();
 
     emit sigItemChanged(obj);
+
+    return true;
 
 }
 
@@ -237,9 +261,9 @@ DBObject* SqlDBCache::getFromCache(uint objKey) {
     if (!_cache.contains(objKey)) {
         return nullptr;
     }
-// TO DO add validation for object
+    // TO DO add validation for object
 
-     return _cache[objKey];
+    return _cache[objKey];
 }
 
 SqlDBCasheWriteMode SqlDBCache::getMode() const {

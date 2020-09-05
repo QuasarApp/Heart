@@ -30,6 +30,8 @@ class KeyStorage;
 class KnowAddresses;
 class Router;
 class BaseNodeInfo;
+class NodesPermisionObject;
+
 
 /**
  * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
@@ -46,6 +48,7 @@ public:
      * @param ptr
      */
     BaseNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
+    ~BaseNode() override;
 
     /**
      * @brief intSqlDb - this function init database of node
@@ -83,7 +86,12 @@ public:
     virtual bool run(const QString &addres, unsigned short port,
                      const QString &localNodeName);
 
-    ~BaseNode() override;
+    /**
+     * @brief stop - this implementation stop work database and push to database all cache data.
+     */
+    void stop() override;
+
+
 
     /**
      * @brief defaultDbParams
@@ -166,10 +174,7 @@ public:
      */
     bool connectToHost(const HostAddress &ip, SslMode mode) override;
 
-
-
 protected:
-
 
     /**
      * @brief initDefaultDbObjects create default cache and db writer if pointer is null
@@ -272,6 +277,13 @@ protected:
                                 const DBObject *saveObject);
 
     /**
+     * @brief savePermision - this method save a new changes in to permisions table.
+     *  Befor save new data node can be validate new data with consensus.
+     * @param permision - data of new permision
+     * @return true if new cghanges saved successful.
+     */
+    bool savePermision(const NodeObject &node, const NodesPermisionObject& permision);
+    /**
      * @brief checkSignOfRequest
      * @param request - package
      * @return true if request signed.
@@ -315,11 +327,28 @@ protected:
      */
     void nodeDisconnected(const HostAddress& node) override;
 
+    /**
+     * @brief incomingData - this signal invoked when node get command or ansver
+     * @param pkg - received package
+     * @param sender - sender of the package
+     * @note override this method for get a signals.
+     */
+    virtual void incomingData(AbstractData* pkg,
+                      const BaseId&  sender);
+
+    /**
+     * @brief keyStorageLocation - return location of storagge of keys.
+     * @return path to the location of keys storage
+     */
+    QString keyStorageLocation() const;
+
+    /**
+     * @brief dbLocation - return location of database of node.
+     * @return path to the location of database
+     */
+    QString dbLocation() const;
 
 private:
-    SqlDBCache *_db = nullptr;
-    KeyStorage *_nodeKeys = nullptr;
-    QString _localNodeName;
 
     /**
      * @brief workWithAvailableDataRequest
@@ -365,6 +394,21 @@ private:
     bool optimizeRoute(const BaseId& node,
                        const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
                        QList<HostAddress> rawRoute);
+
+
+    /**
+     * @brief incomingData - this implementation move old incoming method into private section
+     *  becouse base node work with BaseID addresses.
+     * @warning Do not call this implementation on this class,
+     *  use the ncomingData(AbstractData* pkg, const HostAddress&  sender) implementation.
+     */
+    void incomingData(AbstractData* pkg,
+                      const HostAddress&  sender) override final;
+
+
+    SqlDBCache *_db = nullptr;
+    KeyStorage *_nodeKeys = nullptr;
+    QString _localNodeName;
 
     WebSocketController *_webSocketWorker = nullptr;
 

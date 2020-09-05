@@ -72,6 +72,13 @@ public:
      */
     bool deleteObject(const NP::DBObject *ptr) override;
 
+    /**
+     * @brief databaseLocation - return location of database.
+     * if it is sqllite then return path to db file else return database name.
+     * @return path or name of database.
+     */
+    QString databaseLocation() const;
+
     virtual ~SqlDBWriter() override;
 
 protected:
@@ -141,8 +148,8 @@ private:
     /**
      * @brief workWithQuery - this base function for all prepareQuery functions.
      * steps work : call prepareFunc, call exec , call cb.
-     * @param q
-     * @param prepareFunc
+     * @param q - query object with a request
+     * @param prepareFunc - function with pripare data for query
      * @param cb - call after success exec and prepare steps
      * @return true if all steps finished successful
      */

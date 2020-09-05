@@ -209,11 +209,16 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     return deleteQuery(ptr);
 }
 
+QString SqlDBWriter::databaseLocation() const {
+    return db.databaseName();
+}
+
 SqlDBWriter::~SqlDBWriter() {
+    db.close();
 }
 
 bool SqlDBWriter::saveQuery(const DBObject* ptr) const {
-    if (ptr)
+    if (!ptr)
         return false;
 
     QSqlQuery q(db);
@@ -274,7 +279,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<DBObject *> &
 }
 
 bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
-    if (deleteObject)
+    if (!deleteObject)
         return false;
 
     QSqlQuery q(db);

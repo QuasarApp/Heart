@@ -27,6 +27,12 @@ public:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
+    /**
+     * @brief toString - return a string implementation fo this object
+     * @return string of object
+     */
+    QString toString() const;
+
     friend bool operator== (const DbAddress& left, const DbAddress& other);
     friend bool operator!= (const DbAddress& left, const DbAddress& other);
 

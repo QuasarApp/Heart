@@ -7,6 +7,12 @@ BaseTestUtils::BaseTestUtils() {
 
 }
 
+BaseTestUtils::~BaseTestUtils() {
+    if (coreNode) {
+        delete coreNode;
+    }
+}
+
 NP::BaseNode *BaseTestUtils::initNewNode() const {
     int port = nextPort();
     QString name = (coreNode)? QString("TestNode-%0").arg(port): QString("CoreNode-%0").arg(port);
@@ -87,6 +93,15 @@ BaseTestUtils::generateNetworkNode(int count) const {
 
     for (auto i : tmp) {
         result.insert(i->nodeId(), i);
+    }
+
+    auto check = [this, count](){
+        return coreNode->confirmendCount() == count;
+    };
+
+    if (!funcPrivateConnect(nullptr, check)) {
+        deinit();
+        return {};
     }
 
     result.insert(coreNode->nodeId(), coreNode);

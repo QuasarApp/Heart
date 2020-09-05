@@ -11,6 +11,7 @@ class BaseTestUtils: public TestUtils
 {
 public:
     BaseTestUtils();
+    ~BaseTestUtils();
 
     bool deployNewNode(NP::BaseNode* node) const;
     QHash<NP::BaseId, NP::BaseNode*> generateNetworkNode(int count) const;

@@ -57,6 +57,10 @@ void testProtockol::unitTests() {
     QCoreApplication::setApplicationName("TestQNP");
     QCoreApplication::setOrganizationName("QuasarApp");
 
+    auto path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+    QDir(path).removeRecursively();
+
     QTimer::singleShot(0, [&app, this]() {
 
         for (auto test : _tests ) {

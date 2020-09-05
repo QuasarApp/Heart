@@ -101,7 +101,7 @@ public:
     virtual bool run(const QString& addres, unsigned short port);
 
     /**
-     * @brief stop stop this node
+     * @brief stop stop this node and close all connections.
      */
     virtual void stop();
 
@@ -478,6 +478,7 @@ private:
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _actionCacheMutex;
+    mutable QMutex _confirmNodeMutex;
 
     friend class WebSocketController;
 

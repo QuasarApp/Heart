@@ -1,4 +1,5 @@
 #include "basenodetest.h"
+#include "dbtestsnode.h"
 #include "testutils.h"
 
 #include <basenode.h>
@@ -16,7 +17,7 @@ public:
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const NP::HostAddress &sender) {
+    void incomingData(NP::AbstractData *pkg, const NP::BaseId &sender) {
         Q_UNUSED(sender);
 
         auto ping = dynamic_cast<NP::Ping*>(pkg);
@@ -44,6 +45,7 @@ BaseNodeTest::~BaseNodeTest() {
 
 void BaseNodeTest::test() {
     QVERIFY(testICtypto());
+    QVERIFY(dbTest());
     QVERIFY(powerTest());
     QVERIFY(connectNetworkTest());
     QVERIFY(transportDataTest());
@@ -154,6 +156,18 @@ bool BaseNodeTest::powerTest() {
     return true;
 }
 
+bool BaseNodeTest::dbTest() {
+    auto node = new DbTestsNode;
+
+    if (!node->test()) {
+        return false;
+    }
+
+    delete node;
+
+    return true;
+}
+
 bool BaseNodeTest::connectNetworkTest() {
     int nodeAPort = TEST_PORT + 0;
     int nodeBPort = TEST_PORT + 1;
@@ -214,7 +228,11 @@ bool BaseNodeTest::transportDataTest() {
 
     auto network = generateNetworkNode(30);
 
-    return network.size() && coreNode->confirmendCount() == 30;
+    if (!(network.size() && coreNode->confirmendCount() == 30)) {
+        return false;
+    }
+
+    return true;
 }
 
 bool BaseNodeTest::performanceTest() {

@@ -93,7 +93,8 @@ public:
     /**
      * @brief prepareSelectQuery - override this metod for get item from database
      *  this method need to prepare a query for selected data.
-     *  the default implementation generate default select: "select * from [table] where id=[id]"
+     *  the default implementation generate default select: "select * from [table] where id=[id]".
+     *  If id is empty this implementation use data from altarnativeKey method.
      * @param q - query object
      * @return true if query is prepared seccussful
      */
@@ -111,17 +112,18 @@ public:
     /**
      * @brief prepareSaveQuery - override this method for save item into database
      *  this method need to prepare a query for selected data.
-     * @param q
-     * @return
+     * @param q - query of requst
+     * @return PrepareResult value
      */
     virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const = 0 ;
 
     /**
      * @brief prepareRemoveQuery - override this method for remove this item from database.
      *  this method need to prepare a query for remove this object.
-     *  the default implementatin remove item from id or primaryKey
-     * @param q
-     * @return
+     *  the default implementatin remove item from id or primaryKey.
+     *  If id is empty this implementation use data from altarnativeKey method.
+     * @param q - query of requst
+     * @return PrepareResult value
      */
     virtual PrepareResult prepareRemoveQuery(QSqlQuery& q) const;
 
@@ -147,10 +149,24 @@ public:
     virtual uint dbKey() const;
 
     /**
+     * @brief altarnativeKey - this method need to return a altarnative key:value pair for a select object when a object do not have a database id.
+     * @default default implementation return empty pair.
+     * @return pair of altarnative keys. Key : Value.
+     */
+    virtual QPair<QString, QString> altarnativeKey() const;
+
+    /**
      * @brief dbAddress
      * @return
      */
     DbAddress dbAddress() const;
+
+    /**
+     * @brief toString - return a string implementation fo this object
+     * @return string of object
+     */
+    QString toString() const override;
+
 
 protected:
     QString _tableName;
@@ -161,8 +177,15 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 
+private:
+    QString getWhereBlock() const;
+
 };
 }
 
+Q_DECLARE_METATYPE(const NP::DBObject*)
+Q_DECLARE_METATYPE(NP::DBObject*)
+Q_DECLARE_METATYPE(QList<NP::DBObject *>*);
+Q_DECLARE_METATYPE(QList<const NP::DBObject *>*);
 
 #endif // DBOBJECT_H

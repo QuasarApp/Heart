@@ -35,11 +35,8 @@ void DBObject::setTableName(const QString &tableName) {
 }
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
-    if (_id.isValid()) {
-        return PrepareResult::Fail;
-    }
 
-    QString queryString = "SELECT * FROM %0 WHERE id='" + getId().toBase64() + "'";
+    QString queryString = "SELECT * FROM %0 " + getWhereBlock();
 
     queryString = queryString.arg(tableName());
 
@@ -71,16 +68,39 @@ uint DBObject::dbKey() const {
     return HASH_KEY(DbAddressKey(tableName(), getId()));
 }
 
+QPair<QString, QString> DBObject::altarnativeKey() const {
+    return {};
+}
+
 DbAddress DBObject::dbAddress() const {
     return DbAddress{tableName(), getId()};
 }
 
-PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
-    if (_id.isValid()) {
-        return PrepareResult::Fail;
+QString DBObject::toString() const {
+    return AbstractData::toString() +
+            QString(" %0").arg(dbAddress().toString());
+}
+
+QString DBObject::getWhereBlock() const {
+    QString whereBlock = "WHERE ";
+
+    if (getId().isValid()) {
+        whereBlock += "id='" + getId().toBase64() + "'";
+    } else {
+        auto altKeys = altarnativeKey();
+        if (altKeys.first.isEmpty()) {
+            return {};
+        }
+        whereBlock +=  altKeys.first + "='" + altKeys.second + "'";
+
     }
-    
-    QString queryString = "DELETE FROM %0 where id=" + getId().toBase64();
+
+    return whereBlock;
+}
+
+PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
+
+    QString queryString = "DELETE FROM %0 " + getWhereBlock();
 
     queryString = queryString.arg(tableName());
 

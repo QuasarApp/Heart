@@ -111,7 +111,7 @@ protected:
      * @brief saveToCache
      * @param obj
      */
-    virtual void saveToCache(const DBObject *obj);
+    virtual bool saveToCache(const DBObject *obj);
 
     /**
      * @brief getFromCache -  get database objcet from cache.

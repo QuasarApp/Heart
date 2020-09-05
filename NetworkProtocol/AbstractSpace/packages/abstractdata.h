@@ -45,6 +45,8 @@ protected:
 
 public:
 
+    virtual ~AbstractData() override;
+
     /**
      * @brief cmd
      * @return command of package
@@ -93,13 +95,17 @@ public:
      */
     virtual bool copyFrom(const AbstractData*);
 
-    virtual ~AbstractData() override;
-
+    /**
+     * @brief toString - return a string implementation fo this object
+     * @return string of object
+     */
+    virtual QString toString() const;
 };
 
 
 }
 
 #define INIT_COMMAND setCmd(H_16<decltype (*this)>());
+
 
 #endif // ABSTRACTDATA_H

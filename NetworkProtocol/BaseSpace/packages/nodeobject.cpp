@@ -38,12 +38,12 @@ DBObject *NodeObject::factory() const {
 PrepareResult NodeObject::prepareSaveQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
     queryString = queryString.arg(tableName());
-    queryString = queryString.arg("id, pubKey");
+    queryString = queryString.arg("id, pubKey, trust");
 
     QString values;
 
-    values += "'" + getId().toBase64() + "', ";
-    values += "'" + _publickKey + "', ";
+    values += "'" + nodeId().toBase64() + "', ";
+    values += "'" + _publickKey.toBase64(QByteArray::Base64UrlEncoding) + "', ";
     values +=  QString::number(_trust);
 
     queryString = queryString.arg(values);
@@ -51,6 +51,10 @@ PrepareResult NodeObject::prepareSaveQuery(QSqlQuery &q) const {
     if (q.prepare(queryString)) {
         return PrepareResult::Success;
     }
+
+    QuasarAppUtils::Params::log("Query:" + queryString,
+                                QuasarAppUtils::Error);
+
     return PrepareResult::Fail;
 }
 
@@ -59,8 +63,9 @@ bool NodeObject::fromSqlRecord(const QSqlRecord &q) {
         return false;
     }
 
-    setPublickKey(q.value("pubKey").toByteArray());
-    setTrust(q.value("_trust").toInt());
+    setPublickKey(QByteArray::fromBase64(q.value("pubKey").toByteArray(),
+                                         QByteArray::Base64UrlEncoding));
+    setTrust(q.value("trust").toInt());
 
     return isValid();
 }
@@ -119,8 +124,13 @@ bool NodeObject::copyFrom(const AbstractData * other) {
         return false;
 
     this->_publickKey = otherObject->_publickKey;
+    this->_trust = otherObject->_trust;
 
     return true;
+}
+
+QPair<QString, QString> NodeObject::altarnativeKey() const {
+    return {"pubKey", _publickKey.toBase64(QByteArray::Base64UrlEncoding)};
 }
 
 }

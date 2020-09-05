@@ -9,6 +9,7 @@ class TestUtils
 {
 public:
     TestUtils();
+    virtual ~TestUtils();
     bool wait(const std::function<bool()> &forWait, int msec) const;
 
     bool connectFunc(NP::AbstractNode *cli,

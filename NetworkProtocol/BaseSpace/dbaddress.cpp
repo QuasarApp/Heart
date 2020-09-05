@@ -37,6 +37,12 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
     return stream;
 }
 
+QString DbAddress::toString() const {
+    return QString("DbAddress: id:%0, table:%1").
+            arg(QString(_id.toBase64())).
+            arg(_table);
+}
+
 bool operator!=(const DbAddress &left, const DbAddress &other) {
     return !operator==(left, other);
 }
