@@ -443,6 +443,17 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
 
 }
 
+bool AbstractNode::sendData(AbstractData *resp,
+                            const HostAddress &addere,
+                            const Header *req) {
+
+    if (!resp || !resp->prepareToSend()) {
+        return false;
+    }
+
+    return sendData(const_cast<const AbstractData*>(resp), addere, req);
+}
+
 bool AbstractNode::sendData(const AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
@@ -557,7 +568,7 @@ QList<HostAddress> AbstractNode::banedList() const {
     QMutexLocker locer(&_connectionsMutex);
 
     for (auto i = _connections.begin(); i != _connections.end(); ++i) {
-        if (i.value()->isBaned()) {
+        if (i.value()->isBanned()) {
             list.push_back(i.key());
         }
     }
@@ -597,14 +608,14 @@ bool AbstractNode::ping(const HostAddress &address) {
 
 }
 
-bool AbstractNode::isBaned(QAbstractSocket *socket) const {
+bool AbstractNode::isBanned(QAbstractSocket *socket) const {
     auto info = getInfoPtr(HostAddress{socket->peerAddress(), socket->peerPort()});
 
     if (!(info && info->isValid())) {
         return false;
     }
 
-    return info->isBaned();
+    return info->isBanned();
 }
 
 void AbstractNode::incomingConnection(qintptr handle) {
@@ -641,7 +652,7 @@ void AbstractNode::incomingSsl(qintptr socketDescriptor) {
 
     socket->setSslConfiguration(_ssl);
 
-    if (!isBaned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+    if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
         connect(socket, &QSslSocket::encrypted, [this, socket](){
             if (!registerSocket(socket)) {
                 socket->deleteLater();
@@ -666,7 +677,7 @@ void AbstractNode::incomingSsl(qintptr socketDescriptor) {
 
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
     QTcpSocket *socket = new QTcpSocket();
-    if (socket->setSocketDescriptor(socketDescriptor) && !isBaned(socket)) {
+    if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
         if (!registerSocket(socket)) {
             delete socket;
         }

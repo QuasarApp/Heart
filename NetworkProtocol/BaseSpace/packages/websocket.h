@@ -34,22 +34,24 @@ enum class WebSocketRequest {
  * @brief The WebSocket class - this class contains methods for work with stream data
  */
 class NETWORKPROTOCOLSHARED_EXPORT WebSocket:
-        public DBObject, public Request
+        public AbstractData, public Request, public SenderData
 {
 public:
     WebSocket();
     WebSocket(const Package& package);
 
+    bool isValid() const override;
 
+    // DBObject interface
+    DbAddress address() const;
+    void setAddress(const DbAddress &address);
+
+protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
-    bool isValid() const override;
-
-    DBObject* factory() const override;
-    PrepareResult prepareSaveQuery(QSqlQuery &) const override;
-    PrepareResult prepareRemoveQuery(QSqlQuery &) const override;
-    PrepareResult prepareSelectQuery(QSqlQuery &) const override;
+private:
+    DbAddress _address;
 };
 
 }

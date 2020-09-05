@@ -15,7 +15,7 @@ namespace NP {
 
 AvailableData::AvailableData():
     DBObject("NodesPermisions") {
-    INIT_COMMAND
+    
 }
 
 AvailableData::AvailableData(const Package &pkg):AvailableData() {
@@ -32,6 +32,10 @@ QDataStream &AvailableData::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
     stream << _data;
     return stream;
+}
+
+BaseId AvailableData::generateId() const {
+    return {};
 }
 
 bool AvailableData::isValid() const {
@@ -56,7 +60,7 @@ void AvailableData::clear() {
 }
 
 DBObject *AvailableData::factory() const {
-    return new AvailableData;
+    return create<AvailableData>();
 }
 
 PrepareResult AvailableData::prepareSelectQuery(QSqlQuery &q) const {

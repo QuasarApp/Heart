@@ -12,7 +12,7 @@
 namespace NP {
 
 TransportData::TransportData() {
-    INIT_COMMAND
+    
 }
 
 TransportData::TransportData(const HostAddress &sender):
@@ -148,7 +148,7 @@ void TransportData::setTargetAddress(const BaseId &targetAddress) {
 }
 
 bool TransportData::isValid() const {
-    return  _data.isValid() && _targetAddress.isValid();
+    return AbstractData::isValid() && _data.isValid() && _targetAddress.isValid();
 }
 
 bool TransportData::isHaveRoute() const {

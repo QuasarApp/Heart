@@ -45,6 +45,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 }
 
 bool DBObject::fromSqlRecord(const QSqlRecord &q) {
+
     if (q.contains("id")) {
         setId(q.value("id").toString());
         return true;
@@ -70,9 +71,6 @@ QPair<QString, QString> DBObject::altarnativeKey() const {
 }
 
 DbAddress DBObject::dbAddress() const {
-    if (!_dbId.isValid()) {
-        _dbId.setId(generateId());
-    }
     return _dbId;
 }
 
@@ -81,10 +79,12 @@ QSharedPointer<DBObject> DBObject::clone() const {
 }
 
 DBObject *DBObject::cloneRaw() const {
-    auto cloneObject =factory();
+    auto cloneObject = factory();
     if (!cloneObject->copyFrom(this)) {
         return nullptr;
     }
+
+    cloneObject->init();
 
     return cloneObject;
 }
@@ -144,6 +144,18 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
     stream << senderID();
 
     return stream;
+}
+
+bool DBObject::init() {
+    if (!AbstractData::init())
+        return false;
+
+    if (isBundle()) {
+        return true;
+    }
+
+    _dbId.setId(generateId());
+    return _dbId.isValid();
 }
 
 bool DBObject::isValid() const {

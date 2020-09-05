@@ -80,7 +80,7 @@ public:
 
     /**
      * @brief factory
-     * @return self object pointer
+     * @return clone of self object pointer
      */
     virtual DBObject* factory() const = 0;
 
@@ -185,10 +185,18 @@ protected:
 
     /**
      * @brief generateId - override this method for all db Objects.
+     * if create id is impasoble ther retrun not valid id.
      * @return retuern Id of database object
      */
     virtual BaseId generateId() const = 0;
 
+    /**
+     * @brief init - init this object, prepare work with database.
+     * @default - this implementation is create id for object of database.
+     *  If method generateId return not valid id this method return false.
+     * @return true if object initialized fuccessful else return false.
+     */
+    bool init() override;
 
 private:
     QString getWhereBlock() const;

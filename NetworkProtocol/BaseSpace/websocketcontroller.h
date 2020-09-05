@@ -38,7 +38,7 @@ public:
     const QSet<DbAddress> &list(const BaseId& subscriber);
 
 public slots:
-    void handleItemChanged(const DBObject* item);
+    void handleItemChanged(const DBObject *item);
 
 private:
     void foreachSubscribers(const DBObject *item,

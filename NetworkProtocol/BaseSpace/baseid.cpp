@@ -3,6 +3,10 @@ namespace NP {
 
 BaseId::BaseId() = default;
 
+BaseId::BaseId(unsigned int val) {
+    fromRaw(QByteArray::fromRawData(reinterpret_cast<char*>(&val), sizeof (val)));
+}
+
 BaseId::BaseId(const QByteArray &raw) {
     fromRaw(raw);
 }

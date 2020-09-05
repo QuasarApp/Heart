@@ -254,6 +254,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<const DBObjec
                     return false;
                 }
             }
+
             result.push_back(newObject);
 
         } else {

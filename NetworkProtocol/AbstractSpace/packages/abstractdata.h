@@ -19,30 +19,6 @@ namespace NP {
  */
 class NETWORKPROTOCOLSHARED_EXPORT AbstractData : public StreamBase
 {
-private:
-    /**
-     * @brief _cmd - unique id of class using in Header of package for identification.
-     */
-    unsigned short _cmd = 0;
-
-protected:
-    /**
-     * @brief AbstractData
-     */
-    explicit AbstractData();
-
-    /**
-     * @brief fromBytes - private initialisation of object from byte array
-     * @return true if all good
-     */
-    bool fromBytes(const QByteArray&);
-
-    /**
-     * @brief setCmd
-     * @param cmd
-     */
-    void setCmd(unsigned short cmd);
-
 public:
 
     virtual ~AbstractData() override;
@@ -100,12 +76,64 @@ public:
      * @return string of object
      */
     virtual QString toString() const;
+
+    /**
+     * @brief prepareToSend - this method check object to valid and if an object is invalid invoke method init.
+     * @return return true if the object prepared for sending.
+     */
+    bool prepareToSend();
+
+    /**
+     * @brief create - this is factory method for create a new object with some type that parent object.
+     * @param args - list of arguments for create object
+     * @return pointer toObject
+     */
+    template<class C, class... Args>
+    C* create(Args&&... args) const {
+        C* object = new C(std::forward<Args>(args)...);
+        object->generateCmd();
+        return object;
+    }
+
+protected:
+    /**
+     * @brief AbstractData
+     */
+    explicit AbstractData();
+
+    /**
+     * @brief fromBytes - private initialisation of object from byte array
+     * @return true if all good
+     */
+    bool fromBytes(const QByteArray&);
+
+    /**
+     * @brief setCmd
+     * @param cmd
+     */
+    void setCmd(unsigned short cmd);
+
+    /**
+     * @brief init - this method need to invoke after create object for initialize all componet of ojects.
+     * @note do not invode this method on constructor of object, becose object wel be initialized not correctly.
+     * @default defaul implementation of object init _com of object.
+     * @return true if object initialized correctly.
+     */
+    virtual bool init();
+
+private:
+    /**
+     * @brief generateCmd set cmd from class name.
+     * @note call this method only after create objects. do not call in constructor of class.
+     */
+    void generateCmd();
+    /**
+     * @brief _cmd - unique id of class using in Header of package for identification.
+     */
+    unsigned short _cmd = 0;
 };
 
 
 }
-
-#define INIT_COMMAND setCmd(H_16<decltype (*this)>());
-
 
 #endif // ABSTRACTDATA_H

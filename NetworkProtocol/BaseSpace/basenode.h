@@ -106,12 +106,33 @@ public:
      * @param req
      * @return true if a function finished seccussful
      */
+    bool sendData(AbstractData *resp,
+                  const HostAddress &addere,
+                  const Header *req = nullptr) override;
+
+    /**
+     * @brief sendData - send data to an ip address
+     * @param resp
+     * @param addere
+     * @param req
+     * @return true if a function finished seccussful
+     */
     bool sendData(const AbstractData *resp,
                   const HostAddress &addere,
                   const Header *req = nullptr) override;
 
     /**
-     * @brief sendDataToId - send data to node or clientby them id
+     * @brief sendDataToId - send data to node or clientby them id. This implementation prepare object to sending.
+     * @param resp - responce package
+     * @param nodeId - id of target node
+     * @param req - header of request
+     * @return true if data sendet seccussful
+     */
+    virtual bool sendData(AbstractData *resp, const BaseId &nodeId,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief sendDataToId - send data to node or clientby them id.
      * @param resp - responce package
      * @param nodeId - id of target node
      * @param req - header of request
@@ -347,6 +368,12 @@ protected:
      * @return path to the location of database
      */
     QString dbLocation() const;
+
+    /**
+     * @brief isBanned - check trust of node, if node trus is lover of 0 return true.
+     * @return true if node is banned
+     */
+    bool isBanned(const BaseId& node) const;
 
 private:
 

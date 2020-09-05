@@ -4,6 +4,8 @@
 #include <QFileInfo>
 #include <QFile>
 
+#define DB_NODE_NAME "DatabaseTestNode"
+
 BaseNodeUnitTests::BaseNodeUnitTests():NP::BaseNode() {
 
 }
@@ -30,7 +32,7 @@ bool BaseNodeUnitTests::test() {
 }
 
 bool BaseNodeUnitTests::init() {
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
 
@@ -46,7 +48,7 @@ bool BaseNodeUnitTests::init() {
 }
 
 bool BaseNodeUnitTests::testReadWrite() {
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
 
@@ -70,7 +72,7 @@ bool BaseNodeUnitTests::testReadWrite() {
 
     stop();
 
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
 
@@ -86,7 +88,7 @@ bool BaseNodeUnitTests::testReadWrite() {
 bool BaseNodeUnitTests::testUpdate() {
     stop();
 
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
 
@@ -108,22 +110,78 @@ bool BaseNodeUnitTests::testUpdate() {
 
     objectFromDataBase = db()->getObject(testObjec);
 
-    if (objectFromDataBase && objectFromDataBase->trust() == 20) {
-        return true;
+    if (objectFromDataBase && objectFromDataBase->trust() != 20) {
+        return false;
     }
 
-    return false;
+    stop();
+
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
+        return false;
+    }
+
+    objectFromDataBase = db()->getObject(testObjec);
+
+    if (!objectFromDataBase || objectFromDataBase->trust() != 20) {
+        return false;
+    }
+
+    return true;
 }
 
 bool BaseNodeUnitTests::testChangeTrust() {
     stop();
 
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, "DatabaseTestNode")) {
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
 
     NP::NodeObject testObjec = thisNode();
 
-    return false;
+    if(!changeTrust(testObjec.getId(), -10)) {
+        return false;
+    };
+
+    auto objectFromDataBase = db()->getObject(testObjec);
+
+    if (objectFromDataBase && objectFromDataBase->trust() != 10) {
+        return false;
+    }
+
+    stop();
+
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
+        return false;
+    }
+
+    objectFromDataBase = db()->getObject(testObjec);
+
+    if (!objectFromDataBase || objectFromDataBase->trust() != 10) {
+        return false;
+    }
+
+    if(!changeTrust(testObjec.getId(), -10)) {
+        return false;
+    };
+
+    objectFromDataBase = db()->getObject(testObjec);
+
+    if (objectFromDataBase && objectFromDataBase->trust() != 0) {
+        return false;
+    }
+
+    stop();
+
+    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
+        return false;
+    }
+
+    objectFromDataBase = db()->getObject(testObjec);
+
+    if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
+        return false;
+    }
+
+    return isBanned(testObjec.getId());
 
 }

@@ -16,6 +16,10 @@ public:
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
     PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
+
+    // DBObject interface
+protected:
+    BaseId generateId() const override;
 };
 }
 #endif // DELETEOBJECTREQUEST_H

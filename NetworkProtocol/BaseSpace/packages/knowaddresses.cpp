@@ -5,12 +5,12 @@
 namespace NP {
 
 KnowAddresses::KnowAddresses() {
-    INIT_COMMAND
+    
 }
 
 KnowAddresses::KnowAddresses(const Package &pkg) {
     fromBytes(pkg.toBytes());
-    INIT_COMMAND
+    
 }
 
 bool KnowAddresses::isValid() const {

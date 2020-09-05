@@ -3,7 +3,7 @@
 namespace NP {
 
 LongPing::LongPing(const BaseId& sender) {
-    INIT_COMMAND
+    
     setSenderID(sender);
 }
 

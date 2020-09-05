@@ -167,7 +167,9 @@ bool AsyncSqlDbWriter::initDb(const QVariantMap &params) {
     return workResult;
 }
 
-void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject, bool *resultOfWork, bool *endOfWork) {
+void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject,
+                                        bool *resultOfWork,
+                                        bool *endOfWork) {
     if (resultOfWork) {
         *resultOfWork = SqlDBWriter::saveObject(saveObject);
 

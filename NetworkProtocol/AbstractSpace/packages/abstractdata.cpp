@@ -23,6 +23,19 @@ void AbstractData::setCmd(unsigned short cmd) {
     _cmd = cmd;
 }
 
+bool AbstractData::init() {
+    if (typeid (*this).hash_code() == typeid(AbstractData).hash_code())
+        return false;
+
+    generateCmd();
+
+    return true;
+}
+
+void AbstractData::generateCmd() {
+    setCmd(H_16(*this));
+}
+
 AbstractData::AbstractData() {
     _cmd = 0;
 }
@@ -66,6 +79,7 @@ bool AbstractData::isValid() const {
 }
 
 bool AbstractData::copyFrom(const AbstractData *other) {
+
     return other;
 }
 
@@ -73,6 +87,14 @@ QString AbstractData::toString() const {
     return QString("Object: type:%0, command:%1").
             arg(typeid(*this).name()).
             arg(_cmd);
+}
+
+bool AbstractData::prepareToSend() {
+    if (isValid()) {
+        return true;
+    }
+
+    return init();
 }
 
 AbstractData::~AbstractData() {

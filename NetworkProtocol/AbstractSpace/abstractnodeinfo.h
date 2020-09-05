@@ -88,10 +88,10 @@ public:
     virtual void ban();
 
     /**
-     * @brief isBaned
+     * @brief isBanned
      * @return true if node baned
      */
-    virtual bool isBaned() const;
+    virtual bool isBanned() const;
 
     /**
      * @brief unBan
