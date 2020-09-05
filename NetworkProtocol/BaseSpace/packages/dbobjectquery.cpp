@@ -13,7 +13,7 @@ namespace NP {
 
 DBObjectQuery::DBObjectQuery(const QString& table):
     DBObject(table) {
-    INIT_COMMAND
+    
 }
 
 short DBObjectQuery::updateIntervalSec() const {

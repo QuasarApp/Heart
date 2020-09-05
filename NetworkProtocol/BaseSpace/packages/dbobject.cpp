@@ -14,12 +14,13 @@
 #include <QHash>
 #include <QSqlRecord>
 #include <QVariantMap>
+#include <QSharedPointer>
 
 namespace NP {
 
 DBObject::DBObject(const QString &tableName) {
     clear();
-    _tableName = tableName;
+    _dbId.setTable(tableName);
 }
 
 DBObject::~DBObject() {
@@ -27,11 +28,7 @@ DBObject::~DBObject() {
 }
 
 QString DBObject::tableName() const {
-    return _tableName;
-}
-
-void DBObject::setTableName(const QString &tableName) {
-    _tableName = tableName;
+    return _dbId.table();
 }
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
@@ -48,6 +45,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 }
 
 bool DBObject::fromSqlRecord(const QSqlRecord &q) {
+
     if (q.contains("id")) {
         setId(q.value("id").toString());
         return true;
@@ -65,7 +63,7 @@ bool DBObject::isBundle() const {
 }
 
 uint DBObject::dbKey() const {
-    return HASH_KEY(DbAddressKey(tableName(), getId()));
+    return HASH_KEY(DbAddressKey(_dbId));
 }
 
 QPair<QString, QString> DBObject::altarnativeKey() const {
@@ -73,12 +71,27 @@ QPair<QString, QString> DBObject::altarnativeKey() const {
 }
 
 DbAddress DBObject::dbAddress() const {
-    return DbAddress{tableName(), getId()};
+    return _dbId;
+}
+
+QSharedPointer<DBObject> DBObject::clone() const {
+    return QSharedPointer<DBObject>(cloneRaw());
+}
+
+DBObject *DBObject::cloneRaw() const {
+    auto cloneObject = factory();
+    if (!cloneObject->copyFrom(this)) {
+        return nullptr;
+    }
+
+    cloneObject->init();
+
+    return cloneObject;
 }
 
 QString DBObject::toString() const {
     return AbstractData::toString() +
-            QString(" %0").arg(dbAddress().toString());
+            QString(" %0").arg(_dbId.toString());
 }
 
 QString DBObject::getWhereBlock() const {
@@ -114,8 +127,7 @@ PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
 QDataStream &DBObject::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 
-    stream >> _tableName;
-    stream >> _id;
+    stream >> _dbId;
 
     BaseId senderNode;
     stream >> senderNode;
@@ -127,15 +139,27 @@ QDataStream &DBObject::fromStream(QDataStream &stream) {
 QDataStream &DBObject::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
 
-    stream << _tableName;
-    stream << _id;
+    stream << _dbId;
+
     stream << senderID();
 
     return stream;
 }
 
+bool DBObject::init() {
+    if (!AbstractData::init())
+        return false;
+
+    if (isBundle()) {
+        return true;
+    }
+
+    _dbId.setId(generateId());
+    return _dbId.isValid();
+}
+
 bool DBObject::isValid() const {
-    return AbstractData::isValid() && _tableName.size();
+    return AbstractData::isValid() && _dbId.isValid();
 }
 
 bool DBObject::copyFrom(const AbstractData * other) {
@@ -146,22 +170,21 @@ bool DBObject::copyFrom(const AbstractData * other) {
     if (!otherObject)
         return false;
 
-    this->_tableName = otherObject->_tableName;
-    this->_id = otherObject->_id;
+    this->_dbId = otherObject->_dbId;
 
     return true;
 }
 
 BaseId DBObject::getId() const {
-    return _id;
+    return dbAddress().id();
 }
 
 void DBObject::setId(const BaseId& id) {
-    _id = id;
+    _dbId.setId(id);
 }
 
 void DBObject::clear() {
-    _id.clear();
+    setId({});
 }
 
 }

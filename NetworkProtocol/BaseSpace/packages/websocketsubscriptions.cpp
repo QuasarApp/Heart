@@ -12,7 +12,7 @@
 namespace NP {
 WebSocketSubscriptions::WebSocketSubscriptions()
 {
-    INIT_COMMAND
+    
 
 }
 

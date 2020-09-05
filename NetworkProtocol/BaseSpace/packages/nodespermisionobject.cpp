@@ -15,7 +15,7 @@ namespace NP {
 
 NodesPermisionObject::NodesPermisionObject():
     DBObject("NodesPermisions") {
-    INIT_COMMAND
+    
 }
 
 NodesPermisionObject::NodesPermisionObject(const Package &pkg):
@@ -53,19 +53,26 @@ PrepareResult NodesPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
+    QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
+                          "ON CONFLICT(NodesPermisionsIndex) DO UPDATE SET %2";
 
     queryString = queryString.arg(tableName());
 
     queryString = queryString.arg(
                 "nodeId, objectTable", "objectId", "lvl");
 
+    queryString = queryString.arg("nodeId='" + _key.id().toBase64() +  "', " +
+                                  "objectTable='" + _key.address().table()+  "', " +
+                                  "objectId='" + _key.address().id().toBase64() +  "', " +
+                                  "lvl='" + QString::number(static_cast<int>(_permisions)) + "'");
     QString values;
 
     values += "'" + _key.id().toBase64() + "', ";
     values += "'" + _key.address().table() + "', ";
     values += "'" + _key.address().id().toBase64() + "', ";
     values += QString::number(static_cast<int>(_permisions));
+
+
 
     queryString = queryString.arg(values);
 
@@ -80,7 +87,10 @@ PrepareResult NodesPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
     }
 
     QString queryString = "DELETE FROM %0 where nodeId='%1' and objectTable='%2' and objectId='%3'";
-    queryString = queryString.arg(tableName(), _key.id().toBase64(), _key.address().table(), _key.address().id().toBase64());
+    queryString = queryString.arg(tableName(),
+                                  _key.id().toBase64(),
+                                  _key.address().table(),
+                                  _key.address().id().toBase64());
 
     if (q.prepare(queryString))
         return PrepareResult::Success;
@@ -122,7 +132,7 @@ PrepareResult NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
 }
 
 DBObject *NodesPermisionObject::factory() const {
-    return new NodesPermisionObject();
+    return create<NodesPermisionObject>();
 }
 
 uint NodesPermisionObject::dbKey() const {
@@ -142,6 +152,13 @@ QDataStream &NodesPermisionObject::toStream(QDataStream &stream) const {
     stream << _permisions;
 
     return  stream;
+}
+
+BaseId NodesPermisionObject::generateId() const {
+    if (!_key.isValid())
+        return {};
+
+    return _key.hash();
 }
 
 PermisionData NodesPermisionObject::key() const {

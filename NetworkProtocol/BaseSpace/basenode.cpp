@@ -168,6 +168,8 @@ NodeObject BaseNode::thisNode() const {
     res.setPublickKey(keys.publicKey());
     res.setTrust(0);
 
+    res.prepareToSend();
+
     return res;
 }
 
@@ -264,6 +266,13 @@ QString BaseNode::dbLocation() const {
     }
 
     return "";
+}
+
+bool BaseNode::isBanned(const BaseId &node) const {
+    NodeObject nodeObj(node);
+    auto objectFromDataBase = db()->getObject(nodeObj);
+
+    return objectFromDataBase->trust() <= 0;
 }
 
 ParserResult BaseNode::parsePackage(const Package &pkg,
@@ -454,7 +463,7 @@ bool BaseNode::workWithNodeObjectData(NodeObject& node,
     if (!peerNodeInfo)
         return false;
 
-    peerNodeInfo->setSelfId(node.nodeId());
+    peerNodeInfo->setSelfId(node.getId());
 
     return true;
 }
@@ -591,11 +600,11 @@ bool BaseNode::workWithSubscribe(const WebSocket &rec,
     switch (static_cast<WebSocketRequest>(rec.getRequestCmd())) {
 
     case WebSocketRequest::Subscribe: {
-        return _webSocketWorker->subscribe(clientOrNodeid, rec.dbAddress());
+        return _webSocketWorker->subscribe(clientOrNodeid, rec.address());
     }
 
     case WebSocketRequest::Unsubscribe: {
-        _webSocketWorker->unsubscribe(clientOrNodeid, rec.dbAddress());
+        _webSocketWorker->unsubscribe(clientOrNodeid, rec.address());
         return true;
     }
 
@@ -622,6 +631,12 @@ QVariantMap BaseNode::defaultDbParams() const {
     };
 }
 
+bool BaseNode::sendData(AbstractData *resp,
+                        const HostAddress &addere,
+                        const Header *req) {
+    return AbstractNode::sendData(resp, addere, req);
+}
+
 bool BaseNode::sendData(const AbstractData *resp,
                         const HostAddress &addere,
                         const Header *req) {
@@ -629,10 +644,21 @@ bool BaseNode::sendData(const AbstractData *resp,
     return AbstractNode::sendData(resp, addere, req);
 }
 
-bool BaseNode::sendData(const AbstractData *resp,
+
+
+bool BaseNode::sendData(AbstractData *resp,
                         const BaseId &nodeId,
                         const Header *req) {
 
+
+    if (!resp || !resp->prepareToSend()) {
+        return false;
+    }
+
+    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
+}
+
+bool BaseNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
@@ -661,13 +687,12 @@ bool BaseNode::sendData(const AbstractData *resp,
 
         data.setRoute(_router->getRoute(nodeId));
         data.setSenderID(this->nodeId());
+        data.prepareToSend();
 
         return brodcast(&data);
     }
 
     return brodcast(resp);
-
-
 }
 
 void BaseNode::badRequest(const HostAddress &address, const Header &req, const QString msg) {
@@ -713,9 +738,10 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
         return false;
     }
 
-    client->changeTrust(diff);
+    auto clone = client->clone().staticCast<NodeObject>();
+    clone->changeTrust(diff);
 
-    if (!_db->saveObject(client)) {
+    if (!_db->saveObject(clone.data())) {
         return false;
     }
 
@@ -732,7 +758,7 @@ bool BaseNode::ping(const BaseId &id) {
 
 DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
                                           const NP::DBObject &templateObj,
-                                          DBObject** result) const {
+                                          const DBObject** result) const {
 
     if (!_db && !result) {
         return DBOperationResult::Unknown;
@@ -754,7 +780,7 @@ DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
 
 DBOperationResult BaseNode::getObjects(const BaseId &requester,
                                        const DBObject &templateObj,
-                                       QList<DBObject *> *result) const {
+                                       QList<const DBObject *> *result) const {
     if (!_db && !result) {
         return DBOperationResult::Unknown;
     }

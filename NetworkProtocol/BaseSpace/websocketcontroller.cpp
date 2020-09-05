@@ -62,9 +62,6 @@ void WebSocketController::handleItemChanged(const DBObject *item) {
 void WebSocketController::foreachSubscribers(const DBObject *item,
                                              const QSet<BaseId> &subscribersList) {
 
-    if (!dynamic_cast<const DBObject*>(item))
-        return;
-
     for (const auto &subscriber : subscribersList) {
 
         if (!_node->sendData(item, subscriber)) {

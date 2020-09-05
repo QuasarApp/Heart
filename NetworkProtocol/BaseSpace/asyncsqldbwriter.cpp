@@ -113,7 +113,7 @@ bool AsyncSqlDbWriter::deleteObjectWithWait(const DBObject *deleteObject) {
     return workResult;
 }
 
-bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<DBObject *> &result) {
+bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<const DBObject *> &result) {
 
     if (QThread::currentThread() == thread()) {
         return SqlDBWriter::getAllObjects(templateObject, result);
@@ -126,7 +126,7 @@ bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<DBObj
                                                    "handleGetAllObject",
                                                    Qt::QueuedConnection,
                                                    Q_ARG(const NP::DBObject *, &templateObject),
-                                                   Q_ARG(QList<NP::DBObject *> *, &result),
+                                                   Q_ARG(QList<const NP::DBObject *> *, &result),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
 
@@ -167,7 +167,9 @@ bool AsyncSqlDbWriter::initDb(const QVariantMap &params) {
     return workResult;
 }
 
-void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject, bool *resultOfWork, bool *endOfWork) {
+void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject,
+                                        bool *resultOfWork,
+                                        bool *endOfWork) {
     if (resultOfWork) {
         *resultOfWork = SqlDBWriter::saveObject(saveObject);
 
@@ -199,7 +201,8 @@ void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject, bool *re
     }
 }
 
-void AsyncSqlDbWriter::handleGetAllObject(const DBObject *templateObject, QList<DBObject *> *result,
+void AsyncSqlDbWriter::handleGetAllObject(const DBObject *templateObject,
+                                          QList<const DBObject *> *result,
                                           bool *resultOfWork, bool *endOfWork) {
 
 

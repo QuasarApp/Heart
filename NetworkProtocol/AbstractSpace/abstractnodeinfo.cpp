@@ -40,7 +40,7 @@ void AbstractNodeInfo::ban() {
     disconnect();
 }
 
-bool AbstractNodeInfo::isBaned() const {
+bool AbstractNodeInfo::isBanned() const {
     return _trust < 1;
 }
 
@@ -113,7 +113,7 @@ int AbstractNodeInfo::trust() const {
 void AbstractNodeInfo::setTrust(int trust) {
     _trust = trust;
 
-    if (isBaned()) {
+    if (isBanned()) {
         disconnect();
     }
 }

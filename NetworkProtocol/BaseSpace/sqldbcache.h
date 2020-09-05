@@ -57,7 +57,7 @@ public:
      */
     void setWriter(SqlDBWriter* writer);
 
-    bool getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) override;
+    bool getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) override;
 
     bool saveObject(const DBObject* saveObject) override;
     bool deleteObject(const DBObject* delObj) override;

@@ -11,8 +11,7 @@
 #include <QSharedPointer>
 namespace NP {
 
-WebSocket::WebSocket(): DBObject(""){
-    INIT_COMMAND
+WebSocket::WebSocket(): AbstractData(){
 
 }
 
@@ -23,26 +22,34 @@ WebSocket::WebSocket(const Package &package):
 }
 
 QDataStream &WebSocket::fromStream(QDataStream &stream) {
-    DBObject::fromStream(stream);
-    return stream >> requestCmd;
+    AbstractData::fromStream(stream);
+    stream >> requestCmd;
+    stream >> _senderID;
+    stream >> _address;
+
+    return stream;
 }
 
 QDataStream &WebSocket::toStream(QDataStream &stream) const {
-    DBObject::toStream(stream);
-    return stream << requestCmd;
+    AbstractData::toStream(stream);
+    stream << requestCmd;
+    stream << _senderID;
+    stream << _address;
+
+    return stream;
+}
+
+DbAddress WebSocket::address() const {
+    return _address;
+}
+
+void WebSocket::setAddress(const DbAddress &address) {
+    _address = address;
 }
 
 bool WebSocket::isValid() const {
     return requestCmd > static_cast<int>(WebSocketRequest::Invalied)
             && AbstractData::isValid();
 }
-
-DBObject *WebSocket::factory() const {return nullptr;}
-
-PrepareResult WebSocket::prepareSelectQuery(QSqlQuery &) const { return PrepareResult::Disabled; }
-
-PrepareResult WebSocket::prepareSaveQuery(QSqlQuery &) const { return PrepareResult::Disabled; }
-
-PrepareResult WebSocket::prepareRemoveQuery(QSqlQuery &)const { return PrepareResult::Disabled; }
 
 }

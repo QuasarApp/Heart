@@ -4,7 +4,7 @@
 namespace NP {
 
 Ping::Ping() {
-    INIT_COMMAND
+    
 }
 
 Ping::Ping(const Package &from): Ping() {

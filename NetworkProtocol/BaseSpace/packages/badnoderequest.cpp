@@ -9,15 +9,15 @@
 namespace NP {
 
 BadNodeRequest::BadNodeRequest() {
-    INIT_COMMAND
+    
 }
 
 BadNodeRequest::BadNodeRequest(const QString &err):BadRequest(err) {
-    INIT_COMMAND
+    
 }
 
 BadNodeRequest::BadNodeRequest(const Package &package): BadRequest(package) {
-    INIT_COMMAND
+    
 }
 
 bool BadNodeRequest::isValid() const {

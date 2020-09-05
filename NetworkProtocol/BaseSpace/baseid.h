@@ -21,6 +21,8 @@ class NETWORKPROTOCOLSHARED_EXPORT BaseId: public StreamBase
 {
 public:
     BaseId();
+    BaseId(unsigned int val);
+
     BaseId(const QByteArray& raw);
     BaseId(const QString& base64);
 

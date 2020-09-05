@@ -46,10 +46,12 @@ protected:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
+    BaseId generateId() const override;
 
 private:
     Permission _permisions;
     PermisionData _key;
+
 
 };
 }

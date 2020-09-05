@@ -9,12 +9,12 @@
 namespace NP {
 
 AvailableDataRequest::AvailableDataRequest() {
-    INIT_COMMAND
+    
 }
 
 
 AvailableDataRequest::AvailableDataRequest(const Package &pkg):AvailableData(pkg) {
-    INIT_COMMAND
+    
 }
 AccessToken AvailableDataRequest::token() const
 {

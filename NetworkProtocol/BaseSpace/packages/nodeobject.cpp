@@ -18,7 +18,7 @@
 namespace NP {
 
 NodeObject::NodeObject():DBObject("Nodes") {
-    INIT_COMMAND
+    
 }
 
 NodeObject::NodeObject(const Package &pkg):
@@ -32,25 +32,30 @@ NodeObject::NodeObject(const BaseId &id):
 }
 
 DBObject *NodeObject::factory() const {
-    return new NodeObject;
+    return create<NodeObject>();
 }
 
 PrepareResult NodeObject::prepareSaveQuery(QSqlQuery &q) const {
-    QString queryString = "INSERT INTO %0(%1) VALUES (%2)";
+    QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
+                          "ON CONFLICT(id) DO UPDATE SET %2";
     queryString = queryString.arg(tableName());
     queryString = queryString.arg("id, pubKey, trust");
+    queryString = queryString.arg("pubKey=:publicKey, "
+                                  "trust=" + QString::number(_trust));
 
     QString values;
 
-    values += "'" + nodeId().toBase64() + "', ";
-    values += "'" + _publickKey.toBase64(QByteArray::Base64UrlEncoding) + "', ";
+    values += "'" + getId().toBase64() + "', ";
+    values += ":publicKey, ";
     values +=  QString::number(_trust);
 
     queryString = queryString.arg(values);
 
     if (q.prepare(queryString)) {
+        q.bindValue(":publicKey", publickKey());
         return PrepareResult::Success;
     }
+
 
     QuasarAppUtils::Params::log("Query:" + queryString,
                                 QuasarAppUtils::Error);
@@ -63,8 +68,7 @@ bool NodeObject::fromSqlRecord(const QSqlRecord &q) {
         return false;
     }
 
-    setPublickKey(QByteArray::fromBase64(q.value("pubKey").toByteArray(),
-                                         QByteArray::Base64UrlEncoding));
+    setPublickKey(q.value("pubKey").toByteArray());
     setTrust(q.value("trust").toInt());
 
     return isValid();
@@ -95,6 +99,14 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
+BaseId NodeObject::generateId() const {
+    if (publickKey().isEmpty()) {
+        return {};
+    }
+
+    return NodeId(QCryptographicHash::hash(publickKey(), QCryptographicHash::Sha256));
+}
+
 int NodeObject::trust() const {
     return _trust;
 }
@@ -105,10 +117,6 @@ void NodeObject::changeTrust(int diff) {
 
 void NodeObject::setTrust(int trust) {
     _trust = trust;
-}
-
-BaseId NodeObject::nodeId() const {
-    return NodeId(QCryptographicHash::hash(publickKey(), QCryptographicHash::Sha256));
 }
 
 bool NodeObject::isValid() const {

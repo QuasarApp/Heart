@@ -1,5 +1,5 @@
 #include "basenodetest.h"
-#include "dbtestsnode.h"
+#include "basenodeunittests.h"
 #include "testutils.h"
 
 #include <basenode.h>
@@ -157,7 +157,7 @@ bool BaseNodeTest::powerTest() {
 }
 
 bool BaseNodeTest::dbTest() {
-    auto node = new DbTestsNode;
+    auto node = new BaseNodeUnitTests;
 
     if (!node->test()) {
         return false;

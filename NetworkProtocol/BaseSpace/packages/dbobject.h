@@ -79,14 +79,8 @@ public:
     QString tableName() const;
 
     /**
-     * @brief setTableName set the new table for this objec
-     * @param tableName
-     */
-    void setTableName(const QString &tableName);
-
-    /**
      * @brief factory
-     * @return self object pointer
+     * @return clone of self object pointer
      */
     virtual DBObject* factory() const = 0;
 
@@ -135,7 +129,7 @@ public:
 
     /**
      * @brief isBundle
-     *  If thsi function return true then SqlDBWriter create only one object after invoked selectquery.
+     *  If this function return true then SqlDBWriter create only one object after invoked selectquery.
      *  And if the selectquery function return a list of more 1 elements then a method fromSqlRecord moust be invoked foreach all elements of list.
      * @return true if the object is a selection from a set of database object.
      */
@@ -162,6 +156,21 @@ public:
     DbAddress dbAddress() const;
 
     /**
+     * @brief clone - this nethod create a new object. The new Object is cone of current object.
+     * @note If you want to get raw pointer to cone object use a "cloneRaw" method.
+     * @return return shared pointer to clone of current object
+     */
+    QSharedPointer<DBObject> clone() const;
+
+    /**
+     * @brief cloneRaw - this method return a raw pointer to clone of this object.
+     * @warning - clone object don not removed automatically and may result in a memory leak.
+     * @note for get a shared pointer of clone object use the "clone" method.
+     * @return retuen raw pointer to cloe of this object.
+     */
+    DBObject* cloneRaw() const;
+
+    /**
      * @brief toString - return a string implementation fo this object
      * @return string of object
      */
@@ -169,17 +178,30 @@ public:
 
 
 protected:
-    QString _tableName;
-    BaseId _id;
 
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
+    /**
+     * @brief generateId - override this method for all db Objects.
+     * if create id is impasoble ther retrun not valid id.
+     * @return retuern Id of database object
+     */
+    virtual BaseId generateId() const = 0;
+
+    /**
+     * @brief init - init this object, prepare work with database.
+     * @default - this implementation is create id for object of database.
+     *  If method generateId return not valid id this method return false.
+     * @return true if object initialized fuccessful else return false.
+     */
+    bool init() override;
 
 private:
     QString getWhereBlock() const;
 
+    DbAddress _dbId;
 };
 }
 

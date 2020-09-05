@@ -268,14 +268,24 @@ protected:
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
     /**
-     * @brief sendData send data package to address
-     * @param resp
-     * @param address
-     * @param req
-     * @return
+     * @brief sendData send data package to address and prepare object to sending.
+     * @param resp - pointer to sendet object
+     * @param address - target addres for sending
+     * @param req - header of request
+     * @return true if data sendet succesful.
      */
-    virtual bool sendData(const AbstractData* resp,  const HostAddress& addere,
-                              const Header *req = nullptr);
+    virtual bool sendData(AbstractData *resp,  const HostAddress& addere,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief sendData this is some as a sendData(AbstractData *resp ...) exept this method not prepare object for sending.
+     * @param resp - pointer to sendet object
+     * @param address - target addres for sending
+     * @param req - header of request
+     * @return true if data sendet succesful.
+     */
+    virtual bool sendData(const AbstractData *resp,  const HostAddress& addere,
+                          const Header *req = nullptr);
 
     /**
      * @brief badRequestu
@@ -305,11 +315,11 @@ protected:
     QList<HostAddress> banedList() const;
 
     /**
-     * @brief isBaned
+     * @brief isBanned
      * @param socket
      * @return
      */
-    bool isBaned(QAbstractSocket* socket) const;
+    bool isBanned(QAbstractSocket* socket) const;
 
     /**
      * @brief incomingConnection

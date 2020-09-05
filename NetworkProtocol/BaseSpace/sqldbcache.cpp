@@ -106,7 +106,7 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) {
+bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
 
     DBObject* obj = getFromCache(templateObject.dbKey());
     if(obj) {
@@ -137,16 +137,6 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
 
     if (!saveObject || !saveObject->isValid()) {
         return false;
-    }
-
-    if (saveObject->getId().isValid()) {
-        if (_writer && _writer->isValid()) {
-            if (!_writer->saveObject(saveObject)) {
-                return false;
-            }
-
-            return true;
-        }
     }
 
     saveToCache(saveObject);
@@ -205,12 +195,12 @@ DBOperationResult SqlDBCache::checkPermision(const BaseId &id,
                                              const DbAddress &object,
                                              Permission requiredPermision) {
 
-    NodeObject *node = getObject(NodeObject{id});
+   const NodeObject *node = getObject(NodeObject{id});
     if (!node) {
         return DBOperationResult::Unknown;
     }
 
-    NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object}));
+    const NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object}));
 
     if (!permision) {
         return DBOperationResult::Unknown;
@@ -237,16 +227,25 @@ bool SqlDBCache::saveToCache(const DBObject *obj) {
     if (!obj)
         return false;
 
-    // TO DO Fix this bug
-    // bug : pointer is rewrited!!!!
+    QMutexLocker lock(&_cacheMutex);
 
-    _cacheMutex.lock();
-    auto cloneObject = obj->factory();
-    if (!cloneObject->copyFrom(obj)) {
-        return false;
+    auto existsObject = _cache.value(obj->dbKey(), nullptr);
+    if (!existsObject) {
+
+        _cache[obj->dbKey()] = obj->cloneRaw();
+
+    } else if (existsObject->cmd() != obj->cmd()) {
+
+        delete existsObject;
+        _cache[obj->dbKey()] = obj->cloneRaw();
+
+    } else {
+
+        if (!existsObject->copyFrom(obj)) {
+            return false;
+        }
+
     }
-    _cache[obj->dbKey()] = cloneObject;
-    _cacheMutex.unlock();
 
     emit sigItemChanged(obj);
 
@@ -258,12 +257,7 @@ DBObject* SqlDBCache::getFromCache(uint objKey) {
 
     QMutexLocker locker(&_cacheMutex);
 
-    if (!_cache.contains(objKey)) {
-        return nullptr;
-    }
-    // TO DO add validation for object
-
-    return _cache[objKey];
+    return _cache.value(objKey, nullptr);
 }
 
 SqlDBCasheWriteMode SqlDBCache::getMode() const {

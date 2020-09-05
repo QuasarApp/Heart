@@ -59,7 +59,7 @@ public:
      * @param result - list of objects
      * @return true if function finished successful
      */
-    bool getAllObjects(const DBObject &templateObject, QList<DBObject *> &result) override;
+    bool getAllObjects(const DBObject &templateObject, QList<const DBObject *> &result) override;
 
     /**
      * @brief initDb - this implementation initialise database in own thread and wait result of initialization on current thread
@@ -91,7 +91,8 @@ protected slots:
      * @param endOfWork - this ptr set true when invocked method is finished
      * @param cb - this call back method invoke after getAllObjects method
      */
-    virtual void handleGetAllObject(const NP::DBObject *templateObject, QList<NP::DBObject *> *result,
+    virtual void handleGetAllObject(const NP::DBObject *templateObject,
+                                    QList<const NP::DBObject *> *result,
                                     bool *resultOfWork, bool *endOfWork = nullptr);
 
     /**

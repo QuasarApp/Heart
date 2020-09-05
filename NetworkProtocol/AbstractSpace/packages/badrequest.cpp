@@ -13,7 +13,7 @@ namespace NP{
 
 
 BadRequest::BadRequest(const QString &err):AbstractData() {
-    INIT_COMMAND
+
 
     setErr(err);
 

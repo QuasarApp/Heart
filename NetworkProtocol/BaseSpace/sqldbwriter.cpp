@@ -197,7 +197,7 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) {
+bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
     return selectQuery(templateObject, result);
 }
 
@@ -232,7 +232,7 @@ bool SqlDBWriter::saveQuery(const DBObject* ptr) const {
     return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<DBObject *> &result) {
+bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<const DBObject *> &result) {
 
     QSqlQuery q(db);
     auto prepare = [&requestObject](QSqlQuery&q) {
@@ -254,6 +254,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<DBObject *> &
                     return false;
                 }
             }
+
             result.push_back(newObject);
 
         } else {
