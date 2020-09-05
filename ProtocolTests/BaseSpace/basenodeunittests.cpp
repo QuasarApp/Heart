@@ -98,7 +98,9 @@ bool BaseNodeUnitTests::testUpdate() {
         return false;
     }
 
-    objectFromDataBase->setTrust(20);
+    auto clone = static_cast<NP::NodeObject*>(objectFromDataBase->clone());
+
+    clone->setTrust(20);
 
     if (!db()->saveObject(objectFromDataBase)) {
         return false;

@@ -713,7 +713,8 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
         return false;
     }
 
-    client->changeTrust(diff);
+    auto clone = static_cast<NodeObject*>(client->clone());
+    clone->changeTrust(diff);
 
     if (!_db->saveObject(client)) {
         return false;
@@ -732,7 +733,7 @@ bool BaseNode::ping(const BaseId &id) {
 
 DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
                                           const NP::DBObject &templateObj,
-                                          DBObject** result) const {
+                                          const DBObject** result) const {
 
     if (!_db && !result) {
         return DBOperationResult::Unknown;
@@ -754,7 +755,7 @@ DBOperationResult NP::BaseNode::getObject(const NP::BaseId &requester,
 
 DBOperationResult BaseNode::getObjects(const BaseId &requester,
                                        const DBObject &templateObj,
-                                       QList<DBObject *> *result) const {
+                                       QList<const DBObject *> *result) const {
     if (!_db && !result) {
         return DBOperationResult::Unknown;
     }

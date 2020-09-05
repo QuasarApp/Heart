@@ -106,7 +106,7 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) {
+bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
 
     DBObject* obj = getFromCache(templateObject.dbKey());
     if(obj) {
@@ -195,12 +195,12 @@ DBOperationResult SqlDBCache::checkPermision(const BaseId &id,
                                              const DbAddress &object,
                                              Permission requiredPermision) {
 
-    NodeObject *node = getObject(NodeObject{id});
+   const NodeObject *node = getObject(NodeObject{id});
     if (!node) {
         return DBOperationResult::Unknown;
     }
 
-    NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object}));
+    const NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object}));
 
     if (!permision) {
         return DBOperationResult::Unknown;

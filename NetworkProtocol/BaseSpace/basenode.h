@@ -251,7 +251,7 @@ protected:
      */
     DBOperationResult getObject(const BaseId &requester,
                                 const DBObject &templateObj,
-                                DBObject **result) const;
+                                const DBObject **result) const;
 
 
     /**
@@ -264,7 +264,7 @@ protected:
      */
     DBOperationResult getObjects(const BaseId &requester,
                                  const DBObject &templateObj,
-                                 QList<DBObject *> *result) const;
+                                 QList<const DBObject *> *result) const;
 
     /**
      * @brief setObject

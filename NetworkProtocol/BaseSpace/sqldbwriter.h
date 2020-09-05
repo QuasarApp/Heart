@@ -58,7 +58,7 @@ public:
      * @param result - return value, list of selected objects.
      * @return true if objects have in db else false.
      */
-    bool getAllObjects(const DBObject &templateObject,  QList<DBObject *> &result) override;
+    bool getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) override;
 
     /**
      * @brief saveObject
@@ -138,7 +138,7 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(const DBObject &requestObject, QList<DBObject *> &result);
+    virtual bool selectQuery(const DBObject &requestObject, QList<const DBObject *> &result);
 
     virtual bool deleteQuery(const NP::DBObject *deleteObject) const;
 
