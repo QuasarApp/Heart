@@ -232,12 +232,12 @@ bool SqlDBCache::saveToCache(const DBObject *obj) {
     auto existsObject = _cache.value(obj->dbKey(), nullptr);
     if (!existsObject) {
 
-        _cache[obj->dbKey()] = obj->clone();
+        _cache[obj->dbKey()] = obj->cloneRaw();
 
     } else if (existsObject->cmd() != obj->cmd()) {
 
         delete existsObject;
-        _cache[obj->dbKey()] = obj->clone();
+        _cache[obj->dbKey()] = obj->cloneRaw();
 
     } else {
 

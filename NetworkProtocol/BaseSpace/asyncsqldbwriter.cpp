@@ -199,7 +199,8 @@ void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject, bool *re
     }
 }
 
-void AsyncSqlDbWriter::handleGetAllObject(const DBObject *templateObject, QList<const DBObject *> *result,
+void AsyncSqlDbWriter::handleGetAllObject(const DBObject *templateObject,
+                                          QList<const DBObject *> *result,
                                           bool *resultOfWork, bool *endOfWork) {
 
 

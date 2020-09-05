@@ -713,10 +713,10 @@ bool BaseNode::changeTrust(const BaseId &id, int diff) {
         return false;
     }
 
-    auto clone = static_cast<NodeObject*>(client->clone());
+    auto clone = client->clone().staticCast<NodeObject>();
     clone->changeTrust(diff);
 
-    if (!_db->saveObject(client)) {
+    if (!_db->saveObject(clone.data())) {
         return false;
     }
 

@@ -79,12 +79,6 @@ public:
     QString tableName() const;
 
     /**
-     * @brief setTableName set the new table for this objec
-     * @param tableName
-     */
-    void setTableName(const QString &tableName);
-
-    /**
      * @brief factory
      * @return self object pointer
      */
@@ -163,9 +157,18 @@ public:
 
     /**
      * @brief clone - this nethod create a new object. The new Object is cone of current object.
-     * @return return clone of current object
+     * @note If you want to get raw pointer to cone object use a "cloneRaw" method.
+     * @return return shared pointer to clone of current object
      */
-    DBObject* clone() const;
+    QSharedPointer<DBObject> clone() const;
+
+    /**
+     * @brief cloneRaw - this method return a raw pointer to clone of this object.
+     * @warning - clone object don not removed automatically and may result in a memory leak.
+     * @note for get a shared pointer of clone object use the "clone" method.
+     * @return retuen raw pointer to cloe of this object.
+     */
+    DBObject* cloneRaw() const;
 
     /**
      * @brief toString - return a string implementation fo this object
@@ -175,17 +178,22 @@ public:
 
 
 protected:
-    QString _tableName;
-    BaseId _id;
 
     //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
+    /**
+     * @brief generateId - override this method for all db Objects.
+     * @return retuern Id of database object
+     */
+    virtual BaseId generateId() const = 0;
+
 
 private:
     QString getWhereBlock() const;
 
+    DbAddress _dbId;
 };
 }
 

@@ -98,11 +98,11 @@ bool BaseNodeUnitTests::testUpdate() {
         return false;
     }
 
-    auto clone = static_cast<NP::NodeObject*>(objectFromDataBase->clone());
+    auto clone = objectFromDataBase->clone().staticCast<NP::NodeObject>();
 
     clone->setTrust(20);
 
-    if (!db()->saveObject(objectFromDataBase)) {
+    if (!db()->saveObject(clone.data())) {
         return false;
     }
 

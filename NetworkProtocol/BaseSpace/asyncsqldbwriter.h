@@ -91,7 +91,8 @@ protected slots:
      * @param endOfWork - this ptr set true when invocked method is finished
      * @param cb - this call back method invoke after getAllObjects method
      */
-    virtual void handleGetAllObject(const NP::DBObject *templateObject, QList<const DBObject *> *result,
+    virtual void handleGetAllObject(const NP::DBObject *templateObject,
+                                    QList<const NP::DBObject *> *result,
                                     bool *resultOfWork, bool *endOfWork = nullptr);
 
     /**
