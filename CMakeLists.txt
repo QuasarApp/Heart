@@ -14,7 +14,7 @@ endif()
 
 find_package(Qt5 COMPONENTS Core Test REQUIRED)
 if(NOT DEFINED BUILD_LVL)
-    set(BUILD_LVL 1)
+    set(BUILD_LVL 0)
 endif()
 
 include(QuasarAppLib/CMake/ccache.cmake)
