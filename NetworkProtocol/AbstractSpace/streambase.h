@@ -38,20 +38,6 @@ public:
      */
     QByteArray toBytes() const;
 
-    /**
-     * @brief fromStream
-     * @param stream
-     * @return stream
-     */
-    virtual QDataStream& fromStream(QDataStream& stream) = 0;
-
-    /**
-     * @brief toStream
-     * @param stream
-     * @return stream
-     */
-    virtual QDataStream& toStream(QDataStream& stream) const = 0;
-
 
     /**
      * @brief operator << it is wraper over toStream
@@ -70,7 +56,20 @@ public:
     friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
 
+protected:
+    /**
+     * @brief fromStream
+     * @param stream
+     * @return stream
+     */
+    virtual QDataStream& fromStream(QDataStream& stream) = 0;
 
+    /**
+     * @brief toStream
+     * @param stream
+     * @return stream
+     */
+    virtual QDataStream& toStream(QDataStream& stream) const = 0;
 
 };
 }

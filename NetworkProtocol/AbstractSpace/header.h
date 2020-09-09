@@ -9,12 +9,13 @@
 #define ABSTRACTHEADER_H
 #include "networkprotocol_global.h"
 
+
 namespace NP {
 /**
  * @brief The Header struct 6 byte
  */
 #pragma pack(push, 1)
-struct NETWORKPROTOCOLSHARED_EXPORT Header {
+struct NETWORKPROTOCOLSHARED_EXPORT Header{
     /**
      * @brief size - size of package data (not header)
      */
@@ -54,6 +55,7 @@ struct NETWORKPROTOCOLSHARED_EXPORT Header {
      * @return
      */
     QString toString() const;
+
 };
 #pragma pack(pop)
 

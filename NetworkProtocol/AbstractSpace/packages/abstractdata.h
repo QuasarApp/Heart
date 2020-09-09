@@ -45,19 +45,6 @@ public:
     bool toPackage(Package &package, unsigned short trigeredCommand = 0) const;
 
     /**
-     * @brief fromStream
-     * @param stream
-     * @return stream
-     */
-    QDataStream& fromStream(QDataStream& stream) override;
-
-    /**
-     * @brief toStream
-     * @param stream
-     * @return stream
-     */
-    QDataStream& toStream(QDataStream& stream) const override;
-    /**
      * @brief isValid
      * @return true if class isValid
      */
@@ -120,6 +107,21 @@ protected:
      * @return true if object initialized correctly.
      */
     virtual bool init();
+
+
+    /**
+     * @brief fromStream
+     * @param stream
+     * @return stream
+     */
+    QDataStream& fromStream(QDataStream& stream) override;
+
+    /**
+     * @brief toStream
+     * @param stream
+     * @return stream
+     */
+    QDataStream& toStream(QDataStream& stream) const override;
 
 private:
     /**

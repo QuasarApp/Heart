@@ -8,6 +8,8 @@
 #include "abstractdata.h"
 #include "package.h"
 
+#include <QDataStream>
+
 namespace NP {
 
 Package::Package() {
@@ -34,23 +36,6 @@ bool Package::isValid() const {
     return hdr.size == data.size();
 }
 
-QByteArray Package::toBytes() const {
-    QByteArray res;
-    res.append(reinterpret_cast<char*>(const_cast<Header*>(&hdr)),
-               sizeof (hdr));
-
-    res.append(data);
-    return res;
-}
-
-void Package::fromBytes(const QByteArray& array) {
-    reset();
-    memcpy(&hdr,
-           array.data(), sizeof(Header));
-
-    data.append(array.mid(sizeof(Header)));
-}
-
 void Package::reset() {
     hdr.reset();
     data.clear();
@@ -60,6 +45,23 @@ QString Package::toString() const {
     return QString("Pakcage description: %0."
                    " Data description: Data size - %1, Data: %2").
             arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
+}
+
+QDataStream &Package::fromStream(QDataStream &stream) {
+    reset();
+
+    char *hdr =  reinterpret_cast<char*>(&this->hdr);
+    unsigned int readedBytes = sizeof(Header);
+    stream.readBytes(hdr, readedBytes);
+
+    return stream;
+}
+
+QDataStream &Package::toStream(QDataStream &stream) const {
+    stream.writeBytes(reinterpret_cast<char*>(const_cast<Header*>(&hdr)),
+                      sizeof (hdr));
+
+    return stream;
 }
 
 }
