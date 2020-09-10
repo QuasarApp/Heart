@@ -33,6 +33,7 @@
 #include <keystorage.h>
 #include <knowaddresses.h>
 #include <longping.h>
+#include <networkrequest.h>
 
 #define THIS_NODE "this_node_key"
 namespace NP {
@@ -416,6 +417,16 @@ ParserResult BaseNode::parsePackage(const Package &pkg,
 
         incomingData(&cmd, baseSender->selfId());
         return ParserResult::Processed;
+    } else if (H_16<NetworkRequest>() == pkg.hdr.command) {
+        NetworkRequest cmd(pkg);
+
+        if (!cmd.isValid()) {
+            badRequest(baseSender->selfId(), pkg.hdr);
+            return ParserResult::Error;
+        }
+
+        workWithNetworkRequest(&cmd, baseSender);
+        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
@@ -568,6 +579,25 @@ ParserResult BaseNode::workWithTransportData(AbstractData *transportData,
     _router->addProcesedPackage(cmd->packageId());
     return ParserResult::Processed;
 
+}
+
+ParserResult BaseNode::workWithNetworkRequest(AbstractData *networkRequest,
+                                              const AbstractNodeInfo *sender) {
+    // convert transoprt pakcage
+    auto cmd = dynamic_cast<NetworkRequest*>(networkRequest);
+
+    if (!cmd)
+        return ParserResult::Error;
+
+    if (cmd->isComplete()) {
+        if (cmd->askedNodes().contains(nodeId())) {
+            return parsePackage(cmd->dataResponce(), sender);
+        }
+
+        return ParserResult::Processed;
+    }
+
+    return parsePackage(cmd->dataRequest(), sender);
 }
 
 void BaseNode::incomingData(AbstractData *pkg, const HostAddress &sender) {

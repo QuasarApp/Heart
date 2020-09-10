@@ -21,6 +21,10 @@ bool Package::isValid() const {
         return false;
     }
 
+    if (!id.isValid()) {
+        return false;
+    }
+
     auto rawint = data.mid(0, sizeof (decltype (hdr.command)));
     decltype (hdr.command) cmd;
     memcpy(&cmd, rawint.data(), sizeof (cmd));

@@ -9,9 +9,9 @@
 #define ABSTRACTPACKAGE_H
 #include "header.h"
 #include "networkprotocol_global.h"
-#include <streambase.h>
 
 #include <QByteArray>
+#include <baseid.h>
 
 namespace NP {
 
@@ -19,7 +19,9 @@ class Abstract;
 /**
  * @brief The Package struct
  */
-struct NETWORKPROTOCOLSHARED_EXPORT Package: public StreamBase {
+class NETWORKPROTOCOLSHARED_EXPORT Package: public StreamBase {
+
+public:
     /**
      * @brief hdr - header of package
      */
@@ -29,7 +31,13 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package: public StreamBase {
      */
     QByteArray data;
 
+    /**
+     * @brief id - hash of data of package SHA-256
+     */
+    BaseId id;
+
     Package();
+    virtual ~Package() = default;
 
     /**
      * @brief isValid
@@ -47,9 +55,6 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package: public StreamBase {
      * @return string
      */
     QString toString() const;
-
-    virtual ~Package() = default;
-
 
     // StreamBase interface
 protected:

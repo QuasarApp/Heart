@@ -12,6 +12,7 @@
 #include "networkprotocol.h"
 #include <limits>
 #include <quasarapp.h>
+#include <QCryptographicHash>
 
 namespace NP {
 
@@ -60,6 +61,7 @@ bool AbstractData::toPackage(Package &package,
     package.hdr.command = _cmd;
     package.hdr.triggerCommnad = trigeredCommand;
     package.hdr.size = static_cast<unsigned short>(package.data.size());
+    package.id = QCryptographicHash::hash(package.data, QCryptographicHash::Sha256);
 
     return package.isValid();
 }

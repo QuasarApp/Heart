@@ -34,12 +34,6 @@ public:
     bool copyFrom(const AbstractData *) override;
 
     /**
-     * @brief toString - return string value of this package
-     * @return
-     */
-    QString toString() const override;
-
-    /**
      * @brief dataRequest - this is package of not processed reqest.
      * @return Package of request
      */
@@ -93,7 +87,6 @@ public:
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    bool init() override;
 
 private:
     Package _dataRequest;

@@ -413,6 +413,16 @@ private:
     ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
 
     /**
+     * @brief workWithNetworkRequest
+     * @param networkRequest
+     * @param sender
+     * @param pkg
+     * @return
+     */
+    ParserResult workWithNetworkRequest(AbstractData* networkRequest, const AbstractNodeInfo *sender);
+
+
+    /**
      * @brief optimizeRoute - this method reduces the size of the route by removing unnecessary nodes.
      * @param node
      * @param rawRoute

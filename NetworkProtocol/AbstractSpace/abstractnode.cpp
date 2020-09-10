@@ -864,8 +864,14 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
     if (!sender)
         return;
 
+    if (_packageManager.contains(pkg.id)) {
+        return;
+    }
+
     auto executeObject = [pkg, sender, id, this]() {
         ParserResult parseResult = parsePackage(pkg, sender);
+
+        _packageManager.processed(pkg, static_cast<char>(parseResult));
 
         if (parseResult != ParserResult::Processed) {
             auto message = QString("Package not parsed! result: '%3'."

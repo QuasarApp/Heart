@@ -14,15 +14,22 @@ NetworkRequest::NetworkRequest(const Package &package):
 }
 
 bool NetworkRequest::isValid() const {
-
+    return AbstractData::isValid() && _askedNodes.size() && _dataRequest.isValid();
 }
 
-bool NetworkRequest::copyFrom(const AbstractData *) {
+bool NetworkRequest::copyFrom(const AbstractData * other) {
+    if (!AbstractData::copyFrom(other))
+        return false;
 
-}
+    auto otherObject = dynamic_cast<const NetworkRequest*>(other);
+    if (!otherObject)
+        return false;
 
-QString NetworkRequest::toString() const {
+    this->_dataRequest = otherObject->_dataRequest;
+    this->_askedNodes = otherObject->_askedNodes;
+    this->_dataResponce = otherObject->_dataResponce;
 
+    return true;
 }
 
 Package NetworkRequest::dataRequest() const {
@@ -30,7 +37,7 @@ Package NetworkRequest::dataRequest() const {
 }
 
 void NetworkRequest::setDataRequest(const Package &data) {
-    _dataRequest = data;
+    _dataRequest = data;    
 }
 
 Package NetworkRequest::dataResponce() const {
@@ -67,10 +74,6 @@ QDataStream &NetworkRequest::toStream(QDataStream &stream) const {
     stream << _dataResponce;
 
     return stream;
-}
-
-bool NetworkRequest::init() {
-
 }
 
 QSet<BaseId> NetworkRequest::askedNodes() const {
