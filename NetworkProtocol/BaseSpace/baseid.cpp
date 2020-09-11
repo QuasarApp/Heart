@@ -33,7 +33,7 @@ const QByteArray& BaseId::toRaw() const {
 }
 
 bool BaseId::isValid() const {
-    return _data.size() == 33;
+    return _data.size();
 }
 
 void BaseId::clear() {
