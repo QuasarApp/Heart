@@ -18,6 +18,8 @@ public:
     QByteArray sign() const;
     void setSign(const QByteArray &sign);
 
+    QByteArray& sign();
+
     /**
      * @brief dataForSigned - thism metho return byte array for signed
      * @return data array

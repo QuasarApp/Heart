@@ -12,6 +12,7 @@
 #include "networkprotocol.h"
 #include <limits>
 #include <quasarapp.h>
+#include <QCryptographicHash>
 
 namespace NP {
 
@@ -49,7 +50,7 @@ QByteArray AbstractData::toBytes() const {
 }
 
 bool AbstractData::toPackage(Package &package,
-                        unsigned short trigeredCommand) const {
+                             unsigned int triggerHash) const {
 
     if (!isValid()) {
         return false;
@@ -58,8 +59,9 @@ bool AbstractData::toPackage(Package &package,
     package.data = toBytes();
 
     package.hdr.command = _cmd;
-    package.hdr.triggerCommnad = trigeredCommand;
+    package.hdr.triggerHash = triggerHash;
     package.hdr.size = static_cast<unsigned short>(package.data.size());
+    package.hdr.hash = qHash(package.data);
 
     return package.isValid();
 }

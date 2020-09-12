@@ -26,6 +26,9 @@
 #define ROUTE_COUNT_LIMIT 1000
 #define TRANSPORT_PACKAGES_CACHE 1000
 
+// Node Settings
+#define PACKAGE_CACHE_SIZE 1000
+
 // Other settings
 #ifdef RELEASE_BUILD
     #define WAIT_TIME 30000

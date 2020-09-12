@@ -25,6 +25,7 @@
 #include "icrypto.h"
 #include "networkprotocol_global.h"
 #include "receivedata.h"
+#include "packagemanager.h"
 
 class QSslCertificate;
 class QSslKey;
@@ -485,6 +486,9 @@ private:
     DataSender * _dataSender = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
+
+    PackageManager _packageManager;
+
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _actionCacheMutex;

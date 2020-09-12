@@ -11,6 +11,7 @@
 #include "networkprotocol_global.h"
 
 #include <QByteArray>
+#include <baseid.h>
 
 namespace NP {
 
@@ -18,7 +19,9 @@ class Abstract;
 /**
  * @brief The Package struct
  */
-struct NETWORKPROTOCOLSHARED_EXPORT Package {
+class NETWORKPROTOCOLSHARED_EXPORT Package: public StreamBase {
+
+public:
     /**
      * @brief hdr - header of package
      */
@@ -29,6 +32,7 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package {
     QByteArray data;
 
     Package();
+    virtual ~Package() = default;
 
     /**
      * @brief isValid
@@ -36,17 +40,6 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package {
      */
     virtual bool isValid() const;
 
-    /**
-     * @brief toBytes
-     * @return bytes array of packag
-     */
-    virtual QByteArray toBytes() const;
-
-    /**
-     * @brief fromBytes
-     * @return bytes array to packag
-     */
-    virtual void fromBytes(const QByteArray &array);
     /**
      * @brief reset - reset all data and set for package invalid status
      */
@@ -58,8 +51,10 @@ struct NETWORKPROTOCOLSHARED_EXPORT Package {
      */
     QString toString() const;
 
-    virtual ~Package() = default;
-
+    // StreamBase interface
+protected:
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 };
 
 }

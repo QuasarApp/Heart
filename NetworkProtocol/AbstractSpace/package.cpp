@@ -8,6 +8,8 @@
 #include "abstractdata.h"
 #include "package.h"
 
+#include <QDataStream>
+
 namespace NP {
 
 Package::Package() {
@@ -31,24 +33,11 @@ bool Package::isValid() const {
             return false;
     }
 
-    return hdr.size == data.size();
-}
+    if (hdr.size != data.size()) {
+        return false;
+    }
 
-QByteArray Package::toBytes() const {
-    QByteArray res;
-    res.append(reinterpret_cast<char*>(const_cast<Header*>(&hdr)),
-               sizeof (hdr));
-
-    res.append(data);
-    return res;
-}
-
-void Package::fromBytes(const QByteArray& array) {
-    reset();
-    memcpy(&hdr,
-           array.data(), sizeof(Header));
-
-    data.append(array.mid(sizeof(Header)));
+    return qHash(data) == hdr.hash;
 }
 
 void Package::reset() {
@@ -60,6 +49,27 @@ QString Package::toString() const {
     return QString("Pakcage description: %0."
                    " Data description: Data size - %1, Data: %2").
             arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
+}
+
+QDataStream &Package::fromStream(QDataStream &stream) {
+    reset();
+    stream.readRawData(reinterpret_cast<char*>(&hdr), sizeof(Header));
+
+    char * buf = static_cast<char*>(malloc(hdr.size));
+    stream.readRawData(buf, hdr.size);
+    data = QByteArray::fromRawData(buf, hdr.size);
+
+    return stream;
+}
+
+QDataStream &Package::toStream(QDataStream &stream) const {
+    stream.writeRawData(reinterpret_cast<const char*>(&hdr),
+                        sizeof (hdr));
+
+    stream.writeRawData(data.data(),
+                        data.size());
+
+    return stream;
 }
 
 }
