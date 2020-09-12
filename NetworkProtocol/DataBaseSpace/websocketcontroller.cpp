@@ -5,7 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "basenode.h"
+#include "databasenode.h"
 #include "abstractnodeinfo.h"
 #include "websocketcontroller.h"
 #include <quasarapp.h>
@@ -13,7 +13,7 @@
 namespace NP {
 
 
-WebSocketController::WebSocketController(BaseNode *node) {
+WebSocketController::WebSocketController(DataBaseNode *node) {
     _node = node;
     assert(_node);
 }

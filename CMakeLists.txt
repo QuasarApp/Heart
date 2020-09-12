@@ -22,7 +22,7 @@ include(QuasarAppLib/CMake/ccache.cmake)
 # Add sub directories
 add_subdirectory(QuasarAppLib)
 add_subdirectory(NetworkProtocol)
-add_subdirectory(ProtocolTests)
+#add_subdirectory(ProtocolTests)
 
 include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 initAll()

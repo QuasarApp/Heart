@@ -19,7 +19,7 @@
 // Data Base settings
 #define DEFAULT_DB_NAME "Storage.sqlite"
 #define DEFAULT_DB_PATH QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
-#define DEFAULT_DB_INIT_FILE_PATH ":/sql/BaseSpace/Res/BaseDB.sql"
+#define DEFAULT_DB_INIT_FILE_PATH ":/sql/DataBaseSpace/Res/BaseDB.sql"
 #define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
 
 // Transport Protockol settings

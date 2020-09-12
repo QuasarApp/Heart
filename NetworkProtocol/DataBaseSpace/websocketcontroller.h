@@ -18,7 +18,7 @@
 namespace NP {
 
 class AbstractNodeInfo;
-class BaseNode;
+class DataBaseNode;
 
 /**
  * @brief The WebSocketController class - manage subscribe
@@ -28,7 +28,7 @@ class NETWORKPROTOCOLSHARED_EXPORT WebSocketController : public QObject
     Q_OBJECT
 
 public:
-    WebSocketController(BaseNode *node);
+    WebSocketController(DataBaseNode *node);
     bool subscribe(const BaseId &subscriber,
                    const DbAddress &item);
 
@@ -51,7 +51,7 @@ private:
     QMutex _subscribsMutex;
     QMutex _itemsMutex;
 
-    BaseNode *_node = nullptr;
+    DataBaseNode *_node = nullptr;
 
 };
 

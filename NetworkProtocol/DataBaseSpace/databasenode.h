@@ -27,8 +27,6 @@ class DbAddress;
 class BaseId;
 class Sign;
 class KeyStorage;
-class KnowAddresses;
-class Router;
 class BaseNodeInfo;
 class NodesPermisionObject;
 
@@ -37,7 +35,7 @@ class NodesPermisionObject;
  * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
  *  BaseNode - is thread save class
  */
-class NETWORKPROTOCOLSHARED_EXPORT BaseNode : public AbstractNode
+class NETWORKPROTOCOLSHARED_EXPORT DataBaseNode : public AbstractNode
 {
     Q_OBJECT
 public:
@@ -47,8 +45,8 @@ public:
      * @param mode
      * @param ptr
      */
-    BaseNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
-    ~BaseNode() override;
+    DataBaseNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
+    ~DataBaseNode() override;
 
     /**
      * @brief intSqlDb - this function init database of node
@@ -173,13 +171,6 @@ public:
      * @return true if functin finished seccussful
      */
     virtual bool changeTrust(const BaseId &id, int diff);
-
-    /**
-     * @brief ping - ping node by node id
-     * @param address
-     * @return
-     */
-    bool ping( const BaseId& id);
 
     /**
      * @brief nodeId
@@ -324,13 +315,6 @@ protected:
     QSet<BaseId> myKnowAddresses() const;
 
     /**
-     * @brief welcomeAddress - this method send to the ip information about yaster self.
-     * @param ip - host address of the peer node obeject
-     * @return true if all iformation sendet succesful
-     */
-    virtual bool welcomeAddress(const HostAddress &ip);
-
-    /**
      * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
      * @param info incominng node info.
      */
@@ -395,32 +379,6 @@ private:
      */
     bool workWithNodeObjectData(NodeObject &node, const AbstractNodeInfo *nodeInfo);
 
-    /**
-     * @brief workWithKnowAddresses
-     * @param node
-     * @param nodeInfo
-     * @return
-     */
-    bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
-
-    /**
-     * @brief workWithTransportData
-     * @param transportData
-     * @param sender
-     * @param pkg
-     * @return
-     */
-    ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
-
-    /**
-     * @brief workWithNetworkRequest
-     * @param networkRequest
-     * @param sender
-     * @param pkg
-     * @return
-     */
-    ParserResult workWithNetworkRequest(AbstractData* networkRequest, const AbstractNodeInfo *sender);
-
 
     /**
      * @brief optimizeRoute - this method reduces the size of the route by removing unnecessary nodes.
@@ -446,13 +404,8 @@ private:
     SqlDBCache *_db = nullptr;
     KeyStorage *_nodeKeys = nullptr;
     QString _localNodeName;
-
     WebSocketController *_webSocketWorker = nullptr;
-
-    Router *_router = nullptr;
-
     QHash<BaseId, BaseNodeInfo*> _connections;
-
     mutable QMutex _connectionsMutex;
 
 };

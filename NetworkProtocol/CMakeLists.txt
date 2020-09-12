@@ -46,31 +46,31 @@ endif()
 if (${BUILD_LVL} GREATER_EQUAL 1)
     message("BUILD LVL >= 1")
     file(GLOB SOURCE_CPP_LVL_1
-        "BaseSpace/*.cpp" "BaseSpace/*.qrc"
-        "BaseSpace/packages/*.cpp" "BaseSpace/packages/*.qrc"
-        "BaseSpace/Private/*.cpp" "BaseSpace/Private/*.qrc"
+        "DataBaseSpace/*.cpp" "DataBaseSpace/*.qrc"
+        "DataBaseSpace/packages/*.cpp" "DataBaseSpace/packages/*.qrc"
+        "DataBaseSpace/Private/*.cpp" "DataBaseSpace/Private/*.qrc"
     )
 
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace")
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace/packages")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace/packages")
 
-    set(PRIVATE_INCUDE_DIR ${PRIVATE_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/BaseSpace/Private")
+    set(PRIVATE_INCUDE_DIR ${PRIVATE_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace/Private")
 
 endif()
 
 if (${BUILD_LVL} GREATER_EQUAL 2)
     message("BUILD LVL >= 2")
     file(GLOB SOURCE_CPP_LVL_2
-        "UserSpace/*.cpp" "UserSpace/*.qrc"
-        "UserSpace/packages/*.cpp" "UserSpace/packages/*.qrc"
-        "UserSpace/Private/*.cpp" "UserSpace/Private/*.qrc"
+        "NetworkSpace/*.cpp" "NetworkSpace/*.qrc"
+        "NetworkSpace/packages/*.cpp" "NetworkSpace/packages/*.qrc"
+        "UserSNetworkSpacepace/Private/*.cpp" "NetworkSpace/Private/*.qrc"
     )
 
 
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace")
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace/packages")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/NetworkSpace")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/NetworkSpace/packages")
 
-    set(PRIVATE_INCUDE_DIR ${PRIVATE_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace/Private")
+    set(PRIVATE_INCUDE_DIR ${PRIVATE_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/NetworkSpace/Private")
 
 endif()
 
