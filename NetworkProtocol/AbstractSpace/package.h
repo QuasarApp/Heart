@@ -31,11 +31,6 @@ public:
      */
     QByteArray data;
 
-    /**
-     * @brief id - hash of data of package SHA-256
-     */
-    BaseId id;
-
     Package();
     virtual ~Package() = default;
 

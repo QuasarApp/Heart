@@ -12,7 +12,7 @@
 
 namespace NP {
 /**
- * @brief The Header struct 6 byte
+ * @brief The Header struct 12 byte
  */
 #pragma pack(push, 1)
 struct NETWORKPROTOCOLSHARED_EXPORT Header{
@@ -27,10 +27,15 @@ struct NETWORKPROTOCOLSHARED_EXPORT Header{
     unsigned short command;
 
     /**
-     * @brief command of pacage see Command (rquest from client)
+     * @brief hash - is uniqueue id of a package. id calc with CRC32 function fo Qt implamentation. qHash(QByteArray)
+     */
+    unsigned int hash;
+
+    /**
+     * @brief triggerHash - this is hash of request package that this package has been responded
      * the server should write to which command it responds
      */
-    unsigned short triggerCommnad;
+    unsigned int triggerHash;
 
     /**
      * @brief Header default constructor

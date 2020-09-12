@@ -42,7 +42,7 @@ public:
      * @param trigeredCommand - old cmd
      * @return retorn package object created from this object.
      */
-    bool toPackage(Package &package, unsigned short trigeredCommand = 0) const;
+    bool toPackage(Package &package, unsigned int triggerHash = 0) const;
 
     /**
      * @brief isValid

@@ -19,7 +19,7 @@ PackageManager::~PackageManager() {
     _parseResults.clear();
 }
 
-const Package *PackageManager::getPkgFromArhive(const BaseId &id) const {
+const Package *PackageManager::getPkgFromArhive(const unsigned int &id) const {
     if (!contains(id))
         return nullptr;
 
@@ -27,14 +27,14 @@ const Package *PackageManager::getPkgFromArhive(const BaseId &id) const {
     return _parseResults.value(id)->_data;
 }
 
-bool PackageManager::contains(const BaseId &id) const {
+bool PackageManager::contains(const unsigned int &id) const {
     QMutexLocker lock(&_processMutex);
     return _parseResults.contains(id);
 }
 
 void PackageManager::processed(const Package &pkg, char processResult) {
 
-    if (!pkg.id.isValid() || !PACKAGE_CACHE_SIZE) {
+    if (!pkg.hdr.hash || !PACKAGE_CACHE_SIZE) {
         return;
     }
 
@@ -44,12 +44,12 @@ void PackageManager::processed(const Package &pkg, char processResult) {
         _processTime.erase(_processTime.begin());
     }
 
-    _parseResults.insert(pkg.id, new PackaData {
+    _parseResults.insert(pkg.hdr.hash, new PackaData {
                              processResult,
                              new Package(pkg)
                          });
 
-    _processTime.insert(static_cast<int>(time(0)), pkg.id);
+    _processTime.insert(static_cast<int>(time(0)), pkg.hdr.hash);
 }
 
 PackageManager::PackaData::~PackaData() {

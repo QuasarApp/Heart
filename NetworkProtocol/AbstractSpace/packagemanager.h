@@ -22,14 +22,14 @@ public:
      * @param id - id of the requariment package.
      * @result pointer of the processed package, if package not return nullpt
      */
-    const Package * getPkgFromArhive(const BaseId& id) const;
+    const Package * getPkgFromArhive(const unsigned int &id) const;
 
     /**
      * @brief contains - check packge by id
      * @param id
      * @return true if pakcge has been parsed
      */
-    bool contains(const BaseId& id) const;
+    bool contains(const unsigned int& id) const;
 
     /**
      * @brief processed - add package to arhice
@@ -48,8 +48,8 @@ private:
         ~PackaData();
     };
 
-    QMultiMap<int, BaseId> _processTime;
-    QHash<BaseId, const PackaData*> _parseResults;
+    QMultiMap<int, unsigned int> _processTime;
+    QHash<unsigned int, const PackaData*> _parseResults;
 
     mutable QMutex _processMutex;
 };

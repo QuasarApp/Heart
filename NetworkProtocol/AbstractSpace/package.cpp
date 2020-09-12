@@ -21,10 +21,6 @@ bool Package::isValid() const {
         return false;
     }
 
-    if (!id.isValid()) {
-        return false;
-    }
-
     auto rawint = data.mid(0, sizeof (decltype (hdr.command)));
     decltype (hdr.command) cmd;
     memcpy(&cmd, rawint.data(), sizeof (cmd));
@@ -37,7 +33,11 @@ bool Package::isValid() const {
             return false;
     }
 
-    return hdr.size == data.size();
+    if (hdr.size != data.size()) {
+        return false;
+    }
+
+    return qHash(data) == hdr.hash;
 }
 
 void Package::reset() {
@@ -53,17 +53,21 @@ QString Package::toString() const {
 
 QDataStream &Package::fromStream(QDataStream &stream) {
     reset();
+    stream.readRawData(reinterpret_cast<char*>(&hdr), sizeof(Header));
 
-    char *hdr =  reinterpret_cast<char*>(&this->hdr);
-    unsigned int readedBytes = sizeof(Header);
-    stream.readBytes(hdr, readedBytes);
+    char * buf = static_cast<char*>(malloc(hdr.size));
+    stream.readRawData(buf, hdr.size);
+    data = QByteArray::fromRawData(buf, hdr.size);
 
     return stream;
 }
 
 QDataStream &Package::toStream(QDataStream &stream) const {
-    stream.writeBytes(reinterpret_cast<char*>(const_cast<Header*>(&hdr)),
-                      sizeof (hdr));
+    stream.writeRawData(reinterpret_cast<const char*>(&hdr),
+                        sizeof (hdr));
+
+    stream.writeRawData(data.data(),
+                        data.size());
 
     return stream;
 }

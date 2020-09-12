@@ -15,17 +15,18 @@ Header::Header() {
 }
 
 bool Header::isValid() const {
-    return command && size;
+    return command && size && hash;
 }
 
 void Header::reset() {
     size = 0;
     command = 0;
-    triggerCommnad = 0;
+    triggerHash = 0;
+    hash = 0;
 }
 
 QString Header::toString() const {
-    return QString("Header description: Size - %0, Command - %1, triggerCommnad - %2").
-            arg(size).arg(command).arg(triggerCommnad);
+    return QString("Header description: Size - %0, Command - %1, hash - %2, triggerHash - %3").
+            arg(size).arg(command).arg(QString::number(hash, 16)).arg(QString::number(triggerHash, 16));
 }
 }
