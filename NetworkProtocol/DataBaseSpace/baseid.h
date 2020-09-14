@@ -41,6 +41,13 @@ public:
     bool fromRaw(const QByteArray& raw);
 
     /**
+     * @brief fromRaw
+     * @param raw
+     * @return
+     */
+    bool fromRaw(const char* data, int len);
+
+    /**
      * @brief toBase64
      * @return
      */

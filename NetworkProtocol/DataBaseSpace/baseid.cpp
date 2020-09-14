@@ -4,7 +4,7 @@ namespace NP {
 BaseId::BaseId() = default;
 
 BaseId::BaseId(unsigned int val) {
-    fromRaw(QByteArray::fromRawData(reinterpret_cast<char*>(&val), sizeof (val)));
+    fromRaw(reinterpret_cast<char*>(&val), sizeof (val));
 }
 
 BaseId::BaseId(const QByteArray &raw) {
@@ -21,6 +21,12 @@ bool BaseId::fromBase64(const QByteArray &base64) {
 
 bool BaseId::fromRaw(const QByteArray &raw) {
     _data = raw;
+    return isValid();
+}
+
+bool BaseId::fromRaw(const char *data, int len) {
+    _data.clear();
+    _data.insert(0, data, len);
     return isValid();
 }
 

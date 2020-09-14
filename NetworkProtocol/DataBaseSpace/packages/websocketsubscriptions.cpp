@@ -26,16 +26,11 @@ WebSocketSubscriptions::WebSocketSubscriptions(const NP::Package &package):
 QDataStream &WebSocketSubscriptions::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 
-    BaseId senderNode;
-    stream >> senderNode;
-    setSenderID(senderNode);
-
     return stream >> _addresses;
 }
 
 QDataStream &WebSocketSubscriptions::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
-    stream << senderID();
 
     return stream << _addresses;
 }

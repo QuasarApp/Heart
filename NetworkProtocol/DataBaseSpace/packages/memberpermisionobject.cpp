@@ -5,7 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "nodespermisionobject.h"
+#include "memberpermisionobject.h"
 
 #include <QDataStream>
 #include <QSqlQuery>
@@ -13,31 +13,31 @@
 
 namespace NP {
 
-NodesPermisionObject::NodesPermisionObject():
-    DBObject("NodesPermisions") {
+MemberPermisionObject::MemberPermisionObject():
+    DBObject("MemberPermisions") {
     
 }
 
-NodesPermisionObject::NodesPermisionObject(const Package &pkg):
-    NodesPermisionObject() {
+MemberPermisionObject::MemberPermisionObject(const Package &pkg):
+    MemberPermisionObject() {
     fromBytes(pkg.data);
 
 }
 
-NodesPermisionObject::NodesPermisionObject(const PermisionData &id):
-    NodesPermisionObject()  {
+MemberPermisionObject::MemberPermisionObject(const PermisionData &id):
+    MemberPermisionObject()  {
     setKey(id);
 }
 
-bool NodesPermisionObject::isValid() const {
+bool MemberPermisionObject::isValid() const {
     return _key.isValid();
 }
 
-bool NodesPermisionObject::copyFrom(const AbstractData *other) {
+bool MemberPermisionObject::copyFrom(const AbstractData *other) {
     if (!DBObject::copyFrom(other))
         return false;
 
-    auto otherObject = dynamic_cast<const NodesPermisionObject*>(other);
+    auto otherObject = dynamic_cast<const MemberPermisionObject*>(other);
     if (!otherObject)
         return false;
 
@@ -47,21 +47,21 @@ bool NodesPermisionObject::copyFrom(const AbstractData *other) {
     return true;
 }
 
-PrepareResult NodesPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
+PrepareResult MemberPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
 
     if (!isValid()) {
         return PrepareResult::Fail;
     }
 
     QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
-                          "ON CONFLICT(NodesPermisionsIndex) DO UPDATE SET %2";
+                          "ON CONFLICT(MemberPermisionsIndex) DO UPDATE SET %2";
 
     queryString = queryString.arg(tableName());
 
     queryString = queryString.arg(
-                "nodeId, objectTable", "objectId", "lvl");
+                "memberId, objectTable", "objectId", "lvl");
 
-    queryString = queryString.arg("nodeId='" + _key.id().toBase64() +  "', " +
+    queryString = queryString.arg("memberId='" + _key.id().toBase64() +  "', " +
                                   "objectTable='" + _key.address().table()+  "', " +
                                   "objectId='" + _key.address().id().toBase64() +  "', " +
                                   "lvl='" + QString::number(static_cast<int>(_permisions)) + "'");
@@ -81,12 +81,12 @@ PrepareResult NodesPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
     return PrepareResult::Fail;
 }
 
-PrepareResult NodesPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
+PrepareResult MemberPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
     if (!isValid()) {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "DELETE FROM %0 where nodeId='%1' and objectTable='%2' and objectId='%3'";
+    QString queryString = "DELETE FROM %0 where memberId='%1' and objectTable='%2' and objectId='%3'";
     queryString = queryString.arg(tableName(),
                                   _key.id().toBase64(),
                                   _key.address().table(),
@@ -97,7 +97,7 @@ PrepareResult NodesPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
     return PrepareResult::Fail;
 }
 
-PrepareResult NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
+PrepareResult MemberPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
     if (_key.isValid()) {
         return PrepareResult::Fail;
     }
@@ -106,7 +106,7 @@ PrepareResult NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
     bool fOptionAdded = false;
 
     if (_key.id().isValid()) {
-        queryString += "nodeId='" + _key.id().toBase64() + "'";
+        queryString += "memberId='" + _key.id().toBase64() + "'";
         fOptionAdded = true;
     }
 
@@ -131,15 +131,15 @@ PrepareResult NodesPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
     return PrepareResult::Fail;
 }
 
-DBObject *NodesPermisionObject::factory() const {
-    return create<NodesPermisionObject>();
+DBObject *MemberPermisionObject::factory() const {
+    return create<MemberPermisionObject>();
 }
 
-uint NodesPermisionObject::dbKey() const {
+uint MemberPermisionObject::dbKey() const {
     return HASH_KEY(_key);
 }
 
-QDataStream &NodesPermisionObject::fromStream(QDataStream &stream) {
+QDataStream &MemberPermisionObject::fromStream(QDataStream &stream) {
 
     stream >> _key;
     stream >> _permisions;
@@ -147,33 +147,33 @@ QDataStream &NodesPermisionObject::fromStream(QDataStream &stream) {
     return  stream;
 }
 
-QDataStream &NodesPermisionObject::toStream(QDataStream &stream) const {
+QDataStream &MemberPermisionObject::toStream(QDataStream &stream) const {
     stream << _key;
     stream << _permisions;
 
     return  stream;
 }
 
-BaseId NodesPermisionObject::generateId() const {
+BaseId MemberPermisionObject::generateId() const {
     if (!_key.isValid())
         return {};
 
     return _key.hash();
 }
 
-PermisionData NodesPermisionObject::key() const {
+PermisionData MemberPermisionObject::key() const {
     return _key;
 }
 
-void NodesPermisionObject::setKey(const PermisionData &key) {
+void MemberPermisionObject::setKey(const PermisionData &key) {
     _key = key;
 }
 
-Permission NodesPermisionObject::permisions() const {
+Permission MemberPermisionObject::permisions() const {
     return _permisions;
 }
 
-void NodesPermisionObject::setPermisions(const Permission &permisions) {
+void MemberPermisionObject::setPermisions(const Permission &permisions) {
     _permisions = permisions;
 }
 }

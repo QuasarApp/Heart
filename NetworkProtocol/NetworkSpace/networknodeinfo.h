@@ -5,10 +5,10 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef CONNECTIONINFO_H
-#define CONNECTIONINFO_H
+#ifndef NETWORKCONNECTIONINFO_H
+#define NETWORKCONNECTIONINFO_H
 
-#include "abstractnodeinfo.h"
+#include "basenodeinfo.h"
 #include "accesstoken.h"
 #include "baseid.h"
 #include "networkprotocol_global.h"
@@ -22,17 +22,17 @@ class DbAddress;
 /**
  * @brief The BaseNodeInfo class contaisn list of nodes id of know this node.
  */
-class NETWORKPROTOCOLSHARED_EXPORT BaseNodeInfo: public AbstractNodeInfo {
+class NETWORKPROTOCOLSHARED_EXPORT NetworkNodeInfo: public BaseNodeInfo {
 
 public:
 
     /**
-     * @brief BaseNodeInfo - create node info from the tcp descriptor
+     * @brief NetworkNodeInfo - create node info from the tcp descriptor
      * @param tcp - tcp socket dsscriptor
      */
-    explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr,
+    explicit NetworkNodeInfo(QAbstractSocket * tcp = nullptr,
                           const HostAddress* clientAddress = nullptr);
-    ~BaseNodeInfo() override;
+    ~NetworkNodeInfo() override;
 
     /**
      * @brief isValid
@@ -41,10 +41,11 @@ public:
     bool isValid() const override;
 
     /**
-     * @brief selfId - it is id of peer node
+     * @brief isKnowAddress
+     * @param address
      * @return
      */
-    BaseId selfId() const;
+    bool isKnowAddress(const BaseId& address) const;
 
     /**
      * @brief setSelfId
@@ -53,15 +54,20 @@ public:
     void setSelfId(const BaseId &selfId);
 
     /**
+     * @brief addKnowAddresses
+     */
+    void addKnowAddresses(const QSet<BaseId> &newAddressses);
+
+    /**
      * @brief confirmData - this implementaton check self id of node.
      * @return true if node contains valid self id.
      */
     bool confirmData() const override;
 
 protected:
-    BaseId _selfId;
+    QSet<BaseId> _knowAddresses;
 };
 
 }
 
-#endif // CONNECTIONINFO_H
+#endif // NETWORKCONNECTIONINFO_H

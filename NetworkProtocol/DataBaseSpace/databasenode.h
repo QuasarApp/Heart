@@ -5,30 +5,23 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef BASENODE_H
-#define BASENODE_H
+#ifndef DATABASENODE_H
+#define DATABASENODE_H
 
 #include "abstractnode.h"
 #include <dbobject.h>
 #include <hostaddress.h>
-#include <nodeobject.h>
+#include <permission.h>
 
 
 namespace NP {
 
 class SqlDBCache;
 class SqlDBWriter;
-class UserData;
-class UserRequest;
-class AvailableDataRequest;
 class WebSocket;
 class WebSocketController;
 class DbAddress;
 class BaseId;
-class Sign;
-class KeyStorage;
-class BaseNodeInfo;
-class NodesPermisionObject;
 
 
 /**
@@ -97,6 +90,25 @@ public:
      */
     virtual QVariantMap defaultDbParams() const;
 
+protected:
+
+    /**
+     * @brief initDefaultDbObjects create default cache and db writer if pointer is null
+     * @param cache
+     * @param writer
+     */
+    void initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer);
+
+    /**
+     * @brief parsePackage
+     * @param pkg
+     * @param sender
+     * @return
+     */
+    ParserResult parsePackage(const Package &pkg,
+                              const AbstractNodeInfo* sender) override;
+
+
     /**
      * @brief sendData - send data to an ip address
      * @param resp
@@ -138,7 +150,6 @@ public:
      */
     virtual bool sendData(const AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr);
-
     /**
      * @brief badRequest -send bad request and change trus for ip address
      * @param address
@@ -173,49 +184,17 @@ public:
     virtual bool changeTrust(const BaseId &id, int diff);
 
     /**
-     * @brief nodeId
-     * @return
-     */
-    BaseId nodeId() const;
-
-    /**
-     * @brief connectToHost - this ovverided method diference betwn base implementation then it send a request for get node id.
-     * @param ip
-     * @param port
-     * @param mode
-     */
-    bool connectToHost(const HostAddress &ip, SslMode mode) override;
-
-protected:
-
-    /**
-     * @brief initDefaultDbObjects create default cache and db writer if pointer is null
-     * @param cache
-     * @param writer
-     */
-    void initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer);
-
-    /**
-     * @brief parsePackage
-     * @param pkg
-     * @param sender
-     * @return
-     */
-    ParserResult parsePackage(const Package &pkg,
-                              const AbstractNodeInfo* sender) override;
-
-    /**
      * @brief hashgenerator
      * @param pass
      */
     virtual QString hashgenerator(const QByteArray &pass);
 
+
     /**
-     * @brief createNodeInfo - this method create a new node from socket. override this mehod if you want to create a own clasess of nodes.
-     * @param socket
-     * @return pointer to new node info
+     * @brief nodeConnected - this implementation call a welcomeAddress method.
+     * @param node
      */
-    AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
+    void nodeConnected(const HostAddress &node) override;
 
     /**
      * @brief db
@@ -230,19 +209,7 @@ protected:
      * @return true if data parsed seccusseful
      */
     bool workWithSubscribe(const WebSocket &rec,
-                           const BaseId &clientOrNodeid);
-
-    template<class RequestobjectType>
-    /**
-     * @brief workWithDataRequest
-     * @param rec
-     * @param addere
-     * @param rHeader
-     * @return
-     */
-    bool workWithDataRequest(const AbstractData* rec,
-                             const HostAddress &addere,
-                             const Header *rHeader);
+                           const BaseId &clientOrNodeid, const AbstractNodeInfo &sender);
 
     /**
      * @brief deleteObject - delete object by address dbObject
@@ -289,63 +256,25 @@ protected:
                                 const DBObject *saveObject);
 
     /**
-     * @brief savePermision - this method save a new changes in to permisions table.
-     *  Befor save new data node can be validate new data with consensus.
-     * @param permision - data of new permision
-     * @return true if new cghanges saved successful.
+     * @brief getSender - this method return id of requester.
+     *  @default Base implementation get id from BaseNdoeInfo.
+     * @param connectInfo - info about connect
+     * @param requestData - data of request
+     * @return id of requester member
      */
-    bool savePermision(const NodeObject &node, const NodesPermisionObject& permision);
-    /**
-     * @brief checkSignOfRequest
-     * @param request - package
-     * @return true if request signed.
-     */
-    virtual bool checkSignOfRequest(const AbstractData *request);
+    virtual BaseId getSender(const AbstractNodeInfo *connectInfo, const AbstractData *requestData) const;
 
     /**
-     * @brief thisNode
-     * @return This node object value.
+     * @brief checkPermision - check permision of requester to objectAddress
+     *  Override this method for your backend
+     * @param requester - user on node or another object of network
+     * @param objectAddress - addres to database object
+     * @param requarimentPermision - needed permision for requester
+     * @return DBOperationResult::Alowed if permission granted
      */
-    NodeObject thisNode() const;
-
-    /**
-     * @brief myKnowAddresses
-     * @return set of know addresses
-     */
-    QSet<BaseId> myKnowAddresses() const;
-
-    /**
-     * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
-     * @param info incominng node info.
-     */
-    void nodeConnected(const HostAddress& node) override;
-
-    /**
-     * @brief nodeConfirmend - this implementation test nodes to double connections
-     * @param mode
-     */
-    void nodeConfirmend(const HostAddress& sender) override;
-
-    /**
-     * @brief nodeDisconnected - this implementation remove nodes info from connection cache
-     * @param sender
-     */
-    void nodeDisconnected(const HostAddress& node) override;
-
-    /**
-     * @brief incomingData - this signal invoked when node get command or ansver
-     * @param pkg - received package
-     * @param sender - sender of the package
-     * @note override this method for get a signals.
-     */
-    virtual void incomingData(AbstractData* pkg,
-                      const BaseId&  sender);
-
-    /**
-     * @brief keyStorageLocation - return location of storagge of keys.
-     * @return path to the location of keys storage
-     */
-    QString keyStorageLocation() const;
+    virtual DBOperationResult checkPermission(const BaseId& requester,
+                                const DbAddress& objectAddress,
+                                const Permission& requarimentPermision) const;
 
     /**
      * @brief dbLocation - return location of database of node.
@@ -354,62 +283,28 @@ protected:
     QString dbLocation() const;
 
     /**
+     * @brief welcomeAddress - this method send to the ip information about yaster self.
+     * @param ip - host address of the peer node obeject
+     * @return true if all iformation sendet succesful
+     */
+    virtual bool welcomeAddress(const HostAddress &ip);
+
+    /**
      * @brief isBanned - check trust of node, if node trus is lover of 0 return true.
+     * @param member
      * @return true if node is banned
      */
-    bool isBanned(const BaseId& node) const;
-
+    bool isBanned(const BaseId& member) const;
 private:
 
-    /**
-     * @brief workWithAvailableDataRequest
-     * @param rec
-     * @param addere
-     * @param rHeader
-     * @return
-     */
-    bool workWithAvailableDataRequest(const AvailableDataRequest &rec,
-                                      const Header *rHeader);
-
-    /**
-     * @brief workWithNodeObjectData - this method working with received node object data.
-     * @param node
-     * @param nodeInfo
-     * @return true if function finished successful
-     */
-    bool workWithNodeObjectData(NodeObject &node, const AbstractNodeInfo *nodeInfo);
-
-
-    /**
-     * @brief optimizeRoute - this method reduces the size of the route by removing unnecessary nodes.
-     * @param node
-     * @param rawRoute
-     * @return
-     */
-    bool optimizeRoute(const BaseId& node,
-                       const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
-                       QList<HostAddress> rawRoute);
-
-
-    /**
-     * @brief incomingData - this implementation move old incoming method into private section
-     *  becouse base node work with BaseID addresses.
-     * @warning Do not call this implementation on this class,
-     *  use the ncomingData(AbstractData* pkg, const HostAddress&  sender) implementation.
-     */
-    void incomingData(AbstractData* pkg,
-                      const HostAddress&  sender) override final;
-
-
     SqlDBCache *_db = nullptr;
-    KeyStorage *_nodeKeys = nullptr;
     QString _localNodeName;
     WebSocketController *_webSocketWorker = nullptr;
-    QHash<BaseId, BaseNodeInfo*> _connections;
-    mutable QMutex _connectionsMutex;
 
+
+    friend class WebSocketController;
 };
 
 
 }
-#endif // BASENODE_H
+#endif // DATABASENODE_H

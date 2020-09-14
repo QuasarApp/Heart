@@ -1,19 +1,19 @@
 
-CREATE TABLE IF NOT EXISTS Nodes (
+CREATE TABLE IF NOT EXISTS NetworkMembers (
     id VARCHAR(64) PRIMARY KEY NOT NULL,
-    pubKey BLOB NOT NULL,
-    trust INTEGER NOT NULL
+    authenticationData BLOB default NULL,
+    trust INTEGER default 0
 );
 
-CREATE TABLE IF NOT EXISTS NodesPermisions (
-    nodeId VARCHAR(64) NOT NULL,
+CREATE TABLE IF NOT EXISTS MemberPermisions (
+    memberId VARCHAR(64) NOT NULL,
     objectTable VARCHAR(100) NOT NULL,
     objectId VARCHAR(64) NOT NULL,
     lvl INTEGER NOT NULL,
 
-    FOREIGN KEY(nodeId) REFERENCES Nodes(id)
+    FOREIGN KEY(memberId) REFERENCES NetworkMembers(id)
             ON UPDATE CASCADE
             ON DELETE CASCADE
 
 );
-CREATE UNIQUE INDEX IF NOT EXISTS NodesPermisionsIndex ON NodesPermisions(nodeId, objectTable, objectId);
+CREATE UNIQUE INDEX IF NOT EXISTS MemberPermisionsIndex ON MemberPermisions(memberId, objectTable, objectId);

@@ -8,10 +8,8 @@
 #include "sqldbcache.h"
 #include "quasarapp.h"
 #include "sqldbwriter.h"
-#include "nodeobject.h"
 #include "dbaddresskey.h"
 #include "permisiondata.h"
-#include "nodespermisionobject.h"
 
 #include <networkprotocol.h>
 #include <dbobject.h>
@@ -67,6 +65,8 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
             return;
         }
     }
+
+    _needToSaveCache.clear();
 
     lastUpdateTime = currentTime;
 }
@@ -189,29 +189,6 @@ bool SqlDBCache::init(const QVariantMap &params) {
     }
 
     return _writer->initDb(params);
-}
-
-DBOperationResult SqlDBCache::checkPermision(const BaseId &id,
-                                             const DbAddress &object,
-                                             Permission requiredPermision) {
-
-   const NodeObject *node = getObject(NodeObject{id});
-    if (!node) {
-        return DBOperationResult::Unknown;
-    }
-
-    const NodesPermisionObject *permision = getObject(NodesPermisionObject({id, object}));
-
-    if (!permision) {
-        return DBOperationResult::Unknown;
-    }
-
-    if (permision->permisions() < requiredPermision) {
-        return DBOperationResult::Forbidden;
-    }
-
-    return DBOperationResult::Allowed;
-
 }
 
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {

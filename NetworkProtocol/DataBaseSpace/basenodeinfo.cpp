@@ -6,7 +6,6 @@
 */
 
 #include "basenodeinfo.h"
-#include "permisions.h"
 #include "dbaddress.h"
 #include <QTcpSocket>
 #include <hostaddress.h>
@@ -23,25 +22,16 @@ bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid();
 }
 
-bool BaseNodeInfo::isKnowAddress(const BaseId &address) const {
-    return _knowAddresses.contains(address);
-}
-
 BaseId BaseNodeInfo::selfId() const {
     return _selfId;
 }
 
 void BaseNodeInfo::setSelfId(const BaseId &selfId) {
     _selfId = selfId;
-    _knowAddresses.insert(_selfId);
-}
-
-void BaseNodeInfo::addKnowAddresses(const QSet<BaseId> &newAddressses) {
-    _knowAddresses += newAddressses;
 }
 
 bool BaseNodeInfo::confirmData() const {
-    return AbstractNodeInfo::confirmData() && _selfId.isValid();
+    return AbstractNodeInfo::confirmData();
 }
 
 }

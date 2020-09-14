@@ -18,7 +18,6 @@
 #include <networkprotocol.h>
 #include <QMutex>
 #include "config.h"
-#include <permisions.h>
 #include "basedefines.h"
 
 namespace NP {
@@ -85,17 +84,6 @@ public:
      * @return
      */\
     virtual bool init(const QVariantMap &params);
-
-    /**
-     * @brief checkPermision - check permision of clientId for object.
-     * @param id - id of node or client
-     * @param object - target object
-     * @param requiredPermision - requirement permision of object
-     * @return operation result see DBOperationResult
-     */
-    virtual DBOperationResult checkPermision(const BaseId &id,
-                                             const DbAddress &object,
-                                             Permission requiredPermision);
 
 protected:
 

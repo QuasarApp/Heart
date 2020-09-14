@@ -11,19 +11,19 @@
 #include "dbcachekey.h"
 #include "dbobject.h"
 #include "permisiondata.h"
-#include "permisions.h"
+#include "permission.h"
 
 namespace NP {
 
 /**
  * @brief The NodesPermisionObject class - database object of permisions of node
  */
-class NETWORKPROTOCOLSHARED_EXPORT NodesPermisionObject: public DBObject
+class NETWORKPROTOCOLSHARED_EXPORT MemberPermisionObject: public DBObject
 {
 public:
-    NodesPermisionObject();
-    NodesPermisionObject(const Package& pkg);
-    NodesPermisionObject(const PermisionData& id);
+    MemberPermisionObject();
+    MemberPermisionObject(const Package& pkg);
+    MemberPermisionObject(const PermisionData& id);
 
     // AbstractData interface
     bool isValid() const override;

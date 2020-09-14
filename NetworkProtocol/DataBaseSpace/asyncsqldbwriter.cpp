@@ -17,8 +17,7 @@ namespace NP {
 
 
 AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
-    QObject(ptr)
-{
+    QObject(ptr) {
     _own = new QThread(this);
     moveToThread(_own);
     _own->start();

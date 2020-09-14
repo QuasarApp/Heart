@@ -57,7 +57,10 @@ QDataStream &Package::fromStream(QDataStream &stream) {
 
     char * buf = static_cast<char*>(malloc(hdr.size));
     stream.readRawData(buf, hdr.size);
-    data = QByteArray::fromRawData(buf, hdr.size);
+    data.clear();
+    data.insert(0, buf, hdr.size);
+
+    free(buf);
 
     return stream;
 }

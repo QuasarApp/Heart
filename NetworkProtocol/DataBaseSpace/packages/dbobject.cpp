@@ -129,10 +129,6 @@ QDataStream &DBObject::fromStream(QDataStream &stream) {
 
     stream >> _dbId;
 
-    BaseId senderNode;
-    stream >> senderNode;
-    setSenderID(senderNode);
-
     return stream;
 }
 
@@ -140,8 +136,6 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
 
     stream << _dbId;
-
-    stream << senderID();
 
     return stream;
 }

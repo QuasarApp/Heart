@@ -17,20 +17,20 @@ namespace NP {
 /**
  * @brief The NodeObject class - database structure of node
  */
-class NETWORKPROTOCOLSHARED_EXPORT NodeObject: public DBObject
+class NETWORKPROTOCOLSHARED_EXPORT NetworkMember: public DBObject
 {
 public:
-    NodeObject();
-    NodeObject(const Package& pkg);
-    NodeObject(const BaseId& id);
+    NetworkMember();
+    NetworkMember(const Package& pkg);
+    NetworkMember(const BaseId& id);
 
     // DBObject interface
     DBObject *factory() const override;
     PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
 
-    QByteArray publickKey() const;
-    void setPublickKey(const QByteArray &publickKey);
+    QByteArray authenticationData() const;
+    void setAuthenticationData(const QByteArray &publickKey);
 
     // AbstractData interface
     bool isValid() const override;
@@ -51,7 +51,7 @@ protected:
     BaseId generateId() const override;
 
 private:
-    QByteArray _publickKey;
+    QByteArray _authenticationData;
     int _trust;
 };
 }

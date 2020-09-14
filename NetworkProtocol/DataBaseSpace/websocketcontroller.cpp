@@ -9,6 +9,7 @@
 #include "abstractnodeinfo.h"
 #include "websocketcontroller.h"
 #include <quasarapp.h>
+#include <permission.h>
 
 namespace NP {
 
@@ -63,10 +64,18 @@ void WebSocketController::foreachSubscribers(const DBObject *item,
                                              const QSet<BaseId> &subscribersList) {
 
     for (const auto &subscriber : subscribersList) {
+        bool fAllowed = _node->checkPermission(subscriber, item->dbAddress(), Permission::Read) ==
+                DBOperationResult::Allowed;
 
-        if (!_node->sendData(item, subscriber)) {
+        if (fAllowed &&  !_node->sendData(item, subscriber)) {
             QuasarAppUtils::Params::log("Send update failed for " + subscriber.toBase64(),
                                                QuasarAppUtils::Warning);
+        }
+
+        if (!fAllowed) {
+            QuasarAppUtils::Params::log(QString("Internal Error. Member:%0  not have permission to object %1").
+                                        arg(QString(subscriber.toBase64())).arg(item->toString()),
+                                            QuasarAppUtils::Error);
         }
     }
 }

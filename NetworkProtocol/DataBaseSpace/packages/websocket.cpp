@@ -24,7 +24,6 @@ WebSocket::WebSocket(const Package &package):
 QDataStream &WebSocket::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
     stream >> requestCmd;
-    stream >> _senderID;
     stream >> _address;
 
     return stream;
@@ -33,7 +32,6 @@ QDataStream &WebSocket::fromStream(QDataStream &stream) {
 QDataStream &WebSocket::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
     stream << requestCmd;
-    stream << _senderID;
     stream << _address;
 
     return stream;
