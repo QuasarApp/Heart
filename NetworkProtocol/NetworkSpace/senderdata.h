@@ -18,6 +18,7 @@ class NETWORKPROTOCOLSHARED_EXPORT SenderData
 {
 public:
     SenderData();
+
     const BaseId& senderID() const;
     void setSenderID(const BaseId &senderID);
 

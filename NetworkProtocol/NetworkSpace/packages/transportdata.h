@@ -9,7 +9,6 @@
 #define TRANSPORTDATA_H
 
 #include "abstractdata.h"
-#include "nodeid.h"
 #include "senderdata.h"
 
 #include "hostaddress.h"

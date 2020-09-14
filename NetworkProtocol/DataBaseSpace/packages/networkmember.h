@@ -6,8 +6,8 @@
 */
 
 
-#ifndef NODEOBJECT_H
-#define NODEOBJECT_H
+#ifndef NETWORKMEMBER_H
+#define NETWORKMEMBER_H
 
 #include "dbobject.h"
 
@@ -55,4 +55,4 @@ private:
     int _trust;
 };
 }
-#endif // NODEOBJECT_H
+#endif // NETWORKMEMBER_H

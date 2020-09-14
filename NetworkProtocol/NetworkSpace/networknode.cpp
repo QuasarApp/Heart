@@ -31,6 +31,7 @@
 #include <networkrequest.h>
 #include <networkmember.h>
 #include <networknodeinfo.h>
+#include <nodeobject.h>
 
 
 #define THIS_NODE "this_node_key"
@@ -98,8 +99,8 @@ bool NetworkNode::checkSignOfRequest(const AbstractData *request) {
                                                   object->sign()), node->authenticationData());
 }
 
-NetworkMember NetworkNode::thisNode() const {
-    NetworkMember res;
+NodeObject NetworkNode::thisNode() const {
+    NodeObject res;
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
 
     res.setAuthenticationData(keys.publicKey());
@@ -124,7 +125,7 @@ QSet<BaseId> NetworkNode::myKnowAddresses() const {
 }
 
 bool NetworkNode::welcomeAddress(const HostAddress& ip) {
-    NetworkMember self = thisNode();
+    NodeObject self = thisNode();
 
     if (!sendData(&self, ip)) {
         return false;
@@ -224,8 +225,8 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
         return workWithTransportData(&cmd, sender, pkg);
 
 
-    } else if (H_16<NetworkMember>() == pkg.hdr.command) {
-        NetworkMember obj(pkg);
+    } else if (H_16<NodeObject>() == pkg.hdr.command) {
+        NodeObject obj(pkg);
         if (!obj.isValid()) {
             badRequest(sender->networkAddress(), pkg.hdr);
             return ParserResult::Error;
@@ -275,33 +276,14 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
     return ParserResult::NotProcessed;
 }
 
-bool NetworkNode::workWithAvailableDataRequest(const AvailableDataRequest &rec,
-                                            const Header *rHeader) {
-    if (!_db)
-        return false;
-
-    if (!checkSignOfRequest(&rec)) {
-        return false;
-    }
-
-    auto availableData = _db->getObject(rec);
-    if (!availableData)
-        return false;
-
-    //To-Do brodcast yhis request to all network
-
-    return sendData(availableData, rec.senderID(), rHeader);
-
-}
-
-bool NetworkNode::workWithNodeObjectData(NetworkMember &node,
+bool NetworkNode::workWithNodeObjectData(NodeObject &node,
                                       const AbstractNodeInfo* nodeInfo) {
 
-    if (!_db) {
+    if (!db()) {
         return false;
     }
 
-    auto localObjec = _db->getObject(node);
+    auto localObjec = db()->getObject(node);
 
     if (localObjec) {
         node.setTrust(std::min(node.trust(), localObjec->trust()));
@@ -325,7 +307,7 @@ bool NetworkNode::workWithNodeObjectData(NetworkMember &node,
 bool NetworkNode::workWithKnowAddresses(const KnowAddresses &obj,
                                      const AbstractNodeInfo *nodeInfo) {
 
-    auto peerNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
+    auto peerNodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
     if (!peerNodeInfo)
         return false;
 
@@ -447,95 +429,16 @@ void NetworkNode::incomingData(AbstractData *pkg, const HostAddress &sender) {
     AbstractNode::incomingData(pkg, sender);
 }
 
-QString NetworkNode::hashgenerator(const QByteArray &pass) {
-    return QCryptographicHash::hash(
-                QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
-                QCryptographicHash::Sha256);
-}
-
 AbstractNodeInfo *NetworkNode::createNodeInfo(QAbstractSocket *socket,
                                            const HostAddress* clientAddress) const {
-    return  new BaseNodeInfo(socket, clientAddress);
-}
-
-SqlDBCache *NetworkNode::db() const {
-    return _db;
-}
-
-// TO-DO
-bool NetworkNode::workWithSubscribe(const WebSocket &rec,
-                                 const BaseId &clientOrNodeid) {
-
-    auto _db = db();
-    if (_db)
-        return false;
-
-    switch (static_cast<WebSocketRequest>(rec.getRequestCmd())) {
-
-    case WebSocketRequest::Subscribe: {
-        return _webSocketWorker->subscribe(clientOrNodeid, rec.address());
-    }
-
-    case WebSocketRequest::Unsubscribe: {
-        _webSocketWorker->unsubscribe(clientOrNodeid, rec.address());
-        return true;
-    }
-
-    case WebSocketRequest::SubscribeList: {
-
-        WebSocketSubscriptions resp;
-        resp.setAddresses(_webSocketWorker->list(clientOrNodeid));
-
-        return sendData(&resp, clientOrNodeid);
-    }
-
-    default: break;
-    }
-
-    return false;
-}
-
-QVariantMap NetworkNode::defaultDbParams() const {
-
-    return {
-        {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + _localNodeName + "_" + DEFAULT_DB_NAME},
-        {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
-    };
-}
-
-bool NetworkNode::sendData(AbstractData *resp,
-                        const HostAddress &addere,
-                        const Header *req) {
-    return AbstractNode::sendData(resp, addere, req);
-}
-
-bool NetworkNode::sendData(const AbstractData *resp,
-                        const HostAddress &addere,
-                        const Header *req) {
-
-    return AbstractNode::sendData(resp, addere, req);
-}
-
-
-
-bool NetworkNode::sendData(AbstractData *resp,
-                        const BaseId &nodeId,
-                        const Header *req) {
-
-
-    if (!resp || !resp->prepareToSend()) {
-        return false;
-    }
-
-    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
+    return  new NetworkNodeInfo(socket, clientAddress);
 }
 
 bool NetworkNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        auto info = dynamic_cast<BaseNodeInfo*>(it.value());
+        auto info = dynamic_cast<NetworkNodeInfo*>(it.value());
         if (info && info->isKnowAddress(nodeId)) {
             return sendData(resp, it.key(), req);
         }
@@ -568,157 +471,21 @@ bool NetworkNode::sendData(const AbstractData *resp, const BaseId &nodeId, const
     return brodcast(resp);
 }
 
-void NetworkNode::badRequest(const HostAddress &address, const Header &req, const QString msg) {
-    AbstractNode::badRequest(address, req, msg);
+bool NetworkNode::sendData(AbstractData *resp, const BaseId &nodeId, const Header *req) {
+    return DataBaseNode::sendData(resp, nodeId, req);
 }
 
-void NetworkNode::badRequest(const BaseId& address, const Header &req, const QString msg) {
-
-    if (!changeTrust(address, REQUEST_ERROR)) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because trust not changed",
-                                    QuasarAppUtils::Error);
-
-        return;
-    }
-
-    auto bad = BadRequest(msg);
-    if (!sendData(&bad, address, &req)) {
-        return;
-    }
-
-    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                address.toBase64(),
-                                QuasarAppUtils::Info);
+bool NetworkNode::sendData(const AbstractData *resp, const HostAddress &nodeId, const Header *req) {
+    return DataBaseNode::sendData(resp, nodeId, req);
 }
 
-bool NetworkNode::changeTrust(const HostAddress &id, int diff) {
-    return AbstractNode::changeTrust(id, diff);
-}
-
-bool NetworkNode::changeTrust(const BaseId &id, int diff) {
-    if (!_db)
-        return false;
-
-    auto client = _db->getObject(NodeObject{id});
-
-    if (!client) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because client == null",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    auto clone = client->clone().staticCast<NodeObject>();
-    clone->changeTrust(diff);
-
-    if (!_db->saveObject(clone.data())) {
-        return false;
-    }
-
-    // to do
-    // send all network that node id is trusted changed
-
-    return true;
+bool NetworkNode::sendData(AbstractData *resp, const HostAddress &nodeId, const Header *req) {
+    return DataBaseNode::sendData(resp, nodeId, req);
 }
 
 bool NetworkNode::ping(const BaseId &id) {
     LongPing cmd(nodeId());
     return sendData(&cmd, id);
-}
-
-DBOperationResult NP::NetworkNode::getObject(const NP::BaseId &requester,
-                                          const NP::DBObject &templateObj,
-                                          const DBObject** result) const {
-
-    if (!_db && !result) {
-        return DBOperationResult::Unknown;
-    }
-
-    auto permisionResult = _db->checkPermision(requester, templateObj.dbAddress(), Permission::Read);
-    if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
-    }
-
-    auto obj = _db->getObject(templateObj);
-    if (!obj || (obj->dbAddress() != templateObj.dbAddress())) {
-        return DBOperationResult::Unknown;
-    }
-
-    *result = obj;
-    return DBOperationResult::Allowed;
-}
-
-DBOperationResult NetworkNode::getObjects(const BaseId &requester,
-                                       const DBObject &templateObj,
-                                       QList<const DBObject *> *result) const {
-    if (!_db && !result) {
-        return DBOperationResult::Unknown;
-    }
-
-    if (!_db->getAllObjects(templateObj, *result)) {
-        return DBOperationResult::Unknown;
-    }
-
-    for (const auto& obj: *result) {
-        if (!obj)
-            return DBOperationResult::Unknown;
-
-        auto permisionResult = _db->checkPermision(requester, obj->dbAddress(), Permission::Read);
-        if (permisionResult != DBOperationResult::Allowed) {
-            return permisionResult;
-        }
-    }
-
-    return DBOperationResult::Allowed;
-}
-
-DBOperationResult NetworkNode::setObject(const BaseId &requester,
-                                      const DBObject *saveObject) {
-
-    if (!_db) {
-        return DBOperationResult::Unknown;
-    }
-
-    auto permisionResult = _db->checkPermision(requester,
-                                               saveObject->dbAddress(),
-                                               Permission::Write);
-    if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
-    }
-
-    if (!_db->saveObject(saveObject)) {
-        return DBOperationResult::Unknown;
-    }
-
-    return DBOperationResult::Allowed;
-}
-
-bool NetworkNode::savePermision(const NetworkMember &node,
-                             const NodesPermisionObject &permision) {
-    return false;
-}
-
-DBOperationResult NetworkNode::deleteObject(const BaseId &requester,
-                                         const DBObject *dbObject) {
-
-    if (!_db) {
-        return DBOperationResult::Unknown;
-    }
-
-    auto permisionResult = _db->checkPermision(requester, dbObject->dbAddress(),
-                                               Permission::Write);
-    if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
-    }
-
-    if (!_db->deleteObject(dbObject)) {
-        return DBOperationResult::Unknown;
-    }
-
-    return DBOperationResult::Allowed;
 }
 
 }

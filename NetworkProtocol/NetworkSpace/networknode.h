@@ -11,6 +11,7 @@
 #include <databasenode.h>
 #include <dbobject.h>
 #include <hostaddress.h>
+#include <nodeobject.h>
 
 
 namespace NP {
@@ -63,16 +64,6 @@ public:
     void stop() override;
 
     /**
-     * @brief sendDataToId - send data to node or clientby them id.
-     * @param resp - responce package
-     * @param nodeId - id of target node
-     * @param req - header of request
-     * @return true if data sendet seccussful
-     */
-    bool sendData(const AbstractData *resp, const BaseId &nodeId,
-                          const Header *req = nullptr) override;
-
-    /**
      * @brief ping - ping node by node id
      * @param address
      * @return
@@ -86,6 +77,23 @@ public:
     BaseId nodeId() const;
 
 protected:
+
+    /**
+     * @brief sendDataToId - send data to node or clientby them id.
+     * @param resp - responce package
+     * @param nodeId - id of target node
+     * @param req - header of request
+     * @return true if data sendet seccussful
+     */
+    bool sendData(const AbstractData *resp, const BaseId &nodeId,
+                          const Header *req = nullptr) override;
+
+    bool sendData(AbstractData *resp, const BaseId &nodeId,
+                          const Header *req = nullptr) override;
+    bool sendData(const AbstractData *resp, const HostAddress &nodeId,
+                          const Header *req = nullptr) override;
+    bool sendData(AbstractData *resp, const HostAddress &nodeId,
+                          const Header *req = nullptr) override;
 
     /**
      * @brief initDefaultDbObjects create default cache and db writer if pointer is null
@@ -116,7 +124,7 @@ protected:
      * @param permision - data of new permision
      * @return true if new cghanges saved successful.
      */
-    bool savePermision(const NetworkMember &node, const MemberPermisionObject& permision);
+    bool savePermision(const NodeObject &node, const MemberPermisionObject& permision);
     /**
      * @brief checkSignOfRequest
      * @param request - package
@@ -128,7 +136,7 @@ protected:
      * @brief thisNode
      * @return This node object value.
      */
-    NetworkMember thisNode() const;
+    NodeObject thisNode() const;
 
     /**
      * @brief myKnowAddresses
@@ -184,7 +192,7 @@ private:
      * @param nodeInfo
      * @return true if function finished successful
      */
-    bool workWithNodeObjectData(NetworkMember &node, const AbstractNodeInfo *nodeInfo);
+    bool workWithNodeObjectData(NodeObject &node, const AbstractNodeInfo *nodeInfo);
 
     /**
      * @brief workWithKnowAddresses
