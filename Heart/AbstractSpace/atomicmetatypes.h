@@ -1,0 +1,9 @@
+#ifndef ATOMICMETATYPES_H
+#define ATOMICMETATYPES_H
+#include <QMetaType>
+
+Q_DECLARE_METATYPE(const bool*)
+Q_DECLARE_METATYPE(bool*)
+
+
+#endif // ATOMICMETATYPES_H

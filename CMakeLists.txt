@@ -5,15 +5,26 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.1)
-project(MainNetworkProtocol)
+cmake_minimum_required(VERSION 3.10)
+project(Heart)
+if(TARGET ${PROJECT_NAME})
+  message("The ${PROJECT_NAME} arledy included in main Project")
+  return()
+endif()
+
+find_package(Qt5 COMPONENTS Core Test REQUIRED)
+if(NOT DEFINED BUILD_LVL)
+    set(BUILD_LVL 2)
+endif()
 
 include(QuasarAppLib/CMake/ccache.cmake)
 
 # Add sub directories
 add_subdirectory(QuasarAppLib)
-add_subdirectory(openssl-cmake)
-add_subdirectory(NetworkProtocol)
-add_subdirectory(ProtocolTests)
+add_subdirectory(Heart)
+add_subdirectory(HeartTests)
 
+include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
+initAll()
 
+addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)

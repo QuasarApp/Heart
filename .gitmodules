@@ -1,7 +1,7 @@
 [submodule "QuasarAppLib"]
 	path = QuasarAppLib
 	url = https://github.com/QuasarApp/QuasarAppLib.git
-[submodule "openssl-cmake"]
-	path = openssl-cmake
-	url = https://github.com/QuasarApp/openssl-cmake.git
 
+[submodule "Heart/Qt-Secret"]
+	path = Heart/Qt-Secret
+	url = https://github.com/QuasarApp/Qt-Secret.git
