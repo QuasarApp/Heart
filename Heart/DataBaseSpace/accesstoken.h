@@ -19,7 +19,7 @@ namespace QH {
 /**
  * @brief The AccessToken class - contains info about token and duration of token
  */
-class NETWORKPROTOCOLSHARED_EXPORT AccessToken : public StreamBase
+class HEARTSHARED_EXPORT AccessToken : public StreamBase
 {
 public:
 

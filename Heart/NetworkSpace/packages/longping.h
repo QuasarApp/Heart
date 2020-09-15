@@ -9,7 +9,7 @@ namespace QH {
 /**
  * @brief The LongPing class - test class for big network with return addresse
  */
-class NETWORKPROTOCOLSHARED_EXPORT LongPing: public Ping, public SenderData
+class HEARTSHARED_EXPORT LongPing: public Ping, public SenderData
 {
 public:
     LongPing(const BaseId &sender);

@@ -17,7 +17,7 @@ namespace QH {
 /**
  * @brief The BadNodeRequest class - bad request command for bae node level
  */
-class NETWORKPROTOCOLSHARED_EXPORT BadNodeRequest: public BadRequest, public SenderData
+class HEARTSHARED_EXPORT BadNodeRequest: public BadRequest, public SenderData
 {
 public:
     explicit BadNodeRequest();

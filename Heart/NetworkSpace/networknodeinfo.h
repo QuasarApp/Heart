@@ -22,7 +22,7 @@ class DbAddress;
 /**
  * @brief The BaseNodeInfo class contaisn list of nodes id of know this node.
  */
-class NETWORKPROTOCOLSHARED_EXPORT NetworkNodeInfo: public BaseNodeInfo {
+class HEARTSHARED_EXPORT NetworkNodeInfo: public BaseNodeInfo {
 
 public:
 

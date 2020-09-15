@@ -20,7 +20,7 @@ namespace QH {
 /**
  * @brief The DBCacheKey class - is database main key value
  */
-class NETWORKPROTOCOLSHARED_EXPORT DBCacheKey
+class HEARTSHARED_EXPORT DBCacheKey
 {
 public:
 

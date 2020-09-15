@@ -12,7 +12,7 @@ namespace QH {
 /**
  * @brief The QSecretRSA2048 class Use
  */
-class NETWORKPROTOCOLSHARED_EXPORT QSecretRSA2048: public ICrypto
+class HEARTSHARED_EXPORT QSecretRSA2048: public ICrypto
 {
     // ICrypto interface
 public:

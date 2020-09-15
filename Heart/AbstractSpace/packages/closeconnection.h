@@ -13,7 +13,7 @@ namespace QH{
  * From QtDocumentation :
  * ``` If the remote host closes the connection, QAbstractSocket will emit errorOccurred(QAbstractSocket::RemoteHostClosedError), during which the socket state will still be ConnectedState, and then the disconnected() signal will be emitted.```
  */
-class NETWORKPROTOCOLSHARED_EXPORT CloseConnection: public AbstractData
+class HEARTSHARED_EXPORT CloseConnection: public AbstractData
 {
 public:
     CloseConnection();

@@ -27,7 +27,7 @@ namespace QH {
 /**
  * @brief The SqlDBWriter class
  */
-class NETWORKPROTOCOLSHARED_EXPORT SqlDBWriter : public iObjectProvider
+class HEARTSHARED_EXPORT SqlDBWriter : public iObjectProvider
 {
 public:
     SqlDBWriter();

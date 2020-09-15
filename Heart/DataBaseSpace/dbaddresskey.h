@@ -16,7 +16,7 @@ namespace QH {
 /**
  * @brief The DbAddressKey class - key provider for DbAddress
  */
-class NETWORKPROTOCOLSHARED_EXPORT DbAddressKey: public DbAddress, public AbstractKey
+class HEARTSHARED_EXPORT DbAddressKey: public DbAddress, public AbstractKey
 {
 public:
     DbAddressKey();

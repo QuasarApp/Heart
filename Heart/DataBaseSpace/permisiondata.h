@@ -10,7 +10,7 @@ namespace QH {
 /**
  * @brief The PermisionData class- this class provide unique key for permison of subject (id) to object (address).
  */
-class NETWORKPROTOCOLSHARED_EXPORT PermisionData: public AbstractKey, public StreamBase {
+class HEARTSHARED_EXPORT PermisionData: public AbstractKey, public StreamBase {
 
 public:
 

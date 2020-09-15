@@ -19,7 +19,7 @@ namespace QH {
 /**
  * @brief The WebSocketSubscriptions class
  */
-class NETWORKPROTOCOLSHARED_EXPORT WebSocketSubscriptions: public AbstractData
+class HEARTSHARED_EXPORT WebSocketSubscriptions: public AbstractData
 {
 public:
     WebSocketSubscriptions();

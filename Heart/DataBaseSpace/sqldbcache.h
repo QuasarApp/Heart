@@ -34,7 +34,7 @@ enum class SqlDBCasheWriteMode: int {
 /**
  * @brief The SqlDBCache class it is db cache and bridge for DbWriters
  */
-class NETWORKPROTOCOLSHARED_EXPORT SqlDBCache: public QObject, public iObjectProvider
+class HEARTSHARED_EXPORT SqlDBCache: public QObject, public iObjectProvider
 {
     Q_OBJECT
 

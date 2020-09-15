@@ -13,8 +13,8 @@ if(TARGET ${PROJECT_NAME})
 endif()
 
 find_package(Qt5 COMPONENTS Core Test REQUIRED)
-if(NOT DEFINED BUILD_LVL)
-    set(BUILD_LVL 2)
+if(NOT DEFINED HEART_BUILD_LVL)
+    set(HEART_BUILD_LVL 2)
 endif()
 
 include(QuasarAppLib/CMake/ccache.cmake)

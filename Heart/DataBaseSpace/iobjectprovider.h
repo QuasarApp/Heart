@@ -17,7 +17,7 @@ namespace QH {
 
 class AbstractData;
 
-class NETWORKPROTOCOLSHARED_EXPORT iObjectProvider
+class HEARTSHARED_EXPORT iObjectProvider
 {
 public:
     iObjectProvider();

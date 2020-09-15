@@ -15,7 +15,7 @@ namespace QH {
 /**
  * @brief The Request class - base request methods for data packages
  */
-class NETWORKPROTOCOLSHARED_EXPORT Request
+class HEARTSHARED_EXPORT Request
 {
 public:
     Request();

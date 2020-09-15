@@ -10,7 +10,7 @@ namespace QH {
 /**
  * @brief The HostAddress class - this is Wraper of QHostAddress
  */
-class NETWORKPROTOCOLSHARED_EXPORT HostAddress: public QHostAddress
+class HEARTSHARED_EXPORT HostAddress: public QHostAddress
 {
 public:
     explicit HostAddress();

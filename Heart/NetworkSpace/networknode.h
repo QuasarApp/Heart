@@ -27,7 +27,7 @@ class NetworkNodeInfo;
  * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
  *  BaseNode - is thread save class
  */
-class NETWORKPROTOCOLSHARED_EXPORT NetworkNode : public DataBaseNode
+class HEARTSHARED_EXPORT NetworkNode : public DataBaseNode
 {
     Q_OBJECT
 public:

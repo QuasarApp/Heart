@@ -17,10 +17,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DBUILD_LVL=${BUILD_LVL})
+add_definitions(-DBUILD_LVL=${HEART_BUILD_LVL})
 
 
-if (${BUILD_LVL} GREATER_EQUAL 0)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
         "*.cpp" "*.qrc"
@@ -30,7 +30,7 @@ if (${BUILD_LVL} GREATER_EQUAL 0)
     set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace")
 endif()
 
-if (${BUILD_LVL} GREATER_EQUAL 1)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 1)
     message("BUILD LVL >= 1")
     file(GLOB SOURCE_CPP_LVL_1
         "DataBaseSpace/*.cpp" "DataBaseSpace/*.qrc"
@@ -39,7 +39,7 @@ if (${BUILD_LVL} GREATER_EQUAL 1)
 
 endif()
 
-if (${BUILD_LVL} GREATER_EQUAL 2)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
     message("BUILD LVL >= 2")
     file(GLOB SOURCE_CPP_LVL_2
         "NetworkSpace/*.cpp" "NetworkSpace/*.qrc"

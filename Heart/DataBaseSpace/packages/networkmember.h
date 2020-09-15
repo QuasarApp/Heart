@@ -17,7 +17,7 @@ namespace QH {
 /**
  * @brief The NodeObject class - database structure of node
  */
-class NETWORKPROTOCOLSHARED_EXPORT NetworkMember: public DBObject
+class HEARTSHARED_EXPORT NetworkMember: public DBObject
 {
 public:
     NetworkMember();

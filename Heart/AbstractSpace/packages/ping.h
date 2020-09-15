@@ -9,7 +9,7 @@ namespace QH {
 /**
  * @brief The Ping class - test class for translate data on network
  */
-class NETWORKPROTOCOLSHARED_EXPORT Ping: public AbstractData
+class HEARTSHARED_EXPORT Ping: public AbstractData
 {
 public:
     Ping();

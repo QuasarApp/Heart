@@ -34,7 +34,7 @@ enum class PrepareResult {
 /**
  * @brief The DBObject class- main class for work with data base.
  */
-class NETWORKPROTOCOLSHARED_EXPORT DBObject : public AbstractData
+class HEARTSHARED_EXPORT DBObject : public AbstractData
 {
 public:
     /**

@@ -23,7 +23,7 @@ class DataBaseNode;
 /**
  * @brief The WebSocketController class - manage subscribe
  */
-class NETWORKPROTOCOLSHARED_EXPORT WebSocketController : public QObject
+class HEARTSHARED_EXPORT WebSocketController : public QObject
 {
     Q_OBJECT
 

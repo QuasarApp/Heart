@@ -18,7 +18,7 @@ namespace QH {
 /**
  * @brief The NodesPermisionObject class - database object of permisions of node
  */
-class NETWORKPROTOCOLSHARED_EXPORT MemberPermisionObject: public DBObject
+class HEARTSHARED_EXPORT MemberPermisionObject: public DBObject
 {
 public:
     MemberPermisionObject();

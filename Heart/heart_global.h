@@ -5,15 +5,15 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef NETWORKPROTOCOL_GLOBAL_H
-#define NETWORKPROTOCOL_GLOBAL_H
+#ifndef HEART_GLOBAL_H
+#define HEART_GLOBAL_H
 
 #include <QtCore/qglobal.h>
 
-#if defined(NETWORKPROTOCOL_LIBRARY)
-#  define NETWORKPROTOCOLSHARED_EXPORT Q_DECL_EXPORT
+#if defined(HEART_LIBRARY)
+#  define HEARTSHARED_EXPORT Q_DECL_EXPORT
 #else
-#  define NETWORKPROTOCOLSHARED_EXPORT Q_DECL_IMPORT
+#  define HEARTSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // NETWORKPROTOCOL_GLOBAL_H
+#endif // HEART_GLOBAL_H

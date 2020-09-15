@@ -14,7 +14,7 @@ namespace QH {
 /**
  * @brief The SenderData class - this is base interface class for get sender id of data base objects
  */
-class NETWORKPROTOCOLSHARED_EXPORT SenderData
+class HEARTSHARED_EXPORT SenderData
 {
 public:
     SenderData();

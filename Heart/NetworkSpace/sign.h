@@ -10,7 +10,7 @@ namespace QH {
 /**
  * @brief The Sign class - this class contains sign of child data package.
  */
-class NETWORKPROTOCOLSHARED_EXPORT Sign
+class HEARTSHARED_EXPORT Sign
 {
 public:
     Sign();

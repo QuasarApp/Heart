@@ -53,7 +53,7 @@ uint qHash(NodeCoonectionStatus status);
 /**
  * @brief The AbstractNodeInfo class
  */
-class NETWORKPROTOCOLSHARED_EXPORT AbstractNodeInfo
+class HEARTSHARED_EXPORT AbstractNodeInfo
 {
 
 public:

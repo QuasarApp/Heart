@@ -19,7 +19,7 @@ class CryptoPairKeys;
  * @brief The ICrypto class provide cryptografu functionality.
  *  this is interface for decaration of KeyStorage classes.
  */
-class NETWORKPROTOCOLSHARED_EXPORT ICrypto
+class HEARTSHARED_EXPORT ICrypto
 {
 
 public:

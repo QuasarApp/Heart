@@ -33,7 +33,7 @@ enum class WebSocketRequest {
 /**
  * @brief The WebSocket class - this class contains methods for work with stream data
  */
-class NETWORKPROTOCOLSHARED_EXPORT WebSocket:
+class HEARTSHARED_EXPORT WebSocket:
         public AbstractData, public Request
 {
 public:

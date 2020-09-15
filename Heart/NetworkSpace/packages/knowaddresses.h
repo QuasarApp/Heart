@@ -10,7 +10,7 @@ namespace QH {
 /**
  * @brief The KnowAddresses class - this class is package for send the list of know addresses of node to other node object.
  */
-class NETWORKPROTOCOLSHARED_EXPORT KnowAddresses: public AbstractData
+class HEARTSHARED_EXPORT KnowAddresses: public AbstractData
 {
 public:
     KnowAddresses();

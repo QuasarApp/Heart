@@ -8,7 +8,7 @@ namespace QH {
 /**
  * @brief The NodeObject class
  */
-class NETWORKPROTOCOLSHARED_EXPORT NodeObject: public NetworkMember, public SenderData
+class HEARTSHARED_EXPORT NodeObject: public NetworkMember, public SenderData
 {
 public:
     NodeObject();

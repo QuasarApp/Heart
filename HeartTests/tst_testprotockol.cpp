@@ -1,13 +1,13 @@
 #include <QtTest>
 
-#if BUILD_LVL >= 0
+#if HEART_BUILD_LVL >= 0
 #include "abstractnodetest.h"
 #endif
-#if BUILD_LVL >= 1
+#if HEART_BUILD_LVL >= 1
 #include <basenodetest.h>
 #include <networknodetest.h>
 #endif
-#if BUILD_LVL >= 2
+#if HEART_BUILD_LVL >= 2
 #endif
 
 
@@ -32,13 +32,13 @@ private slots:
 
 testProtockol::testProtockol() {
 
-#if BUILD_LVL >= 0
+#if HEART_BUILD_LVL >= 0
     _tests.push_back(new AbstractNodeTest);
 #endif
-#if BUILD_LVL >= 1
+#if HEART_BUILD_LVL >= 1
     _tests.push_back(new BaseNodeTest);
 #endif
-#if BUILD_LVL >= 2
+#if HEART_BUILD_LVL >= 2
     _tests.push_back(new NetworkNodeTest);
 #endif
 }

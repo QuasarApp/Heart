@@ -20,7 +20,7 @@ class Package;
 /**
  * @brief The StreamBase class - this class add support for streaming data for all cheldren classes.
  */
-class NETWORKPROTOCOLSHARED_EXPORT StreamBase
+class HEARTSHARED_EXPORT StreamBase
 {
 public:
     StreamBase();

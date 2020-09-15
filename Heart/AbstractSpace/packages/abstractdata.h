@@ -17,7 +17,7 @@ namespace QH {
  * @brief The AbstractData class
  * all data packages inherited this class.
  */
-class NETWORKPROTOCOLSHARED_EXPORT AbstractData : public StreamBase
+class HEARTSHARED_EXPORT AbstractData : public StreamBase
 {
 public:
 

@@ -14,7 +14,7 @@ namespace QH {
  * This request moving by network while do not get a ansver.
  * The Ansver (or Responce) it is package with all needed data for processing of a request.
  */
-class NETWORKPROTOCOLSHARED_EXPORT NetworkRequest: public AbstractData
+class HEARTSHARED_EXPORT NetworkRequest: public AbstractData
 {
 public:
     explicit NetworkRequest();

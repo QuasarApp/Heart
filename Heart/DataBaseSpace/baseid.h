@@ -17,7 +17,7 @@ namespace QH {
  * @brief The BaseId class. General class for work with database id.
  * Database id is '1byte of prefix + hash (sha256)' from object value.
  */
-class NETWORKPROTOCOLSHARED_EXPORT BaseId: public StreamBase
+class HEARTSHARED_EXPORT BaseId: public StreamBase
 {
 public:
     BaseId();

@@ -21,12 +21,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 
-add_definitions(-DNETWORKPROTOCOL_LIBRARY)
+add_definitions(-DHEART_LIBRARY)
 
 
 find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
-if (${BUILD_LVL} GREATER_EQUAL 0)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
         "*.cpp" "*.qrc"
@@ -43,7 +43,7 @@ if (${BUILD_LVL} GREATER_EQUAL 0)
 
 endif()
 
-if (${BUILD_LVL} GREATER_EQUAL 1)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 1)
     message("BUILD LVL >= 1")
     file(GLOB SOURCE_CPP_LVL_1
         "DataBaseSpace/*.cpp" "DataBaseSpace/*.qrc"
@@ -58,7 +58,7 @@ if (${BUILD_LVL} GREATER_EQUAL 1)
 
 endif()
 
-if (${BUILD_LVL} GREATER_EQUAL 2)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
     message("BUILD LVL >= 2")
     file(GLOB SOURCE_CPP_LVL_2
         "NetworkSpace/*.cpp" "NetworkSpace/*.qrc"

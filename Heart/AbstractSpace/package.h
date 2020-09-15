@@ -19,7 +19,7 @@ class Abstract;
 /**
  * @brief The Package struct
  */
-class NETWORKPROTOCOLSHARED_EXPORT Package: public StreamBase {
+class HEARTSHARED_EXPORT Package: public StreamBase {
 
 public:
     /**

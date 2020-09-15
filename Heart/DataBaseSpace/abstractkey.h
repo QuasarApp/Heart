@@ -16,7 +16,7 @@ namespace QH {
 /**
  * @brief The Abstractkey class - this class provid one hash function for all keys of database objcets
  */
-class NETWORKPROTOCOLSHARED_EXPORT AbstractKey
+class HEARTSHARED_EXPORT AbstractKey
 {   
 public:
     AbstractKey() = default;

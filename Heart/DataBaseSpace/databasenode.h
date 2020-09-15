@@ -28,7 +28,7 @@ class BaseId;
  * @brief The BaseNode class - base inplementation of nodes. This implementation contains methods for work with database and work with data transopt on network.
  *  BaseNode - is thread save class
  */
-class NETWORKPROTOCOLSHARED_EXPORT DataBaseNode : public AbstractNode
+class HEARTSHARED_EXPORT DataBaseNode : public AbstractNode
 {
     Q_OBJECT
 public:

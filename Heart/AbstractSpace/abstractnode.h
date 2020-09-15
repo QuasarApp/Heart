@@ -78,7 +78,7 @@ class Abstract;
  *  and work with crypto method for crease a security connections betwin nodes.
  *  AbstractNode - is thread save class
  */
-class NETWORKPROTOCOLSHARED_EXPORT AbstractNode : public QTcpServer
+class HEARTSHARED_EXPORT AbstractNode : public QTcpServer
 {
     Q_OBJECT
 

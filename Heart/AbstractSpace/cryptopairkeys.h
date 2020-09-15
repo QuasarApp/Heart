@@ -9,7 +9,7 @@ namespace QH {
 /**
  * @brief The CryptoPairKeys class contains pair keys.
  */
-class NETWORKPROTOCOLSHARED_EXPORT CryptoPairKeys: public StreamBase
+class HEARTSHARED_EXPORT CryptoPairKeys: public StreamBase
 {
 public:
     CryptoPairKeys();
