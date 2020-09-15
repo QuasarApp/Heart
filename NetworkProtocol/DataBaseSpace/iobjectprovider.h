@@ -15,7 +15,6 @@
 
 namespace NP {
 
-class DBObject;
 class AbstractData;
 
 class NETWORKPROTOCOLSHARED_EXPORT iObjectProvider
@@ -32,36 +31,25 @@ public:
     template<class TYPE>
     const TYPE *getObject(const TYPE &templateVal) {
 
-        if (!dynamic_cast<const DBObject*>(&templateVal)) {
-            return nullptr;
-        }
-
-        QList<const DBObject *> list;
-        if (!getAllObjects(templateVal, list)) {
-            return nullptr;
-        }
-
-        if (list.size() > 1) {
-            QuasarAppUtils::Params::log("getObject method returned more than one object,"
-                                        " the first object was selected as the result, all the rest were lost.",
-                                        QuasarAppUtils::Warning);
-        }
-
-        for (int i = 1; i < list.size(); ++i ) {
-            delete list[i];
-        }
-
-        const TYPE* result = dynamic_cast<const TYPE*>(list.first());
-        if (!result && list.first()) {
+        auto val = getObjectRaw(templateVal);
+        const TYPE* result = dynamic_cast<const TYPE*>(val);
+        if (!result && val) {
             QuasarAppUtils::Params::log("getObject method returned object with deffirent type of TYPE,"
                                         " check getAllObjects merhod",
                                         QuasarAppUtils::Error);
 
-            delete list.first();
         }
 
         return result;
     }
+
+    /**
+     * @brief getObjectRaw - return object without test object type
+     * @note if you want get object with check object type use getObject method.
+     * @param templateVal - template object with request to database
+     * @return - return database object pointer (not casted)
+     */
+    const DBObject *getObjectRaw(const DBObject &templateVal);
 
     /**
      * @brief getAllObjects - executable select method of objects and return list of all selected objects

@@ -1,16 +1,16 @@
-#include "basenodeunittests.h"
+#include "networknodeunittests.h"
 #include "test.h"
 #include "sqldbcache.h"
 #include <QFileInfo>
 #include <QFile>
 
-#define DB_NODE_NAME "DatabaseTestNode"
+#define DB_NODE_NAME "DbTestNetworkNode"
 
-BaseNodeUnitTests::BaseNodeUnitTests():NP::BaseNode() {
+NetworkNodeUnitTests::NetworkNodeUnitTests():NP::NetworkNode() {
 
 }
 
-bool BaseNodeUnitTests::test() {
+bool NetworkNodeUnitTests::test() {
 
     if (!init()) {
         return false;
@@ -31,7 +31,7 @@ bool BaseNodeUnitTests::test() {
     return true;
 }
 
-bool BaseNodeUnitTests::init() {
+bool NetworkNodeUnitTests::init() {
     if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
@@ -47,7 +47,7 @@ bool BaseNodeUnitTests::init() {
     return true;
 }
 
-bool BaseNodeUnitTests::testReadWrite() {
+bool NetworkNodeUnitTests::testReadWrite() {
     if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
         return false;
     }
@@ -85,7 +85,7 @@ bool BaseNodeUnitTests::testReadWrite() {
     return false;
 }
 
-bool BaseNodeUnitTests::testUpdate() {
+bool NetworkNodeUnitTests::testUpdate() {
     stop();
 
     if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
@@ -129,7 +129,7 @@ bool BaseNodeUnitTests::testUpdate() {
     return true;
 }
 
-bool BaseNodeUnitTests::testChangeTrust() {
+bool NetworkNodeUnitTests::testChangeTrust() {
     stop();
 
     if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
@@ -142,7 +142,7 @@ bool BaseNodeUnitTests::testChangeTrust() {
         return false;
     };
 
-    auto objectFromDataBase = db()->getObject(testObjec);
+    auto objectFromDataBase = static_cast<const NP::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (objectFromDataBase && objectFromDataBase->trust() != 10) {
         return false;
@@ -154,7 +154,7 @@ bool BaseNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    objectFromDataBase = db()->getObject(testObjec);
+    objectFromDataBase = static_cast<const NP::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (!objectFromDataBase || objectFromDataBase->trust() != 10) {
         return false;
@@ -164,7 +164,7 @@ bool BaseNodeUnitTests::testChangeTrust() {
         return false;
     };
 
-    objectFromDataBase = db()->getObject(testObjec);
+    objectFromDataBase = static_cast<const NP::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (objectFromDataBase && objectFromDataBase->trust() != 0) {
         return false;
@@ -176,7 +176,7 @@ bool BaseNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    objectFromDataBase = db()->getObject(testObjec);
+    objectFromDataBase = static_cast<const NP::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
         return false;

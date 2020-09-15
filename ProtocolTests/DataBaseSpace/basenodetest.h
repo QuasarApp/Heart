@@ -21,11 +21,6 @@ private:
     NP::AbstractNode *_client1 = nullptr;
     NP::AbstractNode *_client2 = nullptr;
 
-    /**
-     * @brief testICtypto - testing ictypto class
-     * @return
-     */
-    bool testICtypto();
 
     /**
      * @brief powerTest - this test just create a new object of node and distruct it.

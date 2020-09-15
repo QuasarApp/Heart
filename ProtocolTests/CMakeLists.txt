@@ -42,9 +42,9 @@ endif()
 if (${BUILD_LVL} GREATER_EQUAL 2)
     message("BUILD LVL >= 2")
     file(GLOB SOURCE_CPP_LVL_2
-        "UserSpace/*.cpp" "UserSpace/*.qrc"
+        "NetworkSpace/*.cpp" "NetworkSpace/*.qrc"
     )
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/UserSpace")
+    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/NetworkSpace")
 
 endif()
 

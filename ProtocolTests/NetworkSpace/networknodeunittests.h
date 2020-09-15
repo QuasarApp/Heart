@@ -1,15 +1,15 @@
 #ifndef DBTESTS_H
 #define DBTESTS_H
 
-#include <basenode.h>
+#include <networknode.h>
 
 /**
  * @brief The DbTestsNode class - this implementation of node gor testing database
  */
-class BaseNodeUnitTests: public NP::BaseNode
+class NetworkNodeUnitTests: public NP::NetworkNode
 {
 public:
-    BaseNodeUnitTests();
+    NetworkNodeUnitTests();
     /**
      * @brief test - test work database
      * @return true if database of node work is correctly.

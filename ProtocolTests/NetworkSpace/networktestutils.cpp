@@ -1,23 +1,23 @@
-#include "basetestutils.h"
+#include "networktestutils.h"
 
-#include <basenode.h>
+#include <networknode.h>
 #include "test.h"
 
-BaseTestUtils::BaseTestUtils() {
+NetworkTestUtils::NetworkTestUtils() {
 
 }
 
-BaseTestUtils::~BaseTestUtils() {
+NetworkTestUtils::~NetworkTestUtils() {
     if (coreNode) {
         delete coreNode;
     }
 }
 
-NP::BaseNode *BaseTestUtils::initNewNode() const {
+NP::NetworkNode *NetworkTestUtils::initNewNode() const {
     int port = nextPort();
     QString name = (coreNode)? QString("TestNode-%0").arg(port): QString("CoreNode-%0").arg(port);
 
-    auto node = new NP::BaseNode();
+    auto node = new NP::NetworkNode();
 
     if (!node->run(TEST_LOCAL_HOST, port, name)) {
         delete node;
@@ -27,7 +27,7 @@ NP::BaseNode *BaseTestUtils::initNewNode() const {
     return node;
 }
 
-const NP::BaseNode *BaseTestUtils::getCoreNode() {
+const NP::NetworkNode *NetworkTestUtils::getCoreNode() {
     if (!coreNode)
         coreNode = initNewNode();
 
@@ -35,7 +35,7 @@ const NP::BaseNode *BaseTestUtils::getCoreNode() {
     return coreNode;
 }
 
-bool BaseTestUtils::deployNewNode(NP::BaseNode* node) const {
+bool NetworkTestUtils::deployNewNode(NP::NetworkNode* node) const {
 
     if (!node)
         return false;
@@ -60,21 +60,21 @@ bool BaseTestUtils::deployNewNode(NP::BaseNode* node) const {
     return true;
 }
 
-QHash<NP::BaseId, NP::BaseNode *>
-BaseTestUtils::generateNetworkNode(int count) const {
+QHash<NP::BaseId, NP::NetworkNode *>
+NetworkTestUtils::generateNetworkNode(int count) const {
 
-    QHash<NP::BaseId, NP::BaseNode *> result;
-    QSet<NP::BaseNode *> tmp;
+    QHash<NP::BaseId, NP::NetworkNode *> result;
+    QSet<NP::NetworkNode *> tmp;
 
     auto deinit = [&tmp]() {
-        for (NP::BaseNode * node : tmp) {
+        for (NP::NetworkNode * node : tmp) {
             delete node;
         }
         tmp.clear();
     };
 
     for (int i = 0; i < count; ++i) {
-        NP::BaseNode *tmpNode = initNewNode();
+        NP::NetworkNode *tmpNode = initNewNode();
         if (tmpNode)
             tmp.insert(tmpNode);
     }
@@ -84,7 +84,7 @@ BaseTestUtils::generateNetworkNode(int count) const {
         return {};
     }
 
-    for (NP::BaseNode *node: tmp) {
+    for (NP::NetworkNode *node: tmp) {
         if (!deployNewNode(node)) {
             deinit();
             return {};
@@ -109,7 +109,7 @@ BaseTestUtils::generateNetworkNode(int count) const {
     return result;
 }
 
-int BaseTestUtils::nextPort() const {
+int NetworkTestUtils::nextPort() const {
     static int port = 0;
     int baseTestPort = TEST_PORT + 1000;
     return baseTestPort + port++;

@@ -18,6 +18,10 @@ public:
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
+
+    // DBObject interface
+public:
+    DBObject *factory() const override;
 };
 }
 #endif // NODEOBJECT_H

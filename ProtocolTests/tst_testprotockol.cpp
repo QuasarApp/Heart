@@ -5,6 +5,7 @@
 #endif
 #if BUILD_LVL >= 1
 #include <basenodetest.h>
+#include <networknodetest.h>
 #endif
 #if BUILD_LVL >= 2
 #endif
@@ -38,7 +39,7 @@ testProtockol::testProtockol() {
     _tests.push_back(new BaseNodeTest);
 #endif
 #if BUILD_LVL >= 2
-    _tests.push_back(new AbstractNodeTest);
+    _tests.push_back(new NetworkNodeTest);
 #endif
 }
 

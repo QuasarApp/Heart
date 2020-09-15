@@ -1,6 +1,6 @@
-#ifndef BASENODETEST_H
-#define BASENODETEST_H
-#include "basetestutils.h"
+#ifndef NETWORKNODETEST_H
+#define NETWORKNODETEST_H
+#include "networktestutils.h"
 #include "test.h"
 #include "testutils.h"
 
@@ -8,11 +8,11 @@
 #include <networkprotocol.h>
 
 
-class BaseNodeTest: public Test, protected BaseTestUtils
+class NetworkNodeTest: public Test, protected NetworkTestUtils
 {
 public:
-    BaseNodeTest();
-    ~BaseNodeTest();
+    NetworkNodeTest();
+    ~NetworkNodeTest();
 
     void test();
 
@@ -21,11 +21,7 @@ private:
     NP::AbstractNode *_nodeB = nullptr;
     NP::AbstractNode *_nodeC = nullptr;
 
-    /**
-     * @brief testICtypto - testing ictypto class
-     * @return
-     */
-    bool testICtypto();
+
 
     /**
      * @brief powerTest - this test just create a new object of node and distruct it.
@@ -69,4 +65,4 @@ private:
 
 };
 
-#endif // BASENODETEST_H
+#endif // NETWORKNODETEST_H
