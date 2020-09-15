@@ -7,7 +7,7 @@
 #include <ping.h>
 #include <qsecretrsa2048.h>
 
-class TestingBaseClient: public NP::NetworkNode {
+class TestingNetworkClient: public NP::NetworkNode {
 
 
     // AbstractNode interface
@@ -30,9 +30,9 @@ private:
 };
 
 NetworkNodeTest::NetworkNodeTest() {
-    _nodeA = new TestingBaseClient();
+    _nodeA = new TestingNetworkClient();
     _nodeB = new NP::NetworkNode();
-    _nodeC = new TestingBaseClient();
+    _nodeC = new TestingNetworkClient();
 
 }
 
@@ -123,7 +123,7 @@ bool NetworkNodeTest::connectNetworkTest() {
         return _nodeAPtr->ping(nodeC);
     };
 
-    auto client = dynamic_cast<TestingBaseClient*>(_nodeAPtr);
+    auto client = dynamic_cast<TestingNetworkClient*>(_nodeAPtr);
 
     auto check = [client](){
         return client->getPing().ansver();

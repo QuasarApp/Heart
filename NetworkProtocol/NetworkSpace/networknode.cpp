@@ -295,7 +295,7 @@ bool NetworkNode::workWithNodeObjectData(NodeObject &node,
         return false;
     };
 
-    auto peerNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
+    auto peerNodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
     if (!peerNodeInfo)
         return false;
 
