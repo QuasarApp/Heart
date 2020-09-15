@@ -35,9 +35,9 @@
 
 
 #define THIS_NODE "this_node_key"
-namespace NP {
+namespace QH {
 
-NetworkNode::NetworkNode(NP::SslMode mode, QObject *ptr):
+NetworkNode::NetworkNode(QH::SslMode mode, QObject *ptr):
     DataBaseNode(mode, ptr) {
 
     _nodeKeys = new KeyStorage(new QSecretRSA2048());

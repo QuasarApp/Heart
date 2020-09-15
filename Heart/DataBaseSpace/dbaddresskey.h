@@ -11,7 +11,7 @@
 #include "abstractkey.h"
 #include "dbaddress.h"
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The DbAddressKey class - key provider for DbAddress

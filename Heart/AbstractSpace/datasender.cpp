@@ -3,12 +3,12 @@
 #include <quasarapp.h>
 #include <QThread>
 
-namespace NP {
+namespace QH {
 
 DataSender::DataSender() {
 }
 
-void NP::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
+void QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
     auto ptr = static_cast<QAbstractSocket*>(target);
     if (array.size() != ptr->write(array)) {
         QuasarAppUtils::Params::log("not writed data to socket", QuasarAppUtils::Error);

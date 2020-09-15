@@ -13,7 +13,7 @@
 #include <dbobject.h>
 #include <quasarapp.h>
 
-namespace NP {
+namespace QH {
 
 
 AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
@@ -37,7 +37,7 @@ bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
     return QMetaObject::invokeMethod(this,
                                      "handleSaveObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const NP::DBObject *, saveObject),
+                                     Q_ARG(const QH::DBObject *, saveObject),
                                      Q_ARG(bool *, nullptr),
                                      Q_ARG(bool *, nullptr));
 
@@ -51,7 +51,7 @@ bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
     return QMetaObject::invokeMethod(this,
                                      "handleDeleteObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const NP::DBObject *, deleteObject),
+                                     Q_ARG(const QH::DBObject *, deleteObject),
                                      Q_ARG(bool *, nullptr),
                                      Q_ARG(bool *, nullptr));
 }
@@ -67,7 +67,7 @@ bool AsyncSqlDbWriter::saveObjectWithWait(const DBObject *saveObject) {
     bool invoke = QMetaObject::invokeMethod(this,
                                      "handleSaveObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const NP::DBObject *, saveObject),
+                                     Q_ARG(const QH::DBObject *, saveObject),
                                      Q_ARG(bool *, &workResult),
                                      Q_ARG(bool *, &workOfEnd));
 
@@ -95,7 +95,7 @@ bool AsyncSqlDbWriter::deleteObjectWithWait(const DBObject *deleteObject) {
     bool invoke = QMetaObject::invokeMethod(this,
                                      "handleDeleteObject",
                                      Qt::QueuedConnection,
-                                     Q_ARG(const NP::DBObject *, deleteObject),
+                                     Q_ARG(const QH::DBObject *, deleteObject),
                                      Q_ARG(bool *, &workResult),
                                      Q_ARG(bool *, &workOfEnd));
 
@@ -124,8 +124,8 @@ bool AsyncSqlDbWriter::getAllObjects(const DBObject &templateObject, QList<const
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "handleGetAllObject",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const NP::DBObject *, &templateObject),
-                                                   Q_ARG(QList<const NP::DBObject *> *, &result),
+                                                   Q_ARG(const QH::DBObject *, &templateObject),
+                                                   Q_ARG(QList<const QH::DBObject *> *, &result),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
 

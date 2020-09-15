@@ -13,7 +13,7 @@
 #include <QByteArray>
 #include <baseid.h>
 
-namespace NP {
+namespace QH {
 
 class Abstract;
 /**

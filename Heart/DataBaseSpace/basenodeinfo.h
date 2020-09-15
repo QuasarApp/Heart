@@ -15,7 +15,7 @@
 #include <QByteArray>
 
 class QAbstractSocket;
-namespace NP {
+namespace QH {
 
 class DbAddress;
 

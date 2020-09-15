@@ -11,7 +11,7 @@
 #include <quasarapp.h>
 #include <permission.h>
 
-namespace NP {
+namespace QH {
 
 
 WebSocketController::WebSocketController(DataBaseNode *node) {

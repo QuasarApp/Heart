@@ -7,7 +7,7 @@
 
 class QRSAEncryption;
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The QSecretRSA2048 class Use

@@ -17,8 +17,8 @@ QByteArray randomArray(int length) {
     return data;
 }
 
-const NP::NetworkMember* randomMember() {
-    NP::NetworkMember *res = new NP::NetworkMember();
+const QH::NetworkMember* randomMember() {
+    QH::NetworkMember *res = new QH::NetworkMember();
 
     res->setAuthenticationData(randomArray(64));
     res->setTrust(0);
@@ -28,7 +28,7 @@ const NP::NetworkMember* randomMember() {
     return res;
 }
 
-BaseNodeUnitTests::BaseNodeUnitTests():NP::DataBaseNode(),
+BaseNodeUnitTests::BaseNodeUnitTests():QH::DataBaseNode(),
     testObjec(randomMember()) {
 
 }
@@ -121,7 +121,7 @@ bool BaseNodeUnitTests::testUpdate() {
         return false;
     }
 
-    auto clone = objectFromDataBase->clone().staticCast<NP::NetworkMember>();
+    auto clone = objectFromDataBase->clone().staticCast<QH::NetworkMember>();
 
     clone->setTrust(20);
 

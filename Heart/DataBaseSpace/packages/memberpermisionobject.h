@@ -13,7 +13,7 @@
 #include "permisiondata.h"
 #include "permission.h"
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The NodesPermisionObject class - database object of permisions of node

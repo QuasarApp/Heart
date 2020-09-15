@@ -13,7 +13,7 @@
 #include <dbobject.h>
 #include <quasarapp.h>
 
-namespace NP {
+namespace QH {
 
 class AbstractData;
 

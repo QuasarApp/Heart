@@ -14,7 +14,7 @@
 #include <QCryptographicHash>
 
 
-namespace NP {
+namespace QH {
 
 NetworkMember::NetworkMember():DBObject("NetworkMembers") {
     

@@ -14,7 +14,7 @@
 #include <dbaddress.h>
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The WebSocketSubscriptions class

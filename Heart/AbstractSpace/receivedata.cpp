@@ -1,6 +1,6 @@
 #include "receivedata.h"
 
-namespace NP {
+namespace QH {
 
 ReceiveData::ReceiveData()
 {

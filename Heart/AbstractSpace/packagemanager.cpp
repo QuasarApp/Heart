@@ -4,7 +4,7 @@
 #include <ctime>
 #include <config.h>
 
-namespace NP {
+namespace QH {
 
 PackageManager::PackageManager()
 {

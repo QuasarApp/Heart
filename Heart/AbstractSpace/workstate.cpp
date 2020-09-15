@@ -9,7 +9,7 @@
 
 #include <hostaddress.h>
 
-namespace NP{
+namespace QH{
 
 bool WorkState::getIsRun() const {
     return isRun;

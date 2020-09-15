@@ -11,7 +11,7 @@
 #include <streambase.h>
 #include <global.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The AbstractData class

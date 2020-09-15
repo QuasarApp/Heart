@@ -1,7 +1,7 @@
 #include "icrypto.h"
 
 
-namespace NP {
+namespace QH {
 
 ICrypto::ICrypto() = default;
 

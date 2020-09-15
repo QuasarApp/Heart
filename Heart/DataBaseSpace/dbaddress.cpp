@@ -10,7 +10,7 @@
 #include <QHash>
 
 
-namespace NP {
+namespace QH {
 
 qint64 qHash(const DbAddress &address) {
     return qHash(address.id().toRaw() + address.table());

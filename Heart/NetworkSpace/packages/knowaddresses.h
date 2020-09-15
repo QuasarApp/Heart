@@ -5,7 +5,7 @@
 #include <abstractdata.h>
 #include <baseid.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The KnowAddresses class - this class is package for send the list of know addresses of node to other node object.

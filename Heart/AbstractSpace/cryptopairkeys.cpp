@@ -1,7 +1,7 @@
 #include "cryptopairkeys.h"
 
 #include <QDataStream>
-namespace NP {
+namespace QH {
 CryptoPairKeys::CryptoPairKeys() {
 
 }

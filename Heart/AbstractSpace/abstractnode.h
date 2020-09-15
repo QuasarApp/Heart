@@ -30,7 +30,7 @@ class QSslCertificate;
 class QSslKey;
 class QSslConfiguration;
 
-namespace NP {
+namespace QH {
 
 class DataSender;
 
@@ -445,7 +445,7 @@ private slots:
     /**
      * @brief connectNodePrivate
      */
-    void connectNodePrivate(NP::HostAddress);
+    void connectNodePrivate(QH::HostAddress);
 
 private:
 

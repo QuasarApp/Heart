@@ -3,7 +3,7 @@
 
 #include <QDateTime>
 #include <quasarapp.h>
-namespace NP {
+namespace QH {
 
 Router::Router() {
 }

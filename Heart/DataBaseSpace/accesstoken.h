@@ -14,7 +14,7 @@
 #include <QDateTime>
 #include <heart_global.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The AccessToken class - contains info about token and duration of token

@@ -3,7 +3,7 @@
 
 #include "package.h"
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The ReceiveData struct - this structure contains informaton for parse packages

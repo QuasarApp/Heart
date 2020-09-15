@@ -9,7 +9,7 @@
 
 #include <QDataStream>
 
-namespace NP{
+namespace QH{
 
 
 BadRequest::BadRequest(const QString &err):AbstractData() {

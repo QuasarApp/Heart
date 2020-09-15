@@ -2,7 +2,7 @@
 #define BASETESTUTILS_H
 
 #include <testutils.h>
-namespace NP {
+namespace QH {
 class DataBaseNode;
 class BaseId;
 }

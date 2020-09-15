@@ -6,7 +6,7 @@
 #include <baseid.h>
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The PakcageManager class - contains all processed packages

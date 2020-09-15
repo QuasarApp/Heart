@@ -6,7 +6,7 @@
 */
 
 #include "request.h"
-namespace NP {
+namespace QH {
 
 Request::Request() {
 

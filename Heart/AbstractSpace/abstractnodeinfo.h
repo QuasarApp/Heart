@@ -16,7 +16,7 @@
 class QAbstractSocket;
 class QHostInfo;
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The TrustNode enum

@@ -16,8 +16,8 @@ public:
     void test();
 
 private:
-    NP::AbstractNode *_nodeA = nullptr;
-    NP::AbstractNode *_nodeB = nullptr;
+    QH::AbstractNode *_nodeA = nullptr;
+    QH::AbstractNode *_nodeB = nullptr;
 
     bool connectTest();
     bool sendDataTest();

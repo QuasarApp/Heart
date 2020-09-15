@@ -9,7 +9,7 @@
 #include <QCryptographicHash>
 #include <QDataStream>
 
-namespace NP {
+namespace QH {
 
 QByteArray AccessToken::generate(const QByteArray &entropy) {
 

@@ -1,5 +1,5 @@
 #include "dbaddresskey.h"
-namespace NP {
+namespace QH {
 
 DbAddressKey::DbAddressKey() {
 

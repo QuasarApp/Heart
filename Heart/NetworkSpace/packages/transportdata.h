@@ -13,7 +13,7 @@
 
 #include "hostaddress.h"
 
-namespace NP {
+namespace QH {
 
 class NETWORKPROTOCOLSHARED_EXPORT TransportData: public AbstractData, public SenderData
 {

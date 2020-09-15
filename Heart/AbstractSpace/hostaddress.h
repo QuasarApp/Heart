@@ -5,7 +5,7 @@
 #include <QHostAddress>
 #include "config.h"
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The HostAddress class - this is Wraper of QHostAddress
@@ -34,6 +34,6 @@ private:
 uint qHash(const HostAddress& address);
 }
 
-Q_DECLARE_METATYPE(NP::HostAddress);
+Q_DECLARE_METATYPE(QH::HostAddress);
 
 #endif // HOSTADDRESS_H

@@ -3,7 +3,7 @@
 #include <quasarapp.h>
 #include <QDataStream>
 
-namespace NP {
+namespace QH {
 
 bool operator ==(const PermisionData &left, const PermisionData &right) {
     return left._id == right._id && left._address == right._address;

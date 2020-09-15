@@ -27,9 +27,9 @@
 #include <memberpermisionobject.h>
 
 #define THIS_NODE "this_node_key"
-namespace NP {
+namespace QH {
 
-DataBaseNode::DataBaseNode(NP::SslMode mode, QObject *ptr):
+DataBaseNode::DataBaseNode(QH::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {
 
     _webSocketWorker = new WebSocketController(this);
@@ -326,8 +326,8 @@ QVariantMap DataBaseNode::defaultDbParams() const {
     };
 }
 
-DBOperationResult NP::DataBaseNode::getObject(const NP::BaseId &requester,
-                                              const NP::DBObject &templateObj,
+DBOperationResult QH::DataBaseNode::getObject(const QH::BaseId &requester,
+                                              const QH::DBObject &templateObj,
                                               const DBObject** result) const {
 
     if (!_db && !result) {

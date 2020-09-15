@@ -24,7 +24,7 @@
 #include <QtConcurrent>
 #include <closeconnection.h>
 
-namespace NP {
+namespace QH {
 
 AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
     QTcpServer(ptr) {
@@ -159,7 +159,7 @@ void AbstractNode::addNode(const HostAddress &nodeAdderess) {
     QMetaObject::invokeMethod(this,
                               "connectNodePrivate",
                               Qt::QueuedConnection,
-                              Q_ARG(NP::HostAddress, nodeAdderess));
+                              Q_ARG(QH::HostAddress, nodeAdderess));
 
 }
 

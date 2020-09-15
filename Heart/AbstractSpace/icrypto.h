@@ -11,7 +11,7 @@
 
 class QMutex;
 
-namespace NP {
+namespace QH {
 
 class CryptoPairKeys;
 

@@ -15,7 +15,7 @@
 #include <QHash>
 #include <heart_global.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The DBCacheKey class - is database main key value

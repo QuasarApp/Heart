@@ -12,7 +12,7 @@
 #include <QStandardPaths>
 #include "config.h"
 
-namespace NP {
+namespace QH {
 
 #define THE_CLASS(x) QString::fromLatin1(typeid(*x).name())
 #define VERSION_FILE "version"

@@ -16,7 +16,7 @@
 #include <QVariantMap>
 #include <QSharedPointer>
 
-namespace NP {
+namespace QH {
 
 DBObject::DBObject(const QString &tableName) {
     clear();

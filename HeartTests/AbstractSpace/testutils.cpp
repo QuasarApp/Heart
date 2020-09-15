@@ -46,12 +46,12 @@ bool TestUtils::wait(const std::function<bool()> &forWait, int msec) const {
 }
 
 bool TestUtils::connectFunc(
-        NP::AbstractNode *cli,
+        QH::AbstractNode *cli,
         const QString& address,
         unsigned short port) const {
 
     auto wraper = [&cli, address, port]() {
-        cli->addNode(NP::HostAddress{address, port});
+        cli->addNode(QH::HostAddress{address, port});
         return true;
     };
 

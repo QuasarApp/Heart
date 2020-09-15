@@ -6,7 +6,7 @@
 */
 
 #include "senderdata.h"
-namespace NP {
+namespace QH {
 
 SenderData::SenderData() {
 

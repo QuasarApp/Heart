@@ -11,7 +11,7 @@
 #include "sqldbwriter.h"
 #include "atomicmetatypes.h"
 
-namespace NP {
+namespace QH {
 
 
 /**
@@ -73,14 +73,14 @@ protected slots:
      * @brief handleSaveObject - this method call SaveObject on own thread.
      * @param saveObject - object for save
      */
-    void handleSaveObject(const NP::DBObject* saveObject,
+    void handleSaveObject(const QH::DBObject* saveObject,
                            bool *resultOfWork, bool *endOfWork);
 
     /**
      * @brief handleDeleteObject - this method call DeleteObject on own thread.
      * @param deleteObject object for delete
      */
-    void handleDeleteObject(const NP::DBObject* deleteObject,
+    void handleDeleteObject(const QH::DBObject* deleteObject,
                             bool *resultOfWork, bool *endOfWork);
 
     /**
@@ -91,8 +91,8 @@ protected slots:
      * @param endOfWork - this ptr set true when invocked method is finished
      * @param cb - this call back method invoke after getAllObjects method
      */
-    virtual void handleGetAllObject(const NP::DBObject *templateObject,
-                                    QList<const NP::DBObject *> *result,
+    virtual void handleGetAllObject(const QH::DBObject *templateObject,
+                                    QList<const QH::DBObject *> *result,
                                     bool *resultOfWork, bool *endOfWork = nullptr);
 
     /**

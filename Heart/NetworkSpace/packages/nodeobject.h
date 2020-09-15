@@ -3,7 +3,7 @@
 
 #include <networkmember.h>
 #include <senderdata.h>
-namespace NP {
+namespace QH {
 
 /**
  * @brief The NodeObject class

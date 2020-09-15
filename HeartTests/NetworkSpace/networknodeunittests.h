@@ -6,7 +6,7 @@
 /**
  * @brief The DbTestsNode class - this implementation of node gor testing database
  */
-class NetworkNodeUnitTests: public NP::NetworkNode
+class NetworkNodeUnitTests: public QH::NetworkNode
 {
 public:
     NetworkNodeUnitTests();

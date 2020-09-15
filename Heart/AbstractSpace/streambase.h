@@ -13,7 +13,7 @@
 #include "heart_global.h"
 
 class QDataStream;
-namespace NP {
+namespace QH {
 
 class Package;
 

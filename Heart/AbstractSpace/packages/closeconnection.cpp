@@ -1,6 +1,6 @@
 #include "closeconnection.h"
 
-namespace NP {
+namespace QH {
 CloseConnection::CloseConnection()
 {
 

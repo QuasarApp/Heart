@@ -13,11 +13,11 @@ NetworkTestUtils::~NetworkTestUtils() {
     }
 }
 
-NP::NetworkNode *NetworkTestUtils::initNewNode() const {
+QH::NetworkNode *NetworkTestUtils::initNewNode() const {
     int port = nextPort();
     QString name = (coreNode)? QString("TestNode-%0").arg(port): QString("CoreNode-%0").arg(port);
 
-    auto node = new NP::NetworkNode();
+    auto node = new QH::NetworkNode();
 
     if (!node->run(TEST_LOCAL_HOST, port, name)) {
         delete node;
@@ -27,7 +27,7 @@ NP::NetworkNode *NetworkTestUtils::initNewNode() const {
     return node;
 }
 
-const NP::NetworkNode *NetworkTestUtils::getCoreNode() {
+const QH::NetworkNode *NetworkTestUtils::getCoreNode() {
     if (!coreNode)
         coreNode = initNewNode();
 
@@ -35,7 +35,7 @@ const NP::NetworkNode *NetworkTestUtils::getCoreNode() {
     return coreNode;
 }
 
-bool NetworkTestUtils::deployNewNode(NP::NetworkNode* node) const {
+bool NetworkTestUtils::deployNewNode(QH::NetworkNode* node) const {
 
     if (!node)
         return false;
@@ -60,21 +60,21 @@ bool NetworkTestUtils::deployNewNode(NP::NetworkNode* node) const {
     return true;
 }
 
-QHash<NP::BaseId, NP::NetworkNode *>
+QHash<QH::BaseId, QH::NetworkNode *>
 NetworkTestUtils::generateNetworkNode(int count) const {
 
-    QHash<NP::BaseId, NP::NetworkNode *> result;
-    QSet<NP::NetworkNode *> tmp;
+    QHash<QH::BaseId, QH::NetworkNode *> result;
+    QSet<QH::NetworkNode *> tmp;
 
     auto deinit = [&tmp]() {
-        for (NP::NetworkNode * node : tmp) {
+        for (QH::NetworkNode * node : tmp) {
             delete node;
         }
         tmp.clear();
     };
 
     for (int i = 0; i < count; ++i) {
-        NP::NetworkNode *tmpNode = initNewNode();
+        QH::NetworkNode *tmpNode = initNewNode();
         if (tmpNode)
             tmp.insert(tmpNode);
     }
@@ -84,7 +84,7 @@ NetworkTestUtils::generateNetworkNode(int count) const {
         return {};
     }
 
-    for (NP::NetworkNode *node: tmp) {
+    for (QH::NetworkNode *node: tmp) {
         if (!deployNewNode(node)) {
             deinit();
             return {};

@@ -10,7 +10,7 @@
 #include <QTcpSocket>
 #include <hostaddress.h>
 
-namespace NP {
+namespace QH {
 
 
 NetworkNodeInfo::NetworkNodeInfo(QAbstractSocket *tcp, const HostAddress* address):

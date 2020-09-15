@@ -12,7 +12,7 @@
 #include "request.h"
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The WebSocketRequest enum

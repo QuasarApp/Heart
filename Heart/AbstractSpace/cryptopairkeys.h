@@ -4,7 +4,7 @@
 #include "streambase.h"
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The CryptoPairKeys class contains pair keys.

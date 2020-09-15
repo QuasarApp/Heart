@@ -6,7 +6,7 @@
 #include <baseid.h>
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The NetworkRequest class - this is pakcage wraper for sending requests to network.

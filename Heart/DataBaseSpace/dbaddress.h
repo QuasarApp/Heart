@@ -12,7 +12,7 @@
 #include "basedefines.h"
 #include "baseid.h"
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The DbAddress class - this is address of data base object

@@ -21,7 +21,7 @@
 #include <QStandardPaths>
 #include <QCoreApplication>
 
-namespace NP {
+namespace QH {
 
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);

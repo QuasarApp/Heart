@@ -6,7 +6,7 @@
 */
 
 #include "badnoderequest.h"
-namespace NP {
+namespace QH {
 
 BadNodeRequest::BadNodeRequest() {
     

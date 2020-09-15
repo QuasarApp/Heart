@@ -4,7 +4,7 @@
 #include "abstractdata.h"
 
 
-namespace NP{
+namespace QH{
 
 /**
  * @brief The CloseConnection class - This commnad is request for close connection on parent node of connection

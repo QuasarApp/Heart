@@ -11,7 +11,7 @@
 #include <QDataStream>
 #include <QHostInfo>
 
-namespace NP {
+namespace QH {
 
 AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct,
                                    const HostAddress *address) {

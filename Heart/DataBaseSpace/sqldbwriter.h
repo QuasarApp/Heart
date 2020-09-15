@@ -22,7 +22,7 @@
 class QSqlDatabase;
 class PlayerDBData;
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The SqlDBWriter class
@@ -64,13 +64,13 @@ public:
      * @brief saveObject
      * @return
      */
-    bool saveObject(const NP::DBObject *ptr) override;
+    bool saveObject(const QH::DBObject *ptr) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const NP::DBObject *ptr) override;
+    bool deleteObject(const QH::DBObject *ptr) override;
 
     /**
      * @brief databaseLocation - return location of database.
@@ -128,7 +128,7 @@ protected:
      * @param ptr
      * @return true if function finished seccussful
      */
-    virtual bool saveQuery(const NP::DBObject *ptr) const;
+    virtual bool saveQuery(const QH::DBObject *ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters
@@ -140,7 +140,7 @@ protected:
      */
     virtual bool selectQuery(const DBObject &requestObject, QList<const DBObject *> &result);
 
-    virtual bool deleteQuery(const NP::DBObject *deleteObject) const;
+    virtual bool deleteQuery(const QH::DBObject *deleteObject) const;
 
 
 private:

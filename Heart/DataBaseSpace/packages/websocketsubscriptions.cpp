@@ -9,14 +9,14 @@
 
 #include <QDataStream>
 
-namespace NP {
+namespace QH {
 WebSocketSubscriptions::WebSocketSubscriptions()
 {
     
 
 }
 
-WebSocketSubscriptions::WebSocketSubscriptions(const NP::Package &package):
+WebSocketSubscriptions::WebSocketSubscriptions(const QH::Package &package):
     WebSocketSubscriptions()
 {
     fromBytes(package.data);

@@ -6,7 +6,7 @@
 #include <hostaddress.h>
 #include <QMap>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The Router class - this class contains routes of nodes and optimise exists routes

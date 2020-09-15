@@ -15,7 +15,7 @@
 #include <baseid.h>
 #include <QMutex>
 
-namespace NP {
+namespace QH {
 
 class AbstractNodeInfo;
 class DataBaseNode;

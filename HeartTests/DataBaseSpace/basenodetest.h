@@ -17,9 +17,9 @@ public:
     void test();
 
 private:
-    NP::AbstractNode *_server = nullptr;
-    NP::AbstractNode *_client1 = nullptr;
-    NP::AbstractNode *_client2 = nullptr;
+    QH::AbstractNode *_server = nullptr;
+    QH::AbstractNode *_client1 = nullptr;
+    QH::AbstractNode *_client2 = nullptr;
 
 
     /**

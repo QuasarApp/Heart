@@ -11,7 +11,7 @@
 #include <QByteArray>
 #include <streambase.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The BaseId class. General class for work with database id.
@@ -87,7 +87,7 @@ private:
 };
 
 
-uint qHash(const NP::BaseId& object);
+uint qHash(const QH::BaseId& object);
 
 }
 

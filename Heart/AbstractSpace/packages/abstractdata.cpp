@@ -14,7 +14,7 @@
 #include <quasarapp.h>
 #include <QCryptographicHash>
 
-namespace NP {
+namespace QH {
 
 unsigned short AbstractData::cmd() const {
     return _cmd;

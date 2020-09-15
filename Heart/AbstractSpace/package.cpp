@@ -10,7 +10,7 @@
 
 #include <QDataStream>
 
-namespace NP {
+namespace QH {
 
 Package::Package() {
     reset();

@@ -14,7 +14,7 @@
 #include <permission.h>
 
 
-namespace NP {
+namespace QH {
 
 class SqlDBCache;
 class SqlDBWriter;

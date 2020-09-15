@@ -12,7 +12,7 @@ public:
     virtual ~TestUtils();
     bool wait(const std::function<bool()> &forWait, int msec) const;
 
-    bool connectFunc(NP::AbstractNode *cli,
+    bool connectFunc(QH::AbstractNode *cli,
                      const QString &address,
                      unsigned short port) const;
 

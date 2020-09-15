@@ -1,7 +1,7 @@
 #include "networkrequest.h"
 
 #include <QDataStream>
-namespace NP {
+namespace QH {
 
 NetworkRequest::NetworkRequest() {
 

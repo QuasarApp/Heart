@@ -1,7 +1,7 @@
 #ifndef BASEDEFINES_H
 #define BASEDEFINES_H
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The DBOperationResult enum

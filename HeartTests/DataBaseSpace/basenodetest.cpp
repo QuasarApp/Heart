@@ -8,29 +8,29 @@
 #include <ping.h>
 #include <qsecretrsa2048.h>
 
-class TestingBaseClient: public NP::DataBaseNode {
+class TestingBaseClient: public QH::DataBaseNode {
 
 
     // AbstractNode interface
 public:
-    const NP::Ping& getPing() const {
+    const QH::Ping& getPing() const {
         return _ping;
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const NP::HostAddress&  sender) {
+    void incomingData(QH::AbstractData *pkg, const QH::HostAddress&  sender) {
         Q_UNUSED(sender);
 
-        auto ping = dynamic_cast<NP::Ping*>(pkg);
+        auto ping = dynamic_cast<QH::Ping*>(pkg);
         if (ping)
             _ping.copyFrom(ping);
     }
 
 private:
-    NP::Ping _ping;
+    QH::Ping _ping;
 };
 
-class BadTstClient: public NP::DataBaseNode {
+class BadTstClient: public QH::DataBaseNode {
 
 };
 
@@ -38,7 +38,7 @@ BaseNodeTest::BaseNodeTest() {
     _client1 = new TestingBaseClient();
     _client2 = new TestingBaseClient();
 
-    _server = new NP::DataBaseNode();
+    _server = new QH::DataBaseNode();
 
 }
 
@@ -58,7 +58,7 @@ void BaseNodeTest::test() {
 }
 
 bool BaseNodeTest::powerTest() {
-    auto _nodeAPtr = new NP::DataBaseNode();
+    auto _nodeAPtr = new QH::DataBaseNode();
 
     if (!_nodeAPtr->run(TEST_LOCAL_HOST, TEST_PORT, "powerTest")) {
         return false;
@@ -83,17 +83,17 @@ bool BaseNodeTest::dbTest() {
 
 bool BaseNodeTest::connectNetworkTest() {
 
-    auto client1 = dynamic_cast<NP::DataBaseNode*>(_client1);
-    auto client2 = dynamic_cast<NP::DataBaseNode*>(_client2);
-    auto server = dynamic_cast<NP::DataBaseNode*>(_server);
+    auto client1 = dynamic_cast<QH::DataBaseNode*>(_client1);
+    auto client2 = dynamic_cast<QH::DataBaseNode*>(_client2);
+    auto server = dynamic_cast<QH::DataBaseNode*>(_server);
 
     if (!server->run(TEST_LOCAL_HOST, TEST_PORT, "ServerDataBaseNode")) {
         return false;
     }
 
     auto addNodeRequest = [client1, client2]() {
-        client1->addNode(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
-        client2->addNode(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
+        client1->addNode(QH::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
+        client2->addNode(QH::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
 
         return true;
     };
@@ -109,8 +109,8 @@ bool BaseNodeTest::connectNetworkTest() {
     // need to wait for add node
 
     auto request = [client1, client2]() {
-        return client1->ping(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT)) &&
-               client2->ping(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
+        return client1->ping(QH::HostAddress(TEST_LOCAL_HOST, TEST_PORT)) &&
+               client2->ping(QH::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
     };
 
     auto tstclient1 = dynamic_cast<TestingBaseClient*>(client1);

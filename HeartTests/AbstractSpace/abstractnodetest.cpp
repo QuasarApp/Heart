@@ -6,30 +6,30 @@
 #include <ping.h>
 #include <qsecretrsa2048.h>
 
-class TestingClient: public NP::AbstractNode {
+class TestingClient: public QH::AbstractNode {
 
 
     // AbstractNode interface
 public:
-    const NP::Ping& getPing() const {
+    const QH::Ping& getPing() const {
         return _ping;
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const NP::HostAddress &sender) {
+    void incomingData(QH::AbstractData *pkg, const QH::HostAddress &sender) {
         Q_UNUSED(sender);
 
-        auto ping = dynamic_cast<NP::Ping*>(pkg);
+        auto ping = dynamic_cast<QH::Ping*>(pkg);
         if (ping)
             _ping.copyFrom(ping);
     }
 
 private:
-    NP::Ping _ping;
+    QH::Ping _ping;
 };
 
 AbstractNodeTest::AbstractNodeTest() {
-    _nodeA = new NP::AbstractNode();
+    _nodeA = new QH::AbstractNode();
     _nodeB = new TestingClient();
 }
 
@@ -55,7 +55,7 @@ bool AbstractNodeTest::connectTest() {
 bool AbstractNodeTest::sendDataTest() {
 
     auto request = [this](){
-        return _nodeB->ping(NP::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
+        return _nodeB->ping(QH::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
     };
 
     auto client = dynamic_cast<TestingClient*>(_nodeB);
@@ -70,7 +70,7 @@ bool AbstractNodeTest::sendDataTest() {
 template<class Crypto>
 bool validationCrypto() {
     // create crypto oject
-    auto crypto = new NP::KeyStorage(new Crypto());
+    auto crypto = new QH::KeyStorage(new Crypto());
 
 
     // get test pair keys
@@ -100,7 +100,7 @@ bool validationCrypto() {
     delete crypto;
 
     // second initialisin of crypto object
-    crypto = new NP::KeyStorage(new Crypto());
+    crypto = new QH::KeyStorage(new Crypto());
     if (!crypto->initDefaultStorageLocation()) {
         delete crypto;
         return false;
@@ -137,7 +137,7 @@ bool validationCrypto() {
 
     delete crypto;
 
-    crypto = new NP::KeyStorage(new Crypto());
+    crypto = new QH::KeyStorage(new Crypto());
     if (!crypto->initDefaultStorageLocation()) {
         delete crypto;
         return false;
@@ -149,7 +149,7 @@ bool validationCrypto() {
 
 bool AbstractNodeTest::testICtypto() {
     // check
-    if (!validationCrypto<NP::QSecretRSA2048>()) {
+    if (!validationCrypto<QH::QSecretRSA2048>()) {
         return false;
     }
 

@@ -3,7 +3,7 @@
 #include <QDir>
 #include <qrsaencryption.h>
 
-namespace NP {
+namespace QH {
 
 QSecretRSA2048::QSecretRSA2048() {
     qtSecret = new QRSAEncryption(QRSAEncryption::RSA_2048);    

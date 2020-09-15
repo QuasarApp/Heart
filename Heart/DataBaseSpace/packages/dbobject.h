@@ -17,7 +17,7 @@
 
 class QSqlQuery;
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The PrepareResult enum - result of work prepare sql query
@@ -204,9 +204,9 @@ private:
 };
 }
 
-Q_DECLARE_METATYPE(const NP::DBObject*)
-Q_DECLARE_METATYPE(NP::DBObject*)
-Q_DECLARE_METATYPE(QList<NP::DBObject *>*);
-Q_DECLARE_METATYPE(QList<const NP::DBObject *>*);
+Q_DECLARE_METATYPE(const QH::DBObject*)
+Q_DECLARE_METATYPE(QH::DBObject*)
+Q_DECLARE_METATYPE(QList<QH::DBObject *>*);
+Q_DECLARE_METATYPE(QList<const QH::DBObject *>*);
 
 #endif // DBOBJECT_H

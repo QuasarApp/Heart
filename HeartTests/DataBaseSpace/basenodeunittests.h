@@ -7,11 +7,11 @@
  * @brief The DbTestsNode class - this implementation of node gor testing database
  */
 
-namespace NP {
+namespace QH {
     class NetworkMember;
 };
 
-class BaseNodeUnitTests: public NP::DataBaseNode
+class BaseNodeUnitTests: public QH::DataBaseNode
 {
 public:
     BaseNodeUnitTests();
@@ -46,7 +46,7 @@ private:
      */
     bool testChangeTrust();
 
-    const NP::NetworkMember *testObjec = nullptr;
+    const QH::NetworkMember *testObjec = nullptr;
 
 };
 

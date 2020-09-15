@@ -4,7 +4,7 @@
 #include "abstractdata.h"
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The Ping class - test class for translate data on network
@@ -32,3 +32,6 @@ private:
 };
 }
 #endif // PING_H
+
+
+

@@ -18,7 +18,7 @@
 #include <QtConcurrent/QtConcurrent>
 
 
-namespace NP {
+namespace QH {
 
 void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 

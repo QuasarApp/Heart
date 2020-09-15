@@ -5,7 +5,7 @@
 #include "heart_global.h"
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The Sign class - this class contains sign of child data package.

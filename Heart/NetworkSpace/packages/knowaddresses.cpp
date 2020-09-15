@@ -2,7 +2,7 @@
 
 #include <QDataStream>
 
-namespace NP {
+namespace QH {
 
 KnowAddresses::KnowAddresses() {
     

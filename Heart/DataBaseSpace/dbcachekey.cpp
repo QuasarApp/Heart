@@ -9,7 +9,7 @@
 #include "dbcachekey.h"
 
 #include <abstractkey.cpp>
-namespace NP {
+namespace QH {
 
 DBCacheKey *DBCacheKey::instance() {
     static auto ptr = new DBCacheKey();

@@ -11,7 +11,7 @@
 #include <QSqlQuery>
 #include <dbcachekey.h>
 
-namespace NP {
+namespace QH {
 
 MemberPermisionObject::MemberPermisionObject():
     DBObject("MemberPermisions") {

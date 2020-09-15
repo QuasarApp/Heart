@@ -2,7 +2,7 @@
 #define NETWORKTESTUTILS_H
 
 #include <basetestutils.h>
-namespace NP {
+namespace QH {
 class NetworkNode;
 class BaseId;
 }
@@ -13,17 +13,17 @@ public:
     NetworkTestUtils();
     ~NetworkTestUtils();
 
-    bool deployNewNode(NP::NetworkNode* node) const;
-    QHash<NP::BaseId, NP::NetworkNode*> generateNetworkNode(int count) const;
+    bool deployNewNode(QH::NetworkNode* node) const;
+    QHash<QH::BaseId, QH::NetworkNode*> generateNetworkNode(int count) const;
 
-    NP::NetworkNode *initNewNode() const;
+    QH::NetworkNode *initNewNode() const;
 
 protected:
-    const NP::NetworkNode* getCoreNode();
+    const QH::NetworkNode* getCoreNode();
 private:
     int nextPort() const;
 
-    NP::NetworkNode* coreNode = nullptr;
+    QH::NetworkNode* coreNode = nullptr;
 };
 
 #endif // NETWORKTESTUTILS_H

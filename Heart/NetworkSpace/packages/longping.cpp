@@ -1,6 +1,6 @@
 #include "longping.h"
 
-namespace NP {
+namespace QH {
 
 LongPing::LongPing(const BaseId& sender) {
     
@@ -27,7 +27,7 @@ bool LongPing::copyFrom(const AbstractData * other) {
     return true;
 }
 
-QDataStream &NP::LongPing::fromStream(QDataStream &stream) {
+QDataStream &QH::LongPing::fromStream(QDataStream &stream) {
     Ping::fromStream(stream);
     stream >> _senderID;
     return stream;

@@ -1,7 +1,7 @@
 #include "ping.h"
 
 #include <QDataStream>
-namespace NP {
+namespace QH {
 
 Ping::Ping() {
     

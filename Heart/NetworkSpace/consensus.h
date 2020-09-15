@@ -4,7 +4,7 @@
 #include "heart_global.h"
 #include <QStringList>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The Consensus namespace - a bundle of general rules constants for behavior of nodes network.

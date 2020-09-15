@@ -1,5 +1,5 @@
 #include "sign.h"
-namespace NP {
+namespace QH {
 
 Sign::Sign()
 {

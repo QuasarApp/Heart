@@ -4,7 +4,7 @@
 #include "ping.h"
 #include <senderdata.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The LongPing class - test class for big network with return addresse

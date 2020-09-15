@@ -9,7 +9,7 @@
 #include <QCryptographicHash>
 #include <QDataStream>
 #include <QDateTime>
-namespace NP {
+namespace QH {
 
 TransportData::TransportData() {
     

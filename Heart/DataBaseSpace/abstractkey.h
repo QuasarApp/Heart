@@ -11,7 +11,7 @@
 
 #include <baseid.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The Abstractkey class - this class provid one hash function for all keys of database objcets

@@ -12,7 +12,7 @@
 
 #include <badrequest.h>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The BadNodeRequest class - bad request command for bae node level

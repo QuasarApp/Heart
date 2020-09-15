@@ -12,12 +12,12 @@
 #include "abstractnode.h"
 
 /**
- * NP - Network protocol
+ * QH - Network protocol
  * defirent values:
  * SP - shared pointer
  * WP  - weak pointer
  */
-namespace NP {
+namespace QH {
 }
 
 #endif // NETWORKPROTOCOL_H

@@ -9,7 +9,7 @@
 
 #include <QDataStream>
 #include <QSharedPointer>
-namespace NP {
+namespace QH {
 
 WebSocket::WebSocket(): AbstractData(){
 

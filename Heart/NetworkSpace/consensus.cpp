@@ -1,6 +1,6 @@
 #include "consensus.h"
 
-namespace NP {
+namespace QH {
 
 const QStringList Consensus::Nodes = {
     "QuasarApp.ddns.net"

@@ -19,7 +19,7 @@
 #include "config.h"
 #include "basedefines.h"
 
-namespace NP {
+namespace QH {
 
 class SqlDBWriter;
 class DBObject;

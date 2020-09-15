@@ -7,31 +7,31 @@
 #include <ping.h>
 #include <qsecretrsa2048.h>
 
-class TestingNetworkClient: public NP::NetworkNode {
+class TestingNetworkClient: public QH::NetworkNode {
 
 
     // AbstractNode interface
 public:
-    const NP::Ping& getPing() const {
+    const QH::Ping& getPing() const {
         return _ping;
     }
 
 protected:
-    void incomingData(NP::AbstractData *pkg, const NP::BaseId &sender) {
+    void incomingData(QH::AbstractData *pkg, const QH::BaseId &sender) {
         Q_UNUSED(sender);
 
-        auto ping = dynamic_cast<NP::Ping*>(pkg);
+        auto ping = dynamic_cast<QH::Ping*>(pkg);
         if (ping)
             _ping.copyFrom(ping);
     }
 
 private:
-    NP::Ping _ping;
+    QH::Ping _ping;
 };
 
 NetworkNodeTest::NetworkNodeTest() {
     _nodeA = new TestingNetworkClient();
-    _nodeB = new NP::NetworkNode();
+    _nodeB = new QH::NetworkNode();
     _nodeC = new TestingNetworkClient();
 
 }
@@ -55,7 +55,7 @@ void NetworkNodeTest::test() {
 }
 
 bool NetworkNodeTest::powerTest() {
-    auto _nodeAPtr = new NP::NetworkNode();
+    auto _nodeAPtr = new QH::NetworkNode();
 
     if (!_nodeAPtr->run(TEST_LOCAL_HOST, TEST_PORT, "powerTest")) {
         return false;
@@ -84,9 +84,9 @@ bool NetworkNodeTest::connectNetworkTest() {
     int nodeCPort = TEST_PORT + 2;
 
 
-    auto _nodeAPtr = dynamic_cast<NP::NetworkNode*>(_nodeA);
-    auto _nodeBPtr = dynamic_cast<NP::NetworkNode*>(_nodeB);
-    auto _nodeCPtr = dynamic_cast<NP::NetworkNode*>(_nodeC);
+    auto _nodeAPtr = dynamic_cast<QH::NetworkNode*>(_nodeA);
+    auto _nodeBPtr = dynamic_cast<QH::NetworkNode*>(_nodeB);
+    auto _nodeCPtr = dynamic_cast<QH::NetworkNode*>(_nodeC);
 
     if (!_nodeAPtr->run(TEST_LOCAL_HOST, nodeAPort, "TestNodeA")) {
         return false;
@@ -104,8 +104,8 @@ bool NetworkNodeTest::connectNetworkTest() {
 
 
     auto addNodeRequest = [_nodeAPtr, nodeBPort, nodeCPort, _nodeBPtr, nodeC]() {
-        _nodeAPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeBPort));
-        _nodeBPtr->addNode(NP::HostAddress(TEST_LOCAL_HOST, nodeCPort));
+        _nodeAPtr->addNode(QH::HostAddress(TEST_LOCAL_HOST, nodeBPort));
+        _nodeBPtr->addNode(QH::HostAddress(TEST_LOCAL_HOST, nodeCPort));
         return true;
     };
 

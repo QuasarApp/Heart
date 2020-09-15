@@ -1,5 +1,5 @@
 #include "baseid.h"
-namespace NP {
+namespace QH {
 
 BaseId::BaseId() = default;
 
@@ -68,7 +68,7 @@ bool operator==(const BaseId &left, const BaseId &other) {
 }
 
 
-uint qHash(const NP::BaseId &object) {
+uint qHash(const QH::BaseId &object) {
     return qHash(object.toRaw());
 }
 }

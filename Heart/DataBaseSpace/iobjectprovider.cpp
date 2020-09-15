@@ -7,7 +7,7 @@
 
 #include "iobjectprovider.h"
 
-namespace NP {
+namespace QH {
 iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;

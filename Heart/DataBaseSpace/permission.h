@@ -1,6 +1,6 @@
 #ifndef PERMISIONS_H
 #define PERMISIONS_H
-namespace NP {
+namespace QH {
 
 /**
  * @brief The Permission enum

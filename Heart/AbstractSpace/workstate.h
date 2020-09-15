@@ -11,7 +11,7 @@
 #include <hostaddress.h>
 #include <QList>
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The WorkState class

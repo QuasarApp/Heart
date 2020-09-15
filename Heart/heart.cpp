@@ -10,6 +10,6 @@
 #include <QDataStream>
 #include <QVariantMap>
 
-namespace NP {
+namespace QH {
 
 }

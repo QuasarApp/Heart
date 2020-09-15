@@ -9,7 +9,7 @@
 
 #include <QString>
 
-namespace NP {
+namespace QH {
 Header::Header() {
     reset();
 }

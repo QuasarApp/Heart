@@ -10,7 +10,7 @@
 
 #include "abstractdata.h"
 
-namespace NP{
+namespace QH{
 
 /**
  * @brief The BadRequest class

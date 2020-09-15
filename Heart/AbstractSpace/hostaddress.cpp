@@ -1,7 +1,7 @@
 #include "hostaddress.h"
 #include <QDataStream>
 #include <quasarapp.h>
-namespace NP {
+namespace QH {
 
 HostAddress::HostAddress() {
 

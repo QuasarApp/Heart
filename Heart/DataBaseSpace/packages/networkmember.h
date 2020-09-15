@@ -12,7 +12,7 @@
 #include "dbobject.h"
 
 
-namespace NP {
+namespace QH {
 
 /**
  * @brief The NodeObject class - database structure of node

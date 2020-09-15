@@ -1,5 +1,5 @@
 #include "nodeobject.h"
-namespace NP {
+namespace QH {
 
 NodeObject::NodeObject() {
 
