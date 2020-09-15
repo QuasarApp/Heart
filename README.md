@@ -77,7 +77,7 @@ public:
         if (!AbstractData::copyFrom(other))
             return false;
 
-        auto otherObject = dynamic_cast<const Ping*>(other);
+        auto otherObject = dynamic_cast<const MyPackage*>(other);
         if (!otherObject)
             return false;
 
