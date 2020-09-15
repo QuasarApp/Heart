@@ -111,7 +111,7 @@ class TestingServer: public QH::AbstractNode {
 
 protected:
     // override this method for processed received data.
-    ParserResult DataBaseNode::parsePackage(const Package &pkg,
+    ParserResult parsePackage(const Package &pkg,
                                             const AbstractNodeInfo *sender) {
                                             
         auto parentResult = AbstractNode::parsePackage(pkg, sender);
@@ -149,7 +149,7 @@ class TestingClient: public QH::AbstractNode {
 
 protected:
     // parsing incoming packages
-    ParserResult DataBaseNode::parsePackage(const Package &pkg,
+    ParserResult parsePackage(const Package &pkg,
                                             const AbstractNodeInfo *sender) {
                                             
         auto parentResult = AbstractNode::parsePackage(pkg, sender);
