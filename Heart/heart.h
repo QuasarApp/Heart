@@ -25,18 +25,13 @@
  * @brief The QH namespace - QuasarApp Heart namespace. This namespace contains all classes of the Heart library.
  * Usage:
  * 1. First one you need to create a package for transporting data betwin server and client. For this you need to do Inheritance with the
- * QF::PKG::AbstrcatData class. So You need to override 2 serialization methods of AbstrcatData and method copyFrom.
- * Example package for transporting text data.
+ * QF::PKG::AbstrcatData class. So, You need to override 2 serialization methods of AbstrcatData and the copyFrom method.
+ * Example: The package for transporting text data.
  * \code{cpp}
 class MyPackage: public QH::AbstractData
 {
 public:
     MyPackage();
-
-    // constructor for create object from package
-    MyPackage(const Package& from): QH::AbstractData(from) {
-
-    };
 
     // override this method for validation your package class
     bool isValid() const {
@@ -73,7 +68,7 @@ protected:
 
 };
  * \endcode
- * @note The method copyFrom is not nicessery method so yo can be skip it.
+ * @note The method copyFrom is not necessary method so you can be skip it. Bud if you want override it then you need to override like in example, with check of object type. If you do not override this method or override it not correctly then copy data from another package do not work correctly. In base case method copy From not using, but it is necessary for DBObject class
  * 2. You need to create a Server class. For this you need to do Inheritance with the QF::AbstrcatData class
  *  Example:
  * \code{cpp}
@@ -82,7 +77,7 @@ class TestingServer: public QH::AbstractNode {
 protected:
     // override this method for processed received data.
     ParserResult parsePackage(const Package &pkg,
-                                            const AbstractNodeInfo *sender) {
+                              const AbstractNodeInfo *sender) {
 
         auto parentResult = AbstractNode::parsePackage(pkg, sender);
         if (parentResult != ParserResult::NotProcessed) {
@@ -127,7 +122,7 @@ class TestingClient: public QH::AbstractNode {
 protected:
     // parsing incoming packages
     ParserResult parsePackage(const Package &pkg,
-                                            const AbstractNodeInfo *sender) {
+                              const AbstractNodeInfo *sender) {
 
         auto parentResult = AbstractNode::parsePackage(pkg, sender);
         if (parentResult != ParserResult::NotProcessed) {
@@ -153,8 +148,27 @@ protected:
     }
 };
  * \endcode
+ *
+ * The basic principle of the library.
+ *
+ * Node - it is server or client implementation of any of AbstractNode class of it child classes.
+ *  - The node receive raw data from another network connection.
+ *  - After parsing a raw data the node conwert a bytes array to QH::Package.
+ *  - The Package create a new thread fot working with received request, so, all working of pacakge working in own threads.
+ *  - Next, the Node invoke a QH::AbstractNode::parsePackage method. This method must be return QH::ParserResult.
+ *    @note Do not forget invoke the super class parsePackage method.
+ *  - The Lasst step it is invoke your overridet parsePackage method on your server or client class.
+ *     IF you need to send responce then use a  bool sendData(PKG::AbstractData *resp,  const HostAddress& addere, const Header *req = nullptr).
+ *
+ * Work scheme:
+ *\image html Async.svg width=800px
  */
 namespace QH {
+
+    /** @brief The PKG namesapce - this namespace contains all default packages of the Heart library.
+     *  If you want create a pool request for Heart Library with own implemented packages
+     *  you need to create a new package into a PKG namesapce.
+     */
     namespace PKG {
 
     }
