@@ -241,7 +241,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<const DBObjec
     auto cb = [&q, &requestObject, &result]() -> bool {
 
         if (requestObject.isBundle()) {
-            auto newObject = requestObject.factory();
+            auto newObject = requestObject.createDBObject();
 
             if (!newObject)
                 return false;
@@ -258,7 +258,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<const DBObjec
 
         } else {
             while (q.next()) {
-                auto newObject = requestObject.factory();
+                auto newObject = requestObject.createDBObject();
 
                 if (!newObject)
                     return false;

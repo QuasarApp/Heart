@@ -78,10 +78,10 @@ public:
     QString tableName() const;
 
     /**
-     * @brief factory
+     * @brief createDBObject
      * @return clone of self object pointer
      */
-    virtual DBObject* factory() const = 0;
+    virtual DBObject* createDBObject() const = 0;
 
     /**
      * @brief prepareSelectQuery - override this metod for get item from database

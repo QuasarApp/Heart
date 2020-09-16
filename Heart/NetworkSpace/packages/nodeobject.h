@@ -21,7 +21,7 @@ protected:
 
     // DBObject interface
 public:
-    DBObject *factory() const override;
+    DBObject *createDBObject() const override;
 };
 }
 #endif // NODEOBJECT_H

@@ -79,7 +79,7 @@ QSharedPointer<DBObject> DBObject::clone() const {
 }
 
 DBObject *DBObject::cloneRaw() const {
-    auto cloneObject = factory();
+    auto cloneObject = createDBObject();
     if (!cloneObject->copyFrom(this)) {
         return nullptr;
     }

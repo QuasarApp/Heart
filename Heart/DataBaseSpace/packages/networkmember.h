@@ -25,7 +25,7 @@ public:
     NetworkMember(const BaseId& id);
 
     // DBObject interface
-    DBObject *factory() const override;
+    DBObject *createDBObject() const override;
     PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
 

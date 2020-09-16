@@ -33,7 +33,7 @@ public:
     PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
-    DBObject *factory() const override;
+    DBObject *createDBObject() const override;
     uint dbKey() const override;
 
     Permission permisions() const;

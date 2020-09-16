@@ -82,6 +82,12 @@ public:
         return object;
     }
 
+    /**
+     * @brief fromPakcage - this method initialise object from pakcge
+     * @param pkg
+     */
+    void fromPakcage(const Package& pkg);
+
 protected:
     /**
      * @brief AbstractData

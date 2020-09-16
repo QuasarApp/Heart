@@ -27,7 +27,7 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
-DBObject *NodeObject::factory() const {
+DBObject *NodeObject::createDBObject() const {
     return create<NodeObject>();
 }
 }

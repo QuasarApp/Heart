@@ -131,7 +131,7 @@ PrepareResult MemberPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
     return PrepareResult::Fail;
 }
 
-DBObject *MemberPermisionObject::factory() const {
+DBObject *MemberPermisionObject::createDBObject() const {
     return create<MemberPermisionObject>();
 }
 

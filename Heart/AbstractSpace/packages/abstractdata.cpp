@@ -99,6 +99,10 @@ bool AbstractData::prepareToSend() {
     return init();
 }
 
+void AbstractData::fromPakcage(const Package &pkg) {
+    fromBytes(pkg.data);
+}
+
 AbstractData::~AbstractData() {
 
 }

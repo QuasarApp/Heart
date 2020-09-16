@@ -30,7 +30,7 @@ NetworkMember::NetworkMember(const BaseId &id):
     setId(id);
 }
 
-DBObject *NetworkMember::factory() const {
+DBObject *NetworkMember::createDBObject() const {
     return create<NetworkMember>();
 }
 
