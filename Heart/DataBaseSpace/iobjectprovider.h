@@ -14,8 +14,9 @@
 #include <quasarapp.h>
 
 namespace QH {
-
+namespace PKG {
 class AbstractData;
+}
 
 class HEARTSHARED_EXPORT iObjectProvider
 {
@@ -49,7 +50,7 @@ public:
      * @param templateVal - template object with request to database
      * @return - return database object pointer (not casted)
      */
-    const DBObject *getObjectRaw(const DBObject &templateVal);
+    const PKG::DBObject *getObjectRaw(const PKG::DBObject &templateVal);
 
     /**
      * @brief getAllObjects - executable select method of objects and return list of all selected objects
@@ -57,19 +58,19 @@ public:
      * @param result - return value, list of selected objects.
      * @return true if objects have in db else false.
      */
-    virtual bool getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) = 0;
+    virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) = 0;
 
     /**
      * @brief saveObject
      * @return
      */
-    virtual bool saveObject(const DBObject* saveObject) = 0;
+    virtual bool saveObject(const PKG::DBObject* saveObject) = 0;
 
     /**
      * @brief deleteObject
      * @return
      */
-    virtual bool deleteObject(const DBObject* obj) = 0;
+    virtual bool deleteObject(const PKG::DBObject* obj) = 0;
 
 };
 

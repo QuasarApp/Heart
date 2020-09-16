@@ -15,6 +15,7 @@
 
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The WebSocketSubscriptions class
@@ -37,5 +38,6 @@ private:
 
 };
 
+}
 }
 #endif // WEBSOCKETSUBSCRIPTIONS_H

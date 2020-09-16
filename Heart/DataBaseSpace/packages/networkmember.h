@@ -13,6 +13,7 @@
 
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The NodeObject class - database structure of node
@@ -54,5 +55,6 @@ private:
     QByteArray _authenticationData;
     int _trust;
 };
+}
 }
 #endif // NETWORKMEMBER_H

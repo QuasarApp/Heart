@@ -274,7 +274,7 @@ protected:
      * @param req - header of request
      * @return true if data sendet succesful.
      */
-    virtual bool sendData(AbstractData *resp,  const HostAddress& addere,
+    virtual bool sendData(PKG::AbstractData *resp,  const HostAddress& addere,
                           const Header *req = nullptr);
 
     /**
@@ -284,7 +284,7 @@ protected:
      * @param req - header of request
      * @return true if data sendet succesful.
      */
-    virtual bool sendData(const AbstractData *resp,  const HostAddress& addere,
+    virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& addere,
                           const Header *req = nullptr);
 
     /**
@@ -360,7 +360,7 @@ protected:
      * @param sender - sender of the package
      * @note override this method for get a signals.
      */
-    virtual void incomingData(AbstractData* pkg,
+    virtual void incomingData(PKG::AbstractData* pkg,
                       const HostAddress&  sender);
 
     /**

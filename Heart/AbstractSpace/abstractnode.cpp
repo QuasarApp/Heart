@@ -26,6 +26,8 @@
 
 namespace QH {
 
+using namespace PKG;
+
 AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
     QTcpServer(ptr) {
 

@@ -30,28 +30,28 @@ public:
      * @param saveObject - ptr to object
      * @return true if function finished successful
      */
-    bool saveObject(const DBObject* saveObject) override;
+    bool saveObject(const PKG::DBObject* saveObject) override;
 
     /**
      * @brief saveObject - delete object in to database. This implementation work on own thread
      * @param deleteObject - ptr to object
      * @return true if function finished successful
      */
-    bool deleteObject(const DBObject* deleteObject) override;
+    bool deleteObject(const PKG::DBObject* deleteObject) override;
 
     /**
      * @brief saveObjectWithWait - this is owerload of saveObject with wait results of a database thread.
      * @param saveObject - ptr to object
      * @return true if function finished successful
      */
-    bool saveObjectWithWait(const DBObject* saveObject);
+    bool saveObjectWithWait(const PKG::DBObject* saveObject);
 
     /**
      * @brief deleteObjectWithWait - this is owerload of deleteObject with wait results of a database thread.
      * @param deleteObject - ptr to object
      * @return true if function finished successful
      */
-    bool deleteObjectWithWait(const DBObject* deleteObject);
+    bool deleteObjectWithWait(const PKG::DBObject* deleteObject);
 
     /**
      * @brief getAllObjects - this implementation work on own thread and wait results in current thread.
@@ -59,7 +59,7 @@ public:
      * @param result - list of objects
      * @return true if function finished successful
      */
-    bool getAllObjects(const DBObject &templateObject, QList<const DBObject *> &result) override;
+    bool getAllObjects(const PKG::DBObject &templateObject, QList<const PKG::DBObject *> &result) override;
 
     /**
      * @brief initDb - this implementation initialise database in own thread and wait result of initialization on current thread
@@ -73,14 +73,14 @@ protected slots:
      * @brief handleSaveObject - this method call SaveObject on own thread.
      * @param saveObject - object for save
      */
-    void handleSaveObject(const QH::DBObject* saveObject,
+    void handleSaveObject(const QH::PKG::DBObject* saveObject,
                            bool *resultOfWork, bool *endOfWork);
 
     /**
      * @brief handleDeleteObject - this method call DeleteObject on own thread.
      * @param deleteObject object for delete
      */
-    void handleDeleteObject(const QH::DBObject* deleteObject,
+    void handleDeleteObject(const QH::PKG::DBObject* deleteObject,
                             bool *resultOfWork, bool *endOfWork);
 
     /**
@@ -91,8 +91,8 @@ protected slots:
      * @param endOfWork - this ptr set true when invocked method is finished
      * @param cb - this call back method invoke after getAllObjects method
      */
-    virtual void handleGetAllObject(const QH::DBObject *templateObject,
-                                    QList<const QH::DBObject *> *result,
+    virtual void handleGetAllObject(const QH::PKG::DBObject *templateObject,
+                                    QList<const QH::PKG::DBObject *> *result,
                                     bool *resultOfWork, bool *endOfWork = nullptr);
 
     /**

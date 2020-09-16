@@ -8,7 +8,10 @@
  */
 
 namespace QH {
-    class NetworkMember;
+namespace PKG {
+class NetworkMember;
+
+}
 };
 
 class BaseNodeUnitTests: public QH::DataBaseNode
@@ -46,7 +49,7 @@ private:
      */
     bool testChangeTrust();
 
-    const QH::NetworkMember *testObjec = nullptr;
+    const QH::PKG::NetworkMember *testObjec = nullptr;
 
 };
 

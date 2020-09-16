@@ -11,6 +11,7 @@
 #include "abstractdata.h"
 
 namespace QH{
+namespace PKG {
 
 /**
  * @brief The BadRequest class
@@ -32,7 +33,7 @@ private:
     QString _err;
 
 };
-
+}
 }
 
 #endif // BADREQUEST_H

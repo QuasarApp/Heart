@@ -10,6 +10,7 @@
 #include <QDataStream>
 
 namespace QH{
+namespace PKG {
 
 
 BadRequest::BadRequest(const QString &err):AbstractData() {
@@ -47,5 +48,5 @@ QString BadRequest::err() const {
 void BadRequest::setErr(const QString &err) {
     _err = err;
 }
-
+}
 }

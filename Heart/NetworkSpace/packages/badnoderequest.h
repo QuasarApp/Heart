@@ -13,6 +13,7 @@
 #include <badrequest.h>
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The BadNodeRequest class - bad request command for bae node level
@@ -33,5 +34,6 @@ protected:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 };
+}
 }
 #endif // BADNODEREQUEST_H

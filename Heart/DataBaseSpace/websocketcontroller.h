@@ -38,10 +38,10 @@ public:
     const QSet<DbAddress> &list(const BaseId& subscriber);
 
 public slots:
-    void handleItemChanged(const DBObject *item);
+    void handleItemChanged(const PKG::DBObject *item);
 
 private:
-    void foreachSubscribers(const DBObject *item,
+    void foreachSubscribers(const PKG::DBObject *item,
                             const QSet<BaseId> &subscribersList);
 
     /// subscribers it is nodes or clients

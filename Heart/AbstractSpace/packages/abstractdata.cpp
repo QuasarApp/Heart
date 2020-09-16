@@ -15,7 +15,7 @@
 #include <QCryptographicHash>
 
 namespace QH {
-
+namespace PKG {
 unsigned short AbstractData::cmd() const {
     return _cmd;
 }
@@ -108,4 +108,5 @@ AbstractData::~AbstractData() {
 }
 
 
+}
 }

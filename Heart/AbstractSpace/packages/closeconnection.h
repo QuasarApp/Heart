@@ -5,6 +5,7 @@
 
 
 namespace QH{
+namespace PKG {
 
 /**
  * @brief The CloseConnection class - This commnad is request for close connection on parent node of connection
@@ -18,5 +19,6 @@ class HEARTSHARED_EXPORT CloseConnection: public AbstractData
 public:
     CloseConnection();
 };
+}
 }
 #endif // CLOSECONNECTION_H

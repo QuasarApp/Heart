@@ -10,6 +10,7 @@
 #include <QDataStream>
 #include <QSharedPointer>
 namespace QH {
+namespace PKG {
 
 WebSocket::WebSocket(): AbstractData(){
 
@@ -50,4 +51,5 @@ bool WebSocket::isValid() const {
             && AbstractData::isValid();
 }
 
+}
 }

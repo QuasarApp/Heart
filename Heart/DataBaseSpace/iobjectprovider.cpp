@@ -8,6 +8,7 @@
 #include "iobjectprovider.h"
 
 namespace QH {
+using namespace PKG;
 iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;

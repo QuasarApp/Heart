@@ -58,19 +58,19 @@ public:
      * @param result - return value, list of selected objects.
      * @return true if objects have in db else false.
      */
-    bool getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) override;
+    bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
 
     /**
      * @brief saveObject
      * @return
      */
-    bool saveObject(const QH::DBObject *ptr) override;
+    bool saveObject(const QH::PKG::DBObject *ptr) override;
 
     /**
      * @brief deleteObject
      * @return
      */
-    bool deleteObject(const QH::DBObject *ptr) override;
+    bool deleteObject(const QH::PKG::DBObject *ptr) override;
 
     /**
      * @brief databaseLocation - return location of database.
@@ -128,7 +128,7 @@ protected:
      * @param ptr
      * @return true if function finished seccussful
      */
-    virtual bool saveQuery(const QH::DBObject *ptr) const;
+    virtual bool saveQuery(const QH::PKG::DBObject *ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters
@@ -138,9 +138,9 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(const DBObject &requestObject, QList<const DBObject *> &result);
+    virtual bool selectQuery(const QH::PKG::DBObject &requestObject, QList<const QH::PKG::DBObject *> &result);
 
-    virtual bool deleteQuery(const QH::DBObject *deleteObject) const;
+    virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
 
 
 private:
@@ -154,7 +154,7 @@ private:
      * @return true if all steps finished successful
      */
     bool workWithQuery(QSqlQuery &q,
-                      const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
+                      const std::function< PKG::PrepareResult (QSqlQuery &)> &prepareFunc,
                       const std::function<bool()>& cb) const;
 
     bool exec(QSqlQuery *sq, const QString &sqlFile);

@@ -5,6 +5,7 @@
 #include <senderdata.h>
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The LongPing class - test class for big network with return addresse
@@ -25,5 +26,6 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 };
+}
 }
 #endif // LONGPING_H

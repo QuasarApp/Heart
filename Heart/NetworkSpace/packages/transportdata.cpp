@@ -10,6 +10,7 @@
 #include <QDataStream>
 #include <QDateTime>
 namespace QH {
+namespace PKG {
 
 TransportData::TransportData() {
     
@@ -153,5 +154,6 @@ bool TransportData::isValid() const {
 
 bool TransportData::isHaveRoute() const {
     return isValid() && _route.size() && _fRouteIsComplete;
+}
 }
 }

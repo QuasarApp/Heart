@@ -2,6 +2,7 @@
 
 #include <QDataStream>
 namespace QH {
+namespace PKG {
 
 Ping::Ping() {
     
@@ -46,5 +47,6 @@ QDataStream &Ping::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
     stream << _ansver;
     return stream;
+}
 }
 }

@@ -6,6 +6,7 @@
 #include <baseid.h>
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The KnowAddresses class - this class is package for send the list of know addresses of node to other node object.
@@ -32,5 +33,6 @@ protected:
 private:
     QSet<BaseId> _knowAddresses;
 };
+}
 }
 #endif // KNOWADDRESSES_H

@@ -4,6 +4,7 @@
 #include <networkmember.h>
 #include <senderdata.h>
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The NodeObject class
@@ -23,5 +24,6 @@ protected:
 public:
     DBObject *createDBObject() const override;
 };
+}
 }
 #endif // NODEOBJECT_H

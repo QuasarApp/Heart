@@ -52,7 +52,7 @@ bool NetworkNodeUnitTests::testReadWrite() {
         return false;
     }
 
-    QH::NodeObject testObjec = thisNode();
+    QH::PKG::NodeObject testObjec = thisNode();
 
     auto objectFromDataBase = db()->getObject(testObjec);
 
@@ -92,7 +92,7 @@ bool NetworkNodeUnitTests::testUpdate() {
         return false;
     }
 
-    QH::NodeObject testObjec = thisNode();
+    QH::PKG::NodeObject testObjec = thisNode();
 
     auto objectFromDataBase = db()->getObject(testObjec);
 
@@ -100,7 +100,7 @@ bool NetworkNodeUnitTests::testUpdate() {
         return false;
     }
 
-    auto clone = objectFromDataBase->clone().staticCast<QH::NodeObject>();
+    auto clone = objectFromDataBase->clone().staticCast<QH::PKG::NodeObject>();
 
     clone->setTrust(20);
 
@@ -136,13 +136,13 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    QH::NodeObject testObjec = thisNode();
+    QH::PKG::NodeObject testObjec = thisNode();
 
     if(!changeTrust(testObjec.getId(), -10)) {
         return false;
     };
 
-    auto objectFromDataBase = static_cast<const QH::NodeObject*>(db()->getObjectRaw(testObjec));
+    auto objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (objectFromDataBase && objectFromDataBase->trust() != 10) {
         return false;
@@ -154,7 +154,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    objectFromDataBase = static_cast<const QH::NodeObject*>(db()->getObjectRaw(testObjec));
+    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (!objectFromDataBase || objectFromDataBase->trust() != 10) {
         return false;
@@ -164,7 +164,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     };
 
-    objectFromDataBase = static_cast<const QH::NodeObject*>(db()->getObjectRaw(testObjec));
+    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (objectFromDataBase && objectFromDataBase->trust() != 0) {
         return false;
@@ -176,7 +176,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    objectFromDataBase = static_cast<const QH::NodeObject*>(db()->getObjectRaw(testObjec));
+    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
 
     if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
         return false;

@@ -2,6 +2,7 @@
 
 #include <QDataStream>
 namespace QH {
+namespace PKG {
 
 NetworkRequest::NetworkRequest() {
 
@@ -85,4 +86,5 @@ void NetworkRequest::removeNodeFromAskedList(const BaseId &node) {
 }
 
 
+}
 }

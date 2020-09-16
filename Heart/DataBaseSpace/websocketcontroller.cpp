@@ -13,6 +13,7 @@
 
 namespace QH {
 
+using namespace PKG;
 
 WebSocketController::WebSocketController(DataBaseNode *node) {
     _node = node;

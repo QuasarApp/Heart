@@ -22,7 +22,6 @@
 namespace QH {
 
 class SqlDBWriter;
-class DBObject;
 class DbAddress;
 
 enum class SqlDBCasheWriteMode: int {
@@ -55,10 +54,10 @@ public:
      */
     void setWriter(SqlDBWriter* writer);
 
-    bool getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) override;
+    bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
 
-    bool saveObject(const DBObject* saveObject) override;
-    bool deleteObject(const DBObject* delObj) override;
+    bool saveObject(const PKG::DBObject* saveObject) override;
+    bool deleteObject(const PKG::DBObject* delObj) override;
 
     /**
      * @brief getUpdateInterval of SqlDBCasheWriteMode::Default mode
@@ -92,20 +91,20 @@ protected:
      * @param id in table of object
      * @return true if all good
      */
-    virtual void deleteFromCache(const DBObject *delObj);
+    virtual void deleteFromCache(const PKG::DBObject *delObj);
 
     /**
      * @brief saveToCache
      * @param obj
      */
-    virtual bool saveToCache(const DBObject *obj);
+    virtual bool saveToCache(const PKG::DBObject *obj);
 
     /**
      * @brief getFromCache -  get database objcet from cache.
      * @param objKey
      * @return object from cache. if object with objKey not exits return nullptr
      */
-    virtual DBObject* getFromCache(uint objKey);
+    virtual PKG::DBObject* getFromCache(uint objKey);
 
     /**
      * @brief getMode
@@ -141,13 +140,13 @@ private:
 
     SqlDBCasheWriteMode _mode;
 
-    QHash<uint, DBObject*>  _cache;
+    QHash<uint, PKG::DBObject*>  _cache;
     QSet<uint>  _needToSaveCache;
 
 
 
 signals:
-    void sigItemChanged(const DBObject *obj);
+    void sigItemChanged(const PKG::DBObject *obj);
 
 };
 

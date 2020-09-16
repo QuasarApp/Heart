@@ -12,21 +12,21 @@ class TestingNetworkClient: public QH::NetworkNode {
 
     // AbstractNode interface
 public:
-    const QH::Ping& getPing() const {
+    const QH::PKG::Ping& getPing() const {
         return _ping;
     }
 
 protected:
-    void incomingData(QH::AbstractData *pkg, const QH::BaseId &sender) {
+    void incomingData(QH::PKG::AbstractData *pkg, const QH::BaseId &sender) {
         Q_UNUSED(sender);
 
-        auto ping = dynamic_cast<QH::Ping*>(pkg);
+        auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
         if (ping)
             _ping.copyFrom(ping);
     }
 
 private:
-    QH::Ping _ping;
+    QH::PKG::Ping _ping;
 };
 
 NetworkNodeTest::NetworkNodeTest() {

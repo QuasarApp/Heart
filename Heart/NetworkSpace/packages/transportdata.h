@@ -14,6 +14,7 @@
 #include "hostaddress.h"
 
 namespace QH {
+namespace PKG {
 
 class HEARTSHARED_EXPORT TransportData: public AbstractData, public SenderData
 {
@@ -91,6 +92,6 @@ private:
 
 
 };
-
+}
 }
 #endif // TRANSPORTDATA_H

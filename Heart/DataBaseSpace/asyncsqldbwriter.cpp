@@ -15,6 +15,7 @@
 
 namespace QH {
 
+using namespace PKG;
 
 AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     QObject(ptr) {

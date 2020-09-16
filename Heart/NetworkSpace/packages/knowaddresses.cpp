@@ -3,6 +3,7 @@
 #include <QDataStream>
 
 namespace QH {
+namespace PKG {
 
 KnowAddresses::KnowAddresses() {
     
@@ -53,5 +54,5 @@ QSet<BaseId> KnowAddresses::knowAddresses() const {
 void KnowAddresses::setKnowAddresses(const QSet<BaseId> &knowAddresses) {
     _knowAddresses = knowAddresses;
 }
-
+}
 }

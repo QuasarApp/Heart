@@ -16,9 +16,12 @@
 
 namespace QH {
 
+namespace PKG {
 class NetworkMember;
 class MemberPermisionObject;
 class KnowAddresses;
+}
+
 class KeyStorage;
 class Router;
 class NetworkNodeInfo;
@@ -85,14 +88,14 @@ protected:
      * @param req - header of request
      * @return true if data sendet seccussful
      */
-    bool sendData(const AbstractData *resp, const BaseId &nodeId,
+    bool sendData(const PKG::AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr) override;
 
-    bool sendData(AbstractData *resp, const BaseId &nodeId,
+    bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr) override;
-    bool sendData(const AbstractData *resp, const HostAddress &nodeId,
+    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
                           const Header *req = nullptr) override;
-    bool sendData(AbstractData *resp, const HostAddress &nodeId,
+    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
                           const Header *req = nullptr) override;
 
     /**
@@ -124,19 +127,19 @@ protected:
      * @param permision - data of new permision
      * @return true if new cghanges saved successful.
      */
-    bool savePermision(const NodeObject &node, const MemberPermisionObject& permision);
+    bool savePermision(const PKG::NodeObject &node, const PKG::MemberPermisionObject& permision);
     /**
      * @brief checkSignOfRequest
      * @param request - package
      * @return true if request signed.
      */
-    virtual bool checkSignOfRequest(const AbstractData *request);
+    virtual bool checkSignOfRequest(const PKG::AbstractData *request);
 
     /**
      * @brief thisNode
      * @return This node object value.
      */
-    NodeObject thisNode() const;
+    PKG::NodeObject thisNode() const;
 
     /**
      * @brief myKnowAddresses
@@ -175,7 +178,7 @@ protected:
      * @param sender - sender of the package
      * @note override this method for get a signals.
      */
-    virtual void incomingData(AbstractData* pkg,
+    virtual void incomingData(PKG::AbstractData* pkg,
                               const BaseId&  sender);
 
     /**
@@ -192,7 +195,7 @@ private:
      * @param nodeInfo
      * @return true if function finished successful
      */
-    bool workWithNodeObjectData(NodeObject &node, const AbstractNodeInfo *nodeInfo);
+    bool workWithNodeObjectData(PKG::NodeObject &node, const AbstractNodeInfo *nodeInfo);
 
     /**
      * @brief workWithKnowAddresses
@@ -200,7 +203,7 @@ private:
      * @param nodeInfo
      * @return
      */
-    bool workWithKnowAddresses(const KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
+    bool workWithKnowAddresses(const PKG::KnowAddresses &obj, const AbstractNodeInfo *nodeInfo);
 
     /**
      * @brief workWithTransportData
@@ -209,7 +212,7 @@ private:
      * @param pkg
      * @return
      */
-    ParserResult workWithTransportData(AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
+    ParserResult workWithTransportData(PKG::AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
 
     /**
      * @brief workWithNetworkRequest
@@ -218,7 +221,7 @@ private:
      * @param pkg
      * @return
      */
-    ParserResult workWithNetworkRequest(AbstractData* networkRequest, const AbstractNodeInfo *sender);
+    ParserResult workWithNetworkRequest(PKG::AbstractData* networkRequest, const AbstractNodeInfo *sender);
 
 
     /**
@@ -237,7 +240,7 @@ private:
      * @warning Do not call this implementation on this class,
      *  use the ncomingData(AbstractData* pkg, const HostAddress&  sender) implementation.
      */
-    void incomingData(AbstractData* pkg,
+    void incomingData(PKG::AbstractData* pkg,
                       const HostAddress&  sender) override final;
 
 

@@ -16,9 +16,13 @@
 
 namespace QH {
 
+namespace PKG {
+class WebSocket;
+
+}
+
 class SqlDBCache;
 class SqlDBWriter;
-class WebSocket;
 class WebSocketController;
 class DbAddress;
 class BaseId;
@@ -116,7 +120,7 @@ protected:
      * @param req
      * @return true if a function finished seccussful
      */
-    bool sendData(AbstractData *resp,
+    bool sendData(PKG::AbstractData *resp,
                   const HostAddress &addere,
                   const Header *req = nullptr) override;
 
@@ -127,7 +131,7 @@ protected:
      * @param req
      * @return true if a function finished seccussful
      */
-    bool sendData(const AbstractData *resp,
+    bool sendData(const PKG::AbstractData *resp,
                   const HostAddress &addere,
                   const Header *req = nullptr) override;
 
@@ -138,7 +142,7 @@ protected:
      * @param req - header of request
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(AbstractData *resp, const BaseId &nodeId,
+    virtual bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr);
 
     /**
@@ -148,7 +152,7 @@ protected:
      * @param req - header of request
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(const AbstractData *resp, const BaseId &nodeId,
+    virtual bool sendData(const PKG::AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr);
     /**
      * @brief badRequest -send bad request and change trus for ip address
@@ -208,7 +212,7 @@ protected:
      * @param address sendet address
      * @return true if data parsed seccusseful
      */
-    bool workWithSubscribe(const WebSocket &rec,
+    bool workWithSubscribe(const PKG::WebSocket &rec,
                            const BaseId &clientOrNodeid, const AbstractNodeInfo &sender);
 
     /**
@@ -218,7 +222,7 @@ protected:
      * @return result of operation (allow, forbiden unknown)
      */
     DBOperationResult deleteObject(const BaseId &requester,
-                                   const DBObject *dbObject);
+                                   const PKG::DBObject *dbObject);
 
     /**
      * @brief getObject - general method for geting object wth check permisions
@@ -229,8 +233,8 @@ protected:
      * @return operation status
      */
     DBOperationResult getObject(const BaseId &requester,
-                                const DBObject &templateObj,
-                                const DBObject **result) const;
+                                const PKG::DBObject &templateObj,
+                                const PKG::DBObject **result) const;
 
 
     /**
@@ -242,8 +246,8 @@ protected:
      * @return operation status
      */
     DBOperationResult getObjects(const BaseId &requester,
-                                 const DBObject &templateObj,
-                                 QList<const DBObject *> *result) const;
+                                 const PKG::DBObject &templateObj,
+                                 QList<const PKG::DBObject *> *result) const;
 
     /**
      * @brief setObject
@@ -253,7 +257,7 @@ protected:
      * @return operation status
      */
     DBOperationResult setObject(const BaseId &requester,
-                                const DBObject *saveObject);
+                                const PKG::DBObject *saveObject);
 
     /**
      * @brief getSender - this method return id of requester.
@@ -262,7 +266,7 @@ protected:
      * @param requestData - data of request
      * @return id of requester member
      */
-    virtual BaseId getSender(const AbstractNodeInfo *connectInfo, const AbstractData *requestData) const;
+    virtual BaseId getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
 
     /**
      * @brief checkPermision - check permision of requester to objectAddress

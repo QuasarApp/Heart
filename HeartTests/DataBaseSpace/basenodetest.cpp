@@ -13,21 +13,21 @@ class TestingBaseClient: public QH::DataBaseNode {
 
     // AbstractNode interface
 public:
-    const QH::Ping& getPing() const {
+    const QH::PKG::Ping& getPing() const {
         return _ping;
     }
 
 protected:
-    void incomingData(QH::AbstractData *pkg, const QH::HostAddress&  sender) {
+    void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) {
         Q_UNUSED(sender);
 
-        auto ping = dynamic_cast<QH::Ping*>(pkg);
+        auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
         if (ping)
             _ping.copyFrom(ping);
     }
 
 private:
-    QH::Ping _ping;
+    QH::PKG::Ping _ping;
 };
 
 class BadTstClient: public QH::DataBaseNode {

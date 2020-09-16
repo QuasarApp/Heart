@@ -20,6 +20,8 @@
 
 namespace QH {
 
+using namespace PKG;
+
 void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     QMutexLocker lock(&_saveLaterMutex);

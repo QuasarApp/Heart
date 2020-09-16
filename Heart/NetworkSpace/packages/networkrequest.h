@@ -7,6 +7,7 @@
 
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The NetworkRequest class - this is pakcage wraper for sending requests to network.
@@ -94,5 +95,6 @@ private:
     Package _dataResponce;
 
 };
+}
 }
 #endif // NETWORKREQUEST_H

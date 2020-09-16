@@ -13,6 +13,7 @@
 
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The WebSocketRequest enum
@@ -54,5 +55,6 @@ private:
     DbAddress _address;
 };
 
+}
 }
 #endif // WEBSOCKET_H

@@ -37,6 +37,8 @@
 #define THIS_NODE "this_node_key"
 namespace QH {
 
+using namespace PKG;
+
 NetworkNode::NetworkNode(QH::SslMode mode, QObject *ptr):
     DataBaseNode(mode, ptr) {
 

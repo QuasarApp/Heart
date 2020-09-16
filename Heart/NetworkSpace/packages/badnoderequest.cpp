@@ -7,6 +7,7 @@
 
 #include "badnoderequest.h"
 namespace QH {
+namespace PKG {
 
 BadNodeRequest::BadNodeRequest() {
     
@@ -51,5 +52,6 @@ QDataStream &BadNodeRequest::toStream(QDataStream &stream) const {
     stream << senderID();
 
     return stream;
+}
 }
 }

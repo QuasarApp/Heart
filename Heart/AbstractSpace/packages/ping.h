@@ -5,6 +5,7 @@
 
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The Ping class - test class for translate data on network
@@ -30,6 +31,7 @@ protected:
 private:
     bool _ansver = false;
 };
+}
 }
 #endif // PING_H
 

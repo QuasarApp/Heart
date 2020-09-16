@@ -12,6 +12,7 @@
 #include <global.h>
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The AbstractData class
@@ -142,6 +143,7 @@ private:
 };
 
 
+}
 }
 
 #endif // ABSTRACTDATA_H

@@ -17,6 +17,7 @@
 #include <QSharedPointer>
 
 namespace QH {
+namespace PKG {
 
 DBObject::DBObject(const QString &tableName) {
     clear();
@@ -181,4 +182,5 @@ void DBObject::clear() {
     setId({});
 }
 
+}
 }

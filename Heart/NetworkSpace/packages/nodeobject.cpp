@@ -1,5 +1,6 @@
 #include "nodeobject.h"
 namespace QH {
+namespace PKG {
 
 NodeObject::NodeObject() {
 
@@ -29,5 +30,6 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
 
 DBObject *NodeObject::createDBObject() const {
     return create<NodeObject>();
+}
 }
 }

@@ -22,6 +22,7 @@
 #include <QCoreApplication>
 
 namespace QH {
+using namespace PKG;
 
 bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
     QFile f(sqlFile);

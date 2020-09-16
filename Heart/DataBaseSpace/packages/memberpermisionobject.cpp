@@ -12,6 +12,7 @@
 #include <dbcachekey.h>
 
 namespace QH {
+namespace PKG {
 
 MemberPermisionObject::MemberPermisionObject():
     DBObject("MemberPermisions") {
@@ -175,5 +176,6 @@ Permission MemberPermisionObject::permisions() const {
 
 void MemberPermisionObject::setPermisions(const Permission &permisions) {
     _permisions = permisions;
+}
 }
 }

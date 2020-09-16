@@ -15,6 +15,7 @@
 
 
 namespace QH {
+namespace PKG {
 
 NetworkMember::NetworkMember():DBObject("NetworkMembers") {
     
@@ -140,4 +141,5 @@ QPair<QString, QString> NetworkMember::altarnativeKey() const {
     return {"authenticationData", _authenticationData.toBase64(QByteArray::Base64UrlEncoding)};
 }
 
+}
 }

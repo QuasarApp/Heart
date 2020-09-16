@@ -14,6 +14,7 @@
 #include "permission.h"
 
 namespace QH {
+namespace PKG {
 
 /**
  * @brief The NodesPermisionObject class - database object of permisions of node
@@ -54,5 +55,6 @@ private:
 
 
 };
+}
 }
 #endif // NODESPERMISIONOBJECT_H

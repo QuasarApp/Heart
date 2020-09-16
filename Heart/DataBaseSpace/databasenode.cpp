@@ -28,6 +28,7 @@
 
 #define THIS_NODE "this_node_key"
 namespace QH {
+using namespace PKG;
 
 DataBaseNode::DataBaseNode(QH::SslMode mode, QObject *ptr):
     AbstractNode(mode, ptr) {

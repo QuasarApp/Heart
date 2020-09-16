@@ -10,6 +10,8 @@
 #include <QDataStream>
 
 namespace QH {
+namespace PKG {
+
 WebSocketSubscriptions::WebSocketSubscriptions()
 {
     
@@ -44,5 +46,5 @@ void WebSocketSubscriptions::setAddresses(const QSet<DbAddress> &addresses) {
 }
 
 }
-
+}
 
