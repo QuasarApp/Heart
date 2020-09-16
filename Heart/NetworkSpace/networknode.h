@@ -37,10 +37,9 @@ public:
 
     /**
      * @brief BaseNode
-     * @param mode
      * @param ptr
      */
-    NetworkNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
+    NetworkNode(QObject * ptr = nullptr);
     ~NetworkNode() override;
 
     /**
@@ -56,10 +55,11 @@ public:
      * @brief run server on address an port with local name of storage of keys
      * @param addres - network address of node
      * @param port - port of node
+     * @param localNodeName - this is locale node name. Sets name of folder with the data for current node.
      * @return true if node is deployed successful
      */
     bool run(const QString &addres, unsigned short port,
-                     const QString &localNodeName) override;
+             const QString &localNodeName) override;
 
     /**
      * @brief stop - this implementation stop work database and push to database all cache data.
@@ -68,7 +68,7 @@ public:
 
     /**
      * @brief ping - ping node by node id
-     * @param address
+     * @param id
      * @return
      */
     bool ping( const BaseId& id);
@@ -89,14 +89,14 @@ protected:
      * @return true if data sendet seccussful
      */
     bool sendData(const PKG::AbstractData *resp, const BaseId &nodeId,
-                          const Header *req = nullptr) override;
+                  const Header *req = nullptr) override;
 
     bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
-                          const Header *req = nullptr) override;
+                  const Header *req = nullptr) override;
     bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
-                          const Header *req = nullptr) override;
+                  const Header *req = nullptr) override;
     bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
-                          const Header *req = nullptr) override;
+                  const Header *req = nullptr) override;
 
     /**
      * @brief initDefaultDbObjects create default cache and db writer if pointer is null

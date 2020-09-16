@@ -39,10 +39,9 @@ public:
 
     /**
      * @brief BaseNode
-     * @param mode
      * @param ptr
      */
-    DataBaseNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);
+    DataBaseNode(QObject * ptr = nullptr);
     ~DataBaseNode() override;
 
     /**

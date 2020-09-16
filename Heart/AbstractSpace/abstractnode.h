@@ -49,14 +49,22 @@ enum class ParserResult {
     Processed = 2
 };
 
+/**
+ * @brief The SslMode enum  This enum contatins options for set ssl mode of node (server)
+ * For more information see AbstractNode::useSelfSignedSslConfiguration AbstractNode::useSystemSslConfiguration and AbstractNode::disableSSL methods.
+ */
 enum class SslMode {
+    //// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr)
     NoSSL,
+    //// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
     InitFromSystem,
+    //// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslSrtData struct
     InitSelfSigned
 };
 
 /**
- * @brief The SslSrtData struct
+ * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certefication.
+ *  If yo want change selfSigned certificate then use method AbstractNode::useSelfSignedSslConfiguration
  */
 struct SslSrtData {
     QString country = "BY";
@@ -85,129 +93,135 @@ class HEARTSHARED_EXPORT AbstractNode : public QTcpServer
 public:
 
     /**
-     * @brief AbstractNode
-     * @param ssl
-     * @param ptr
+     * @brief AbstractNode - base constructor of node.
+     * @param ptr - pointrt to parent Qt object, the AbstractNode class is Q_OBJECT
      */
-    AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr);    
+    AbstractNode(QObject * ptr = nullptr);
     ~AbstractNode() override;
 
     /**
-     * @brief run
-     * @param addres - If address is empty then serve weel be listen all addreses of all interfaces
-     * @param port
-     * @return true if all good
+     * @brief run - this method implement deployment a network node (server) on selected address.
+     * @param addres - If address is empty then server weel be listen all addreses of all interfaces else listen only selected address.
+     * @param port - This is port of deployment node (server)
+     * @return Result of deployment node (sever). (True if deploy finished successful else false).
      */
     virtual bool run(const QString& addres, unsigned short port);
 
     /**
-     * @brief stop stop this node and close all connections.
+     * @brief stop - stopped this node and close all network connections.
      */
     virtual void stop();
 
     /**
-     * @brief getInfo
-     * @param id of selected node
-     * @return pointer to information about node. if address not found return nullpt
+     * @brief getInfoPtr - This method return information class pointer about netwok connection.
+     *  If Connection with id not found then return nullptr.
+     * @param id - it is network address of requested node
+     * @return The pointer of information about node. if address not found return nullptr
      */
     virtual AbstractNodeInfo* getInfoPtr(const HostAddress &id);
 
     /**
-     * @brief getInfoPtr
-     * @param id peer adders
-     * @return pointer to information about node. if address not found return nullpt
+     * @brief getInfoPtr - this is some that getInfoPtr(const HostAddress &id) bod it is constant implementation.
+     * @param id - it is network address of requested node
+     * @return The pointer of information about node. if address not found return nullptr
      */
     virtual const AbstractNodeInfo* getInfoPtr(const HostAddress &id) const;
 
     /**
-     * @brief ban
-     * @param target id of ban node
+     * @brief ban - this method set for target connection a trust property to 0 and target connection will been aborted.
+     * @param target - it is network address of target connection.
      */
     virtual void ban(const HostAddress& target);
 
     /**
-     * @brief unBan
-     * @param target id of unban node
+     * @brief unBan - this method set for target connection a trust property to 100.
+     * @param target - it is network address of target connection.
      */
     virtual void unBan(const HostAddress& target);
 
     /**
-     * @brief connectToHost - connect to host node
-     * @param address -  address of node
-     * @param mode - mode see SslMode
+     * @brief connectToHost - connect to node (server) with address.
+     * @param address - This is Network address of node (server)
+     * @param mode - This is mode of connection see SslMode.  By default using SslMode::NoSSL connection mode, it is not secure.
      */
     virtual bool connectToHost(const HostAddress &address, SslMode mode = SslMode::NoSSL);
 
     /**
-     * @brief connectToHost - connect to host node. this method find ip address of domain befor connecting
-     * @param domain: address of node
-     * @param port - port of node
-     * @param mode - mode see SslMode
+     * @brief connectToHost - connect to node (server) with domain, bud this method find ip address of domain befor connecting
+     * @param domain - This is domain address of node (server)
+     * @param port - This is target port of node (server)
+     * @param mode - This is mode of connection see SslMode. By default using SslMode::NoSSL connection mode, it is not secure.
      */
     virtual bool connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
 
     /**
-     * @brief addNode - add new node for connect
-     * @param nodeAdderess - the network addres of a new node.
+     * @brief addNode - add new node (server) for this mode
+     * @param nodeAdderess - This is network addres of a new node (server).
+     * @note By Default This immplementation move called function into main Thread and invoke connectToHost method.
      */
     void addNode(const HostAddress& nodeAdderess);
 
     /**
-     * @brief removeNode - remove node
-     * @param nodeAdderess - the adddress of removed node.
+     * @brief removeNode - remove node and disconnected forom node (server)
+     * @param nodeAdderess - This is network adddress of removed node (server).
      */
     void removeNode(const HostAddress& nodeAdderess);
 
     /**
-     * @brief address - address of this node
-     * @return return current adders
+     * @brief address - Thim method return own network address of current node (server)
+     * @return The current network adderss
      */
     HostAddress address() const;
 
     /**
-     * @brief getSslConfig - configuration of this node.
-     * @return current ssl configuration on this nod
+     * @brief getSslConfig - This method return ssl configuration of current node (server).
+     * @return current ssl configuration on this node (server)
      */
     QSslConfiguration getSslConfig() const;
 
     /**
-     * @brief getMode
-     * @return
+     * @brief getMode - This method return SSL mode of corrent node (server).
+     * @return current mode for more information see SslMode
      */
     SslMode getMode() const;
 
     /**
-     * @brief getWorkState
-     * @return
+     * @brief getWorkState - This method collect general information about this server.
+     *  For more information about returned data see getWorkState
+     * @return state value for more information see WorkState class
      */
     virtual WorkState getWorkState() const;
 
     /**
-     * @brief pareseResultToString
-     * @return string of pareseresult
+     * @brief pareseResultToString This method convert ParserResult value to string.
+     * @return The String value of pareseresult
      */
     QString pareseResultToString(const ParserResult& parseResult) const;
 
     /**
-     * @brief connectionsCount - return count fo connections (nodes with status connected)
-     * @return
+     * @brief connectionsCount - return count fo connections (connections with status connected)
+     * @return count valid connections.
      */
     int connectionsCount() const;
 
     /**
      * @brief connectionsCount - return count of nodes with status confirmend
-     * @return
+     * @return return confirmend connections of this node (server)
      */
     int confirmendCount() const;
 
     /**
-     * @brief ping - ping address for testing
-     * @param address - address of other node
-     * @return true if ping sendet
+     * @brief ping This method send ping package to address for testing connection
+     * @param address This is address of target node (server)
+     * @return true if ping sendet successful.
      */
     bool ping( const HostAddress& address);
 
 signals:
+    /**
+     * @brief requestError - this signal emited when client or node received from remoute server or node the BadRequest package.
+     * @param msg - received text of remoute node (server).
+     */
     void requestError(QString msg);
 
 protected:
@@ -232,7 +246,7 @@ protected:
      * @brief selfSignedSslConfiguration
      * @return generate new keys and use it
      */
-    virtual QSslConfiguration selfSignedSslConfiguration();
+    virtual QSslConfiguration selfSignedSslConfiguration( const SslSrtData& = {});
 
     /**
      * @brief createNodeInfo
@@ -347,12 +361,30 @@ protected:
     */
     virtual void incomingTcp(qintptr handle);
 
+    /**
+     * @brief useSelfSignedSslConfiguration - This method reconfigure current node to use selfSigned certificate.
+     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     *  The self signed certificate is temp value, this is will be changed after reboot node (server)
+     * @param crtData - This is data for generation a new self signed certification.
+     * @return result of change node ssl configuration.
+     */
+    bool useSelfSignedSslConfiguration(const SslSrtData& crtData);
 
     /**
-     * @brief setMode - invoke this method befor run method
-     * @param mode
+     * @brief useSystemSslConfiguration - This method reconfigure current node to use sslConfig.
+     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @param sslConfig - This is ssl configuration ot a current node (server)
+     * @return result of change node ssl configuration.
      */
-    bool setMode(const SslMode &mode);
+    bool useSystemSslConfiguration(const QSslConfiguration& sslConfig);
+
+    /**
+     * @brief disableSSL - this method disable ssl mode for this node
+     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @return true if changes is completed.
+     */
+    bool disableSSL();
+
 
     /**
      * @brief incomingData - this signal invoked when node get command or ansver

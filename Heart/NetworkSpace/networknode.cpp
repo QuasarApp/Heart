@@ -39,8 +39,8 @@ namespace QH {
 
 using namespace PKG;
 
-NetworkNode::NetworkNode(QH::SslMode mode, QObject *ptr):
-    DataBaseNode(mode, ptr) {
+NetworkNode::NetworkNode(QObject *ptr):
+    DataBaseNode(ptr) {
 
     _nodeKeys = new KeyStorage(new QSecretRSA2048());
     _router = new Router();

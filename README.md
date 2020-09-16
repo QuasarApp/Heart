@@ -7,19 +7,19 @@ This library consists of two levels (AbstractNode level and DataBaseNode level).
 - [X] Support ssl sockets
 - [X] Support initialize database
 - [X] Support work in database
-- [ ] Sopport decentralized network mode
+- [ ] Support decentralized network mode
 
-### AbstractNode level (1)
+### AbstractNode level (0)
 #### Description
 The AbstractNode level implement only base functons of create new work threads and parsing packages.
 
-For more information see QuasarApp Heart documentation.
+For more information see QuasarApp Heart documentation or QH namespace.
 
-### DataBaseNode level (2)
+### DataBaseNode level (1)
 #### Description
 The DataBaseNode level implement methods and packages for work with databases. This level using Qt classes for wrking with database, so for more information about suport databases see [Qt Documentation](https://doc.qt.io/qt-5/sql-driver.html).
 
-### NetworkNode level (3)
+### NetworkNode level (2)
 #### Description
 This level is still in develop. 
 

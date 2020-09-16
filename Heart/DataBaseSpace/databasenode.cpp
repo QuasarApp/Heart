@@ -30,8 +30,8 @@
 namespace QH {
 using namespace PKG;
 
-DataBaseNode::DataBaseNode(QH::SslMode mode, QObject *ptr):
-    AbstractNode(mode, ptr) {
+DataBaseNode::DataBaseNode(QObject *ptr):
+    AbstractNode(ptr) {
 
     _webSocketWorker = new WebSocketController(this);
 

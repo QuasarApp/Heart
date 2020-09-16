@@ -28,14 +28,10 @@ namespace QH {
 
 using namespace PKG;
 
-AbstractNode::AbstractNode(SslMode mode, QObject *ptr):
+AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
 
-    _mode = mode;
-
     _dataSender = new DataSender();
-
-    setMode(_mode);
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -307,12 +303,11 @@ bool AbstractNode::generateSslDataPrivate(const SslSrtData &data, QSslCertificat
     return true;
 }
 
-QSslConfiguration AbstractNode::selfSignedSslConfiguration() {
+QSslConfiguration AbstractNode::selfSignedSslConfiguration(const SslSrtData & sslData) {
     QSslConfiguration res = QSslConfiguration::defaultConfiguration();
 
     QSslKey pkey;
     QSslCertificate crt;
-    SslSrtData sslData;
 
     if (!generateSslDataPrivate(sslData, crt, pkey)) {
 
@@ -914,38 +909,26 @@ SslMode AbstractNode::getMode() const {
     return _mode;
 }
 
-bool AbstractNode::setMode(const SslMode &mode) {
-
-    if (_mode == mode) {
-        return true;
-    }
+bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
 
     if (isListening()) {
         return false;
     }
 
-    _mode = mode;
+    _ssl = selfSignedSslConfiguration(crtData);
+    _mode = SslMode::InitSelfSigned;
 
-    switch (_mode) {
-    case SslMode::InitFromSystem: {
-        _ssl = QSslConfiguration::defaultConfiguration();
-        break;
+    return !_ssl.isNull();
+}
 
-    }
-    case SslMode::InitSelfSigned: {
-        _ssl = selfSignedSslConfiguration();
-        break;
-
-    }
-    default: {
-        _ssl = QSslConfiguration();
-        break;
+bool AbstractNode::disableSSL() {
+    if (isListening()) {
+        return false;
     }
 
-    }
+    _mode = SslMode::NoSSL;
 
     return true;
-
 }
 
 void AbstractNode::incomingData(AbstractData *pkg, const HostAddress &sender) {
