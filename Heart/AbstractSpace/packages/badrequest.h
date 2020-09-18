@@ -14,15 +14,28 @@ namespace QH{
 namespace PKG {
 
 /**
- * @brief The BadRequest class
+ * @brief The BadRequest class send response about error to client
  */
 class BadRequest : public AbstractData
 {
 public:
+    /**
+     * @brief BadRequest
+     * @param err This is error message.
+     */
     explicit BadRequest(const QString & err = "");
     explicit BadRequest(const Package& package);
 
+    /**
+     * @brief err This method return a text of error message.
+     * @return text of error message
+     */
     QString err() const;
+
+    /**
+     * @brief setErr - set a error mesage.
+     * @param err - message of error.
+     */
     void setErr(const QString &err);
 
     // StreamBase interface

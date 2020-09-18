@@ -17,10 +17,23 @@ public:
     Ping(const Package& from);
 
     // AbstractData interface
+    /**
+     * @brief isValid - heck this package if valid.
+     * @return
+     */
     bool isValid() const;
-    bool copyFrom(const AbstractData *);
 
+    /**
+     * @brief ansver This is bool value for check this objec that it si ansver or request.
+     *  using on tessts.
+     * @return true if this object is ansver from server
+     */
     bool ansver() const;
+
+    /**
+     * @brief setAnsver - set the ansver otion
+     * @param ansver - new ansver value
+     */
     void setAnsver(bool ansver);
 
 protected:
