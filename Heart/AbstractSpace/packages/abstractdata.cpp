@@ -41,14 +41,6 @@ AbstractData::AbstractData() {
     _cmd = 0;
 }
 
-bool AbstractData::fromBytes(const QByteArray &data) {
-    return StreamBase::fromBytes(data);
-}
-
-QByteArray AbstractData::toBytes() const {
-    return StreamBase::toBytes();
-}
-
 bool AbstractData::toPackage(Package &package,
                              unsigned int triggerHash) const {
 
