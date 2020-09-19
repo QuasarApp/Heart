@@ -19,7 +19,7 @@ namespace QH {
 class CryptoPairKeys;
 class ICrypto;
 /**
- * @brief The KeyStorage class - this class provie the functionality of controll crypto keys (generate, save, write);
+ * @brief The KeyStorage class provie the functionality of controll crypto keys (generate, save and write);
  */
 class KeyStorage: public QThread
 {
@@ -27,18 +27,18 @@ class KeyStorage: public QThread
 public:
     /**
      * @brief KeyStorage
-     * @param cryptoMethod - any class inherited from ICrypto
+     * @param cryptoMethod This is pointer to any class inherited from ICrypto
      */
     KeyStorage(ICrypto* cryptoMethod);
     ~KeyStorage();
 
     /**
-     * @brief getNextPair - take a one pair key from keys pool.
+     * @brief getNextPair This method take a one pair key from the keys pool or generate a new keys pair if the keys pool is empty.
      * @warning If key pool is empty then this method frease a current thread for awiting f neg generated pair key.
      * @note if the key is not generated within the specified period of time, an invalid copy of the key pair will be returned.
-     * @param accsessKey - the byte array for get a acceses to key from storage.
-     * @param genesis - set this params to empty for get random key pair or set the byte array for get a key pair for genesis array.
-     * @param timeout_msec - timeout in milisecunds. default is WAIT_TIME (30000)
+     * @param accsessKey  The byte array for get a acceses to key from storage.
+     * @param genesis Set this params to empty for get random key pair or set the byte array for get a key pair for genesis array.
+     * @param timeout_msec This is timeout in milisecunds. default is WAIT_TIME (30000)
      * @return pair of keys.
      */
     CryptoPairKeys getNextPair(const QString &accsessKey,
@@ -46,134 +46,137 @@ public:
                                int timeout_msec = WAIT_TIME);
 
     /**
-     * @brief getKeyPoolSize
-     * @return
+     * @brief getKeyPoolSize - This method return size of keyPool.
+     *  By default it is 1.
+     * @return value of keys poot size
      */
     int getKeyPoolSize() const;
 
     /**
-     * @brief setKeyPoolSize
-     * @param keyPoolSize
+     * @brief setKeyPoolSize This method the size of keys pool
+     *  and start new work for generation a new keys.
+     * @param keyPoolSize This is a new size of pool.
      */
     void setKeyPoolSize(int keyPoolSize);
 
     /**
-     * @brief isValid
+     * @brief isValid This method check keysStorage to valid.
      * @return true if the crypto object is valid.
      */
     virtual bool isValid() const;
 
     /**
-     * @brief isInited
-     * @return true if the crypto object has been initialized.
+     * @brief isInited This method returns true if the crypto object was initialized correctly.
+     * @return true if the crypto object was initialized correctly.
      */
     virtual bool isInited() const;
 
     /**
-     * @brief crypt
-     * @param data - pointer to data array for crypting.
-     * @note data as ben changed after call this method.
-     * @param publicKey - key for crypting data
+     * @brief crypt This method crypted a data message using a publicKey
+     * @param dataThis is pointer to data array for crypting.
+     * @note data has ben changed after call this method.
+     * @param publicKey This is key for crypting data
      * @return true if function finished seccussful
      */
     bool crypt(QByteArray *data, const QByteArray& publicKey);
 
     /**
-     * @brief decrypt
+     * @brief decrypt This method decrypt a data message using a privateKey
      * @param cryptedData - pointer to data array for decrypting.
      * @note cryptedData as ben changed after call this method.
-     * @param privateKey
+     * @param privateKey This is private key for decrypting data
      * @return true if function finished seccussful
      */
     bool decrypt(QByteArray *cryptedData, const QByteArray& privateKey);
 
     /**
-     * @brief sign
-     * @param data - pointer to data array for signed.
-     * @note data as ben changed after call this method.
-     * @param privateKey
+     * @brief sign This method sign a mesage using a privateKEy
+     * @param data This is pointer to data array for signed.
+     * @note data has ben changed after call this method.
+     * @param privateKey This is key for signing a data message
      * @return true if function finished seccussful
      */
     bool sign(QByteArray* data, const QByteArray& privateKey);
 
     /**
-     * @brief extractSign - extract sign from signed byteArray
-     * @param data - signed message.
+     * @brief extractSign This method extract sign from signed byteArray
+     * @param data This is a signed message.
      * @return return array of sign.
      */
     QByteArray extractSign(const QByteArray& data);
 
     /**
-     * @brief concatSign
-     * @param data - message data
+     * @brief concatSign This method concat a data of message and signs of a message.
+     * @param data This is message data
      * @return signed message
      */
     QByteArray concatSign(const QByteArray& data, const QByteArray& sign);
 
     /**
-     * @brief check
-     * @param publicKey
+     * @brief check This method validation signed message
+     * @param publicKey This is public key for validation of message.
      * @return true if function finished seccussful and signedData is valid.
      */
     bool check(const QByteArray& signedData, const QByteArray& publicKey);
 
     /**
-     * @brief setGenesisList - set genesis list for generation key pairs
+     * @brief setGenesisList - set genesis list for generation key pairs.
+     *  After invoke this method for each all items will be generated a keys pair.
      */
     void setGenesisList(const QList<QByteArray> &list);
 
     /**
-     * @brief storageLocation
+     * @brief storageLocation This method return a Path of the storage location.
      * @default QStandardPaths::DataLocation/KeysStorage
      * @return parth to storage location of crypto keys
      */
     QString storageLocation() const;
 
     /**
-     * @brief initStorageLocation set a new path for storage location of keys.
-     * @param value - new path
+     * @brief initStorageLocation This method set a new path for storage location of keys.
+     * @param value This is a new path to storeage location.
      */
     bool initStorageLocation(const QString &value);
 
     /**
-     * @brief initDefaultStorageLocation - the some as initStorageLocation, but set default
-     * path.
-     * @param dirName - it is name of storage location. If This parametr weel be empty then
-     * storage location set default dir name. By default is name of crypto class.
+     * @brief initDefaultStorageLocation Thes is some as initStorageLocation,
+     *  but set default path.
+     * @param dirName This is name of storage location. If This parametr weel be empty then
+     *  storage location set default dir name. By default is name of crypto class.
      * @default default path of storage is '/QStandardPaths::AppDataLocation/crypto/dirName'
      * @return true if the storage inited successful
      */
     bool initDefaultStorageLocation(const QString& dirName = "");
 
     /**
-     * @brief clearStorage
+     * @brief clearStorage - This methodclear all storage.
      */
     void clearStorage() const;
 
 protected:
 
     /**
-     * @brief toStorage - save key from genesis into local storage.
-     * @param genesis - genesis of key pair
+     * @brief toStorage This method save key into local storage.
+     * @param key This is key data value of keys pair.
      * @note override this method if you want to change storage location or method of save of keys.
      * @return true if key saved successful
      */
-    virtual bool toStorage(const QString &genesis) const;
+    virtual bool toStorage(const QString &key) const;
 
     /**
-     * @brief fromStorage - load keys from local storage
-     * @param genesis - genesis of key pair
+     * @brief fromStorage This method load keys from local storage
+     * @param key This is key data value of keys pair.
      * @return true if key pair saved seccussful.
      */
     virtual bool fromStorage(const QByteArray& key);
 
     /**
-     * @brief run - start the key generator.
+     * @brief run This method start the key generator on own thread.
      */
     void run() override;
 
     /**
-     * @brief stop - stop generate keys.
+     * @brief stop This method stop generate keys.
      */
     void stop();
 private:

@@ -8,7 +8,7 @@ class QAbstractSocket;
 namespace QH {
 
 /**
- * @brief The DataSender class - this class create a queue for sendet data to network.
+ * @brief The DataSender class this class create a queue for sendet data to network.
  *  work on a main thread
  */
 class DataSender: public QObject
@@ -19,9 +19,9 @@ public:
 
 public slots:
     /**
-     * @brief sendPackagePrivate
-     * @param array
-     * @param target
+     * @brief sendPackagePrivate This slot move send package to a main threan
+     * @param array bytes to send
+     * @param target - this is pointer of target socket
      */
     void sendPackagePrivate(QByteArray array, void *target) const;
 };
