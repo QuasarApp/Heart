@@ -219,7 +219,7 @@ public:
 
 signals:
     /**
-     * @brief requestError - this signal emited when client or node received from remoute server or node the BadRequest package.
+     * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
      * @param msg - received text of remoute node (server).
      */
     void requestError(QString msg);
@@ -227,65 +227,100 @@ signals:
 protected:
 
     /**
-     * @brief generateRSAforSSL
-     * @param pkey -
-     * @return
+     * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned cetificate.
+     *  By default generate RSA 2048, if you want change algorithm or keys size then override this method.
+     * @param pkey This is openssl pointer to RSA pair key.
+     * @return True if keys generated successful.
      */
     virtual bool generateRSAforSSL(EVP_PKEY* pkey) const;
 
     /**
-     * @brief generateSslData - generate new ssl data
-     * @param data - sign data
-     * @param r_srt - result srt
-     * @param r_key - result private key
-     * @return true if all good
+     * @brief generateSslDataPrivate This method generate a ssl certificate and a ssl keys using The SslSrtData structure.
+     * @param data The data for generate a selfSigned certificate.
+     * @param r_srt This is return value of a certivicate
+     * @param r_key - This is return value of private ssl key
+     * @return True if generate the selfSigned certificate finished succesful.
      */
     virtual bool generateSslDataPrivate(const SslSrtData& data, QSslCertificate& r_srt, QSslKey& r_key);
 
     /**
-     * @brief selfSignedSslConfiguration
-     * @return generate new keys and use it
+     * @brief selfSignedSslConfiguration This method create a new ssl configuration with selfsigned certificates.
+     * @param data This is data for generate selfsigned certification for more information see SslSrtData structure.
+     * @return The new selfsigned ssl configuration
      */
-    virtual QSslConfiguration selfSignedSslConfiguration( const SslSrtData& = {});
+    virtual QSslConfiguration selfSignedSslConfiguration( const SslSrtData& data = {});
 
     /**
-     * @brief createNodeInfo
-     * @return nodeinfo for new connection
-     * override this metho for set your own nodeInfo objects;
+     * @brief createNodeInfo This method create a nodeInfo object.
+     *  override this method for create your own nodeInfo objects. for more in
+     * @param socket This is socket of network address
+     * @param clientAddress This parameter need to set when the socket du not contains a address or invalid.
+     * @return return pointer to info object.
      */
     virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket,
                                              const HostAddress *clientAddress = nullptr) const;
 
     /**
-     * @brief registerSocket - this method registration new socket
-     * @param socket - socket pointer
-     * @param incoming - host address of socket. by default is nullptr.
+     * @brief registerSocket This method registration new socket object.
+     * @param socket This is incomming socket pointer
+     * @param address This is host address of socket. By default is nullptr.
      *  Set this value for nodes created on this host
      * @return return true if the scoeket has been registered successful
      */
     virtual bool registerSocket(QAbstractSocket *socket, const HostAddress* address = nullptr);
 
     /**
-     * @brief parsePackage
-     * @param pkg
-     * @param sender
-     * @return item of ParserResult ()
+     * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
+     *  This method work on own thread.
+     *  If you ovveride this method you need to create this than an example:
+     * \code
+        ParserResult DataBaseNode::parsePackage(const Package &pkg,
+                                                const AbstractNodeInfo *sender) {
+            auto parentResult = AbstractNode::parsePackage(pkg, sender);
+            if (parentResult != ParserResult::NotProcessed) {
+                return parentResult;
+            }
+
+            if (H_16<MyCommand>() == pkg.hdr.command) {
+                MyCommand obj
+                obj.fromPackage(pkg);
+
+                BaseId requesterId = getSender(sender, &obj);
+
+                ...
+
+                if (FailCondition) {
+                    return ParserResult::Error;
+                }
+
+                ...
+
+                return ParserResult::Processed;
+
+            }
+
+            return ParserResult::NotProcessed;
+        }
+     * \endcode
+     * @param pkg This is package with incomming data.
+     * @param sender This is sender this pacakge
+     * @return item of ParserResult. For more information see The ParserResult enum.
      */
     virtual ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo* sender);
 
     /**
-     * @brief sendPackage
-     * @param pkg
-     * @param target
-     * @return
+     * @brief sendPackage This method prepare and send to target address a package.
+     * @param pkg This is sendet pakcage to target node.
+     * @param target This is target node.
+     * @return return true if The package is sendet succesfull
      */
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
     /**
-     * @brief sendData send data package to address and prepare object to sending.
-     * @param resp - pointer to sendet object
-     * @param address - target addres for sending
-     * @param req - header of request
+     * @brief sendData This pakcage send data package to address and prepare object to sending.
+     * @param resp This is pointer to sendet object
+     * @param address This is target addres for sending
+     * @param req This is header of request
      * @return true if data sendet succesful.
      */
     virtual bool sendData(PKG::AbstractData *resp,  const HostAddress& addere,
@@ -293,76 +328,76 @@ protected:
 
     /**
      * @brief sendData this is some as a sendData(AbstractData *resp ...) exept this method not prepare object for sending.
-     * @param resp - pointer to sendet object
-     * @param address - target addres for sending
-     * @param req - header of request
+     * @param resp This is pointer to sendet object
+     * @param address This is target addres for sending
+     * @param req This is header of request
      * @return true if data sendet succesful.
      */
     virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& addere,
                           const Header *req = nullptr);
 
     /**
-     * @brief badRequestu
-     * @param address
-     * @param req
-     * @param msg - message of error
+     * @brief badRequest This method is send data about error of request
+     * @param address This is addrees of receiver
+     * @param req This is header of incomming request
+     * @param msg This is message of error
      */
     virtual void badRequest(const HostAddress &address, const Header &req,
                             const QString msg = "");
 
     /**
-     * @brief getWorkStateString
+     * @brief getWorkStateString This method generate string about work state of server.
      * @return string of work state
      */
     virtual QString getWorkStateString() const;
 
     /**
-     * @brief connectionState
+     * @brief connectionState This method return string value about the cocction state
      * @return string with count users state
      */
     virtual QString connectionState() const;
 
     /**
-     * @brief banedList
+     * @brief banedList This method retrun list of banned clients of nodes.
      * @return list of baned nodes
      */
     QList<HostAddress> banedList() const;
 
     /**
-     * @brief isBanned
-     * @param socket
-     * @return
+     * @brief isBanned This method checks if the node is banned.
+     * @param socket This is node info object for validation
+     * @return true if node is banned
      */
     bool isBanned(QAbstractSocket* socket) const;
 
     /**
-     * @brief incomingConnection
-     * @param handle
+     * @brief incomingConnection This is ovverided method of QTCPServer
+     * @param handle This is socket handel
      */
-    void incomingConnection(qintptr handle) override;
+    void incomingConnection(qintptr handle) override final;
 
     /**
-     * @brief changeTrust change trust of connected node
-     * @param id - id of select node
-     * @param diff
-     * @return true if all good
+     * @brief changeTrust This method change trust of connected node
+     * @param id This is id of select node
+     * @param diff This is difference of current trust (currenTrus += diff)
+     * @return true if node Trust is changed successful
      */
     virtual bool changeTrust(const HostAddress& id, int diff);
 
     /**
-    * @brief incomingConnection for ssl sockets
+    * @brief incomingConnection This methiod work with incomming  ssl sockets.
     * @param handle - handle of socket
     */
     virtual void incomingSsl(qintptr handle);
 
     /**
-    * @brief incomingConnection for tcp sockets
-    * @param handle -  handle of socket
+    * @brief incomingConnection This methiod work with incomming  tcp sockets.
+    * @param handle - handle of socket
     */
     virtual void incomingTcp(qintptr handle);
 
     /**
-     * @brief useSelfSignedSslConfiguration - This method reconfigure current node to use selfSigned certificate.
+     * @brief useSelfSignedSslConfiguration This method reconfigure current node to use selfSigned certificate.
      * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
      *  The self signed certificate is temp value, this is will be changed after reboot node (server)
      * @param crtData - This is data for generation a new self signed certification.
@@ -371,15 +406,15 @@ protected:
     bool useSelfSignedSslConfiguration(const SslSrtData& crtData);
 
     /**
-     * @brief useSystemSslConfiguration - This method reconfigure current node to use sslConfig.
+     * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
      * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
-     * @param sslConfig - This is ssl configuration ot a current node (server)
+     * @param sslConfig This is ssl configuration ot a current node (server)
      * @return result of change node ssl configuration.
      */
     bool useSystemSslConfiguration(const QSslConfiguration& sslConfig);
 
     /**
-     * @brief disableSSL - this method disable ssl mode for this node
+     * @brief disableSSL This method disable ssl mode for this node
      * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
      * @return true if changes is completed.
      */
@@ -387,9 +422,13 @@ protected:
 
 
     /**
-     * @brief incomingData - this signal invoked when node get command or ansver
-     * @param pkg - get package (in this implementation it is only the Ping command)
-     * @param sender - sender of the package
+     * @brief incomingData This method invoked when node get command or ansver. But in default implemmentation it using only for Ping command. Add
+     * \code
+     * incomingData(pkg, sender);
+     * \endcode
+     * Into the overrided AbstractNode::ParsePacakge method on your own server or client class.
+     * @param pkg This is received package (in this implementation it is only the Ping command)
+     * @param sender This is information of sender of the package
      * @note override this method for get a signals.
      */
     virtual void incomingData(PKG::AbstractData* pkg,
@@ -397,7 +436,7 @@ protected:
 
     /**
      * @brief connections - return hash map of all connections of this node.
-     * @return
+     * @return return map of connections.
      */
     QHash<HostAddress, AbstractNodeInfo*> connections() const;
 
@@ -408,51 +447,52 @@ protected:
     virtual void connectionRegistered(const AbstractNodeInfo *info);
 
     /**
-     * @brief nodeStatusChanged - This method invoked when status of node chganged.
+     * @brief nodeStatusChanged This method invoked when status of node chganged.
      *  Base implementation do nothing. Override this method for add own functionality.
-     * @param node - address of changed node.
-     * @param status - new status of node.
+     * @param node This is address of changed node.
+     * @param status This is new status of node.
      *
      */
     void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
 
     /**
-     * @brief nodeConfirmend - thim method invocked when the node status changed to "confirmend"
+     * @brief nodeConfirmend This method invocked when the node status changed to "confirmend"
      *  default implementatio do nothing
-     * @param node - the address of changed node
+     * @param node This is address of changed node
      */
     virtual void nodeConfirmend(const HostAddress& node);
 
     /**
-     * @brief nodeConnected thim method invocked when the node status changed to "connected"
+     * @brief nodeConnected This method invocked when the node status changed to "connected"
      *  default implementatio do nothing
-     * @param node
+     * @param node This is address of changed node
      */
     virtual void nodeConnected(const HostAddress& node);
 
     /**
-     * @brief nodeConnected thim method invocked when the node status changed to "disconnected"
+     * @brief nodeConnected This method invocked when the node status changed to "disconnected"
      *  default implementatio do nothing
-     * @param node
+     * @param node This is address of changed node
      */
     virtual void nodeDisconnected(const HostAddress& node);
 
 
     /**
      * @brief pushToQueue - This method add action to queue. When the node status will be equal 'triggerStatus' then node run a action method.
-     * @param node - node.
-     * @param action - lyamda function with action.
-     * @param triggerStatus - node status.
+     * @param node This is address of node that changed status.
+     * @param action This is lyamda function with action.
+     * @param triggerStatus This is awaiting status of node.
      */
     void pushToQueue(const std::function<void ()> &action,
                      const HostAddress& node,
                      NodeCoonectionStatus triggerStatus);
 
     /**
-     * @brief takeFromQueue - take the list of actions of node. after invoke take elements will be removed.
-     * @param node - node
-     * @param triggerStatus - status of node
-     * @return list o actions
+     * @brief takeFromQueue This method take the list of actions of node.
+     *  After invoke take elements will be removed.
+     * @param node This is address of node that changed status.
+     * @param triggerStatus This is awaiting status of node.
+     * @return The list of an actions
      */
     QList<std::function<void ()>> takeFromQueue(const HostAddress& node,
                                                 NodeCoonectionStatus triggerStatus);
