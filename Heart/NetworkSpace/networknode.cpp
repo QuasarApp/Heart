@@ -202,7 +202,7 @@ QString NetworkNode::keyStorageLocation() const {
 
 ParserResult NetworkNode::parsePackage(const Package &pkg,
                                     const AbstractNodeInfo *sender) {
-    auto parentResult = AbstractNode::parsePackage(pkg, sender);
+    auto parentResult = DataBaseNode::parsePackage(pkg, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
     }
