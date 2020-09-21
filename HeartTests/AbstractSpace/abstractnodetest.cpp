@@ -21,7 +21,7 @@ protected:
 
         auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
         if (ping)
-            _ping.copyFrom(ping);
+            _ping.setAnsver(ping->ansver());
     }
 
 private:

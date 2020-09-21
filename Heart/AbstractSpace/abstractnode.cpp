@@ -921,6 +921,17 @@ bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
     return !_ssl.isNull();
 }
 
+bool AbstractNode::useSystemSslConfiguration(const QSslConfiguration &sslConfig) {
+    if (isListening()) {
+        return false;
+    }
+
+    _ssl = sslConfig;
+    _mode = SslMode::InitFromSystem;
+
+    return !_ssl.isNull();
+}
+
 bool AbstractNode::disableSSL() {
     if (isListening()) {
         return false;

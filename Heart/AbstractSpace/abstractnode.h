@@ -547,7 +547,7 @@ private:
      */
     void checkConfirmendOfNode(const HostAddress& node);
 
-    SslMode _mode;
+    SslMode _mode = SslMode::NoSSL;
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, ReceiveData> _receiveData;
