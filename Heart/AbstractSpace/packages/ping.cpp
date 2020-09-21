@@ -16,18 +16,6 @@ bool Ping::isValid() const {
     return AbstractData::isValid();
 }
 
-bool Ping::copyFrom(const AbstractData * other) {
-    if (!AbstractData::copyFrom(other))
-        return false;
-
-    auto otherObject = dynamic_cast<const Ping*>(other);
-    if (!otherObject)
-        return false;
-
-    this->_ansver = otherObject->_ansver;
-    return true;
-}
-
 bool Ping::ansver() const {
     return _ansver;
 }

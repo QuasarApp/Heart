@@ -12,7 +12,10 @@ namespace PKG {
  * This neede becouse QAbstractSocket emit error when connection closed from remote node.
  *
  * From QtDocumentation :
- * ``` If the remote host closes the connection, QAbstractSocket will emit errorOccurred(QAbstractSocket::RemoteHostClosedError), during which the socket state will still be ConnectedState, and then the disconnected() signal will be emitted.```
+ * \code{cpp}
+ *  If the remote host closes the connection, QAbstractSocket will emit errorOccurred(QAbstractSocket::RemoteHostClosedError), during which the socket state will still be ConnectedState, and then the disconnected() signal will be emitted.
+ * \endcond
+ *
  */
 class HEARTSHARED_EXPORT CloseConnection: public AbstractData
 {

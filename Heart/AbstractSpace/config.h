@@ -11,23 +11,22 @@
 
 
 // network settings
-#define LOCAL_SERVER    "127.0.0.1"
-
-#define DEFAULT_PORT          3090
-#define WAIT_CONFIRM_TIME     30000 // 30000 msec = 30 sec
+#define LOCAL_SERVER          "127.0.0.1"
+#define DEFAULT_PORT          3090  // Default work port
+#define WAIT_CONFIRM_TIME     30000 // timeout for waiting responce of server or client. 30000 msec = 30 sec
 
 // Data Base settings
-#define DEFAULT_DB_NAME "Storage.sqlite"
-#define DEFAULT_DB_PATH QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
-#define DEFAULT_DB_INIT_FILE_PATH ":/sql/DataBaseSpace/Res/BaseDB.sql"
-#define DEFAULT_UPDATE_INTERVAL 3600000 // 1 hour
+#define DEFAULT_DB_NAME "Storage.sqlite" // default database name of server
+#define DEFAULT_DB_PATH QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) // default location of database. in linux systems it is ~/.local/shared/<Company>/<AppName>
+#define DEFAULT_DB_INIT_FILE_PATH ":/sql/DataBaseSpace/Res/BaseDB.sql" // default database file path
+#define DEFAULT_UPDATE_INTERVAL 3600000 // This is interval of update database cache by default it is 1 hour
 
 // Transport Protockol settings
-#define ROUTE_COUNT_LIMIT 1000
-#define TRANSPORT_PACKAGES_CACHE 1000
+#define ROUTE_CACHE_LIMIT 1000          // This is defaut count of routes in the router class obecjt.
+#define TRANSPORT_PACKAGES_CACHE 1000   // This is defaut count of processed packages in the router class obecjt.
 
 // Node Settings
-#define PACKAGE_CACHE_SIZE 1000
+#define PACKAGE_CACHE_SIZE 1000         // this is default count limit of received packages
 
 // Other settings
 #ifdef RELEASE_BUILD

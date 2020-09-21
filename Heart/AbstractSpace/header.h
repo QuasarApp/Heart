@@ -12,28 +12,28 @@
 
 namespace QH {
 /**
- * @brief The Header struct 12 byte
+ * @brief The Header struct 12 bytes.
  */
 #pragma pack(push, 1)
 struct HEARTSHARED_EXPORT Header{
     /**
-     * @brief size - size of package data (not header)
+     * @brief size - size of package data (exclude header size)
      */
     unsigned short size;
 
     /**
-     * @brief command of pacage
+     * @brief command of pacage for more information see the AbstractData::toPackage method.
      */
     unsigned short command;
 
     /**
-     * @brief hash - is uniqueue id of a package. id calc with CRC32 function fo Qt implamentation. qHash(QByteArray)
+     * @brief hash This is uniqueue id of a package. id calc with CRC32 function fo Qt implamentation. qHash(QByteArray)
      */
     unsigned int hash;
 
     /**
-     * @brief triggerHash - this is hash of request package that this package has been responded
-     * the server should write to which command it responds
+     * @brief triggerHash This is hash of request package that this package has been responded
+     *  the server should write to which command it responds.
      */
     unsigned int triggerHash;
 
@@ -44,20 +44,20 @@ struct HEARTSHARED_EXPORT Header{
     ~Header() = default;
 
     /**
-     * @brief isValid
+     * @brief isValid This method check header size and compare commands.
      * @return true if header is valid
      */
     bool isValid() const;
 
 
     /**
-     * @brief reset - reset all data and set for header invalid status
+     * @brief reset This method reset all data and set for header invalid status
      */
     void reset();
 
     /**
      * @brief toString - return string of header of package
-     * @return
+     * @return string value.
      */
     QString toString() const;
 

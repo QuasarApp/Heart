@@ -19,39 +19,47 @@ class QHostInfo;
 namespace QH {
 
 /**
- * @brief The TrustNode enum
+ * @brief The TrustNode enum contains cases for trus of the client or nodes.
  */
 enum class TrustNode: unsigned char {
-    /// undefined node
+    /// Undefined node
     Undefined = 0xFF,
 
-    /// general trust of node
+    /// General trust of the node or client
     Default = 100,
 
-    /// this trusted of unbaned nodes
+    /// This trusted of unbaned nodes or clients. Recomendet trus of unbaned client.
+    /// For more informations see method AbstrcatData::unBan
     Restore = 20,
 
-    /// node with this trusted is forbidden
+    /// Node with this trusted is forbidden.
     Baned = 0
 };
 
 /**
- * @brief The AbstractNodeState enum - This is status of known nodes.
+ * @brief The AbstractNodeState enum - This is status of the known nodes or clients.
  */
 enum class NodeCoonectionStatus: int {
-    /// This node not sent data about its envirement
+    /// This node not sent data about its envirement and status of node socket is dissconnected.
     NotConnected,
-    /// The node with this status has already sent data about its environment.
+    /// The node with this status has socket status is connected.
     Connected,
     ///  The node confirmend. Node with it status sent a information
     ///  requarement for confirm in to this node object.
     Confirmed,
 };
 
+/**
+ * @brief qHash - simple hash function of NodeCoonectionStatus
+ * @param status - input data.
+ * @return crc32 hash code
+ */
 uint qHash(NodeCoonectionStatus status);
 
 /**
- * @brief The AbstractNodeInfo class
+ * @brief The AbstractNodeInfo class contains information about client or server connection and tcp socket of node.
+ * all node Info classes must be initialized in the AbstractNode::createNodeInfo methods.
+ * This implementation of nodeInf contains only trust of node and network socket.
  */
 class HEARTSHARED_EXPORT AbstractNodeInfo
 {
@@ -72,52 +80,53 @@ public:
     virtual ~AbstractNodeInfo();
 
     /**
-     * @brief sct
+     * @brief sct This method returtn socket of connection.
      * @return return socket of connection
      */
     QAbstractSocket *sct() const;
 
     /**
-     * @brief disconnect disconnect from host
+     * @brief disconnect This method disconnect device from host
      */
     virtual void disconnect();
 
     /**
-     * @brief ban this node
+     * @brief ban this node, set trust value to 0.
      */
     virtual void ban();
 
     /**
-     * @brief isBanned
-     * @return true if node baned
+     * @brief isBanned - check node of banned.
+     * @return true if the node is baned
      */
     virtual bool isBanned() const;
 
     /**
-     * @brief unBan
+     * @brief unBan - set trust value of node to TrustNode::Restore.
+     *  See TrustNode enum for more information.
      */
     virtual void unBan();
 
     /**
-     * @brief trust
-     * @return rtust
+     * @brief trust - return current trust level of thge node or client
+     * @return current trust value
      */
     virtual int trust() const;
 
     /**
-     * @brief setTrust manual set value of trust
+     * @brief setTrust This method set manually value of a this node trust
      * @param trust - new value
      */
     virtual void setTrust(int trust);
 
     /**
-     * @brief isValid
-     * @return true if all data valid
+     * @brief isValid - check node of valid. This implementation check connect status of socket.
+     * @return true if node or client is valid.
      */
     virtual bool isValid() const;
 
     /**
-     * @brief isConnected
+     * @brief isConnected - check of node connect status.
      * @return true if the socket connected
      */
     virtual bool isConnected() const;
@@ -137,32 +146,33 @@ public:
     virtual QDataStream& toStream(QDataStream& stream) const;
 
     /**
-     * @brief info
-     * @return Host info of this node
+     * @brief info - this method return Host domain information.
+     *  For more information see the Qt Documentation about QHostInfo.
+     * @return Host info of this node.
      */
     QHostInfo *info() const;
 
     /**
-     * @brief setInfo - set new temp info for this node
-     * @param info
+     * @brief setInfo - set new host info for this node
+     * @param info - host info
      */
     void setInfo(const QHostInfo &info);
 
     /**
-     * @brief networkAddress
+     * @brief networkAddress This method return network address of current node or client.
      * @return network adderess of node
      */
     HostAddress networkAddress() const;
 
     /**
-     * @brief setNetworkAddress - update network address
-     * @param networkAddress - new address
+     * @brief setNetworkAddress This method update network address of the current node
+     * @param networkAddress new address
      */
     void setNetworkAddress(const HostAddress &networkAddress);
 
     /**
-     * @brief status - status of node connection
-     * @return connection status
+     * @brief status This method return status of the node connection
+     * @return connection status for more info see NodeCoonectionStatus
      */
     NodeCoonectionStatus status() const;
 
@@ -173,14 +183,15 @@ public:
     void setStatus(const NodeCoonectionStatus &status);
 
     /**
-     * @brief confirmData - check all data of node and return true if node is confirmed
+     * @brief confirmData This method check all data of node and return true
+     * if node is confirmed.
      * @return true if node is confirmed
      */
     virtual bool confirmData() const;
 
     /**
-     * @brief isLocal - return true if connectuion opened on this node.
-     * @return
+     * @brief isLocal return true if connectuion opened on this node.
+     * @return True if connection is opened on this host.
      */
     bool isLocal() const;
 
@@ -192,7 +203,7 @@ public:
 
 protected:
     /**
-     * @brief setSct
+     * @brief setSct - set socket for this node or client
      * @param sct
      */
     void setSct(QAbstractSocket *sct);

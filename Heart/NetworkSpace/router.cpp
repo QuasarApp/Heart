@@ -28,7 +28,7 @@ void Router::updateRoute(const BaseId &node, const QList<HostAddress> &route) {
         _routesTimeMap.insert(QDateTime::currentSecsSinceEpoch(), node);
         _routes.insert(node, route);
 
-        if (ROUTE_COUNT_LIMIT < _processedPackages.size()) {
+        if (ROUTE_CACHE_LIMIT < _processedPackages.size()) {
             _routes.remove(*_routesTimeMap.begin());
             _routesTimeMap.erase(_routesTimeMap.begin());
         }
