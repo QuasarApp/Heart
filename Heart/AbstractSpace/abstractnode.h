@@ -54,11 +54,11 @@ enum class ParserResult {
  * For more information see AbstractNode::useSelfSignedSslConfiguration AbstractNode::useSystemSslConfiguration and AbstractNode::disableSSL methods.
  */
 enum class SslMode {
-    //// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr)
+    /// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr)
     NoSSL,
-    //// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
+    /// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
     InitFromSystem,
-    //// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslSrtData struct
+    /// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslSrtData struct
     InitSelfSigned
 };
 

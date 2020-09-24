@@ -21,12 +21,12 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The PrepareResult enum - result of work prepare sql query
+ * @brief The PrepareResult enum is result of work prepare sql query of dbobjects.
  */
 enum class PrepareResult {
-    /// prepare finished fail.
+    /// prepare is failed.
     Fail,
-    /// prepare finished succussful
+    /// prepare finished succussful.
     Success,
     /// prepare disabled for method. Use this case for disable prepare method for object without errors.
     Disabled,
@@ -45,69 +45,112 @@ public:
 
     ~DBObject() override;
 
-    //// AbstractData interface
     bool isValid() const override;
-
-    /**
-     * @brief copyFrom get all data from other
-     * @arg other - other data package
-     * @return return true if method finished seccussful
-     */
     bool copyFrom(const AbstractData * other) override;
 
     /**
-     * @brief getId
-     * @return id of objcet
+     * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
+     * @return The id of database objcet.
      */
     BaseId getId() const;
 
     /**
-     * @brief setId - set new id for db object
-     * @param id
+     * @brief setId This method set new id for current database object.
+     * @param id This is new value of id.
      */
     void setId(const BaseId& id);
 
     /**
-     * @brief clear
+     * @brief clear This method clear all data of database object.
+     *  Override This method for remove or reset your own members of class.
      */
     virtual void clear();
 
     /**
-     * @brief tableName
-     * @return
+     * @brief tableName This method return a table name of the database object.
+     * @return string value if the table name.
      */
     QString tableName() const;
 
     /**
-     * @brief createDBObject
-     * @return clone of self object pointer
+     * @brief createDBObject This method should be create a object with the some type as the object called this method.
+     * @note The object created on this method not destroyed automatically.
+     * @return pointer of new object with the some type.
      */
     virtual DBObject* createDBObject() const = 0;
 
     /**
-     * @brief prepareSelectQuery - override this metod for get item from database
-     *  this method need to prepare a query for selected data.
-     *  the default implementation generate default select: "select * from [table] where id=[id]".
-     *  If id is empty this implementation use data from altarnativeKey method.
-     * @param q - query object
-     * @return true if query is prepared seccussful
+     * @brief prepareSelectQuery This method should be prepare a query for selected data.
+     *  Override this metod for get item from database.
+     *  The default implementation generate default select:
+     *  \code
+     *   "select * from [table] where id=[id]".
+     *  \endcode
+     * If id is empty this implementation use data from altarnativeKey method. See DBObject::altarnativeKey fr more information.
+     * @param q This is query object.
+     * @return PrepareResult object with information about prepare results.
      */
     virtual PrepareResult prepareSelectQuery(QSqlQuery& q) const;
 
     /**
-     * @brief fromSqlRecord- this method need to init this object from executed sqlRecord.
-     *  default implementation get general dbObject information ( id and table name )
-     * @note this method weel be invoke for one object. but if isBundle return 'true' then a function fromSqlRecord moust be invoked foreach all elements of list.
-     * @param q - sql record
-     * @return true if method finished succesful
+     * @brief fromSqlRecord This method should be initialize this object from the executed sqlRecord.
+     *  The Default implementation get general dbObject information ( id and table name ).
+     *  Override This method for initialize this object from sql query.
+     * @note This method weel be invoke for one object. But if isBundle return 'true' then a function fromSqlRecord moust be invoked foreach all elements of list.
+     * @param q This is query object.
+     * @return true if method finished succesful.
+     *
+     * Exampel of override fromSqlRecord method:
+     * \code{cpp}
+     *  bool ExampleObject::fromSqlRecord(const QSqlRecord &q) {
+            if (!DBObject::fromSqlRecord(q)) {
+                return false;
+            }
+
+            exampleMember = q.value("exampleMember").toInt();
+            return isValid();
+        }
+     * \code
      */
     virtual bool fromSqlRecord(const QSqlRecord& q);
 
     /**
-     * @brief prepareSaveQuery - override this method for save item into database
-     *  this method need to prepare a query for selected data.
-     * @param q - query of requst
-     * @return PrepareResult value
+     * @brief prepareSaveQuery This method should be prepare a query for save object into database.
+     * You need to create a own save sql query for this object into database.
+     *  Override this metod for save item into database.
+     * @note befor creating a own object you need to create a own database structure.
+     * @param q This is query object.
+     * @return PrepareResult object with information about prepare results.
+     *
+     * Example of overriding:
+     * \code{cpp}
+     *  PrepareResult ExampleObject::prepareSaveQuery(QSqlQuery &q) const {
+
+            QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
+                                  "ON CONFLICT(id) DO UPDATE SET %2";
+            queryString = queryString.arg(tableName());
+            queryString = queryString.arg("id, ExampleObjectData");
+            queryString = queryString.arg("ExampleObjectData=:ExampleObjectData");
+
+            QString values;
+
+            values += "'" + getId().toBase64() + "', ";
+            values += ":ExampleObjectData, ";
+
+            queryString = queryString.arg(values);
+
+            if (q.prepare(queryString)) {
+                q.bindValue(":ExampleObjectData", ExampleObjectData);
+                return PrepareResult::Success;
+            }
+
+
+            QuasarAppUtils::Params::log("Query:" + queryString,
+                                        QuasarAppUtils::Error);
+
+            return PrepareResult::Fail;
+        }
+     * \endcode
      */
     virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const = 0 ;
 
