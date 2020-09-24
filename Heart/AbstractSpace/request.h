@@ -13,7 +13,8 @@
 namespace QH {
 
 /**
- * @brief The Request class - base request methods for data packages
+ * @brief The Request class is base request methods for data packages.
+ *  This simple class contains request Cmd value and get/set methods for access of command.
  */
 class HEARTSHARED_EXPORT Request
 {

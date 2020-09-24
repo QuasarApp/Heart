@@ -19,11 +19,10 @@
 #include <QTimer>
 #include "abstractdata.h"
 #include "workstate.h"
-
+#include "package.h"
 #include "cryptopairkeys.h"
 #include "icrypto.h"
 #include "heart_global.h"
-#include "receivedata.h"
 #include "packagemanager.h"
 
 class QSslCertificate;
@@ -33,6 +32,7 @@ class QSslConfiguration;
 namespace QH {
 
 class DataSender;
+class ReceiveData;
 
 /**
  * @brief The ParserResult enum
@@ -323,7 +323,7 @@ protected:
      * @param req This is header of request
      * @return true if data sendet succesful.
      */
-    virtual bool sendData(PKG::AbstractData *resp,  const HostAddress& addere,
+    virtual bool sendData(PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
 
     /**
@@ -333,7 +333,7 @@ protected:
      * @param req This is header of request
      * @return true if data sendet succesful.
      */
-    virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& addere,
+    virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
 
     /**
@@ -550,7 +550,7 @@ private:
     SslMode _mode = SslMode::NoSSL;
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;
-    QHash<HostAddress, ReceiveData> _receiveData;
+    QHash<HostAddress, ReceiveData*> _receiveData;
 
     QHash<HostAddress, QHash<NodeCoonectionStatus, QList<std::function<void()>>>> _actionCache;
 

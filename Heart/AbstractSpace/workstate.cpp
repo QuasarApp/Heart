@@ -11,7 +11,7 @@
 
 namespace QH{
 
-bool WorkState::getIsRun() const {
+bool WorkState::IsRun() const {
     return isRun;
 }
 

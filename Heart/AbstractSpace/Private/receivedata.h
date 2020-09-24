@@ -6,7 +6,7 @@
 namespace QH {
 
 /**
- * @brief The ReceiveData struct - this structure contains informaton for parse packages
+ * @brief The ReceiveData struct This is private structure for contains informaton for parse packages
  */
 struct ReceiveData
 {

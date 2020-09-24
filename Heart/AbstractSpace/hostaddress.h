@@ -22,7 +22,7 @@ public:
 
 
     /**
-     * @brief port - This method return port of node.
+     * @brief The port method return port of node.
      * @return port of node.
      */
     unsigned short port() const;

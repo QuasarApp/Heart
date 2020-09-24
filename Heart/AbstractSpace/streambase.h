@@ -18,7 +18,9 @@ namespace QH {
 class Package;
 
 /**
- * @brief The StreamBase class - this class add support for streaming data for all cheldren classes.
+ * @brief The StreamBase class add support streaming data for all children classes.
+ *  For correctly working all serializations functions you need to override fromStream and toStream methods.
+ * All implementations of overriden method should be contains a invoke of method of base class.
  */
 class HEARTSHARED_EXPORT StreamBase
 {
@@ -27,47 +29,69 @@ public:
     virtual ~StreamBase();
 
     /**
-     * @brief fromBytes - private initialisation of object from byte array
+     * @brief fromBytes This method method provide initialisation of object from byte array.
      * @return true if all good
      */
     bool fromBytes(const QByteArray &data);
 
     /**
-     * @brief toBytes
-     * @return byte array for package
+     * @brief toBytes This method convert a current object to bytes array.
+     * @return bytes array for package
      */
     QByteArray toBytes() const;
 
 
     /**
-     * @brief operator << it is wraper over toStream
-     * @param stream
-     * @param obj
-     * @return stream
+     * @brief This is wraper over toStream
+     * @param stream This is qt data stream object.
+     * @param obj This is serialized object.
+     * @return stream object
      */
     friend QDataStream& operator<< (QDataStream& stream, const StreamBase& obj);
 
     /**
-     * @brief operator >> it is wraper over fromStream
-     * @param stream
-     * @param obj
-     * @return
+     * @brief This is wraper over toStream
+     * @param stream This is qt data stream object.
+     * @param obj This is serialized object.
+     * @return stream object
      */
     friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
 
 protected:
+
     /**
-     * @brief fromStream
-     * @param stream
-     * @return stream
+     * @brief fromStream This method should be read all bytes from the stream object and full the current object.
+     * @note The implementation of this method should be invoke a method of base class.
+     * @param stream This is Qt stream object.
+     * @return Qt stream object.
+     *
+     * Examle of base simple implementation:
+     *
+     *  \code{cpp}
+        QDataStream &ExampleClass::fromStream(QDataStream &stream) const {
+            StreamBase::toStream(stream);
+            stream >> exampleMember;
+            return stream;
+        }
+     *  \endcode
      */
     virtual QDataStream& fromStream(QDataStream& stream) = 0;
 
     /**
-     * @brief toStream
-     * @param stream
-     * @return stream
+     * @brief fromStream This method should be write all members of the current object to the stream object.
+     * @note The implementation of this method should be invoke a method of base class.
+     * @param stream This is Qt stream object.
+     * @return Qt stream object.
+     *
+     * Examle of base simple implementation:
+     * \code{cpp}
+        QDataStream &ExampleClass::toStream(QDataStream &stream) const {
+            StreamBase::toStream(stream);
+            stream << exampleMember;
+            return stream;
+        }
+     * \endcode
      */
     virtual QDataStream& toStream(QDataStream& stream) const = 0;
 

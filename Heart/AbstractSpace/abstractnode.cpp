@@ -23,6 +23,7 @@
 #include <QMetaObject>
 #include <QtConcurrent>
 #include <closeconnection.h>
+#include "receivedata.h"
 
 namespace QH {
 
@@ -61,6 +62,12 @@ void AbstractNode::stop() {
         if (!it->isFinished())
             it->cancel();
     }
+
+    for (auto it: _receiveData) {
+        delete  it;
+    }
+    _receiveData.clear();
+
 }
 
 AbstractNodeInfo *AbstractNode::getInfoPtr(const HostAddress &id) {
@@ -698,8 +705,12 @@ void AbstractNode::avelableBytes() {
         return;
     }
 
-    auto &pkg = _receiveData[id]._pkg;
-    auto &hdrArray = _receiveData[id]._hdrArray;
+    if (!_receiveData.contains(id)) {
+        _receiveData.insert(id, new ReceiveData());
+    }
+
+    auto &pkg = _receiveData[id]->_pkg;
+    auto &hdrArray = _receiveData[id]->_hdrArray;
 
     int workIndex = 0;
     auto array = client->readAll();

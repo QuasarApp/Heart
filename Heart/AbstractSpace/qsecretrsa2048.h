@@ -10,7 +10,7 @@ class QRSAEncryption;
 namespace QH {
 
 /**
- * @brief The QSecretRSA2048 class Use
+ * @brief The QSecretRSA2048 class Use a QtSecret library for implementation RSA alghoritms.
  */
 class HEARTSHARED_EXPORT QSecretRSA2048: public ICrypto
 {
@@ -25,10 +25,6 @@ public:
     QByteArray extractSign(const QByteArray &data) override;
     QByteArray concatSign(const QByteArray &data, const QByteArray &sign) override;
 
-    /**
-     * @brief isValid
-     * @return true if object is valid.
-     */
     bool isValid() const override;
 
 protected:
