@@ -155,12 +155,12 @@ public:
     virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const = 0 ;
 
     /**
-     * @brief prepareRemoveQuery - override this method for remove this item from database.
-     *  this method need to prepare a query for remove this object.
-     *  the default implementatin remove item from id or primaryKey.
-     *  If id is empty this implementation use data from altarnativeKey method.
-     * @param q - query of requst
-     * @return PrepareResult value
+     * @brief prepareRemoveQuery This method method need to prepare a query for remove this object.
+     * Override this method for remove this item from database.
+     * The default implementatin remove item from id or primaryKey for more information see DBObject::altarnativeKey method.
+     * If id is empty the default implementation use data from altarnativeKey method.
+     * @param q This is query object.
+     * @return PrepareResult object with information about prepare results.
      */
     virtual PrepareResult prepareRemoveQuery(QSqlQuery& q) const;
 
