@@ -17,17 +17,19 @@ namespace QH {
 
 class Abstract;
 /**
- * @brief The Package struct
+ * @brief The Package struct. This is base structure for transporting data by network between QH nodes.
+ * The Package contains a 12 bytes header and Package::data array. The size on the header should be equals size of Package::data array.
+ *
  */
 class HEARTSHARED_EXPORT Package: public StreamBase {
 
 public:
     /**
-     * @brief hdr - header of package
+     * @brief hdr This is header of package. For more information see the Header struct.
      */
     Header hdr;
     /**
-     * @brief data - source data of package
+     * @brief data This is source data of package.
      */
     QByteArray data;
 
@@ -35,19 +37,20 @@ public:
     virtual ~Package() = default;
 
     /**
-     * @brief isValid
+     * @brief isValid This method validation a current package.
+     * Default implementation is checked a header and compare a size of package in header and size of source data.
      * @return true if package is valid
      */
     virtual bool isValid() const;
 
     /**
-     * @brief reset - reset all data and set for package invalid status
+     * @brief reset This method reset all data and set for package invalid status
      */
     virtual void reset();
 
     /**
-     * @brief toString - convert pakcage information to string label
-     * @return string
+     * @brief toString This method convert a pakcage information to a string label
+     * @return string value of the package.
      */
     QString toString() const;
 

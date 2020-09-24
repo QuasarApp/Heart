@@ -3,6 +3,7 @@
 #include <package.h>
 #include <ctime>
 #include <config.h>
+#include <packadata.h>
 
 namespace QH {
 
@@ -50,10 +51,6 @@ void PackageManager::processed(const Package &pkg, char processResult) {
                          });
 
     _processTime.insert(static_cast<int>(time(0)), pkg.hdr.hash);
-}
-
-PackageManager::PackaData::~PackaData() {
-    delete _data;
 }
 
 }

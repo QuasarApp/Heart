@@ -19,7 +19,11 @@ namespace QH {
 class CryptoPairKeys;
 class ICrypto;
 /**
- * @brief The KeyStorage class provie the functionality of controll crypto keys (generate, save and write);
+ * @brief The KeyStorage class provie the functionality of controll crypto keys (generate, save and write).
+ * The current implementation of the key storage is collected cryptokeys like files in a key storage location.
+ *
+ * Work scheme:
+ *\image html KeyStorage.svg width=800px
  */
 class KeyStorage: public QThread
 {
@@ -73,7 +77,7 @@ public:
 
     /**
      * @brief crypt This method crypted a data message using a publicKey
-     * @param dataThis is pointer to data array for crypting.
+     * @param data This is pointer to data array for crypting.
      * @note data has ben changed after call this method.
      * @param publicKey This is key for crypting data
      * @return true if function finished seccussful
@@ -107,13 +111,15 @@ public:
 
     /**
      * @brief concatSign This method concat a data of message and signs of a message.
-     * @param data This is message data
-     * @return signed message
+     * @param data This is message data.
+     * @param sign This is a sign of message.
+     * @return signed message.
      */
     QByteArray concatSign(const QByteArray& data, const QByteArray& sign);
 
     /**
      * @brief check This method validation signed message
+     * @param signedData This is signed message for checking.
      * @param publicKey This is public key for validation of message.
      * @return true if function finished seccussful and signedData is valid.
      */
@@ -127,7 +133,7 @@ public:
 
     /**
      * @brief storageLocation This method return a Path of the storage location.
-     * @default QStandardPaths::DataLocation/KeysStorage
+     * By default storageLocation is QStandardPaths::DataLocation/KeysStorage
      * @return parth to storage location of crypto keys
      */
     QString storageLocation() const;
@@ -143,7 +149,10 @@ public:
      *  but set default path.
      * @param dirName This is name of storage location. If This parametr weel be empty then
      *  storage location set default dir name. By default is name of crypto class.
-     * @default default path of storage is '/QStandardPaths::AppDataLocation/crypto/dirName'
+     * By default path of storage is
+     * \code
+     * QStandardPaths::AppDataLocation/crypto/dirName;
+     * \endcode
      * @return true if the storage inited successful
      */
     bool initDefaultStorageLocation(const QString& dirName = "");
