@@ -155,7 +155,7 @@ public:
     virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const = 0 ;
 
     /**
-     * @brief prepareRemoveQuery This method method need to prepare a query for remove this object.
+     * @brief prepareRemoveQuery This method method should be prepare a query for remove this object from a database.
      * Override this method for remove this item from database.
      * The default implementatin remove item from id or primaryKey for more information see DBObject::altarnativeKey method.
      * If id is empty the default implementation use data from altarnativeKey method.
@@ -165,22 +165,29 @@ public:
     virtual PrepareResult prepareRemoveQuery(QSqlQuery& q) const;
 
     /**
-     * @brief isCached
-     * @return return true if item in cache. default implementation retun true only
+     * @brief isCached This method shold be retun status of object.
+     * If this method return true then this object can be saved into cache of database.
+     * Override this method and set this value to false for composite objects
+     * (objects for which a select query can return several objects
+     * or an object that does not have a direct representation in the database
+     * but contains common characteristics of several objects)
+     * @return True if item in cache.
+     * Default implementation retun true only
      */
     virtual bool isCached() const;
 
     /**
-     * @brief isBundle
-     *  If this function return true then SqlDBWriter create only one object after invoked selectquery.
-     *  And if the selectquery function return a list of more 1 elements then a method fromSqlRecord moust be invoked foreach all elements of list.
+     * @brief isBundle This method definef determines whether the object will be abstract (composite objects) or singel object
+     * If this function return true then SqlDBWriter create only one object after invoked selectquery.
+     * And if the selectquery function return a list of more 1 elements then a method fromSqlRecord moust be invoked foreach all elements of list.
      * @return true if the object is a selection from a set of database object.
      */
     virtual bool isBundle() const;
 
     /**
-     * @brief dbAddress - unique address of item in database {id:table}
-     *  default implementation
+     * @brief dbKey This method return unique key obje this object.
+     * For more information see AbstractKey::hash methid.
+     * This method calc hash of {id:table} data.
      * @return unique key of this object
      */
     virtual uint dbKey() const;
