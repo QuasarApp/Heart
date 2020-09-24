@@ -18,6 +18,9 @@ namespace PKG {
 class AbstractData;
 }
 
+/**
+ * @brief The iObjectProvider class
+ */
 class HEARTSHARED_EXPORT iObjectProvider
 {
 public:

@@ -17,67 +17,100 @@
 namespace QH {
 
 /**
- * @brief The AccessToken class - contains info about token and duration of token
+ * @brief The AccessToken class is contains info about token and duration of this token.
+ * Tiken is byte array with privileges. In usuallu cases toke add permisions for database objects.
  */
 class HEARTSHARED_EXPORT AccessToken : public StreamBase
 {
 public:
 
+    /**
+     * @brief The Duration enum This enum contains a long time unit.
+     */
     enum Duration: int {
-        Secund = 1,
-        Minute = 60 * Secund,
+        /// The one second
+        Second = 1,
+        /// The one minute
+        Minute = 60 * Second,
+        /// The one hour
         Hour = 60 * Minute,
+        /// The one day
         Day = 24 * Hour,
+        /// The one Week
         Week = 7 * Day,
+        /// The one Month
         Month = 30 * Day,
+        /// The one year
         Year = 365 * Day,
     };
 
     /**
-     * @brief AccsesToken - this constructor create token on duration (s)
-     * @param duration - value as secundes
-     * @param entropy - random bytes array for generate token
+     * @brief AccsesToken This constructor create token on duration (s)
+     * @param duration This is value in secundes
+     * @param entropy This is random bytes array for generate token. By Default is empty string
      */
     explicit AccessToken(int duration, const QByteArray& entropy = "");
 
     /**
-     * @brief AccsesToken - constructor by default create not valid token
+     * @brief AccsesToken constructor by default create not valid token
      */
     explicit AccessToken();
 
     /**
-     * @brief AccessToken - copy constructor
+     * @brief AccessToken copy constructor
      * @param other
      */
     AccessToken(const AccessToken& other);
 
     /**
-     * @brief isValid
+     * @brief isValid This method check this toke to valid.
      * @return return true if token is valid;
      */
     bool isValid() const;
 
     /**
-     * @brief clear - reset all data of token
+     * @brief clearThis method reset all data of token
      */
     void clear();
 
-    friend QDataStream& operator<<(QDataStream& stream, const AccessToken& token);
-    friend QDataStream& operator>>(QDataStream& stream, AccessToken& token);
+    /**
+     * @brief operator == compare left and right values with type AccessToken
+     * @param other This is another object of the AccessTokens
+     * @return true if 2 object is equals
+     */
     bool operator == (const AccessToken& other) const;
+
+    /**
+     * @brief operator != compare left and right values with type AccessToken
+     * @param other This is another object of the AccessTokens
+     * @return false if 2 object is equals
+     */
     bool operator != (const AccessToken& other) const;
 
+    /**
+     * @brief operator = this is operator of copy objects
+     * @param other
+     * @return
+     */
     AccessToken &operator =(const AccessToken& other);
 
+    /**
+     * @brief qHash This is hash function of the AccessToken type
+     * @param token input value of AccessToken type
+     * @return hash code of the AccessToken value.
+     */
     friend uint qHash(const AccessToken& token);
+
+protected:
+    QDataStream &fromStream(QDataStream &stream);
+    QDataStream &toStream(QDataStream &stream) const;
 
 private:
     QByteArray _data;
     int _duration;
 
     // StreamBase interface
-    QDataStream &fromStream(QDataStream &stream);
-    QDataStream &toStream(QDataStream &stream) const;
+
 
     QByteArray generate(const QByteArray &user);
 };

@@ -193,59 +193,51 @@ public:
     virtual uint dbKey() const;
 
     /**
-     * @brief altarnativeKey - this method need to return a altarnative key:value pair for a select object when a object do not have a database id.
-     * @default default implementation return empty pair.
-     * @return pair of altarnative keys. Key : Value.
+     * @brief altarnativeKey This method must to return a altarnative 'key:value' pair for select object when the object do not have a database id.
+     * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
+     * The default implementation return empty pair value.
+     * @return pair of altarnative keys. {Key : Value}.
      */
     virtual QPair<QString, QString> altarnativeKey() const;
 
     /**
-     * @brief dbAddress
-     * @return
+     * @brief dbAddress This method return address of the database object.
+     * IF the object is not valid then this method return an invalid database address.
+     * @return The database address of current object.
      */
     DbAddress dbAddress() const;
 
     /**
-     * @brief clone - this nethod create a new object. The new Object is cone of current object.
-     * @note If you want to get raw pointer to cone object use a "cloneRaw" method.
-     * @return return shared pointer to clone of current object
+     * @brief clone This method create a new object. The new Object is clone of current object.
+     * @note If you want to get raw pointer to the clone object use a DBObject::cloneRaw method.
+     * @return The Shared pointer to clone of current object.
      */
     QSharedPointer<DBObject> clone() const;
 
     /**
-     * @brief cloneRaw - this method return a raw pointer to clone of this object.
-     * @warning - clone object don not removed automatically and may result in a memory leak.
-     * @note for get a shared pointer of clone object use the "clone" method.
-     * @return retuen raw pointer to cloe of this object.
+     * @brief cloneRaw This method return a raw pointer to clone of this object.
+     * @warning clone object don not removed automatically and may result in a memory leak.
+     * @note for get a shared pointer of clone object use the DBObject::clone method.
+     * @return The raw pointer to clone of this object.
      */
     DBObject* cloneRaw() const;
 
-    /**
-     * @brief toString - return a string implementation fo this object
-     * @return string of object
-     */
     QString toString() const override;
 
 
 protected:
 
-    //// StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
     /**
-     * @brief generateId - override this method for all db Objects.
-     * if create id is impasoble ther retrun not valid id.
-     * @return retuern Id of database object
+     * @brief generateId This method using for generate a id of dbObject from objects memeber values.
+     *  Usually the implementation of this object is hash function of key members of current object.
+     * if create id is impasoble then the generateId method retrun not valid id.
+     * @return retuern Id of database object.
      */
     virtual BaseId generateId() const = 0;
 
-    /**
-     * @brief init - init this object, prepare work with database.
-     * @default - this implementation is create id for object of database.
-     *  If method generateId return not valid id this method return false.
-     * @return true if object initialized fuccessful else return false.
-     */
     bool init() override;
 
 private:

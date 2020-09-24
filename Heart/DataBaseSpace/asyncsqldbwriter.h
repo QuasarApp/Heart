@@ -26,52 +26,47 @@ public:
     ~AsyncSqlDbWriter();
     // iObjectProvider interface
     /**
-     * @brief saveObject - save object in to database. This implementation work on own thread
-     * @param saveObject - ptr to object
+     * @brief saveObject save object in to database. This implementation work on own thread
+     * @param saveObject ptr to object
      * @return true if function finished successful
      */
     bool saveObject(const PKG::DBObject* saveObject) override;
 
     /**
-     * @brief saveObject - delete object in to database. This implementation work on own thread
-     * @param deleteObject - ptr to object
+     * @brief saveObject delete object in to database. This implementation work on own thread
+     * @param deleteObject ptr to object
      * @return true if function finished successful
      */
     bool deleteObject(const PKG::DBObject* deleteObject) override;
 
     /**
-     * @brief saveObjectWithWait - this is owerload of saveObject with wait results of a database thread.
-     * @param saveObject - ptr to object
+     * @brief saveObjectWithWait this is owerload of saveObject with wait results of a database thread.
+     * @param saveObject ptr to object
      * @return true if function finished successful
      */
     bool saveObjectWithWait(const PKG::DBObject* saveObject);
 
     /**
-     * @brief deleteObjectWithWait - this is owerload of deleteObject with wait results of a database thread.
-     * @param deleteObject - ptr to object
+     * @brief deleteObjectWithWait this is owerload of deleteObject with wait results of a database thread.
+     * @param deleteObject ptr to object
      * @return true if function finished successful
      */
     bool deleteObjectWithWait(const PKG::DBObject* deleteObject);
 
     /**
-     * @brief getAllObjects - this implementation work on own thread and wait results in current thread.
-     * @param templateObject - template object with request
-     * @param result - list of objects
+     * @brief getAllObjects this implementation work on own thread and wait results in current thread.
+     * @param templateObject template object with request
+     * @param result list of objects
      * @return true if function finished successful
      */
     bool getAllObjects(const PKG::DBObject &templateObject, QList<const PKG::DBObject *> &result) override;
 
-    /**
-     * @brief initDb - this implementation initialise database in own thread and wait result of initialization on current thread
-     * @param initDbParams - initialise parameters
-     * @return true if database initialise successful
-     */
     bool initDb(const QVariantMap &params) override;
 
 protected slots:
     /**
-     * @brief handleSaveObject - this method call SaveObject on own thread.
-     * @param saveObject - object for save
+     * @brief handleSaveObject this method call SaveObject on own thread.
+     * @param saveObject object for save
      */
     void handleSaveObject(const QH::PKG::DBObject* saveObject,
                            bool *resultOfWork, bool *endOfWork);

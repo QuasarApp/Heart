@@ -194,7 +194,7 @@ protected:
     void setCmd(unsigned short cmd);
 
     /**
-     * @brief init - this method need to invoke after create object for initialize all componet of ojects.
+     * @brief init This method need to invoke after create object for initialize all componet of ojects.
      * @note do not invode this method on constructor of object, becose object wel be initialized not correctly.
      *  By defaul implementation of object init comand of object.
      * @return true if object initialized correctly.

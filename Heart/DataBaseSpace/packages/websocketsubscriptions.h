@@ -18,7 +18,8 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The WebSocketSubscriptions class
+ * @brief The WebSocketSubscriptions class is list of subscribrs object.
+ *  Using for transporting a informations about subscribes
  */
 class HEARTSHARED_EXPORT WebSocketSubscriptions: public AbstractData
 {
@@ -29,7 +30,15 @@ public:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
+    /**
+     * @brief addresses This is list of subscribes.
+     */
     QSet<DbAddress> addresses() const;
+
+    /**
+     * @brief setAddresses This method set a new list of subscribers.
+     * @param addresses This is a new list of subscribers.
+     */
     void setAddresses(const QSet<DbAddress> &addresses);
 
 private:
