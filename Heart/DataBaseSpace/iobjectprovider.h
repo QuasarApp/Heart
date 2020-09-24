@@ -19,7 +19,8 @@ class AbstractData;
 }
 
 /**
- * @brief The iObjectProvider class
+ * @brief The iObjectProvider class is base interface for work with database objects.
+ * Using on database writers and database cache.
  */
 class HEARTSHARED_EXPORT iObjectProvider
 {
@@ -28,8 +29,11 @@ public:
     virtual ~iObjectProvider();
 
     /**
-     * @brief getObject - this method return pointer to DBObject created by select method of template object.
-     * @param obj - template object with a select db request.
+     * @brief getObject this method return a pointer to DBObject created by select method of the template object (templateVal).
+     * @param templateVal This is template object with a select data base request.
+     * @note This method return a database object with a type as a type of templateVal object.
+     * If you want to get a object of C class but the datatabase contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
+     * This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors.
      * @return return pointer to DBObject ot nullptr id object not exits.
      */
     template<class TYPE>
@@ -48,30 +52,32 @@ public:
     }
 
     /**
-     * @brief getObjectRaw - return object without test object type
+     * @brief getObjectRaw This method return object without test object type
      * @note if you want get object with check object type use getObject method.
-     * @param templateVal - template object with request to database
-     * @return - return database object pointer (not casted)
+     * @param templateVal This is  template object with request to database
+     * @return The database object pointer (not casted)
      */
     const PKG::DBObject *getObjectRaw(const PKG::DBObject &templateVal);
 
     /**
-     * @brief getAllObjects - executable select method of objects and return list of all selected objects
-     * @param obj - template object with select request.
-     * @param result - return value, list of selected objects.
+     * @brief getAllObjects This method executable select method of objects and return list of all selected objects
+     * @param templateObject This is template object with select request.
+     * @param result This is return value, list of selected objects.
      * @return true if objects have in db else false.
      */
     virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) = 0;
 
     /**
-     * @brief saveObject
-     * @return
+     * @brief saveObject This method executable save method of objects and save current object into database.
+     * @param saveObject This is object for saving.
+     * @return true if objects is saved successful else false.
      */
     virtual bool saveObject(const PKG::DBObject* saveObject) = 0;
 
     /**
-     * @brief deleteObject
-     * @return
+     * @brief deleteObject This method executable delete method of objects and remove current object from database.
+     * @param obj This is object for removing.
+     * @return true if object is removed successful else false.
      */
     virtual bool deleteObject(const PKG::DBObject* obj) = 0;
 
