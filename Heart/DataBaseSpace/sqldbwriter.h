@@ -25,7 +25,10 @@ class PlayerDBData;
 namespace QH {
 
 /**
- * @brief The SqlDBWriter class
+ * @brief The SqlDBWriter class. This class write and read objects from database (hard level).
+ *  Befor working with database you need to initialize it. The SqlDBWriter support a any sql databases,
+ *  For list of supported drivers see the Qt Docummentation \link{}
+ *  For initialize a custom database driver you need to set an own params see the SqlDBWriter::initDb metthod.
  */
 class HEARTSHARED_EXPORT SqlDBWriter : public iObjectProvider
 {
@@ -33,48 +36,37 @@ public:
     SqlDBWriter();
 
     /**
-     * @brief initDb
-     * @param path
-     * @return
+     * @brief initDb This method is wraper of the initDb(const QVariantMap &params) method.
+     *  This implementation read a initDbParams file and get all params from json.
+     * @note this method must be invoked in the thread as a working thread of this object.
+     * @param initDbParams This is path to  json configuration file with settings of database.
+     *  For more information see description of the SqlDBWriter::getInitParams method.
+     * @return true if database initialize successful.
      */
     virtual bool initDb(const QString &initDbParams = DEFAULT_DB_PATH);
 
     /**
-     * @brief initDb
-     * @param path
-     * @return
+     * @brief initDb This method initialize a database params and create a new database if the old database not exists.
+     * @note this method must be invoked in the some thread as a working thread of this object.
+     * @param params This is params of initialize a database. For more information about availabe and supported parameters see the description SqlDBWriter::getInitParams method.
+     *  For more information see description of the SqlDBWriter::getInitParams method.
+     * @return true if database initialize successful.
      */
     virtual bool initDb(const QVariantMap &params);
 
     /**
-     * @brief isValid
-     * @return
+     * @brief isValid This method return true if database is successful inited and working correctly.
+     * @return true if database working is correctly.
      */
     virtual bool isValid() const;
 
-    /**
-     * @brief getAllObjects - executable select method of objects and return list of all selected objects
-     * @param obj - template object with select request.
-     * @param result - return value, list of selected objects.
-     * @return true if objects have in db else false.
-     */
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
-
-    /**
-     * @brief saveObject
-     * @return
-     */
     bool saveObject(const QH::PKG::DBObject *ptr) override;
-
-    /**
-     * @brief deleteObject
-     * @return
-     */
     bool deleteObject(const QH::PKG::DBObject *ptr) override;
 
     /**
-     * @brief databaseLocation - return location of database.
-     * if it is sqllite then return path to db file else return database name.
+     * @brief databaseLocation This method return location of database.
+     * If it is sqllite then return path to db file else return database name.
      * @return path or name of database.
      */
     QString databaseLocation() const;
@@ -84,18 +76,16 @@ public:
 protected:
 
     /**
-     * @brief enableFK - enavle forign ke for sqlite db
-     * @return return true if all good
+     * @brief enableFK This method enable forign key for the sqlite database
+     * @return return true if new settings set is correctly
      */
     bool enableFK();
 
     /**
-     * @brief enableFK - disavle forign ke for sqlite db
-     * @return return true if all good
+     * @brief disableFK This method disable forign key for the sqlite database
+     * @return return true if new settings set is correctly
      */
     bool disableFK();
-
-
 
     /**
      * @brief getInitPararm
