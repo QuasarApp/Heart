@@ -3,8 +3,7 @@
 namespace QH {
 namespace PKG {
 
-CloseConnection::CloseConnection()
-{
+CloseConnection::CloseConnection() {
 
 }
 }

@@ -1,5 +1,5 @@
 # QuasarApp Heart
-QuasarApp Heart - it is base backend for C++/Qt projects. 
+QuasarApp Heart - it is base backend for C++/Qt projects. This library support work with databases and work with lite network requests.
 
 ## Futures 
 This library consists of two levels (AbstractNode level and DataBaseNode level).
@@ -11,9 +11,8 @@ This library consists of two levels (AbstractNode level and DataBaseNode level).
 
 ### AbstractNode level (0)
 #### Description
-The AbstractNode level implement only base functons of create new work threads and parsing packages.
-
-For more information see QuasarApp Heart documentation or QH namespace.
+The AbstractNode level implement only base functions of create a new work threads and parsing packages.
+For more information see QuasarApp Heart documentation, QH namespace.
 
 ### DataBaseNode level (1)
 #### Description
@@ -24,7 +23,6 @@ The DataBaseNode level implement methods and packages for work with databases. T
 This level is still in develop. 
 
 ## Build and Include
-
 ### For cmake projects
  
  * cd yourRepo

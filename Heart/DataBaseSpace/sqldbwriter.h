@@ -133,16 +133,19 @@ protected:
     virtual bool saveQuery(const QH::PKG::DBObject *ptr) const;
 
     /**
-     * @brief selectQuery generate select query to database from parameters
-     * @param returnList - return values
-     * @param table - table name of query
-     * @param key - compare key (column) for select is default it is id
-     * @param val - compare value
+     * @brief selectQuery generate select query to database from parameters.
+     * @param requestObject This is template object for generate select query.
+     * @param result This isreturn values
      * @return true if all goodelse false
      */
     virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
                              QList<const QH::PKG::DBObject *> &result);
 
+    /**
+     * @brief deleteQuery This method prepare the delete object query.
+     * @param deleteObject This is tempalte object for generate a  delete query.
+     * @return true if query generated successful.
+     */
     virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
 
     QSqlDatabase db;

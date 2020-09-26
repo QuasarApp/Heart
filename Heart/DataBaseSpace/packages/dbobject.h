@@ -110,7 +110,7 @@ public:
             exampleMember = q.value("exampleMember").toInt();
             return isValid();
         }
-     * \code
+     * \endcode
      */
     virtual bool fromSqlRecord(const QSqlRecord& q);
 

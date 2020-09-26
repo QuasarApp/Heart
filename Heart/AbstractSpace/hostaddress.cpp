@@ -17,7 +17,7 @@ HostAddress::HostAddress(const QString &other, int port):
     setPort(port);
 }
 
-HostAddress::HostAddress(const QHostAddress::SpecialAddress &other, int port):
+HostAddress::HostAddress(const SpecialAddress &other, int port):
     QHostAddress(other) {
     setPort(port);
 }
