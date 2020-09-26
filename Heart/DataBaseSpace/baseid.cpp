@@ -46,13 +46,6 @@ void BaseId::clear() {
     _data.clear();
 }
 
-unsigned char BaseId::prefix() const {
-    if (_data.size())
-        return _data[0];
-
-    return 0;
-}
-
 QDataStream &BaseId::fromStream(QDataStream &stream) {
     stream >> _data;
     return stream;

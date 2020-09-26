@@ -124,8 +124,6 @@ protected:
      */
     virtual QVariantMap defaultInitPararm() const;
 
-    QSqlDatabase db;
-
     /**
      * @brief saveQuery This method execute save query of object.
      *  For more Information see DBObject::prepareSaveQuery.
@@ -147,6 +145,7 @@ protected:
 
     virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
 
+    QSqlDatabase db;
 
 private:
 

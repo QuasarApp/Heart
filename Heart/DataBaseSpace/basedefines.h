@@ -4,14 +4,14 @@
 namespace QH {
 
 /**
- * @brief The DBOperationResult enum
+ * @brief The DBOperationResult enum contains the statuses of database operations.
  */
 enum class DBOperationResult {
-    /// Node do not know about this operaio
+    /// The Node do not know about a permision of operation.
     Unknown,
-    /// Node allow this operation and exec it
+    /// The Node allow this operation and execute it.
     Allowed,
-    /// Node forbid this operation.
+    /// The Node forbid this operation.
     Forbidden,
 };
 

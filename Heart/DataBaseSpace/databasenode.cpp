@@ -171,6 +171,10 @@ bool DataBaseNode::sendData(AbstractData *resp,
     return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
 }
 
+AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
+    return new BaseNodeInfo(socket, clientAddress);;
+}
+
 bool DataBaseNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
     auto nodes = connections();
 

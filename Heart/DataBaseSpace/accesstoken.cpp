@@ -66,14 +66,6 @@ QDataStream &AccessToken::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, AccessToken &token) {
-    return token.fromStream(stream);
-}
-
-QDataStream &operator<<(QDataStream &stream, const AccessToken &token) {
-    return token.toStream(stream);
-}
-
 uint qHash(const AccessToken &token) {
     return qHash(token._data);
 }

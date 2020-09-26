@@ -20,42 +20,36 @@ namespace QH {
 class DbAddress;
 
 /**
- * @brief The BaseNodeInfo class contaisn list of nodes id of know this node.
+ * @brief The BaseNodeInfo class contaisn the unique node id.
+ * This object created in the DataBaseNode::createNodeInfo method.
  */
 class HEARTSHARED_EXPORT BaseNodeInfo: public AbstractNodeInfo {
 
 public:
 
     /**
-     * @brief BaseNodeInfo - create node info from the tcp descriptor
-     * @param tcp - tcp socket dsscriptor
+     * @brief BaseNodeInfo This constructor initialize the node info object from the tcp descriptor
+     * @param tcp This is  tcp socket dsscriptor
+     * @param clientAddress This is network address of socket.
      */
     explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr,
                           const HostAddress* clientAddress = nullptr);
     ~BaseNodeInfo() override;
 
-    /**
-     * @brief isValid
-     * @return true if node is valid.
-     */
     bool isValid() const override;
 
     /**
-     * @brief selfId - it is id of peer node
-     * @return
+     * @brief selfId This method return id of peer node or client.
+     * @return The id of peer node or client.
      */
     BaseId selfId() const;
 
     /**
-     * @brief setSelfId
-     * @param selfId
+     * @brief setSelfId This method set an id for the peer node or the client.
+     * @param selfId new value of id of the peer node.
      */
     void setSelfId(const BaseId &selfId);
 
-    /**
-     * @brief confirmData - this implementaton check self id of node.
-     * @return true if node contains valid self id.
-     */
     bool confirmData() const override;
 
 protected:

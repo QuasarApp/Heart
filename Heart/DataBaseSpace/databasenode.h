@@ -144,6 +144,8 @@ protected:
     virtual bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
                           const Header *req = nullptr);
 
+    AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
+
     /**
      * @brief sendDataToId - send data to node or clientby them id.
      * @param resp - responce package
@@ -306,6 +308,7 @@ private:
 
 
     friend class WebSocketController;
+
 };
 
 
