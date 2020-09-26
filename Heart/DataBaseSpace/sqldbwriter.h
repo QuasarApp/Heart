@@ -88,34 +88,48 @@ protected:
     bool disableFK();
 
     /**
-     * @brief getInitPararm
-     * @param initFile
-     * @return
+     * @brief getInitPararm This method read parameters of database.
      *
-     * Params :
-     * DBDriver - driver of db see https://doc.qt.io/qt-5/sql-driver.html
-     * DBFilePath - path to file of data base (sqlite only)
-     * DBInitFile - sql file with init state database
-     * DBPass - pass of remote db
-     * DBLogin - login of remote db
-     * DBHost - host addres of reote db
-     * DBPort - port of reote db
+     * Support parameters of database:
+     *
+     * - DBDriver - This is sql driver of data base for more information see The Qt Documentatuons https://doc.qt.io/qt-5/sql-driver.html
+     * - DBFilePath - This is path to file of data base (sqlite only). This is phusical location of sqlite database.
+     * - DBInitFile - This is sql file with sql code (structure) with default structure of the database.
+     * - DBPass - This is password of a remoute databse.
+     * - DBLogin - This is login of a remoute database.
+     * - DBHost - This is host addres of a remoute database.
+     * - DBPort - port of a remoute database.
 
+     * @param initFile This is path to json file with database configuration.
+     * @return The Map with readed configuration. IF file is incorrect or not exists then retun an empty map.
+     *
      */
     virtual QVariantMap getInitParams(const QString& initFile) const;
 
     /**
-     * @brief defaultInitPararm
+     * @brief defaultInitPararm This method retrun default pdrameters of the database.
      * @param initFile
      * @return
+     *
+     *      * Support parameters of database:
+     *
+     * - DBDriver - This is sql driver of data base for more information see The Qt Documentatuons https://doc.qt.io/qt-5/sql-driver.html
+     * - DBFilePath - This is path to file of data base (sqlite only). This is phusical location of sqlite database.
+     * - DBInitFile - This is sql file with sql code (structure) with default structure of the database.
+     * - DBPass - This is password of a remoute databse.
+     * - DBLogin - This is login of a remoute database.
+     * - DBHost - This is host addres of a remoute database.
+     * - DBPort - port of a remoute database.
+
      */
     virtual QVariantMap defaultInitPararm() const;
 
     QSqlDatabase db;
 
     /**
-     * @brief saveQuery - exec save query of object
-     * @param ptr
+     * @brief saveQuery This method execute save query of object.
+     *  For more Information see DBObject::prepareSaveQuery.
+     * @param ptr This is pointer to object that need to save into a database.
      * @return true if function finished seccussful
      */
     virtual bool saveQuery(const QH::PKG::DBObject *ptr) const;
@@ -128,7 +142,8 @@ protected:
      * @param val - compare value
      * @return true if all goodelse false
      */
-    virtual bool selectQuery(const QH::PKG::DBObject &requestObject, QList<const QH::PKG::DBObject *> &result);
+    virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
+                             QList<const QH::PKG::DBObject *> &result);
 
     virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
 
