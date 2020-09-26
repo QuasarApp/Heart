@@ -14,7 +14,7 @@
 namespace QH {
 
 /**
- * @brief The DbAddressKey class - key provider for DbAddress
+ * @brief The DbAddressKey class is implementation for calc hash key of DbAddress objects.
  */
 class HEARTSHARED_EXPORT DbAddressKey: public DbAddress, public AbstractKey
 {

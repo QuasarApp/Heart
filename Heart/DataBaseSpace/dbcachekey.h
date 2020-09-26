@@ -18,23 +18,38 @@
 namespace QH {
 
 /**
- * @brief The DBCacheKey class - is database main key value
+ * @brief The DBCacheKey class is memory storrage for registered key values.
+ * This class have a static array for contains all child classes of the AbstractKey class.
+ *
+ * Description:
+ *
+ * Any key it is unsigned int implementatio of any AbstractKey child objects.
+ * This class provide functions:
+ * - The Get of value of AbstractKey child classes (it hash). for more information see the AbstractKey::hash method.
+ *   For this use the HASH_KEY(X) macros.
+ * - The Calc of hash value of any  AbstractKey child classes (it hash).
+ *   If the hash is has been calculated then hash returned from the cache of DBCacheKey.
+ *   For this use the VALUE_KEY(X) macros.
+ * - The Generate of keys description.
+ *   For this use the DESCRIPTION_KEY(X) macros.
+ *
+ * @note This class is implementation of the Singleton pattern. Use carefully.
  */
 class HEARTSHARED_EXPORT DBCacheKey
 {
 public:
 
     /**
-     * @brief instance
+     * @brief instance This method return instance of this singleton object.
      * @return singleton of object
      */
     static DBCacheKey* instance();
 
     template <class TYPE = AbstractKey>
     /**
-     * @brief value - return vale from key
-     * @param key - hash of ke value
-     * @return value of key
+     * @brief value This method return the vale from key. for more convenient use the HASH_KEY(X) macros.
+     * @param key This is hash of key value
+     * @return value of key.
      */
     const TYPE* value(uint key) const {
         return dynamic_cast<const TYPE*>(_data.value(key, nullptr));
@@ -42,9 +57,9 @@ public:
 
     template <class TYPE>
     /**
-     * @brief key - return hash key and save object into objects table
-     * @param value - the value of a key objekt
-     * @return hash of input value
+     * @brief key This method return hash key and save object into objects table. For more convenient use the VALUE_KEY(X) macros
+     * @param value this is value of a key objekt
+     * @return hash of input value.
      */
     uint key(const TYPE& value) {
         auto object = dynamic_cast<const AbstractKey*>(&value);
@@ -61,12 +76,11 @@ public:
     }
 
     /**
-     * @brief description - return string description of id
-     * @param hash
-     * @return
+     * @brief description This method return string description of id (hash). For more convenient use the DESCRIPTION_KEY(X) macros.
+     * @param hash this is hash value of object (id)
+     * @return information about this hash value.
      */
     QString description(uint hash) const;
-
 
 private:
     QHash<uint, AbstractKey*> _data;

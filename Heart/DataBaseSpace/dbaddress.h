@@ -15,20 +15,32 @@
 namespace QH {
 
 /**
- * @brief The DbAddress class - this is address of data base object
+ * @brief The DbAddress class is class for work with database addresses. Database Address it is structure with 2 values.
+ * \code
+ * {
+ *  QString _table; // this is name of table of object.
+    BaseId _id;     // this is id of object.
+ * }
+ * \endcode
  */
 class HEARTSHARED_EXPORT DbAddress : public StreamBase {
 
 public:
 
     DbAddress() = default;
+
+    /**
+     * @brief DbAddress this constructo initialize a default database address.
+     * @param table This is table name in database.
+     * @param id This is id of object in table.
+     */
     DbAddress(const QString& table, const BaseId& id);
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
     /**
-     * @brief toString - return a string implementation fo this object
+     * @brief toString This method return a string implementation fo this object
      * @return string of object
      */
     QString toString() const;
@@ -36,12 +48,34 @@ public:
     friend bool operator== (const DbAddress& left, const DbAddress& other);
     friend bool operator!= (const DbAddress& left, const DbAddress& other);
 
+    /**
+     * @brief isValid This method check object for valid.
+     * @return true if object is valid.
+     */
     bool isValid() const;
 
+    /**
+     * @brief table This method return table name.
+     * @return table name of object.
+     */
     const QString& table() const;
+
+    /**
+     * @brief setTable This method set new table name of address.
+     * @param table new value of table name.
+     */
     void setTable(const QString &table);
 
+    /**
+     * @brief id This method return id of object in table.
+     * @return id of object.
+     */
     const BaseId &id() const;
+
+    /**
+     * @brief setId This method set id for this address.
+     * @param id tgis is new value of objects id.
+     */
     void setId(const BaseId &id);
 
 private:
@@ -50,6 +84,11 @@ private:
     BaseId _id;
 };
 
+/**
+ * @brief qHash This functions cals int 32 hash of address.
+ * @param address This is input address.
+ * @return unsigned int 32 hash value.
+ */
 qint64 qHash(const DbAddress& address);
 
 }

@@ -99,13 +99,6 @@ protected:
                   const Header *req = nullptr) override;
 
     /**
-     * @brief initDefaultDbObjects create default cache and db writer if pointer is null
-     * @param cache
-     * @param writer
-     */
-    void initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer);
-
-    /**
      * @brief parsePackage
      * @param pkg
      * @param sender
