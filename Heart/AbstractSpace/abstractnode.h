@@ -100,9 +100,10 @@ public:
     ~AbstractNode() override;
 
     /**
-     * @brief run - this method implement deployment a network node (server) on selected address.
-     * @param addres - If address is empty then server weel be listen all addreses of all interfaces else listen only selected address.
-     * @param port - This is port of deployment node (server)
+     * @brief run This method implement deployment a network node (server) on selected address.
+     * @param addres This is network address of work node or server.
+     *  If address is empty then server weel be listen all addreses of all interfaces else listen only selected address.
+     * @param port This is port of deployment node (server)
      * @return Result of deployment node (sever). (True if deploy finished successful else false).
      */
     virtual bool run(const QString& addres, unsigned short port);

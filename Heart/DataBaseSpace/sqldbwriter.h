@@ -27,7 +27,7 @@ namespace QH {
 /**
  * @brief The SqlDBWriter class. This class write and read objects from database (hard level).
  *  Befor working with database you need to initialize it. The SqlDBWriter support a any sql databases,
- *  For list of supported drivers see the Qt Docummentation \link{}
+ *  For list of supported drivers see the Qt Docummentation https://doc.qt.io/qt-5/sql-driver.html
  *  For initialize a custom database driver you need to set an own params see the SqlDBWriter::initDb metthod.
  */
 class HEARTSHARED_EXPORT SqlDBWriter : public iObjectProvider
