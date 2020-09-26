@@ -21,23 +21,49 @@ class AbstractNodeInfo;
 class DataBaseNode;
 
 /**
- * @brief The WebSocketController class - manage subscribe
+ * @brief The WebSocketController class is manage subscribe. This class contains information about users and him subscriptions
  */
 class HEARTSHARED_EXPORT WebSocketController : public QObject
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief WebSocketController default construector.
+     * @param node This is pointer to node object.
+     */
     WebSocketController(DataBaseNode *node);
+
+    /**
+     * @brief subscribe This method subscribe a subscriber to the item.
+     * @param subscriber This is network member that want get information about update of the item.
+     * @param item This is database object.
+     * @return true if method finished succesful
+     */
     bool subscribe(const BaseId &subscriber,
                    const DbAddress &item);
 
+    /**
+     * @brief unsubscribe This method unsubscribe a subscriber from the item.
+     * @param subscriber This is network member that want disable getting information about update of the item.
+     * @param item This is database object.
+     * @return true if method finished succesful
+     */
     void unsubscribe(const BaseId &subscriber,
                      const DbAddress &item);
 
+    /**
+     * @brief list This method return a list of subscribed items of subscriber.
+     * @param subscriber This is network member that want get alist of own subscription.
+     * @return true if method finished succesful
+     */
     const QSet<DbAddress> &list(const BaseId& subscriber);
 
 public slots:
+    /**
+     * @brief handleItemChanged This method invoked when item on database changed.
+     * @param item This is changed item.
+     */
     void handleItemChanged(const PKG::DBObject *item);
 
 private:
