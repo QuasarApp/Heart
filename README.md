@@ -4,6 +4,7 @@
 
 QuasarApp Heart - it is base backend for C++/Qt projects. This library support work with databases and work with lite network requests.
 
+
 ## Futures 
 This library consists of two levels (AbstractNode level and DataBaseNode level).
 
