@@ -178,5 +178,4 @@ protected:
 };
 ```
 
-
-
+For more information, see our QuasarApp Heart [Code](https://quasarapp.ddns.net/docs/heart/html/index.html) Documentation.
