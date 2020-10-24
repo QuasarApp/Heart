@@ -162,6 +162,10 @@ BaseId MemberPermisionObject::generateId() const {
     return _key.hash();
 }
 
+DBVariantMap MemberPermisionObject::variantMap() const {
+    return {};
+}
+
 PermisionData MemberPermisionObject::key() const {
     return _key;
 }

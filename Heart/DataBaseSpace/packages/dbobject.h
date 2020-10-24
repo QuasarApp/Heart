@@ -33,6 +33,34 @@ enum class PrepareResult {
 };
 
 /**
+ * @brief The MemberType enum. This enum contains types of members DBObjects classes.
+ * for more information see the DBObject::variantMap method.
+ */
+enum class MemberType {
+    //// Member of DBObjects will be inserted but not updated.
+    InsertOnly,
+    //// Member of DBObjects will be inserted and updated.
+    InsertUpdate
+};
+
+/**
+ * @brief The DBVariant struct contains QVariant value of the DBObjects member and it type.
+ */
+struct DBVariant {
+    DBVariant(const QVariant& value, MemberType type);
+    QVariant value;
+    MemberType type;
+};
+
+/**
+ * @brief DBVariantMap this is Map with key and valu with data type.
+ * \code{cpp}
+ *  QMap<QString key, {QVariant value, MemberType type}>;
+ * \endcode
+ */
+typedef QMap<QString, DBVariant> DBVariantMap;
+
+/**
  * @brief The DBObject class- main class for work with data base.
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData
@@ -89,6 +117,8 @@ public:
      * If id is empty this implementation use data from altarnativeKey method. See DBObject::altarnativeKey fr more information.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
+     *
+     * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
      */
     virtual PrepareResult prepareSelectQuery(QSqlQuery& q) const;
 
@@ -118,6 +148,15 @@ public:
      * @brief prepareSaveQuery This method should be prepare a query for save object into database.
      * You need to create a own save sql query for this object into database.
      *  Override this metod for save item into database.
+     * By Default This method prepare a slect query using the data that returned from the variantMap method.
+     *
+     * Default save query have a next template:
+     * \code{sql}
+     *     INSERT INTO %0(%1) VALUES (%3)
+     *     ON CONFLICT(id) DO UPDATE SET %2;
+     * \endcode
+     *
+     *  For more information see the DBObject::variantMap method.
      * @note befor creating a own object you need to create a own database structure.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
@@ -151,8 +190,10 @@ public:
             return PrepareResult::Fail;
         }
      * \endcode
+     *
+     * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
      */
-    virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const = 0 ;
+    virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const;
 
     /**
      * @brief prepareRemoveQuery This method method should be prepare a query for remove this object from a database.
@@ -161,6 +202,8 @@ public:
      * If id is empty the default implementation use data from altarnativeKey method.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
+     *
+     * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
      */
     virtual PrepareResult prepareRemoveQuery(QSqlQuery& q) const;
 
@@ -173,6 +216,7 @@ public:
      * but contains common characteristics of several objects)
      * @return True if item in cache.
      * Default implementation retun true only
+     *
      */
     virtual bool isCached() const;
 
@@ -239,6 +283,24 @@ protected:
     virtual BaseId generateId() const = 0;
 
     bool init() override;
+
+    /**
+     * @brief variantMap This method should be create a DBVariantMap implementation of this database object.
+     * Example of retuen value:
+     *
+     * \code{cpp}
+     *  return {{"name",        {"Andrei",      MemberType::InsertOnly}},
+     *          {"age",         {26,            MemberType::InsertUpdate}},
+     *          {"extraData",   {QByteArray{},  MemberType::InsertUpdate}}};
+     * \endcode
+     *
+     * @note This method using for create a default sql save request
+     * see the DBObject::prepareSaveQuery method for more information.
+     * @return the QVariantMap implementation of this database object.
+     *
+     * @note If you want disable this functionality then override this method and return an empty map. But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
+     */
+    virtual DBVariantMap variantMap() const = 0;
 
 private:
     QString getWhereBlock() const;

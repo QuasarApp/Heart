@@ -15,6 +15,7 @@
 #include <QSqlRecord>
 #include <QVariantMap>
 #include <QSharedPointer>
+#include <quasarapp.h>
 
 namespace QH {
 namespace PKG {
@@ -53,6 +54,65 @@ bool DBObject::fromSqlRecord(const QSqlRecord &q) {
     }
 
     return false;
+}
+
+// To-Do need to tested
+PrepareResult DBObject::prepareSaveQuery(QSqlQuery &q) const {
+
+    DBVariantMap map = variantMap();
+
+    if (!map.size()) {
+        QuasarAppUtils::Params::log("The variantMap method return an empty map.",
+                                    QuasarAppUtils::Error);
+
+        return PrepareResult::Fail;
+    }
+
+    QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
+                          "ON CONFLICT(id) DO UPDATE SET %2";
+
+
+
+    queryString = queryString.arg(tableName());
+    QString tableInsertHeader = "id, ";
+    QString tableInsertValues = "'" + getId().toBase64() + "', ";
+    QString tableUpdateValues = "";
+
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        bool fInsertUpdate = it.value().type == MemberType::InsertUpdate;
+
+        tableInsertHeader += it.key();
+        tableInsertValues += ":" + it.key();
+
+        if (fInsertUpdate) {
+            tableUpdateValues += it.key() + "=:" + it.key();
+        }
+
+        if (it + 1 != map.end()) {
+            tableInsertHeader += ", ";
+            tableInsertValues += ", ";
+
+            if (fInsertUpdate) {
+                tableUpdateValues += ", ";
+            }
+        }
+
+    }
+
+    queryString = queryString.arg(tableInsertHeader);
+    queryString = queryString.arg(tableUpdateValues);
+    queryString = queryString.arg(tableInsertValues);
+
+    if (q.prepare(queryString)) {
+
+        for (auto it = map.begin(); it != map.end(); ++it) {
+            q.bindValue(":" + it.key(), it.value().value);
+        }
+
+        return PrepareResult::Success;
+    }
+
+    return PrepareResult::Fail;
 }
 
 bool DBObject::isCached() const {
@@ -180,6 +240,11 @@ void DBObject::setId(const BaseId& id) {
 
 void DBObject::clear() {
     setId({});
+}
+
+DBVariant::DBVariant(const QVariant &value, MemberType type) {
+    this->value = value;
+    this->type = type;
 }
 
 }

@@ -35,34 +35,6 @@ DBObject *NetworkMember::createDBObject() const {
     return create<NetworkMember>();
 }
 
-PrepareResult NetworkMember::prepareSaveQuery(QSqlQuery &q) const {
-    QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
-                          "ON CONFLICT(id) DO UPDATE SET %2";
-    queryString = queryString.arg(tableName());
-    queryString = queryString.arg("id, authenticationData, trust");
-    queryString = queryString.arg("authenticationData=:AuthenticationData, "
-                                  "trust=" + QString::number(_trust));
-
-    QString values;
-
-    values += "'" + getId().toBase64() + "', ";
-    values += ":AuthenticationData, ";
-    values +=  QString::number(_trust);
-
-    queryString = queryString.arg(values);
-
-    if (q.prepare(queryString)) {
-        q.bindValue(":AuthenticationData", authenticationData());
-        return PrepareResult::Success;
-    }
-
-
-    QuasarAppUtils::Params::log("Query:" + queryString,
-                                QuasarAppUtils::Error);
-
-    return PrepareResult::Fail;
-}
-
 bool NetworkMember::fromSqlRecord(const QSqlRecord &q) {
     if (!DBObject::fromSqlRecord(q)) {
         return false;
@@ -105,6 +77,11 @@ BaseId NetworkMember::generateId() const {
     }
 
     return QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256);
+}
+
+DBVariantMap NetworkMember::variantMap() const {
+    return {{"authenticationData",  {_authenticationData,   MemberType::InsertOnly}},
+            {"trust",               {_trust,                MemberType::InsertUpdate}}};
 }
 
 int NetworkMember::trust() const {

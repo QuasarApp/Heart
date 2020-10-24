@@ -28,7 +28,6 @@ public:
 
     // DBObject interface
     DBObject *createDBObject() const override;
-    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
 
     /**
@@ -75,10 +74,12 @@ protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     BaseId generateId() const override;
+    DBVariantMap variantMap() const override;
 
 private:
     QByteArray _authenticationData;
     int _trust;
+
 };
 }
 }

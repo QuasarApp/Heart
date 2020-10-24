@@ -68,11 +68,11 @@ protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     BaseId generateId() const override;
+    DBVariantMap variantMap() const override;
 
 private:
     Permission _permisions;
     PermisionData _key;
-
 
 };
 }
