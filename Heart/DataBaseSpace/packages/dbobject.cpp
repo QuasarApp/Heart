@@ -56,7 +56,6 @@ bool DBObject::fromSqlRecord(const QSqlRecord &q) {
     return false;
 }
 
-// To-Do need to tested
 PrepareResult DBObject::prepareSaveQuery(QSqlQuery &q) const {
 
     DBVariantMap map = variantMap();

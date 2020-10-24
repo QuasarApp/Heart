@@ -13,9 +13,9 @@
 #endif
 #if HEART_BUILD_LVL >= 1
 #include <basenodetest.h>
-#include <networknodetest.h>
 #endif
 #if HEART_BUILD_LVL >= 2
+#include <networknodetest.h>
 #endif
 
 
