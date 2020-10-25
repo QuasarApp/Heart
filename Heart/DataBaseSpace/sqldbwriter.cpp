@@ -55,8 +55,8 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
                     result = result && sq->exec(temp);
 
                     if (!result) {
-                        QuasarAppUtils::Params::log("exec database error: " +sq->lastError().text(),
-                                                           QuasarAppUtils::Error);
+                        QuasarAppUtils::Params::log("exec database error: " + sq->lastError().text(),
+                                                    QuasarAppUtils::Error);
                         f.close();
                         return false;
                     }
@@ -176,8 +176,15 @@ bool SqlDBWriter::initDb(const QVariantMap &params) {
 
     if (!db.open()) {
         QuasarAppUtils::Params::log(db.lastError().text(),
-                                           QuasarAppUtils::Error);
+                                    QuasarAppUtils::Error);
         return false;
+    }
+
+    for (const auto& sqlFile : _SQLSources) {
+        QSqlQuery query(db);
+        if (!exec(&query, sqlFile)) {
+            return false;
+        }
     }
 
     if (params.contains("DBInitFile")) {
@@ -207,6 +214,10 @@ bool SqlDBWriter::saveObject(const DBObject* ptr) {
 
 bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     return deleteQuery(ptr);
+}
+
+void SqlDBWriter::setSQLSources(const QStringList &list) {
+    _SQLSources = list;
 }
 
 QString SqlDBWriter::databaseLocation() const {

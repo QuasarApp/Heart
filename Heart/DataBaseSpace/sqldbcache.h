@@ -93,6 +93,8 @@ public:
      */
     virtual bool init(const QVariantMap &params);
 
+    void setSQLSources(const QStringList &list) override;
+
 protected:
 
     /**
@@ -157,7 +159,6 @@ private:
 
 signals:
     void sigItemChanged(const PKG::DBObject *obj);
-
 };
 
 }

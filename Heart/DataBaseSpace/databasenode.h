@@ -261,6 +261,45 @@ protected:
      * @return true if node is banned
      */
     bool isBanned(const BaseId& member) const;
+
+    /**
+     * @brief SQLSources This method contains list of sqldatabase sources.
+     * This method will be invoced into initialize sql method and deploy sql database.
+     *
+     * All sql files will be deployed in QList order.
+     *
+     *  By Default This metod deploy next sql code:
+     * \code{sql}
+     *  CREATE TABLE IF NOT EXISTS NetworkMembers (
+            id VARCHAR(64) PRIMARY KEY NOT NULL,
+            authenticationData BLOB default NULL,
+            trust INTEGER default 0
+        );
+
+        CREATE TABLE IF NOT EXISTS MemberPermisions (
+            memberId VARCHAR(64) NOT NULL,
+            objectTable VARCHAR(100) NOT NULL,
+            objectId VARCHAR(64) NOT NULL,
+            lvl INTEGER NOT NULL,
+
+            FOREIGN KEY(memberId) REFERENCES NetworkMembers(id)
+                    ON UPDATE CASCADE
+                    ON DELETE CASCADE
+
+        );
+        CREATE UNIQUE INDEX IF NOT EXISTS MemberPermisionsIndex ON MemberPermisions(memberId, objectTable, objectId);
+
+     * \endcode
+     * For add own sql code hust override this method, but do not forgat invoke a base method of a parent class.
+     *
+     * Example:
+     * \code{cpp}
+     *    return DataBaseNode::SQLSources() << "path/to/mySqlFile.sql";
+     * \endcode
+     *
+     * @return the list to deploy sql files.
+     */
+    virtual QStringList SQLSources() const;;
 private:
 
     /**

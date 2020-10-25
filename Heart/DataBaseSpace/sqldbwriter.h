@@ -63,6 +63,7 @@ public:
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
     bool saveObject(const QH::PKG::DBObject *ptr) override;
     bool deleteObject(const QH::PKG::DBObject *ptr) override;
+    void setSQLSources(const QStringList &list) override;
 
     /**
      * @brief databaseLocation This method return location of database.
@@ -168,6 +169,8 @@ private:
 
     bool initSuccessful = false;
     QVariantMap _config;
+    QStringList _SQLSources;
+
 
 };
 

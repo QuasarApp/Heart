@@ -130,6 +130,12 @@ bool DataBaseNode::isBanned(const BaseId &node) const {
     return objectFromDataBase->trust() <= 0;
 }
 
+QStringList DataBaseNode::SQLSources() const{
+    return {
+        DEFAULT_DB_INIT_FILE_PATH
+    };
+}
+
 void DataBaseNode::nodeConnected(const HostAddress &node) {
     AbstractNode::nodeConnected(node);
     welcomeAddress(node);
@@ -327,7 +333,6 @@ QVariantMap DataBaseNode::defaultDbParams() const {
     return {
         {"DBDriver", "QSQLITE"},
         {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + _localNodeName + "_" + DEFAULT_DB_NAME},
-        {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
     };
 }
 

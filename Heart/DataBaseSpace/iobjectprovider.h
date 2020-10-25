@@ -81,6 +81,14 @@ public:
      */
     virtual bool deleteObject(const PKG::DBObject* obj) = 0;
 
+    /**
+     * @brief setSQLSources This method set sql sources for deployed database.
+     * @param list This is list of sql files with database sources.
+     *
+     * For more information about sql sources see the DataBaseNode::SQLSources method.
+     */
+    virtual void setSQLSources(const QStringList& list) = 0;
+
 };
 
 }

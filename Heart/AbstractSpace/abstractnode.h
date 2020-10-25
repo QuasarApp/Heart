@@ -274,7 +274,7 @@ protected:
      * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
      *  This method work on own thread.
      *  If you ovveride this method you need to create this than an example:
-     * \code
+     * \code{cpp}
         ParserResult DataBaseNode::parsePackage(const Package &pkg,
                                                 const AbstractNodeInfo *sender) {
             auto parentResult = AbstractNode::parsePackage(pkg, sender);
@@ -424,7 +424,7 @@ protected:
 
     /**
      * @brief incomingData This method invoked when node get command or ansver. But in default implemmentation it using only for Ping command. Add
-     * \code
+     * \code{cpp}
      * incomingData(pkg, sender);
      * \endcode
      * Into the overrided AbstractNode::ParsePacakge method on your own server or client class.

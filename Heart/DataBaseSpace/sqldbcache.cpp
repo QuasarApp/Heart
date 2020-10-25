@@ -192,6 +192,12 @@ bool SqlDBCache::init(const QVariantMap &params) {
     return _writer->initDb(params);
 }
 
+void SqlDBCache::setSQLSources(const QStringList &list) {
+    auto db = writer();
+    if (db)
+        db->setSQLSources(list);
+}
+
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     if (!delObj)
         return;
