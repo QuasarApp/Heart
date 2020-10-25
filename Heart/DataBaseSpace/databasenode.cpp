@@ -25,6 +25,7 @@
 #include <basenodeinfo.h>
 #include <networkmember.h>
 #include <memberpermisionobject.h>
+#include <permisioncontrolmember.h>
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -44,6 +45,7 @@ bool DataBaseNode::initSqlDb(QString DBparamsFile,
     initDefaultDbObjects(cache, writer);
 
     QVariantMap params;
+    _db->setSQLSources(SQLSources());
 
     if (DBparamsFile.isEmpty()) {
         params = defaultDbParams();
@@ -124,8 +126,8 @@ bool DataBaseNode::welcomeAddress(const HostAddress&) {
 }
 
 bool DataBaseNode::isBanned(const BaseId &node) const {
-    NetworkMember member(node);
-    auto objectFromDataBase = db()->getObject(member);
+    PermisionControlMember member(node);
+    auto objectFromDataBase = db()->getObject<NetworkMember>(member);
 
     return objectFromDataBase->trust() <= 0;
 }
@@ -227,17 +229,13 @@ bool DataBaseNode::changeTrust(const BaseId &id, int diff) {
     if (!_db)
         return false;
 
-    auto client = _db->getObject(NetworkMember{id});
+    auto client = _db->getObject<NetworkMember>(PermisionControlMember{id});
 
     if (!client) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because client == null",
-                                    QuasarAppUtils::Error);
         return false;
     }
 
-    auto clone = client->clone().staticCast<NetworkMember>();
+    auto clone = client->clone().staticCast<PermisionControlMember>();
     clone->changeTrust(diff);
 
     if (!_db->saveObject(clone.data())) {
@@ -418,7 +416,7 @@ BaseId DataBaseNode::getSender(const AbstractNodeInfo *connectInfo, const Abstra
 DBOperationResult DataBaseNode::checkPermission(const BaseId &requester,
                                                 const DbAddress &objectAddress,
                                                 const Permission& requarimentPermision) const {
-     const NetworkMember *member = _db->getObject(NetworkMember{requester});
+     const NetworkMember *member = _db->getObject(PermisionControlMember{requester});
      if (!member) {
          return DBOperationResult::Unknown;
      }

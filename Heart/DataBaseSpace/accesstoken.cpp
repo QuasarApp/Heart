@@ -29,6 +29,10 @@ AccessToken::AccessToken(int duration, const QByteArray &entropy) {
     _data = generate(entropy);
 }
 
+AccessToken::AccessToken(const QByteArray &other) {
+    fromBytes(other);
+}
+
 AccessToken::AccessToken() = default;
 
 AccessToken::AccessToken(const AccessToken &other) = default;

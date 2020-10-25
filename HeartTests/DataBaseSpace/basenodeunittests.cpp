@@ -12,6 +12,7 @@
 #include <QFileInfo>
 #include <QFile>
 #include <networkmember.h>
+#include <user.h>
 
 #define DB_NODE_NAME "DatabaseTestNode"
 
@@ -26,7 +27,8 @@ QByteArray randomArray(int length) {
 }
 
 const QH::PKG::NetworkMember* randomMember() {
-    QH::PKG::NetworkMember *res = new QH::PKG::NetworkMember();
+    QH::PKG::NetworkMember *res = new QH::PKG::User();
+    res->setId(randomArray(10));
 
     res->setAuthenticationData(randomArray(64));
     res->setTrust(0);

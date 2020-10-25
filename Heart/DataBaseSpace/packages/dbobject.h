@@ -102,6 +102,10 @@ public:
 
     /**
      * @brief createDBObject This method should be create a object with the some type as the object called this method.
+     * Example of override:
+     * \code{cpp}
+     *     return create<MyClassName>();
+     * \endcode
      * @note The object created on this method not destroyed automatically.
      * @return pointer of new object with the some type.
      */
@@ -292,6 +296,14 @@ protected:
      *  return {{"name",        {"Andrei",      MemberType::InsertOnly}},
      *          {"age",         {26,            MemberType::InsertUpdate}},
      *          {"extraData",   {QByteArray{},  MemberType::InsertUpdate}}};
+     * \endcode
+     *
+     * Example of override:
+     *
+     * \code{cpp}
+     *     auto map = ParrentClass::variantMap();
+           map.insert("myNewMembers", {_newMember.toBytes(), MemberType::InsertUpdate});
+           return map;
      * \endcode
      *
      * @note This method using for create a default sql save request

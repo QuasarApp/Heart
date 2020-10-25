@@ -2,8 +2,11 @@
 #define USER_H
 
 #include "networkmember.h"
+#include "accesstoken.h"
 
 namespace QH {
+
+
 namespace PKG {
 
 /**
@@ -17,10 +20,35 @@ class User: public NetworkMember
 {
 public:
     User();
+    User(const Package &pkg);
+    User(const BaseId &id);
+
+    bool copyFrom(const AbstractData *other) override;
+    bool fromSqlRecord(const QSqlRecord &q) override;
+    DBObject *createDBObject() const override;
+    bool isValid() const override;
 
     // DBObject interface
-public:
-    DBObject *createDBObject() const override;
+    /**
+     * @brief token This method return access token of this user
+     * @return access token of this user.
+     */
+    AccessToken token() const;
+
+    /**
+     * @brief setToken This method set new value for access token of this user
+     * @param token This is new value for access token of this user
+     */
+    void setToken(const AccessToken &token);
+
+protected:
+    BaseId generateId() const override;
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
+    DBVariantMap variantMap() const override;
+
+private:
+    AccessToken _token;
 };
 }
 }

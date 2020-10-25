@@ -11,7 +11,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDataStream>
-#include <QCryptographicHash>
 
 
 namespace QH {
@@ -31,10 +30,6 @@ NetworkMember::NetworkMember(const BaseId &id):
     setId(id);
 }
 
-DBObject *NetworkMember::createDBObject() const {
-    return create<NetworkMember>();
-}
-
 bool NetworkMember::fromSqlRecord(const QSqlRecord &q) {
     if (!DBObject::fromSqlRecord(q)) {
         return false;
@@ -43,7 +38,7 @@ bool NetworkMember::fromSqlRecord(const QSqlRecord &q) {
     setAuthenticationData(q.value("authenticationData").toByteArray());
     setTrust(q.value("trust").toInt());
 
-    return isValid();
+    return NetworkMember::isValid();
 }
 
 QByteArray NetworkMember::authenticationData() const {
@@ -71,16 +66,8 @@ QDataStream &NetworkMember::toStream(QDataStream &stream) const {
     return stream;
 }
 
-BaseId NetworkMember::generateId() const {
-    if (authenticationData().isEmpty()) {
-        return {};
-    }
-
-    return QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256);
-}
-
 DBVariantMap NetworkMember::variantMap() const {
-    return {{"authenticationData",  {_authenticationData,   MemberType::InsertOnly}},
+    return {{"authenticationData",  {_authenticationData,   MemberType::InsertUpdate}},
             {"trust",               {_trust,                MemberType::InsertUpdate}}};
 }
 
@@ -112,10 +99,6 @@ bool NetworkMember::copyFrom(const AbstractData * other) {
     this->_trust = otherObject->_trust;
 
     return true;
-}
-
-QPair<QString, QString> NetworkMember::altarnativeKey() const {
-    return {"authenticationData", _authenticationData.toBase64(QByteArray::Base64UrlEncoding)};
 }
 
 }

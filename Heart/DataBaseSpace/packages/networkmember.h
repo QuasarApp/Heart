@@ -27,7 +27,6 @@ public:
     NetworkMember(const BaseId& id);
 
     // DBObject interface
-    DBObject *createDBObject() const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
 
     /**
@@ -45,8 +44,6 @@ public:
     // AbstractData interface
     bool isValid() const override;
     bool copyFrom(const AbstractData *) override;
-
-    QPair<QString, QString> altarnativeKey() const override;
 
     /**
      * @brief trust This is trust level of current Network member.
@@ -73,7 +70,6 @@ protected:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    BaseId generateId() const override;
     DBVariantMap variantMap() const override;
 
 private:

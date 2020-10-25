@@ -7,6 +7,8 @@
 
 
 #include "nodeobject.h"
+#include <QCryptographicHash>
+
 namespace QH {
 namespace PKG {
 
@@ -36,8 +38,25 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
+BaseId NodeObject::generateId() const {
+    if (authenticationData().isEmpty()) {
+        return {};
+    }
+
+    return QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256);
+}
+
+DBVariantMap NodeObject::variantMap() const {
+    return {{"authenticationData",  {authenticationData(),   MemberType::InsertOnly}},
+            {"trust",               {trust(),                MemberType::InsertUpdate}}};
+}
+
 DBObject *NodeObject::createDBObject() const {
     return create<NodeObject>();
+}
+
+QPair<QString, QString> NodeObject::altarnativeKey() const {
+    return {"authenticationData", authenticationData().toBase64(QByteArray::Base64UrlEncoding)};
 }
 }
 }

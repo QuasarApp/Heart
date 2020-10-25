@@ -52,6 +52,12 @@ public:
     explicit AccessToken(int duration, const QByteArray& entropy = "");
 
     /**
+     * @brief AccessToken - create token from bytes array of another token.
+     * @param other This is bytes Array of another token value.
+     */
+    explicit AccessToken(const QByteArray& other);
+
+    /**
      * @brief AccsesToken constructor by default create not valid token
      */
     explicit AccessToken();
