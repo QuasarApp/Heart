@@ -90,9 +90,10 @@ void SqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     }
 }
 
-SqlDBCache::SqlDBCache(qint64 updateInterval) {
+SqlDBCache::SqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode) {
     lastUpdateTime = QDateTime::currentMSecsSinceEpoch();
     this->updateInterval = updateInterval;
+    setMode(mode);
 }
 
 SqlDBCache::~SqlDBCache() {

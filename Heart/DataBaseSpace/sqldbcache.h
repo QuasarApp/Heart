@@ -47,7 +47,13 @@ class HEARTSHARED_EXPORT SqlDBCache: public QObject, public iObjectProvider
     Q_OBJECT
 
 public:
-    SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL);
+    /**
+     * @brief SqlDBCache This is default constructor of dbcache
+     * @param updateInterval See the SqlDBCache::setUpdateInterval for more information.
+     * @param mode See the SqlDBCache::setMode method  for more information.
+     */
+    SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL,
+               SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
     ~SqlDBCache() override;
 
     /**
