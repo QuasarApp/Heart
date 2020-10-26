@@ -497,7 +497,7 @@ bool AbstractNode::sendData(const AbstractData *resp,
 }
 
 void AbstractNode::badRequest(const HostAddress &address, const Header &req,
-                              const QString msg) {
+                              const QString msg, quint8 diff) {
     auto client = getInfoPtr(address);
 
     if (!client) {
@@ -508,7 +508,7 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
         return;
     }
 
-    if (!changeTrust(address, REQUEST_ERROR)) {
+    if (!changeTrust(address, diff)) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
                                     " because trust not changed",

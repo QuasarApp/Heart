@@ -196,13 +196,15 @@ bool DataBaseNode::sendData(const AbstractData *resp, const BaseId &nodeId, cons
     return false;
 }
 
-void DataBaseNode::badRequest(const HostAddress &address, const Header &req, const QString msg) {
-    AbstractNode::badRequest(address, req, msg);
+void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
+                              const QString msg, quint8 diff) {
+    AbstractNode::badRequest(address, req, msg, diff);
 }
 
-void DataBaseNode::badRequest(const BaseId &address, const Header &req, const QString msg) {
+void DataBaseNode::badRequest(const BaseId &address, const Header &req,
+                              const QString msg, quint8 diff) {
 
-    if (!changeTrust(address, REQUEST_ERROR)) {
+    if (!changeTrust(address, diff)) {
 
         QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
                                     " because trust not changed",

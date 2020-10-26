@@ -109,10 +109,9 @@ protected:
 
     /**
      * @brief defaultInitPararm This method retrun default pdrameters of the database.
-     * @param initFile
-     * @return
+     * @return map of database params.
      *
-     *      * Support parameters of database:
+     *  * Support parameters of database:
      *
      * - DBDriver - This is sql driver of data base for more information see The Qt Documentatuons https://doc.qt.io/qt-5/sql-driver.html
      * - DBFilePath - This is path to file of data base (sqlite only). This is phusical location of sqlite database.

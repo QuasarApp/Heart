@@ -10,6 +10,9 @@ namespace PKG {
 class User;
 }
 
+#define REQUEST_INTERNAL_ERROR 0
+#define REQUEST_LOGIN_ERROR -1
+
 /**
  * @brief The RegisteruserResult enum
  */
@@ -31,16 +34,16 @@ enum class RegisteruserResult {
 /**
  * @brief The SingleServer class This class is classic server with support all base server functions.
  * classic server support:
- *  - ssl encryption
+ *  - ssl encryption (See the SslMode enum).
  *  - multitrading working.
- *  - user registration.
- *  - working with dabase.
+ *  - user registration. (See The PKG::User class)
+ *  - working with dabase. (See the DBObject class)
  *
  * Examples
  *
  * \code{cpp}
  * \endcode
- * s
+ *
  */
 class SingleServer : public DataBaseNode
 {
@@ -79,6 +82,11 @@ protected:
      * @return a new token.
      */
     AccessToken generateToken(int duration = AccessToken::Day);
+
+    ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
+
+private:
+    bool workWithUserRequest(const PKG::User &obj, const Package &pkg, const AbstractNodeInfo *sender);
 
 };
 

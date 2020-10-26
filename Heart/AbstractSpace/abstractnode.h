@@ -342,9 +342,11 @@ protected:
      * @param address This is addrees of receiver
      * @param req This is header of incomming request
      * @param msg This is message of error
+     * @param diff This is difference of current trust (currenTrus += diff)
+     * By default diff equals REQUEST_ERROR
      */
     virtual void badRequest(const HostAddress &address, const Header &req,
-                            const QString msg = "");
+                            const QString msg = "", quint8 diff = REQUEST_ERROR);
 
     /**
      * @brief getWorkStateString This method generate string about work state of server.

@@ -1,4 +1,6 @@
 #include "user.h"
+
+#include <QDataStream>
 namespace QH {
 namespace PKG {
 
@@ -25,6 +27,7 @@ bool User::copyFrom(const AbstractData *other) {
         return false;
 
     this->_token = otherObject->_token;
+    this->_type = otherObject->_type;
 
     return true;
 }
@@ -54,6 +57,7 @@ BaseId User::generateId() const {
 QDataStream &User::fromStream(QDataStream &stream) {
     NetworkMember::fromStream(stream);
     stream >> _token;
+    stream >> _type;
 
     return stream;
 }
@@ -61,6 +65,7 @@ QDataStream &User::fromStream(QDataStream &stream) {
 QDataStream &User::toStream(QDataStream &stream) const {
     NetworkMember::toStream(stream);
     stream << _token;
+    stream << _type;
 
     return stream;
 }
@@ -70,6 +75,14 @@ DBVariantMap User::variantMap() const {
     map.insert("token", {_token.toBytes(), MemberType::InsertUpdate});
 
     return map;
+}
+
+UserRequestType User::type() const {
+    return _type;
+}
+
+void User::setType(const UserRequestType &type) {
+    _type = type;
 }
 
 AccessToken User::token() const {
