@@ -24,7 +24,7 @@ WebSocket::WebSocket(const Package &package):
 
 QDataStream &WebSocket::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
-    stream >> requestCmd;
+    stream >> _request;
     stream >> _address;
 
     return stream;
@@ -32,10 +32,14 @@ QDataStream &WebSocket::fromStream(QDataStream &stream) {
 
 QDataStream &WebSocket::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
-    stream << requestCmd;
+    stream << _request;
     stream << _address;
 
     return stream;
+}
+
+unsigned char WebSocket::getRequestCmd() const {
+    return static_cast<unsigned char>(_request);
 }
 
 DbAddress WebSocket::address() const {
@@ -47,7 +51,7 @@ void WebSocket::setAddress(const DbAddress &address) {
 }
 
 bool WebSocket::isValid() const {
-    return requestCmd > static_cast<int>(WebSocketRequest::Invalied)
+    return _request > WebSocketRequest::Invalied
             && AbstractData::isValid();
 }
 

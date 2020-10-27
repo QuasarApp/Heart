@@ -1,6 +1,6 @@
 #include "singleserver.h"
 
-#include <user.h>
+#include <authrequest.h>
 #include <sqldbcache.h>
 #include <basenodeinfo.h>
 
@@ -11,7 +11,7 @@ SingleServer::SingleServer()
 
 }
 
-RegisteruserResult SingleServer::registerNewUser(const PKG::User &user,
+RegisteruserResult SingleServer::registerNewUser(const PKG::UserMember &user,
                                                  const AbstractNodeInfo *info) {
     if (!db()) {
         return RegisteruserResult::InternalError;
@@ -30,7 +30,7 @@ RegisteruserResult SingleServer::registerNewUser(const PKG::User &user,
     return loginUser(user, info);
 }
 
-RegisteruserResult SingleServer::loginUser(PKG::User user,
+RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
                                            const AbstractNodeInfo *info) {
 
     if (!db()) {
@@ -87,16 +87,15 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
         return parentResult;
     }
 
-
-    if (H_16<QH::PKG::User>() == pkg.hdr.command) {
-            QH::PKG::User obj(pkg);
+    if (H_16<QH::PKG::AuthRequest>() == pkg.hdr.command) {
+            QH::PKG::AuthRequest obj(pkg);
 
             if (!obj.isValid()) {
                 badRequest(sender->networkAddress(), pkg.hdr);
                 return ParserResult::Error;
             }
 
-            if (!workWithUserRequest(obj, pkg, sender)) {
+            if (!workWithUserRequest(&obj, pkg, sender)) {
                 return QH::ParserResult::Error;
             }
 
@@ -108,15 +107,22 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
 
 }
 
-bool SingleServer::workWithUserRequest(const PKG::User& obj,
+bool SingleServer::workWithUserRequest(const PKG::UserMember* obj,
                                        const Package &pkg,
                                        const AbstractNodeInfo *sender) {
+
     RegisteruserResult result = RegisteruserResult::InternalError;
 
-    if (obj.type() == PKG::UserRequestType::Login) {
-        result = loginUser(obj, sender);
-    } else if (obj.type() == PKG::UserRequestType::SignIn) {
-        result = registerNewUser(obj, sender);
+    auto request = dynamic_cast<const Request*>(obj);
+
+    if (request) {
+        return false;
+    }
+
+    if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Login)) {
+        result = loginUser(*static_cast<const PKG::UserMember*>(obj), sender);
+    } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::SignIn)) {
+        result = registerNewUser(*obj, sender);
     }
 
     switch (result) {

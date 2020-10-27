@@ -61,6 +61,10 @@ protected:
 
 private:
     DbAddress _address;
+    WebSocketRequest _request = WebSocketRequest::Invalied;
+    // Request interface
+public:
+    unsigned char getRequestCmd() const override;
 };
 
 }

@@ -7,7 +7,8 @@
 namespace QH {
 
 namespace PKG {
-class User;
+class AuthRequest;
+class UserMember;
 }
 
 #define REQUEST_INTERNAL_ERROR 0
@@ -62,7 +63,7 @@ protected:
      *
      * @note This method send userData with new token to the client.
      */
-    virtual RegisteruserResult registerNewUser(const PKG::User &user,
+    virtual RegisteruserResult registerNewUser(const PKG::UserMember &user,
                                                const AbstractNodeInfo* info);
 
     /**
@@ -74,7 +75,7 @@ protected:
      *
      * @note This method send userData with new token to the client.
      */
-    virtual RegisteruserResult loginUser(PKG::User user, const AbstractNodeInfo* info);
+    virtual RegisteruserResult loginUser(PKG::UserMember user, const AbstractNodeInfo* info);
 
     /**
      * @brief generateToken This method generate a new toke.
@@ -86,7 +87,7 @@ protected:
     ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
 
 private:
-    bool workWithUserRequest(const PKG::User &obj, const Package &pkg, const AbstractNodeInfo *sender);
+    bool workWithUserRequest(const QH::PKG::UserMember *obj, const Package &pkg, const AbstractNodeInfo *sender);
 
 };
 
