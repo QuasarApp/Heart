@@ -24,6 +24,7 @@
 #include "icrypto.h"
 #include "heart_global.h"
 #include "packagemanager.h"
+#include "abstracterrorcodes.h"
 
 class QSslCertificate;
 class QSslKey;
@@ -33,6 +34,10 @@ namespace QH {
 
 class DataSender;
 class ReceiveData;
+
+namespace PKG {
+class ErrorData;
+}
 
 /**
  * @brief The ParserResult enum
@@ -221,9 +226,10 @@ public:
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
+     * @param code This is code of error.
      * @param msg - received text of remoute node (server).
      */
-    void requestError(QString msg);
+    void requestError(unsigned char code, const QString& msg);
 
 protected:
 
@@ -341,12 +347,12 @@ protected:
      * @brief badRequest This method is send data about error of request
      * @param address This is addrees of receiver
      * @param req This is header of incomming request
-     * @param msg This is message of error
+     * @param err This is message and code of error. For more information see the ErrorData struct.
      * @param diff This is difference of current trust (currenTrus += diff)
      * By default diff equals REQUEST_ERROR
      */
     virtual void badRequest(const HostAddress &address, const Header &req,
-                            const QString msg = "", quint8 diff = REQUEST_ERROR);
+                            const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
 
     /**
      * @brief getWorkStateString This method generate string about work state of server.

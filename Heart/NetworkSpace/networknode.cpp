@@ -32,6 +32,8 @@
 #include <networkmember.h>
 #include <networknodeinfo.h>
 #include <nodeobject.h>
+#include <permisioncontrolmember.h>
+#include "networkerrorcodes.h"
 
 
 #define THIS_NODE "this_node_key"
@@ -96,7 +98,7 @@ bool NetworkNode::checkSignOfRequest(const AbstractData *request) {
         return false;
     }
 
-    auto node = db()->getObject(NetworkMember{dbObject->senderID()});
+    auto node = db()->getObject(PermisionControlMember{dbObject->senderID()});
     return _nodeKeys->check(_nodeKeys->concatSign(object->dataForSigned(),
                                                   object->sign()), node->authenticationData());
 }
@@ -218,7 +220,7 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
         BadNodeRequest cmd(pkg);
 
         incomingData(&cmd, baseSender->selfId());
-        emit requestError(cmd.err());
+        emit requestError(cmd.errCode(), cmd.err());
 
         return ParserResult::Processed;
 
@@ -230,12 +232,22 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
     } else if (H_16<NodeObject>() == pkg.hdr.command) {
         NodeObject obj(pkg);
         if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(sender->networkAddress(), pkg.hdr,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "NodeObject request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
         if (!workWithNodeObjectData(obj, sender)) {
-            badRequest(obj.senderID(), pkg.hdr);
+            badRequest(obj.senderID(), pkg.hdr,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "NodeObject request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
@@ -243,12 +255,22 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
     } else if (H_16<KnowAddresses>() == pkg.hdr.command) {
         KnowAddresses obj(pkg);
         if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(sender->networkAddress(), pkg.hdr,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "KnowAddresses request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
         if (!workWithKnowAddresses(obj, sender)) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(sender->networkAddress(), pkg.hdr,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "KnowAddresses request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
@@ -267,7 +289,12 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
         NetworkRequest cmd(pkg);
 
         if (!cmd.isValid()) {
-            badRequest(baseSender->selfId(), pkg.hdr);
+            badRequest(baseSender->selfId(), pkg.hdr,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "NetworkRequest request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 

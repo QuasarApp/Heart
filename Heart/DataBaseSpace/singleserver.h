@@ -3,6 +3,7 @@
 
 #include <databasenode.h>
 #include <accesstoken.h>
+#include "dberrorcodes.h"
 
 namespace QH {
 
@@ -50,6 +51,7 @@ class SingleServer : public DataBaseNode
 {
     Q_OBJECT
 public:
+
     SingleServer();
 
     // AbstractNode interface

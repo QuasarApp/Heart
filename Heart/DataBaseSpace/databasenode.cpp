@@ -197,12 +197,12 @@ bool DataBaseNode::sendData(const AbstractData *resp, const BaseId &nodeId, cons
 }
 
 void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
-                              const QString msg, quint8 diff) {
-    AbstractNode::badRequest(address, req, msg, diff);
+                              const ErrorData &err, quint8 diff) {
+    AbstractNode::badRequest(address, req, err, diff);
 }
 
 void DataBaseNode::badRequest(const BaseId &address, const Header &req,
-                              const QString msg, quint8 diff) {
+                              const ErrorData &err, quint8 diff) {
 
     if (!changeTrust(address, diff)) {
 
@@ -213,7 +213,7 @@ void DataBaseNode::badRequest(const BaseId &address, const Header &req,
         return;
     }
 
-    auto bad = BadRequest(msg);
+    auto bad = BadRequest(err);
     if (!sendData(&bad, address, &req)) {
         return;
     }
@@ -260,12 +260,19 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
         BaseId requesterId = getSender(sender, &obj);
 
         if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(sender->networkAddress(), pkg.hdr,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "WebSocket request is invalid"
+                       });
             return ParserResult::Error;
         }
 
         if (!workWithSubscribe(obj, requesterId, *sender)) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(sender->networkAddress(), pkg.hdr, {
+                           ErrorCodes::InvalidRequest,
+                           "WebSocket request is invalid"
+                       });
             return ParserResult::Error;
         }
 
@@ -274,7 +281,10 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
     } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
         WebSocketSubscriptions obj(pkg);
         if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+            badRequest(sender->networkAddress(), pkg.hdr, {
+                           ErrorCodes::InvalidRequest,
+                           "WebSocketSubscriptions request is invalid"
+                       });
             return ParserResult::Error;
         }
 

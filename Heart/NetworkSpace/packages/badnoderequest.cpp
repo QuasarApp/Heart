@@ -13,7 +13,7 @@ BadNodeRequest::BadNodeRequest() {
     
 }
 
-BadNodeRequest::BadNodeRequest(const QString &err):BadRequest(err) {
+BadNodeRequest::BadNodeRequest(const ErrorData &err):BadRequest(err) {
     
 }
 

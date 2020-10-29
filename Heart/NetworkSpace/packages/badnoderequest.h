@@ -22,7 +22,7 @@ class HEARTSHARED_EXPORT BadNodeRequest: public BadRequest, public SenderData
 {
 public:
     explicit BadNodeRequest();
-    explicit BadNodeRequest(const QString & err = "");
+    explicit BadNodeRequest(const ErrorData &err);
     explicit BadNodeRequest(const Package& package);
 
     // AbstractData interface

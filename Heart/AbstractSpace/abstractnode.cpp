@@ -407,7 +407,7 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
         BadRequest cmd(pkg);
 
         incomingData(&cmd, sender->networkAddress());
-        emit requestError(cmd.err());
+        emit requestError(cmd.errCode(), cmd.err());
 
         return ParserResult::Processed;
 
@@ -497,7 +497,7 @@ bool AbstractNode::sendData(const AbstractData *resp,
 }
 
 void AbstractNode::badRequest(const HostAddress &address, const Header &req,
-                              const QString msg, quint8 diff) {
+                              const ErrorData &err, quint8 diff) {
     auto client = getInfoPtr(address);
 
     if (!client) {
@@ -517,7 +517,7 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
         return;
     }
 
-    auto bad = BadRequest(msg);
+    auto bad = BadRequest(err);
     if (!sendData(&bad, address, &req)) {
         return;
     }

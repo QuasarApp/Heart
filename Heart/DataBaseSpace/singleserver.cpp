@@ -3,6 +3,7 @@
 #include <authrequest.h>
 #include <sqldbcache.h>
 #include <basenodeinfo.h>
+#include <badrequest.h>
 
 namespace QH {
 
@@ -91,7 +92,11 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
             QH::PKG::AuthRequest obj(pkg);
 
             if (!obj.isValid()) {
-                badRequest(sender->networkAddress(), pkg.hdr);
+                badRequest(sender->networkAddress(), pkg.hdr,
+                           {
+                               ErrorCodes::InvalidRequest,
+                               "AuthRequest is invalid"
+                           });
                 return ParserResult::Error;
             }
 
@@ -130,34 +135,58 @@ bool SingleServer::workWithUserRequest(const PKG::UserMember* obj,
     case RegisteruserResult::InternalError: {
         QuasarAppUtils::Params::log("Internal error ocured in the loginUser or registerNewUser method.",
                                     QuasarAppUtils::Error);
-        badRequest(sender->networkAddress(), pkg.hdr, "Internal server error."
-                                                      " Please create issue about this problem in the support page "
-                                                      " https://github.com/QuasarApp/Heart/issues/new",
+        badRequest(sender->networkAddress(), pkg.hdr,
+                   {
+                       ErrorCodes::InternalError,
+                      "Internal server error."
+                      " Please create issue about this problem in the support page "
+                      " https://github.com/QuasarApp/Heart/issues/new"
+                   },
                    REQUEST_INTERNAL_ERROR);
 
         return false;
     }
 
     case RegisteruserResult::UserExits: {
-        badRequest(sender->networkAddress(), pkg.hdr, "Such user already exists ", REQUEST_LOGIN_ERROR);
+        badRequest(sender->networkAddress(), pkg.hdr,
+                   {
+                       ErrorCodes::InternalError,
+                       "Such user already exists "
+                   },
+                   REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
     case RegisteruserResult::UserNotExits: {
-        badRequest(sender->networkAddress(), pkg.hdr, "Such user not exists ", REQUEST_LOGIN_ERROR);
+        badRequest(sender->networkAddress(), pkg.hdr,
+                   {
+                       ErrorCodes::UserNotExits,
+                       "Such user not exists "
+                   },
+                   REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
     case RegisteruserResult::UserInvalidPasswoed: {
-        badRequest(sender->networkAddress(), pkg.hdr, "Invalid password ", REQUEST_LOGIN_ERROR);
+        badRequest(sender->networkAddress(), pkg.hdr,
+                   {
+                       ErrorCodes::UserInvalidPasswoed,
+                       "Invalid password "
+                   },
+                   REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
     case RegisteruserResult::UserAlreadyLogged: {
-        badRequest(sender->networkAddress(), pkg.hdr, "User Already Logged", REQUEST_LOGIN_ERROR);
+        badRequest(sender->networkAddress(), pkg.hdr,
+                   {
+                       ErrorCodes::UserInvalidPasswoed,
+                       "User Already Logged"
+                   },
+                   REQUEST_LOGIN_ERROR);
         return true;
 
     }
@@ -167,9 +196,13 @@ bool SingleServer::workWithUserRequest(const PKG::UserMember* obj,
     }
     }
 
-    badRequest(sender->networkAddress(), pkg.hdr, "Internal server error. RegisteruserResult return invalid value!"
-                                                  " Please create issue about this problem in the support page "
-                                                  " https://github.com/QuasarApp/Heart/issues/new",
+    badRequest(sender->networkAddress(), pkg.hdr,
+               {
+                   ErrorCodes::InternalError,
+                  "Internal server error."
+                  " Please create issue about this problem in the support page "
+                  " https://github.com/QuasarApp/Heart/issues/new"
+               },
                REQUEST_INTERNAL_ERROR);
     return false;
 }

@@ -133,19 +133,19 @@ protected:
     AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
 
     void badRequest(const HostAddress &address, const Header &req,
-                    const QString msg = "", quint8 diff = REQUEST_ERROR) override;
+                    const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
 
     /**
      * @brief badRequest This implementation of the AbstractNode::badRequest method
      *  send bad request to node with id.
      * @param address This is id of target node or client
      * @param req This is header of request.
-     * @param msg This is message for target node about error.
+     * @param err This is message and code for target node about error. For more onformation see the PKG::ErrorData struct.
      * @param diff This is difference of current trust (currenTrus += diff)
      * By default diff equals REQUEST_ERROR
      */
     virtual void badRequest(const BaseId &address, const Header &req,
-                            const QString msg = "", quint8 diff = REQUEST_ERROR);
+                            const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
 
     bool changeTrust(const HostAddress &id, int diff) override;
 

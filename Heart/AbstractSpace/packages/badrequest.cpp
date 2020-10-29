@@ -13,11 +13,13 @@ namespace QH{
 namespace PKG {
 
 
-BadRequest::BadRequest(const QString &err):AbstractData() {
-
-
+BadRequest::BadRequest(unsigned char errocode, const QString &err) {
     setErr(err);
+    setErrCode(errocode);
+}
 
+BadRequest::BadRequest(const ErrorData &data):
+    BadRequest(data.code, data.msg) {
 }
 
 BadRequest::BadRequest(const Package &package):
@@ -28,6 +30,7 @@ BadRequest::BadRequest(const Package &package):
 QDataStream &BadRequest::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 
+    stream >> _errCode;
     stream >> _err;
 
     return stream;
@@ -36,9 +39,19 @@ QDataStream &BadRequest::fromStream(QDataStream &stream) {
 QDataStream &BadRequest::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
 
+    stream << _errCode;
     stream << _err;
 
     return stream;
+}
+
+unsigned char BadRequest::errCode() const {
+    return _errCode;
+
+}
+
+void BadRequest::setErrCode(unsigned char code) {
+    _errCode = code;
 }
 
 QString BadRequest::err() const {
