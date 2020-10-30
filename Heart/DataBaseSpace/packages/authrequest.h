@@ -18,7 +18,9 @@ enum class UserRequestType: unsigned char {
     /// Request to registration a new user.
     SignIn,
     /// Request to login an exists user.
-    Login
+    Login,
+    /// Remove all data of this user from server
+    Remove
 };
 
 /**

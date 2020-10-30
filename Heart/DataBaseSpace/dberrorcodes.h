@@ -12,6 +12,8 @@ namespace ErrorCodes {
 enum DBErrorCodes: unsigned char {
     /// User not registered because database not inited or other error occurred.
     InternalError = AbstractErrorCodes::AbstractErrorCodes,
+    /// User not have a permision of execute a requested operation.
+    OperatioForbiden,
     /// User not registered because user already exists.
     UserExits,
     /// User not logined because you need register user befor login.

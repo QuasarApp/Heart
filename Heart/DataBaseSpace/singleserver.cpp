@@ -12,7 +12,7 @@ SingleServer::SingleServer()
 
 }
 
-RegisteruserResult SingleServer::registerNewUser(const PKG::UserMember &user,
+RegisteruserResult SingleServer::registerNewUser(PKG::UserMember user,
                                                  const AbstractNodeInfo *info) {
     if (!db()) {
         return RegisteruserResult::InternalError;
@@ -23,6 +23,12 @@ RegisteruserResult SingleServer::registerNewUser(const PKG::UserMember &user,
     if (localObject) {
         return RegisteruserResult::UserExits;
     }
+
+    user.setAuthenticationData(hashgenerator(user.authenticationData()));
+
+    auto requester = getSender(info, &user);
+
+    addUpdatePermission(requester, user.dbAddress(), Permission::Write);
 
     if (!db()->saveObject(&user)) {
         return RegisteruserResult::InternalError;
@@ -44,7 +50,7 @@ RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
         return RegisteruserResult::UserNotExits;
     }
 
-    if (localObject->authenticationData() != user.authenticationData()) {
+    if (localObject->authenticationData() != hashgenerator(user.authenticationData())) {
         return RegisteruserResult::UserInvalidPasswoed;
     }
 
@@ -70,6 +76,7 @@ RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
 
     editableNodeInfo->setSelfId(token.toBytes());
     user.setToken(token);
+    user.setAuthenticationData("");
 
     if (!sendData(&user, info->networkAddress())) {
         return RegisteruserResult::InternalError;
@@ -112,7 +119,11 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
 
 }
 
-bool SingleServer::workWithUserRequest(const PKG::UserMember* obj,
+QByteArray SingleServer::hashgenerator(const QByteArray &data) {
+    return DataBaseNode::hashgenerator(data + "singelserversoult");
+}
+
+bool SingleServer::workWithUserRequest(PKG::UserMember* obj,
                                        const Package &pkg,
                                        const AbstractNodeInfo *sender) {
 
@@ -125,9 +136,20 @@ bool SingleServer::workWithUserRequest(const PKG::UserMember* obj,
     }
 
     if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Login)) {
-        result = loginUser(*static_cast<const PKG::UserMember*>(obj), sender);
+        result = loginUser(*static_cast<PKG::UserMember*>(obj), sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::SignIn)) {
         result = registerNewUser(*obj, sender);
+    } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
+
+        BaseId requesterId = getSender(sender, obj);
+
+        if (deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
+            badRequest(sender->networkAddress(), pkg.hdr,
+                       {
+                           ErrorCodes::OperatioForbiden,
+                          " Permission denied"
+                       });
+        }
     }
 
     switch (result) {

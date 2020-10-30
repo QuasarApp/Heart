@@ -162,7 +162,7 @@ protected:
      * Override this method for set your custom salt.
      * @param data This input byte array
      */
-    virtual QString hashgenerator(const QByteArray &data);
+    virtual QByteArray hashgenerator(const QByteArray &data);
 
     void nodeConnected(const HostAddress &node) override;
 
@@ -219,7 +219,6 @@ protected:
      */
     DBOperationResult setObject(const BaseId &requester,
                                 const PKG::DBObject *saveObject);
-
     /**
      * @brief getSender This method return id of requester.
      *  By Default base implementation get id from BaseNdoeInfo.
@@ -242,6 +241,30 @@ protected:
     virtual DBOperationResult checkPermission(const BaseId& requester,
                                 const DbAddress& objectAddress,
                                 const Permission& requarimentPermision) const;
+
+
+    /**
+     * @brief addUpdatePermission This method added or update permision for member.
+     * @warning This method do not have a validation. It is just change a NetworkMembers table, so use this carefully.
+     * @param member This is member id (user of node)
+     * @param objectAddress This is database  object for which the permissions will be set
+     * @param permision This is Permision level
+     * @return true if method finished successful.
+     */
+    virtual bool addUpdatePermission(const BaseId& member,
+                                     const DbAddress& objectAddress,
+                                     const Permission& permision) const;
+
+
+    /**
+     * @brief removePermission This method removed permision for member.
+     * @warning This method do not have a validation. It is just change a NetworkMembers table, so use this carefully.
+     * @param member This is member id (user of node)
+     * @param objectAddress This is database  object for which the permissions will be removed
+     * @return true if method finished successful.
+     */
+    virtual bool removePermission(const BaseId& member,
+                                  const DbAddress& objectAddress) const;
 
     /**
      * @brief dbLocation This method return location of nodes or clients database.

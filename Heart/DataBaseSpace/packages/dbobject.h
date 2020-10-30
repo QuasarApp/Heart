@@ -257,10 +257,17 @@ public:
 
     /**
      * @brief clone This method create a new object. The new Object is clone of current object.
+     *  This method is template, so you can set needed type for result.
+     * \code{cpp}
+     *  MyObject->clone<MyObjectType>();
+     * \endcode
      * @note If you want to get raw pointer to the clone object use a DBObject::cloneRaw method.
      * @return The Shared pointer to clone of current object.
      */
-    QSharedPointer<DBObject> clone() const;
+    template<class Object = DBObject>
+    QSharedPointer<Object>&& clone() const {
+        return QSharedPointer<Object>(dynamic_cast<Object*>(cloneRaw()));
+    }
 
     /**
      * @brief cloneRaw This method return a raw pointer to clone of this object.

@@ -84,7 +84,7 @@ void NetworkMember::setTrust(int trust) {
 }
 
 bool NetworkMember::isValid() const {
-    return DBObject::isValid() && _authenticationData.size();
+    return DBObject::isValid();
 }
 
 bool NetworkMember::copyFrom(const AbstractData * other) {

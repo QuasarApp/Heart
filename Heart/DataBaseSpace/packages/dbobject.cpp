@@ -134,10 +134,6 @@ DbAddress DBObject::dbAddress() const {
     return _dbId;
 }
 
-QSharedPointer<DBObject> DBObject::clone() const {
-    return QSharedPointer<DBObject>(cloneRaw());
-}
-
 DBObject *DBObject::cloneRaw() const {
     auto cloneObject = createDBObject();
     if (!cloneObject->copyFrom(this)) {

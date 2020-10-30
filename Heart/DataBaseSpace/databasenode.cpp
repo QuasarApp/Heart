@@ -26,6 +26,8 @@
 #include <networkmember.h>
 #include <memberpermisionobject.h>
 #include <permisioncontrolmember.h>
+#include <deleteobject.h>
+#include "dberrorcodes.h"
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -290,12 +292,26 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
 
         incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
+    } else if (H_16<DeleteObject>() == pkg.hdr.command) {
+        DeleteObject obj(pkg);
+
+        BaseId requesterId = getSender(sender, &obj);
+
+        if (deleteObject(requesterId, &obj) == DBOperationResult::Forbidden) {
+            badRequest(sender->networkAddress(), pkg.hdr, {
+                            ErrorCodes::OperatioForbiden,
+                           "Permision denied"
+                       });
+            return ParserResult::Error;
+
+        }
+
     }
 
     return ParserResult::NotProcessed;
 }
 
-QString DataBaseNode::hashgenerator(const QByteArray &pass) {
+QByteArray DataBaseNode::hashgenerator(const QByteArray &pass) {
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
                 QCryptographicHash::Sha256);
@@ -445,6 +461,43 @@ DBOperationResult DataBaseNode::checkPermission(const BaseId &requester,
      }
 
      return DBOperationResult::Allowed;
+}
+
+bool DataBaseNode::addUpdatePermission(const BaseId &member,
+                                       const DbAddress &objectAddress,
+                                       const Permission &permision) const {
+
+    if (!_db) {
+        return false;
+    }
+
+    MemberPermisionObject object;
+    object.setKey(PermisionData(member, objectAddress));
+    object.setPermisions(permision);
+
+    if (!_db->saveObject(&object)) {
+        return false;
+    }
+
+    return true;
+
+}
+
+bool DataBaseNode::removePermission(const BaseId &member,
+                                    const DbAddress &objectAddress) const {
+
+    if (!_db) {
+        return false;
+    }
+
+    MemberPermisionObject object;
+    object.setKey(PermisionData(member, objectAddress));
+
+    if (!_db->deleteObject(&object)) {
+        return false;
+    }
+
+    return true;
 }
 
 DBOperationResult DataBaseNode::deleteObject(const BaseId &requester,

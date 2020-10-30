@@ -65,7 +65,7 @@ protected:
      *
      * @note This method send userData with new token to the client.
      */
-    virtual RegisteruserResult registerNewUser(const PKG::UserMember &user,
+    virtual RegisteruserResult registerNewUser(PKG::UserMember user,
                                                const AbstractNodeInfo* info);
 
     /**
@@ -87,9 +87,10 @@ protected:
     AccessToken generateToken(int duration = AccessToken::Day);
 
     ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
+    QByteArray hashgenerator(const QByteArray &data) override;
 
 private:
-    bool workWithUserRequest(const QH::PKG::UserMember *obj, const Package &pkg, const AbstractNodeInfo *sender);
+    bool workWithUserRequest(PKG::UserMember *obj, const Package &pkg, const AbstractNodeInfo *sender);
 
 };
 
