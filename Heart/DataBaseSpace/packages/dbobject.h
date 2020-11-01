@@ -265,7 +265,7 @@ public:
      * @return The Shared pointer to clone of current object.
      */
     template<class Object = DBObject>
-    QSharedPointer<Object>&& clone() const {
+    QSharedPointer<Object> clone() const {
         return QSharedPointer<Object>(dynamic_cast<Object*>(cloneRaw()));
     }
 
