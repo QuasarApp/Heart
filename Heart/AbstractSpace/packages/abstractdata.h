@@ -206,10 +206,19 @@ protected:
 
 private:
     /**
-     * @brief generateCmd set cmd from class name.
+     * @brief generateCmd generate command from name of this class object.
+     * @note call this method only after create objects. do not call in constructor of class.
+     * @return command of object.
+     */
+    unsigned short generateCmd() const;
+
+
+    /**
+     * @brief initCmd set cmd from class name.
      * @note call this method only after create objects. do not call in constructor of class.
      */
-    void generateCmd();
+    void initCmd();
+
     /**
      * @brief _cmd - unique id of class using in Header of package for identification.
      */

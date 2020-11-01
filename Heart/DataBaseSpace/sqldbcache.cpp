@@ -16,6 +16,7 @@
 
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
+#include <execution>
 
 
 namespace QH {
@@ -105,6 +106,15 @@ SqlDBWriter *SqlDBCache::writer() const {
 }
 
 void SqlDBCache::setWriter(SqlDBWriter *writer) {
+
+    if ((_mode == SqlDBCasheWriteMode::Force) && dynamic_cast<AsyncSqlDbWriter*>(writer)) {
+        throw std::runtime_error("You user the SqlDBCasheWriteMode::Force mode of SqlDBCache and AsyncSqlDbWriter. "
+                                  "This is this can cause your client or server to crash. Since the asynchronous save will be "
+                                  "able to be performed for temporary objects. Use the SqlDBCasheWriteMode::Default or"
+                                  " not async SqlDbWriter");
+
+    }
+
     _writer = writer;
 }
 

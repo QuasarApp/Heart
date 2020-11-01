@@ -17,7 +17,10 @@
 namespace QH {
 namespace PKG {
 unsigned short AbstractData::cmd() const {
-    return _cmd;
+    if (_cmd)
+        return _cmd;
+
+    return generateCmd();
 }
 
 void AbstractData::setCmd(unsigned short cmd) {
@@ -28,17 +31,21 @@ bool AbstractData::init() {
     if (typeid (*this).hash_code() == typeid(AbstractData).hash_code())
         return false;
 
-    generateCmd();
+    initCmd();
 
     return true;
 }
 
-void AbstractData::generateCmd() {
-    setCmd(H_16(*this));
+unsigned short AbstractData::generateCmd() const {
+    return H_16(*this);
+}
+
+void AbstractData::initCmd() {
+    setCmd(generateCmd());
 }
 
 AbstractData::AbstractData() {
-    _cmd = 0;
+    setCmd(0);
 }
 
 bool AbstractData::toPackage(Package &package,
@@ -50,7 +57,7 @@ bool AbstractData::toPackage(Package &package,
 
     package.data = toBytes();
 
-    package.hdr.command = _cmd;
+    package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = static_cast<unsigned short>(package.data.size());
     package.hdr.hash = qHash(package.data);
@@ -64,12 +71,12 @@ QDataStream &AbstractData::fromStream(QDataStream &stream) {
 }
 
 QDataStream &AbstractData::toStream(QDataStream &stream) const {
-    stream << _cmd;
+    stream << cmd();
     return stream;
 }
 
 bool AbstractData::isValid() const {
-    return _cmd;
+    return cmd();
 }
 
 bool AbstractData::copyFrom(const AbstractData *other) {
@@ -80,7 +87,7 @@ bool AbstractData::copyFrom(const AbstractData *other) {
 QString AbstractData::toString() const {
     return QString("Object: type:%0, command:%1").
             arg(typeid(*this).name()).
-            arg(_cmd);
+            arg(cmd());
 }
 
 bool AbstractData::prepareToSend() {

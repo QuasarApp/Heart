@@ -334,6 +334,9 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
         QuasarAppUtils::Params::log("prepare sql error: " + q.lastError().text(),
                                     QuasarAppUtils::Error);
 
+        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
+                                    QuasarAppUtils::Error);
+
         return false;
     }
 

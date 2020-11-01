@@ -49,7 +49,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 bool DBObject::fromSqlRecord(const QSqlRecord &q) {
 
     if (q.contains("id")) {
-        setId(q.value("id").toString());
+        setId(q.value("id").toByteArray());
         return true;
     }
 
@@ -74,7 +74,7 @@ PrepareResult DBObject::prepareSaveQuery(QSqlQuery &q) const {
 
     queryString = queryString.arg(tableName());
     QString tableInsertHeader = "id, ";
-    QString tableInsertValues = "'" + getId().toBase64() + "', ";
+    QString tableInsertValues = "'" + getId().toRaw() + "', ";
     QString tableUpdateValues = "";
 
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -154,11 +154,11 @@ QString DBObject::getWhereBlock() const {
     QString whereBlock = "WHERE ";
 
     if (getId().isValid()) {
-        whereBlock += "id='" + getId().toBase64() + "'";
+        whereBlock += "id='" + getId().toRaw() + "'";
     } else {
         auto altKeys = altarnativeKey();
         if (altKeys.first.isEmpty()) {
-            return {};
+            return whereBlock;
         }
         whereBlock +=  altKeys.first + "='" + altKeys.second + "'";
 
