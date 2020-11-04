@@ -13,10 +13,6 @@ DBObjectSet::DBObjectSet(const QString table):
 
 }
 
-DBObject *DBObjectSet::createDBObject() const {
-    return nullptr;
-}
-
 PrepareResult DBObjectSet::prepareSaveQuery(QSqlQuery &) const {
     return PrepareResult::Disabled;
 }

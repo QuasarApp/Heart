@@ -35,7 +35,9 @@ QString DBObject::tableName() const {
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
-    QString queryString = "SELECT * FROM %0 " + getWhereBlock();
+    auto map = variantMap().keys();
+
+    QString queryString = "SELECT id," + map.join(",") + " FROM %0 " + getWhereBlock();
 
     queryString = queryString.arg(tableName());
 
@@ -151,7 +153,12 @@ QString DBObject::toString() const {
 }
 
 QString DBObject::getWhereBlock() const {
-    QString whereBlock = "WHERE " + condition();
+    auto con = condition();
+
+    if (!con.size())
+        return "";
+
+    QString whereBlock = "WHERE " + con;
 
     return whereBlock;
 }

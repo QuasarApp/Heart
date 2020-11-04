@@ -27,7 +27,6 @@ public:
 
     // DBObject interface
 public:
-    DBObject *createDBObject() const override final;
     PrepareResult prepareSaveQuery(QSqlQuery &) const override final;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override final;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override final;
