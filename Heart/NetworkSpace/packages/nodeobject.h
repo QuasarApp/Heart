@@ -29,7 +29,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
     BaseId generateId() const override;
     DBVariantMap variantMap() const override;
-    QPair<QString, QString> altarnativeKey() const override;
+    QPair<QString, QString> condition() const override;
 
 public:
     DBObject *createDBObject() const override;

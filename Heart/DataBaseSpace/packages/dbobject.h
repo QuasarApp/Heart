@@ -47,6 +47,8 @@ enum class MemberType {
  * @brief The DBVariant struct contains QVariant value of the DBObjects member and it type.
  */
 struct DBVariant {
+    DBVariant();
+
     DBVariant(const QVariant& value, MemberType type);
     QVariant value;
     MemberType type;
@@ -118,7 +120,7 @@ public:
      *  \code
      *   "select * from [table] where id=[id]".
      *  \endcode
-     * If id is empty this implementation use data from altarnativeKey method. See DBObject::altarnativeKey fr more information.
+     * This method create where block using the condition method. See DBObject::condition fr more information.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
      *
@@ -202,8 +204,7 @@ public:
     /**
      * @brief prepareRemoveQuery This method method should be prepare a query for remove this object from a database.
      * Override this method for remove this item from database.
-     * The default implementatin remove item from id or primaryKey for more information see DBObject::altarnativeKey method.
-     * If id is empty the default implementation use data from altarnativeKey method.
+     * The default implementatin remove item from id or primaryKey for more information see DBObject::condition method.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
      *
@@ -239,14 +240,6 @@ public:
      * @return unique key of this object
      */
     virtual uint dbKey() const;
-
-    /**
-     * @brief altarnativeKey This method must to return a altarnative 'key:value' pair for select object when the object do not have a database id.
-     * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
-     * The default implementation return empty pair value.
-     * @return pair of altarnative keys. {Key : Value}.
-     */
-    virtual QPair<QString, QString> altarnativeKey() const;
 
     /**
      * @brief dbAddress This method return address of the database object.
@@ -320,6 +313,22 @@ protected:
      * @note If you want disable this functionality then override this method and return an empty map. But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
      */
     virtual DBVariantMap variantMap() const = 0;
+
+    /**
+     * @brief condition This method must to return a condition of the WHERE block of the sql query.
+     * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
+     * The default implementation return dbId value.
+     * \code{cpp}
+     *  QString DBObject::condition() const {
+            return {"id = '" + getId().toRaw() + "'"};
+        }
+     * \endcode
+     * Override this method for customize your select or delete query.
+     * @return condition string.
+     */
+    virtual QString condition() const;
+
+    QString generateValueString() const;
 
 private:
     QString getWhereBlock() const;

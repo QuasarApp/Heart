@@ -126,8 +126,8 @@ uint DBObject::dbKey() const {
     return HASH_KEY(DbAddressKey(_dbId));
 }
 
-QPair<QString, QString> DBObject::altarnativeKey() const {
-    return {};
+QString DBObject::condition() const {
+    return {"id = '" + getId().toRaw() + "'"};
 }
 
 DbAddress DBObject::dbAddress() const {
@@ -151,18 +151,7 @@ QString DBObject::toString() const {
 }
 
 QString DBObject::getWhereBlock() const {
-    QString whereBlock = "WHERE ";
-
-    if (getId().isValid()) {
-        whereBlock += "id='" + getId().toRaw() + "'";
-    } else {
-        auto altKeys = altarnativeKey();
-        if (altKeys.first.isEmpty()) {
-            return whereBlock;
-        }
-        whereBlock +=  altKeys.first + "='" + altKeys.second + "'";
-
-    }
+    QString whereBlock = "WHERE " + condition();
 
     return whereBlock;
 }
@@ -235,6 +224,10 @@ void DBObject::setId(const BaseId& id) {
 
 void DBObject::clear() {
     setId({});
+}
+
+DBVariant::DBVariant() {
+
 }
 
 DBVariant::DBVariant(const QVariant &value, MemberType type) {
