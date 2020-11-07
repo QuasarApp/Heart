@@ -20,14 +20,7 @@ unsigned int DBObjectKey::hash() const {
     if (!_source)
         return 0;
 
-    int sig = _source->signature();
-    QByteArray array =
-            QByteArray::fromRawData(reinterpret_cast<char*>(&sig), sizeof(int));
-
-    array.push_back(_source->getId().toRaw());
-    array.push_back(_source->tableName().toLocal8Bit());
-
-    return qHash(array);
+    return qHash(_source->getQuerySrting());
 }
 
 const BaseId *DBObjectKey::id() const {

@@ -120,7 +120,7 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
 
 bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
 
-    DBObject* obj = getFromCache(templateObject.dbCacheKey());
+    DBObject* obj = getFromCache(templateObject.dbKey());
     if(obj) {
         result.push_back(obj);
         return true;
@@ -162,7 +162,7 @@ bool SqlDBCache::saveObject(const DBObject *saveObject) {
             return true;
         }
     } else {
-        _needToSaveCache.insert(saveObject->dbCacheKey());
+        _needToSaveCache.insert(saveObject->dbKey());
         globalUpdateDataBase(_mode);
     }
 
