@@ -82,7 +82,7 @@ public:
      * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
      * @return The id of database objcet.
      */
-    const BaseId &getId() const;
+    BaseId getId() const;
 
     /**
      * @brief setId This method set new id for current database object.
@@ -100,7 +100,7 @@ public:
      * @brief tableName This method return a table name of the database object.
      * @return string value if the table name.
      */
-    const QString &tableName() const;
+    QString tableName() const;
 
     /**
      * @brief createDBObject This method should be create a object with the some type as the object called this method.
@@ -242,21 +242,11 @@ public:
     virtual uint dbKey() const;
 
     /**
-     * @brief dbKey This method return unique key of cache object.
-     * For more information see AbstractKey::hash methid.
-     * This method calc hash of sqlQuery string.
-     * For more information see the DBObjectKey class.
-     * @return unique cache key of this object
-     */
-    virtual uint dbCacheKey() const;
-
-
-    /**
      * @brief dbAddress This method return address of the database object.
      * IF the object is not valid then this method return an invalid database address.
      * @return The database address of current object.
      */
-    const DbAddress &dbAddress() const;
+    DbAddress dbAddress() const;
 
     /**
      * @brief clone This method create a new object. The new Object is clone of current object.
@@ -281,12 +271,6 @@ public:
     DBObject* cloneRaw() const;
 
     QString toString() const override;
-
-    /**
-     * @brief getQuerySrting This method return the srting of sql query of this object.
-     * @return string query of this object.
-     */
-    QString getQuerySrting() const;
 
 
 protected:

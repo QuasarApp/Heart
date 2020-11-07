@@ -31,16 +31,23 @@ public:
     virtual unsigned int hash() const = 0;
 
     /**
-     * @brief id This method must be return the pointer of id of database object
-     * @return BaseId of database object.
+     * @brief equal This method must be make compare betwin current object and other.
+     * @param other This is other comparable object.
+     * @return ture if objects is equals.
      */
-    virtual const BaseId* id() const = 0;
+    virtual bool equal(const AbstractKey* other) const = 0;
 
     /**
-     * @brief table this method must be return the pointer of table name of object
+     * @brief id This method must be return the id of database object
+     * @return BaseId of database object.
+     */
+    virtual const BaseId& id() const = 0;
+
+    /**
+     * @brief table this method must be return the table name of object
      * @return table name
      */
-    virtual const QString *table() const = 0;
+    virtual const QString& table() const = 0;
 
     /**
      * @brief isValid This method check this key object to valid

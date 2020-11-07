@@ -16,8 +16,6 @@
 #include <QVariantMap>
 #include <QSharedPointer>
 #include <quasarapp.h>
-#include <QSqlError>
-#include <dbobjectkey.h>
 
 namespace QH {
 namespace PKG {
@@ -31,7 +29,7 @@ DBObject::~DBObject() {
 
 }
 
-const QString& DBObject::tableName() const {
+QString DBObject::tableName() const {
     return _dbId.table();
 }
 
@@ -130,15 +128,11 @@ uint DBObject::dbKey() const {
     return HASH_KEY(DbAddressKey(_dbId));
 }
 
-uint DBObject::dbCacheKey() const {
-    return HASH_KEY(DBObjectKey(this));
-}
-
 QString DBObject::condition() const {
     return {"id = '" + getId().toRaw() + "'"};
 }
 
-const DbAddress& DBObject::dbAddress() const {
+DbAddress DBObject::dbAddress() const {
     return _dbId;
 }
 
@@ -156,16 +150,6 @@ DBObject *DBObject::cloneRaw() const {
 QString DBObject::toString() const {
     return AbstractData::toString() +
             QString(" %0").arg(_dbId.toString());
-}
-
-QString DBObject::getQuerySrting() const {
-    QSqlQuery query;
-    if (prepareSelectQuery(query) == PrepareResult::Fail) {
-        QuasarAppUtils::Params::log(query.lastError().text() ,QuasarAppUtils::Error);
-        return "";
-    }
-
-    return query.lastQuery();
 }
 
 QString DBObject::getWhereBlock() const {
@@ -237,7 +221,7 @@ bool DBObject::copyFrom(const AbstractData * other) {
     return true;
 }
 
-const BaseId& DBObject::getId() const {
+BaseId DBObject::getId() const {
     return dbAddress().id();
 }
 

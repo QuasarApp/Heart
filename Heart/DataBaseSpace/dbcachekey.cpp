@@ -22,15 +22,7 @@ QString DBCacheKey::description(uint hash) const {
     if (!val)
         return "";
 
-    QString descr("table:%0 id:%1");
-
-    if (val->id())
-        descr = descr.arg(static_cast<QString>((val->id()->toBase64())));
-
-    if (val->table())
-        descr = descr.arg((*val->table()));
-
-    return descr;
+    return QString("table:%0 id:%1").arg(val->id().toBase64(), val->table());
 }
 
 DBCacheKey::DBCacheKey() {}

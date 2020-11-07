@@ -158,7 +158,6 @@ private:
     SqlDBCasheWriteMode _mode;
 
     QHash<uint, PKG::DBObject*>  _cache;
-    QHash<uint, QHash<uint, const PKG::DBObject*>*> _siblings;
     QSet<uint>  _needToSaveCache;
     SqlDBWriter* _writer = nullptr;
 

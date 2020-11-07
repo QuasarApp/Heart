@@ -25,8 +25,9 @@ public:
 
     unsigned int hash() const override;
 
-    const BaseId *id() const override;
-    const QString *table() const override;
+    const BaseId &id() const override;
+    const QString &table() const override;
+    bool equal(const AbstractKey *other) const override;
 
     bool isValid() const override;
 
