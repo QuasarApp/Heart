@@ -158,14 +158,8 @@ QString DBObject::toString() const {
             QString(" %0").arg(_dbId.toString());
 }
 
-QString DBObject::getQuerySrting() const {
-    QSqlQuery query;
-    if (prepareSelectQuery(query) == PrepareResult::Fail) {
-        QuasarAppUtils::Params::log(query.lastError().text() ,QuasarAppUtils::Error);
-        return "";
-    }
-
-    return query.lastQuery();
+int DBObject::signature() const {
+    return cmd();
 }
 
 QString DBObject::getWhereBlock() const {

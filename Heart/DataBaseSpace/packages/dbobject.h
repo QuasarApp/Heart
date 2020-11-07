@@ -283,10 +283,13 @@ public:
     QString toString() const override;
 
     /**
-     * @brief getQuerySrting This method return the srting of sql query of this object.
-     * @return string query of this object.
+     * @brief signature This merhod return dbobjcet siganture.
+     * By default it is typeinfo::hash % 0XFFFFF.
+     *
+     * This method is uset to create a dbCacheid because default db id maybe have a duplicate in the case when a record of database have a large size.
+     * @return int (4byte ) signatyre value.
      */
-    QString getQuerySrting() const;
+    virtual int signature() const;
 
 
 protected:
