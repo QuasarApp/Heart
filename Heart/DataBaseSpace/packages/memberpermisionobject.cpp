@@ -62,13 +62,13 @@ PrepareResult MemberPermisionObject::prepareSaveQuery(QSqlQuery &q) const {
     queryString = queryString.arg(
                 "memberId, objectTable", "objectId", "lvl");
 
-    queryString = queryString.arg("memberId='" + _key.id().toBase64() +  "', " +
+    queryString = queryString.arg("memberId='" + _key.id()->toBase64() +  "', " +
                                   "objectTable='" + _key.address().table()+  "', " +
                                   "objectId='" + _key.address().id().toBase64() +  "', " +
                                   "lvl='" + QString::number(static_cast<int>(_permisions)) + "'");
     QString values;
 
-    values += "'" + _key.id().toBase64() + "', ";
+    values += "'" + _key.id()->toBase64() + "', ";
     values += "'" + _key.address().table() + "', ";
     values += "'" + _key.address().id().toBase64() + "', ";
     values += QString::number(static_cast<int>(_permisions));
@@ -89,7 +89,7 @@ PrepareResult MemberPermisionObject::prepareRemoveQuery(QSqlQuery &q) const {
 
     QString queryString = "DELETE FROM %0 where memberId='%1' and objectTable='%2' and objectId='%3'";
     queryString = queryString.arg(tableName(),
-                                  _key.id().toBase64(),
+                                  _key.id()->toBase64(),
                                   _key.address().table(),
                                   _key.address().id().toBase64());
 
@@ -106,8 +106,8 @@ PrepareResult MemberPermisionObject::prepareSelectQuery(QSqlQuery &q) const {
     QString queryString = "SELECT * FROM %0 WHERE";
     bool fOptionAdded = false;
 
-    if (_key.id().isValid()) {
-        queryString += "memberId='" + _key.id().toBase64() + "'";
+    if (_key.id()->isValid()) {
+        queryString += "memberId='" + _key.id()->toBase64() + "'";
         fOptionAdded = true;
     }
 

@@ -5,31 +5,33 @@
  * of this license document, but changing it is not allowed.
 */
 
+#ifndef DBOBJECTKEY_H
+#define DBOBJECTKEY_H
 
-#ifndef DBADDRESSKEY_H
-#define DBADDRESSKEY_H
 #include "abstractkey.h"
-#include "dbaddress.h"
-
 namespace QH {
 
+namespace PKG {
+class DBObject;
+}
+
 /**
- * @brief The DbAddressKey class is implementation for calc hash key of DbAddress objects.
+ * @brief The DBObjectKey class This class calc hash from DBOject.
+ * Ditals:
+ * This class using the header of sql query for generate hash code of object.
  */
-class HEARTSHARED_EXPORT DbAddressKey: public DbAddress, public AbstractKey
+class DBObjectKey: public AbstractKey
 {
 public:
-    DbAddressKey();
-    DbAddressKey(const DbAddress& address);
-    DbAddressKey(const QString& address, const BaseId& id);
+    DBObjectKey(const PKG::DBObject* dbObjcet);
 
     unsigned int hash() const override;
-
     const BaseId *id() const override;
     const QString *table() const override;
-
     bool isValid() const override;
 
+private:
+    const PKG::DBObject* _source;
 };
 }
-#endif // DBADDRESSKEY_H
+#endif // DBOBJECTKEY_H

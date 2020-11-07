@@ -214,7 +214,16 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
         return;
 
     _cacheMutex.lock();
-    _cache.remove(delObj->dbKey());
+    unsigned int cacheID = delObj->dbCacheKey();
+    unsigned int dbID = delObj->dbKey();
+
+    _cache.remove(cacheID);
+    auto siblings = _siblings.value(dbID, nullptr);
+
+    if (siblings) {
+        siblings->remove(cacheID);
+    }
+
     _cacheMutex.unlock();
 }
 
@@ -223,16 +232,18 @@ bool SqlDBCache::saveToCache(const DBObject *obj) {
         return false;
 
     QMutexLocker lock(&_cacheMutex);
+    unsigned int dbAddressKey = obj->dbKey();
+    unsigned int dbCacheAddressKey = obj->dbCacheKey();
 
-    auto existsObject = _cache.value(obj->dbKey(), nullptr);
+    auto existsObject = _cache.value(dbCacheAddressKey, nullptr);
     if (!existsObject) {
 
-        _cache[obj->dbKey()] = obj->cloneRaw();
+        _cache[dbCacheAddressKey] = obj->cloneRaw();
 
     } else if (existsObject->cmd() != obj->cmd()) {
 
         delete existsObject;
-        _cache[obj->dbKey()] = obj->cloneRaw();
+        _cache[dbCacheAddressKey] = obj->cloneRaw();
 
     } else {
 
@@ -242,7 +253,20 @@ bool SqlDBCache::saveToCache(const DBObject *obj) {
 
     }
 
-    emit sigItemChanged(obj);
+    auto siblings = _siblings.value(dbAddressKey, nullptr);
+
+    if (!siblings) {
+        siblings = new QHash<uint, const DBObject*>();
+        _siblings.insert(dbAddressKey, siblings);
+    }
+
+    if (!siblings->contains(dbCacheAddressKey)) {
+        siblings->insert(dbCacheAddressKey, obj);
+    };
+
+    for (auto sibl: *siblings) {
+        emit sigItemChanged(sibl);
+    }
 
     return true;
 
