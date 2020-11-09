@@ -31,14 +31,6 @@ unsigned int PermisionData::hash() const {
     return qHash(data);
 }
 
-const BaseId &PermisionData::id() const {
-    return _id;
-}
-
-const QString &PermisionData::table() const {
-    return _address.table();
-}
-
 bool PermisionData::isValid() const {
     return address().isValid() && _id.isValid();
 }
@@ -49,6 +41,11 @@ bool PermisionData::equal(const AbstractKey *other) const {
         return false;
 
     return _address == otherObject->_address && _id == otherObject->_id;
+}
+
+QString PermisionData::toString() const {
+    return QString("DBAddress: %0, Owner Id: %1").
+            arg(_address.toString(), _id.toBase64());
 }
 
 DbAddress PermisionData::address() const {

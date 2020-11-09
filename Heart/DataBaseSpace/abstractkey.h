@@ -38,16 +38,10 @@ public:
     virtual bool equal(const AbstractKey* other) const = 0;
 
     /**
-     * @brief id This method must be return the id of database object
-     * @return BaseId of database object.
+     * @brief toString This method should be return the string implementation of the this key.
+     * @return string value.
      */
-    virtual const BaseId& id() const = 0;
-
-    /**
-     * @brief table this method must be return the table name of object
-     * @return table name
-     */
-    virtual const QString& table() const = 0;
+    virtual QString toString() const = 0;
 
     /**
      * @brief isValid This method check this key object to valid

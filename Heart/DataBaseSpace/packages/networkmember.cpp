@@ -16,7 +16,7 @@
 namespace QH {
 namespace PKG {
 
-NetworkMember::NetworkMember():DBObject("NetworkMembers") {
+NetworkMember::NetworkMember():DBObject("NetworkMembers", "id") {
     
 }
 
@@ -25,7 +25,7 @@ NetworkMember::NetworkMember(const Package &pkg):
     fromBytes(pkg.data);
 }
 
-NetworkMember::NetworkMember(const BaseId &id):
+NetworkMember::NetworkMember(const QVariant &id):
     NetworkMember() {
     setId(id);
 }
@@ -67,8 +67,12 @@ QDataStream &NetworkMember::toStream(QDataStream &stream) const {
 }
 
 DBVariantMap NetworkMember::variantMap() const {
-    return {{"authenticationData",  {_authenticationData,   MemberType::InsertUpdate}},
-            {"trust",               {_trust,                MemberType::InsertUpdate}}};
+
+    auto map = DBObject::variantMap();
+    map["authenticationData"] =     {_authenticationData,   MemberType::InsertUpdate};
+    map["trust"] =                  {_trust,   MemberType::InsertUpdate};
+
+    return  map;
 }
 
 int NetworkMember::trust() const {

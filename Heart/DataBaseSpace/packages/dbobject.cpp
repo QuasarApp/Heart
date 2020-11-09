@@ -20,9 +20,11 @@
 namespace QH {
 namespace PKG {
 
-DBObject::DBObject(const QString &tableName) {
+DBObject::DBObject(const QString &tableName, const QString& primaryKey) {
     clear();
     _dbId.setTable(tableName);
+    _dbId.setPrimaryKey(primaryKey);
+
 }
 
 DBObject::~DBObject() {
@@ -75,8 +77,8 @@ PrepareResult DBObject::prepareSaveQuery(QSqlQuery &q) const {
 
 
     queryString = queryString.arg(tableName());
-    QString tableInsertHeader = "id, ";
-    QString tableInsertValues = "'" + getId().toRaw() + "', ";
+    QString tableInsertHeader = "";
+    QString tableInsertValues = "";
     QString tableUpdateValues = "";
 
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -117,7 +119,7 @@ PrepareResult DBObject::prepareSaveQuery(QSqlQuery &q) const {
 }
 
 bool DBObject::isCached() const {
-    return true;
+    return isHaveAPrimaryKey();
 }
 
 bool DBObject::isBundle() const {
@@ -129,10 +131,14 @@ uint DBObject::dbKey() const {
 }
 
 QString DBObject::condition() const {
-    return {"id = '" + getId().toRaw() + "'"};
+    return {_dbId.primaryKey() + "= '" + _dbId.id().toString() + "'"};
 }
 
-DbAddress DBObject::dbAddress() const {
+void DBObject::setDbAddress(const DbAddress &address) {
+    _dbId = address;
+}
+
+const DbAddress &DBObject::dbAddress() const {
     return _dbId;
 }
 
@@ -192,6 +198,13 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
+QVariant DBObject::generateId() const {
+    if (isHaveAPrimaryKey())
+        return {};
+
+    return 0;
+}
+
 bool DBObject::init() {
     if (!AbstractData::init())
         return false;
@@ -204,8 +217,23 @@ bool DBObject::init() {
     return _dbId.isValid();
 }
 
+DBVariantMap DBObject::variantMap() const {
+    if (_dbId.isValid()) {
+        return {{_dbId.primaryKey(), {_dbId.id(), MemberType::InsertOnly}}};
+    }
+
+    return {};
+}
+
 bool DBObject::isValid() const {
-    return AbstractData::isValid() && _dbId.isValid();
+    if (!AbstractData::isValid())
+        return false;
+
+    if (isHaveAPrimaryKey()) {
+        return _dbId.isValid();
+    }
+
+    return _dbId.table().size();
 }
 
 bool DBObject::copyFrom(const AbstractData * other) {
@@ -221,11 +249,15 @@ bool DBObject::copyFrom(const AbstractData * other) {
     return true;
 }
 
-BaseId DBObject::getId() const {
+bool DBObject::isHaveAPrimaryKey() const {
+    return _dbId.isValid();
+}
+
+QVariant DBObject::getId() const {
     return dbAddress().id();
 }
 
-void DBObject::setId(const BaseId& id) {
+void DBObject::setId(const QVariant& id) {
     _dbId.setId(id);
 }
 

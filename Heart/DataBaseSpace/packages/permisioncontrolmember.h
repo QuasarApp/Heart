@@ -26,10 +26,6 @@ public:
 public:
     bool isCached() const override;
 
-protected:
-    BaseId generateId() const override;
-
-    // DBObject interface
 public:
     DBObject *createDBObject() const override;
 };

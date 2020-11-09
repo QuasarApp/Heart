@@ -24,7 +24,7 @@ class HEARTSHARED_EXPORT NetworkMember: public DBObject
 public:
     NetworkMember();
     NetworkMember(const Package& pkg);
-    NetworkMember(const BaseId& id);
+    NetworkMember(const QVariant &id);
 
     // DBObject interface
     bool fromSqlRecord(const QSqlRecord &q) override;

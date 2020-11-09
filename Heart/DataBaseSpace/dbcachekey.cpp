@@ -22,7 +22,7 @@ QString DBCacheKey::description(uint hash) const {
     if (!val)
         return "";
 
-    return QString("table:%0 id:%1").arg(val->id().toBase64(), val->table());
+    return val->toString();
 }
 
 DBCacheKey::DBCacheKey() {}

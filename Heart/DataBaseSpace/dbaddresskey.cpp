@@ -18,21 +18,13 @@ DbAddressKey::DbAddressKey(const DbAddress &address):
 
 }
 
-DbAddressKey::DbAddressKey(const QString &address, const BaseId &id):
-   DbAddress(address, id) {
+DbAddressKey::DbAddressKey(const QString &table, const QString &primaryKey, const QVariant &value):
+   DbAddress(table, primaryKey, value) {
 
 }
 
 unsigned int DbAddressKey::hash() const {
     return qHash(*static_cast<const DbAddress*>(this));
-}
-
-const BaseId &DbAddressKey::id() const {
-    return DbAddress::id();
-}
-
-const QString &DbAddressKey::table() const {
-    return DbAddress::table();
 }
 
 bool DbAddressKey::equal(const AbstractKey *other) const {
@@ -46,5 +38,9 @@ bool DbAddressKey::equal(const AbstractKey *other) const {
 
 bool DbAddressKey::isValid() const {
     return DbAddress::isValid();
+}
+
+QString DbAddressKey::toString() const {
+    return DbAddress::toString();
 }
 }

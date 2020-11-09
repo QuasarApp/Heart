@@ -64,14 +64,20 @@ typedef QMap<QString, DBVariant> DBVariantMap;
 
 /**
  * @brief The DBObject class- main class for work with data base.
+ * @note If you set in the default constructor primaryKey to empty value. The your object disable cache support. for more information see the DBObject::isCached method.
+ *
+ * @warning Object witj empty table name is invalid.
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData
 {
 public:
+
     /**
-     * @brief DBObject
+     * @brief DBObject This is default constructor.Befor using this class tou need set the table name and primary key of this object.
+     * @param tableName This is table name
+     * @param primaryKey This is primary key.
      */
-    DBObject(const QString& tableName);
+    DBObject(const QString& tableName, const QString &primaryKey);
 
     ~DBObject() override;
 
@@ -79,16 +85,23 @@ public:
     bool copyFrom(const AbstractData * other) override;
 
     /**
+     * @brief isHaveAPrimaryKey This method return true if this object have a primary key.
+     *  If you want to cache this database object then primary key must be not null.
+     * @return true if object has a primary key.
+     */
+    bool isHaveAPrimaryKey() const;
+
+    /**
      * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
      * @return The id of database objcet.
      */
-    BaseId getId() const;
+    QVariant getId() const;
 
     /**
      * @brief setId This method set new id for current database object.
      * @param id This is new value of id.
      */
-    void setId(const BaseId& id);
+    void setId(const QVariant& id);
 
     /**
      * @brief clear This method clear all data of database object.
@@ -220,7 +233,7 @@ public:
      * or an object that does not have a direct representation in the database
      * but contains common characteristics of several objects)
      * @return True if item in cache.
-     * Default implementation retun true only
+     * The Default implementation check the primary key if this object and if primary key is valid then return true else return false.
      *
      */
     virtual bool isCached() const;
@@ -246,7 +259,7 @@ public:
      * IF the object is not valid then this method return an invalid database address.
      * @return The database address of current object.
      */
-    DbAddress dbAddress() const;
+    const DbAddress& dbAddress() const;
 
     /**
      * @brief clone This method create a new object. The new Object is clone of current object.
@@ -272,7 +285,6 @@ public:
 
     QString toString() const override;
 
-
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override;
@@ -283,8 +295,9 @@ protected:
      *  Usually the implementation of this object is hash function of key members of current object.
      * if create id is impasoble then the generateId method retrun not valid id.
      * @return retuern Id of database object.
+     * The degault implementation return 0 if object do not has primary key else return invalid value.
      */
-    virtual BaseId generateId() const = 0;
+    virtual QVariant generateId() const;
 
     bool init() override;
 
@@ -312,7 +325,7 @@ protected:
      *
      * @note If you want disable this functionality then override this method and return an empty map. But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
      */
-    virtual DBVariantMap variantMap() const = 0;
+    virtual DBVariantMap variantMap() const;
 
     /**
      * @brief condition This method must to return a condition of the WHERE block of the sql query.
@@ -329,6 +342,12 @@ protected:
     virtual QString condition() const;
 
     QString generateValueString() const;
+
+    /**
+     * @brief setDbAddress This method set the new database address.
+     * @param This is a new value of database address.
+     */
+    void setDbAddress(const DbAddress &address);
 
 private:
     QString getWhereBlock() const;

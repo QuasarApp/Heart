@@ -8,7 +8,7 @@
 #include "deleteobject.h"
 namespace QH {
 namespace PKG {
-DeleteObject::DeleteObject(): DBObject("")  {
+DeleteObject::DeleteObject(): DBObject("", "")  {
 
 }
 
@@ -18,10 +18,6 @@ DeleteObject::DeleteObject(const Package &pkg): DeleteObject() {
 
 DBObject *DeleteObject::createDBObject() const {
     return create<DeleteObject>();
-}
-
-BaseId DeleteObject::generateId() const {
-    return getId();
 }
 
 DBVariantMap DeleteObject::variantMap() const {

@@ -34,8 +34,6 @@ public:
     bool isCached() const override final;
     bool isBundle() const override final;
 
-protected:
-    BaseId generateId() const override final;
 };
 }
 }

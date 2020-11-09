@@ -67,7 +67,7 @@ protected:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    BaseId generateId() const override;
+    QVariant generateId() const override;
     DBVariantMap variantMap() const override;
 
 private:

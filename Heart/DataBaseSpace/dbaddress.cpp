@@ -13,34 +13,36 @@
 namespace QH {
 
 qint64 qHash(const DbAddress &address) {
-    return qHash(address.id().toRaw() + address.table());
+    return qHash(address.primaryKey() + address.table() + address.id().toString());
 }
 
-DbAddress::DbAddress(const QString &table, const BaseId &id) {
+DbAddress::DbAddress(const QString &table, const QString &primaryKey, const QVariant &id) {
     this->_table = table;
-    this->_id = id;
+    this->_primaryKey = primaryKey;
+    this->_value = id;
 }
 
 bool operator==(const DbAddress & left, const DbAddress &other) {
-    return left._table == other._table && left._id == other._id;
+    return left._table == other._table && left._primaryKey == other._primaryKey &&  left._value == other._value;
 }
 
 QDataStream &DbAddress::fromStream(QDataStream &stream) {
-    stream >> _id;
+    stream >> _value;
+    stream >> _primaryKey;
     stream >> _table;
     return stream;
 }
 
 QDataStream &DbAddress::toStream(QDataStream &stream) const {
-    stream << _id;
+    stream << _value;
+    stream << _primaryKey;
     stream << _table;
     return stream;
 }
 
 QString DbAddress::toString() const {
-    return QString("DbAddress: id:%0, table:%1").
-            arg(QString(_id.toBase64())).
-            arg(_table);
+    return QString("DbAddress: table:%0, primaryKey:%1, value:%2").
+            arg(_table).arg(_primaryKey).arg(_value.toString());
 }
 
 bool operator!=(const DbAddress &left, const DbAddress &other) {
@@ -48,7 +50,7 @@ bool operator!=(const DbAddress &left, const DbAddress &other) {
 }
 
 bool DbAddress::isValid() const {
-    return _id.isValid() && _table.size();
+    return _value.isValid() && _table.size() && _primaryKey.size();
 }
 
 const QString& DbAddress::table() const {
@@ -59,12 +61,21 @@ void DbAddress::setTable(const QString &table) {
     _table = table;
 }
 
-const BaseId& DbAddress::id() const {
-    return _id;
+const QVariant &DbAddress::id() const {
+    return _value;
 }
 
-void DbAddress::setId(const BaseId &id) {
-    _id = id;
+void DbAddress::setId(const QVariant &id){
+    _value = id;
 }
+
+QString DbAddress::primaryKey() const {
+    return _primaryKey;
+}
+
+void DbAddress::setPrimaryKey(const QString &primaryKey) {
+    _primaryKey = primaryKey;
+}
+
 
 }

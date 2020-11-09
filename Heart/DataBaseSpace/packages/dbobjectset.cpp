@@ -9,7 +9,7 @@
 namespace QH {
 namespace PKG {
 DBObjectSet::DBObjectSet(const QString table):
-    DBObject(table) {
+    DBObject(table, "") {
 
 }
 
@@ -31,10 +31,6 @@ bool DBObjectSet::isCached() const {
 
 bool DBObjectSet::isBundle() const {
     return true;
-}
-
-BaseId DBObjectSet::generateId() const {
-    return {};
 }
 
 }

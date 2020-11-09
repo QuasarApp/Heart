@@ -15,11 +15,12 @@
 namespace QH {
 
 /**
- * @brief The DbAddress class is class for work with database addresses. Database Address it is structure with 2 values.
+ * @brief The DbAddress class uset to work with database addresses. Database Address it is structure with 3 values.
  * \code
  * {
- *  QString _table; // this is name of table of object.
-    BaseId _id;     // this is id of object.
+ *  QString _table;  // this is name of table of object.
+ *  QString _primaryKey  // this is field of primary key column.
+    QVariant _id;     // this is id of object.
  * }
  * \endcode
  */
@@ -32,9 +33,10 @@ public:
     /**
      * @brief DbAddress this constructo initialize a default database address.
      * @param table This is table name in database.
+     * @param primaryKey This is primary key.
      * @param id This is id of object in table.
      */
-    DbAddress(const QString& table, const BaseId& id);
+    DbAddress(const QString& table, const QString& primaryKey,  const QVariant& id);
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
@@ -70,18 +72,31 @@ public:
      * @brief id This method return id of object in table.
      * @return id of object.
      */
-    const BaseId &id() const;
+    const QVariant &id() const;
 
     /**
      * @brief setId This method set id for this address.
      * @param id tgis is new value of objects id.
      */
-    void setId(const BaseId &id);
+    void setId(const QVariant &id);
+
+    /**
+     * @brief primaryKey This metod return the column name with the primary key.
+     * @return primary key column name.
+     */
+    QString primaryKey() const;
+
+    /**
+     * @brief setPrimaryKey This method set primary key name.
+     * @param primaryKey This is new value for primary Key.
+     */
+    void setPrimaryKey(const QString &primaryKey);
 
 private:
 
     QString _table;
-    BaseId _id;
+    QString _primaryKey;
+    QVariant _value;
 };
 
 /**

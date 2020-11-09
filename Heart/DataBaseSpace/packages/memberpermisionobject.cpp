@@ -155,7 +155,7 @@ QDataStream &MemberPermisionObject::toStream(QDataStream &stream) const {
     return  stream;
 }
 
-BaseId MemberPermisionObject::generateId() const {
+QVariant MemberPermisionObject::generateId() const {
     if (!_key.isValid())
         return {};
 

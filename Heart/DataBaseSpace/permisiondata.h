@@ -28,10 +28,9 @@ public:
 
     friend bool operator == (const PermisionData& left, const PermisionData& right);
     unsigned int hash() const override;
-    const BaseId & id() const override;
-    const QString &table() const override;
     bool isValid() const override;
     bool equal(const AbstractKey *other) const override;
+    QString toString() const override;
 
     /**
      * @brief setId This method set id of Network member.
@@ -63,8 +62,6 @@ private:
 
     /// table of target object (second part of key)
     DbAddress _address;
-
-
 };
 
 }

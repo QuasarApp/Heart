@@ -27,7 +27,6 @@ public:
     DBObject *createDBObject() const override;
 
 protected:
-    BaseId generateId() const override;
     DBVariantMap variantMap() const override;
 
     // DBObject interface

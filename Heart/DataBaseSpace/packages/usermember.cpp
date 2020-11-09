@@ -49,10 +49,6 @@ bool UserMember::isValid() const {
     return NetworkMember::isValid() && trust() <= 100;
 }
 
-BaseId UserMember::generateId() const {
-    return getId();
-}
-
 QDataStream &UserMember::fromStream(QDataStream &stream) {
     NetworkMember::fromStream(stream);
     stream >> _token;

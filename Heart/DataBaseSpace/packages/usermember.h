@@ -43,7 +43,6 @@ public:
     void setToken(const AccessToken &token);
 
 protected:
-    BaseId generateId() const override;
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     DBVariantMap variantMap() const override;
