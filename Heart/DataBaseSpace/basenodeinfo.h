@@ -48,7 +48,7 @@ public:
      * @brief setSelfId This method set an id for the peer node or the client.
      * @param selfId new value of id of the peer node.
      */
-    void setSelfId(const BaseId &selfId);
+    void setSelfId(const QVariant &selfId);
 
     bool confirmData() const override;
 

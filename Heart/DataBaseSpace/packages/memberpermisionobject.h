@@ -35,6 +35,7 @@ public:
     DBObject *createDBObject() const override;
     uint dbKey() const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
+    bool isCached() const override;
 
     /**
      * @brief permisions This method return permision of object.
@@ -72,7 +73,6 @@ protected:
 private:
     Permission _permision;
     PermisionData _key;
-
 };
 }
 }
