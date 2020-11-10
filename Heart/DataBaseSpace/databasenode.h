@@ -116,7 +116,7 @@ protected:
      * @param req This is header of request.
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
+    virtual bool sendData(PKG::AbstractData *resp, const QVariant &nodeId,
                           const Header *req = nullptr);
 
     /**
@@ -127,7 +127,7 @@ protected:
      * @param req This is header of request.
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(const PKG::AbstractData *resp, const BaseId &nodeId,
+    virtual bool sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
                           const Header *req = nullptr);
 
     AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
@@ -144,7 +144,7 @@ protected:
      * @param diff This is difference of current trust (currenTrus += diff)
      * By default diff equals REQUEST_ERROR
      */
-    virtual void badRequest(const BaseId &address, const Header &req,
+    virtual void badRequest(const QVariant &address, const Header &req,
                             const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
 
     bool changeTrust(const HostAddress &id, int diff) override;
@@ -180,7 +180,7 @@ protected:
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult deleteObject(const BaseId &requester,
+    DBOperationResult deleteObject(const QVariant &requester,
                                    const PKG::DBObject *dbObject);
 
     /**
@@ -192,7 +192,7 @@ protected:
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult getObject(const BaseId &requester,
+    DBOperationResult getObject(const QVariant &requester,
                                 const PKG::DBObject &templateObj,
                                 const PKG::DBObject **result) const;
 
@@ -205,7 +205,7 @@ protected:
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult getObjects(const BaseId &requester,
+    DBOperationResult getObjects(const QVariant &requester,
                                  const PKG::DBObject &templateObj,
                                  QList<const PKG::DBObject *> *result) const;
 
@@ -217,7 +217,7 @@ protected:
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult setObject(const BaseId &requester,
+    DBOperationResult setObject(const QVariant &requester,
                                 const PKG::DBObject *saveObject);
     /**
      * @brief getSender This method return id of requester.
@@ -227,7 +227,7 @@ protected:
      * @param requestData This is data of request.
      * @return id of requester member.
      */
-    virtual BaseId getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
+    virtual const QVariant *getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
 
     /**
      * @brief checkPermision This method check a permision of requester to database object with objectAddress.
@@ -238,7 +238,7 @@ protected:
      * @return DBOperationResult::Alowed if permission granted.
      *  For m more information about result see the DBOperationResult enum.
      */
-    virtual DBOperationResult checkPermission(const BaseId& requester,
+    virtual DBOperationResult checkPermission(const QVariant &requester,
                                 const DbAddress& objectAddress,
                                 const Permission& requarimentPermision) const;
 
@@ -251,7 +251,7 @@ protected:
      * @param permision This is Permision level
      * @return true if method finished successful.
      */
-    virtual bool addUpdatePermission(const BaseId& member,
+    virtual bool addUpdatePermission(const QVariant &member,
                                      const DbAddress& objectAddress,
                                      const Permission& permision) const;
 
@@ -263,7 +263,7 @@ protected:
      * @param objectAddress This is database  object for which the permissions will be removed
      * @return true if method finished successful.
      */
-    virtual bool removePermission(const BaseId& member,
+    virtual bool removePermission(const QVariant &member,
                                   const DbAddress& objectAddress) const;
 
     /**
@@ -285,7 +285,7 @@ protected:
      * @param member This is member of network (node, client or server)
      * @return true if node is banned
      */
-    bool isBanned(const BaseId& member) const;
+    bool isBanned(const QVariant &member) const;
 
     /**
      * @brief SQLSources This method contains list of sqldatabase sources.

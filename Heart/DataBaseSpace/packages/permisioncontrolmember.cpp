@@ -14,7 +14,7 @@ PermisionControlMember::PermisionControlMember() {
 
 }
 
-PermisionControlMember::PermisionControlMember(const BaseId &id): NetworkMember(id) {
+PermisionControlMember::PermisionControlMember(const QVariant &id): NetworkMember(id) {
 
 }
 

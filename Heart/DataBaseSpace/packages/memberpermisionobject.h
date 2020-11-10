@@ -32,11 +32,9 @@ public:
     bool copyFrom(const AbstractData *other) override;
 
     // DBObject interface
-    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
-    PrepareResult prepareRemoveQuery(QSqlQuery &q) const override;
-    PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
     DBObject *createDBObject() const override;
     uint dbKey() const override;
+    bool fromSqlRecord(const QSqlRecord &q) override;
 
     /**
      * @brief permisions This method return permision of object.
@@ -69,9 +67,10 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
     QVariant generateId() const override;
     DBVariantMap variantMap() const override;
+    QString condition() const override;
 
 private:
-    Permission _permisions;
+    Permission _permision;
     PermisionData _key;
 
 };

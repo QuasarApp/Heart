@@ -24,7 +24,7 @@ class HEARTSHARED_EXPORT PermisionData: public AbstractKey, public StreamBase {
 public:
 
     PermisionData() = default;
-    PermisionData(const BaseId& subject, const DbAddress& objcet);
+    PermisionData(const QVariant& subject, const DbAddress& objcet);
 
     friend bool operator == (const PermisionData& left, const PermisionData& right);
     unsigned int hash() const override;
@@ -36,13 +36,13 @@ public:
      * @brief setId This method set id of Network member.
      * @param Id This
      */
-    void setId(const BaseId &Id);
+    void setId(const QVariant &Id);
 
     /**
      * @brief address This method return address of database object.
      * @return address of database object.
      */
-    DbAddress address() const;
+    const DbAddress &address() const;
 
     /**
      * @brief setAddress This method set address of database object.
@@ -51,6 +51,8 @@ public:
     void setAddress(const DbAddress &address);
 
     // StreamBase interface
+    const QVariant &id() const;
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
@@ -58,7 +60,7 @@ protected:
 private:
 
     /// id  of user of node
-    BaseId _id;
+    QVariant _id;
 
     /// table of target object (second part of key)
     DbAddress _address;

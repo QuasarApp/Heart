@@ -22,11 +22,11 @@ bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid();
 }
 
-BaseId BaseNodeInfo::selfId() const {
+const QVariant &BaseNodeInfo::selfId() const {
     return _selfId;
 }
 
-void BaseNodeInfo::setSelfId(const BaseId &selfId) {
+void BaseNodeInfo::setSelfId(const QVariant &selfId) {
     _selfId = selfId;
 }
 

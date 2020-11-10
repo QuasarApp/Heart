@@ -20,7 +20,7 @@ class PermisionControlMember: public NetworkMember
 {
 public:
     PermisionControlMember();
-    PermisionControlMember(const BaseId& id);
+    PermisionControlMember(const QVariant& id);
 
     // DBObject interface
 public:

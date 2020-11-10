@@ -17,7 +17,7 @@ bool operator ==(const PermisionData &left, const PermisionData &right) {
     return left._id == right._id && left._address == right._address;
 }
 
-PermisionData::PermisionData(const BaseId &subject, const DbAddress &objcet) {
+PermisionData::PermisionData(const QVariant &subject, const DbAddress &objcet) {
     setId(subject);
     setAddress(objcet);
 }
@@ -45,10 +45,10 @@ bool PermisionData::equal(const AbstractKey *other) const {
 
 QString PermisionData::toString() const {
     return QString("DBAddress: %0, Owner Id: %1").
-            arg(_address.toString(), _id.toBase64());
+            arg(_address.toString(), _id.toString());
 }
 
-DbAddress PermisionData::address() const {
+const DbAddress& PermisionData::address() const {
     return _address;
 }
 
@@ -70,7 +70,11 @@ QDataStream &PermisionData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-void PermisionData::setId(const BaseId &Id) {
+const QVariant& PermisionData::id() const {
+    return _id;
+}
+
+void PermisionData::setId(const QVariant &Id) {
     _id = Id;
 }
 

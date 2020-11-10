@@ -127,7 +127,7 @@ bool DataBaseNode::welcomeAddress(const HostAddress&) {
     return true;
 }
 
-bool DataBaseNode::isBanned(const BaseId &node) const {
+bool DataBaseNode::isBanned(const QVariant &node) const {
     PermisionControlMember member(node);
     auto objectFromDataBase = db()->getObject<NetworkMember>(member);
 
@@ -170,7 +170,7 @@ bool DataBaseNode::sendData(const AbstractData *resp,
 
 
 bool DataBaseNode::sendData(AbstractData *resp,
-                        const BaseId &nodeId,
+                        const QVariant &nodeId,
                         const Header *req) {
 
 
@@ -185,7 +185,7 @@ AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const Ho
     return new BaseNodeInfo(socket, clientAddress);;
 }
 
-bool DataBaseNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
+bool DataBaseNode::sendData(const AbstractData *resp, const QVariant &nodeId, const Header *req) {
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
@@ -203,7 +203,7 @@ void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
     AbstractNode::badRequest(address, req, err, diff);
 }
 
-void DataBaseNode::badRequest(const BaseId &address, const Header &req,
+void DataBaseNode::badRequest(const QVariant &address, const Header &req,
                               const ErrorData &err, quint8 diff) {
 
     if (!changeTrust(address, diff)) {
@@ -221,7 +221,7 @@ void DataBaseNode::badRequest(const BaseId &address, const Header &req,
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                address.toBase64(),
+                                address.toString(),
                                 QuasarAppUtils::Info);
 }
 
@@ -295,7 +295,7 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
     } else if (H_16<DeleteObject>() == pkg.hdr.command) {
         DeleteObject obj(pkg);
 
-        BaseId requesterId = getSender(sender, &obj);
+        auto requesterId = getSender(sender, &obj);
 
         if (deleteObject(requesterId, &obj) == DBOperationResult::Forbidden) {
             badRequest(sender->networkAddress(), pkg.hdr, {
@@ -362,7 +362,7 @@ QVariantMap DataBaseNode::defaultDbParams() const {
     };
 }
 
-DBOperationResult QH::DataBaseNode::getObject(const QH::BaseId &requester,
+DBOperationResult QH::DataBaseNode::getObject(const QVariant &requester,
                                               const QH::DBObject &templateObj,
                                               const DBObject** result) const {
 
@@ -385,7 +385,7 @@ DBOperationResult QH::DataBaseNode::getObject(const QH::BaseId &requester,
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::getObjects(const BaseId &requester,
+DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
                                            const DBObject &templateObj,
                                            QList<const DBObject *> *result) const {
     if (!_db && !result) {
@@ -410,7 +410,7 @@ DBOperationResult DataBaseNode::getObjects(const BaseId &requester,
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::setObject(const BaseId &requester,
+DBOperationResult DataBaseNode::setObject(const QVariant &requester,
                                           const DBObject *saveObject) {
 
     if (!_db) {
@@ -431,17 +431,17 @@ DBOperationResult DataBaseNode::setObject(const BaseId &requester,
     return DBOperationResult::Allowed;
 }
 
-BaseId DataBaseNode::getSender(const AbstractNodeInfo *connectInfo, const AbstractData *) const {
+const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo, const AbstractData *) const {
 
     auto info = dynamic_cast<const BaseNodeInfo*>(connectInfo);
 
     if (!info)
-        return {};
+        return nullptr;
 
-    return info->selfId();
+    return &info->selfId();
 }
 
-DBOperationResult DataBaseNode::checkPermission(const BaseId &requester,
+DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
                                                 const DbAddress &objectAddress,
                                                 const Permission& requarimentPermision) const {
      const NetworkMember *member = _db->getObject(PermisionControlMember{requester});
@@ -463,7 +463,7 @@ DBOperationResult DataBaseNode::checkPermission(const BaseId &requester,
      return DBOperationResult::Allowed;
 }
 
-bool DataBaseNode::addUpdatePermission(const BaseId &member,
+bool DataBaseNode::addUpdatePermission(const QVariant &member,
                                        const DbAddress &objectAddress,
                                        const Permission &permision) const {
 
@@ -483,7 +483,7 @@ bool DataBaseNode::addUpdatePermission(const BaseId &member,
 
 }
 
-bool DataBaseNode::removePermission(const BaseId &member,
+bool DataBaseNode::removePermission(const QVariant &member,
                                     const DbAddress &objectAddress) const {
 
     if (!_db) {
@@ -500,7 +500,7 @@ bool DataBaseNode::removePermission(const BaseId &member,
     return true;
 }
 
-DBOperationResult DataBaseNode::deleteObject(const BaseId &requester,
+DBOperationResult DataBaseNode::deleteObject(const QVariant &requester,
                                              const DBObject *dbObject) {
 
     if (!_db) {

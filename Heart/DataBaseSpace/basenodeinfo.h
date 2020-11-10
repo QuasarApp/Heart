@@ -42,7 +42,7 @@ public:
      * @brief selfId This method return id of peer node or client.
      * @return The id of peer node or client.
      */
-    BaseId selfId() const;
+    const QVariant& selfId() const;
 
     /**
      * @brief setSelfId This method set an id for the peer node or the client.
@@ -53,7 +53,7 @@ public:
     bool confirmData() const override;
 
 protected:
-    BaseId _selfId;
+    QVariant _selfId;
 };
 
 }
