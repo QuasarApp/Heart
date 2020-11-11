@@ -25,7 +25,7 @@ public:
     }
 
 protected:
-    void incomingData(QH::PKG::AbstractData *pkg, const QH::BaseId &sender) {
+    void incomingData(QH::PKG::AbstractData *pkg, const QH::NodeId &sender) {
         Q_UNUSED(sender);
 
         auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);

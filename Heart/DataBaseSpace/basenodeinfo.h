@@ -39,21 +39,34 @@ public:
     bool isValid() const override;
 
     /**
-     * @brief selfId This method return id of peer node or client.
+     * @brief token This method return id of peer node or client.
      * @return The id of peer node or client.
      */
-    const QVariant& selfId() const;
+    const AccessToken& token() const;
 
     /**
-     * @brief setSelfId This method set an id for the peer node or the client.
-     * @param selfId new value of id of the peer node.
+     * @brief setToken This method set an token for the peer node or the client.
+     * @param token new value of token of the peer node.
      */
-    void setSelfId(const QVariant &selfId);
+    void setToken(const AccessToken &token);
 
     bool confirmData() const override;
 
+    /**
+     * @brief id This method return id of the connected user.
+     * @return user id
+     */
+    const QVariant &id() const;
+
+    /**
+     * @brief setId This method set userId for connected object.
+     * @param id This is new value of user id.
+     */
+    void setId(QVariant id);
+
 protected:
-    QVariant _selfId;
+    AccessToken _token;
+    QVariant _id;
 };
 
 }

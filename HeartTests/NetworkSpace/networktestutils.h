@@ -12,7 +12,7 @@
 #include <basetestutils.h>
 namespace QH {
 class NetworkNode;
-class BaseId;
+class NodeId;
 }
 
 class NetworkTestUtils: public BaseTestUtils
@@ -22,7 +22,7 @@ public:
     ~NetworkTestUtils();
 
     bool deployNewNode(QH::NetworkNode* node) const;
-    QHash<QH::BaseId, QH::NetworkNode*> generateNetworkNode(int count) const;
+    QHash<QH::NodeId, QH::NetworkNode*> generateNetworkNode(int count) const;
 
     QH::NetworkNode *initNewNode() const;
 

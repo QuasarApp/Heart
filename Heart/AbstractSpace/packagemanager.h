@@ -11,7 +11,7 @@
 
 #include <QMutex>
 #include <QSharedDataPointer>
-#include <baseid.h>
+#include <nodeid.h>
 
 
 namespace QH {

@@ -58,7 +58,7 @@ RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
     if (!nodeinfo)
         return RegisteruserResult::InternalError;
 
-    AccessToken token((nodeinfo->selfId().toBytes()));
+    AccessToken token((nodeinfo->token().toBytes()));
 
     if (token.isValid()) {
         return RegisteruserResult::UserAlreadyLogged;
@@ -74,7 +74,7 @@ RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
     if (!editableNodeInfo)
         return RegisteruserResult::InternalError;
 
-    editableNodeInfo->setSelfId(token.toBytes());
+    editableNodeInfo->setToken(token.toBytes());
     user.setToken(token);
     user.setAuthenticationData("");
 
@@ -141,7 +141,7 @@ bool SingleServer::workWithUserRequest(PKG::UserMember* obj,
         result = registerNewUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
 
-        BaseId requesterId = getSender(sender, obj);
+        NodeId requesterId = getSender(sender, obj);
 
         if (deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
             badRequest(sender->networkAddress(), pkg.hdr,

@@ -447,7 +447,7 @@ protected:
      * @brief connections - return hash map of all connections of this node.
      * @return return map of connections.
      */
-    QHash<HostAddress, AbstractNodeInfo*> connections() const;
+    QHash<HostAddress, AbstractNodeInfo *> connections() const;
 
     /**
      * @brief connectionRegistered Override this method for get registered incoming connections.

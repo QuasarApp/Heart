@@ -22,16 +22,25 @@ bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid();
 }
 
-const QVariant &BaseNodeInfo::selfId() const {
-    return _selfId;
+const AccessToken &BaseNodeInfo::token() const {
+    return _token;
 }
 
-void BaseNodeInfo::setSelfId(const QVariant &selfId) {
-    _selfId = selfId;
+void BaseNodeInfo::setToken(const AccessToken &token) {
+    _token = token;
 }
 
 bool BaseNodeInfo::confirmData() const {
     return AbstractNodeInfo::confirmData();
+}
+
+const QVariant& BaseNodeInfo::id() const {
+    return _id;
+}
+
+void BaseNodeInfo::setId(QVariant id)
+{
+    _id = id;
 }
 
 }

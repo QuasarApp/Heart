@@ -153,57 +153,11 @@ QString DataBaseNode::dbLocation() const {
     return "";
 }
 
-
-bool DataBaseNode::sendData(AbstractData *resp,
-                        const HostAddress &addere,
-                        const Header *req) {
-    return AbstractNode::sendData(resp, addere, req);
-}
-
-bool DataBaseNode::sendData(const AbstractData *resp,
-                        const HostAddress &addere,
-                        const Header *req) {
-
-    return AbstractNode::sendData(resp, addere, req);
-}
-
-
-
-bool DataBaseNode::sendData(AbstractData *resp,
-                        const QVariant &nodeId,
-                        const Header *req) {
-
-
-    if (!resp || !resp->prepareToSend()) {
-        return false;
-    }
-
-    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
-}
-
 AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
     return new BaseNodeInfo(socket, clientAddress);;
 }
 
-bool DataBaseNode::sendData(const AbstractData *resp, const QVariant &nodeId, const Header *req) {
-    auto nodes = connections();
-
-    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        auto info = dynamic_cast<BaseNodeInfo*>(it.value());
-        if (info && info->selfId() == nodeId) {
-            return sendData(resp, it.key(), req);
-        }
-    }
-
-    return false;
-}
-
 void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
-                              const ErrorData &err, quint8 diff) {
-    AbstractNode::badRequest(address, req, err, diff);
-}
-
-void DataBaseNode::badRequest(const QVariant &address, const Header &req,
                               const ErrorData &err, quint8 diff) {
 
     if (!changeTrust(address, diff)) {
@@ -226,14 +180,14 @@ void DataBaseNode::badRequest(const QVariant &address, const Header &req,
 }
 
 bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
-    return AbstractNode::changeTrust(id, diff);
-}
-
-bool DataBaseNode::changeTrust(const BaseId &id, int diff) {
     if (!_db)
         return false;
 
-    auto client = _db->getObject<NetworkMember>(PermisionControlMember{id});
+    auto info = dynamic_cast<const BaseNodeInfo*>(getInfoPtr(id));
+    if (!info)
+        return false;
+
+    auto client = _db->getObject<NetworkMember>(PermisionControlMember{info->id()});
 
     if (!client) {
         return false;
@@ -249,6 +203,45 @@ bool DataBaseNode::changeTrust(const BaseId &id, int diff) {
     return true;
 }
 
+bool DataBaseNode::sendData(AbstractData *resp,
+                            const QVariant &nodeId,
+                            const Header *req) {
+
+
+    if (!resp || !resp->prepareToSend()) {
+        return false;
+    }
+
+    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
+}
+
+bool DataBaseNode::sendData(const AbstractData *resp,
+                            const QVariant &nodeId,
+                            const Header *req) {
+
+    auto nodes = connections();
+
+    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+        auto info = dynamic_cast<BaseNodeInfo*>(it.value());
+        if (info && info->id() == nodeId) {
+            return sendData(resp, it.key(), req);
+        }
+    }
+
+    return false;
+}
+
+bool DataBaseNode::sendData(const AbstractData *resp, const HostAddress &nodeId,
+                            const Header *req) {
+    return AbstractNode::sendData(resp, nodeId, req);
+
+}
+
+bool DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
+                            const Header *req) {
+    return AbstractNode::sendData(resp, nodeId, req);
+}
+
 ParserResult DataBaseNode::parsePackage(const Package &pkg,
                                         const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, sender);
@@ -259,7 +252,7 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
     if (H_16<WebSocket>() == pkg.hdr.command) {
         WebSocket obj(pkg);
 
-        BaseId requesterId = getSender(sender, &obj);
+        QVariant requesterId = getSender(sender, &obj);
 
         if (!obj.isValid()) {
             badRequest(sender->networkAddress(), pkg.hdr,
@@ -322,7 +315,7 @@ SqlDBCache *DataBaseNode::db() const {
 }
 
 bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
-                                     const BaseId &clientOrNodeid,
+                                     const QVariant &clientOrNodeid,
                                      const AbstractNodeInfo & sender) {
 
     auto _db = db();
@@ -431,14 +424,15 @@ DBOperationResult DataBaseNode::setObject(const QVariant &requester,
     return DBOperationResult::Allowed;
 }
 
-const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo, const AbstractData *) const {
+const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
+                                        const AbstractData *) const {
 
     auto info = dynamic_cast<const BaseNodeInfo*>(connectInfo);
 
     if (!info)
         return nullptr;
 
-    return &info->selfId();
+    return &info->id();
 }
 
 DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,

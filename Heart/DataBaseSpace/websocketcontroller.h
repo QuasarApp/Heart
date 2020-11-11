@@ -12,7 +12,6 @@
 #include <QHash>
 #include <QSharedPointer>
 #include <dbobject.h>
-#include <baseid.h>
 #include <QMutex>
 
 namespace QH {
@@ -40,7 +39,7 @@ public:
      * @param item This is database object.
      * @return true if method finished succesful
      */
-    bool subscribe(const BaseId &subscriber,
+    bool subscribe(const QVariant &subscriber,
                    const DbAddress &item);
 
     /**
@@ -49,7 +48,7 @@ public:
      * @param item This is database object.
      * @return true if method finished succesful
      */
-    void unsubscribe(const BaseId &subscriber,
+    void unsubscribe(const QVariant &subscriber,
                      const DbAddress &item);
 
     /**
@@ -57,7 +56,7 @@ public:
      * @param subscriber This is network member that want get alist of own subscription.
      * @return true if method finished succesful
      */
-    const QSet<DbAddress> &list(const BaseId& subscriber);
+    const QSet<DbAddress> &list(const QVariant& subscriber);
 
 public slots:
     /**
@@ -68,11 +67,11 @@ public slots:
 
 private:
     void foreachSubscribers(const PKG::DBObject *item,
-                            const QSet<BaseId> &subscribersList);
+                            const QSet<QVariant> &subscribersList);
 
     /// subscribers it is nodes or clients
-    QHash<DbAddress, QSet<BaseId>> _subscribs;
-    QHash<BaseId, QSet<DbAddress>> _items;
+    QHash<DbAddress, QSet<QVariant>> _subscribs;
+    QHash<QVariant, QSet<DbAddress>> _items;
 
     QMutex _subscribsMutex;
     QMutex _itemsMutex;

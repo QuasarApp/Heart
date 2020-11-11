@@ -13,6 +13,7 @@
 #include <hostaddress.h>
 #include <nodeobject.h>
 
+#include "nodeid.h"
 
 namespace QH {
 
@@ -71,32 +72,48 @@ public:
      * @param id
      * @return
      */
-    bool ping( const BaseId& id);
+    bool ping( const NodeId& id);
 
     /**
      * @brief nodeId
      * @return
      */
-    BaseId nodeId() const;
+    NodeId nodeId() const;
 
 protected:
 
-    /**
-     * @brief sendDataToId - send data to node or clientby them id.
-     * @param resp - responce package
-     * @param nodeId - id of target node
-     * @param req - header of request
-     * @return true if data sendet seccussful
-     */
-    bool sendData(const PKG::AbstractData *resp, const BaseId &nodeId,
-                  const Header *req = nullptr) override;
 
-    bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
-                  const Header *req = nullptr) override;
-    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
-    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
+    bool sendData(PKG::AbstractData *resp, const QVariant &nodeId,
+                          const Header *req = nullptr) override;
+
+    bool sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
+                          const Header *req = nullptr) override;
+
+    void badRequest(const HostAddress &address, const Header &req,
+                    const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
+
+    /**
+     * @brief badRequest This implementation of the AbstractNode::badRequest method
+     *  send bad request to node with id.
+     * @param address This is id of target node or client
+     * @param req This is header of request.
+     * @param err This is message and code for target node about error. For more onformation see the PKG::ErrorData struct.
+     * @param diff This is difference of current trust (currenTrus += diff)
+     * By default diff equals REQUEST_ERROR
+     */
+    virtual void badRequest(const NodeId &address, const Header &req,
+                            const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
+
+
+    bool changeTrust(const HostAddress &id, int diff) override;
+
+    /**
+     * @brief changeTrust This implementation is some as AbstractNode::changeTrust but change trust of node by id and save changes on local database.
+     * @param id This is id of node or client.
+     * @param diff This is integer value of trust lavel changes.
+     * @return true if functin finished seccussful
+     */
+    virtual bool changeTrust(const NodeId &id, int diff);
 
     /**
      * @brief parsePackage
@@ -129,16 +146,17 @@ protected:
     virtual bool checkSignOfRequest(const PKG::AbstractData *request);
 
     /**
-     * @brief thisNode
+     * @brief thisNode This method return the node object of this node
+     * @param returnValue This is return value of nodeobject
      * @return This node object value.
      */
-    PKG::NodeObject thisNode() const;
+    void thisNode(PKG::NodeObject & returnValue) const;
 
     /**
      * @brief myKnowAddresses
      * @return set of know addresses
      */
-    QSet<BaseId> myKnowAddresses() const;
+    QSet<NodeId> myKnowAddresses() const;
 
     /**
      * @brief welcomeAddress - this method send to the ip information about yaster self.
@@ -172,7 +190,7 @@ protected:
      * @note override this method for get a signals.
      */
     virtual void incomingData(PKG::AbstractData* pkg,
-                              const BaseId&  sender);
+                              const NodeId&  sender);
 
     /**
      * @brief keyStorageLocation - return location of storagge of keys.
@@ -223,7 +241,7 @@ private:
      * @param rawRoute
      * @return
      */
-    bool optimizeRoute(const BaseId& node,
+    bool optimizeRoute(const NodeId& node,
                        const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
                        QList<HostAddress> rawRoute);
 
@@ -241,7 +259,7 @@ private:
 
     Router *_router = nullptr;
 
-    QHash<BaseId, NetworkNodeInfo*> _connections;
+    QHash<NodeId, NetworkNodeInfo*> _connections;
 
     mutable QMutex _connectionsMutex;
 

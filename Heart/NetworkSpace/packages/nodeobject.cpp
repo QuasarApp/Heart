@@ -38,7 +38,7 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
-BaseId NodeObject::generateId() const {
+QVariant NodeObject::generateId() const {
     if (authenticationData().isEmpty()) {
         return {};
     }
@@ -46,17 +46,22 @@ BaseId NodeObject::generateId() const {
     return QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256);
 }
 
-DBVariantMap NodeObject::variantMap() const {
-    return {{"authenticationData",  {authenticationData(),   MemberType::InsertOnly}},
-            {"trust",               {trust(),                MemberType::InsertUpdate}}};
-}
-
 DBObject *NodeObject::createDBObject() const {
     return create<NodeObject>();
 }
 
-QPair<QString, QString> NodeObject::altarnativeKey() const {
-    return {"authenticationData", authenticationData().toBase64(QByteArray::Base64UrlEncoding)};
+bool NodeObject::copyFrom(const AbstractData *other) {
+    if (!NetworkMember::copyFrom(other)) {
+        return false;
+    }
+
+    auto otherObject = dynamic_cast<const NodeObject*>(other);
+    if (!otherObject)
+        return false;
+
+    _senderID = otherObject->_senderID;
+
+    return true;
 }
 }
 }

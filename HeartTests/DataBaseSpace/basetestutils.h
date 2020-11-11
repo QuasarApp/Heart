@@ -12,7 +12,7 @@
 #include <testutils.h>
 namespace QH {
 class DataBaseNode;
-class BaseId;
+class NodeId;
 }
 
 class BaseTestUtils: public TestUtils

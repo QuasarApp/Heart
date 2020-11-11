@@ -12,11 +12,11 @@ SenderData::SenderData() {
 
 }
 
-const BaseId &SenderData::senderID() const {
+const NodeId &SenderData::senderID() const {
     return _senderID;
 }
 
-void SenderData::setSenderID(const BaseId &senderID) {
+void SenderData::setSenderID(const NodeId &senderID) {
     _senderID = senderID;
 }
 }

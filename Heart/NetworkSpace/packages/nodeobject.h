@@ -27,12 +27,12 @@ public:
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    BaseId generateId() const override;
-    DBVariantMap variantMap() const override;
-    QPair<QString, QString> condition() const override;
+    QVariant generateId() const override;
+    QString condition() const override;
 
 public:
     DBObject *createDBObject() const override;
+    bool copyFrom(const AbstractData *other) override;
 };
 }
 }

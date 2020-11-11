@@ -9,9 +9,9 @@
 #define ABSTRACTPACKAGE_H
 #include "header.h"
 #include "heart_global.h"
+#include "streambase.h"
 
 #include <QByteArray>
-#include <baseid.h>
 
 namespace QH {
 

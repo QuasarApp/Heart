@@ -20,7 +20,7 @@ WebSocketController::WebSocketController(DataBaseNode *node) {
     assert(_node);
 }
 
-bool WebSocketController::subscribe(const BaseId& subscriber,
+bool WebSocketController::subscribe(const QVariant &subscriber,
                                     const DbAddress &item) {
 
     _subscribsMutex.lock();
@@ -34,7 +34,7 @@ bool WebSocketController::subscribe(const BaseId& subscriber,
     return true;
 }
 
-void WebSocketController::unsubscribe(const BaseId &subscriber,
+void WebSocketController::unsubscribe(const QVariant &subscriber,
                                       const DbAddress& item) {
     _subscribsMutex.lock();
     _subscribs[item].remove(subscriber);
@@ -46,7 +46,7 @@ void WebSocketController::unsubscribe(const BaseId &subscriber,
 
 }
 
-const QSet<DbAddress> &WebSocketController::list(const BaseId &subscriber) {
+const QSet<DbAddress> &WebSocketController::list(const QVariant &subscriber) {
     QMutexLocker locker(&_itemsMutex);
     return _items[subscriber];
 }
@@ -62,21 +62,24 @@ void WebSocketController::handleItemChanged(const DBObject *item) {
 }
 
 void WebSocketController::foreachSubscribers(const DBObject *item,
-                                             const QSet<BaseId> &subscribersList) {
+                                             const QSet<QVariant> &subscribersList) {
 
     for (const auto &subscriber : subscribersList) {
         bool fAllowed = _node->checkPermission(subscriber, item->dbAddress(), Permission::Read) ==
                 DBOperationResult::Allowed;
 
         if (fAllowed &&  !_node->sendData(item, subscriber)) {
-            QuasarAppUtils::Params::log("Send update failed for " + subscriber.toBase64(),
+            QuasarAppUtils::Params::log("Send update failed for " + subscriber.toString(),
                                                QuasarAppUtils::Warning);
+
+            unsubscribe(subscriber, item->dbAddress());
         }
 
         if (!fAllowed) {
             QuasarAppUtils::Params::log(QString("Internal Error. Member:%0  not have permission to object %1").
-                                        arg(QString(subscriber.toBase64())).arg(item->toString()),
+                                        arg(QString(subscriber.toString())).arg(item->toString()),
                                             QuasarAppUtils::Error);
+            unsubscribe(subscriber, item->dbAddress());
         }
     }
 }

@@ -25,7 +25,7 @@ class SqlDBCache;
 class SqlDBWriter;
 class WebSocketController;
 class DbAddress;
-class BaseId;
+class NodeId;
 
 
 /**
@@ -100,13 +100,12 @@ protected:
     ParserResult parsePackage(const Package &pkg,
                               const AbstractNodeInfo* sender) override;
 
-    bool sendData(PKG::AbstractData *resp,
-                  const HostAddress &addere,
-                  const Header *req = nullptr) override;
+    AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
 
-    bool sendData(const PKG::AbstractData *resp,
-                  const HostAddress &addere,
-                  const Header *req = nullptr) override;
+    void badRequest(const HostAddress &address, const Header &req,
+                    const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
+
+    bool changeTrust(const HostAddress &id, int diff) override;
 
     /**
      * @brief sendData This method is some as AbstractNode::sendData but try send data to the id.
@@ -130,32 +129,10 @@ protected:
     virtual bool sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
                           const Header *req = nullptr);
 
-    AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
-
-    void badRequest(const HostAddress &address, const Header &req,
-                    const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
-
-    /**
-     * @brief badRequest This implementation of the AbstractNode::badRequest method
-     *  send bad request to node with id.
-     * @param address This is id of target node or client
-     * @param req This is header of request.
-     * @param err This is message and code for target node about error. For more onformation see the PKG::ErrorData struct.
-     * @param diff This is difference of current trust (currenTrus += diff)
-     * By default diff equals REQUEST_ERROR
-     */
-    virtual void badRequest(const QVariant &address, const Header &req,
-                            const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
-
-    bool changeTrust(const HostAddress &id, int diff) override;
-
-    /**
-     * @brief changeTrust This implementation is some as AbstractNode::changeTrust but change trust of node by id and save changes on local database.
-     * @param id This is id of node or client.
-     * @param diff This is integer value of trust lavel changes.
-     * @return true if functin finished seccussful
-     */
-    virtual bool changeTrust(const BaseId &id, int diff);
+    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
+    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
 
     /**
      * @brief hashgenerator This method generate a hash from any value.
@@ -334,7 +311,7 @@ private:
      * @return true if data parsed seccusseful
      */
     bool workWithSubscribe(const PKG::WebSocket &rec,
-                           const BaseId &clientOrNodeid,
+                           const QVariant &clientOrNodeid,
                            const AbstractNodeInfo &sender);
 
 

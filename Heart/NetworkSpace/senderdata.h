@@ -7,7 +7,7 @@
 
 #ifndef SENDERDATA_H
 #define SENDERDATA_H
-#include "baseid.h"
+#include "nodeid.h"
 
 namespace QH {
 
@@ -19,11 +19,11 @@ class HEARTSHARED_EXPORT SenderData
 public:
     SenderData();
 
-    const BaseId& senderID() const;
-    void setSenderID(const BaseId &senderID);
+    const NodeId& senderID() const;
+    void setSenderID(const NodeId &senderID);
 
 protected:
-    BaseId _senderID;
+    NodeId _senderID;
 };
 }
 #endif // SENDERDATA_H

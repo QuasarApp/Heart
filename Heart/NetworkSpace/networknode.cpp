@@ -36,6 +36,7 @@
 #include "networkerrorcodes.h"
 
 
+
 #define THIS_NODE "this_node_key"
 namespace QH {
 
@@ -84,7 +85,7 @@ NetworkNode::~NetworkNode() {
     delete _router;
 }
 
-BaseId NetworkNode::nodeId() const {
+NodeId NetworkNode::nodeId() const {
 
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
     return QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256);
@@ -103,8 +104,7 @@ bool NetworkNode::checkSignOfRequest(const AbstractData *request) {
                                                   object->sign()), node->authenticationData());
 }
 
-NodeObject NetworkNode::thisNode() const {
-    NodeObject res;
+void NetworkNode::thisNode(NodeObject& res) const {
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
 
     res.setAuthenticationData(keys.publicKey());
@@ -112,11 +112,10 @@ NodeObject NetworkNode::thisNode() const {
 
     res.prepareToSend();
 
-    return res;
 }
 
-QSet<BaseId> NetworkNode::myKnowAddresses() const {
-    QSet<BaseId> res;
+QSet<NodeId> NetworkNode::myKnowAddresses() const {
+    QSet<NodeId> res;
 
     for (const AbstractNodeInfo *i : connections()) {
         auto info = dynamic_cast<const BaseNodeInfo*>(i);
@@ -196,7 +195,7 @@ void NetworkNode::nodeDisconnected(const HostAddress &node) {
     _connectionsMutex.unlock();
 }
 
-void NetworkNode::incomingData(AbstractData *, const BaseId &) {}
+void NetworkNode::incomingData(AbstractData *, const NodeId &) {}
 
 QString NetworkNode::keyStorageLocation() const {
     return _nodeKeys->storageLocation();
@@ -463,7 +462,7 @@ AbstractNodeInfo *NetworkNode::createNodeInfo(QAbstractSocket *socket,
     return  new NetworkNodeInfo(socket, clientAddress);
 }
 
-bool NetworkNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
+bool NetworkNode::sendData(const AbstractData *resp, const QVariant &nodeId, const Header *req) {
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
@@ -500,19 +499,67 @@ bool NetworkNode::sendData(const AbstractData *resp, const BaseId &nodeId, const
     return brodcast(resp);
 }
 
-bool NetworkNode::sendData(AbstractData *resp, const BaseId &nodeId, const Header *req) {
-    return DataBaseNode::sendData(resp, nodeId, req);
+bool NetworkNode::sendData(AbstractData *resp, const QVariant &nodeId, const Header *req) {
+    if (!resp || !resp->prepareToSend()) {
+        return false;
+    }
+
+    return sendData(resp, nodeId, req);
 }
 
-bool NetworkNode::sendData(const AbstractData *resp, const HostAddress &nodeId, const Header *req) {
-    return DataBaseNode::sendData(resp, nodeId, req);
+void NetworkNode::badRequest(const HostAddress &address, const Header &req,
+                             const ErrorData &err, quint8 diff) {
+    DataBaseNode::badRequest(address, req, err, diff);
 }
 
-bool NetworkNode::sendData(AbstractData *resp, const HostAddress &nodeId, const Header *req) {
-    return DataBaseNode::sendData(resp, nodeId, req);
+void NetworkNode::badRequest(const NodeId &address, const Header &req,
+                             const ErrorData &err, quint8 diff) {
+
+    if (!changeTrust(address, diff)) {
+
+        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+                                    " because trust not changed",
+                                    QuasarAppUtils::Error);
+
+        return;
+    }
+
+    auto bad = BadNodeRequest(err);
+    if (!sendData(&bad, address, &req)) {
+        return;
+    }
+
+    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
+                                address.toBase64(),
+                                QuasarAppUtils::Info);
 }
 
-bool NetworkNode::ping(const BaseId &id) {
+bool NetworkNode::changeTrust(const HostAddress &id, int diff) {
+    return DataBaseNode::changeTrust(id, diff);
+}
+
+bool NetworkNode::changeTrust(const NodeId &id, int diff) {
+
+    if (!db())
+        return false;
+
+    auto client = db()->getObject<NetworkMember>(PermisionControlMember{id.toRaw()});
+
+    if (!client) {
+        return false;
+    }
+
+    auto clone = client->clone().staticCast<PermisionControlMember>();
+    clone->changeTrust(diff);
+
+    if (!db()->saveObject(clone.data())) {
+        return false;
+    }
+
+    return true;
+}
+
+bool NetworkNode::ping(const NodeId &id) {
     LongPing cmd(nodeId());
     return sendData(&cmd, id);
 }
