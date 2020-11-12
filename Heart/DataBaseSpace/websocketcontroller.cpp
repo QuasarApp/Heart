@@ -84,3 +84,7 @@ void WebSocketController::foreachSubscribers(const DBObject *item,
     }
 }
 }
+
+uint qHash(const QVariant &variant) {
+    return qHash(variant.toByteArray());
+}

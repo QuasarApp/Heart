@@ -253,7 +253,7 @@ bool DBObject::isHaveAPrimaryKey() const {
     return _dbId.isValid();
 }
 
-QVariant DBObject::getId() const {
+const QVariant& DBObject::getId() const {
     return dbAddress().id();
 }
 

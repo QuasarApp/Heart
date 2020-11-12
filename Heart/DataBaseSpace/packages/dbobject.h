@@ -95,7 +95,7 @@ public:
      * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
      * @return The id of database objcet.
      */
-    QVariant getId() const;
+    const QVariant &getId() const;
 
     /**
      * @brief setId This method set new id for current database object.

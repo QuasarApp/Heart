@@ -9,8 +9,7 @@
 #define NETWORKCONNECTIONINFO_H
 
 #include "basenodeinfo.h"
-#include "accesstoken.h"
-#include "baseid.h"
+#include "nodeid.h"
 #include "heart_global.h"
 #include <QByteArray>
 
@@ -22,7 +21,7 @@ class DbAddress;
 /**
  * @brief The BaseNodeInfo class contaisn list of nodes id of know this node.
  */
-class HEARTSHARED_EXPORT NetworkNodeInfo: public BaseNodeInfo {
+class HEARTSHARED_EXPORT NetworkNodeInfo: public AbstractNodeInfo {
 
 public:
 
@@ -45,18 +44,18 @@ public:
      * @param address
      * @return
      */
-    bool isKnowAddress(const BaseId& address) const;
+    bool isKnowAddress(const NodeId& address) const;
 
     /**
      * @brief setSelfId
      * @param selfId
      */
-    void setSelfId(const BaseId &selfId);
+    void setSelfId(const NodeId &selfId);
 
     /**
      * @brief addKnowAddresses
      */
-    void addKnowAddresses(const QSet<BaseId> &newAddressses);
+    void addKnowAddresses(const QSet<NodeId> &newAddressses);
 
     /**
      * @brief confirmData - this implementaton check self id of node.
@@ -64,8 +63,15 @@ public:
      */
     bool confirmData() const override;
 
+    /**
+     * @brief selfId This method return id of This node.
+     * @return return selfId object
+     */
+    const NodeId& selfId() const;
+
 protected:
-    QSet<BaseId> _knowAddresses;
+    QSet<NodeId> _knowAddresses;
+    NodeId _selfId;
 };
 
 }

@@ -46,6 +46,10 @@ QVariant NodeObject::generateId() const {
     return QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256);
 }
 
+QString NodeObject::condition() const {
+    return NetworkMember::condition();
+}
+
 DBObject *NodeObject::createDBObject() const {
     return create<NodeObject>();
 }

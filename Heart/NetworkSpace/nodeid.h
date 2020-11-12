@@ -24,6 +24,13 @@ public:
     NodeId();
 
     /**
+     * @brief NodeId This constructor for init NodeId from the QVariantObject
+     * @param val
+     */
+    explicit NodeId(const QVariant& val);
+
+
+    /**
      * @brief NodeId This contructor init the id from int value.
      * @param val This is new data value.
      */

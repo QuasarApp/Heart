@@ -22,7 +22,7 @@ class UserMember: public NetworkMember
 public:
     UserMember();
     UserMember(const Package &pkg);
-    UserMember(const BaseId &id);
+    UserMember(const QVariant &id);
 
     bool copyFrom(const AbstractData *other) override;
     bool fromSqlRecord(const QSqlRecord &q) override;

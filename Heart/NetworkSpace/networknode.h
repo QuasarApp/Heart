@@ -82,12 +82,37 @@ public:
 
 protected:
 
+    /**
+     * @brief sendData This implementation of the sendData sending pacakge to the network to node id.
+     * @param resp This is sendet pacakge
+     * @param nodeId This is id of target node
+     * @param req This is header of pacakga that this pacakge ansvered.
+     * @return true if the package sendet successful.
+     */
+    virtual bool sendData(PKG::AbstractData *resp, const NodeId &nodeId,
+                  const Header *req = nullptr);
+
+    /**
+     * @brief sendData This implementation no prepare data for sendint. for prepare data for sending use the not const object of resp.
+     * @param resp This is sendet pacakge
+     * @param nodeId This is id of target node
+     * @param req This is header of pacakga that this pacakge ansvered.
+     * @return true if the package sendet successful.
+     */
+    virtual bool sendData(const PKG::AbstractData *resp, const NodeId &nodeId,
+                  const Header *req = nullptr);
+
+    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
+
+    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
 
     bool sendData(PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr) override;
+                  const Header *req = nullptr) override;
 
     bool sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr) override;
+                  const Header *req = nullptr) override;
 
     void badRequest(const HostAddress &address, const Header &req,
                     const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
@@ -105,6 +130,7 @@ protected:
                             const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
 
 
+    bool changeTrust(const QVariant &id, int diff) override;
     bool changeTrust(const HostAddress &id, int diff) override;
 
     /**

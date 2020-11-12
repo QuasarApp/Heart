@@ -6,71 +6,85 @@
 */
 
 
-#include "baseid.h"
+#include "nodeid.h"
 namespace QH {
 
-BaseId::BaseId() = default;
+NodeId::NodeId() = default;
 
-BaseId::BaseId(unsigned int val) {
+
+QH::NodeId::NodeId(const QVariant &val) {
+    QVariant::Type type = val.type();
+    if(type == QVariant::Type::ByteArray) {
+        fromRaw(val.toByteArray());
+    } else if (type == QVariant::Type::String) {
+        fromBase64(val.toByteArray());
+    } else {
+        unsigned int integer = val.toUInt();
+        fromRaw(reinterpret_cast<char*>(&integer), sizeof (integer));
+    }
+}
+
+NodeId::NodeId(unsigned int val) {
     fromRaw(reinterpret_cast<char*>(&val), sizeof (val));
 }
 
-BaseId::BaseId(const QByteArray &raw) {
+NodeId::NodeId(const QByteArray &raw) {
     fromRaw(raw);
 }
 
-BaseId::BaseId(const QString &base64) {
+NodeId::NodeId(const QString &base64) {
     fromBase64(base64.toLatin1());
 }
 
-bool BaseId::fromBase64(const QByteArray &base64) {
+bool NodeId::fromBase64(const QByteArray &base64) {
     return fromRaw(QByteArray::fromBase64(base64, QByteArray::Base64UrlEncoding));
 }
 
-bool BaseId::fromRaw(const QByteArray &raw) {
+bool NodeId::fromRaw(const QByteArray &raw) {
     _data = raw;
     return isValid();
 }
 
-bool BaseId::fromRaw(const char *data, int len) {
+bool NodeId::fromRaw(const char *data, int len) {
     _data.clear();
     _data.insert(0, data, len);
     return isValid();
 }
 
-QByteArray BaseId::toBase64() const {
+QByteArray NodeId::toBase64() const {
     return _data.toBase64(QByteArray::Base64UrlEncoding);
 }
 
-const QByteArray& BaseId::toRaw() const {
+const QByteArray& NodeId::toRaw() const {
     return _data;
 }
 
-bool BaseId::isValid() const {
+bool NodeId::isValid() const {
     return _data.size();
 }
 
-void BaseId::clear() {
+void NodeId::clear() {
     _data.clear();
 }
 
-QDataStream &BaseId::fromStream(QDataStream &stream) {
+QDataStream &NodeId::fromStream(QDataStream &stream) {
     stream >> _data;
     return stream;
 }
 
-QDataStream &BaseId::toStream(QDataStream &stream) const {
+QDataStream &NodeId::toStream(QDataStream &stream) const {
     stream << _data;
     return stream;
 }
 
-bool operator==(const BaseId &left, const BaseId &other) {
+bool operator==(const NodeId &left, const NodeId &other) {
     return left._data == other._data;
 }
 
 
-uint qHash(const QH::BaseId &object) {
+uint qHash(const QH::NodeId &object) {
     return qHash(object.toRaw());
 }
+
 }
 

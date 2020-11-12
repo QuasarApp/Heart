@@ -108,6 +108,15 @@ protected:
     bool changeTrust(const HostAddress &id, int diff) override;
 
     /**
+     * @brief changeTrust This implementation of change trust is change trust node or user by self id.
+     * All changes of trust saving into local database.
+     * @param id This is id of user of other network member object.
+     * @param diff This is dfference of trust.
+     * @return true if trust of user changed successful.
+     */
+    virtual bool changeTrust(const QVariant &id, int diff);
+
+    /**
      * @brief sendData This method is some as AbstractNode::sendData but try send data to the id.
      *  This implementation prepare object to sending.
      * @param resp This is sending object to the nodeId.

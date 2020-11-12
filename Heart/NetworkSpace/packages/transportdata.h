@@ -34,8 +34,8 @@ public:
      * @brief targetAddress - targetAddress
      * @return
      */
-    BaseId targetAddress() const;
-    void setTargetAddress(const BaseId &targetAddress);
+    const NodeId& targetAddress() const;
+    void setTargetAddress(const NodeId &targetAddress);
 
     /**
      * @brief route - is list of addresses of node was the TransportData has been moved.
@@ -68,7 +68,7 @@ public:
      * @brief packageId
      * @return unique package id.
      */
-    BaseId packageId() const;
+    const NodeId &packageId() const;
 
     /**
      * @brief completeRoute - set bool variable of route complete.
@@ -84,9 +84,9 @@ private:
     explicit TransportData();
 
     Package _data;
-    BaseId _targetAddress;
+    NodeId _targetAddress;
     QList<HostAddress> _route;
-    BaseId _packageId;
+    NodeId _packageId;
     bool _fRouteIsComplete = false;
 
 

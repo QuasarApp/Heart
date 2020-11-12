@@ -54,11 +54,11 @@ QDataStream &KnowAddresses::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QSet<BaseId> KnowAddresses::knowAddresses() const {
+QSet<NodeId> KnowAddresses::knowAddresses() const {
     return _knowAddresses;
 }
 
-void KnowAddresses::setKnowAddresses(const QSet<BaseId> &knowAddresses) {
+void KnowAddresses::setKnowAddresses(const QSet<NodeId> &knowAddresses) {
     _knowAddresses = knowAddresses;
 }
 }

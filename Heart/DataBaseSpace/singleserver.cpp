@@ -74,7 +74,7 @@ RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
     if (!editableNodeInfo)
         return RegisteruserResult::InternalError;
 
-    editableNodeInfo->setToken(token.toBytes());
+    editableNodeInfo->setToken(token);
     user.setToken(token);
     user.setAuthenticationData("");
 
@@ -141,9 +141,9 @@ bool SingleServer::workWithUserRequest(PKG::UserMember* obj,
         result = registerNewUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
 
-        NodeId requesterId = getSender(sender, obj);
+        auto requesterId = getSender(sender, obj);
 
-        if (deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
+        if (requesterId && deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
             badRequest(sender->networkAddress(), pkg.hdr,
                        {
                            ErrorCodes::OperatioForbiden,

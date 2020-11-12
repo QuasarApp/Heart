@@ -10,7 +10,6 @@
 
 #include "abstractnodeinfo.h"
 #include "accesstoken.h"
-#include "baseid.h"
 #include "heart_global.h"
 #include <QByteArray>
 
@@ -62,7 +61,7 @@ public:
      * @brief setId This method set userId for connected object.
      * @param id This is new value of user id.
      */
-    void setId(QVariant id);
+    void setId(const QVariant &id);
 
 protected:
     AccessToken _token;

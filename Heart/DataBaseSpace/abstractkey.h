@@ -9,8 +9,6 @@
 #define ABSTRACTKEY_H
 #include "heart_global.h"
 
-#include <baseid.h>
-
 namespace QH {
 
 /**

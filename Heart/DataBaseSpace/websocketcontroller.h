@@ -81,4 +81,6 @@ private:
 };
 
 }
+
+uint qHash(const QVariant& variant);
 #endif // WEBSOCKETCONTROLLER_H

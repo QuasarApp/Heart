@@ -13,7 +13,7 @@ UserMember::UserMember(const Package &pkg):
     fromBytes(pkg.data);
 }
 
-UserMember::UserMember(const BaseId &id):
+UserMember::UserMember(const QVariant &id):
     UserMember() {
     setId(id);
 }

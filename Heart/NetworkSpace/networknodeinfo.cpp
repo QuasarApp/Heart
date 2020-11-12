@@ -14,29 +14,34 @@ namespace QH {
 
 
 NetworkNodeInfo::NetworkNodeInfo(QAbstractSocket *tcp, const HostAddress* address):
-    BaseNodeInfo(tcp, address){}
+    AbstractNodeInfo(tcp, address){}
 
 NetworkNodeInfo::~NetworkNodeInfo() = default;
 
 bool NetworkNodeInfo::isValid() const {
-    return BaseNodeInfo::isValid();
+    return AbstractNodeInfo::isValid();
 }
 
-bool NetworkNodeInfo::isKnowAddress(const BaseId &address) const {
+bool NetworkNodeInfo::isKnowAddress(const NodeId &address) const {
     return _knowAddresses.contains(address);
 }
 
-void NetworkNodeInfo::setSelfId(const BaseId &selfId) {
-    BaseNodeInfo::setSelfId(selfId);
+void NetworkNodeInfo::setSelfId(const NodeId &selfId) {
+    _selfId = selfId;
     _knowAddresses.insert(_selfId);
 }
 
-void NetworkNodeInfo::addKnowAddresses(const QSet<BaseId> &newAddressses) {
+void NetworkNodeInfo::addKnowAddresses(const QSet<NodeId> &newAddressses) {
     _knowAddresses += newAddressses;
 }
 
 bool NetworkNodeInfo::confirmData() const {
-    return BaseNodeInfo::confirmData() && _selfId.isValid();
+    return AbstractNodeInfo::confirmData() && _selfId.isValid();
+}
+
+const NodeId &NetworkNodeInfo::selfId() const
+{
+    return _selfId;
 }
 
 }

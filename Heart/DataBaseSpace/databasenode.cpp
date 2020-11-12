@@ -180,14 +180,18 @@ void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
 }
 
 bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
-    if (!_db)
-        return false;
-
     auto info = dynamic_cast<const BaseNodeInfo*>(getInfoPtr(id));
     if (!info)
         return false;
 
-    auto client = _db->getObject<NetworkMember>(PermisionControlMember{info->id()});
+    return changeTrust(info->id(), diff);
+}
+
+bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
+    if (!_db)
+        return false;
+
+    auto client = _db->getObject<NetworkMember>(PermisionControlMember{id});
 
     if (!client) {
         return false;

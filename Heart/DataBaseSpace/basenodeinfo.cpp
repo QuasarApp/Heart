@@ -38,7 +38,7 @@ const QVariant& BaseNodeInfo::id() const {
     return _id;
 }
 
-void BaseNodeInfo::setId(QVariant id)
+void BaseNodeInfo::setId(const QVariant &id)
 {
     _id = id;
 }

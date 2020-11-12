@@ -11,7 +11,7 @@
 
 #include <QSet>
 #include <abstractdata.h>
-#include <baseid.h>
+#include <nodeid.h>
 
 
 namespace QH {
@@ -78,20 +78,20 @@ public:
      * @brief addNodeRequiringData - add a node to the list of nodes that need a responce of the request
      * @param node - id of node
      */
-    void addNodeRequiringData(const BaseId& node);
+    void addNodeRequiringData(const NodeId& node);
 
     /**
      * @brief askedNodes - return list of nodes that need a responce of the request
      * @return list of nodes id.
      */
-    QSet<BaseId> askedNodes() const;
+    QSet<NodeId> askedNodes() const;
 
     /**
      * @brief removeNodeFromAskedList - remove a node from list of nodes that need a responce of the request.
      *  Invoke this method when the node will get a responce.
      * @param node
      */
-    void removeNodeFromAskedList(const BaseId& node);
+    void removeNodeFromAskedList(const NodeId& node);
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
@@ -99,7 +99,7 @@ protected:
 
 private:
     Package _dataRequest;
-    QSet<BaseId> _askedNodes;
+    QSet<NodeId> _askedNodes;
     Package _dataResponce;
 
 };

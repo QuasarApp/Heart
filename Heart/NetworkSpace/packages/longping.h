@@ -21,7 +21,7 @@ namespace PKG {
 class HEARTSHARED_EXPORT LongPing: public Ping, public SenderData
 {
 public:
-    LongPing(const BaseId &sender);
+    LongPing(const NodeId &sender);
     LongPing(const Package& from);
 
     // AbstractData interface

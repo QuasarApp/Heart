@@ -11,7 +11,7 @@
 
 #include <QSet>
 #include <abstractdata.h>
-#include <baseid.h>
+#include <nodeid.h>
 
 namespace QH {
 namespace PKG {
@@ -29,8 +29,8 @@ public:
     bool isValid() const override;
     bool copyFrom(const AbstractData *) override;
 
-    QSet<BaseId> knowAddresses() const;
-    void setKnowAddresses(const QSet<BaseId> &knowAddresses);
+    QSet<NodeId> knowAddresses() const;
+    void setKnowAddresses(const QSet<NodeId> &knowAddresses);
 
 
     // StreamBase interface
@@ -39,7 +39,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    QSet<BaseId> _knowAddresses;
+    QSet<NodeId> _knowAddresses;
 };
 }
 }

@@ -60,7 +60,7 @@ bool NetworkNodeUnitTests::testReadWrite() {
         return false;
     }
 
-    QH::PKG::NodeObject testObjec = thisNode();
+    QH::PKG::NodeObject testObjec; thisNode(testObjec);
 
     auto objectFromDataBase = db()->getObject(testObjec);
 
@@ -100,7 +100,7 @@ bool NetworkNodeUnitTests::testUpdate() {
         return false;
     }
 
-    QH::PKG::NodeObject testObjec = thisNode();
+    QH::PKG::NodeObject testObjec; thisNode(testObjec);
 
     auto objectFromDataBase = db()->getObject(testObjec);
 
@@ -144,7 +144,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    QH::PKG::NodeObject testObjec = thisNode();
+    QH::PKG::NodeObject testObjec; thisNode(testObjec);
 
     if(!changeTrust(testObjec.getId(), -10)) {
         return false;

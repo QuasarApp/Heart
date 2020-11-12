@@ -11,7 +11,7 @@
 namespace QH {
 namespace PKG {
 
-LongPing::LongPing(const BaseId& sender) {
+LongPing::LongPing(const NodeId &sender) {
     
     setSenderID(sender);
 }
