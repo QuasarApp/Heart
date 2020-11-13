@@ -37,11 +37,22 @@ enum class PrepareResult {
  * for more information see the DBObject::variantMap method.
  */
 enum class MemberType {
-    //// Member of DBObjects will be inserted but not updated.
-    InsertOnly,
-    //// Member of DBObjects will be inserted and updated.
-    InsertUpdate
+    //// The Field with this type can not be update and Inserted.
+    None = 0x0,
+
+    //// The Field With This type can be inserted but not updated.
+    Insert = 0x1,
+
+    //// The Field With This type can be updated but not inserted.
+    Update = 0x2,
+
+    //// The Field With This type can be inserted and updated.
+    InsertUpdate = Insert | Insert
 };
+
+constexpr inline uint qHash(MemberType type) {
+    return static_cast<uint>(type);
+}
 
 /**
  * @brief The DBVariant struct contains QVariant value of the DBObjects member and it type.
@@ -75,9 +86,8 @@ public:
     /**
      * @brief DBObject This is default constructor.Befor using this class tou need set the table name and primary key of this object.
      * @param tableName This is table name
-     * @param primaryKey This is primary key.
      */
-    DBObject(const QString& tableName, const QString &primaryKey);
+    DBObject(const QString& tableName);
 
     ~DBObject() override;
 
@@ -164,15 +174,14 @@ public:
     virtual bool fromSqlRecord(const QSqlRecord& q);
 
     /**
-     * @brief prepareSaveQuery This method should be prepare a query for save object into database.
-     * You need to create a own save sql query for this object into database.
-     *  Override this metod for save item into database.
-     * By Default This method prepare a slect query using the data that returned from the variantMap method.
+     * @brief prepareInsertQuery This method should be prepare a query for insert object into database.
+     * You need to create a own insert sql query for this object into database.
+     *  Override this metod for insert item into database.
+     * By Default This method prepare a insert query using the data that returned from the variantMap method.
      *
-     * Default save query have a next template:
+     * Default insert query have a next template:
      * \code{sql}
      *     INSERT INTO %0(%1) VALUES (%3)
-     *     ON CONFLICT(id) DO UPDATE SET %2;
      * \endcode
      *
      *  For more information see the DBObject::variantMap method.
@@ -182,29 +191,41 @@ public:
      *
      * Example of overriding:
      * \code{cpp}
-     *  PrepareResult ExampleObject::prepareSaveQuery(QSqlQuery &q) const {
+     *  PrepareResult ExampleObject::prepareInsertQuery(QSqlQuery &q) const {
 
-            QString queryString = "INSERT INTO %0(%1) VALUES (%3) "
-                                  "ON CONFLICT(id) DO UPDATE SET %2";
+            DBVariantMap map = variantMap();
+
+
+            QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
+
+
             queryString = queryString.arg(tableName());
-            queryString = queryString.arg("id, ExampleObjectData");
-            queryString = queryString.arg("ExampleObjectData=:ExampleObjectData");
+            QString tableInsertHeader = "";
+            QString tableInsertValues = "";
 
-            QString values;
+            for (auto it = map.begin(); it != map.end(); ++it) {
 
-            values += "'" + getId().toBase64() + "', ";
-            values += ":ExampleObjectData, ";
+                tableInsertHeader += it.key();
+                tableInsertValues += ":" + it.key();
 
-            queryString = queryString.arg(values);
+                if (it + 1 != map.end()) {
+                    tableInsertHeader += ", ";
+                    tableInsertValues += ", ";
+                }
 
-            if (q.prepare(queryString)) {
-                q.bindValue(":ExampleObjectData", ExampleObjectData);
-                return PrepareResult::Success;
             }
 
+            queryString = queryString.arg(tableInsertHeader);
+            queryString = queryString.arg(tableInsertValues);
 
-            QuasarAppUtils::Params::log("Query:" + queryString,
-                                        QuasarAppUtils::Error);
+            if (q.prepare(queryString)) {
+
+                for (auto it = map.begin(); it != map.end(); ++it) {
+                    q.bindValue(":" + it.key(), it.value().value);
+                }
+
+                return PrepareResult::Success;
+            }
 
             return PrepareResult::Fail;
         }
@@ -212,7 +233,67 @@ public:
      *
      * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
      */
-    virtual PrepareResult prepareSaveQuery(QSqlQuery& q) const;
+    virtual PrepareResult prepareInsertQuery(QSqlQuery& q) const;
+
+    /**
+     * @brief prepareUpdateQuery this method sould be prepare a insert data query.
+     *
+     * Bt Default This method generate query like this
+     * \code{sql}
+     *  UPDATE value SET value = 2 WHERE id = 1
+     * \endcode
+     *
+     * IF you want to create a own insert query override this method.
+     *
+     * Example of overriding this method:
+     *
+     * \code{cpp}
+     *  PrepareResult prepareUpdateQuery(QSqlQuery& q) const {
+            DBVariantMap map = variantMap();
+
+            QString queryString = "UPDATE %0 SET %1 WHERE %2";
+
+            queryString = queryString.arg(tableName());
+            QString tableUpdateValues = "";
+            QString tableUpdateRules = QString("%0 = :%0").
+                    arg(primaryKey());
+
+            for (auto it = map.begin(); it != map.end(); ++it) {
+                if (!(it.value().type & MemberType::Update)) {
+                    continue;
+                }
+
+                if (tableUpdateValues.size()) {
+                    tableUpdateValues += ", ";
+                }
+
+                tableUpdateValues += QString("%0= :%0").arg(it.key());
+
+            }
+
+            queryString = queryString.arg(tableUpdateValues);
+            queryString = queryString.arg(tableUpdateRules);
+
+            if (q.prepare(queryString)) {
+
+                for (auto it = map.begin(); it != map.end(); ++it) {
+                    if (it.value().type != MemberType::InsertUpdate) {
+                        continue;
+                    }
+
+                    q.bindValue(":" + it.key(), it.value().value);
+                }
+
+                return PrepareResult::Success;
+            }
+
+            return PrepareResult::Fail;
+        }
+     * \endcode
+     * @param q This is query object.
+     * @return PrepareResult object with information about prepare results.
+     */
+    virtual PrepareResult prepareUpdateQuery(QSqlQuery& q) const;
 
     /**
      * @brief prepareRemoveQuery This method method should be prepare a query for remove this object from a database.
@@ -341,7 +422,20 @@ protected:
      */
     virtual QString condition() const;
 
-    QString generateValueString() const;
+    /**
+     * @brief primaryKey This method must be return the name of primary key of this object table.
+     * If you want to create data object without primary key just return empty string.
+     * @note If you returned empty value then this method can not be prepare insert update and delete querys.
+     * @return The primary key name.
+     */
+    virtual QString primaryKey() const = 0;
+
+    /**
+     * @brief primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then return invalid value.
+     * @return Value of primaryKey ( database id ).
+     */
+    const QVariant& primaryValue() const;
+
 
     /**
      * @brief setDbAddress This method set the new database address.

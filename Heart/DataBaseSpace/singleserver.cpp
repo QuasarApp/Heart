@@ -30,7 +30,7 @@ RegisteruserResult SingleServer::registerNewUser(PKG::UserMember user,
 
     addUpdatePermission(requester, user.dbAddress(), Permission::Write);
 
-    if (!db()->saveObject(&user)) {
+    if (!db()->updateObject(&user)) {
         return RegisteruserResult::InternalError;
     };
 

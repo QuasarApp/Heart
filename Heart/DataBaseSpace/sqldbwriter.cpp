@@ -208,12 +208,16 @@ bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBO
     return selectQuery(templateObject, result);
 }
 
-bool SqlDBWriter::saveObject(const DBObject* ptr) {
-    return saveQuery(ptr);
+bool SqlDBWriter::updateObject(const DBObject* ptr) {
+    return updateQuery(ptr);
 }
 
 bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     return deleteQuery(ptr);
+}
+
+bool SqlDBWriter::insertObject(const DBObject *saveObject) {
+    return insertQuery(saveObject);
 }
 
 void SqlDBWriter::setSQLSources(const QStringList &list) {
@@ -228,14 +232,14 @@ SqlDBWriter::~SqlDBWriter() {
     db.close();
 }
 
-bool SqlDBWriter::saveQuery(const DBObject* ptr) const {
+bool SqlDBWriter::insertQuery(const DBObject* ptr) const {
     if (!ptr)
         return false;
 
     QSqlQuery q(db);
 
     auto prepare = [ptr](QSqlQuery&q) {
-        return ptr->prepareSaveQuery(q);
+        return ptr->prepareInsertQuery(q);
     };
 
     auto cb = [](){return true;};
@@ -307,18 +311,39 @@ bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
     return workWithQuery(q, prepare, cb);
 }
 
+bool SqlDBWriter::updateQuery(const DBObject *ptr) const {
+    if (!ptr)
+        return false;
+
+    QSqlQuery q(db);
+
+    auto prepare = [ptr](QSqlQuery&q) {
+        return ptr->prepareUpdateQuery(q);
+    };
+
+    auto cb = [](){return true;};
+
+    return workWithQuery(q, prepare, cb);
+}
+
 bool SqlDBWriter::workWithQuery(QSqlQuery &q,
                                const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
                                const std::function<bool ()> &cb) const {
+
+    auto erroPrint = [](const QSqlQuery &q){
+        QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
+
+        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
+                                    QuasarAppUtils::Error);
+    };
+
 
     switch (prepareFunc(q)) {
     case PrepareResult::Success: {
 
         if (!q.exec()) {
-
-            QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
-                                        QuasarAppUtils::Error);
-
+            erroPrint(q);
             return false;
         }
 
@@ -331,12 +356,7 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
     }
 
     case PrepareResult::Fail: {
-        QuasarAppUtils::Params::log("prepare sql error: " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
-
-        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
-                                    QuasarAppUtils::Error);
-
+        erroPrint(q);
         return false;
     }
 

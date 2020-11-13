@@ -28,6 +28,7 @@ public:
 
 protected:
     DBVariantMap variantMap() const override;
+    QString primaryKey() const override;
 
     // DBObject interface
 public:

@@ -2,5 +2,6 @@
     <qresource prefix="/sql">
         <file>DataBaseSpace/Res/DbConfig.json</file>
         <file>DataBaseSpace/Res/BaseDB.sql</file>
+        <file>NetworkSpace/Res/NetworkDB.sql</file>
     </qresource>
 </RCC>

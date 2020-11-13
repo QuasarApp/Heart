@@ -69,10 +69,12 @@ protected:
     QVariant generateId() const override;
     DBVariantMap variantMap() const override;
     QString condition() const override;
+    QString primaryKey() const override;
 
 private:
     Permission _permision;
     PermisionData _key;
+
 };
 }
 }

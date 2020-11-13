@@ -30,9 +30,9 @@ AsyncSqlDbWriter::~AsyncSqlDbWriter() {
     _own->wait();
 }
 
-bool AsyncSqlDbWriter::saveObject(const DBObject *saveObject) {
+bool AsyncSqlDbWriter::updateObject(const DBObject *saveObject) {
     if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::saveObject(saveObject);
+        return SqlDBWriter::updateObject(saveObject);
     }
 
     return QMetaObject::invokeMethod(this,
@@ -57,23 +57,64 @@ bool AsyncSqlDbWriter::deleteObject(const DBObject *deleteObject) {
                                      Q_ARG(bool *, nullptr));
 }
 
-bool AsyncSqlDbWriter::saveObjectWithWait(const DBObject *saveObject) {
+bool AsyncSqlDbWriter::insertObject(const DBObject *insertObject) {
     if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::saveObject(saveObject);
+        return SqlDBWriter::insertObject(insertObject);
+    }
+
+    return QMetaObject::invokeMethod(this,
+                                     "handleInsertObject",
+                                     Qt::QueuedConnection,
+                                     Q_ARG(const QH::PKG::DBObject *, insertObject),
+                                     Q_ARG(bool *, nullptr),
+                                     Q_ARG(bool *, nullptr));
+}
+
+bool AsyncSqlDbWriter::updateObjectWithWait(const DBObject *saveObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::updateObject(saveObject);
     }
 
     bool workOfEnd = false, workResult = false;
 
 
     bool invoke = QMetaObject::invokeMethod(this,
-                                     "handleSaveObject",
+                                     "handleUpdateObject",
                                      Qt::QueuedConnection,
                                      Q_ARG(const QH::PKG::DBObject *, saveObject),
                                      Q_ARG(bool *, &workResult),
                                      Q_ARG(bool *, &workOfEnd));
 
     if (!invoke) {
-        QuasarAppUtils::Params::log("handleDeleteObject not invokecd", QuasarAppUtils::Debug);
+        QuasarAppUtils::Params::log("handleUpdateObject not invokecd", QuasarAppUtils::Debug);
+        return false;
+    }
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
+}
+
+bool AsyncSqlDbWriter::insertObjectWithWait(const DBObject *saveObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::insertObject(saveObject);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invoke = QMetaObject::invokeMethod(this,
+                                     "handleInsertObject",
+                                     Qt::QueuedConnection,
+                                     Q_ARG(const QH::PKG::DBObject *, saveObject),
+                                     Q_ARG(bool *, &workResult),
+                                     Q_ARG(bool *, &workOfEnd));
+
+    if (!invoke) {
+        QuasarAppUtils::Params::log("handleInsertObject not invokecd", QuasarAppUtils::Debug);
         return false;
     }
 
@@ -167,23 +208,42 @@ bool AsyncSqlDbWriter::initDb(const QVariantMap &params) {
     return workResult;
 }
 
-void AsyncSqlDbWriter::handleSaveObject(const DBObject* saveObject,
+void AsyncSqlDbWriter::handleUpdateObject(const DBObject* saveObject,
                                         bool *resultOfWork,
                                         bool *endOfWork) {
     if (resultOfWork) {
-        *resultOfWork = SqlDBWriter::saveObject(saveObject);
+        *resultOfWork = SqlDBWriter::updateObject(saveObject);
 
         if (endOfWork) {
             *endOfWork = true;
         }
 
     } else {
-        if (!SqlDBWriter::saveObject(saveObject)) {
+        if (!SqlDBWriter::updateObject(saveObject)) {
             QuasarAppUtils::Params::log("AsyncSqlDbWriter: save object fail!",
                                         QuasarAppUtils::Error);
         }
     }
 }
+
+void AsyncSqlDbWriter::handleInsertObject(const DBObject* object,
+                                        bool *resultOfWork,
+                                        bool *endOfWork) {
+    if (resultOfWork) {
+        *resultOfWork = SqlDBWriter::insertObject(object);
+
+        if (endOfWork) {
+            *endOfWork = true;
+        }
+
+    } else {
+        if (!SqlDBWriter::insertObject(object)) {
+            QuasarAppUtils::Params::log("AsyncSqlDbWriter: save object fail!",
+                                        QuasarAppUtils::Error);
+        }
+    }
+}
+
 
 void AsyncSqlDbWriter::handleDeleteObject(const DBObject *deleteObject, bool *resultOfWork, bool *endOfWork) {
     if (resultOfWork) {

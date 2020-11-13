@@ -25,16 +25,25 @@ public:
     AsyncSqlDbWriter(QObject* ptr = nullptr);
     ~AsyncSqlDbWriter();
 
-    bool saveObject(const PKG::DBObject* saveObject) override;
+    bool updateObject(const PKG::DBObject* saveObject) override;
     bool deleteObject(const PKG::DBObject* deleteObject) override;
+    bool insertObject(const PKG::DBObject *updateObject) override;
 
     /**
-     * @brief saveObjectWithWait this method is wraper of the saveObject method with waiting of works result.
+     * @brief updateObjectWithWait this method is wraper of the updateObject method with waiting of works result.
      * @note This method stop current thread while the request is not finished.
-     * @param saveObject This is  pointer to the saved object.
+     * @param updateObject This is  pointer to the update object.
      * @return true if function finished successful.
      */
-    bool saveObjectWithWait(const PKG::DBObject* saveObject);
+    bool updateObjectWithWait(const PKG::DBObject* updateObject);
+
+    /**
+     * @brief insertObjectWithWait this method is wraper of the insertObject method with waiting of works result.
+     * @note This method stop current thread while the request is not finished.
+     * @param inserObject This is  pointer to the insert object.
+     * @return true if function finished successful.
+     */
+    bool insertObjectWithWait(const PKG::DBObject* inserObject);
 
     /**
      * @brief deleteObjectWithWait this method is wraper of the deleteObject method with waiting of works result.
@@ -52,22 +61,32 @@ public:
 
 protected slots:
     /**
-     * @brief handleSaveObject this method call the SqlDBWriter::SaveObject method on an own thread.
-     * @param saveObject is savad object.
+     * @brief handleUpdateObject this method call the SqlDBWriter::updateObject method on an own thread.
+     * @param saveObject This is need to updated object.
      * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
+     * @param endOfWork This wariable set true when the SqlDBWriter::updateObject is finished.
      */
-    void handleSaveObject(const QH::PKG::DBObject* saveObject,
+    void handleUpdateObject(const QH::PKG::DBObject* saveObject,
                            bool *resultOfWork, bool *endOfWork);
 
     /**
-     * @brief handleDeleteObject this method call the SqlDBWriter::DeleteObject method on an own thread.
+     * @brief handleDeleteObject this method call the SqlDBWriter::deleteObject method on an own thread.
      * @param deleteObject is deleted object.
      * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
      * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
      */
     void handleDeleteObject(const QH::PKG::DBObject* deleteObject,
                             bool *resultOfWork, bool *endOfWork);
+
+    /**
+     * @brief handleInsertObject this method call the SqlDBWriter::insertObject method on an own thread.
+     * @param object This is need to update object.
+     * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
+     * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
+     */
+    void handleInsertObject(const QH::PKG::DBObject *object,
+                            bool *resultOfWork,
+                            bool *endOfWork);
 
     /**
      * @brief handleGetAllObject This method call getAllObjects on own thread.

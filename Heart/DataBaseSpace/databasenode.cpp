@@ -200,7 +200,7 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     auto clone = client->clone().staticCast<PermisionControlMember>();
     clone->changeTrust(diff);
 
-    if (!_db->saveObject(clone.data())) {
+    if (!_db->updateObject(clone.data())) {
         return false;
     }
 
@@ -421,7 +421,7 @@ DBOperationResult DataBaseNode::setObject(const QVariant &requester,
         return permisionResult;
     }
 
-    if (!_db->saveObject(saveObject)) {
+    if (!_db->updateObject(saveObject)) {
         return DBOperationResult::Unknown;
     }
 
@@ -473,7 +473,7 @@ bool DataBaseNode::addUpdatePermission(const QVariant &member,
     object.setKey(PermisionData(member, objectAddress));
     object.setPermisions(permision);
 
-    if (!_db->saveObject(&object)) {
+    if (!_db->updateObject(&object)) {
         return false;
     }
 

@@ -16,7 +16,7 @@
 namespace QH {
 namespace PKG {
 
-NetworkMember::NetworkMember():DBObject("NetworkMembers", "id") {
+NetworkMember::NetworkMember():DBObject("NetworkMembers") {
     
 }
 
@@ -73,6 +73,10 @@ DBVariantMap NetworkMember::variantMap() const {
     map["trust"] =                  {_trust,   MemberType::InsertUpdate};
 
     return  map;
+}
+
+QString NetworkMember::primaryKey() const {
+    return "id";
 }
 
 int NetworkMember::trust() const {

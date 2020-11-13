@@ -61,9 +61,10 @@ public:
     virtual bool isValid() const;
 
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
-    bool saveObject(const QH::PKG::DBObject *ptr) override;
+    bool updateObject(const QH::PKG::DBObject *ptr) override;
     bool deleteObject(const QH::PKG::DBObject *ptr) override;
     void setSQLSources(const QStringList &list) override;
+    bool insertObject(const PKG::DBObject *ptr) override;
 
     /**
      * @brief databaseLocation This method return location of database.
@@ -125,12 +126,12 @@ protected:
     virtual QVariantMap defaultInitPararm() const;
 
     /**
-     * @brief saveQuery This method execute save query of object.
-     *  For more Information see DBObject::prepareSaveQuery.
-     * @param ptr This is pointer to object that need to save into a database.
+     * @brief updateQuery This method execute update query of object.
+     *  For more Information see DBObject::prepareUpdateQuery.
+     * @param ptr This is pointer to object that need to update into a database.
      * @return true if function finished seccussful
      */
-    virtual bool saveQuery(const QH::PKG::DBObject *ptr) const;
+    virtual bool updateQuery(const QH::PKG::DBObject *ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters.
@@ -147,6 +148,13 @@ protected:
      * @return true if query generated successful.
      */
     virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
+
+    /**
+     * @brief insertQuery This method prepare the insert object query.
+     * @param insertObject This is tempalte object for generate the insert query.
+     * @return true if query generated successful.
+     */
+    virtual bool insertQuery(const QH::PKG::DBObject *insertObject) const;
 
     QSqlDatabase db;
 
@@ -169,7 +177,6 @@ private:
     bool initSuccessful = false;
     QVariantMap _config;
     QStringList _SQLSources;
-
 
 };
 

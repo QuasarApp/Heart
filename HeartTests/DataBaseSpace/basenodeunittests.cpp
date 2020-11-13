@@ -92,7 +92,7 @@ bool BaseNodeUnitTests::testReadWrite() {
         return false;
     }
 
-    if (!db()->saveObject(testObjec)) {
+    if (!db()->insertObject(testObjec)) {
         return false;
     }
 
@@ -135,7 +135,7 @@ bool BaseNodeUnitTests::testUpdate() {
 
     clone->setTrust(20);
 
-    if (!db()->saveObject(clone.data())) {
+    if (!db()->updateObject(clone.data())) {
         return false;
     }
 

@@ -18,8 +18,8 @@ DbAddressKey::DbAddressKey(const DbAddress &address):
 
 }
 
-DbAddressKey::DbAddressKey(const QString &table, const QString &primaryKey, const QVariant &value):
-   DbAddress(table, primaryKey, value) {
+DbAddressKey::DbAddressKey(const QString &table, const QVariant &value):
+   DbAddress(table, value) {
 
 }
 

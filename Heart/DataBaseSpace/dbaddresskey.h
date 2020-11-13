@@ -25,10 +25,9 @@ public:
     /**
      * @brief DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor.
      * @param table This is name of database table
-     * @param primaryKey This is primaryKey of table
      * @param value This is value of primary key.
      */
-    DbAddressKey(const QString& table, const QString& primaryKey, const QVariant& value);
+    DbAddressKey(const QString& table, const QVariant& value);
 
     unsigned int hash() const override;
 

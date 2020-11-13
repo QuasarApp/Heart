@@ -9,11 +9,11 @@
 namespace QH {
 namespace PKG {
 DBObjectSet::DBObjectSet(const QString table):
-    DBObject(table, "") {
+    DBObject(table) {
 
 }
 
-PrepareResult DBObjectSet::prepareSaveQuery(QSqlQuery &) const {
+PrepareResult DBObjectSet::prepareInsertQuery(QSqlQuery &) const {
     return PrepareResult::Disabled;
 }
 
@@ -31,6 +31,10 @@ bool DBObjectSet::isCached() const {
 
 bool DBObjectSet::isBundle() const {
     return true;
+}
+
+QString DBObjectSet::primaryKey() const {
+    return "";
 }
 
 }

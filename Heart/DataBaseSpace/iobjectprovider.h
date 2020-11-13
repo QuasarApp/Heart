@@ -68,11 +68,18 @@ public:
     virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) = 0;
 
     /**
-     * @brief saveObject This method executable save method of objects and save current object into database.
-     * @param saveObject This is object for saving.
+     * @brief updateObject This method executable update method of objects and save the change of current object into database.
+     * @param saveObject This is object for updating.
+     * @return true if objects is updated successful else false.
+     */
+    virtual bool updateObject(const PKG::DBObject* saveObject) = 0;
+
+    /**
+     * @brief insertObject This method executable insert method of objects and save current object into database.
+     * @param saveObject This is object for inserting.
      * @return true if objects is saved successful else false.
      */
-    virtual bool saveObject(const PKG::DBObject* saveObject) = 0;
+    virtual bool insertObject(const PKG::DBObject* saveObject) = 0;
 
     /**
      * @brief deleteObject This method executable delete method of objects and remove current object from database.

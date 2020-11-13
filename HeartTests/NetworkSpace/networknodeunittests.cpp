@@ -68,7 +68,7 @@ bool NetworkNodeUnitTests::testReadWrite() {
         return false;
     }
 
-    if (!db()->saveObject(&testObjec)) {
+    if (!db()->updateObject(&testObjec)) {
         return false;
     }
 
@@ -112,7 +112,7 @@ bool NetworkNodeUnitTests::testUpdate() {
 
     clone->setTrust(20);
 
-    if (!db()->saveObject(clone.data())) {
+    if (!db()->updateObject(clone.data())) {
         return false;
     }
 

@@ -27,35 +27,43 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     QMutexLocker lock(&_saveLaterMutex);
 
-    for (uint it : _needToSaveCache) {
+    for (auto it = _needToSaveCache.begin(); it != _needToSaveCache.end(); ++it) {
 
         auto async = dynamic_cast<AsyncSqlDbWriter*>(_writer);
 
         if (_writer && _writer->isValid()) {
 
-            auto obj = getFromCache(it);
+            auto obj = getFromCache(it.value());
 
             if (!obj || !obj->isValid()) {
                 deleteFromCache(obj);
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " db object is not valid! key=" + DESCRIPTION_KEY(it) +
+                                            " db object is not valid! key=" +
+                                            DESCRIPTION_KEY(it.value()) +
                                             " " + obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Error);
                 continue;
             }
 
             bool saveResult = false;
-            if (async)
-                saveResult = async->saveObjectWithWait(obj);
-            else
-                saveResult = _writer->saveObject(obj);
 
-
+            if (it.key() == MemberType::Insert) {
+                if (async)
+                    saveResult = async->insertObjectWithWait(obj);
+                else
+                    saveResult = _writer->insertObject(obj);
+            } else {
+                if (async)
+                    saveResult = async->updateObjectWithWait(obj);
+                else
+                    saveResult = _writer->updateObject(obj);
+            }
 
             if (!saveResult ) {
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " work globalUpdateDataRelease!!! key=" + DESCRIPTION_KEY(it) +
+                                            " work globalUpdateDataRelease!!! key=" +
+                                            DESCRIPTION_KEY(it.value()) +
                                             " " + obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Error);
             }
@@ -132,7 +140,7 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBOb
         }
 
         for (auto object: result) {
-            if (object->isCached() && !saveToCache(object)) {
+            if (object->isCached() && !insertToCache(object)) {
                 QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
                                             object->toString(),
                                             QuasarAppUtils::Warning);
@@ -145,24 +153,26 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBOb
     return false;
 }
 
-bool SqlDBCache::saveObject(const DBObject *saveObject) {
+bool SqlDBCache::updateObject(const DBObject *saveObject) {
 
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
 
-    saveToCache(saveObject);
+    if (!updateCache(saveObject)) {
+        return false;
+    }
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
         if (_writer && _writer->isValid()) {
-            if (!_writer->saveObject(saveObject)) {
+            if (!_writer->updateObject(saveObject)) {
                 return false;
             }
 
             return true;
         }
     } else {
-        _needToSaveCache.insert(saveObject->dbKey());
+        _needToSaveCache.insert(MemberType::Update, saveObject->dbKey());
         globalUpdateDataBase(_mode);
     }
 
@@ -183,6 +193,31 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
 
     return false;
 
+}
+
+bool SqlDBCache::insertObject(const DBObject *saveObject) {
+    if (!saveObject || !saveObject->isValid()) {
+        return false;
+    }
+
+    if (!insertObject(saveObject)) {
+        return false;
+    }
+
+    if (getMode() == SqlDBCasheWriteMode::Force) {
+        if (_writer && _writer->isValid()) {
+            if (!_writer->insertObject(saveObject)) {
+                return false;
+            }
+
+            return true;
+        }
+    } else {
+        _needToSaveCache.insert(MemberType::Insert, saveObject->dbKey());
+        globalUpdateDataBase(_mode);
+    }
+
+    return true;
 }
 
 bool SqlDBCache::init(const QString &initDbParams) {
@@ -218,34 +253,50 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     _cacheMutex.unlock();
 }
 
-bool SqlDBCache::saveToCache(const DBObject *obj) {
+bool SqlDBCache::insertToCache(const DBObject *obj) {
+    if (!obj)
+        return false;
+
+    QMutexLocker lock(&_cacheMutex);
+
+    if (_cache.contains(obj->dbKey())) {
+        return false;
+    }
+
+    _cache[obj->dbKey()] = obj->cloneRaw();
+
+    emit sigItemChanged(obj);
+
+    return true;
+
+}
+
+bool SqlDBCache::updateCache(const DBObject *obj) {
     if (!obj)
         return false;
 
     QMutexLocker lock(&_cacheMutex);
 
     auto existsObject = _cache.value(obj->dbKey(), nullptr);
+
     if (!existsObject) {
+        return false;
+    }
 
-        _cache[obj->dbKey()] = obj->cloneRaw();
-
-    } else if (existsObject->cmd() != obj->cmd()) {
+    if (existsObject->cmd() != obj->cmd()) {
 
         delete existsObject;
         _cache[obj->dbKey()] = obj->cloneRaw();
 
     } else {
-
         if (!existsObject->copyFrom(obj)) {
             return false;
         }
-
     }
 
     emit sigItemChanged(obj);
 
     return true;
-
 }
 
 DBObject* SqlDBCache::getFromCache(uint objKey) {

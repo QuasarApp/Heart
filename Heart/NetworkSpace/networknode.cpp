@@ -388,7 +388,7 @@ bool NetworkNode::workWithNodeObjectData(NodeObject &node,
         node.setTrust(0);
     }
 
-    if (!db()->saveObject(&node)) {
+    if (!db()->updateObject(&node)) {
         return false;
     };
 
@@ -564,6 +564,10 @@ bool NetworkNode::changeTrust(const QVariant &id, int diff) {
 
 bool NetworkNode::changeTrust(const HostAddress &id, int diff) {
     return DataBaseNode::changeTrust(id, diff);
+}
+
+QStringList NetworkNode::SQLSources() const {
+    return {":/sql/NetworkSpace/Res/NetworkDB.sql"};
 }
 
 bool NetworkNode::changeTrust(const NodeId &id, int diff) {

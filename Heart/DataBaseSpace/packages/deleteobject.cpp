@@ -8,7 +8,7 @@
 #include "deleteobject.h"
 namespace QH {
 namespace PKG {
-DeleteObject::DeleteObject(): DBObject("", "")  {
+DeleteObject::DeleteObject(): DBObject("")  {
 
 }
 
@@ -22,6 +22,10 @@ DBObject *DeleteObject::createDBObject() const {
 
 DBVariantMap DeleteObject::variantMap() const {
     return {};
+}
+
+QString DeleteObject::primaryKey() const {
+    return "";
 }
 
 bool DeleteObject::isCached() const {

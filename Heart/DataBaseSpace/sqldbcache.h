@@ -70,8 +70,9 @@ public:
 
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
 
-    bool saveObject(const PKG::DBObject* saveObject) override;
+    bool updateObject(const PKG::DBObject* saveObject) override;
     bool deleteObject(const PKG::DBObject* delObj) override;
+    bool insertObject(const PKG::DBObject *saveObject) override;
 
     /**
      * @brief getUpdateInterval This method return update interval for save changes into database. This is work for default and On_New_Thread mdes. For more information see the QH::SqlDBCasheWriteMode enum.
@@ -111,11 +112,19 @@ protected:
     virtual void deleteFromCache(const PKG::DBObject *delObj);
 
     /**
-     * @brief saveToCache This method save object into cache,  but not database.
+     * @brief insertToCache This method insert object into cache,  but not database.
+     *  If Object exists in the cache this method return false.
      * @param obj This is object for save into cache.
-     * @return true if save finished successful.
+     * @return true if insert finished successful. If Object exists then return false.
      */
-    virtual bool saveToCache(const PKG::DBObject *obj);
+    virtual bool insertToCache(const PKG::DBObject *obj);
+
+    /**
+     * @brief updateCache This method update alredy exits object on the cache, but not database.
+     * @param obj This is object with chages for updae the object rtom cache.
+     * @return true if save finished successful. If the obj mot exits in the cache then return false.
+     */
+    virtual bool updateCache(const PKG::DBObject *obj);
 
     /**
      * @brief getFromCache This method get database objcet from cache.
@@ -158,13 +167,15 @@ private:
     SqlDBCasheWriteMode _mode;
 
     QHash<uint, PKG::DBObject*>  _cache;
-    QSet<uint>  _needToSaveCache;
+    QHash<PKG::MemberType, uint>  _needToSaveCache;
+
     SqlDBWriter* _writer = nullptr;
 
 
 
 signals:
     void sigItemChanged(const PKG::DBObject *obj);
+
 };
 
 }

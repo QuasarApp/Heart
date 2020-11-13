@@ -15,7 +15,7 @@ namespace QH {
 namespace PKG {
 
 MemberPermisionObject::MemberPermisionObject():
-    DBObject("MemberPermisions", "") {
+    DBObject("MemberPermisions") {
     
 }
 
@@ -114,6 +114,10 @@ QString MemberPermisionObject::condition() const {
     }
 
     return result;
+}
+
+QString MemberPermisionObject::primaryKey() const {
+    return "";
 }
 
 PermisionData MemberPermisionObject::key() const {

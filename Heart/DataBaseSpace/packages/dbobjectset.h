@@ -27,12 +27,13 @@ public:
 
     // DBObject interface
 public:
-    PrepareResult prepareSaveQuery(QSqlQuery &) const override final;
+    PrepareResult prepareInsertQuery(QSqlQuery &) const override final;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override final;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override final;
 
     bool isCached() const override final;
     bool isBundle() const override final;
+    QString primaryKey() const override;
 
 };
 }

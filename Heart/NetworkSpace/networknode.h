@@ -133,6 +133,8 @@ protected:
     bool changeTrust(const QVariant &id, int diff) override;
     bool changeTrust(const HostAddress &id, int diff) override;
 
+    QStringList SQLSources() const override;
+
     /**
      * @brief changeTrust This implementation is some as AbstractNode::changeTrust but change trust of node by id and save changes on local database.
      * @param id This is id of node or client.
@@ -223,6 +225,7 @@ protected:
      * @return path to the location of keys storage
      */
     QString keyStorageLocation() const;
+
 
 private:
 
