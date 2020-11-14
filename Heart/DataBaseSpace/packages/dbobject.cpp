@@ -244,25 +244,6 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QVariant DBObject::generateId() const {
-    if (isHaveAPrimaryKey())
-        return {};
-
-    return 0;
-}
-
-bool DBObject::init() {
-    if (!AbstractData::init())
-        return false;
-
-    if (isBundle()) {
-        return true;
-    }
-
-    _dbId.setId(generateId());
-    return _dbId.isValid();
-}
-
 DBVariantMap DBObject::variantMap() const {
     if (isHaveAPrimaryKey()) {
         return {{primaryKey(), {_dbId.id(), MemberType::Insert}}};

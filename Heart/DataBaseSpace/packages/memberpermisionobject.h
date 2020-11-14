@@ -66,10 +66,10 @@ protected:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    QVariant generateId() const override;
     DBVariantMap variantMap() const override;
     QString condition() const override;
     QString primaryKey() const override;
+    bool init() override;
 
 private:
     Permission _permision;

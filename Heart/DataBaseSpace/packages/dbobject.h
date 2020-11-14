@@ -372,17 +372,6 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
     /**
-     * @brief generateId This method using for generate a id of dbObject from objects memeber values.
-     *  Usually the implementation of this object is hash function of key members of current object.
-     * if create id is impasoble then the generateId method retrun not valid id.
-     * @return retuern Id of database object.
-     * The degault implementation return 0 if object do not has primary key else return invalid value.
-     */
-    virtual QVariant generateId() const;
-
-    bool init() override;
-
-    /**
      * @brief variantMap This method should be create a DBVariantMap implementation of this database object.
      * Example of retuen value:
      *

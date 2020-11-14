@@ -38,16 +38,21 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QVariant NodeObject::generateId() const {
-    if (authenticationData().isEmpty()) {
-        return {};
-    }
-
-    return QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256);
-}
-
 QString NodeObject::condition() const {
     return NetworkMember::condition();
+}
+
+bool NodeObject::init() {
+    if (!NetworkMember::init())
+        return false;
+
+    if (authenticationData().isEmpty()) {
+        return true;
+    }
+
+    setId(QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256));
+
+    return true;
 }
 
 DBObject *NodeObject::createDBObject() const {

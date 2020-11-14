@@ -27,8 +27,8 @@ public:
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    QVariant generateId() const override;
     QString condition() const override;
+    bool init() override;
 
 public:
     DBObject *createDBObject() const override;

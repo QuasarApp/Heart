@@ -87,13 +87,6 @@ QDataStream &MemberPermisionObject::toStream(QDataStream &stream) const {
     return  stream;
 }
 
-QVariant MemberPermisionObject::generateId() const {
-    if (!_key.isValid())
-        return {};
-
-    return _key.hash();
-}
-
 DBVariantMap MemberPermisionObject::variantMap() const {
     return {{"memberId",               {_key.id(),                  MemberType::InsertUpdate}},
             {"dbAddress",              {_key.address().toBytes(),   MemberType::InsertUpdate}},
@@ -118,6 +111,15 @@ QString MemberPermisionObject::condition() const {
 
 QString MemberPermisionObject::primaryKey() const {
     return "";
+}
+
+bool MemberPermisionObject::init() {
+    if (!DBObject::init())
+        return false;
+
+    setId(_key.hash());
+
+    return true;
 }
 
 PermisionData MemberPermisionObject::key() const {
