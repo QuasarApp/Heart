@@ -7,7 +7,7 @@
 
 
 #include "basenodetest.h"
-#include "basenodeunittests.h"
+#include "databasenodeunittests.h"
 #include "testutils.h"
 
 #include <databasenode.h>
@@ -78,7 +78,7 @@ bool BaseNodeTest::powerTest() {
 }
 
 bool BaseNodeTest::dbTest() {
-    auto node = new BaseNodeUnitTests;
+    auto node = new DataBaseNodeUnitTests;
 
     if (!node->test()) {
         return false;

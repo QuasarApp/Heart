@@ -200,7 +200,7 @@ bool SqlDBCache::insertObject(const DBObject *saveObject) {
         return false;
     }
 
-    if (!insertObject(saveObject)) {
+    if (!insertToCache(saveObject)) {
         return false;
     }
 
