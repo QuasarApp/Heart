@@ -46,8 +46,14 @@ enum class MemberType {
     //// The Field With This type can be updated but not inserted.
     Update = 0x2,
 
+    //// The Field with Whis type can not be dublicate on a table. If a Database object do not have a primary key then default implementation fof select query try get object by fields with unique type.
+    Unique = 0x4,
+
     //// The Field With This type can be inserted and updated.
-    InsertUpdate = Insert | Insert
+    InsertUpdate = Insert | Insert,
+
+    //// The primary key field with autoincrement.
+    PrimaryKeyAutoIncrement = Unique
 };
 
 constexpr inline uint qHash(MemberType type) {
@@ -62,7 +68,7 @@ struct DBVariant {
 
     DBVariant(const QVariant& value, MemberType type);
     QVariant value;
-    MemberType type;
+    MemberType type = MemberType::None;
 };
 
 /**
@@ -366,11 +372,6 @@ public:
 
     QString toString() const override;
 
-protected:
-
-    QDataStream &fromStream(QDataStream &stream) override;
-    QDataStream &toStream(QDataStream &stream) const override;
-
     /**
      * @brief variantMap This method should be create a DBVariantMap implementation of this database object.
      * Example of retuen value:
@@ -396,6 +397,11 @@ protected:
      * @note If you want disable this functionality then override this method and return an empty map. But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
      */
     virtual DBVariantMap variantMap() const;
+
+protected:
+
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 
     /**
      * @brief condition This method must to return a condition of the WHERE block of the sql query.
@@ -431,6 +437,13 @@ protected:
      * @param This is a new value of database address.
      */
     void setDbAddress(const DbAddress &address);
+
+    /**
+     * @brief isInsertPrimaryKey This method check primaryKeys type.
+     *  If the priary key have a type MemberType::Insert then return true.
+     * @return true if the primary key have the MemberType::Insert type.
+     */
+    bool isInsertPrimaryKey() const;
 
 private:
     QString getWhereBlock() const;

@@ -44,6 +44,7 @@ public:
     // AbstractData interface
     bool isValid() const override;
     bool copyFrom(const AbstractData *) override;
+    DBVariantMap variantMap() const override;
 
     /**
      * @brief trust This is trust level of current Network member.
@@ -70,7 +71,6 @@ protected:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    DBVariantMap variantMap() const override;
     QString primaryKey() const override;
 
 private:

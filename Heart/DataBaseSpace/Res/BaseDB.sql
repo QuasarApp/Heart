@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS NetworkMembers (
-    id INTEGER AUTO INCREMENT PRIMARY KEY NOT NULL ,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     authenticationData BLOB NOT NULL,
     trust INTEGER default 0,
     token BLOB default NULL

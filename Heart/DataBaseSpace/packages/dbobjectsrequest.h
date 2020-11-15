@@ -88,6 +88,9 @@ public:
         return _data;;
     };
 
+    DBVariantMap variantMap() const override {
+        return T{}.variantMap();
+    };
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override {
@@ -119,17 +122,17 @@ protected:
         return stream;
     };
 
-    DBVariantMap variantMap() const override {
-        return T{}.variantMap();
-    };
-
     QString condition() const override {
         return _conditions;
     }
+    DBObject *createDBObject() const override {
+        return create<DBObjectsRequest<T>>(tableName(), _conditions);
+    };
 
 private:
     QString _conditions;
     QList<const T*> _data;
+
 };
 
 }

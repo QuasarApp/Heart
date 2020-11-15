@@ -22,12 +22,10 @@ public:
     DeleteObject();
     DeleteObject(const Package& pkg);
 
-    // DBObject interface
-public:
     DBObject *createDBObject() const override;
+    DBVariantMap variantMap() const override;
 
 protected:
-    DBVariantMap variantMap() const override;
     QString primaryKey() const override;
 
     // DBObject interface

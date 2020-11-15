@@ -69,6 +69,7 @@ QDataStream &NetworkMember::toStream(QDataStream &stream) const {
 DBVariantMap NetworkMember::variantMap() const {
 
     auto map = DBObject::variantMap();
+    map[primaryKey()].type =        MemberType::Update;
     map["authenticationData"] =     {_authenticationData,   MemberType::InsertUpdate};
     map["trust"] =                  {_trust,   MemberType::InsertUpdate};
 

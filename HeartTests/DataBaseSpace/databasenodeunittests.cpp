@@ -21,14 +21,14 @@ QByteArray randomArray(int length) {
 }
 
 DataBaseNodeUnitTests::DataBaseNodeUnitTests():
-    TemplateDataBaseNodeUnitTests<QH::DataBaseNode>(DB_NODE_NAME)
+    TemplateDataBaseNodeUnitTests<QH::DataBaseNode, QH::PKG::UserMember>(DB_NODE_NAME)
 {
 
 }
 
-const QH::PKG::NetworkMember *DataBaseNodeUnitTests::randomMember() const {
-    QH::PKG::NetworkMember * res = new QH::PKG::UserMember();
-    res->setId(randomArray(10).toBase64());
+const QH::PKG::UserMember *DataBaseNodeUnitTests::randomMember() const
+{
+    QH::PKG::UserMember * res = new QH::PKG::UserMember();
     res->setAuthenticationData(randomArray(64));
     res->setTrust(0);
 
@@ -36,3 +36,4 @@ const QH::PKG::NetworkMember *DataBaseNodeUnitTests::randomMember() const {
 
     return res;
 }
+

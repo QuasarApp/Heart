@@ -36,6 +36,7 @@ public:
     uint dbKey() const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;
+    DBVariantMap variantMap() const override;
 
     /**
      * @brief permisions This method return permision of object.
@@ -66,7 +67,6 @@ protected:
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    DBVariantMap variantMap() const override;
     QString condition() const override;
     QString primaryKey() const override;
     bool init() override;

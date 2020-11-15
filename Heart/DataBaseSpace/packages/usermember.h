@@ -28,6 +28,7 @@ public:
     bool fromSqlRecord(const QSqlRecord &q) override;
     DBObject *createDBObject() const override;
     bool isValid() const override;
+    DBVariantMap variantMap() const override;
 
     // DBObject interface
     /**
@@ -45,7 +46,6 @@ public:
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    DBVariantMap variantMap() const override;
 
 private:
     AccessToken _token;

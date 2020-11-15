@@ -37,7 +37,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
     auto map = variantMap().keys();
 
-    QString queryString = "SELECT id," + map.join(",") + " FROM %0 " + getWhereBlock();
+    QString queryString = "SELECT " + map.join(",") + " FROM %0 " + getWhereBlock();
 
     queryString = queryString.arg(tableName());
 
@@ -50,8 +50,9 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
 bool DBObject::fromSqlRecord(const QSqlRecord &q) {
 
-    if (q.contains("id")) {
-        setId(q.value("id").toByteArray());
+    QString key = primaryKey();
+    if (key.size() && q.contains(key)) {
+        setId(q.value(key));
         return true;
     }
 
@@ -78,6 +79,10 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
 
     for (auto it = map.begin(); it != map.end(); ++it) {
 
+        if (!(it.value().type & MemberType::Insert)) {
+            continue;
+        }
+
         tableInsertHeader += it.key();
         tableInsertValues += ":" + it.key();
 
@@ -94,6 +99,10 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
     if (q.prepare(queryString)) {
 
         for (auto it = map.begin(); it != map.end(); ++it) {
+            if (!(it.value().type & MemberType::Insert)) {
+                continue;
+            }
+
             q.bindValue(":" + it.key(), it.value().value);
         }
 
@@ -147,7 +156,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     if (q.prepare(queryString)) {
 
         for (auto it = map.begin(); it != map.end(); ++it) {
-            if (it.value().type != MemberType::InsertUpdate) {
+            if (!(it.value().type & MemberType::Update)) {
                 continue;
             }
 
@@ -173,7 +182,40 @@ uint DBObject::dbKey() const {
 }
 
 QString DBObject::condition() const {
-    return {primaryKey() + "= '" + primaryValue().toString() + "'"};
+
+    // prepare key value to string condition
+    auto prepareCondition = [](const QString& key, const QString &val){
+        return key + "= '" + val + "'";
+    };
+
+    // if object have a primaryKey then return primary key
+    if (primaryValue().isValid()) {
+        return prepareCondition(primaryKey(), primaryValue().toString());
+    }
+
+    auto map = variantMap();
+
+    // check all objects fields
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        // if field if unique then to
+        if (bool(it.value().type & MemberType::Unique)) {
+            QVariant::Type type = it.value().value.type();
+
+            // if field is string then check size.
+            if (type == QVariant::String) {
+                QString val = it.value().value.toString();
+                if (val.size()) {
+                    return prepareCondition(it.key(), val);
+                }
+            } else if (type == QVariant::ByteArray) {
+                continue;
+            } else if (it.value().value.isValid()) {
+                return prepareCondition(it.key(), it.value().value.toString());
+            }
+        }
+    }
+
+    return "";
 }
 
 const QVariant &DBObject::primaryValue() const {
@@ -182,6 +224,10 @@ const QVariant &DBObject::primaryValue() const {
 
 void DBObject::setDbAddress(const DbAddress &address) {
     _dbId = address;
+}
+
+bool DBObject::isInsertPrimaryKey() const {
+    return bool(variantMap().value(primaryKey()).type & MemberType::Insert);
 }
 
 const DbAddress &DBObject::dbAddress() const {
@@ -256,7 +302,7 @@ bool DBObject::isValid() const {
     if (!AbstractData::isValid())
         return false;
 
-    if (isHaveAPrimaryKey()) {
+    if (isInsertPrimaryKey()) {
         return _dbId.isValid();
     }
 

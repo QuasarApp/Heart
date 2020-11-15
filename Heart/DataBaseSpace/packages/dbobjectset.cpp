@@ -25,6 +25,10 @@ PrepareResult DBObjectSet::prepareSelectQuery(QSqlQuery &q) const {
     return DBObject::prepareSelectQuery(q);
 }
 
+PrepareResult DBObjectSet::prepareUpdateQuery(QSqlQuery &) const {
+    return PrepareResult::Disabled;
+}
+
 bool DBObjectSet::isCached() const {
     return false;
 }

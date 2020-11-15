@@ -30,6 +30,7 @@ public:
     PrepareResult prepareInsertQuery(QSqlQuery &) const override final;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override final;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override final;
+    PrepareResult prepareUpdateQuery(QSqlQuery &q) const override final;
 
     bool isCached() const override final;
     bool isBundle() const override final;

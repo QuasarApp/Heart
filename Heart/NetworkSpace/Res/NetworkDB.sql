@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS NetworkMembers (
     id VARCHAR(64) PRIMARY KEY NOT NULL ,
     authenticationData BLOB NOT NULL,
-    trust INTEGER default 0,
-    token BLOB default NULL
+    trust INTEGER default 0
 );
 
 CREATE TABLE IF NOT EXISTS MemberPermisions (

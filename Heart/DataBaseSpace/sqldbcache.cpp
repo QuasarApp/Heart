@@ -128,10 +128,12 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
 
 bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
 
-    DBObject* obj = getFromCache(templateObject.dbKey());
-    if(obj) {
-        result.push_back(obj);
-        return true;
+    if (templateObject.isCached()) {
+        DBObject* obj = getFromCache(templateObject.dbKey());
+        if(obj) {
+            result.push_back(obj);
+            return true;
+        }
     }
 
     if (_writer && _writer->isValid()) {
@@ -164,17 +166,12 @@ bool SqlDBCache::updateObject(const DBObject *saveObject) {
     }
 
     if (getMode() == SqlDBCasheWriteMode::Force) {
-        if (_writer && _writer->isValid()) {
-            if (!_writer->updateObject(saveObject)) {
-                return false;
-            }
-
-            return true;
-        }
-    } else {
-        _needToSaveCache.insert(MemberType::Update, saveObject->dbKey());
-        globalUpdateDataBase(_mode);
+        return _writer && _writer->isValid() &&
+               _writer->updateObject(saveObject);
     }
+
+    _needToSaveCache.insert(MemberType::Update, saveObject->dbKey());
+    globalUpdateDataBase(_mode);
 
     return true;
 
@@ -200,24 +197,26 @@ bool SqlDBCache::insertObject(const DBObject *saveObject) {
         return false;
     }
 
-    if (!insertToCache(saveObject)) {
-        return false;
-    }
+    if (saveObject->getId().isValid()) {
 
-    if (getMode() == SqlDBCasheWriteMode::Force) {
-        if (_writer && _writer->isValid()) {
-            if (!_writer->insertObject(saveObject)) {
-                return false;
-            }
-
-            return true;
+        if (insertToCache(saveObject)) {
+            return false;
         }
-    } else {
+
+        if (getMode() == SqlDBCasheWriteMode::Force) {
+
+            return _writer && _writer->isValid() &&
+                    _writer->insertObject(saveObject);
+        }
+
         _needToSaveCache.insert(MemberType::Insert, saveObject->dbKey());
         globalUpdateDataBase(_mode);
+
+        return true;
     }
 
-    return true;
+    return _writer && _writer->isValid() &&
+            _writer->insertObject(saveObject);
 }
 
 bool SqlDBCache::init(const QString &initDbParams) {

@@ -11,11 +11,12 @@
 
 #include <QFileInfo>
 #include <databasenode.h>
+#include <dbobjectsrequest.h>
 #include <networkmember.h>
 #include "test.h"
 #include "sqldbcache.h"
 
-template <class BASE>
+template <class BASE, class WorkType>
 /**
  * @brief The TemplateDataBaseNodeUnitTests class This is base class for testing databases.
  * You need to override this class for using. The BASE Templte is a any child class of the DataBaseNode class.
@@ -60,7 +61,7 @@ protected:
      * @brief randomMember This method generate randm network member.
      * @return pointer to random network member
      */
-    virtual const QH::PKG::NetworkMember* randomMember() const = 0;
+    virtual const WorkType* randomMember() const = 0;
 
     /**
      * @brief init - init database.
@@ -73,7 +74,6 @@ protected:
 
         QString database = BASE::dbLocation();
         BASE::stop();
-
 
         if (QFileInfo(database).exists() && !QFile::remove(database)) {
             return false;
@@ -91,12 +91,26 @@ protected:
             return false;
         }
 
-
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
         if (objectFromDataBase) {
             return false;
         }
+
+        for (int i = 0; i < 10; ++i) {
+            if (!BASE::db()->insertObject(randomMember())) {
+                return false;
+            }
+        }
+
+        QH::PKG::DBObjectsRequest<WorkType> setRequest(
+                    testObjec->tableName(), "");
+
+        auto list = BASE::db()->getObject(setRequest);
+
+        if (list->data().size() != 10)
+            return false;
+
 
         if (!BASE::db()->insertObject(testObjec)) {
             return false;
@@ -230,7 +244,7 @@ protected:
     }
 
 private:
-    const QH::PKG::NetworkMember *testObjec = nullptr;
+    const WorkType *testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
 
 };
