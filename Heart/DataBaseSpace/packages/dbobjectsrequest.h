@@ -25,6 +25,8 @@ namespace PKG {
  *  DBObjectsRequest<User> query("users", "id='Andrei'");
  *  SingleServer::getObject(query);
  * \endcode
+ *
+ * @note Any objects in the query well not be saved in to cache. For cahing your objects use the CachedDbObjectsRequest class.
  */
 template <class T>
 class DBObjectsRequest final: public DBObjectSet

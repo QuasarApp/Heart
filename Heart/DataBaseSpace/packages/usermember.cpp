@@ -27,6 +27,7 @@ bool UserMember::copyFrom(const AbstractData *other) {
         return false;
 
     this->_token = otherObject->_token;
+    this->_name = otherObject->_name;
 
     return true;
 }
@@ -37,6 +38,7 @@ bool UserMember::fromSqlRecord(const QSqlRecord &q) {
     }
 
     setToken(AccessToken(q.value("token").toByteArray()));
+    setName(q.value("userName").toString());
 
     return UserMember::isValid();
 }
@@ -46,12 +48,13 @@ DBObject *UserMember::createDBObject() const {
 }
 
 bool UserMember::isValid() const {
-    return NetworkMember::isValid() && trust() <= 100;
+    return NetworkMember::isValid() && trust() <= 100 && _name.size();
 }
 
 QDataStream &UserMember::fromStream(QDataStream &stream) {
     NetworkMember::fromStream(stream);
     stream >> _token;
+    stream >> _name;
 
     return stream;
 }
@@ -59,12 +62,23 @@ QDataStream &UserMember::fromStream(QDataStream &stream) {
 QDataStream &UserMember::toStream(QDataStream &stream) const {
     NetworkMember::toStream(stream);
     stream << _token;
+    stream << _name;
+
     return stream;
+}
+
+QString UserMember::name() const {
+    return _name;
+}
+
+void UserMember::setName(const QString &name) {
+    _name = name;
 }
 
 DBVariantMap UserMember::variantMap() const {
     auto map = NetworkMember::variantMap();
-    map.insert("token", {_token.toBytes(), MemberType::InsertUpdate});
+    map.insert("token",     {_token.toBytes(),  MemberType::InsertUpdate});
+    map.insert("userName",  {_name,             MemberType::InsertUpdate | MemberType::Unique});
 
     return map;
 }

@@ -134,8 +134,8 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
 
     queryString = queryString.arg(tableName());
     QString tableUpdateValues = "";
-    QString tableUpdateRules = QString("%0 = :%0").
-            arg(primaryKey());
+    QString tableUpdateRules = QString("%0 ='%1'").
+            arg(primaryKey(), primaryValue().toString());
 
     for (auto it = map.begin(); it != map.end(); ++it) {
         if (!(it.value().type & MemberType::Update)) {

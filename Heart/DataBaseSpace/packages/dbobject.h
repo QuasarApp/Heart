@@ -50,7 +50,7 @@ enum class MemberType {
     Unique = 0x4,
 
     //// The Field With This type can be inserted and updated.
-    InsertUpdate = Insert | Insert,
+    InsertUpdate = Insert | Update,
 
     //// The primary key field with autoincrement.
     PrimaryKeyAutoIncrement = Unique

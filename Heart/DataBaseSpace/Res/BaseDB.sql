@@ -1,9 +1,12 @@
 CREATE TABLE IF NOT EXISTS NetworkMembers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userName VARCHAR(64) UNIQUE NOT NULL,
     authenticationData BLOB NOT NULL,
     trust INTEGER default 0,
     token BLOB default NULL
 );
+CREATE UNIQUE INDEX IF NOT EXISTS NetworkMembersIndex ON NetworkMembers(userName);
+
 
 CREATE TABLE IF NOT EXISTS MemberPermisions (
     memberId INTEGER NOT NULL,

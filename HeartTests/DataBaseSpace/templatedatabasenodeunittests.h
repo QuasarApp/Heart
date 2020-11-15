@@ -10,6 +10,7 @@
 #define TEMPLATEDBTESTS_H
 
 #include <QFileInfo>
+#include <cacheddbobjectsrequest.h>
 #include <databasenode.h>
 #include <dbobjectsrequest.h>
 #include <networkmember.h>
@@ -87,47 +88,67 @@ protected:
      * @return true if all test finished successful
      */
     bool testReadWrite() {
+        // test init database
         if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
             return false;
         }
 
+        // try get not exists object
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
+        // objectFromDataBase must be equal 0x0
         if (objectFromDataBase) {
             return false;
         }
 
+        // generate random objects for database.
         for (int i = 0; i < 10; ++i) {
             if (!BASE::db()->insertObject(randomMember())) {
                 return false;
             }
         }
 
+        // create request for get all objects from database.
         QH::PKG::DBObjectsRequest<WorkType> setRequest(
                     testObjec->tableName(), "");
 
         auto list = BASE::db()->getObject(setRequest);
 
-        if (list->data().size() != 10)
+        if (list && list->data().size() != 10)
             return false;
 
+        // create request for get all objects from database and cached it.
+        QH::PKG::CachedDbObjectsRequest<WorkType> request("");
 
+        QList<const QH::PKG::DBObject *> result;
+        if (!BASE::db()->getAllObjects(request, result)) {
+            return false;
+        }
+
+        if (list->data().size() != result.size())
+            return false;
+
+        // insert main object inot database.
         if (!BASE::db()->insertObject(testObjec)) {
             return false;
         }
 
+        // get main object from cache database.
         auto object = BASE::db()->getObject(*testObjec);
 
         if (!object || !object->isValid()) {
             return false;
         }
 
+        // save state of cache of data base.
         BASE::stop();
 
+        // run new session of server dataqbase.
         if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
             return false;
         }
 
+        // try get object from not cache.
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
         if (objectFromDataBase && objectFromDataBase->trust() == 0) {
@@ -163,7 +184,7 @@ protected:
             return false;
         }
 
-        objectFromDataBase = BASE::db()->getObject(*testObjec);
+        objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
         if (objectFromDataBase && objectFromDataBase->trust() != 20) {
             return false;
@@ -175,7 +196,7 @@ protected:
             return false;
         }
 
-        objectFromDataBase = BASE::db()->getObject(*testObjec);
+        objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
         if (!objectFromDataBase || objectFromDataBase->trust() != 20) {
             return false;
