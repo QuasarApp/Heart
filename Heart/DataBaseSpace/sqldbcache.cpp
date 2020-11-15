@@ -161,19 +161,21 @@ bool SqlDBCache::updateObject(const DBObject *saveObject) {
         return false;
     }
 
-    if (!updateCache(saveObject)) {
-        return false;
+    if (saveObject->isCached() && updateCache(saveObject)) {
+
+        if (getMode() == SqlDBCasheWriteMode::Force) {
+            return _writer && _writer->isValid() &&
+                   _writer->updateObject(saveObject);
+        }
+
+        _needToSaveCache.insert(MemberType::Update, saveObject->dbKey());
+        globalUpdateDataBase(_mode);
+
+        return true;
     }
 
-    if (getMode() == SqlDBCasheWriteMode::Force) {
-        return _writer && _writer->isValid() &&
-               _writer->updateObject(saveObject);
-    }
-
-    _needToSaveCache.insert(MemberType::Update, saveObject->dbKey());
-    globalUpdateDataBase(_mode);
-
-    return true;
+    return  _writer && _writer->isValid() &&
+            _writer->updateObject(saveObject);
 
 }
 

@@ -62,7 +62,7 @@ protected:
      * @brief randomMember This method generate randm network member.
      * @return pointer to random network member
      */
-    virtual const WorkType* randomMember() const = 0;
+    virtual WorkType* randomMember() const = 0;
 
     /**
      * @brief init - init database.
@@ -140,6 +140,8 @@ protected:
             return false;
         }
 
+        testObjec->copyFrom(object);
+
         // save state of cache of data base.
         BASE::stop();
 
@@ -216,6 +218,10 @@ protected:
             return false;
         }
 
+        if(BASE::changeTrust(QVariant{}, -10)) {
+            return false;
+        };
+
         if(!BASE::changeTrust(testObjec->getId(), -10)) {
             return false;
         };
@@ -265,7 +271,7 @@ protected:
     }
 
 private:
-    const WorkType *testObjec = nullptr;
+    WorkType *testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
 
 };

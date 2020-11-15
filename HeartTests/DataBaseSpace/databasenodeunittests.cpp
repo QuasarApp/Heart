@@ -25,7 +25,7 @@ DataBaseNodeUnitTests::DataBaseNodeUnitTests():
 
 }
 
-const QH::PKG::UserMember *DataBaseNodeUnitTests::randomMember() const
+QH::PKG::UserMember *DataBaseNodeUnitTests::randomMember() const
 {
     QH::PKG::UserMember * res = new QH::PKG::UserMember();
     res->setAuthenticationData(randomArray(64));

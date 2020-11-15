@@ -36,7 +36,7 @@ bool AsyncSqlDbWriter::updateObject(const DBObject *saveObject) {
     }
 
     return QMetaObject::invokeMethod(this,
-                                     "handleSaveObject",
+                                     "handleUpdateObject",
                                      Qt::QueuedConnection,
                                      Q_ARG(const QH::PKG::DBObject *, saveObject),
                                      Q_ARG(bool *, nullptr),

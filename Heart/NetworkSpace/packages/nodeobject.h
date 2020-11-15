@@ -27,7 +27,6 @@ public:
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
-    QString condition() const override;
     bool init() override;
 
 public:

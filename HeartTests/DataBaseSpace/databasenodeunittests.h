@@ -22,7 +22,7 @@ public:
 
     // TemplateDataBaseNodeUnitTests interface
 protected:
-    const QH::PKG::UserMember *randomMember() const override;
+    QH::PKG::UserMember *randomMember() const override;
 };
 
 #endif // DBTESTS_H

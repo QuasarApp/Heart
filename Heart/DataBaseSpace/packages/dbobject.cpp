@@ -130,12 +130,10 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "UPDATE %0 SET %1 WHERE %2";
+    QString queryString = "UPDATE %0 SET %1 WHERE " + DBObject::condition();
 
     queryString = queryString.arg(tableName());
     QString tableUpdateValues = "";
-    QString tableUpdateRules = QString("%0 ='%1'").
-            arg(primaryKey(), primaryValue().toString());
 
     for (auto it = map.begin(); it != map.end(); ++it) {
         if (!(it.value().type & MemberType::Update)) {
@@ -151,7 +149,6 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     }
 
     queryString = queryString.arg(tableUpdateValues);
-    queryString = queryString.arg(tableUpdateRules);
 
     if (q.prepare(queryString)) {
 
@@ -215,7 +212,12 @@ QString DBObject::condition() const {
         }
     }
 
-    return "";
+    QuasarAppUtils::Params::log("Fail to generate condition for object: " + toString() +
+                                ". Object do not have valid unique fields or valid database address.",
+                                QuasarAppUtils::Error);
+
+
+    return "WRONG OBJECT";
 }
 
 const QVariant &DBObject::primaryValue() const {

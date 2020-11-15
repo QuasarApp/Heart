@@ -38,7 +38,7 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
 }
 
 QString DbAddress::toString() const {
-    return QString("DbAddress: table:%0, primaryKey:%1, value:%2").
+    return QString("DbAddress: table:%0, value:%1").
             arg(_table).arg(_value.toString());
 }
 

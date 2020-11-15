@@ -38,10 +38,6 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QString NodeObject::condition() const {
-    return NetworkMember::condition();
-}
-
 bool NodeObject::init() {
     if (!NetworkMember::init())
         return false;
