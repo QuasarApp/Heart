@@ -65,8 +65,8 @@ public:
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
     bool updateObject(const QH::PKG::DBObject *ptr) override;
     bool deleteObject(const QH::PKG::DBObject *ptr) override;
-    void setSQLSources(const QStringList &list) override;
     bool insertObject(const PKG::DBObject *ptr) override;
+    void setSQLSources(const QStringList &list) override;
 
     /**
      * @brief databaseLocation This method return location of database.

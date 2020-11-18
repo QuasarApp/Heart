@@ -263,14 +263,18 @@ bool SqlDBWriter::updateObject(const DBObject* ptr) {
         return updateQuery(ptr, nullptr, nullptr);
     }
 
+    auto clone = ptr->cloneRaw();
+
     bool workOfEnd = false, workResult = false;
 
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "updateQuery",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, ptr),
+                                                   Q_ARG(const QH::PKG::DBObject *, clone),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
+
+    delete clone;
 
     if (!invockeResult)
         return false;
@@ -289,11 +293,13 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     }
 
     bool workOfEnd = false, workResult = false;
+    auto clone = ptr->cloneRaw();
 
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "deleteQuery",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, ptr));
+                                                   Q_ARG(const QH::PKG::DBObject *, clone));
+    delete clone;
 
     if (!invockeResult)
         return false;
@@ -313,11 +319,13 @@ bool SqlDBWriter::insertObject(const DBObject *saveObject) {
     }
 
     bool workOfEnd = false, workResult = false;
+    auto clone = saveObject->cloneRaw();
 
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "insertQuery",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, saveObject));
+                                                   Q_ARG(const QH::PKG::DBObject *, clone));
+    delete clone;
 
     if (!invockeResult)
         return false;
