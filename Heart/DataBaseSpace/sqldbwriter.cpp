@@ -20,6 +20,7 @@
 #include <QSqlRecord>
 #include <QStandardPaths>
 #include <QCoreApplication>
+#include <QThread>
 
 namespace QH {
 using namespace PKG;
@@ -70,6 +71,64 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
         return result;
     }
     return false;
+}
+
+bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
+    _config = params;
+
+    db = QSqlDatabase::addDatabase(_config["DBDriver"].toString(),
+            QFileInfo(_config["DBFilePath"].toString()).fileName());
+
+    if (_config.contains("DBFilePath")) {
+
+        auto path = QFileInfo(_config["DBFilePath"].toString());
+        if (!QDir("").mkpath(path.absolutePath())) {
+            return false;
+        }
+
+        db.setDatabaseName(path.absoluteFilePath());
+    }
+
+    if (_config.contains("DBLogin")) {
+        db.setPassword(_config["DBLogin"].toString());
+    }
+
+    if (_config.contains("DBPass")) {
+        db.setPassword(_config["DBPass"].toString());
+    }
+
+    if (_config.contains("DBHost")) {
+        db.setHostName(_config["DBHost"].toString());
+    }
+
+    if (_config.contains("DBPort")) {
+        db.setPort(_config["DBPort"].toInt());
+    }
+
+    if (!db.open()) {
+        QuasarAppUtils::Params::log(db.lastError().text(),
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    for (const auto& sqlFile : _SQLSources) {
+        QSqlQuery query(db);
+        if (!exec(&query, sqlFile)) {
+            return false;
+        }
+    }
+
+    if (_config.contains("DBInitFile")) {
+        auto path = QFileInfo(_config["DBInitFile"].toString()).absoluteFilePath();
+
+        QSqlQuery query(db);
+        if (!exec(&query, path)) {
+            return false;
+        }
+    }
+
+    initSuccessful = db.isValid();
+    return initSuccessful;
 }
 
 bool SqlDBWriter::enableFK() {
@@ -125,7 +184,8 @@ QVariantMap SqlDBWriter::defaultInitPararm() const {
     return params;
 }
 
-SqlDBWriter::SqlDBWriter() {
+SqlDBWriter::SqlDBWriter(QObject* ptr):
+    QObject(ptr) {
 }
 
 bool SqlDBWriter::initDb(const QString &initDbParams) {
@@ -141,63 +201,29 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
 }
 
 bool SqlDBWriter::initDb(const QVariantMap &params) {
-
-
-    _config = params;
-
-    db = QSqlDatabase::addDatabase(params["DBDriver"].toString(),
-            QFileInfo(params["DBFilePath"].toString()).fileName());
-
-    if (params.contains("DBFilePath")) {
-
-        auto path = QFileInfo(params["DBFilePath"].toString());
-        if (!QDir("").mkpath(path.absolutePath())) {
-            return false;
-        }
-
-        db.setDatabaseName(path.absoluteFilePath());
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::initDb(params);
     }
 
-    if (params.contains("DBLogin")) {
-        db.setPassword(params["DBLogin"].toString());
-    }
+    bool workOfEnd = false, workResult = false;
 
-    if (params.contains("DBPass")) {
-        db.setPassword(params["DBPass"].toString());
-    }
 
-    if (params.contains("DBHost")) {
-        db.setHostName(params["DBHost"].toString());
-    }
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "handleInitDb",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(const QVariantMap &, params),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
 
-    if (params.contains("DBPort")) {
-        db.setPort(params["DBPort"].toInt());
-    }
+    if (!invockeResult)
+        return false;
 
-    if (!db.open()) {
-        QuasarAppUtils::Params::log(db.lastError().text(),
-                                    QuasarAppUtils::Error);
+
+    if (!waitFor(&workOfEnd)) {
         return false;
     }
 
-    for (const auto& sqlFile : _SQLSources) {
-        QSqlQuery query(db);
-        if (!exec(&query, sqlFile)) {
-            return false;
-        }
-    }
-
-    if (params.contains("DBInitFile")) {
-        auto path = QFileInfo(params["DBInitFile"].toString()).absoluteFilePath();
-
-        QSqlQuery query(db);
-        if (!exec(&query, path)) {
-            return false;
-        }
-    }
-
-    initSuccessful = db.isValid();
-    return initSuccessful;
+    return workResult;
 }
 
 bool SqlDBWriter::isValid() const {
@@ -205,19 +231,211 @@ bool SqlDBWriter::isValid() const {
 }
 
 bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
-    return selectQuery(templateObject, result);
+
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::selectQuery(templateObject, result, nullptr, nullptr);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "selectQuery",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(const QH::PKG::DBObject *, &templateObject),
+                                                   Q_ARG(QList<const QH::PKG::DBObject *> *, &result),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
+
+    if (!invockeResult)
+        return false;
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
 }
 
 bool SqlDBWriter::updateObject(const DBObject* ptr) {
-    return updateQuery(ptr);
+    if (QThread::currentThread() == thread()) {
+        return updateQuery(ptr, nullptr, nullptr);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "updateQuery",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(const QH::PKG::DBObject *, ptr),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
+
+    if (!invockeResult)
+        return false;
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
 }
 
 bool SqlDBWriter::deleteObject(const DBObject* ptr) {
-    return deleteQuery(ptr);
+    if (QThread::currentThread() == thread()) {
+        return deleteQuery(ptr, nullptr, nullptr);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "deleteQuery",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(const QH::PKG::DBObject *, ptr));
+
+    if (!invockeResult)
+        return false;
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
 }
 
 bool SqlDBWriter::insertObject(const DBObject *saveObject) {
-    return insertQuery(saveObject);
+
+    if (QThread::currentThread() == thread()) {
+        return insertQuery(saveObject, nullptr, nullptr);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "insertQuery",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(const QH::PKG::DBObject *, saveObject));
+
+    if (!invockeResult)
+        return false;
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
+
+}
+
+bool SqlDBWriter::waitFor(bool *condition, int timeout) const {
+    auto curmsec = QDateTime::currentMSecsSinceEpoch() + timeout;
+    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !*condition) {
+        QCoreApplication::processEvents();
+    }
+    QCoreApplication::processEvents();
+    return *condition;
+}
+
+void SqlDBWriter::handleInitDb(const QVariantMap &params, bool *resultOfWork, bool *endOfWork) {
+
+    bool work = initDbPrivate(params);
+
+    if (resultOfWork) {
+        *resultOfWork = work;
+    }
+
+    if (endOfWork) {
+        *endOfWork = true;
+    }
+}
+
+
+bool SqlDBWriter::updateObjectWithWait(const DBObject *saveObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::updateObject(saveObject);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invoke = QMetaObject::invokeMethod(this,
+                                            "handleUpdateObject",
+                                            Qt::QueuedConnection,
+                                            Q_ARG(const QH::PKG::DBObject *, saveObject),
+                                            Q_ARG(bool *, &workResult),
+                                            Q_ARG(bool *, &workOfEnd));
+
+    if (!invoke) {
+        QuasarAppUtils::Params::log("handleUpdateObject not invokecd", QuasarAppUtils::Debug);
+        return false;
+    }
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
+}
+
+bool SqlDBWriter::insertObjectWithWait(const DBObject *saveObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::insertObject(saveObject);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invoke = QMetaObject::invokeMethod(this,
+                                            "handleInsertObject",
+                                            Qt::QueuedConnection,
+                                            Q_ARG(const QH::PKG::DBObject *, saveObject),
+                                            Q_ARG(bool *, &workResult),
+                                            Q_ARG(bool *, &workOfEnd));
+
+    if (!invoke) {
+        QuasarAppUtils::Params::log("handleInsertObject not invokecd", QuasarAppUtils::Debug);
+        return false;
+    }
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
+}
+
+bool SqlDBWriter::deleteObjectWithWait(const DBObject *deleteObject) {
+    if (QThread::currentThread() == thread()) {
+        return SqlDBWriter::deleteObject(deleteObject);
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+
+    bool invoke = QMetaObject::invokeMethod(this,
+                                            "handleDeleteObject",
+                                            Qt::QueuedConnection,
+                                            Q_ARG(const QH::PKG::DBObject *, deleteObject),
+                                            Q_ARG(bool *, &workResult),
+                                            Q_ARG(bool *, &workOfEnd));
+
+    if (!invoke) {
+        QuasarAppUtils::Params::log("handleDeleteObject not invokecd", QuasarAppUtils::Debug);
+        return false;
+    }
+
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
 }
 
 void SqlDBWriter::setSQLSources(const QStringList &list) {
@@ -232,7 +450,8 @@ SqlDBWriter::~SqlDBWriter() {
     db.close();
 }
 
-bool SqlDBWriter::insertQuery(const DBObject* ptr) const {
+bool SqlDBWriter::insertQuery(const DBObject* ptr,
+                              bool *workResult, bool *workOfEnd) const {
     if (!ptr)
         return false;
 
@@ -244,10 +463,20 @@ bool SqlDBWriter::insertQuery(const DBObject* ptr) const {
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb);
+    bool work = workWithQuery(q, prepare, cb);
+    if (workResult)
+        *workResult = work;
+
+    if (workOfEnd) {
+        *workOfEnd = true;
+    }
+
+    return work;
 }
 
-bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<const DBObject *> &result) {
+bool SqlDBWriter::selectQuery(const DBObject& requestObject,
+                              QList<const DBObject *> &result,
+                              bool *workResult, bool *workOfEnd) {
 
     QSqlQuery q(db);
     auto prepare = [&requestObject](QSqlQuery&q) {
@@ -291,10 +520,19 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject, QList<const DBObjec
         return result.size();
     };
 
-    return workWithQuery(q, prepare, cb);
+    bool work = workWithQuery(q, prepare, cb);
+    if (workResult)
+        *workResult = work;
+
+    if (workOfEnd) {
+        *workOfEnd = true;
+    }
+
+    return work;
 }
 
-bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
+bool SqlDBWriter::deleteQuery(const DBObject *deleteObject,
+                              bool *workResult, bool *workOfEnd) const {
     if (!deleteObject)
         return false;
 
@@ -305,13 +543,22 @@ bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
     };
 
     auto cb = []() -> bool {
-        return true;
-    };
+            return true;
+};
 
-    return workWithQuery(q, prepare, cb);
+    bool work = workWithQuery(q, prepare, cb);
+    if (workResult)
+        *workResult = work;
+
+    if (workOfEnd) {
+        *workOfEnd = true;
+    }
+
+    return work;
 }
 
-bool SqlDBWriter::updateQuery(const DBObject *ptr) const {
+bool SqlDBWriter::updateQuery(const DBObject *ptr,
+                              bool *workResult, bool *workOfEnd) const {
     if (!ptr)
         return false;
 
@@ -323,12 +570,20 @@ bool SqlDBWriter::updateQuery(const DBObject *ptr) const {
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb);
+    bool work = workWithQuery(q, prepare, cb);
+    if (workResult)
+        *workResult = work;
+
+    if (workOfEnd) {
+        *workOfEnd = true;
+    }
+
+    return work;
 }
 
 bool SqlDBWriter::workWithQuery(QSqlQuery &q,
-                               const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
-                               const std::function<bool ()> &cb) const {
+                                const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
+                                const std::function<bool ()> &cb) const {
 
     auto erroPrint = [](const QSqlQuery &q){
         QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),

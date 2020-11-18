@@ -29,8 +29,6 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
     for (auto it = _needToSaveCache.begin(); it != _needToSaveCache.end(); ++it) {
 
-        auto async = dynamic_cast<AsyncSqlDbWriter*>(_writer);
-
         if (_writer && _writer->isValid()) {
 
             auto obj = getFromCache(it.value());
@@ -49,15 +47,9 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
             bool saveResult = false;
 
             if (it.key() == MemberType::Insert) {
-                if (async)
-                    saveResult = async->insertObjectWithWait(obj);
-                else
-                    saveResult = _writer->insertObject(obj);
+                    saveResult = _writer->insertObjectWithWait(obj);
             } else {
-                if (async)
-                    saveResult = async->updateObjectWithWait(obj);
-                else
-                    saveResult = _writer->updateObject(obj);
+                    saveResult = _writer->updateObjectWithWait(obj);
             }
 
             if (!saveResult ) {
