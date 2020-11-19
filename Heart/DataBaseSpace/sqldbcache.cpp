@@ -213,6 +213,27 @@ bool SqlDBCache::insertObject(const DBObject *saveObject) {
             _writer->insertObject(saveObject);
 }
 
+bool SqlDBCache::changeObjects(const DBObject *templateObject,
+                               const std::function<void (DBObject *)> &changeAction,
+                               bool async) {
+    if (!templateObject)
+        return false;
+
+    QList<const DBObject *> list;
+    if (!getAllObjects(*templateObject, list)) {
+        return false;
+    }
+
+    if (!list.size())
+        return false;
+
+    for (auto obj :list) {
+        changeAction(getFromCache(obj->dbKey()));
+    }
+
+    return true;
+}
+
 bool SqlDBCache::init(const QString &initDbParams) {
 
     if (!_writer) {

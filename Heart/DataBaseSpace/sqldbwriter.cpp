@@ -5,6 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
+#include "promise.h"
 #include "sqldbwriter.h"
 
 #include <QRegularExpression>
@@ -21,6 +22,8 @@
 #include <QStandardPaths>
 #include <QCoreApplication>
 #include <QThread>
+#include <functional>
+#include <execution>
 
 namespace QH {
 using namespace PKG;
@@ -230,7 +233,8 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
+bool SqlDBWriter::getAllObjects(const DBObject &templateObject,
+                                QList<std::promise<const DBObject *> > &result) {
 
     if (QThread::currentThread() == thread()) {
         return SqlDBWriter::selectQuery(templateObject, result, nullptr, nullptr);
@@ -483,15 +487,15 @@ bool SqlDBWriter::insertQuery(const DBObject* ptr,
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
-                              QList<const DBObject *> &result,
-                              bool *workResult, bool *workOfEnd) {
+                              Promise<QList<const DBObject *>> &result) {
 
     QSqlQuery q(db);
     auto prepare = [&requestObject](QSqlQuery&q) {
         return requestObject.prepareSelectQuery(q);
     };
 
-    auto cb = [&q, &requestObject, &result]() -> bool {
+    QList<const DBObject *> res;
+    auto cb = [&q, &requestObject, &res]() -> bool {
 
         if (requestObject.isBundle()) {
             auto newObject = requestObject.createDBObject();
@@ -503,11 +507,12 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
                 if (!newObject->fromSqlRecord(q.record())) {
                     QuasarAppUtils::Params::log("Init sql object error.",
                                                 QuasarAppUtils::Error);
+                    delete newObject;
                     return false;
                 }
             }
 
-            result.push_back(newObject);
+            res.push_back(newObject);
 
         } else {
             while (q.next()) {
@@ -519,24 +524,24 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
                 if (!newObject->fromSqlRecord(q.record())) {
                     QuasarAppUtils::Params::log("Init sql object error.",
                                                 QuasarAppUtils::Error);
-                    return false;
+                    delete newObject;
+                    continue;
                 }
-                result.push_back(newObject);
+                res.push_back(newObject);
             }
         }
 
-        return result.size();
+        return res.size();
     };
 
-    bool work = workWithQuery(q, prepare, cb);
-    if (workResult)
-        *workResult = work;
-
-    if (workOfEnd) {
-        *workOfEnd = true;
+    if(!workWithQuery(q, prepare, cb)) {
+        result.reject();
+        return false;
     }
 
-    return work;
+    result.setValue(res);
+
+    return true;
 }
 
 bool SqlDBWriter::deleteQuery(const DBObject *deleteObject,

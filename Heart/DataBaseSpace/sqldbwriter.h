@@ -15,6 +15,7 @@
 #include "heart_global.h"
 #include "config.h"
 #include "iobjectprovider.h"
+#include "promise.h"
 #include <QVariant>
 #include <QCoreApplication>
 #include <dbobject.h>
@@ -62,7 +63,8 @@ public:
      */
     virtual bool isValid() const;
 
-    bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
+    bool getAllObjects(const PKG::DBObject &templateObject,
+                       QList<std::promise<const PKG::DBObject *>> &result) override;
     bool updateObject(const QH::PKG::DBObject *ptr) override;
     bool deleteObject(const QH::PKG::DBObject *ptr) override;
     bool insertObject(const PKG::DBObject *ptr) override;
@@ -119,14 +121,18 @@ protected slots:
      * @brief selectQuery generate select query to database from parameters.
      * @param requestObject This is template object for generate select query.
      * @param result This isreturn values
-     * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This wariable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if all goodelse false
      */
     virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
-                             QList<const QH::PKG::DBObject *> &result,
-                             bool * resultOfWork,
-                             bool * endOfWork);
+                             Promise<QList<const PKG::DBObject *> > &result);
+
+    /**
+     * @brief asyncSelectQuery This is asynhrone method for get objects from database.
+     * @param requestObject This is template object for generate select query.
+     * @param result This is lambda functions for processing results objects.
+     */
+    void asyncSelectQuery(const QH::PKG::DBObject &requestObject,
+                          const std::function<void (const QList<const PKG::DBObject *> &)> &result);
 
     /**
      * @brief deleteQuery This method prepare the delete object query.
@@ -247,6 +253,7 @@ private:
     bool initSuccessful = false;
     QVariantMap _config;
     QStringList _SQLSources;
+
 
 };
 

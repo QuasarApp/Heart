@@ -12,6 +12,7 @@
 #include <QSharedPointer>
 #include <dbobject.h>
 #include <quasarapp.h>
+#include <future>
 
 namespace QH {
 namespace PKG {
@@ -65,7 +66,7 @@ public:
      * @param result This is return value, list of selected objects.
      * @return true if objects have in db else false.
      */
-    virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) = 0;
+    virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<std::promise<const PKG::DBObject *>> &result) = 0;
 
     /**
      * @brief updateObject This method executable update method of objects and save the change of current object into database.

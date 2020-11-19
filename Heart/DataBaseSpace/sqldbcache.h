@@ -75,6 +75,20 @@ public:
     bool insertObject(const PKG::DBObject *saveObject) override;
 
     /**
+     * @brief changeObjects This method change objecst of the database.
+     * @param templateObject This is template for get objects from database.
+     * @param changeAction This is lymbda function for work with non const pointer of the object for change.
+     * @param async This is bool option for change type of the invoking the changeAction function.
+     * If you set the true then the changeObject function do not wait for finished the changeAction function.
+     * @note If templateObject selecte more than 1 obkects then the lyambda function call for each all selected objects.
+     * @return true if function finished succesful.
+     */
+    bool changeObjects(const PKG::DBObject* templateObject,
+                       const std::function<void (PKG::DBObject *)> &changeAction,
+                       bool async);
+
+
+    /**
      * @brief getUpdateInterval This method return update interval for save changes into database. This is work for default and On_New_Thread mdes. For more information see the QH::SqlDBCasheWriteMode enum.
      * @return time in msecs
      */
