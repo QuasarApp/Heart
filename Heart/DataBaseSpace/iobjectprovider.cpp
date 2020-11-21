@@ -13,24 +13,45 @@ iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;
 
-const DBObject *iObjectProvider::getObjectRaw(const DBObject &templateVal) {
+Promise<const DBObject *> iObjectProvider::getObjectRaw(const DBObject &templateVal) {
 
+    Promise<const DBObject*> result;
     if (!dynamic_cast<const DBObject*>(&templateVal)) {
-        return nullptr;
+        result.reject();
+        return result;
     }
 
-    QList<const DBObject *> list;
-    if (!getAllObjects(templateVal, list)) {
-        return nullptr;
+    Promise<QList<const DBObject *>> promise;
+    if (!getAllObjects(templateVal, promise)) {
+        result.reject();
+        return result;
     }
 
-    if (list.size() > 1) {
-        QuasarAppUtils::Params::log("getObject method returned more than one object,"
-                                    " the first object was selected as the result, all the rest were lost.",
-                                    QuasarAppUtils::Warning);
+    bool subscribe = promise.subscribe([result](const QList<const DBObject *>& objects) mutable {
+
+        if (!objects.size()) {
+            result.reject();
+            return;
+        }
+
+        if (objects.size() > 1) {
+            QuasarAppUtils::Params::log("getObject method returned more than one object,"
+                                        " the first object was selected as the result, all the rest were lost.",
+                                        QuasarAppUtils::Warning);
+        }
+
+        result.setValue(objects.first());
+
+
+    });
+
+    if (!subscribe) {
+        result.reject();
+        return result;
     }
 
-    return list.first();
+
+    return result;
 }
 
 }
