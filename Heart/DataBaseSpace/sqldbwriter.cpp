@@ -234,32 +234,20 @@ bool SqlDBWriter::isValid() const {
 }
 
 bool SqlDBWriter::getAllObjects(const DBObject &templateObject,
-                                QList<std::promise<const DBObject *> > &result) {
+                                Promise<QList<const DBObject *> > &result) {
 
     if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::selectQuery(templateObject, result, nullptr, nullptr);
+        return SqlDBWriter::selectQuery(templateObject, &result);
     }
-
-    bool workOfEnd = false, workResult = false;
-
 
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "selectQuery",
                                                    Qt::QueuedConnection,
                                                    Q_ARG(const QH::PKG::DBObject *, &templateObject),
-                                                   Q_ARG(QList<const QH::PKG::DBObject *> *, &result),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
-
-    if (!invockeResult)
-        return false;
+                                                   Q_ARG(Promise<QList<const QH::PKG::DBObject *>>*, &result));
 
 
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
+    return invockeResult;
 }
 
 bool SqlDBWriter::updateObject(const DBObject* ptr) {
@@ -487,7 +475,10 @@ bool SqlDBWriter::insertQuery(const DBObject* ptr,
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
-                              Promise<QList<const DBObject *>> &result) {
+                              Promise<QList<const DBObject *>> *result) {
+
+    if(!result)
+        return false;
 
     QSqlQuery q(db);
     auto prepare = [&requestObject](QSqlQuery&q) {
@@ -535,11 +526,11 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
     };
 
     if(!workWithQuery(q, prepare, cb)) {
-        result.reject();
+        result->reject();
         return false;
     }
 
-    result.setValue(res);
+    result->setValue(res);
 
     return true;
 }

@@ -48,6 +48,12 @@ public:
      */
     void setValue(const SOURCE& val);
 
+    /**
+     * @brief subscribe This method add action to the list for execute when The promise shange own status to successful.
+     * @param subscriber This is action for execute after setValue of this object.
+     */
+    void subscribe(const std::function<void(const SOURCE&)>& action);
+
 private:
     QSharedPointer<SOURCE> _data;
 };

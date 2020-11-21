@@ -68,7 +68,8 @@ public:
      */
     void setWriter(SqlDBWriter* writer);
 
-    bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
+    bool getAllObjects(const PKG::DBObject &templateObject,
+                       Promise<QList<const PKG::DBObject *> > &result) override;
 
     bool updateObject(const PKG::DBObject* saveObject) override;
     bool deleteObject(const PKG::DBObject* delObj) override;

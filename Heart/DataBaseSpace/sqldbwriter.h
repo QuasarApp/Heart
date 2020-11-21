@@ -64,7 +64,7 @@ public:
     virtual bool isValid() const;
 
     bool getAllObjects(const PKG::DBObject &templateObject,
-                       QList<std::promise<const PKG::DBObject *>> &result) override;
+                       Promise<QList<const PKG::DBObject *> > &result) override;
     bool updateObject(const QH::PKG::DBObject *ptr) override;
     bool deleteObject(const QH::PKG::DBObject *ptr) override;
     bool insertObject(const PKG::DBObject *ptr) override;
@@ -124,15 +124,7 @@ protected slots:
      * @return true if all goodelse false
      */
     virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
-                             Promise<QList<const PKG::DBObject *> > &result);
-
-    /**
-     * @brief asyncSelectQuery This is asynhrone method for get objects from database.
-     * @param requestObject This is template object for generate select query.
-     * @param result This is lambda functions for processing results objects.
-     */
-    void asyncSelectQuery(const QH::PKG::DBObject &requestObject,
-                          const std::function<void (const QList<const PKG::DBObject *> &)> &result);
+                             QH::Promise<QList<const QH::PKG::DBObject *> > *result);
 
     /**
      * @brief deleteQuery This method prepare the delete object query.
@@ -164,7 +156,7 @@ protected slots:
      * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
      */
     virtual void handleInitDb(const QVariantMap &params,
-                                        bool *resultOfWork, bool *endOfWork);
+                              bool *resultOfWork, bool *endOfWork);
 
 
 protected:
@@ -238,8 +230,8 @@ private:
      * @return true if all steps finished successful
      */
     bool workWithQuery(QSqlQuery &q,
-                      const std::function< PKG::PrepareResult (QSqlQuery &)> &prepareFunc,
-                      const std::function<bool()>& cb) const;
+                       const std::function< PKG::PrepareResult (QSqlQuery &)> &prepareFunc,
+                       const std::function<bool()>& cb) const;
 
     bool exec(QSqlQuery *sq, const QString &sqlFile);
 
@@ -258,4 +250,6 @@ private:
 };
 
 }
+Q_DECLARE_METATYPE(QH::Promise<QList<const QH::PKG::DBObject *>>*)
+
 #endif // SQLDBWRITER_H

@@ -118,12 +118,13 @@ void SqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
+bool SqlDBCache::getAllObjects(const DBObject &templateObject,
+                               Promise<QList<const DBObject *> > &result) {
 
     if (templateObject.isCached()) {
         DBObject* obj = getFromCache(templateObject.dbKey());
         if(obj) {
-            result.push_back(obj);
+            result.setValue({obj});
             return true;
         }
     }
@@ -133,13 +134,17 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBOb
             return false;
         }
 
-        for (auto object: result) {
-            if (object->isCached() && !insertToCache(object)) {
-                QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
-                                            object->toString(),
-                                            QuasarAppUtils::Warning);
+        result.subscribe([this](const QList<const DBObject *> &result) {
+
+            for (auto object: result) {
+                if (object->isCached() && !insertToCache(object)) {
+                    QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
+                                                object->toString(),
+                                                QuasarAppUtils::Warning);
+                }
             }
-        }
+        });
+
 
         return true;
     }
@@ -219,15 +224,29 @@ bool SqlDBCache::changeObjects(const DBObject *templateObject,
     if (!templateObject)
         return false;
 
-    QList<const DBObject *> list;
+    Promise<QList<const DBObject *>> list;
     if (!getAllObjects(*templateObject, list)) {
         return false;
     }
 
-    if (!list.size())
-        return false;
+    if (async) {
 
-    for (auto obj :list) {
+        list.subscribe([this, changeAction](const QList<const DBObject *>& list){
+            for (auto obj :list) {
+                changeAction(getFromCache(obj->dbKey()));
+            }
+        });
+
+        return true;
+    }
+
+    auto val = list.value();
+
+    if (val.isNull()) {
+        return false;
+    }
+
+    for (auto obj : *val) {
         changeAction(getFromCache(obj->dbKey()));
     }
 

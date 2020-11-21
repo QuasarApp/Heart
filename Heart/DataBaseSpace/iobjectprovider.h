@@ -8,6 +8,7 @@
 #ifndef IOBJECTPROVIDER_H
 #define IOBJECTPROVIDER_H
 #include "heart_global.h"
+#include "promise.h"
 
 #include <QSharedPointer>
 #include <dbobject.h>
@@ -63,10 +64,11 @@ public:
     /**
      * @brief getAllObjects This method executable select method of objects and return list of all selected objects
      * @param templateObject This is template object with select request.
-     * @param result This is return value, list of selected objects.
-     * @return true if objects have in db else false.
+     * @param result This is return value, pointer to promise of the list of selected objects.
+     * @return true if the selectQuery method of the Database invoked successful.
      */
-    virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<std::promise<const PKG::DBObject *>> &result) = 0;
+    virtual bool getAllObjects(const PKG::DBObject &templateObject,
+                               Promise<QList<const PKG::DBObject *>> &result) = 0;
 
     /**
      * @brief updateObject This method executable update method of objects and save the change of current object into database.
