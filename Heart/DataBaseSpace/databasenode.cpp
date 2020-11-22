@@ -129,9 +129,8 @@ bool DataBaseNode::welcomeAddress(const HostAddress&) {
 
 bool DataBaseNode::isBanned(const QVariant &node) const {
     PermisionControlMember member(node);
-    auto objectFromDataBase = db()->getObject<NetworkMember>(member);
-
-    return objectFromDataBase->trust() <= 0;
+    auto objectFromDataBase = db()->getObject(member).value().dynamicCast<NetworkMember>();
+    return objectFromDataBase.isNull() || objectFromDataBase->trust() <= 0;
 }
 
 QStringList DataBaseNode::SQLSources() const{
@@ -191,16 +190,13 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     if (!_db)
         return false;
 
-    auto client = _db->getObject<NetworkMember>(PermisionControlMember{id});
 
-    if (!client) {
-        return false;
-    }
+    auto changeFunction = [diff](PKG::DBObject* obj) {
+        auto member = dynamic_cast<NetworkMember*>(obj);
+        member->changeTrust(diff);
+    };
 
-    auto clone = client->clone().staticCast<PermisionControlMember>();
-    clone->changeTrust(diff);
-
-    if (!_db->updateObject(clone.data())) {
+    if (!_db->changeObjects(PermisionControlMember{id}, changeFunction, true)) {
         return false;
     }
 
@@ -376,13 +372,11 @@ GetObjectResult QH::DataBaseNode::getObject(const QVariant &requester,
         return result;
     }
 
-    auto sobj = _db->getObject(templateObj).value();
-    if (sobj.isNull()) {
+    auto obj = _db->getObject(templateObj).value();
+    if (obj.isNull()) {
         result.setValue({DBOperationResult::Unknown});
         return result;
     }
-
-    auto obj = *sobj.data();
 
     if (!obj || obj->dbAddress() != templateObj.dbAddress()) {
         result.setValue({DBOperationResult::Unknown});
@@ -390,31 +384,42 @@ GetObjectResult QH::DataBaseNode::getObject(const QVariant &requester,
     }
 
     result.setValue({DBOperationResult::Allowed, obj});
-    return DBOperationResult::Allowed;
+    return result;
 }
 
 GetObjectsArrayResult DataBaseNode::getObjects(const QVariant &requester,
-                                           const DBObject &templateObj) const {
-    if (!_db && !result) {
-        return DBOperationResult::Unknown;
+                                               const DBObject &templateObj) const {
+    GetObjectsArrayResult result;
+
+    if (!_db) {
+        result.setValue({DBOperationResult::Unknown});
+        return result;
     }
 
-    if (!_db->getAllObjects(templateObj, *result)) {
-        return DBOperationResult::Unknown;
+    Promise<QList<const DBObject *> > list;
+    if (!_db->getAllObjects(templateObj, list)) {
+        result.setValue({DBOperationResult::Unknown});
+        return result;
     }
 
-    for (const auto& obj: *result) {
-        if (!obj)
-            return DBOperationResult::Unknown;
+    auto resultList = list.value();
+
+    for (const auto& obj: *resultList) {
+        if (!obj) {
+            result.setValue({DBOperationResult::Unknown});
+            return result;
+        }
 
         auto permisionResult = checkPermission(requester, obj->dbAddress(),
                                                Permission::Read);
         if (permisionResult != DBOperationResult::Allowed) {
-            return permisionResult;
+            result.setValue({permisionResult});
+            return result;
         }
     }
+    result.setValue({DBOperationResult::Allowed, resultList});
 
-    return DBOperationResult::Allowed;
+    return result;
 }
 
 DBOperationResult DataBaseNode::setObject(const QVariant &requester,

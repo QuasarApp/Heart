@@ -29,7 +29,7 @@ class DbAddress;
 class NodeId;
 
 typedef Promise<DBOperationData<QList<const PKG::DBObject *>>>  GetObjectsArrayResult;
-typedef Promise<DBOperationData<const PKG::DBObject *>>         GetObjectResult;
+typedef Promise<DBOperationData<const PKG::DBObject>>           GetObjectResult;
 
 /**
  * @brief The BaseNode class is dabase base inplementation of nodes or servers.

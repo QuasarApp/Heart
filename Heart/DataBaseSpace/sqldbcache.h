@@ -84,7 +84,7 @@ public:
      * @note If templateObject selecte more than 1 obkects then the lyambda function call for each all selected objects.
      * @return true if function finished succesful.
      */
-    bool changeObjects(const PKG::DBObject* templateObject,
+    bool changeObjects(const PKG::DBObject& templateObject,
                        const std::function<void (PKG::DBObject *)> &changeAction,
                        bool async);
 

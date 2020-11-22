@@ -9,6 +9,9 @@
 #ifndef BASEDEFINES_H
 #define BASEDEFINES_H
 
+#include <QSharedPointer>
+
+
 namespace QH {
 
 /**
@@ -31,12 +34,7 @@ struct DBOperationData {
     /// result value. if isAllowed then the data field must be contains result value.
     DBOperationResult result;
     /// this is result value. If the result field contains Unknown or Forbidden values then a data field contains nullptr value.
-    DATA *data = nullptr;
-
-    ~DBOperationData() {
-        if (data)
-            delete data;
-    }
+    QSharedPointer<DATA> data = nullptr;
 };
 
 }

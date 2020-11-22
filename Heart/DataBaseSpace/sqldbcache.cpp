@@ -218,14 +218,12 @@ bool SqlDBCache::insertObject(const DBObject *saveObject) {
             _writer->insertObject(saveObject);
 }
 
-bool SqlDBCache::changeObjects(const DBObject *templateObject,
+bool SqlDBCache::changeObjects(const DBObject &templateObject,
                                const std::function<void (DBObject *)> &changeAction,
                                bool async) {
-    if (!templateObject)
-        return false;
 
     Promise<QList<const DBObject *>> list;
-    if (!getAllObjects(*templateObject, list)) {
+    if (!getAllObjects(templateObject, list)) {
         return false;
     }
 
