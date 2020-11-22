@@ -31,35 +31,12 @@ public:
     virtual ~iObjectProvider();
 
     /**
-     * @brief getObject this method return a pointer to DBObject created by select method of the template object (templateVal).
-     * @param templateVal This is template object with a select data base request.
-     * @note This method return a database object with a type as a type of templateVal object.
-     * If you want to get a object of C class but the datatabase contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
-     * This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors.
-     * @return return pointer to DBObject ot nullptr id object not exits.
-     */
-    template<class TYPE>
-    const TYPE *getObject(const TYPE &templateVal) {
-
-        auto val = getObjectRaw(templateVal);
-        const TYPE* result = dynamic_cast<const TYPE*>(val);
-        if (!result && val) {
-            QuasarAppUtils::Params::log("getObject method returned object with deffirent type of TYPE,"
-                                        " check getAllObjects merhod",
-                                        QuasarAppUtils::Error);
-
-        }
-
-        return result;
-    }
-
-    /**
      * @brief getObjectRaw This method return object without test object type
      * @note if you want get object with check object type use getObject method.
      * @param templateVal This is  template object with request to database
      * @return The database object pointer (not casted)
      */
-    Promise<const PKG::DBObject *> getObjectRaw(const PKG::DBObject &templateVal);
+    Promise<const PKG::DBObject *> getObject(const PKG::DBObject &templateVal);
 
     /**
      * @brief getAllObjects This method executable select method of objects and return list of all selected objects

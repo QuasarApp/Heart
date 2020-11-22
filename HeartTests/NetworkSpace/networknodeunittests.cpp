@@ -150,7 +150,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     };
 
-    auto objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
+    auto objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObject(testObjec));
 
     if (objectFromDataBase && objectFromDataBase->trust() != 10) {
         return false;
@@ -162,7 +162,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
+    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObject(testObjec));
 
     if (!objectFromDataBase || objectFromDataBase->trust() != 10) {
         return false;
@@ -172,7 +172,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     };
 
-    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
+    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObject(testObjec));
 
     if (objectFromDataBase && objectFromDataBase->trust() != 0) {
         return false;
@@ -184,7 +184,7 @@ bool NetworkNodeUnitTests::testChangeTrust() {
         return false;
     }
 
-    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
+    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObject(testObjec));
 
     if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
         return false;

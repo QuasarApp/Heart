@@ -359,32 +359,42 @@ QVariantMap DataBaseNode::defaultDbParams() const {
     };
 }
 
-DBOperationResult QH::DataBaseNode::getObject(const QVariant &requester,
-                                              const QH::DBObject &templateObj,
-                                              const DBObject** result) const {
+GetObjectResult QH::DataBaseNode::getObject(const QVariant &requester,
+                                            const QH::DBObject &templateObj) const {
 
-    if (!_db && !result) {
-        return DBOperationResult::Unknown;
+    GetObjectResult result;
+
+    if (!_db) {
+        result.setValue({DBOperationResult::Unknown});
+        return result;
     }
 
     DBOperationResult permisionResult = checkPermission(requester, templateObj.dbAddress(),
                                                         Permission::Read);
     if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
+        result.setValue({permisionResult});
+        return result;
     }
 
-    auto obj = _db->getObject(templateObj);
-    if (!obj || (obj->dbAddress() != templateObj.dbAddress())) {
-        return DBOperationResult::Unknown;
+    auto sobj = _db->getObject(templateObj).value();
+    if (sobj.isNull()) {
+        result.setValue({DBOperationResult::Unknown});
+        return result;
     }
 
-    *result = obj;
+    auto obj = *sobj.data();
+
+    if (!obj || obj->dbAddress() != templateObj.dbAddress()) {
+        result.setValue({DBOperationResult::Unknown});
+        return result;
+    }
+
+    result.setValue({DBOperationResult::Allowed, obj});
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
-                                           const DBObject &templateObj,
-                                           QList<const DBObject *> *result) const {
+GetObjectsArrayResult DataBaseNode::getObjects(const QVariant &requester,
+                                           const DBObject &templateObj) const {
     if (!_db && !result) {
         return DBOperationResult::Unknown;
     }
@@ -442,19 +452,15 @@ const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
 DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
                                                 const DbAddress &objectAddress,
                                                 const Permission& requarimentPermision) const {
-     const NetworkMember *member = _db->getObject(PermisionControlMember{requester});
-     if (!member) {
+
+     auto permision = _db->getObject(MemberPermisionObject({requester, objectAddress}));
+     auto permisionresult = permision.value().dynamicCast<const MemberPermisionObject>();
+
+     if (permisionresult.isNull()) {
          return DBOperationResult::Unknown;
      }
 
-     const MemberPermisionObject *permision =
-             _db->getObject(MemberPermisionObject({requester, objectAddress}));
-
-     if (!permision) {
-         return DBOperationResult::Unknown;
-     }
-
-     if (permision->permisions() < requarimentPermision) {
+     if (permisionresult->permisions() < requarimentPermision) {
          return DBOperationResult::Forbidden;
      }
 

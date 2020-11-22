@@ -9,6 +9,7 @@
 #define DATABASENODE_H
 
 #include "abstractnode.h"
+#include "promise.h"
 #include <dbobject.h>
 #include <hostaddress.h>
 #include <permission.h>
@@ -27,6 +28,8 @@ class WebSocketController;
 class DbAddress;
 class NodeId;
 
+typedef Promise<DBOperationData<QList<const PKG::DBObject *>>>  GetObjectsArrayResult;
+typedef Promise<DBOperationData<const PKG::DBObject *>>         GetObjectResult;
 
 /**
  * @brief The BaseNode class is dabase base inplementation of nodes or servers.
@@ -174,26 +177,22 @@ protected:
      *  @note If yoo want to get any object use only this method becouse this method check permision of requester to execute this action
      * @param requester This is pointer to network meber that send this request.
      * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param result This is pointer to result object of requset.
-     * @return result of operation (allow, forbiden unknown).
-     *  For more information about results see the DBOperationResult enum.
+     * @return promise to result of operation (allow, forbiden unknown) and resultData.
+     * For more indormation see the DBOperationData class and the DBOperationResult enum.
      */
-    DBOperationResult getObject(const QVariant &requester,
-                                const PKG::DBObject &templateObj,
-                                const PKG::DBObject **result) const;
+    GetObjectResult getObject(const QVariant &requester,
+                              const PKG::DBObject &templateObj) const;
 
     /**
      * @brief getObjects This method try get objects by template object.
      *  @note If yoo want to get any objects use only this method becouse this method check permision of requester to execute this action
      * @param requester This is pointer to network meber that send this request.
      * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param result This is pointer to the list of result objects.
-     * @return result of operation (allow, forbiden unknown).
-     *  For more information about results see the DBOperationResult enum.
+     * @return promise to result of operation (allow, forbiden unknown) and resultData.
+     * For more indormation see the DBOperationData class and the DBOperationResult enum.
      */
-    DBOperationResult getObjects(const QVariant &requester,
-                                 const PKG::DBObject &templateObj,
-                                 QList<const PKG::DBObject *> *result) const;
+    GetObjectsArrayResult getObjects(const QVariant &requester,
+                                     const PKG::DBObject &templateObj) const;
 
     /**
      * @brief getObjects This method try save or update database object.
@@ -225,8 +224,8 @@ protected:
      *  For m more information about result see the DBOperationResult enum.
      */
     virtual DBOperationResult checkPermission(const QVariant &requester,
-                                const DbAddress& objectAddress,
-                                const Permission& requarimentPermision) const;
+                                              const DbAddress& objectAddress,
+                                              const Permission& requarimentPermision) const;
 
 
     /**

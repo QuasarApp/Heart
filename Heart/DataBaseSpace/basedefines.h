@@ -23,5 +23,21 @@ enum class DBOperationResult {
     Forbidden,
 };
 
+/**
+ * @brief The DBOperationData struct This is result data of the getObjects request.
+ */
+template <class DATA>
+struct DBOperationData {
+    /// result value. if isAllowed then the data field must be contains result value.
+    DBOperationResult result;
+    /// this is result value. If the result field contains Unknown or Forbidden values then a data field contains nullptr value.
+    DATA *data = nullptr;
+
+    ~DBOperationData() {
+        if (data)
+            delete data;
+    }
+};
+
 }
 #endif // BASEDEFINES_H

@@ -13,7 +13,7 @@ iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;
 
-Promise<const DBObject *> iObjectProvider::getObjectRaw(const DBObject &templateVal) {
+Promise<const DBObject *> iObjectProvider::getObject(const DBObject &templateVal) {
 
     Promise<const DBObject*> result;
     if (!dynamic_cast<const DBObject*>(&templateVal)) {
