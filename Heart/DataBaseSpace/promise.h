@@ -23,31 +23,49 @@ bool waitFor(const std::function<bool()> &condition, int timeout = WAIT_TIME);
 template <class SOURCE>
 class Promise
 {
+    enum State: char {
+        Unknown,
+        Succsess,
+        Reject
+    };
+
     class PromisePrivate {
-        bool _rejected = false;
-        QMutex _rejectedMutex;
-        QList<const std::function<void(const SOURCE&)>> actions;
-        const QSharedPointer<SOURCE> _null = nullptr;
+        State _state = Unknown;
+        QMutex _mutex;
+        QList<const std::function<void(SOURCE&)>> actions;
+        SOURCE _data;
+
         friend class Promise<SOURCE>;
     };
 
 public:
     Promise() {
         _p = new PromisePrivate();
-    };
+    }
+
     ~Promise() {
-        delete _p;
-    };
+        if (_p)
+            delete _p;
+    }
 
     /**
      * @brief wait This method wait for invoke setValue or failed. return true if the invoked setValue.
-     * @param time This is time in msec for awaiting for value.
+     * @param time This is maximum awaiting time in msec.
      * @return True if invoked setValue else return false.
      */
     bool wait(int time = WAIT_TIME) {
         return waitFor([this](){
-            return !_data.isNull() || _p->_rejected;
+            return _p->_state;
         }, time);
+    }
+
+    /**
+     * @brief waitSuccess This method return true if promise finished succesful.
+     * @param time This is maximum awaiting time in msec.
+     * @return true if promise finished succesful.
+     */
+    bool waitSuccess(int time = WAIT_TIME) {
+        return wait(time) && _p->_state == Succsess;
     }
 
     /**
@@ -55,34 +73,25 @@ public:
      * @return true if object has valid value.
      */
     bool isSuccess() const {
-        return !_p->_rejected && !_data.isNull();
+        return _p->_state == Succsess;
     }
 
     /**
      * @brief reject invoke this method for set fail for this object.
      */
     void reject() {
-        _p->_rejectedMutex.lock();
-        _p->_rejected = _data.isNull();
-        _p->_rejectedMutex.unlock();
+        _p->_mutex.lock();
+        _p->_state = Reject;
+        _p->_mutex.unlock();
     }
 
     /**
-     * @brief value This method return value of This object.
-     * @return shared pointer of the value. If This promise rejected return invalid pointer.
+     * @brief value This method return the refernce to the promise data.
+     * If promise is rejected or not completed then return invalid value.
+     * @return value of the promise.
      */
-    const QSharedPointer<SOURCE>& value() {
-
-        if (_p->_rejected) {
-            return _p->_null;
-        }
-
-        if (!wait()) {
-            return _p->_null;
-
-        }
-
-        return _data;
+    const SOURCE& value() const {
+        return _p->_data;
     }
 
     /**
@@ -90,46 +99,16 @@ public:
      * @param val This is new value.
      */
     void setValue(const SOURCE& val) {
-        _p->_rejectedMutex.lock();
-        if (!_p->_rejected) {
-            _data = QSharedPointer<SOURCE>::create(val);
+        if (!isFinished()) {
+
+            _p->_mutex.lock();
+            _p->_data =val;
+            _p->_state = Succsess;
+            _p->_mutex.unlock();
+
+            triggered();
+
         }
-        _p->_rejectedMutex.unlock();
-
-        triggered();
-
-
-    }
-
-    /**
-     * @brief setValue This method is import a pointer to data.
-     * @warning Do not use this method if the import pointe may be deleted from another objects.
-     * @param val This is impoer value.
-     */
-    void setValue(const SOURCE* val) {
-        _p->_rejectedMutex.lock();
-        if (!_p->_rejected) {
-            _data = QSharedPointer<SOURCE>(val);
-        }
-        _p->_rejectedMutex.unlock();
-
-        triggered();
-
-    }
-
-    /**
-     * @brief setValue This is implementation is waraper for shared pointers..
-     * @warning Do not use this method if the import pointe may be deleted from another objects.
-     * @param val This is impoer value.
-     */
-    void setValue(const QSharedPointer<SOURCE>& val) {
-        _p->_rejectedMutex.lock();
-        if (!_p->_rejected) {
-            _data = val;
-        }
-        _p->_rejectedMutex.unlock();
-
-        triggered();
     }
 
     /**
@@ -137,24 +116,37 @@ public:
      * @param subscriber This is action for execute after setValue of this object.
      * @return true if subscribet finished successful.
      */
-    bool subscribe(const std::function<void(const SOURCE&)> &action) {
-        QMutexLocker locker(&_p->_rejectedMutex);
-        if (_p->_rejected) {
+    bool subscribe(const std::function<void(SOURCE&)> &action) {
+        QMutexLocker locker(&_p->_mutex);
+        if (_p->_state == Reject) {
             return false;
         }
 
+        if (_p->_state == Succsess) {
+            action(_p->_data);
+            return true;
+        }
+
         _p->actions.push_back(action);
+        return true;
+    }
+
+    /**
+     * @brief isFinished This method return true if this promise is complete. (rejected or seted value)
+     * @return true if this object is completed.
+     */
+    bool isFinished() {
+        return _p->_state;
     }
 
 private:
     void triggered() {
         for (const auto & action: _p->actions) {
-            action(*_data.data());
+            action(_p->_data);
         }
     }
 
     PromisePrivate *_p = nullptr;
-    QSharedPointer<SOURCE> _data = nullptr;
 
 };
 }

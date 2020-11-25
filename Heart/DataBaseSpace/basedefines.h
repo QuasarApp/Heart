@@ -34,7 +34,7 @@ struct DBOperationData {
     /// result value. if isAllowed then the data field must be contains result value.
     DBOperationResult result;
     /// this is result value. If the result field contains Unknown or Forbidden values then a data field contains nullptr value.
-    QSharedPointer<DATA> data = nullptr;
+    DATA* data = nullptr;
 };
 
 }

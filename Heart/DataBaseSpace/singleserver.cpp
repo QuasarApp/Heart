@@ -32,7 +32,7 @@ RegisteruserResult SingleServer::registerNewUser(PKG::UserMember user,
 
     if (!db()->updateObject(&user)) {
         return RegisteruserResult::InternalError;
-    };
+    }
 
     return loginUser(user, info);
 }
@@ -44,9 +44,9 @@ RegisteruserResult SingleServer::loginUser(PKG::UserMember user,
         return RegisteruserResult::InternalError;
     }
 
-    auto localObject = db()->getObject(user);
+    auto localObject = db()->getObject(user).value().dynamicCast<const PKG::UserMember>();
 
-    if (!localObject) {
+    if (localObject.isNull()) {
         return RegisteruserResult::UserNotExits;
     }
 

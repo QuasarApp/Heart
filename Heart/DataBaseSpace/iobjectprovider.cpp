@@ -13,9 +13,9 @@ iObjectProvider::iObjectProvider() = default;
 
 iObjectProvider::~iObjectProvider() = default;
 
-Promise<DBObject> iObjectProvider::getObject(const DBObject &templateVal) {
+Promise<const DBObject*> iObjectProvider::getObject(const DBObject &templateVal) {
 
-    Promise<DBObject> result;
+    Promise<const DBObject*> result;
     if (!dynamic_cast<const DBObject*>(&templateVal)) {
         result.reject();
         return result;

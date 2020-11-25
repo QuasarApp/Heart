@@ -36,7 +36,7 @@ public:
      * @param templateVal This is  template object with request to database
      * @return The database object pointer (not casted)
      */
-    Promise<PKG::DBObject> getObject(const PKG::DBObject &templateVal);
+    Promise<const PKG::DBObject *> getObject(const PKG::DBObject &templateVal);
 
     /**
      * @brief getAllObjects This method executable select method of objects and return list of all selected objects

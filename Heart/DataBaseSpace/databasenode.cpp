@@ -129,8 +129,17 @@ bool DataBaseNode::welcomeAddress(const HostAddress&) {
 
 bool DataBaseNode::isBanned(const QVariant &node) const {
     PermisionControlMember member(node);
-    auto objectFromDataBase = db()->getObject(member).value().dynamicCast<NetworkMember>();
-    return objectFromDataBase.isNull() || objectFromDataBase->trust() <= 0;
+    auto promise = db()->getObject(member);
+    if (!promise.waitSuccess()) {
+        return false;
+    }
+
+    auto object = dynamic_cast<const NetworkMember*>(promise.value());
+    if (!object) {
+        return false;
+    }
+
+    return object->trust() <= 0;
 }
 
 QStringList DataBaseNode::SQLSources() const{
@@ -153,7 +162,7 @@ QString DataBaseNode::dbLocation() const {
 }
 
 AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
-    return new BaseNodeInfo(socket, clientAddress);;
+    return new BaseNodeInfo(socket, clientAddress);
 }
 
 void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
@@ -373,7 +382,7 @@ GetObjectResult QH::DataBaseNode::getObject(const QVariant &requester,
     }
 
     auto obj = _db->getObject(templateObj).value();
-    if (obj.isNull()) {
+    if (!obj) {
         result.setValue({DBOperationResult::Unknown});
         return result;
     }
@@ -402,9 +411,14 @@ GetObjectsArrayResult DataBaseNode::getObjects(const QVariant &requester,
         return result;
     }
 
+    if (!list.waitSuccess()) {
+        result.setValue({DBOperationResult::Unknown});
+        return result;
+    }
+
     auto resultList = list.value();
 
-    for (const auto& obj: *resultList) {
+    for (const auto& obj: resultList) {
         if (!obj) {
             result.setValue({DBOperationResult::Unknown});
             return result;
@@ -459,11 +473,12 @@ DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
                                                 const Permission& requarimentPermision) const {
 
      auto permision = _db->getObject(MemberPermisionObject({requester, objectAddress}));
-     auto permisionresult = permision.value().dynamicCast<const MemberPermisionObject>();
 
-     if (permisionresult.isNull()) {
+     if (!permision.waitSuccess()) {
          return DBOperationResult::Unknown;
      }
+
+     auto permisionresult = dynamic_cast<const MemberPermisionObject*>(permision.value());
 
      if (permisionresult->permisions() < requarimentPermision) {
          return DBOperationResult::Forbidden;
