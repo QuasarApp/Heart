@@ -154,7 +154,7 @@ QString DataBaseNode::dbLocation() const {
 }
 
 AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
-    return new BaseNodeInfo(socket, clientAddress);;
+    return new BaseNodeInfo(socket, clientAddress);
 }
 
 void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
@@ -191,20 +191,14 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     if (!_db)
         return false;
 
-    auto client = _db->getObject<NetworkMember>(PermisionControlMember{id});
+    auto action = [diff](DBObject * object) {
+        auto obj = dynamic_cast<NetworkMember*>(object);
+        if (obj) {
+            obj->changeTrust(diff);
+        }
+    };
 
-    if (!client) {
-        return false;
-    }
-
-    auto clone = client->clone().staticCast<PermisionControlMember>();
-    clone->changeTrust(diff);
-
-    if (!_db->updateObject(clone.data())) {
-        return false;
-    }
-
-    return true;
+    return _db->changeObjects(PermisionControlMember{id}, action);
 }
 
 bool DataBaseNode::sendData(AbstractData *resp,

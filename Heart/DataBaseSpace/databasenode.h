@@ -310,7 +310,7 @@ protected:
      *
      * @return the list to deploy sql files.
      */
-    virtual QStringList SQLSources() const;;
+    virtual QStringList SQLSources() const;
 private:
 
     /**

@@ -9,7 +9,6 @@
 #define ASYNCSQLDBWRITER_H
 
 #include "sqldbwriter.h"
-#include "atomicmetatypes.h"
 
 namespace QH {
 

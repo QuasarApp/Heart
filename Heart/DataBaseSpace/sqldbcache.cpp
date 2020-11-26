@@ -263,6 +263,24 @@ bool SqlDBCache::insertToCache(const DBObject *obj) {
 
 }
 
+bool SqlDBCache::changeObjects(const DBObject &templateObject,
+                               const std::function<void (DBObject *)> &changeAction) {
+
+    QList<const DBObject *> list;
+    if (!getAllObjects(templateObject, list)) {
+        return false;
+    }
+
+    if (!list.size())
+        return false;
+
+    for (auto obj :list) {
+        changeAction(getFromCache(obj->dbKey()));
+    }
+
+    return true;
+}
+
 bool SqlDBCache::updateCache(const DBObject *obj) {
     if (!obj)
         return false;
