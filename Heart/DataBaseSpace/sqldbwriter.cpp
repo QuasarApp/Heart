@@ -258,7 +258,7 @@ bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBO
     return workResult;
 }
 
-bool SqlDBWriter::updateObject(const DBObject* ptr) {
+bool SqlDBWriter::updateObject(const DBObject* ptr, bool wait) {
     if (QThread::currentThread() == thread()) {
         return updateQuery(ptr, nullptr, nullptr);
     }
@@ -279,6 +279,9 @@ bool SqlDBWriter::updateObject(const DBObject* ptr) {
     if (!invockeResult)
         return false;
 
+    if (!wait) {
+        return true;
+    }
 
     if (!waitFor(&workOfEnd)) {
         return false;
@@ -287,7 +290,7 @@ bool SqlDBWriter::updateObject(const DBObject* ptr) {
     return workResult;
 }
 
-bool SqlDBWriter::deleteObject(const DBObject* ptr) {
+bool SqlDBWriter::deleteObject(const DBObject* ptr, bool wait) {
     if (QThread::currentThread() == thread()) {
         return deleteQuery(ptr, nullptr, nullptr);
     }
@@ -298,12 +301,17 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "deleteQuery",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, clone));
+                                                   Q_ARG(const QH::PKG::DBObject *, clone),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
     delete clone;
 
     if (!invockeResult)
         return false;
 
+    if (!wait) {
+        return true;
+    }
 
     if (!waitFor(&workOfEnd)) {
         return false;
@@ -312,7 +320,7 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr) {
     return workResult;
 }
 
-bool SqlDBWriter::insertObject(const DBObject *saveObject) {
+bool SqlDBWriter::insertObject(const DBObject *saveObject, bool wait) {
 
     if (QThread::currentThread() == thread()) {
         return insertQuery(saveObject, nullptr, nullptr);
@@ -324,12 +332,17 @@ bool SqlDBWriter::insertObject(const DBObject *saveObject) {
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "insertQuery",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, clone));
+                                                   Q_ARG(const QH::PKG::DBObject *, clone),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
     delete clone;
 
     if (!invockeResult)
         return false;
 
+    if (!wait) {
+        return true;
+    }
 
     if (!waitFor(&workOfEnd)) {
         return false;

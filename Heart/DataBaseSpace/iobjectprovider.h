@@ -70,23 +70,26 @@ public:
     /**
      * @brief updateObject This method executable update method of objects and save the change of current object into database.
      * @param saveObject This is object for updating.
+     * @param wait This arguments force current thread wait for the function finishing.
      * @return true if objects is updated successful else false.
      */
-    virtual bool updateObject(const PKG::DBObject* saveObject) = 0;
+    virtual bool updateObject(const PKG::DBObject* saveObject, bool wait) = 0;
 
     /**
      * @brief insertObject This method executable insert method of objects and save current object into database.
      * @param saveObject This is object for inserting.
+     * @param wait This arguments force current thread wait for the function finishing.
      * @return true if objects is saved successful else false.
      */
-    virtual bool insertObject(const PKG::DBObject* saveObject) = 0;
+    virtual bool insertObject(const PKG::DBObject* saveObject, bool wait) = 0;
 
     /**
      * @brief deleteObject This method executable delete method of objects and remove current object from database.
      * @param obj This is object for removing.
+     * @param wait This arguments force current thread wait for the function finishing.
      * @return true if object is removed successful else false.
      */
-    virtual bool deleteObject(const PKG::DBObject* obj) = 0;
+    virtual bool deleteObject(const PKG::DBObject* obj, bool wait) = 0;
 
     /**
      * @brief setSQLSources This method set sql sources for deployed database.

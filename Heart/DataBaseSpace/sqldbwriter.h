@@ -64,9 +64,9 @@ public:
     virtual bool isValid() const;
 
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
-    bool updateObject(const QH::PKG::DBObject *ptr) override;
-    bool deleteObject(const QH::PKG::DBObject *ptr) override;
-    bool insertObject(const PKG::DBObject *ptr) override;
+    bool updateObject(const QH::PKG::DBObject *ptr, bool wait = false) override;
+    bool deleteObject(const QH::PKG::DBObject *ptr, bool wait = false) override;
+    bool insertObject(const PKG::DBObject *ptr, bool wait = false) override;
     void setSQLSources(const QStringList &list) override;
 
     /**
@@ -148,8 +148,8 @@ protected slots:
      * @return true if query generated successful.
      */
     virtual bool insertQuery(const QH::PKG::DBObject *insertObject,
-                             bool * resultOfWork,
-                             bool * endOfWork) const;
+                             bool * resultOfWork = nullptr,
+                             bool * endOfWork = nullptr) const;
 
     /**
      * @brief handleInitDb This method invoke initDb on own thread

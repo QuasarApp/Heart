@@ -70,9 +70,9 @@ public:
 
     bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
 
-    bool updateObject(const PKG::DBObject* saveObject) override;
-    bool deleteObject(const PKG::DBObject* delObj) override;
-    bool insertObject(const PKG::DBObject *saveObject) override;
+    bool updateObject(const PKG::DBObject* saveObject, bool wait = false) override;
+    bool deleteObject(const PKG::DBObject* delObj, bool wait = false) override;
+    bool insertObject(const PKG::DBObject *saveObject, bool wait = false) override;
 
     /**
      * @brief changeObjects This method change objecst of the database.

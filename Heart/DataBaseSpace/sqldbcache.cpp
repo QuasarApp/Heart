@@ -146,7 +146,7 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBOb
     return false;
 }
 
-bool SqlDBCache::updateObject(const DBObject *saveObject) {
+bool SqlDBCache::updateObject(const DBObject *saveObject, bool wait) {
 
     if (!saveObject || !saveObject->isValid()) {
         return false;
@@ -156,7 +156,7 @@ bool SqlDBCache::updateObject(const DBObject *saveObject) {
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
             return _writer && _writer->isValid() &&
-                   _writer->updateObject(saveObject);
+                   _writer->updateObject(saveObject, wait);
         }
 
         _needToSaveCache.insert(MemberType::Update, saveObject->dbKey());
@@ -170,7 +170,7 @@ bool SqlDBCache::updateObject(const DBObject *saveObject) {
 
 }
 
-bool SqlDBCache::deleteObject(const DBObject *delObj) {
+bool SqlDBCache::deleteObject(const DBObject *delObj, bool wait) {
 
     if (!delObj)
         return false;
@@ -178,14 +178,14 @@ bool SqlDBCache::deleteObject(const DBObject *delObj) {
     deleteFromCache(delObj);
 
     if (_writer && _writer->isValid()) {
-        return _writer->deleteObject(delObj);
+        return _writer->deleteObject(delObj, wait);
     }
 
     return false;
 
 }
 
-bool SqlDBCache::insertObject(const DBObject *saveObject) {
+bool SqlDBCache::insertObject(const DBObject *saveObject, bool wait) {
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
@@ -199,7 +199,7 @@ bool SqlDBCache::insertObject(const DBObject *saveObject) {
         if (getMode() == SqlDBCasheWriteMode::Force) {
 
             return _writer && _writer->isValid() &&
-                    _writer->insertObject(saveObject);
+                    _writer->insertObject(saveObject, wait);
         }
 
         _needToSaveCache.insert(MemberType::Insert, saveObject->dbKey());
