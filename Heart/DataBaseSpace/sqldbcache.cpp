@@ -46,9 +46,9 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
             bool saveResult = false;
 
             if (it.key() == MemberType::Insert) {
-                    saveResult = _writer->insertObjectWithWait(obj);
+                    saveResult = _writer->insertObject(obj, true);
             } else {
-                    saveResult = _writer->updateObjectWithWait(obj);
+                    saveResult = _writer->updateObject(obj, true);
             }
 
             if (!saveResult ) {

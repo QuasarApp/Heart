@@ -12,6 +12,7 @@
 #include <QSqlDatabase>
 #include <QDir>
 #include <QSqlQuery>
+#include "async.h"
 #include "heart_global.h"
 #include "config.h"
 #include "iobjectprovider.h"
@@ -32,7 +33,7 @@ namespace QH {
  *  For initialize a custom database driver you need to set an own params see the SqlDBWriter::initDb metthod.
  *  This class work only on single thread. For change working thread use the Qt method moveToThread.
  */
-class HEARTSHARED_EXPORT SqlDBWriter : public QObject, public iObjectProvider
+class HEARTSHARED_EXPORT SqlDBWriter : public Async, public iObjectProvider
 {
     Q_OBJECT
 public:
@@ -76,34 +77,8 @@ public:
      */
     QString databaseLocation() const;
 
-    /**
-     * @brief updateObjectWithWait this method is wraper of the updateObject method with waiting of works result.
-     * @note This method stop current thread while the request is not finished.
-     * @param updateObject This is  pointer to the update object.
-     * @return true if function finished successful.
-     */
-    bool updateObjectWithWait(const PKG::DBObject* updateObject);
-
-    /**
-     * @brief insertObjectWithWait this method is wraper of the insertObject method with waiting of works result.
-     * @note This method stop current thread while the request is not finished.
-     * @param inserObject This is  pointer to the insert object.
-     * @return true if function finished successful.
-     */
-    bool insertObjectWithWait(const PKG::DBObject* inserObject);
-
-    /**
-     * @brief deleteObjectWithWait this method is wraper of the deleteObject method with waiting of works result.
-     * @note This method stop current thread while the request is not finished.
-     * @param deleteObject This is  pointer to the saved object.
-     * @return true if function finished successful
-     */
-    bool deleteObjectWithWait(const PKG::DBObject* deleteObject);
-
     virtual ~SqlDBWriter() override;
 
-
-protected slots:
     /**
      * @brief updateQuery This method execute update query of object.
      *  For more Information see DBObject::prepareUpdateQuery.
@@ -112,9 +87,7 @@ protected slots:
      * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
      * @return true if function finished seccussful
      */
-    virtual bool updateQuery(const QH::PKG::DBObject *ptr,
-                             bool * resultOfWork,
-                             bool * endOfWork) const;
+    virtual bool updateQuery(const QH::PKG::DBObject *ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters.
@@ -125,9 +98,7 @@ protected slots:
      * @return true if all goodelse false
      */
     virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
-                             QList<const QH::PKG::DBObject *> &result,
-                             bool * resultOfWork,
-                             bool * endOfWork);
+                             QList<const QH::PKG::DBObject *> &result);
 
     /**
      * @brief deleteQuery This method prepare the delete object query.
@@ -136,9 +107,7 @@ protected slots:
      * @param endOfWork This wariable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if query generated successful.
      */
-    virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject,
-                             bool * resultOfWork,
-                             bool * endOfWork) const;
+    virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
 
     /**
      * @brief insertQuery This method prepare the insert object query.
@@ -147,19 +116,10 @@ protected slots:
      * @param endOfWork This wariable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if query generated successful.
      */
-    virtual bool insertQuery(const QH::PKG::DBObject *insertObject,
-                             bool * resultOfWork = nullptr,
-                             bool * endOfWork = nullptr) const;
+    virtual bool insertQuery(const QH::PKG::DBObject *insertObject) const;
 
-    /**
-     * @brief handleInitDb This method invoke initDb on own thread
-     * @note This method stop current thread while the request is not finished.
-     * @param params This is input parameters data. for more information see the SqlDBWriter::defaultInitPararm method.
-     * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
-     */
-    virtual void handleInitDb(const QVariantMap &params,
-                                        bool *resultOfWork, bool *endOfWork);
+
+protected slots:
 
 
 protected:
@@ -211,14 +171,6 @@ protected:
 
      */
     virtual QVariantMap defaultInitPararm() const;
-
-    /**
-     * @brief waitFor - The base wait function.
-     * @param condition - condition for wait
-     * @param timeout - maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
-     * @return true if condition is true.
-     */
-    bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
 
     QSqlDatabase db;
 
