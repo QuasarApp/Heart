@@ -3,6 +3,7 @@
 #include <QObject>
 #include <functional>
 #include "config.h"
+#include "atomicmetatypes.h"
 
 namespace QH {
 
@@ -15,8 +16,34 @@ class Async: public QObject {
 
     Q_OBJECT
 
+public:
+    /**
+     * The Job is wrapper of the std::function<bool()> type. This type registered like the Qt meta type
+     * for using in the qt metasystem.
+     */
+    using Job = std::function<bool()>;
+
+
 protected:
     Async(QObject* ptr = nullptr);
+
+    /**
+     * @brief waitFor This is base wait function.
+     * @param condition This is pointer to awaiting boolean variable.
+     * @param timeout This is maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @return true if condition is true.
+     */
+    bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
+
+    /**
+     * @brief waitFor This is base wait function.
+     * @param condition This is lambda method with condition results.
+     * @param timeout This is maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @return true if condition is true.
+     */
+    bool waitFor(const Job &condition, int timeout = WAIT_TIME) const;
+
+private slots:
 
     /**
      * @brief asyncLauncher This is base async launcher method for move jobs to new thread.
@@ -38,7 +65,7 @@ protected:
      *      bool invoke = QMetaObject::invokeMethod(this,
                                             "asyncLauncher",
                                             Qt::QueuedConnection,
-                                            Q_ARG(std::function<bool()>, job),
+                                            Q_ARG(QH::Async::Job, job),
                                             Q_ARG(bool *, &workResult),
                                             Q_ARG(bool *, &workOfEnd));
 
@@ -70,28 +97,14 @@ protected:
             return invoke;
      * \endcode
      */
-    void asyncLauncher(std::function<bool()> job,
+    void asyncLauncher(QH::Async::Job job,
                        bool* resultOfWork = nullptr,
                        bool* endOfWork = nullptr) const;
 
-    /**
-     * @brief waitFor This is base wait function.
-     * @param condition This is pointer to awaiting boolean variable.
-     * @param timeout This is maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
-     * @return true if condition is true.
-     */
-    bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
 
-    /**
-     * @brief waitFor This is base wait function.
-     * @param condition This is lambda method with condition results.
-     * @param timeout This is maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
-     * @return true if condition is true.
-     */
-    bool waitFor(const std::function<bool()> &condition, int timeout = WAIT_TIME) const;
-};
+  };
 
 }
 
-Q_DECLARE_METATYPE(std::function<bool()>)
+Q_DECLARE_METATYPE(QH::Async::Job)
 #endif // ASYNC_H

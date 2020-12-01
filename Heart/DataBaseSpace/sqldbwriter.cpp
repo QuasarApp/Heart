@@ -202,7 +202,7 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
 
 bool SqlDBWriter::initDb(const QVariantMap &params) {
     auto handleInitDb = [&params, this]() {
-        return SqlDBWriter::initDb(params);
+        return initDbPrivate(params);
     };
 
     if (QThread::currentThread() == thread()) {
@@ -214,7 +214,7 @@ bool SqlDBWriter::initDb(const QVariantMap &params) {
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "asyncLauncher",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(decltype (handleInitDb), handleInitDb),
+                                                   Q_ARG(QH::Async::Job, handleInitDb),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
 
@@ -249,7 +249,7 @@ bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBO
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "asyncLauncher",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(decltype (getAll), getAll),
+                                                   Q_ARG(QH::Async::Job, getAll),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
 
@@ -280,7 +280,7 @@ bool SqlDBWriter::updateObject(const DBObject* ptr, bool wait) {
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "asyncLauncher",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(decltype (updateQueryWraper), updateQueryWraper),
+                                                   Q_ARG(QH::Async::Job, updateQueryWraper),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
 
@@ -315,7 +315,7 @@ bool SqlDBWriter::deleteObject(const DBObject* ptr, bool wait) {
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "asyncLauncher",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(decltype (deleteQueryWraper), deleteQueryWraper),
+                                                   Q_ARG(QH::Async::Job, deleteQueryWraper),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
     delete clone;
@@ -350,7 +350,7 @@ bool SqlDBWriter::insertObject(const DBObject *saveObject, bool wait) {
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "asyncLauncher",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(decltype (insertQueryWraper), insertQueryWraper),
+                                                   Q_ARG(QH::Async::Job, insertQueryWraper),
                                                    Q_ARG(bool *, &workResult),
                                                    Q_ARG(bool *, &workOfEnd));
     delete clone;

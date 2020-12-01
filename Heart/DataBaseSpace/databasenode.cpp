@@ -193,9 +193,13 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
 
     auto action = [diff](DBObject * object) {
         auto obj = dynamic_cast<NetworkMember*>(object);
-        if (obj) {
-            obj->changeTrust(diff);
+        if (!obj) {
+            return false;
         }
+
+        obj->changeTrust(diff);
+
+        return true;
     };
 
     return _db->changeObjects(PermisionControlMember{id}, action);

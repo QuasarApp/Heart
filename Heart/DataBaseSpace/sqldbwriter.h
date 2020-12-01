@@ -19,7 +19,6 @@
 #include <QVariant>
 #include <QCoreApplication>
 #include <dbobject.h>
-#include "atomicmetatypes.h"
 
 class QSqlDatabase;
 class PlayerDBData;

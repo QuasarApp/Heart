@@ -82,7 +82,7 @@ public:
      * @return true if function finished succesful.
      */
     bool changeObjects(const PKG::DBObject &templateObject,
-                       const std::function<void (PKG::DBObject *)> &changeAction);
+                       const std::function<bool (PKG::DBObject *)>  &changeAction);
     /**
      * @brief getUpdateInterval This method return update interval for save changes into database. This is work for default and On_New_Thread mdes. For more information see the QH::SqlDBCasheWriteMode enum.
      * @return time in msecs

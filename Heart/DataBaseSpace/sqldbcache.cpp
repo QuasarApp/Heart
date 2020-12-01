@@ -264,7 +264,7 @@ bool SqlDBCache::insertToCache(const DBObject *obj) {
 }
 
 bool SqlDBCache::changeObjects(const DBObject &templateObject,
-                               const std::function<void (DBObject *)> &changeAction) {
+                               const std::function<bool (DBObject *)> &changeAction) {
 
     QList<const DBObject *> list;
     if (!getAllObjects(templateObject, list)) {
@@ -274,8 +274,22 @@ bool SqlDBCache::changeObjects(const DBObject &templateObject,
     if (!list.size())
         return false;
 
-    for (auto obj :list) {
-        changeAction(getFromCache(obj->dbKey()));
+    for (const DBObject * obj :list) {
+        if (obj->isCached()) {
+            if (!changeAction(getFromCache(obj->dbKey()))) {
+                return false;
+            };
+
+            updateCache(obj);
+        } else {
+            if (!changeAction(const_cast<DBObject *>(obj))) {
+                return false;
+            };
+
+            updateObject(obj);
+        }
+
+
     }
 
     return true;

@@ -19,7 +19,7 @@ Async::Async(QObject *ptr):
 
 }
 
-void Async::asyncLauncher(std::function<bool ()> job,
+void Async::asyncLauncher(Job job,
                           bool *resultOfWork,
                           bool *endOfWork) const {
 
