@@ -43,10 +43,18 @@ protected:
      */
     bool waitFor(const Job &condition, int timeout = WAIT_TIME) const;
 
+    /**
+     * @brief asyncLauncher This method invoke a job on the thread (usnign the asyncHandler method) of this object.
+     * @param job This is function with needed job.
+     * @param await This is boolean option for enable or disable waiot of finish of the job function.
+     * @return true if the job function started correctly. IF the await option is true then
+     * this method return result of job function.
+     */
+    bool asyncLauncher(const Job &job, bool await = false);
 private slots:
 
     /**
-     * @brief asyncLauncher This is base async launcher method for move jobs to new thread.
+     * @brief asyncHandler async This is base async launcher method for move jobs to new thread.
      * @param job This is job to do.
      * @param resultOfWork This is pointer of bool value of a result of the job method.
      * @note If you want to disable check results just use nullptr value.
@@ -63,7 +71,7 @@ private slots:
      *          return true;
      *      }
      *      bool invoke = QMetaObject::invokeMethod(this,
-                                            "asyncLauncher",
+                                            "asyncHandler",
                                             Qt::QueuedConnection,
                                             Q_ARG(QH::Async::Job, job),
                                             Q_ARG(bool *, &workResult),
@@ -90,14 +98,14 @@ private slots:
      *          return true;
      *      }
      *      bool invoke = QMetaObject::invokeMethod(this,
-                                            "asyncLauncher",
+                                            "asyncHandler",
                                             Qt::QueuedConnection,
                                             Q_ARG(std::function<bool()>, job));
 
             return invoke;
      * \endcode
      */
-    void asyncLauncher(QH::Async::Job job,
+    void asyncHandler (QH::Async::Job job,
                        bool* resultOfWork = nullptr,
                        bool* endOfWork = nullptr) const;
 

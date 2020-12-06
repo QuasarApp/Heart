@@ -275,21 +275,20 @@ bool SqlDBCache::changeObjects(const DBObject &templateObject,
         return false;
 
     for (const DBObject * obj :list) {
-        if (obj->isCached()) {
-            if (!changeAction(getFromCache(obj->dbKey()))) {
-                return false;
-            };
+        auto cachedObject = getFromCache(obj->dbKey());
 
-            updateCache(obj);
-        } else {
-            if (!changeAction(const_cast<DBObject *>(obj))) {
-                return false;
-            };
+        if (!cachedObject && obj->isCached())
+            return false;
 
-            updateObject(obj);
-        }
+        DBObject *ptr = (cachedObject)? cachedObject: const_cast<DBObject*>(obj);
 
+        if (!changeAction(ptr)) {
+            return false;
+        };
 
+        if (!updateObject(ptr)) {
+            return false;
+        };
     }
 
     return true;

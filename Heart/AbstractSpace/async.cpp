@@ -2,6 +2,7 @@
 
 #include <QCoreApplication>
 #include <QDateTime>
+#include <QThread>
 
 // Private implementation of waitFor functions.
 #define waitPrivate(CONDITION, TIMEOUT) \
@@ -19,7 +20,7 @@ Async::Async(QObject *ptr):
 
 }
 
-void Async::asyncLauncher(Job job,
+void Async::asyncHandler(Job job,
                           bool *resultOfWork,
                           bool *endOfWork) const {
 
@@ -31,6 +32,8 @@ void Async::asyncLauncher(Job job,
     if (endOfWork) {
         *endOfWork = true;
     }
+
+
 }
 
 bool Async::waitFor(bool *condition, int timeout) const {
@@ -38,6 +41,35 @@ bool Async::waitFor(bool *condition, int timeout) const {
         return false;
 
     waitPrivate(*condition, timeout)
+}
+
+bool Async::asyncLauncher(const Async::Job &job, bool await) {
+    if (QThread::currentThread() == thread()) {
+        return job();
+    }
+
+    bool workOfEnd = false, workResult = false;
+
+    bool invockeResult = QMetaObject::invokeMethod(this,
+                                                   "asyncHandler",
+                                                   Qt::QueuedConnection,
+                                                   Q_ARG(QH::Async::Job, job),
+                                                   Q_ARG(bool *, &workResult),
+                                                   Q_ARG(bool *, &workOfEnd));
+
+
+    if (!invockeResult)
+        return false;
+
+    if (!await) {
+        return true;
+    }
+
+    if (!waitFor(&workOfEnd)) {
+        return false;
+    }
+
+    return workResult;
 }
 
 bool Async::waitFor(const std::function<bool ()> &condition, int timeout) const {
