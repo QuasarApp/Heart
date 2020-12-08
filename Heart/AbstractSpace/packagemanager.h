@@ -9,9 +9,10 @@
 #ifndef PAKCAGEMANAGER_H
 #define PAKCAGEMANAGER_H
 
+#include "package.h"
+
 #include <QMutex>
 #include <QSharedDataPointer>
-#include <nodeid.h>
 
 
 namespace QH {

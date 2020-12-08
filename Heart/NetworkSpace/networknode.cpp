@@ -532,12 +532,12 @@ AbstractNodeInfo *NetworkNode::createNodeInfo(QAbstractSocket *socket,
 }
 
 void NetworkNode::badRequest(const HostAddress &address, const Header &req,
-                             const ErrorData &err, quint8 diff) {
+                             const ErrorData &err, qint8 diff) {
     DataBaseNode::badRequest(address, req, err, diff);
 }
 
 void NetworkNode::badRequest(const NodeId &address, const Header &req,
-                             const ErrorData &err, quint8 diff) {
+                             const ErrorData &err, qint8 diff) {
 
     if (!changeTrust(address, diff)) {
 

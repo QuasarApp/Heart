@@ -58,7 +58,7 @@ void PackageManager::processed(const Package &pkg, char processResult) {
                              new Package(pkg)
                          });
 
-    _processTime.insert(static_cast<int>(time(0)), pkg.hdr.hash);
+    _processTime.insert(static_cast<int>(time(nullptr)), pkg.hdr.hash);
 }
 
 }

@@ -13,7 +13,7 @@
 QByteArray randomArray(int length) {
     QByteArray data;
     for (int i = 0 ; i < length; ++i) {
-        data.push_back(rand() % 0xFF);
+        data.push_back(rand() % static_cast<char>(0xFF));
     }
 
     return data;

@@ -18,6 +18,7 @@
 
 class TestingBaseClient: public QH::DataBaseNode {
 
+    Q_OBJECT
 
     // AbstractNode interface
 public:
@@ -26,8 +27,8 @@ public:
     }
 
 protected:
-    void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) {
-        Q_UNUSED(sender);
+    void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) override {
+        Q_UNUSED(sender)
 
         auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
         if (ping)
@@ -70,7 +71,7 @@ bool BaseNodeTest::powerTest() {
 
     if (!_nodeAPtr->run(TEST_LOCAL_HOST, TEST_PORT, "powerTest")) {
         return false;
-    };
+    }
 
     delete _nodeAPtr;
 
@@ -142,3 +143,4 @@ bool BaseNodeTest::securityTest() {
 
 
 
+#include "basenodetest.moc"

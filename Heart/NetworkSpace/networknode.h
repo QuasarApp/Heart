@@ -115,7 +115,7 @@ protected:
                   const Header *req = nullptr) override;
 
     void badRequest(const HostAddress &address, const Header &req,
-                    const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
+                    const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR) override;
 
     /**
      * @brief badRequest This implementation of the AbstractNode::badRequest method
@@ -127,7 +127,7 @@ protected:
      * By default diff equals REQUEST_ERROR
      */
     virtual void badRequest(const NodeId &address, const Header &req,
-                            const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
+                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
 
 
     bool changeTrust(const QVariant &id, int diff) override;

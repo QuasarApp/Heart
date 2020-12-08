@@ -103,7 +103,7 @@ protected:
     AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
 
     void badRequest(const HostAddress &address, const Header &req,
-                    const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR) override;
+                    const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR) override;
 
     bool changeTrust(const HostAddress &id, int diff) override;
 

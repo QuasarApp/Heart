@@ -352,7 +352,7 @@ protected:
      * By default diff equals REQUEST_ERROR
      */
     virtual void badRequest(const HostAddress &address, const Header &req,
-                            const PKG::ErrorData& err, quint8 diff = REQUEST_ERROR);
+                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
 
     /**
      * @brief getWorkStateString This method generate string about work state of server.
@@ -441,7 +441,7 @@ protected:
      * @note override this method for get a signals.
      */
     virtual void incomingData(PKG::AbstractData* pkg,
-                      const HostAddress&  sender);
+                              const HostAddress&  sender);
 
     /**
      * @brief connections - return hash map of all connections of this node.

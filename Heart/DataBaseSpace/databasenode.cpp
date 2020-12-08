@@ -158,7 +158,7 @@ AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const Ho
 }
 
 void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
-                              const ErrorData &err, quint8 diff) {
+                              const ErrorData &err, qint8 diff) {
 
     if (!changeTrust(address, diff)) {
 

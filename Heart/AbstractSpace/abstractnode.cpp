@@ -497,7 +497,7 @@ bool AbstractNode::sendData(const AbstractData *resp,
 }
 
 void AbstractNode::badRequest(const HostAddress &address, const Header &req,
-                              const ErrorData &err, quint8 diff) {
+                              const ErrorData &err, qint8 diff) {
     auto client = getInfoPtr(address);
 
     if (!client) {
@@ -713,45 +713,46 @@ void AbstractNode::avelableBytes() {
     auto &hdrArray = _receiveData[id]->_hdrArray;
 
     int workIndex = 0;
-    auto array = client->readAll();
+    const int headerSize = sizeof(Header);
 
     // concat with old data of header.
-    array.insert(0, hdrArray);
+    const auto array = hdrArray + client->readAll();
+    const int arraySize = array.size();
     hdrArray.clear();
 
-    while (array.size() > workIndex) {
+    while (arraySize > workIndex) {
 
-        unsigned int workSize = array.size() - workIndex;
+        int workSize = arraySize - workIndex;
 
         if (pkg.hdr.isValid()) {
             // CASE 1: The Package data is still not collected, but the header is already collected. performs full or partial filling of packet data.
 
-            unsigned int dataLength = std::min(pkg.hdr.size - pkg.data.size(),
-                                               array.size() - workIndex);
-            pkg.data.append(array.mid(workIndex + sizeof(Header), dataLength));
+            int dataLength = std::min(pkg.hdr.size - pkg.data.size(),
+                                               arraySize - workIndex);
+            pkg.data.append(array.mid(workIndex + headerSize, dataLength));
 
             workIndex += dataLength;
 
 
-        } else if (workSize >= sizeof(Header)) {
+        } else if (workSize >= headerSize) {
 
             // CASE 2: The header and package still do not exist and the amount of data allows you to create a new header. A header is created and will fill in all or part of the package data.
 
             pkg.reset();
 
             memcpy(&pkg.hdr,
-                   array.data() + workIndex, sizeof(Header));
+                   array.data() + workIndex, headerSize);
 
-            unsigned int dataLength = std::min(static_cast<unsigned long>(pkg.hdr.size),
-                                               array.size() - sizeof(Header) - workIndex);
+            int dataLength = std::min(static_cast<int>(pkg.hdr.size),
+                                      arraySize - headerSize - workIndex);
 
-            pkg.data.append(array.mid(workIndex + sizeof(Header), dataLength));
-            workIndex += sizeof(Header) + dataLength;
+            pkg.data.append(array.mid(workIndex + headerSize, dataLength));
+            workIndex += headerSize + dataLength;
 
         } else {
             // CASE 3: There is not enough data to initialize the header. The data will be placed in temporary storage and will be processed the next time the data is received.
 
-            unsigned char dataLength = array.size() - workIndex;
+            unsigned char dataLength = static_cast<unsigned char>(arraySize - workIndex);
             hdrArray += array.mid(workIndex, dataLength);
             workIndex += dataLength;
         }
@@ -964,7 +965,7 @@ QHash<HostAddress, AbstractNodeInfo *> AbstractNode::connections() const {
 }
 
 void AbstractNode::connectionRegistered(const AbstractNodeInfo *info) {
-    Q_UNUSED(info);
+    Q_UNUSED(info)
 }
 
 void AbstractNode::pushToQueue(const std::function<void()>& action,
@@ -1012,15 +1013,15 @@ void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStat
 }
 
 void AbstractNode::nodeConfirmend(const HostAddress &node) {
-    Q_UNUSED(node);
+    Q_UNUSED(node)
 }
 
 void AbstractNode::nodeConnected(const HostAddress &node) {
-    Q_UNUSED(node);
+    Q_UNUSED(node)
 }
 
 void AbstractNode::nodeDisconnected(const HostAddress &node) {
-    Q_UNUSED(node);
+    Q_UNUSED(node)
 }
 
 void AbstractNode::checkConfirmendOfNode(const HostAddress &node) {
