@@ -294,7 +294,7 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
 
 DBVariantMap DBObject::variantMap() const {
     if (isHaveAPrimaryKey()) {
-        return {{primaryKey(), {_dbId.id(), MemberType::Insert}}};
+        return {{primaryKey(), {_dbId.id(), MemberType::Insert | MemberType::Unique}}};
     }
 
     return {};

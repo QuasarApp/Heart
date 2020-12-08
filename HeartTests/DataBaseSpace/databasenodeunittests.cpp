@@ -12,9 +12,14 @@
 
 QByteArray randomArray(int length) {
     QByteArray data;
+
+    static unsigned char nance = 0;
+
     for (int i = 0 ; i < length; ++i) {
-        data.push_back(rand() % static_cast<char>(0xFF));
+        data.push_back((rand() % static_cast<unsigned char>(0xFF - nance)) + nance);
     }
+
+    nance++;
 
     return data;
 }
@@ -25,8 +30,9 @@ DataBaseNodeUnitTests::DataBaseNodeUnitTests():
 
 }
 
-QH::PKG::UserMember *DataBaseNodeUnitTests::randomMember() const
-{
+QH::PKG::UserMember *DataBaseNodeUnitTests::randomMember() const {
+    srand(time(nullptr));
+
     QH::PKG::UserMember * res = new QH::PKG::UserMember();
     res->setAuthenticationData(randomArray(64));
     res->setTrust(0);

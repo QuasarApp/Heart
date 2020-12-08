@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS NetworkMembers (
     trust INTEGER default 0,
     token BLOB default NULL
 );
+
 CREATE UNIQUE INDEX IF NOT EXISTS NetworkMembersIndex ON NetworkMembers(userName);
 
 
@@ -18,4 +19,5 @@ CREATE TABLE IF NOT EXISTS MemberPermisions (
             ON DELETE CASCADE
 
 );
+
 CREATE UNIQUE INDEX IF NOT EXISTS MemberPermisionsIndex ON MemberPermisions(memberId, dbAddress);
