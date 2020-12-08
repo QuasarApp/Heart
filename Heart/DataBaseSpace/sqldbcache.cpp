@@ -46,9 +46,9 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
             bool saveResult = false;
 
             if (it.key() == MemberType::Insert) {
-                    saveResult = _writer->insertObjectWithWait(obj);
+                    saveResult = _writer->insertObject(obj, true);
             } else {
-                    saveResult = _writer->updateObjectWithWait(obj);
+                    saveResult = _writer->updateObject(obj, true);
             }
 
             if (!saveResult ) {
@@ -264,7 +264,7 @@ bool SqlDBCache::insertToCache(const DBObject *obj) {
 }
 
 bool SqlDBCache::changeObjects(const DBObject &templateObject,
-                               const std::function<void (DBObject *)> &changeAction) {
+                               const std::function<bool (DBObject *)> &changeAction) {
 
     QList<const DBObject *> list;
     if (!getAllObjects(templateObject, list)) {
@@ -274,8 +274,21 @@ bool SqlDBCache::changeObjects(const DBObject &templateObject,
     if (!list.size())
         return false;
 
-    for (auto obj :list) {
-        changeAction(getFromCache(obj->dbKey()));
+    for (const DBObject * obj :list) {
+        auto cachedObject = getFromCache(obj->dbKey());
+
+        if (!cachedObject && obj->isCached())
+            return false;
+
+        DBObject *ptr = (cachedObject)? cachedObject: const_cast<DBObject*>(obj);
+
+        if (!changeAction(ptr)) {
+            return false;
+        };
+
+        if (!updateObject(ptr)) {
+            return false;
+        };
     }
 
     return true;

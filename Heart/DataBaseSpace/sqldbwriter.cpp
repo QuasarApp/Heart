@@ -185,7 +185,7 @@ QVariantMap SqlDBWriter::defaultInitPararm() const {
 }
 
 SqlDBWriter::SqlDBWriter(QObject* ptr):
-    QObject(ptr) {
+    Async(ptr) {
 }
 
 bool SqlDBWriter::initDb(const QString &initDbParams) {
@@ -201,29 +201,15 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
 }
 
 bool SqlDBWriter::initDb(const QVariantMap &params) {
+    auto handleInitDb = [&params, this]() {
+        return initDbPrivate(params);
+    };
+
     if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::initDb(params);
+        return handleInitDb();
     }
 
-    bool workOfEnd = false, workResult = false;
-
-
-    bool invockeResult = QMetaObject::invokeMethod(this,
-                                                   "handleInitDb",
-                                                   Qt::QueuedConnection,
-                                                   Q_ARG(const QVariantMap &, params),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
-
-    if (!invockeResult)
-        return false;
-
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
+    return asyncLauncher(handleInitDb, true);
 }
 
 bool SqlDBWriter::isValid() const {
@@ -232,231 +218,79 @@ bool SqlDBWriter::isValid() const {
 
 bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
 
-    if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::selectQuery(templateObject, result, nullptr, nullptr);
-    }
+    auto getAll = [&templateObject, &result, this]() {
+        return SqlDBWriter::selectQuery(templateObject, result);
+    };
 
-    bool workOfEnd = false, workResult = false;
-
-
-    bool invockeResult = QMetaObject::invokeMethod(this,
-                                                   "selectQuery",
-                                                   Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, &templateObject),
-                                                   Q_ARG(QList<const QH::PKG::DBObject *> *, &result),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
-
-    if (!invockeResult)
-        return false;
-
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
+    return asyncLauncher(getAll, true);
 }
 
 bool SqlDBWriter::updateObject(const DBObject* ptr, bool wait) {
-    if (QThread::currentThread() == thread()) {
-        return updateQuery(ptr, nullptr, nullptr);
+
+    Async::Job job;
+
+    if (wait) {
+
+        auto clone = ptr->cloneRaw();
+
+        job = [clone, this]() {
+
+            bool res = updateQuery(clone);
+            delete clone;
+            return res;
+        };
+    } else {
+        job = [this, ptr]() {
+            return updateQuery(ptr);
+        };
     }
 
-    auto clone = ptr->cloneRaw();
-
-    bool workOfEnd = false, workResult = false;
-
-    bool invockeResult = QMetaObject::invokeMethod(this,
-                                                   "updateQuery",
-                                                   Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, clone),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
-
-    delete clone;
-
-    if (!invockeResult)
-        return false;
-
-    if (!wait) {
-        return true;
-    }
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
+    return asyncLauncher(job, wait);
 }
 
 bool SqlDBWriter::deleteObject(const DBObject* ptr, bool wait) {
-    if (QThread::currentThread() == thread()) {
-        return deleteQuery(ptr, nullptr, nullptr);
+
+    Async::Job job;
+
+    if (wait) {
+
+        auto clone = ptr->cloneRaw();
+        job = [clone, this]() {
+
+            bool res = deleteQuery(clone);
+            delete clone;
+            return res;
+        };
+    } else {
+        job = [this, ptr]() {
+            return deleteQuery(ptr);
+        };
     }
 
-    bool workOfEnd = false, workResult = false;
-    auto clone = ptr->cloneRaw();
-
-    bool invockeResult = QMetaObject::invokeMethod(this,
-                                                   "deleteQuery",
-                                                   Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, clone),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
-    delete clone;
-
-    if (!invockeResult)
-        return false;
-
-    if (!wait) {
-        return true;
-    }
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
+    return asyncLauncher(job, wait);
 }
 
-bool SqlDBWriter::insertObject(const DBObject *saveObject, bool wait) {
+bool SqlDBWriter::insertObject(const DBObject *ptr, bool wait) {
 
-    if (QThread::currentThread() == thread()) {
-        return insertQuery(saveObject, nullptr, nullptr);
+    Async::Job job;
+
+    if (wait) {
+
+        auto clone = ptr->cloneRaw();
+        job = [clone, this]() {
+
+            bool res = insertQuery(clone);
+            delete clone;
+            return res;
+        };
+    } else {
+        job = [this, ptr]() {
+            return insertQuery(ptr);
+        };
     }
 
-    bool workOfEnd = false, workResult = false;
-    auto clone = saveObject->cloneRaw();
+    return asyncLauncher(job, wait);
 
-    bool invockeResult = QMetaObject::invokeMethod(this,
-                                                   "insertQuery",
-                                                   Qt::QueuedConnection,
-                                                   Q_ARG(const QH::PKG::DBObject *, clone),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
-    delete clone;
-
-    if (!invockeResult)
-        return false;
-
-    if (!wait) {
-        return true;
-    }
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
-
-}
-
-bool SqlDBWriter::waitFor(bool *condition, int timeout) const {
-    auto curmsec = QDateTime::currentMSecsSinceEpoch() + timeout;
-    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !*condition) {
-        QCoreApplication::processEvents();
-    }
-    QCoreApplication::processEvents();
-    return *condition;
-}
-
-void SqlDBWriter::handleInitDb(const QVariantMap &params, bool *resultOfWork, bool *endOfWork) {
-
-    bool work = initDbPrivate(params);
-
-    if (resultOfWork) {
-        *resultOfWork = work;
-    }
-
-    if (endOfWork) {
-        *endOfWork = true;
-    }
-}
-
-
-bool SqlDBWriter::updateObjectWithWait(const DBObject *saveObject) {
-    if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::updateObject(saveObject);
-    }
-
-    bool workOfEnd = false, workResult = false;
-
-
-    bool invoke = QMetaObject::invokeMethod(this,
-                                            "handleUpdateObject",
-                                            Qt::QueuedConnection,
-                                            Q_ARG(const QH::PKG::DBObject *, saveObject),
-                                            Q_ARG(bool *, &workResult),
-                                            Q_ARG(bool *, &workOfEnd));
-
-    if (!invoke) {
-        QuasarAppUtils::Params::log("handleUpdateObject not invokecd", QuasarAppUtils::Debug);
-        return false;
-    }
-
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
-}
-
-bool SqlDBWriter::insertObjectWithWait(const DBObject *saveObject) {
-    if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::insertObject(saveObject);
-    }
-
-    bool workOfEnd = false, workResult = false;
-
-
-    bool invoke = QMetaObject::invokeMethod(this,
-                                            "handleInsertObject",
-                                            Qt::QueuedConnection,
-                                            Q_ARG(const QH::PKG::DBObject *, saveObject),
-                                            Q_ARG(bool *, &workResult),
-                                            Q_ARG(bool *, &workOfEnd));
-
-    if (!invoke) {
-        QuasarAppUtils::Params::log("handleInsertObject not invokecd", QuasarAppUtils::Debug);
-        return false;
-    }
-
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
-}
-
-bool SqlDBWriter::deleteObjectWithWait(const DBObject *deleteObject) {
-    if (QThread::currentThread() == thread()) {
-        return SqlDBWriter::deleteObject(deleteObject);
-    }
-
-    bool workOfEnd = false, workResult = false;
-
-
-    bool invoke = QMetaObject::invokeMethod(this,
-                                            "handleDeleteObject",
-                                            Qt::QueuedConnection,
-                                            Q_ARG(const QH::PKG::DBObject *, deleteObject),
-                                            Q_ARG(bool *, &workResult),
-                                            Q_ARG(bool *, &workOfEnd));
-
-    if (!invoke) {
-        QuasarAppUtils::Params::log("handleDeleteObject not invokecd", QuasarAppUtils::Debug);
-        return false;
-    }
-
-
-    if (!waitFor(&workOfEnd)) {
-        return false;
-    }
-
-    return workResult;
 }
 
 void SqlDBWriter::setSQLSources(const QStringList &list) {
@@ -471,8 +305,7 @@ SqlDBWriter::~SqlDBWriter() {
     db.close();
 }
 
-bool SqlDBWriter::insertQuery(const DBObject* ptr,
-                              bool *workResult, bool *workOfEnd) const {
+bool SqlDBWriter::insertQuery(const DBObject* ptr) const {
     if (!ptr)
         return false;
 
@@ -484,20 +317,11 @@ bool SqlDBWriter::insertQuery(const DBObject* ptr,
 
     auto cb = [](){return true;};
 
-    bool work = workWithQuery(q, prepare, cb);
-    if (workResult)
-        *workResult = work;
-
-    if (workOfEnd) {
-        *workOfEnd = true;
-    }
-
-    return work;
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
-                              QList<const DBObject *> &result,
-                              bool *workResult, bool *workOfEnd) {
+                              QList<const DBObject *> &result) {
 
     QSqlQuery q(db);
     auto prepare = [&requestObject](QSqlQuery&q) {
@@ -541,19 +365,10 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
         return result.size();
     };
 
-    bool work = workWithQuery(q, prepare, cb);
-    if (workResult)
-        *workResult = work;
-
-    if (workOfEnd) {
-        *workOfEnd = true;
-    }
-
-    return work;
+    return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::deleteQuery(const DBObject *deleteObject,
-                              bool *workResult, bool *workOfEnd) const {
+bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
     if (!deleteObject)
         return false;
 
@@ -565,21 +380,13 @@ bool SqlDBWriter::deleteQuery(const DBObject *deleteObject,
 
     auto cb = []() -> bool {
             return true;
-};
+    };
 
-    bool work = workWithQuery(q, prepare, cb);
-    if (workResult)
-        *workResult = work;
 
-    if (workOfEnd) {
-        *workOfEnd = true;
-    }
-
-    return work;
+    return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::updateQuery(const DBObject *ptr,
-                              bool *workResult, bool *workOfEnd) const {
+bool SqlDBWriter::updateQuery(const DBObject *ptr) const {
     if (!ptr)
         return false;
 
@@ -591,15 +398,7 @@ bool SqlDBWriter::updateQuery(const DBObject *ptr,
 
     auto cb = [](){return true;};
 
-    bool work = workWithQuery(q, prepare, cb);
-    if (workResult)
-        *workResult = work;
-
-    if (workOfEnd) {
-        *workOfEnd = true;
-    }
-
-    return work;
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::workWithQuery(QSqlQuery &q,
