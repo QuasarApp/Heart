@@ -14,182 +14,20 @@
 
 #define DB_NODE_NAME "DbTestNetworkNode"
 
-NetworkNodeUnitTests::NetworkNodeUnitTests():QH::NetworkNode() {
+NetworkNodeUnitTests::NetworkNodeUnitTests():
+    TemplateDataBaseNodeUnitTests<QH::NetworkNode, QH::PKG::NodeObject>(DB_NODE_NAME) {
 
 }
 
-bool NetworkNodeUnitTests::test() {
+QH::PKG::NodeObject *NetworkNodeUnitTests::randomMember() const {
 
-    if (!init()) {
-        return false;
-    }
+    srand(time(nullptr));
 
-    if (!testReadWrite()) {
-        return false;
-    }
+    QH::PKG::NodeObject * res = new QH::PKG::NodeObject();
 
-    if (!testUpdate()) {
-        return false;
-    }
+    res->setAuthenticationData(randomArray(64));
+    res->setTrust(0);
+    res->prepareToSend();
 
-    if (!testChangeTrust()) {
-        return false;
-    }
-
-    return true;
-}
-
-bool NetworkNodeUnitTests::init() {
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    QString database = dbLocation();
-    stop();
-
-
-    if (QFileInfo(database).exists() && !QFile::remove(database)) {
-        return false;
-    }
-
-    return true;
-}
-
-bool NetworkNodeUnitTests::testReadWrite() {
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    QH::PKG::NodeObject testObjec; thisNode(testObjec);
-
-    auto objectFromDataBase = db()->getObject(testObjec);
-
-    if (objectFromDataBase) {
-        return false;
-    }
-
-    if (!db()->updateObject(&testObjec)) {
-        return false;
-    }
-
-    auto object = db()->getObject(testObjec);
-
-    if (!object || !object->isValid()) {
-        return false;
-    }
-
-    stop();
-
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    objectFromDataBase = db()->getObject(testObjec);
-
-    if (objectFromDataBase && objectFromDataBase->trust() == 0) {
-        return true;
-    }
-
-    return false;
-}
-
-bool NetworkNodeUnitTests::testUpdate() {
-    stop();
-
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    QH::PKG::NodeObject testObjec; thisNode(testObjec);
-
-    auto objectFromDataBase = db()->getObject(testObjec);
-
-    if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
-        return false;
-    }
-
-    auto clone = objectFromDataBase->clone().staticCast<QH::PKG::NodeObject>();
-
-    clone->setTrust(20);
-
-    if (!db()->updateObject(clone.data())) {
-        return false;
-    }
-
-    objectFromDataBase = db()->getObject(testObjec);
-
-    if (objectFromDataBase && objectFromDataBase->trust() != 20) {
-        return false;
-    }
-
-    stop();
-
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    objectFromDataBase = db()->getObject(testObjec);
-
-    if (!objectFromDataBase || objectFromDataBase->trust() != 20) {
-        return false;
-    }
-
-    return true;
-}
-
-bool NetworkNodeUnitTests::testChangeTrust() {
-    stop();
-
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    QH::PKG::NodeObject testObjec; thisNode(testObjec);
-
-    if(!changeTrust(testObjec.getId(), -10)) {
-        return false;
-    };
-
-    auto objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
-
-    if (objectFromDataBase && objectFromDataBase->trust() != 10) {
-        return false;
-    }
-
-    stop();
-
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
-
-    if (!objectFromDataBase || objectFromDataBase->trust() != 10) {
-        return false;
-    }
-
-    if(!changeTrust(testObjec.getId(), -10)) {
-        return false;
-    };
-
-    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
-
-    if (objectFromDataBase && objectFromDataBase->trust() != 0) {
-        return false;
-    }
-
-    stop();
-
-    if (!run(TEST_LOCAL_HOST, TEST_PORT, DB_NODE_NAME)) {
-        return false;
-    }
-
-    objectFromDataBase = static_cast<const QH::PKG::NodeObject*>(db()->getObjectRaw(testObjec));
-
-    if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
-        return false;
-    }
-
-    return isBanned(testObjec.getId());
-
+    return res;
 }

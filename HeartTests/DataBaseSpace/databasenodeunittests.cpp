@@ -10,19 +10,6 @@
 
 #define DB_NODE_NAME "DatabaseTestNode"
 
-QByteArray randomArray(int length) {
-    QByteArray data;
-
-    static unsigned char nance = 0;
-
-    for (int i = 0 ; i < length; ++i) {
-        data.push_back((rand() % static_cast<unsigned char>(0xFF - nance)) + nance);
-    }
-
-    nance++;
-
-    return data;
-}
 
 DataBaseNodeUnitTests::DataBaseNodeUnitTests():
     TemplateDataBaseNodeUnitTests<QH::DataBaseNode, QH::PKG::UserMember>(DB_NODE_NAME)
