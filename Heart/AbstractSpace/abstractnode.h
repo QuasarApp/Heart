@@ -567,9 +567,6 @@ private:
 
     QSet<QFutureWatcher <bool>*> _workers;
 
-    PackageManager _packageManager;
-
-
     mutable QMutex _connectionsMutex;
     mutable QMutex _actionCacheMutex;
     mutable QMutex _confirmNodeMutex;

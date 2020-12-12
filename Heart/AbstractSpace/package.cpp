@@ -21,6 +21,10 @@ bool Package::isValid() const {
         return false;
     }
 
+    if (hdr.size != data.size()) {
+        return false;
+    }
+
     auto rawint = data.mid(0, sizeof (decltype (hdr.command)));
     decltype (hdr.command) cmd;
     memcpy(&cmd, rawint.data(), sizeof (cmd));
@@ -31,10 +35,6 @@ bool Package::isValid() const {
 
         if (hdr.command != cmd)
             return false;
-    }
-
-    if (hdr.size != data.size()) {
-        return false;
     }
 
     return qHash(data) == hdr.hash;
