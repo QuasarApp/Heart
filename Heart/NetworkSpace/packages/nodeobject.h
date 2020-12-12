@@ -32,6 +32,10 @@ protected:
 public:
     DBObject *createDBObject() const override;
     bool copyFrom(const AbstractData *other) override;
+
+    // DBObject interface
+public:
+    virtual DBVariantMap variantMap() const override;
 };
 }
 }
