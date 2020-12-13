@@ -25,8 +25,6 @@ class AbstractData;
 class HEARTSHARED_EXPORT iObjectProvider
 {
 public:
-    iObjectProvider();
-    virtual ~iObjectProvider();
 
     /**
      * @brief getObject this method return a pointer to DBObject created by select method of the template object (templateVal).

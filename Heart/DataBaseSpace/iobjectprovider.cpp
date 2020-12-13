@@ -9,9 +9,6 @@
 
 namespace QH {
 using namespace PKG;
-iObjectProvider::iObjectProvider() = default;
-
-iObjectProvider::~iObjectProvider() = default;
 
 const DBObject *iObjectProvider::getObjectRaw(const DBObject &templateVal) {
 
