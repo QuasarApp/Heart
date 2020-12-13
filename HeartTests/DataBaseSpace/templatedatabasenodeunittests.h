@@ -54,6 +54,7 @@ public:
             return false;
         }
 
+        BASE::stop();
         return true;
     }
 
@@ -276,7 +277,7 @@ protected:
         static unsigned char nance = 0;
 
         for (int i = 0 ; i < length; ++i) {
-            data.push_back((rand() % static_cast<unsigned char>(0xFF - nance)) + nance);
+            data.push_back(((rand() + nance) % static_cast<unsigned char>(0xFF)));
         }
 
         nance++;

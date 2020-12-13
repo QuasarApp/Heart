@@ -146,6 +146,21 @@ bool SqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBOb
     return false;
 }
 
+bool SqlDBCache::deleteObject(const DBObject *delObj, bool wait) {
+
+    if (!delObj)
+        return false;
+
+    deleteFromCache(delObj);
+
+    if (_writer && _writer->isValid()) {
+        return _writer->deleteObject(delObj, wait);
+    }
+
+    return false;
+
+}
+
 bool SqlDBCache::updateObject(const DBObject *saveObject, bool wait) {
 
     if (!saveObject || !saveObject->isValid()) {
@@ -170,31 +185,12 @@ bool SqlDBCache::updateObject(const DBObject *saveObject, bool wait) {
 
 }
 
-bool SqlDBCache::deleteObject(const DBObject *delObj, bool wait) {
-
-    if (!delObj)
-        return false;
-
-    deleteFromCache(delObj);
-
-    if (_writer && _writer->isValid()) {
-        return _writer->deleteObject(delObj, wait);
-    }
-
-    return false;
-
-}
-
 bool SqlDBCache::insertObject(const DBObject *saveObject, bool wait) {
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
 
-    if (saveObject->getId().isValid()) {
-
-        if (insertToCache(saveObject)) {
-            return false;
-        }
+    if (saveObject->isCached() && insertToCache(saveObject)) {
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
 
@@ -247,6 +243,10 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
 
 bool SqlDBCache::insertToCache(const DBObject *obj) {
     if (!obj)
+        return false;
+
+    // obj must be have valid id of save into cache
+    if (!obj->getId().isValid())
         return false;
 
     QMutexLocker lock(&_cacheMutex);

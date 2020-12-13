@@ -205,10 +205,6 @@ bool SqlDBWriter::initDb(const QVariantMap &params) {
         return initDbPrivate(params);
     };
 
-    if (QThread::currentThread() == thread()) {
-        return handleInitDb();
-    }
-
     return asyncLauncher(handleInitDb, true);
 }
 
