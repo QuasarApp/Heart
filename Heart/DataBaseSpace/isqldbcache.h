@@ -168,7 +168,7 @@ protected:
      * Override this methd if you want change method of writinga data from cache.
      * @param currentTime This is current time for saving time of the invoke of this method.
      */
-    virtual void globalUpdateDataBasePrivate(qint64 currentTime) = 0;
+    virtual void globalUpdateDataBasePrivate(qint64 currentTime);;
 
     /**
      * @brief globalUpdateDataBase This is base method for syncing data from the cache with database.

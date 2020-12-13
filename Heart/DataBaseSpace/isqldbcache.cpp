@@ -225,6 +225,12 @@ void ISqlDBCache::setMode(const SqlDBCasheWriteMode &mode) {
     _mode = mode;
 }
 
+void ISqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
+    Q_UNUSED(currentTime)
+
+    throw std::runtime_error("ISqlDBCache::globalUpdateDataBasePrivate is not implemented!");
+}
+
 qint64 ISqlDBCache::getUpdateInterval() const {
     return updateInterval;
 }
