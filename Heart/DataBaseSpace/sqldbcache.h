@@ -27,6 +27,7 @@ public:
     SqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL,
                SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
+    ~SqlDBCache();
     // ISqlDBCache interface
 protected:
     void deleteFromCache(const PKG::DBObject *delObj) override;

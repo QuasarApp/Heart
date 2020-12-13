@@ -40,13 +40,11 @@ void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     }
 }
 
-qint64 ISqlDBCache::getLastUpdateTime() const
-{
+qint64 ISqlDBCache::getLastUpdateTime() const {
     return lastUpdateTime;
 }
 
-void ISqlDBCache::setLastUpdateTime(const qint64 &value)
-{
+void ISqlDBCache::setLastUpdateTime(const qint64 &value) {
     lastUpdateTime = value;
 }
 
@@ -57,7 +55,7 @@ ISqlDBCache::ISqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode) {
 }
 
 ISqlDBCache::~ISqlDBCache() {
-    globalUpdateDataBase(SqlDBCasheWriteMode::Force);
+
 }
 
 SqlDBWriter *ISqlDBCache::writer() const {
@@ -186,6 +184,10 @@ void ISqlDBCache::setSQLSources(const QStringList &list) {
         db->setSQLSources(list);
 }
 
+void ISqlDBCache::prepareForDelete() {
+    globalUpdateDataBase(SqlDBCasheWriteMode::Force);
+}
+
 bool ISqlDBCache::changeObjects(const DBObject &templateObject,
                                const std::function<bool (DBObject *)> &changeAction) {
 
@@ -223,12 +225,6 @@ SqlDBCasheWriteMode ISqlDBCache::getMode() const {
 
 void ISqlDBCache::setMode(const SqlDBCasheWriteMode &mode) {
     _mode = mode;
-}
-
-void ISqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
-    Q_UNUSED(currentTime)
-
-    throw std::runtime_error("ISqlDBCache::globalUpdateDataBasePrivate is not implemented!");
 }
 
 qint64 ISqlDBCache::getUpdateInterval() const {

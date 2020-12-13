@@ -18,6 +18,7 @@
 #include <QMutex>
 #include "config.h"
 #include "basedefines.h"
+#include "softdelete.h"
 
 namespace QH {
 
@@ -47,8 +48,13 @@ enum class SqlDBCasheWriteMode: int {
  * * insertToCache
  * * deleteFromCache
  * * getFromCache
+ *
+ * @note Objects of all implementation of this classs must be deleted using the softDelete.
+ * The softDelete method create save all cached data into database.
+ * If you try delete this object wthout using softDelete method then distructor of this object emit runtime error exeption (on the debug mode only).
+ *
  */
-class HEARTSHARED_EXPORT ISqlDBCache: public QObject, public iObjectProvider
+class HEARTSHARED_EXPORT ISqlDBCache: public QObject, public iObjectProvider, public SoftDelete
 {
     Q_OBJECT
 
@@ -117,10 +123,20 @@ public:
 
     void setSQLSources(const QStringList &list) override;
 
-    qint64 getLastUpdateTime() const;
-    void setLastUpdateTime(const qint64 &value);
-
 protected:
+    virtual void prepareForDelete() override;
+
+    /**
+     * @brief getLastUpdateTime This method return time of last update.
+     * @return msec of the last update.
+     */
+    qint64 getLastUpdateTime() const;
+
+    /**
+     * @brief setLastUpdateTime This method set new value of the update time.
+     * @param value new time of update.
+     */
+    void setLastUpdateTime(const qint64 &value);
 
     /**
      * @brief deleteFromCache This method delete object from db cache, bat not from database.
@@ -168,7 +184,7 @@ protected:
      * Override this methd if you want change method of writinga data from cache.
      * @param currentTime This is current time for saving time of the invoke of this method.
      */
-    virtual void globalUpdateDataBasePrivate(qint64 currentTime);;
+    virtual void globalUpdateDataBasePrivate(qint64 currentTime) = 0;;
 
     /**
      * @brief globalUpdateDataBase This is base method for syncing data from the cache with database.

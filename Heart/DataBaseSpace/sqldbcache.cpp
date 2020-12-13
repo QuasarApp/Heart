@@ -75,6 +75,10 @@ SqlDBCache::SqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode):
 
 }
 
+SqlDBCache::~SqlDBCache() {
+
+}
+
 void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     if (!delObj)
         return;
