@@ -95,7 +95,7 @@ void DataBaseNode::stop() {
 
     if (db()) {
         auto writer = _db->writer();
-        delete _db;
+        _db->softDelete();
         _db = nullptr;
         delete writer;
 

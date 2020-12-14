@@ -35,13 +35,13 @@ protected:
     bool updateCache(const PKG::DBObject *obj) override;
     PKG::DBObject *getFromCache(const PKG::DBObject *obj) override;
     void globalUpdateDataBasePrivate(qint64 currentTime) override;
+    void pushToQueue(const PKG::DBObject *obj, PKG::MemberType type) override;
 
 private:
     QMutex _saveLaterMutex;
     QMutex _cacheMutex;
     QHash<uint, PKG::DBObject*>  _cache;
     QHash<PKG::MemberType, const PKG::DBObject*>  _needToSaveCache;
-
 };
 
 }

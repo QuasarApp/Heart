@@ -48,6 +48,7 @@ enum class SqlDBCasheWriteMode: int {
  * * insertToCache
  * * deleteFromCache
  * * getFromCache
+ * * pushToQueue
  *
  * @note Objects of all implementation of this classs must be deleted using the softDelete.
  * The softDelete method create save all cached data into database.
@@ -166,6 +167,14 @@ protected:
      * @return database Object from cache. if object with objKey not exits return nullptr.
      */
     virtual PKG::DBObject* getFromCache(const PKG::DBObject *obj) = 0;
+
+    /**
+     * @brief pushToQueue this method should add the object to the update queue in the physical data dash.
+     * @param obj This is obje for update.
+     * @param type This is type uf update. Usually it is PKG::MemberType::Update and PKG::MemberType::Insert.
+     *  For more information see the PKG::MemberType enum.
+     */
+    virtual void pushToQueue(const PKG::DBObject *obj, PKG::MemberType type) = 0;
 
     /**
      * @brief getMode This method return mode of work databnase cache. For mmore information see the QH::SqlDBCasheWriteMode enum.

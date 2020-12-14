@@ -69,6 +69,12 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
     setLastUpdateTime(currentTime);
 }
 
+void SqlDBCache::pushToQueue(const DBObject *obj, MemberType type) {
+    _saveLaterMutex.lock();
+    _needToSaveCache.insert(type, obj);
+    _saveLaterMutex.unlock();
+}
+
 
 SqlDBCache::SqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode):
     ISqlDBCache(updateInterval, mode) {

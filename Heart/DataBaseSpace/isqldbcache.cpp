@@ -132,6 +132,9 @@ bool ISqlDBCache::updateObject(const DBObject *saveObject, bool wait) {
                    _writer->updateObject(saveObject, wait);
         }
 
+        pushToQueue(saveObject, MemberType::Update);
+        globalUpdateDataBase(getMode());
+
         return true;
     }
 
@@ -152,6 +155,9 @@ bool ISqlDBCache::insertObject(const DBObject *saveObject, bool wait) {
             return _writer && _writer->isValid() &&
                     _writer->insertObject(saveObject, wait);
         }
+
+        pushToQueue(saveObject, MemberType::Insert);
+        globalUpdateDataBase(getMode());
 
         return true;
     }

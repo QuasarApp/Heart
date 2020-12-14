@@ -19,6 +19,11 @@ namespace QH {
 class SoftDelete {
 public:
     SoftDelete();
+    /**
+     * @brief ~SoftDelete This distructor has bin crashed if the softDelete method  not will be invoked befor delte this object.
+     * IF you try delete this object on release distributio then tou get error message only without invoked std::abort method.
+     * @warning do not delete child classes using delete of delete later methods. Use the softDelete method.
+     */
     virtual ~SoftDelete();
 
     /**
@@ -31,6 +36,7 @@ protected:
     /**
      * @brief prepareForDelete This method must be prepare this object for delete.
      * Override this for working main functions of this class.
+     * For more information see the SoftDelete class and SoftDelete::~SoftDelete distructor.
      */
     virtual void prepareForDelete() = 0;
 
