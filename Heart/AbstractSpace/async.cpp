@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QThread>
+#include <QDebug>
 
 // Private implementation of waitFor functions.
 #define waitPrivate(CONDITION, TIMEOUT) \
@@ -25,6 +26,17 @@ void Async::asyncHandler(Job job,
                           bool *endOfWork) const {
 
     bool result = job();
+
+    /*This IS ULTRA BUG
+     * For reproduse:
+     * 1. run gdb
+     * 2. skip the 3 step of the asyncLauncher method.
+     * 3. add breackpoint in to this function.
+     * 4. operator = for the resultOfWork operand broken the stack of main thread.
+     * This is true magick.
+     * -\_O_/-
+     * */
+    qDebug() << resultOfWork << " : " << *resultOfWork;
 
     if (resultOfWork)
         *resultOfWork = result;

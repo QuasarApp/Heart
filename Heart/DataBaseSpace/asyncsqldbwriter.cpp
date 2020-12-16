@@ -19,7 +19,9 @@ using namespace PKG;
 
 AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     SqlDBWriter(ptr) {
-    _own = new QThread(this);
+
+     _own = new QThread();
+     _own->setObjectName("AsyncSqlDbWriter");
     moveToThread(_own);
     _own->start();
 
@@ -28,5 +30,7 @@ AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
 AsyncSqlDbWriter::~AsyncSqlDbWriter() {
     _own->quit();
     _own->wait();
+
+    _own->deleteLater();
 }
 }

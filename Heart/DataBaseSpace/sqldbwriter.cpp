@@ -20,7 +20,6 @@
 #include <QSqlRecord>
 #include <QStandardPaths>
 #include <QCoreApplication>
-#include <QThread>
 
 namespace QH {
 using namespace PKG;
