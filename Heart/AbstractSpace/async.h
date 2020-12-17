@@ -104,10 +104,13 @@ private slots:
 
             return invoke;
      * \endcode
+     *
+     * @warning if you use the resultOfWork parameter then necessarily set the endOfWork parameter and wait the endOfWork condition. If you do not set this then this method broken the stack of the main thread.
+     *
      */
     void asyncHandler (QH::Async::Job job,
-                       bool* resultOfWork = nullptr,
-                       bool* endOfWork = nullptr) const;
+                       bool* endOfWork = nullptr,
+                       bool* resultOfWork = nullptr) const;
 
 
   };

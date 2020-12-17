@@ -22,23 +22,12 @@ Async::Async(QObject *ptr):
 }
 
 void Async::asyncHandler(Job job,
-                          bool *resultOfWork,
-                          bool *endOfWork) const {
+                          bool *endOfWork,
+                          bool *resultOfWork) const {
 
     bool result = job();
 
-    /*This IS ULTRA BUG
-     * For reproduse:
-     * 1. run gdb
-     * 2. skip the 3 step of the asyncLauncher method.
-     * 3. add breackpoint in to this function.
-     * 4. operator = for the resultOfWork operand broken the stack of main thread.
-     * This is true magick.
-     * -\_O_/-
-     * */
-    qDebug() << resultOfWork << " : " << *resultOfWork;
-
-    if (resultOfWork)
+    if (endOfWork && resultOfWork)
         *resultOfWork = result;
 
     if (endOfWork) {
@@ -60,22 +49,25 @@ bool Async::asyncLauncher(const Async::Job &job, bool await) {
         return job();
     }
 
+    if (!await) {
+        return  QMetaObject::invokeMethod(this,
+                                       "asyncHandler",
+                                       Qt::QueuedConnection,
+                                       Q_ARG(QH::Async::Job, job));
+    }
+
     bool workOfEnd = false, workResult = false;
 
     bool invockeResult = QMetaObject::invokeMethod(this,
                                                    "asyncHandler",
                                                    Qt::QueuedConnection,
                                                    Q_ARG(QH::Async::Job, job),
-                                                   Q_ARG(bool *, &workResult),
-                                                   Q_ARG(bool *, &workOfEnd));
+                                                   Q_ARG(bool *, &workOfEnd),
+                                                   Q_ARG(bool *, &workResult));
 
 
     if (!invockeResult)
         return false;
-
-    if (!await) {
-        return true;
-    }
 
     if (!waitFor(&workOfEnd)) {
         return false;
