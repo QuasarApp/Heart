@@ -103,8 +103,8 @@ protected:
         }
 
         // generate random objects for database.
-        for (int i = 0; i < 10; ++i) {
-            if (!BASE::db()->insertObject(randomMember())) {
+        for (int i = 0; i < 100; ++i) {
+            if (!BASE::db()->insertObject(randomMember(), true)) {
                 return false;
             }
         }
@@ -115,7 +115,7 @@ protected:
 
         auto list = BASE::db()->getObject(setRequest);
 
-        if (list && list->data().size() != 10)
+        if (list && list->data().size() != 100)
             return false;
 
         // create request for get all objects from database and cached it.

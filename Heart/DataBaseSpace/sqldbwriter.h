@@ -171,6 +171,17 @@ protected:
      */
     virtual QVariantMap defaultInitPararm() const;
 
+    /**
+     * @brief initSqlDataBasse This method create ad database connection.
+     * Without configuratuon. This metho invoked in the initDbPrivate method.
+     * @note Overrde this method for create f custom method of initialisation of the db connection.
+     * @param driverName This is name of sql driver for more information see about Qt Sql Drivers.
+     * @param name This is name of path of database.
+     * @return database object.
+     */
+    virtual QSqlDatabase initSqlDataBasse(const QString &driverName,
+                                          const QString &name);
+
     QSqlDatabase db;
 
 private:

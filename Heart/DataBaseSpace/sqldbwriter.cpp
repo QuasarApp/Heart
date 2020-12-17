@@ -75,8 +75,8 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
 bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     _config = params;
 
-    db = QSqlDatabase::addDatabase(_config["DBDriver"].toString(),
-            QFileInfo(_config["DBFilePath"].toString()).fileName());
+    db = initSqlDataBasse(_config["DBDriver"].toString(),
+            _config["DBFilePath"].toString());
 
     if (_config.contains("DBFilePath")) {
 
@@ -110,7 +110,7 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
         return false;
     }
 
-    for (const auto& sqlFile : _SQLSources) {
+    for (const QString& sqlFile : _SQLSources) {
         QSqlQuery query(db);
         if (!exec(&query, sqlFile)) {
             return false;
@@ -181,6 +181,13 @@ QVariantMap SqlDBWriter::defaultInitPararm() const {
     params["DBDriver"] = "QSQLITE";
     params["DBFile"] = DEFAULT_DB_PATH;
     return params;
+}
+
+QSqlDatabase SqlDBWriter::initSqlDataBasse(const QString& driverName,
+                                           const QString& name) {
+
+    return QSqlDatabase::addDatabase(driverName,
+                                     QFileInfo(name).fileName());
 }
 
 SqlDBWriter::SqlDBWriter(QObject* ptr):
