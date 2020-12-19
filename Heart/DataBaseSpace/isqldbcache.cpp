@@ -75,10 +75,11 @@ void ISqlDBCache::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool ISqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
+bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
+                                QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     if (templateObject.isCached()) {
-        DBObject* obj = getFromCache(&templateObject);
+        auto obj = getFromCache(&templateObject);
         if(obj) {
             result.push_back(obj);
             return true;
@@ -104,7 +105,7 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,  QList<const DBO
     return false;
 }
 
-bool ISqlDBCache::deleteObject(const DBObject *delObj, bool wait) {
+bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj, bool wait) {
 
     if (!delObj)
         return false;
@@ -119,7 +120,7 @@ bool ISqlDBCache::deleteObject(const DBObject *delObj, bool wait) {
 
 }
 
-bool ISqlDBCache::updateObject(const DBObject *saveObject, bool wait) {
+bool ISqlDBCache::updateObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
 
     if (!saveObject || !saveObject->isValid()) {
         return false;
@@ -143,7 +144,7 @@ bool ISqlDBCache::updateObject(const DBObject *saveObject, bool wait) {
 
 }
 
-bool ISqlDBCache::insertObject(const DBObject *saveObject, bool wait) {
+bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
@@ -195,9 +196,9 @@ void ISqlDBCache::prepareForDelete() {
 }
 
 bool ISqlDBCache::changeObjects(const DBObject &templateObject,
-                               const std::function<bool (DBObject *)> &changeAction) {
+                                const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction) {
 
-    QList<const DBObject *> list;
+    QList<QSharedPointer<DBObject>> list;
     if (!getAllObjects(templateObject, list)) {
         return false;
     }
@@ -205,19 +206,17 @@ bool ISqlDBCache::changeObjects(const DBObject &templateObject,
     if (!list.size())
         return false;
 
-    for (const DBObject * obj :list) {
-        auto cachedObject = getFromCache(obj);
+    for (const auto& obj :list) {
+        auto cachedObject = getFromCacheById(obj->dbKey());
 
         if (!cachedObject && obj->isCached())
             return false;
 
-        DBObject *ptr = (cachedObject)? cachedObject: const_cast<DBObject*>(obj);
-
-        if (!changeAction(ptr)) {
+        if (!changeAction(cachedObject)) {
             return false;
         };
 
-        if (!updateObject(ptr)) {
+        if (!updateObject(cachedObject)) {
             return false;
         };
     }

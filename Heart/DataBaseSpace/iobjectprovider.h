@@ -20,22 +20,22 @@ class AbstractData;
 
 /**
  * @brief The iObjectProvider class is base interface for work with database objects.
- * Using on database writers and database cache.
+ * Using on database writers and database caches.
  */
 class HEARTSHARED_EXPORT iObjectProvider
 {
 public:
 
     /**
-     * @brief getObject this method return a pointer to DBObject created by select method of the template object (templateVal).
+     * @brief getObject this method return a strong pointer to DBObject created by select method of the template object (templateVal).
      * @param templateVal This is template object with a select data base request.
      * @note This method return a database object with a type as a type of templateVal object.
      * If you want to get a object of C class but the datatabase contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
      * This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors.
-     * @return return pointer to DBObject ot nullptr id object not exits.
+     * @return return strong pointer to DBObject ot nullptr id object not exits.
      */
     template<class TYPE>
-    const TYPE *getObject(const TYPE &templateVal) {
+    QSharedPointer<TYPE> getObject(const TYPE &templateVal) {
 
         auto val = getObjectRaw(templateVal);
         const TYPE* result = dynamic_cast<const TYPE*>(val);
@@ -55,39 +55,42 @@ public:
      * @param templateVal This is  template object with request to database
      * @return The database object pointer (not casted)
      */
-    const PKG::DBObject *getObjectRaw(const PKG::DBObject &templateVal);
+    QSharedPointer<PKG::DBObject> getObjectRaw(const PKG::DBObject &templateVal);
 
     /**
-     * @brief getAllObjects This method executable select method of objects and return list of all selected objects
-     * @param templateObject This is template object with select request.
+     * @brief getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects
+     * @param templateObject This is template object for prepe a select request.
      * @param result This is return value, list of selected objects.
      * @return true if objects have in db else false.
      */
-    virtual bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) = 0;
+    virtual bool getAllObjects(const PKG::DBObject &templateObject,
+                               QList<QSharedPointer<PKG::DBObject>> &result) = 0;
 
     /**
-     * @brief updateObject This method executable update method of objects and save the change of current object into database.
+     * @brief updateObject This method execute a update method of the saveObject and save all changes into database.
+     * @note This method update object in the database only. If you try update not exists object then this method return false.
      * @param saveObject This is object for updating.
      * @param wait This arguments force current thread wait for the function finishing.
      * @return true if objects is updated successful else false.
      */
-    virtual bool updateObject(const PKG::DBObject* saveObject, bool wait) = 0;
+    virtual bool updateObject(const QSharedPointer<PKG::DBObject>& saveObject, bool wait) = 0;
 
     /**
-     * @brief insertObject This method executable insert method of objects and save current object into database.
+     * @brief insertObject This method execute a insert method of the saveObject and insert it into database.
+     * @note This method insert object into database only. IF object is exits in the database then this method return false.
      * @param saveObject This is object for inserting.
      * @param wait This arguments force current thread wait for the function finishing.
      * @return true if objects is saved successful else false.
      */
-    virtual bool insertObject(const PKG::DBObject* saveObject, bool wait) = 0;
+    virtual bool insertObject(const QSharedPointer<PKG::DBObject>& saveObject, bool wait) = 0;
 
     /**
-     * @brief deleteObject This method executable delete method of objects and remove current object from database.
+     * @brief deleteObject This method execute a delete method of obj and remove current object from database.
      * @param obj This is object for removing.
      * @param wait This arguments force current thread wait for the function finishing.
      * @return true if object is removed successful else false.
      */
-    virtual bool deleteObject(const PKG::DBObject* obj, bool wait) = 0;
+    virtual bool deleteObject(const QSharedPointer<PKG::DBObject>& obj, bool wait) = 0;
 
     /**
      * @brief setSQLSources This method set sql sources for deployed database.

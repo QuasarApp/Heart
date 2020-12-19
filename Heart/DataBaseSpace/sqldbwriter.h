@@ -63,10 +63,11 @@ public:
      */
     virtual bool isValid() const;
 
-    bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
-    bool updateObject(const QH::PKG::DBObject *ptr, bool wait = false) override;
-    bool deleteObject(const QH::PKG::DBObject *ptr, bool wait = false) override;
-    bool insertObject(const PKG::DBObject *ptr, bool wait = false) override;
+    bool getAllObjects(const PKG::DBObject &templateObject,
+                       QList<QSharedPointer<PKG::DBObject>> &result) override;
+    bool updateObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
+    bool deleteObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
+    bool insertObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     void setSQLSources(const QStringList &list) override;
 
     /**
@@ -81,23 +82,23 @@ public:
     /**
      * @brief updateQuery This method execute update query of object.
      *  For more Information see DBObject::prepareUpdateQuery.
-     * @param ptr This is pointer to object that need to update into a database.
+     * @param ptr This is strong pointer to object that need to update into a database.
      * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
      * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
      * @return true if function finished seccussful
      */
-    virtual bool updateQuery(const QH::PKG::DBObject *ptr) const;
+    virtual bool updateQuery(const QSharedPointer<QH::PKG::DBObject> &ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters.
      * @param requestObject This is template object for generate select query.
-     * @param result This isreturn values
+     * @param result This is return values
      * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
      * @param endOfWork This wariable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if all goodelse false
      */
     virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
-                             QList<const QH::PKG::DBObject *> &result);
+                             QList<QSharedPointer<QH::PKG::DBObject>> &result);
 
     /**
      * @brief deleteQuery This method prepare the delete object query.
@@ -106,16 +107,16 @@ public:
      * @param endOfWork This wariable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if query generated successful.
      */
-    virtual bool deleteQuery(const QH::PKG::DBObject *deleteObject) const;
+    virtual bool deleteQuery(const QSharedPointer<QH::PKG::DBObject> &deleteObject) const;
 
     /**
      * @brief insertQuery This method prepare the insert object query.
-     * @param insertObject This is tempalte object for generate the insert query.
+     * @param insertObject This is strong pointer of object for generate the insert query.
      * @param resultOfWork This is bool variable contais result of work a SqlDBWriter::saveObject method.
      * @param endOfWork This wariable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if query generated successful.
      */
-    virtual bool insertQuery(const QH::PKG::DBObject *insertObject) const;
+    virtual bool insertQuery(const QSharedPointer<QH::PKG::DBObject>& insertObject) const;
 
 
 protected slots:

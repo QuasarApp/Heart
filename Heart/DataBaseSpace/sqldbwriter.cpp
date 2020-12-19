@@ -218,7 +218,8 @@ bool SqlDBWriter::isValid() const {
     return db.isValid() && db.isOpen() && initSuccessful;
 }
 
-bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBObject *> &result) {
+bool SqlDBWriter::getAllObjects(const DBObject &templateObject,
+                                QList<QSharedPointer<PKG::DBObject>> &result) {
 
     auto getAll = [&templateObject, &result, this]() {
         return SqlDBWriter::selectQuery(templateObject, result);
@@ -227,69 +228,29 @@ bool SqlDBWriter::getAllObjects(const DBObject &templateObject,  QList<const DBO
     return asyncLauncher(getAll, true);
 }
 
-bool SqlDBWriter::updateObject(const DBObject* ptr, bool wait) {
+bool SqlDBWriter::updateObject(const QSharedPointer<DBObject> &ptr, bool wait) {
 
-    Async::Job job;
-
-    if (wait) {
-
-        auto clone = ptr->cloneRaw();
-
-        job = [clone, this]() {
-
-            bool res = updateQuery(clone);
-            delete clone;
-            return res;
-        };
-    } else {
-        job = [this, ptr]() {
-            return updateQuery(ptr);
-        };
-    }
+    Async::Job job = [this, ptr]() {
+        return updateQuery(ptr);
+    };
 
     return asyncLauncher(job, wait);
 }
 
-bool SqlDBWriter::deleteObject(const DBObject* ptr, bool wait) {
+bool SqlDBWriter::deleteObject(const QSharedPointer<DBObject> &ptr, bool wait) {
 
-    Async::Job job;
-
-    if (wait) {
-
-        auto clone = ptr->cloneRaw();
-        job = [clone, this]() {
-
-            bool res = deleteQuery(clone);
-            delete clone;
-            return res;
-        };
-    } else {
-        job = [this, ptr]() {
-            return deleteQuery(ptr);
-        };
-    }
+    Async::Job job = [this, ptr]() {
+        return deleteQuery(ptr);
+    };
 
     return asyncLauncher(job, wait);
 }
 
-bool SqlDBWriter::insertObject(const DBObject *ptr, bool wait) {
+bool SqlDBWriter::insertObject(const QSharedPointer<DBObject> &ptr, bool wait) {
 
-    Async::Job job;
-
-    if (wait) {
-
-        auto clone = ptr->cloneRaw();
-        job = [clone, this]() {
-
-            bool res = insertQuery(clone);
-            delete clone;
-            return res;
-        };
-    } else {
-        job = [this, ptr]() {
-            return insertQuery(ptr);
-        };
-    }
+    Async::Job job = [this, ptr]() {
+        return insertQuery(ptr);
+    };
 
     return asyncLauncher(job, wait);
 
@@ -307,7 +268,7 @@ SqlDBWriter::~SqlDBWriter() {
     db.close();
 }
 
-bool SqlDBWriter::insertQuery(const DBObject* ptr) const {
+bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
     if (!ptr)
         return false;
 
@@ -323,7 +284,7 @@ bool SqlDBWriter::insertQuery(const DBObject* ptr) const {
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
-                              QList<const DBObject *> &result) {
+                              QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     QSqlQuery q(db);
     auto prepare = [&requestObject](QSqlQuery&q) {
@@ -333,7 +294,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
     auto cb = [&q, &requestObject, &result]() -> bool {
 
         if (requestObject.isBundle()) {
-            auto newObject = requestObject.createDBObject();
+            auto newObject = QSharedPointer<QH::PKG::DBObject>(requestObject.createDBObject());
 
             if (!newObject)
                 return false;
@@ -350,7 +311,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
 
         } else {
             while (q.next()) {
-                auto newObject = requestObject.createDBObject();
+                auto newObject = QSharedPointer<QH::PKG::DBObject>(requestObject.createDBObject());
 
                 if (!newObject)
                     return false;
@@ -370,7 +331,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
     return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
+bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) const {
     if (!deleteObject)
         return false;
 
@@ -381,14 +342,14 @@ bool SqlDBWriter::deleteQuery(const DBObject *deleteObject) const {
     };
 
     auto cb = []() -> bool {
-            return true;
+        return true;
     };
 
 
     return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::updateQuery(const DBObject *ptr) const {
+bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
     if (!ptr)
         return false;
 

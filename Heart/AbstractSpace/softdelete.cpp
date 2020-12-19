@@ -14,9 +14,9 @@ QH::SoftDelete::~SoftDelete() {
 
     if (!fSoftDelete) {
 
-        QuasarAppUtils::Params::log("You delte ISqlDBCache without preparing. "
+        QuasarAppUtils::Params::log(QString("You delete %0 without preparing. "
                                     "All changes can not be saved. "
-                                    "For fix it trouble use the softDelete method.",
+                                    "For fix it trouble use the softDelete method.").arg(typeid (this).name()),
                                     QuasarAppUtils::Error);
 #ifdef QT_DEBUG
         std::abort();

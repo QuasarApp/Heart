@@ -10,13 +10,14 @@
 namespace QH {
 using namespace PKG;
 
-const DBObject *iObjectProvider::getObjectRaw(const DBObject &templateVal) {
+QSharedPointer<DBObject> iObjectProvider::getObjectRaw(
+        const DBObject &templateVal) {
 
     if (!dynamic_cast<const DBObject*>(&templateVal)) {
         return nullptr;
     }
 
-    QList<const DBObject *> list;
+    QList<QSharedPointer<PKG::DBObject>> list;
     if (!getAllObjects(templateVal, list)) {
         return nullptr;
     }

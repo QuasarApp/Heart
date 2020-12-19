@@ -81,11 +81,15 @@ public:
      */
     void setWriter(SqlDBWriter* writer);
 
-    bool getAllObjects(const PKG::DBObject &templateObject,  QList<const PKG::DBObject *> &result) override;
+    bool getAllObjects(const PKG::DBObject &templateObject,
+                       QList<QSharedPointer<QH::PKG::DBObject>> &result) override;
 
-    bool updateObject(const PKG::DBObject* saveObject, bool wait = false) override;
-    bool deleteObject(const PKG::DBObject* delObj, bool wait = false) override;
-    bool insertObject(const PKG::DBObject *saveObject, bool wait = false) override;
+    bool updateObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                      bool wait = false) override;
+    bool deleteObject(const QSharedPointer<QH::PKG::DBObject>& delObj,
+                      bool wait = false) override;
+    bool insertObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                      bool wait = false) override;
 
     /**
      * @brief changeObjects This method change objecst of the database.
@@ -95,7 +99,7 @@ public:
      * @return true if function finished succesful.
      */
     bool changeObjects(const PKG::DBObject &templateObject,
-                       const std::function<bool (PKG::DBObject *)>  &changeAction);
+                       const std::function<bool (const QSharedPointer<PKG::DBObject> &)> &changeAction);
     /**
      * @brief getUpdateInterval This method return update interval for save changes into database. This is work for default and On_New_Thread mdes. For more information see the QH::SqlDBCasheWriteMode enum.
      * @return time in msecs
@@ -144,7 +148,7 @@ protected:
      * @param delObj [pointer to object for delete.
      * @return true if object has been delete successful.
      */
-    virtual void deleteFromCache(const PKG::DBObject *delObj) = 0;
+    virtual void deleteFromCache(const QSharedPointer<QH::PKG::DBObject> &delObj) = 0;
 
     /**
      * @brief insertToCache This method insert object into cache,  but not database.
@@ -152,29 +156,38 @@ protected:
      * @param obj This is object for save into cache.
      * @return true if insert finished successful. If Object exists then return false.
      */
-    virtual bool insertToCache(const PKG::DBObject *obj)  = 0;
+    virtual bool insertToCache(const QSharedPointer<QH::PKG::DBObject> &obj)  = 0;
 
     /**
      * @brief updateCache This method update alredy exits object on the cache, but not database.
      * @param obj This is object with chages for updae the object rtom cache.
      * @return true if save finished successful. If the obj mot exits in the cache then return false.
      */
-    virtual bool updateCache(const PKG::DBObject *obj) = 0;
+    virtual bool updateCache(const QSharedPointer<QH::PKG::DBObject> &obj) = 0;
 
     /**
-     * @brief getFromCache This method get database objcet from cache.
+     * @brief getFromCache This method return strong pointer to the database objcet from cache (pool).
      * @param objKey This is database cache id.
      * @return database Object from cache. if object with objKey not exits return nullptr.
      */
-    virtual PKG::DBObject* getFromCache(const PKG::DBObject *obj) = 0;
+    virtual QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const PKG::DBObject *obj) = 0;
 
     /**
-     * @brief pushToQueue this method should add the object to the update queue in the physical data dash.
+     * @brief getFromCacheById This method try get object from the pool of objects.
+     *  This method can only one object from the object pool.
+     * @param dbKey This is id of the database object.
+     *  For more information about generation ids see the DbAddressKey class or the DBObject::dbKey method.
+     * @return strong reference to the database object. If reqariment object not exists then return nullptr reference.
+     */
+    virtual QSharedPointer<QH::PKG::DBObject> getFromCacheById(quint32 dbKey) = 0;
+
+    /**
+     * @brief pushToQueue this method should be add the object to the update queue in the physical data dash.
      * @param obj This is obje for update.
      * @param type This is type uf update. Usually it is PKG::MemberType::Update and PKG::MemberType::Insert.
      *  For more information see the PKG::MemberType enum.
      */
-    virtual void pushToQueue(const PKG::DBObject *obj, PKG::MemberType type) = 0;
+    virtual void pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj, PKG::MemberType type) = 0;
 
     /**
      * @brief getMode This method return mode of work databnase cache. For mmore information see the QH::SqlDBCasheWriteMode enum.
