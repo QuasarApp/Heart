@@ -79,9 +79,8 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
                                 QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     if (templateObject.isCached()) {
-        auto obj = getFromCache(&templateObject);
-        if(obj) {
-            result.push_back(obj);
+        result = getFromCache(&templateObject);
+        if(result.size()) {
             return true;
         }
     }

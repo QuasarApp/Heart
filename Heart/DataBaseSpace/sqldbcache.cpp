@@ -30,7 +30,7 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
 
         if (writer() && writer()->isValid()) {
 
-            auto obj = getFromCache(it.value());
+            auto obj = it.value();
 
             if (!obj || !obj->isValid()) {
                 deleteFromCache(obj);
@@ -69,7 +69,8 @@ void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
     setLastUpdateTime(currentTime);
 }
 
-void SqlDBCache::pushToQueue(const DBObject *obj, MemberType type) {
+void SqlDBCache::pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj,
+                             MemberType type) {
     _saveLaterMutex.lock();
     _needToSaveCache.insert(type, obj);
     _saveLaterMutex.unlock();
@@ -85,7 +86,7 @@ SqlDBCache::~SqlDBCache() {
 
 }
 
-void SqlDBCache::deleteFromCache(const DBObject *delObj) {
+void SqlDBCache::deleteFromCache(const QSharedPointer<DBObject>& delObj) {
     if (!delObj)
         return;
 
@@ -94,7 +95,7 @@ void SqlDBCache::deleteFromCache(const DBObject *delObj) {
     _cacheMutex.unlock();
 }
 
-bool SqlDBCache::insertToCache(const DBObject *obj) {
+bool SqlDBCache::insertToCache(const QSharedPointer<DBObject>& obj) {
     if (!obj)
         return false;
 
@@ -110,13 +111,11 @@ bool SqlDBCache::insertToCache(const DBObject *obj) {
 
     _cache[obj->dbKey()] = obj->cloneRaw();
 
-    emit sigItemChanged(obj);
-
     return true;
 
 }
 
-bool SqlDBCache::updateCache(const DBObject *obj) {
+bool SqlDBCache::updateCache(const QSharedPointer<DBObject>& obj) {
     if (!obj)
         return false;
 
@@ -138,8 +137,6 @@ bool SqlDBCache::updateCache(const DBObject *obj) {
             return false;
         }
     }
-
-    emit sigItemChanged(obj);
 
     return true;
 }

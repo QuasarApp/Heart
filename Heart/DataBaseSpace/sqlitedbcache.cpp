@@ -56,23 +56,25 @@ bool SQLiteDBCache::init(const QVariantMap &params) {
     return ISqlDBCache::init(params);
 }
 
-void SQLiteDBCache::deleteFromCache(const PKG::DBObject *delObj) {
+void SQLiteDBCache::deleteFromCache(const QSharedPointer<PKG::DBObject> &delObj) {
     _private->deleteObject(delObj, true);
 }
 
-bool SQLiteDBCache::insertToCache(const PKG::DBObject *obj) {
+bool SQLiteDBCache::insertToCache(const QSharedPointer<PKG::DBObject> &obj) {
     return _private->insertObject(obj, true);
 }
 
-bool SQLiteDBCache::updateCache(const PKG::DBObject *obj) {
+bool SQLiteDBCache::updateCache(const QSharedPointer<PKG::DBObject> &obj) {
     return _private->updateObject(obj, true);
 }
 
-// TO-DO change result type to array.
-PKG::DBObject *SQLiteDBCache::getFromCache(const PKG::DBObject *obj) {
+QList<QSharedPointer<QH::PKG::DBObject>>&&
+SQLiteDBCache::getFromCache(const PKG::DBObject *obj) {
+
 }
 
-void SQLiteDBCache::pushToQueue(const PKG::DBObject *obj, PKG::MemberType type) {
+void SQLiteDBCache::pushToQueue(const QSharedPointer<PKG::DBObject> &obj,
+                                PKG::MemberType type) {
 
 }
 

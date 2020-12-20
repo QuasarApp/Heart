@@ -32,15 +32,16 @@ public:
     SQLiteDBCache();
 
     // ISqlDBCache interface
-    bool init(const QVariantMap &params);
+    bool init(const QVariantMap &params) override;
 
 protected:
-    void deleteFromCache(const PKG::DBObject *delObj);
-    bool insertToCache(const PKG::DBObject *obj);
-    bool updateCache(const PKG::DBObject *obj);
-    PKG::DBObject *getFromCache(const PKG::DBObject *obj);
-    void pushToQueue(const PKG::DBObject *obj, PKG::MemberType type);
-    void globalUpdateDataBasePrivate(qint64 currentTime);
+    void deleteFromCache(const QSharedPointer<QH::PKG::DBObject> & delObj) override;
+    bool insertToCache(const QSharedPointer<QH::PKG::DBObject> &obj) override;
+    bool updateCache(const QSharedPointer<QH::PKG::DBObject> &obj) override;
+    QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const QH::PKG::DBObject *obj) override;
+    void pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj,
+                     PKG::MemberType type) override;
+    void globalUpdateDataBasePrivate(qint64 currentTime) override;
 
 private:
     SQLiteDBCachePrivate * _private = nullptr;
