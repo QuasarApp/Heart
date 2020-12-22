@@ -90,7 +90,7 @@ protected:
     QByteArray hashgenerator(const QByteArray &data) override;
 
 private:
-    bool workWithUserRequest(PKG::UserMember *obj, const Package &pkg, const AbstractNodeInfo *sender);
+    bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj, const Package &pkg, const AbstractNodeInfo *sender);
 
 };
 

@@ -474,9 +474,7 @@ bool DataBaseNode::addUpdatePermission(const QVariant &member,
     object->setKey(PermisionData(member, objectAddress));
     object->setPermisions(permision);
 
-    if (!_db->insertObject(object))
-
-    if (!_db->updateObject(object)) {
+    if (!_db->insertObject(object) && !_db->updateObject(object)) {
         return false;
     }
 

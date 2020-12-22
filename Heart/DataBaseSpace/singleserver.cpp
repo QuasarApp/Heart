@@ -30,7 +30,7 @@ RegisteruserResult SingleServer::registerNewUser(PKG::UserMember user,
 
     addUpdatePermission(requester, user.dbAddress(), Permission::Write);
 
-    if (!db()->updateObject(&user)) {
+    if (!db()->insertObject(QSharedPointer<decltype(user)>::create(user))) {
         return RegisteruserResult::InternalError;
     };
 
@@ -96,9 +96,9 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
     }
 
     if (H_16<QH::PKG::AuthRequest>() == pkg.hdr.command) {
-            QH::PKG::AuthRequest obj(pkg);
+            auto obj = QSharedPointer<QH::PKG::AuthRequest>::create(pkg);
 
-            if (!obj.isValid()) {
+            if (!obj->isValid()) {
                 badRequest(sender->networkAddress(), pkg.hdr,
                            {
                                ErrorCodes::InvalidRequest,
@@ -107,7 +107,7 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
                 return ParserResult::Error;
             }
 
-            if (!workWithUserRequest(&obj, pkg, sender)) {
+            if (!workWithUserRequest(obj, pkg, sender)) {
                 return QH::ParserResult::Error;
             }
 
@@ -123,25 +123,25 @@ QByteArray SingleServer::hashgenerator(const QByteArray &data) {
     return DataBaseNode::hashgenerator(data + "singelserversoult");
 }
 
-bool SingleServer::workWithUserRequest(PKG::UserMember* obj,
+bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& obj,
                                        const Package &pkg,
                                        const AbstractNodeInfo *sender) {
 
     RegisteruserResult result = RegisteruserResult::InternalError;
 
-    auto request = dynamic_cast<const Request*>(obj);
+    auto request = obj.dynamicCast<Request>();
 
-    if (request) {
+    if (!request) {
         return false;
     }
 
     if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Login)) {
-        result = loginUser(*static_cast<PKG::UserMember*>(obj), sender);
+        result = loginUser(*obj.staticCast<PKG::UserMember>().data(), sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::SignIn)) {
         result = registerNewUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
 
-        auto requesterId = getSender(sender, obj);
+        auto requesterId = getSender(sender, obj.data());
 
         if (requesterId && deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
             badRequest(sender->networkAddress(), pkg.hdr,

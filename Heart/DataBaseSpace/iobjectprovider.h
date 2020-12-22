@@ -38,8 +38,8 @@ public:
     QSharedPointer<TYPE> getObject(const TYPE &templateVal) {
 
         auto val = getObjectRaw(templateVal);
-        const TYPE* result = dynamic_cast<const TYPE*>(val);
-        if (!result && val) {
+        auto result = val.template dynamicCast<TYPE>();
+        if (!result && !val.isNull()) {
             QuasarAppUtils::Params::log("getObject method returned object with deffirent type of TYPE,"
                                         " check getAllObjects merhod",
                                         QuasarAppUtils::Error);
