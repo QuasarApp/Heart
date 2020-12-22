@@ -191,8 +191,8 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     if (!_db)
         return false;
 
-    auto action = [diff](DBObject * object) {
-        auto obj = dynamic_cast<NetworkMember*>(object);
+    auto action = [diff](const QSharedPointer<DBObject> &object) {
+        auto obj = object.dynamicCast<NetworkMember>();
         if (!obj) {
             return false;
         }
@@ -288,11 +288,11 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
         incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
     } else if (H_16<DeleteObject>() == pkg.hdr.command) {
-        DeleteObject obj(pkg);
+        auto obj = QSharedPointer<DeleteObject>::create(pkg);
 
-        auto requesterId = getSender(sender, &obj);
+        auto requesterId = getSender(sender, obj.data());
 
-        if (deleteObject(requesterId, &obj) == DBOperationResult::Forbidden) {
+        if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
             badRequest(sender->networkAddress(), pkg.hdr, {
                             ErrorCodes::OperatioForbiden,
                            "Permision denied"
@@ -359,7 +359,7 @@ QVariantMap DataBaseNode::defaultDbParams() const {
 
 DBOperationResult QH::DataBaseNode::getObject(const QVariant &requester,
                                               const QH::DBObject &templateObj,
-                                              const DBObject** result) const {
+                                              QSharedPointer<QH::PKG::DBObject> &result) const {
 
     if (!_db && !result) {
         return DBOperationResult::Unknown;
@@ -376,22 +376,22 @@ DBOperationResult QH::DataBaseNode::getObject(const QVariant &requester,
         return DBOperationResult::Unknown;
     }
 
-    *result = obj;
+    result = obj;
     return DBOperationResult::Allowed;
 }
 
 DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
                                            const DBObject &templateObj,
-                                           QList<const DBObject *> *result) const {
+                                           QList<QSharedPointer<DBObject>> &result) const {
     if (!_db && !result) {
         return DBOperationResult::Unknown;
     }
 
-    if (!_db->getAllObjects(templateObj, *result)) {
+    if (!_db->getAllObjects(templateObj, result)) {
         return DBOperationResult::Unknown;
     }
 
-    for (const auto& obj: *result) {
+    for (const auto& obj: result) {
         if (!obj)
             return DBOperationResult::Unknown;
 
@@ -406,7 +406,7 @@ DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
 }
 
 DBOperationResult DataBaseNode::setObject(const QVariant &requester,
-                                          const DBObject *saveObject) {
+                                          const QSharedPointer<DBObject> &saveObject) {
 
     if (!_db) {
         return DBOperationResult::Unknown;
@@ -440,12 +440,15 @@ const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
 DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
                                                 const DbAddress &objectAddress,
                                                 const Permission& requarimentPermision) const {
-     const NetworkMember *member = _db->getObject(PermisionControlMember{requester});
+
+     auto member = _db->getObjectRaw(PermisionControlMember{requester}).
+             dynamicCast<NetworkMember>();
+
      if (!member) {
          return DBOperationResult::Unknown;
      }
 
-     const MemberPermisionObject *permision =
+     auto permision =
              _db->getObject(MemberPermisionObject({requester, objectAddress}));
 
      if (!permision) {
@@ -467,11 +470,13 @@ bool DataBaseNode::addUpdatePermission(const QVariant &member,
         return false;
     }
 
-    MemberPermisionObject object;
-    object.setKey(PermisionData(member, objectAddress));
-    object.setPermisions(permision);
+    auto object = QSharedPointer<MemberPermisionObject>::create();
+    object->setKey(PermisionData(member, objectAddress));
+    object->setPermisions(permision);
 
-    if (!_db->updateObject(&object)) {
+    if (!_db->insertObject(object))
+
+    if (!_db->updateObject(object)) {
         return false;
     }
 
@@ -486,10 +491,10 @@ bool DataBaseNode::removePermission(const QVariant &member,
         return false;
     }
 
-    MemberPermisionObject object;
-    object.setKey(PermisionData(member, objectAddress));
+    auto object = QSharedPointer<MemberPermisionObject>::create();
+    object->setKey(PermisionData(member, objectAddress));
 
-    if (!_db->deleteObject(&object)) {
+    if (!_db->deleteObject(object)) {
         return false;
     }
 
@@ -497,7 +502,7 @@ bool DataBaseNode::removePermission(const QVariant &member,
 }
 
 DBOperationResult DataBaseNode::deleteObject(const QVariant &requester,
-                                             const DBObject *dbObject) {
+                                             const QSharedPointer<DBObject> &dbObject) {
 
     if (!_db) {
         return DBOperationResult::Unknown;

@@ -33,14 +33,15 @@ protected:
     void deleteFromCache(const QSharedPointer<QH::PKG::DBObject>& delObj) override;
     bool insertToCache(const QSharedPointer<QH::PKG::DBObject>& obj) override;
     bool updateCache(const QSharedPointer<QH::PKG::DBObject>& obj) override;
-    PKG::DBObject *getFromCache(const PKG::DBObject *obj) override;
+    QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const PKG::DBObject *obj) override;
     void globalUpdateDataBasePrivate(qint64 currentTime) override;
     void pushToQueue(const QSharedPointer<QH::PKG::DBObject>&obj, PKG::MemberType type) override;
+    QSharedPointer<PKG::DBObject> getFromCacheById(quint32 dbKey) override;
 
 private:
     QMutex _saveLaterMutex;
     QMutex _cacheMutex;
-    QHash<uint, PKG::DBObject*>  _cache;
+    QHash<uint, QSharedPointer<PKG::DBObject>> _cache;
     QHash<PKG::MemberType, QSharedPointer<QH::PKG::DBObject>>  _needToSaveCache;
 };
 

@@ -167,33 +167,33 @@ protected:
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult deleteObject(const QVariant &requester,
-                                   const PKG::DBObject *dbObject);
+                                   const QSharedPointer<PKG::DBObject> &dbObject);
 
     /**
      * @brief getObject This method try get an object by database address.
      *  @note If yoo want to get any object use only this method becouse this method check permision of requester to execute this action
      * @param requester This is pointer to network meber that send this request.
      * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param result This is pointer to result object of requset.
+     * @param result This is a shared pointer for save result of request.
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult getObject(const QVariant &requester,
                                 const PKG::DBObject &templateObj,
-                                const PKG::DBObject **result) const;
+                                QSharedPointer<PKG::DBObject> &result) const;
 
     /**
      * @brief getObjects This method try get objects by template object.
      *  @note If yoo want to get any objects use only this method becouse this method check permision of requester to execute this action
      * @param requester This is pointer to network meber that send this request.
      * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param result This is pointer to the list of result objects.
+     * @param result This is reference to the list of result objects.
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult getObjects(const QVariant &requester,
                                  const PKG::DBObject &templateObj,
-                                 QList<const PKG::DBObject *> *result) const;
+                                 QList<QSharedPointer<PKG::DBObject>> &result) const;
 
     /**
      * @brief getObjects This method try save or update database object.
@@ -204,7 +204,7 @@ protected:
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult setObject(const QVariant &requester,
-                                const PKG::DBObject *saveObject);
+                                const QSharedPointer<PKG::DBObject> &saveObject);
     /**
      * @brief getSender This method return id of requester.
      *  By Default base implementation get id from BaseNdoeInfo.

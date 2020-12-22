@@ -76,6 +76,13 @@ void SqlDBCache::pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj,
     _saveLaterMutex.unlock();
 }
 
+QSharedPointer<DBObject> SqlDBCache::getFromCacheById(quint32 dbKey) {
+
+    QMutexLocker locker(&_cacheMutex);
+
+    return _cache.value(dbKey, nullptr);
+}
+
 
 SqlDBCache::SqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode):
     ISqlDBCache(updateInterval, mode) {
@@ -109,7 +116,7 @@ bool SqlDBCache::insertToCache(const QSharedPointer<DBObject>& obj) {
         return false;
     }
 
-    _cache[obj->dbKey()] = obj->cloneRaw();
+    _cache[obj->dbKey()] = obj->clone();
 
     return true;
 
@@ -128,12 +135,10 @@ bool SqlDBCache::updateCache(const QSharedPointer<DBObject>& obj) {
     }
 
     if (existsObject->cmd() != obj->cmd()) {
-
-        delete existsObject;
-        _cache[obj->dbKey()] = obj->cloneRaw();
+        _cache[obj->dbKey()] = obj->clone();
 
     } else {
-        if (!existsObject->copyFrom(obj)) {
+        if (!existsObject->copyFrom(obj.data())) {
             return false;
         }
     }
@@ -141,10 +146,13 @@ bool SqlDBCache::updateCache(const QSharedPointer<DBObject>& obj) {
     return true;
 }
 
-DBObject* SqlDBCache::getFromCache(const DBObject *obj) {
+QList<QSharedPointer<QH::PKG::DBObject>>&& SqlDBCache::getFromCache(const DBObject *obj) {
 
-    QMutexLocker locker(&_cacheMutex);
+    using resultType = QList<QSharedPointer<QH::PKG::DBObject>>;
+    if (obj->getId().isValid()) {
+        return std::move(resultType{getFromCacheById(obj->dbKey())});
+    }
 
-    return _cache.value(obj->dbKey(), nullptr);
+    return std::move(resultType{});
 }
 }
