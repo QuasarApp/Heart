@@ -383,7 +383,7 @@ DBOperationResult QH::DataBaseNode::getObject(const QVariant &requester,
 DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
                                            const DBObject &templateObj,
                                            QList<QSharedPointer<DBObject>> &result) const {
-    if (!_db && !result) {
+    if (!_db) {
         return DBOperationResult::Unknown;
     }
 
