@@ -32,10 +32,18 @@ public:
      * @note This method return a database object with a type as a type of templateVal object.
      * If you want to get a object of C class but the datatabase contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
      * This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors.
+     * @note The type of input templateVal object must be child type of the DBObject class.
      * @return return strong pointer to DBObject ot nullptr id object not exits.
      */
     template<class TYPE>
     QSharedPointer<TYPE> getObject(const TYPE &templateVal) {
+
+        static_assert (std::is_base_of_v<PKG::DBObject, TYPE>,
+                "The getObject must be work with DBObject child types only");
+
+        static_assert (!std::is_pointer_v<TYPE>,
+                "The getObject must be work with non pointer types.");
+
 
         auto val = getObjectRaw(templateVal);
         auto result = val.template dynamicCast<TYPE>();

@@ -235,7 +235,7 @@ private:
      * @param nodeInfo
      * @return true if function finished successful
      */
-    bool workWithNodeObjectData(PKG::NodeObject &node, const AbstractNodeInfo *nodeInfo);
+    bool workWithNodeObjectData(const QSharedPointer<PKG::NodeObject> &node, const AbstractNodeInfo *nodeInfo);
 
     /**
      * @brief workWithKnowAddresses

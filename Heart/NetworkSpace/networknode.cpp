@@ -298,8 +298,8 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
 
 
     } else if (H_16<NodeObject>() == pkg.hdr.command) {
-        NodeObject obj(pkg);
-        if (!obj.isValid()) {
+        auto obj = QSharedPointer<NodeObject>::create(pkg);
+        if (!obj->isValid()) {
             badRequest(sender->networkAddress(), pkg.hdr,
                        {
                            ErrorCodes::InvalidRequest,
@@ -310,7 +310,7 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
         }
 
         if (!workWithNodeObjectData(obj, sender)) {
-            badRequest(obj.senderID(), pkg.hdr,
+            badRequest(obj->senderID(), pkg.hdr,
                        {
                            ErrorCodes::InvalidRequest,
                            "NodeObject request is invalid"
@@ -373,22 +373,22 @@ ParserResult NetworkNode::parsePackage(const Package &pkg,
     return ParserResult::NotProcessed;
 }
 
-bool NetworkNode::workWithNodeObjectData(NodeObject &node,
+bool NetworkNode::workWithNodeObjectData(const QSharedPointer<NodeObject> &node,
                                       const AbstractNodeInfo* nodeInfo) {
 
     if (!db()) {
         return false;
     }
 
-    auto localObjec = db()->getObject(node);
+    auto localObjec = db()->getObject(*node.data());
 
     if (localObjec) {
-        node.setTrust(std::min(node.trust(), localObjec->trust()));
+        node->setTrust(std::min(node->trust(), localObjec->trust()));
     } else {
-        node.setTrust(0);
+        node->setTrust(0);
     }
 
-    if (!db()->updateObject(&node)) {
+    if (!db()->updateObject(node)) {
         return false;
     };
 
@@ -396,7 +396,7 @@ bool NetworkNode::workWithNodeObjectData(NodeObject &node,
     if (!peerNodeInfo)
         return false;
 
-    peerNodeInfo->setSelfId(NodeId(node.getId()));
+    peerNodeInfo->setSelfId(NodeId(node->getId()));
 
     return true;
 }
