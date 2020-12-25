@@ -28,6 +28,7 @@
 #include <permisioncontrolmember.h>
 #include <deleteobject.h>
 #include "dberrorcodes.h"
+#include <QSet>
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -138,6 +139,10 @@ QStringList DataBaseNode::SQLSources() const{
     return {
         DEFAULT_DB_INIT_FILE_PATH
     };
+}
+
+QSet<QString> DataBaseNode::systemTables() const {
+    return {"NetworkMembers", "MemberPermisions"};
 }
 
 void DataBaseNode::nodeConnected(const HostAddress &node) {
@@ -349,6 +354,10 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
     return false;
 }
 
+bool DataBaseNode::isForbidenTable(const QString &table) {
+    return systemTables().contains(table);
+}
+
 QVariantMap DataBaseNode::defaultDbParams() const {
 
     return {
@@ -405,7 +414,7 @@ DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::setObject(const QVariant &requester,
+DBOperationResult DataBaseNode::updateObject(const QVariant &requester,
                                           const QSharedPointer<DBObject> &saveObject) {
 
     if (!_db) {
@@ -424,6 +433,43 @@ DBOperationResult DataBaseNode::setObject(const QVariant &requester,
     }
 
     return DBOperationResult::Allowed;
+}
+
+DBOperationResult DataBaseNode::createObject(const QVariant &requester,
+                                             const QSharedPointer<DBObject> &obj) {
+
+    if (!_db) {
+        return DBOperationResult::Unknown;
+    }
+
+    if (isForbidenTable(obj->tableName())) {
+        return DBOperationResult::Forbidden;
+    }
+
+    if (!_db->insertObject(obj)) {
+        return DBOperationResult::Unknown;
+    }
+
+    if (!addUpdatePermission(requester, obj->dbAddress(), Permission::Write)) {
+
+        _db->deleteObject(obj);
+
+        return DBOperationResult::Forbidden;
+    }
+
+    return DBOperationResult::Allowed;
+
+}
+
+DBOperationResult DataBaseNode::updateIfNotExistsCreateObject(const QVariant &requester,
+                                                              const QSharedPointer<DBObject> &obj) {
+
+    auto opResult = updateObject(requester, obj);
+    if (opResult != QH::DBOperationResult::Unknown) {
+        return opResult;
+    }
+
+    return createObject(requester, obj);
 }
 
 const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,

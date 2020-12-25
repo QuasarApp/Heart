@@ -104,7 +104,7 @@ protected:
 
         // generate random objects for database.
         for (int i = 0; i < 100; ++i) {
-            if (!BASE::db()->insertObject(randomMember(), true)) {
+            if (!BASE::db()->insertObject(QSharedPointer<WorkType>(randomMember()), true)) {
                 return false;
             }
         }
@@ -121,7 +121,7 @@ protected:
         // create request for get all objects from database and cached it.
         QH::PKG::CachedDbObjectsRequest<WorkType> request("");
 
-        QList<const QH::PKG::DBObject *> result;
+        QList<QSharedPointer<QH::PKG::DBObject>> result;
         if (!BASE::db()->getAllObjects(request, result)) {
             return false;
         }
@@ -130,7 +130,7 @@ protected:
             return false;
 
         // insert main object inot database.
-        if (!BASE::db()->insertObject(testObjec)) {
+        if (!BASE::db()->insertObject(QSharedPointer<WorkType>(testObjec))) {
             return false;
         }
 
@@ -141,7 +141,7 @@ protected:
             return false;
         }
 
-        testObjec->copyFrom(object);
+        testObjec->copyFrom(object.data());
 
         // save state of cache of data base.
         BASE::stop();
@@ -183,7 +183,7 @@ protected:
 
         clone->setTrust(20);
 
-        if (!BASE::db()->updateObject(clone.data())) {
+        if (!BASE::db()->updateObject(clone)) {
             return false;
         }
 

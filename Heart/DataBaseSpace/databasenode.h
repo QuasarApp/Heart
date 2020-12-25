@@ -196,15 +196,41 @@ protected:
                                  QList<QSharedPointer<PKG::DBObject>> &result) const;
 
     /**
-     * @brief getObjects This method try save or update database object.
+     * @brief updateObject This method try save or update database object.
      *  @note If yoo want to save or update any objects use only this method becouse this method check permision of requester to execute this action
-     * @param requester This is pointer to network meber that send this request.
+     * @param requester This is network meber that send this request.
      * @param saveObject This is pointer to object of database for save or update.
      * @return result of operation (allow, forbiden unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult setObject(const QVariant &requester,
+    DBOperationResult updateObject(const QVariant &requester,
                                 const QSharedPointer<PKG::DBObject> &saveObject);
+
+    /**
+     * @brief createObject This method create a new object in the database and add all permisions forthe objects creator.
+     *  @note If yoo want to create any objects use only this method becouse this method check permision of requester to execute this action
+     * @param requester This is network meber that send this request.
+     * @param obj This is pointer to object of database for save or update.
+     * @return result of operation (allow, forbiden unknown).
+     *  For more information about results see the DBOperationResult enum.
+     */
+    DBOperationResult createObject(const QVariant &requester,
+                                const QSharedPointer<PKG::DBObject> &obj);
+
+    /**
+     * @brief updateIfNotExistsCreateObject This is wraper of the updateObject and createObjects methods.
+     * 1. try update object
+     * 2. If object not exists Try create new object.
+     * 3. return operation result
+     * @param requester This is network meber that send this request.
+     * @param obj This is initialising object.
+     * @return result of operation (allow, forbiden unknown).
+     *  For more information about results see the DBOperationResult enum.
+     */
+    DBOperationResult updateIfNotExistsCreateObject(const QVariant &requester,
+                                                    const QSharedPointer<PKG::DBObject> &obj);
+
+
     /**
      * @brief getSender This method return id of requester.
      *  By Default base implementation get id from BaseNdoeInfo.
@@ -310,7 +336,14 @@ protected:
      *
      * @return the list to deploy sql files.
      */
-    virtual QStringList SQLSources() const;
+     virtual QStringList SQLSources() const;
+
+    /**
+     * @brief systemTables This method return the set of tables that forbidet for users.
+     * By default is NetworkMembers and MemberPermisions tables.
+     * @return set of tables names.
+     */
+     virtual QSet<QString> systemTables() const;
 private:
 
     /**
@@ -323,6 +356,8 @@ private:
                            const QVariant &clientOrNodeid,
                            const AbstractNodeInfo &sender);
 
+
+    bool isForbidenTable(const QString& table);
 
     SqlDBCache *_db = nullptr;
     QString _localNodeName;

@@ -39,7 +39,7 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
 
 QString DbAddress::toString() const {
     return QString("DbAddress: table:%0, value:%1").
-            arg(_table).arg(_value.toString());
+            arg(_table, _value.toString());
 }
 
 bool operator!=(const DbAddress &left, const DbAddress &other) {
