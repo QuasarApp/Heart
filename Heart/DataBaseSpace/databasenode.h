@@ -215,7 +215,10 @@ protected:
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult createObject(const QVariant &requester,
-                                const QSharedPointer<PKG::DBObject> &obj);
+                                    const QSharedPointer<PKG::DBObject> &obj);
+
+    DBOperationResult changeObject(const QVariant &requester,
+                                   const QSharedPointer<PKG::DBObject> &obj);
 
     /**
      * @brief updateIfNotExistsCreateObject This is wraper of the updateObject and createObjects methods.
