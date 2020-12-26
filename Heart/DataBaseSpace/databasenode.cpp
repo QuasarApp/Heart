@@ -472,6 +472,34 @@ DBOperationResult DataBaseNode::updateIfNotExistsCreateObject(const QVariant &re
     return createObject(requester, obj);
 }
 
+DBOperationResult DataBaseNode::changeObjects(const QVariant &requester,
+                                              const DBObject &templateObj,
+                                              const std::function<bool (const QSharedPointer<DBObject> &)> &changeAction) {
+
+    DBOperationResult result = DBOperationResult::Unknown;
+
+    if (!_db) {
+        return result;
+    }
+
+    auto execWithCheck = [this, requester, &result, &changeAction]
+            (const QSharedPointer<DBObject> & obj) {
+
+        result = checkPermission(requester, obj->dbAddress(), Permission::Update);
+        if (result != DBOperationResult::Allowed) {
+            return false;
+        }
+
+        return changeAction(obj);
+    };
+
+    if (!db()->changeObjects(templateObj, execWithCheck)) {
+        return result;
+    }
+
+    return result;
+}
+
 const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
                                         const AbstractData *) const {
 

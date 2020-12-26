@@ -208,7 +208,7 @@ protected:
 
     /**
      * @brief createObject This method create a new object in the database and add all permisions forthe objects creator.
-     *  @note If yoo want to create any objects use only this method becouse this method check permision of requester to execute this action
+     *  @note If you want to create any objects use only this method becouse this method check permision of requester to execute this action
      * @param requester This is network meber that send this request.
      * @param obj This is pointer to object of database for save or update.
      * @return result of operation (allow, forbiden unknown).
@@ -216,9 +216,6 @@ protected:
      */
     DBOperationResult createObject(const QVariant &requester,
                                     const QSharedPointer<PKG::DBObject> &obj);
-
-    DBOperationResult changeObject(const QVariant &requester,
-                                   const QSharedPointer<PKG::DBObject> &obj);
 
     /**
      * @brief updateIfNotExistsCreateObject This is wraper of the updateObject and createObjects methods.
@@ -232,6 +229,20 @@ protected:
      */
     DBOperationResult updateIfNotExistsCreateObject(const QVariant &requester,
                                                     const QSharedPointer<PKG::DBObject> &obj);
+
+    /**
+     * @brief changeObjects This is wrapper of the "ISqlDBCache::changeObjects" method.
+     * 0 Kye difference between a base method is checking of the permision for needed action.
+     * @note If you want to change any objects use only this method becouse this method check permision of requester to execute this action
+     * @param requester This is network meber that send this request.
+     * @param templateObj This is pointer to object of database with data for generation the sql select request.
+     * @param changeAction This is action funnction for change all selected objects.
+     * @return result of operation (allow, forbiden unknown).
+     *  For more information about results see the DBOperationResult enum.
+     */
+    DBOperationResult changeObjects(const QVariant &requester,
+                                    const PKG::DBObject &templateObj,
+                                    const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
 
     /**
