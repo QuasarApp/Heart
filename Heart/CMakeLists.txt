@@ -23,8 +23,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_definitions(-DHEART_LIBRARY)
 
-
-find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
@@ -78,7 +78,7 @@ set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Network Qt5::Sql Qt5::Concurrent QuasarApp crypto ssl Qt-Secret)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crypto ssl Qt-Secret)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})

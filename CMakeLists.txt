@@ -12,7 +12,6 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
-find_package(Qt5 COMPONENTS Core Test REQUIRED)
 if(NOT DEFINED HEART_BUILD_LVL)
     set(HEART_BUILD_LVL 2)
 endif()

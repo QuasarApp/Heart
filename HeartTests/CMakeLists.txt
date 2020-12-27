@@ -17,6 +17,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Test REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
+
 add_definitions(-DHEART_BUILD_LVL=${HEART_BUILD_LVL})
 
 
@@ -53,7 +56,7 @@ set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 message(SOURCE_CPP = ${SOURCE_CPP})
 
 add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
-target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt5::Test Heart)
+target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt::Test Heart)
 
 target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
