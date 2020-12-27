@@ -28,7 +28,7 @@ bool StreamBase::fromBytes(const QByteArray &data) {
 
 QByteArray StreamBase::toBytes() const {
     QByteArray res;
-    QDataStream stream(&res, QIODevice::WriteOnly);
+    QDataStream stream(&res, QDataStream::WriteOnly);
     toStream(stream);
     return res;
 }

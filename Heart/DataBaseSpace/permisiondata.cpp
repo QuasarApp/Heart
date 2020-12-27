@@ -24,7 +24,7 @@ PermisionData::PermisionData(const QVariant &subject, const DbAddress &objcet) {
 
 unsigned int PermisionData::hash() const {
     QByteArray data;
-    QDataStream stream(&data, QIODevice::WriteOnly);
+    QDataStream stream(&data, QDataStream::WriteOnly);
 
     stream << _id;
     stream << _address;

@@ -79,14 +79,13 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
 
     for (auto it = map.begin(); it != map.end(); ++it) {
 
-        if (!(it.value().type & MemberType::Insert)) {
+        if (!bool(it.value().type & MemberType::Insert)) {
             continue;
         }
 
         tableInsertHeader += it.key();
         tableInsertValues += ":" + it.key();
-
-        if (it + 1 != map.end()) {
+        if (std::next(it, 1) != map.end()) {
             tableInsertHeader += ", ";
             tableInsertValues += ", ";
         }
@@ -99,7 +98,7 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
     if (q.prepare(queryString)) {
 
         for (auto it = map.begin(); it != map.end(); ++it) {
-            if (!(it.value().type & MemberType::Insert)) {
+            if (!bool(it.value().type & MemberType::Insert)) {
                 continue;
             }
 
@@ -136,7 +135,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     QString tableUpdateValues = "";
 
     for (auto it = map.begin(); it != map.end(); ++it) {
-        if (!(it.value().type & MemberType::Update)) {
+        if (!bool(it.value().type & MemberType::Update)) {
             continue;
         }
 
@@ -153,7 +152,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     if (q.prepare(queryString)) {
 
         for (auto it = map.begin(); it != map.end(); ++it) {
-            if (!(it.value().type & MemberType::Update)) {
+            if (!bool(it.value().type & MemberType::Update)) {
                 continue;
             }
 

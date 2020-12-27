@@ -31,7 +31,9 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
 
         QString temp, delimiter = ";";
         QTextStream stream(&f);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         stream.setCodec("UTF8");
+#endif
 
         while(!stream.atEnd()) {
 

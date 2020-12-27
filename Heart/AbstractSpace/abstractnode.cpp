@@ -727,7 +727,7 @@ void AbstractNode::avelableBytes() {
         if (pkg.hdr.isValid()) {
             // CASE 1: The Package data is still not collected, but the header is already collected. performs full or partial filling of packet data.
 
-            int dataLength = std::min(pkg.hdr.size - pkg.data.size(),
+            int dataLength = std::min(static_cast<int>(pkg.hdr.size - pkg.data.size()),
                                                arraySize - workIndex);
             pkg.data.append(array.mid(workIndex + headerSize, dataLength));
 
