@@ -52,3 +52,8 @@ target_wrapper.*
 CMakeLists.txt.user*
 CMakeCache.txt
 CMakeFiles/
+
+Heart/Heart_autogen/
+Heart/cmake_install.cmake
+HeartTests/cmake_install.cmake
+cmake_install.cmake
