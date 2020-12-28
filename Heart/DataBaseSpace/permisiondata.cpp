@@ -10,6 +10,7 @@
 #include "permisiondata.h"
 #include <quasarapp.h>
 #include <QDataStream>
+#include <QIODevice>
 
 namespace QH {
 
@@ -24,7 +25,7 @@ PermisionData::PermisionData(const QVariant &subject, const DbAddress &objcet) {
 
 unsigned int PermisionData::hash() const {
     QByteArray data;
-    QDataStream stream(&data, QDataStream::WriteOnly);
+    QDataStream stream(&data, QIODevice::WriteOnly);
 
     stream << _id;
     stream << _address;

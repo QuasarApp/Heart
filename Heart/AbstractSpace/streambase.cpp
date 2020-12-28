@@ -9,6 +9,7 @@
 #include "streambase.h"
 
 #include <QDataStream>
+#include <QIODevice>
 
 namespace QH {
 
@@ -28,7 +29,7 @@ bool StreamBase::fromBytes(const QByteArray &data) {
 
 QByteArray StreamBase::toBytes() const {
     QByteArray res;
-    QDataStream stream(&res, QDataStream::WriteOnly);
+    QDataStream stream(&res, QIODevice::WriteOnly);
     toStream(stream);
     return res;
 }
