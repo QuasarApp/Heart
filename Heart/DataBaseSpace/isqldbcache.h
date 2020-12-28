@@ -38,6 +38,23 @@ enum class SqlDBCasheWriteMode: int {
 } ;
 
 /**
+ * @brief The CacheAction enum contains types of database cache actions.
+ * The any database caches save all changes in to hardware database.
+ *  For saving all changes it use hash map with objects and its actions.
+ * Every type invokes own method for running an action of object.
+ */
+enum class CacheAction: int {
+    /// Do nothing.
+    None,
+    /// Invoke the SqlDBWriter::insertObject method of a private database writer implementation.
+    Insert,
+    /// Invoke the SqlDBWriter::updateObject method of a private database writer implementation.
+    Update,
+    /// Invoke the SqlDBWriter::deleteObject method of a private database writer implementation.
+    Delete
+};
+
+/**
  * @brief The ISqlDBCache class it is db cache and bridge for DbWriters.
  * Wor Scheme of the database cache:
  *
@@ -48,7 +65,6 @@ enum class SqlDBCasheWriteMode: int {
  * * insertToCache
  * * deleteFromCache
  * * getFromCache
- * * pushToQueue
  *
  * @note Objects of all implementation of this classs must be deleted using the softDelete.
  * The softDelete method create save all cached data into database.
@@ -184,10 +200,10 @@ protected:
     /**
      * @brief pushToQueue this method should be add the object to the update queue in the physical data dash.
      * @param obj This is obje for update.
-     * @param type This is type uf update. Usually it is PKG::MemberType::Update and PKG::MemberType::Insert.
-     *  For more information see the PKG::MemberType enum.
+     * @param type This is type of action. For more information see the CacheAction enum.
      */
-    virtual void pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj, PKG::MemberType type) = 0;
+    virtual void pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj,
+                             CacheAction type);
 
     /**
      * @brief getMode This method return mode of work databnase cache. For mmore information see the QH::SqlDBCasheWriteMode enum.
@@ -206,7 +222,7 @@ protected:
      * Override this methd if you want change method of writinga data from cache.
      * @param currentTime This is current time for saving time of the invoke of this method.
      */
-    virtual void globalUpdateDataBasePrivate(qint64 currentTime) = 0;;
+    virtual void globalUpdateDataBasePrivate(qint64 currentTime);
 
     /**
      * @brief globalUpdateDataBase This is base method for syncing data from the cache with database.
@@ -222,10 +238,17 @@ private:
 
     SqlDBWriter* _writer = nullptr;
 
+    QHash<CacheAction, QSharedPointer<QH::PKG::DBObject>> _changes;
+    QMutex _saveLaterMutex;
+
 signals:
     void sigItemChanged(const PKG::DBObject *obj);
 
 };
 
+}
+
+uint qHash(QH::CacheAction action) {
+    return static_cast<uint>(action);
 }
 #endif // ISQLDBCACHE_H

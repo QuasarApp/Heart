@@ -11,6 +11,9 @@
 namespace QH {
 
 // Private implementation.
+/**
+ * @brief The SQLiteDBCachePrivate class is private implementation of the sqllite database for working in the RAM.
+ */
 class SQLiteDBCachePrivate: public SqlDBWriter {
 
 
@@ -71,15 +74,12 @@ bool SQLiteDBCache::updateCache(const QSharedPointer<PKG::DBObject> &obj) {
 QList<QSharedPointer<QH::PKG::DBObject>>&&
 SQLiteDBCache::getFromCache(const PKG::DBObject *obj) {
 
-}
+    QList<QSharedPointer<QH::PKG::DBObject>> list;
+    if (!_private->getAllObjects(*obj, list)) {
+        return std::move(QList<QSharedPointer<QH::PKG::DBObject>>{});
+    };
 
-void SQLiteDBCache::pushToQueue(const QSharedPointer<PKG::DBObject> &obj,
-                                PKG::MemberType type) {
-
-}
-
-void SQLiteDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
-
+    return std::move(list);
 }
 
 }

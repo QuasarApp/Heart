@@ -48,6 +48,13 @@ void ISqlDBCache::setLastUpdateTime(const qint64 &value) {
     lastUpdateTime = value;
 }
 
+void ISqlDBCache::pushToQueue(const QSharedPointer<DBObject> &obj,
+                              CacheAction type) {
+    _saveLaterMutex.lock();
+    _changes.insert(type, obj);
+    _saveLaterMutex.unlock();
+}
+
 ISqlDBCache::ISqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode) {
     lastUpdateTime = QDateTime::currentMSecsSinceEpoch();
     this->updateInterval = updateInterval;
@@ -79,7 +86,7 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
                                 QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     if (templateObject.isCached()) {
-        result = getFromCache(&templateObject);
+        result = std::move(getFromCache(&templateObject));
         if(result.size()) {
             return true;
         }
@@ -110,6 +117,7 @@ bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj, bool wait
         return false;
 
     deleteFromCache(delObj);
+    pushToQueue(delObj, CacheAction::Delete);
 
     if (_writer && _writer->isValid()) {
         return _writer->deleteObject(delObj, wait);
@@ -129,10 +137,10 @@ bool ISqlDBCache::updateObject(const QSharedPointer<DBObject> &saveObject, bool 
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
             return _writer && _writer->isValid() &&
-                   _writer->updateObject(saveObject, wait);
+                    _writer->updateObject(saveObject, wait);
         }
 
-        pushToQueue(saveObject, MemberType::Update);
+        pushToQueue(saveObject, CacheAction::Update);
         globalUpdateDataBase(getMode());
 
         return true;
@@ -156,7 +164,7 @@ bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool 
                     _writer->insertObject(saveObject, wait);
         }
 
-        pushToQueue(saveObject, MemberType::Insert);
+        pushToQueue(saveObject, CacheAction::Update);
         globalUpdateDataBase(getMode());
 
         return true;
@@ -229,6 +237,65 @@ SqlDBCasheWriteMode ISqlDBCache::getMode() const {
 
 void ISqlDBCache::setMode(const SqlDBCasheWriteMode &mode) {
     _mode = mode;
+}
+
+void ISqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
+    QMutexLocker lock(&_saveLaterMutex);
+
+    for (auto it = _changes.begin(); it != _changes.end(); ++it) {
+
+        if (writer() && writer()->isValid()) {
+
+            auto obj = it.value();
+
+            if (!obj || !obj->isValid()) {
+                deleteFromCache(obj);
+
+                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                            " db object is not valid! obj=" +
+                                            obj->toString(),
+                                            QuasarAppUtils::VerboseLvl::Error);
+                continue;
+            }
+
+            bool saveResult = false;
+
+            switch (it.key()) {
+            case CacheAction::Insert: {
+                saveResult = writer()->insertObject(obj, true);
+            }
+            case CacheAction::Update: {
+                saveResult = writer()->updateObject(obj, true);
+            }
+            case CacheAction::Delete: {
+                saveResult = writer()->deleteObject(obj, true);
+            }
+            default: {
+                QuasarAppUtils::Params::log("The Object of the cache have wrong type " +
+                                            obj->toString(),
+                                            QuasarAppUtils::VerboseLvl::Warning);
+
+                continue;
+            }
+            }
+
+            if (!saveResult ) {
+                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                            " work globalUpdateDataRelease!!! obj=" +
+                                            obj->toString(),
+                                            QuasarAppUtils::VerboseLvl::Error);
+            }
+        } else {
+
+            QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
+                                        " db writer is npt inited! ",
+                                        QuasarAppUtils::VerboseLvl::Error);
+            return;
+        }
+    }
+
+    _changes.clear();
+    setLastUpdateTime(currentTime);
 }
 
 qint64 ISqlDBCache::getUpdateInterval() const {

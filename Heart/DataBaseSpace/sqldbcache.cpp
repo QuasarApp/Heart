@@ -22,60 +22,6 @@ namespace QH {
 
 using namespace PKG;
 
-void SqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
-
-    QMutexLocker lock(&_saveLaterMutex);
-
-    for (auto it = _needToSaveCache.begin(); it != _needToSaveCache.end(); ++it) {
-
-        if (writer() && writer()->isValid()) {
-
-            auto obj = it.value();
-
-            if (!obj || !obj->isValid()) {
-                deleteFromCache(obj);
-
-                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " db object is not valid! obj=" +
-                                            obj->toString(),
-                                            QuasarAppUtils::VerboseLvl::Error);
-                continue;
-            }
-
-            bool saveResult = false;
-
-            if (it.key() == MemberType::Insert) {
-                    saveResult = writer()->insertObject(obj, true);
-            } else {
-                    saveResult = writer()->updateObject(obj, true);
-            }
-
-            if (!saveResult ) {
-                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " work globalUpdateDataRelease!!! obj=" +
-                                            obj->toString(),
-                                            QuasarAppUtils::VerboseLvl::Error);
-            }
-        } else {
-
-            QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                        " db writer is npt inited! ",
-                                        QuasarAppUtils::VerboseLvl::Error);
-            return;
-        }
-    }
-
-    _needToSaveCache.clear();
-    setLastUpdateTime(currentTime);
-}
-
-void SqlDBCache::pushToQueue(const QSharedPointer<QH::PKG::DBObject> &obj,
-                             MemberType type) {
-    _saveLaterMutex.lock();
-    _needToSaveCache.insert(type, obj);
-    _saveLaterMutex.unlock();
-}
-
 QSharedPointer<DBObject> SqlDBCache::getFromCacheById(quint32 dbKey) {
 
     QMutexLocker locker(&_cacheMutex);
