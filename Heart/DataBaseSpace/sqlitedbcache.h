@@ -39,7 +39,6 @@ protected:
     bool insertToCache(const QSharedPointer<QH::PKG::DBObject> &obj) override;
     bool updateCache(const QSharedPointer<QH::PKG::DBObject> &obj) override;
     QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const QH::PKG::DBObject *obj) override;
-    void globalUpdateDataBasePrivate(qint64 currentTime) override;
 
 private:
     SQLiteDBCachePrivate * _private = nullptr;

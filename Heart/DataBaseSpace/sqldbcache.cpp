@@ -92,7 +92,8 @@ bool SqlDBCache::updateCache(const QSharedPointer<DBObject>& obj) {
     return true;
 }
 
-QList<QSharedPointer<QH::PKG::DBObject>>&& SqlDBCache::getFromCache(const DBObject *obj) {
+QList<QSharedPointer<QH::PKG::DBObject>>&&
+SqlDBCache::getFromCache(const DBObject *obj) {
 
     using resultType = QList<QSharedPointer<QH::PKG::DBObject>>;
     if (obj->getId().isValid()) {

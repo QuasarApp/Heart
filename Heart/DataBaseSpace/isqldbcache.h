@@ -246,9 +246,15 @@ signals:
 
 };
 
-}
-
-uint qHash(QH::CacheAction action) {
+/**
+ * @brief qHash calc hash of the CacheAction enum.
+ * @param action input data
+ * @return hash value of the action.
+ */
+constexpr inline uint qHash(CacheAction action) {
     return static_cast<uint>(action);
 }
+
+}
+
 #endif // ISQLDBCACHE_H
