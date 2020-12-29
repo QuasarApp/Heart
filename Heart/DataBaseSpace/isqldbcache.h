@@ -186,7 +186,8 @@ protected:
      * @param objKey This is database cache id.
      * @return database Object from cache. if object with objKey not exits return nullptr.
      */
-    virtual QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const PKG::DBObject *obj) = 0;
+    virtual QList<QSharedPointer<QH::PKG::DBObject>>
+    getFromCache(const PKG::DBObject *obj) = 0;
 
     /**
      * @brief getFromCacheById This method try get object from the pool of objects.

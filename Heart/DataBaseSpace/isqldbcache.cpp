@@ -86,7 +86,7 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
                                 QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     if (templateObject.isCached()) {
-        result = std::move(getFromCache(&templateObject));
+        result = getFromCache(&templateObject);
         if(result.size()) {
             return true;
         }
@@ -97,7 +97,7 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
             return false;
         }
 
-        for (auto object: result) {
+        for (const auto &object: qAsConst(result)) {
             if (object->isCached() && !insertToCache(object)) {
                 QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
                                             object->toString(),
@@ -213,7 +213,7 @@ bool ISqlDBCache::changeObjects(const DBObject &templateObject,
     if (!list.size())
         return false;
 
-    for (const auto& obj :list) {
+    for (const auto& obj :qAsConst(list)) {
         auto cachedObject = getFromCacheById(obj->dbKey());
 
         if (!cachedObject && obj->isCached())
@@ -263,12 +263,15 @@ void ISqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
             switch (it.key()) {
             case CacheAction::Insert: {
                 saveResult = writer()->insertObject(obj, true);
+                break;
             }
             case CacheAction::Update: {
                 saveResult = writer()->updateObject(obj, true);
+                break;
             }
             case CacheAction::Delete: {
                 saveResult = writer()->deleteObject(obj, true);
+                break;
             }
             default: {
                 QuasarAppUtils::Params::log("The Object of the cache have wrong type " +

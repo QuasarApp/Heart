@@ -33,7 +33,8 @@ protected:
     void deleteFromCache(const QSharedPointer<QH::PKG::DBObject>& delObj) override;
     bool insertToCache(const QSharedPointer<QH::PKG::DBObject>& obj) override;
     bool updateCache(const QSharedPointer<QH::PKG::DBObject>& obj) override;
-    QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const PKG::DBObject *obj) override;
+    QList<QSharedPointer<QH::PKG::DBObject>>
+    getFromCache(const PKG::DBObject *obj) override;
     QSharedPointer<PKG::DBObject> getFromCacheById(quint32 dbKey) override;
 
 private:

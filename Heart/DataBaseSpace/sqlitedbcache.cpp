@@ -71,15 +71,15 @@ bool SQLiteDBCache::updateCache(const QSharedPointer<PKG::DBObject> &obj) {
     return _private->updateObject(obj, true);
 }
 
-QList<QSharedPointer<QH::PKG::DBObject>>&&
+QList<QSharedPointer<QH::PKG::DBObject>>
 SQLiteDBCache::getFromCache(const PKG::DBObject *obj) {
 
     QList<QSharedPointer<QH::PKG::DBObject>> list;
     if (!_private->getAllObjects(*obj, list)) {
-        return std::move(QList<QSharedPointer<QH::PKG::DBObject>>{});
+        return QList<QSharedPointer<QH::PKG::DBObject>>{};
     };
 
-    return std::move(list);
+    return list;
 }
 
 }

@@ -38,7 +38,9 @@ protected:
     void deleteFromCache(const QSharedPointer<QH::PKG::DBObject> & delObj) override;
     bool insertToCache(const QSharedPointer<QH::PKG::DBObject> &obj) override;
     bool updateCache(const QSharedPointer<QH::PKG::DBObject> &obj) override;
-    QList<QSharedPointer<QH::PKG::DBObject>>&& getFromCache(const QH::PKG::DBObject *obj) override;
+
+    QList<QSharedPointer<QH::PKG::DBObject>>
+    getFromCache(const QH::PKG::DBObject *obj) override;
 
 private:
     SQLiteDBCachePrivate * _private = nullptr;
