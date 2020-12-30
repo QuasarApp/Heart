@@ -112,7 +112,7 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
         return false;
     }
 
-    for (const QString& sqlFile : _SQLSources) {
+    for (const QString& sqlFile : qAsConst(_SQLSources)) {
         QSqlQuery query(db);
         if (!exec(&query, sqlFile)) {
             return false;

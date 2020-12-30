@@ -18,10 +18,6 @@ PermisionControlMember::PermisionControlMember(const QVariant &id): NetworkMembe
 
 }
 
-bool PermisionControlMember::isCached() const {
-    return false;
-}
-
 DBObject *PermisionControlMember::createDBObject() const {
     return create<PermisionControlMember>();
 }

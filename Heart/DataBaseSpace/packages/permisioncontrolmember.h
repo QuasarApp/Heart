@@ -22,10 +22,6 @@ public:
     PermisionControlMember();
     PermisionControlMember(const QVariant& id);
 
-    // DBObject interface
-public:
-    bool isCached() const override;
-
 public:
     DBObject *createDBObject() const override;
 };

@@ -97,7 +97,11 @@ SqlDBCache::getFromCache(const DBObject *obj) {
 
     using resultType = QList<QSharedPointer<QH::PKG::DBObject>>;
     if (obj->getId().isValid()) {
-        return resultType{getFromCacheById(obj->dbKey())};
+        auto result = getFromCacheById(obj->dbKey());
+        if (!result)
+            return resultType{};
+
+        return resultType{result};
     }
 
     return resultType{};

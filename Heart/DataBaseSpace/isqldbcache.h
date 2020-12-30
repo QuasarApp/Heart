@@ -190,15 +190,6 @@ protected:
     getFromCache(const PKG::DBObject *obj) = 0;
 
     /**
-     * @brief getFromCacheById This method try get object from the pool of objects.
-     *  This method can only one object from the object pool.
-     * @param dbKey This is id of the database object.
-     *  For more information about generation ids see the DbAddressKey class or the DBObject::dbKey method.
-     * @return strong reference to the database object. If reqariment object not exists then return nullptr reference.
-     */
-    virtual QSharedPointer<QH::PKG::DBObject> getFromCacheById(quint32 dbKey) = 0;
-
-    /**
      * @brief pushToQueue this method should be add the object to the update queue in the physical data dash.
      * @param obj This is obje for update.
      * @param type This is type of action. For more information see the CacheAction enum.

@@ -36,8 +36,7 @@ public:
      */
     virtual bool test() {
 
-        testObjec = randomMember();
-
+        testObjec = QSharedPointer<WorkType>(randomMember());
         if (!init()) {
             return false;
         }
@@ -130,7 +129,7 @@ protected:
             return false;
 
         // insert main object inot database.
-        if (!BASE::db()->insertObject(QSharedPointer<WorkType>(testObjec))) {
+        if (!BASE::db()->insertObject(testObjec)) {
             return false;
         }
 
@@ -286,7 +285,7 @@ protected:
     }
 
 private:
-    WorkType *testObjec = nullptr;
+    QSharedPointer<WorkType> testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
 
 };

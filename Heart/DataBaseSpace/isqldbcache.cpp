@@ -214,16 +214,12 @@ bool ISqlDBCache::changeObjects(const DBObject &templateObject,
         return false;
 
     for (const auto& obj :qAsConst(list)) {
-        auto cachedObject = getFromCacheById(obj->dbKey());
 
-        if (!cachedObject && obj->isCached())
-            return false;
-
-        if (!changeAction(cachedObject)) {
+        if (!changeAction(obj)) {
             return false;
         };
 
-        if (!updateObject(cachedObject)) {
+        if (!updateObject(obj)) {
             return false;
         };
     }
