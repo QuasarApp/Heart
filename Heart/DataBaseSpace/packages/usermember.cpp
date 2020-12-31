@@ -77,6 +77,7 @@ void UserMember::setName(const QString &name) {
 
 DBVariantMap UserMember::variantMap() const {
     auto map = NetworkMember::variantMap();
+    map[primaryKey()].type = MemberType::PrimaryKeyAutoIncrement;
     map.insert("token",     {_token.toBytes(),  MemberType::InsertUpdate});
     map.insert("userName",  {_name,             MemberType::InsertUpdate | MemberType::Unique});
 

@@ -23,19 +23,15 @@ public:
     NodeObject();
     NodeObject(const Package& pkg);
 
+    DBObject *createDBObject() const override;
+    bool copyFrom(const AbstractData *other) override;
+
     // StreamBase interface
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     bool init() override;
 
-public:
-    DBObject *createDBObject() const override;
-    bool copyFrom(const AbstractData *other) override;
-
-    // DBObject interface
-public:
-    virtual DBVariantMap variantMap() const override;
 };
 }
 }

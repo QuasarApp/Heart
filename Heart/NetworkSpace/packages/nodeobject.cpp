@@ -69,10 +69,5 @@ bool NodeObject::copyFrom(const AbstractData *other) {
     return true;
 }
 
-DBVariantMap NodeObject::variantMap() const {
-    auto map = NetworkMember::variantMap();
-    map[primaryKey()].type = map[primaryKey()].type | MemberType::Insert;
-    return map;
-}
 }
 }

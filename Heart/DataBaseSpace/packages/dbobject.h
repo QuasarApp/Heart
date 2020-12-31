@@ -52,6 +52,9 @@ enum class MemberType {
     //// The Field With This type can be inserted and updated.
     InsertUpdate = Insert | Update,
 
+    //// The primary key field without autoincrement.
+    PrimaryKey = Insert | Unique,
+
     //// The primary key field with autoincrement.
     PrimaryKeyAutoIncrement = Unique
 };
@@ -97,6 +100,13 @@ public:
 
     ~DBObject() override;
 
+    /**
+     * @brief isValid DBObject::implementaion check the dbaddress if the PrimaryKey do not have the insert attribute and created with the autoincrement atribute of the sql.
+     * For more information about attributes see the DBObject::variantMap method.
+     *
+     * @return true if object is valid.
+     */
+    TO-DO
     bool isValid() const override;
     bool copyFrom(const AbstractData * other) override;
 
@@ -374,10 +384,15 @@ public:
 
     /**
      * @brief variantMap This method should be create a DBVariantMap implementation of this database object.
+     *
+     * IF you have the database field with autoincrement you need to remove MemberType::Insert attribute from the your key.
+     *  For more information see the MemberType::PrimaryKeyAutoIncrement attribute.
+     *
+     *
      * Example of retuen value:
      *
      * \code{cpp}
-     *  return {{"name",        {"Andrei",      MemberType::InsertOnly}},
+     *  return {{"name",        {"Andrei",      MemberType::Insert}},
      *          {"age",         {26,            MemberType::InsertUpdate}},
      *          {"extraData",   {QByteArray{},  MemberType::InsertUpdate}}};
      * \endcode
@@ -394,7 +409,8 @@ public:
      * see the DBObject::prepareSaveQuery method for more information.
      * @return the QVariantMap implementation of this database object.
      *
-     * @note If you want disable this functionality then override this method and return an empty map. But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
+     * @note If you want disable this functionality then override this method and return an empty map.
+     *  But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
      */
     virtual DBVariantMap variantMap() const;
 

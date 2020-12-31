@@ -85,11 +85,9 @@ void ISqlDBCache::setWriter(SqlDBWriter *writer) {
 bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
                                 QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
-    if (templateObject.isCached()) {
-        result = getFromCache(&templateObject);
-        if(result.size()) {
-            return true;
-        }
+    result = getFromCache(&templateObject);
+    if(result.size()) {
+        return true;
     }
 
     if (_writer && _writer->isValid()) {
