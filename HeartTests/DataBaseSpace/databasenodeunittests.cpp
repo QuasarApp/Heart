@@ -6,27 +6,37 @@
 */
 #include "databasenodeunittests.h"
 
-#include <usermember.h>
+#include "databasenodetesttemplate.h"
 
-#define DB_NODE_NAME "DatabaseTestNode"
+#include <asyncsqldbwriter.h>
+#include <sqlitedbcache.h>
+
+// This define create a simple class based on the BASE class and use the CHECHE and WRITER like a default cache and default writer objects.
+#define TEST_CASE(NAME, BASE, MEMBER, CACHE, WRITER) \
+    class NAME: public DataBaseNodeUnitTestTemplate< \
+            BASE, MEMBER, CACHE, WRITER> { \
+    };
+
+TEST_CASE(Case0, QH::DataBaseNode, QH::PKG::UserMember, QH::SqlDBCache, QH::SqlDBWriter)
+TEST_CASE(Case1, QH::DataBaseNode, QH::PKG::UserMember, QH::SqlDBCache, QH::AsyncSqlDbWriter)
+TEST_CASE(Case2, QH::DataBaseNode, QH::PKG::UserMember, QH::SQLiteDBCache, QH::SqlDBWriter)
+TEST_CASE(Case3, QH::DataBaseNode, QH::PKG::UserMember, QH::SQLiteDBCache, QH::AsyncSqlDbWriter)
 
 
-DataBaseNodeUnitTests::DataBaseNodeUnitTests():
-    TemplateDataBaseNodeUnitTests<QH::DataBaseNode, QH::PKG::UserMember>(DB_NODE_NAME)
-{
-
+template <class T>
+bool testCase(const T& t) {
+    return const_cast<T&>(t).test();
 }
 
-QH::PKG::UserMember *DataBaseNodeUnitTests::randomMember() const {
-    srand(time(nullptr));
+#define RUN_TEST_CASE(TYPE) \
+    if (!testCase(Case0{})) \
+        return false;
 
-    QH::PKG::UserMember * res = new QH::PKG::UserMember();
-    res->setAuthenticationData(randomArray(64));
-    res->setTrust(0);
-    res->setName(randomArray(5).toHex());
+bool DataBaseNodeUnitTests::test() {
+    RUN_TEST_CASE(Case0)
+    RUN_TEST_CASE(Case1)
+    RUN_TEST_CASE(Case2)
+    RUN_TEST_CASE(Case3)
 
-    res->prepareToSend();
-
-    return res;
+    return true;
 }
-

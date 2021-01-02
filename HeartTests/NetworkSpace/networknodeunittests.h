@@ -6,8 +6,8 @@
 */
 
 
-#ifndef DBTESTS_H
-#define DBTESTS_H
+#ifndef NETWORK_DBTESTS_H
+#define NETWORK_DBTESTS_H
 
 #include <networknode.h>
 #include <templatedatabasenodeunittests.h>
@@ -24,4 +24,4 @@ protected:
     QH::PKG::NodeObject *randomMember() const override;
 };
 
-#endif // DBTESTS_H
+#endif // NETWORK_DBTESTS_H

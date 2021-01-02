@@ -124,7 +124,7 @@ public:
     bool toPackage(Package &package, unsigned int triggerHash = 0) const;
 
     /**
-     * @brief isValid This method check current package to valid.
+     * @brief isValid This method check current object to valid.
      * @return true if class isValid
      */
     virtual bool isValid() const;

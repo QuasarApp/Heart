@@ -10,19 +10,15 @@
 #define DBTESTS_H
 
 #include <databasenode.h>
+#include "itest.h"
 #include <usermember.h>
-#include "templatedatabasenodeunittests.h"
 
-/**
- * @brief The TemplateDataBaseNodeUnitTests class
- */
-class DataBaseNodeUnitTests: public TemplateDataBaseNodeUnitTests<QH::DataBaseNode, QH::PKG::UserMember> {
+class DataBaseNodeUnitTests: public iTest {
+
+
+    // Test interface
 public:
-    DataBaseNodeUnitTests();
-
-    // TemplateDataBaseNodeUnitTests interface
-protected:
-    QH::PKG::UserMember *randomMember() const override;
+    bool test() override;
 };
 
 #endif // DBTESTS_H

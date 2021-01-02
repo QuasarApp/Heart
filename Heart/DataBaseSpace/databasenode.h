@@ -21,7 +21,7 @@ class WebSocket;
 
 }
 
-class SqlDBCache;
+class ISqlDBCache;
 class SqlDBWriter;
 class WebSocketController;
 class DbAddress;
@@ -52,7 +52,7 @@ public:
      * @return true if the database initalized successful.
      */
     virtual bool initSqlDb( QString DBparamsFile = "",
-                            SqlDBCache * cache = nullptr,
+                            ISqlDBCache * cache = nullptr,
                             SqlDBWriter* writer = nullptr);
 
     /**
@@ -95,7 +95,7 @@ protected:
      * @param cache This is Cache database object.
      * @param writer This is Database writerObject.
      */
-    virtual void initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer);
+    virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
 
     ParserResult parsePackage(const Package &pkg,
                               const AbstractNodeInfo* sender) override;
@@ -156,7 +156,7 @@ protected:
      * @brief db this node return pointer to database object.
      * @return the pinter to data base
      */
-    SqlDBCache* db() const;
+    ISqlDBCache* db() const;
 
     /**
      * @brief deleteObject This method delete object by database address.
@@ -373,7 +373,7 @@ private:
 
     bool isForbidenTable(const QString& table);
 
-    SqlDBCache *_db = nullptr;
+    ISqlDBCache *_db = nullptr;
     QString _localNodeName;
     WebSocketController *_webSocketWorker = nullptr;
 

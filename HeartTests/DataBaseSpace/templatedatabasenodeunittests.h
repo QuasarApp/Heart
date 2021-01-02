@@ -13,8 +13,9 @@
 #include <cacheddbobjectsrequest.h>
 #include <databasenode.h>
 #include <dbobjectsrequest.h>
+#include <itest.h>
+#include <test.h>
 #include <networkmember.h>
-#include "test.h"
 #include "sqldbcache.h"
 
 template <class BASE, class WorkType>
@@ -22,7 +23,7 @@ template <class BASE, class WorkType>
  * @brief The TemplateDataBaseNodeUnitTests class This is base class for testing databases.
  * You need to override this class for using. The BASE Templte is a any child class of the DataBaseNode class.
  */
-class TemplateDataBaseNodeUnitTests: public BASE
+class TemplateDataBaseNodeUnitTests: public BASE, public iTest
 {
 public:
     TemplateDataBaseNodeUnitTests(const QString DbNodeName):BASE(){
@@ -34,10 +35,10 @@ public:
      * @brief test - test work database
      * @return true if database of node work is correctly.
      */
-    virtual bool test() {
+    bool test() override{
 
         testObjec = QSharedPointer<WorkType>(randomMember());
-        if (!init()) {
+        if (!initUnitTests()) {
             return false;
         }
 
@@ -65,10 +66,10 @@ protected:
     virtual WorkType* randomMember() const = 0;
 
     /**
-     * @brief init - init database.
+     * @brief initUnitTests - init database.
      * @return return true if test module initialized successful
      */
-    virtual bool init() {
+    virtual bool initUnitTests() {
         if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
             return false;
         }

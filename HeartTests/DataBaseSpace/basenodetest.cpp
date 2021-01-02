@@ -63,7 +63,6 @@ void BaseNodeTest::test() {
     QVERIFY(powerTest());
     QVERIFY(connectNetworkTest());
     QVERIFY(securityTest());
-
 }
 
 bool BaseNodeTest::powerTest() {

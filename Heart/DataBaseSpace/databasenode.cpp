@@ -29,6 +29,7 @@
 #include <deleteobject.h>
 #include "dberrorcodes.h"
 #include <QSet>
+#include <sqlitedbcache.h>
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -42,7 +43,7 @@ DataBaseNode::DataBaseNode(QObject *ptr):
 }
 
 bool DataBaseNode::initSqlDb(QString DBparamsFile,
-                             SqlDBCache *cache,
+                             ISqlDBCache *cache,
                              SqlDBWriter *writer) {
 
     initDefaultDbObjects(cache, writer);
@@ -107,13 +108,14 @@ void DataBaseNode::stop() {
 DataBaseNode::~DataBaseNode() {
 }
 
-void DataBaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
+void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
+                                        SqlDBWriter *writer) {
     if (!writer) {
         writer = new AsyncSqlDbWriter();
     }
 
     if (!cache) {
-        cache = new SqlDBCache();
+        cache = new SQLiteDBCache();
     }
 
     cache->setWriter(writer);
@@ -317,7 +319,7 @@ QByteArray DataBaseNode::hashgenerator(const QByteArray &pass) {
                 QCryptographicHash::Sha256);
 }
 
-SqlDBCache *DataBaseNode::db() const {
+ISqlDBCache *DataBaseNode::db() const {
     return _db;
 }
 

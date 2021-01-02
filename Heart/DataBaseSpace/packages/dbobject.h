@@ -100,13 +100,6 @@ public:
 
     ~DBObject() override;
 
-    /**
-     * @brief isValid DBObject::implementaion check the dbaddress if the PrimaryKey do not have the insert attribute and created with the autoincrement atribute of the sql.
-     * For more information about attributes see the DBObject::variantMap method.
-     *
-     * @return true if object is valid.
-     */
-    TO-DO
     bool isValid() const override;
     bool copyFrom(const AbstractData * other) override;
 

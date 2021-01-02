@@ -6,7 +6,7 @@
 */
 
 
-#include "databasenodeunittests.h"
+#include "templatedatabasenodeunittests.h"
 
 
 

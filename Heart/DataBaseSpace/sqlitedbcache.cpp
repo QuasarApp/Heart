@@ -27,7 +27,8 @@ protected:
     friend class SQLiteDBCache;
 };
 
-QSqlDatabase SQLiteDBCachePrivate::initSqlDataBasse(const QString &driverName, const QString &name) {
+QSqlDatabase SQLiteDBCachePrivate::initSqlDataBasse(const QString &driverName,
+                                                    const QString &name) {
 
     return QSqlDatabase::addDatabase(driverName,
                                      name + "::memory:");
@@ -48,6 +49,10 @@ bool SQLiteDBCachePrivate::initDb(const QVariantMap &params) {
 // Main class members.
 SQLiteDBCache::SQLiteDBCache() {
     _private = new SQLiteDBCachePrivate();
+}
+
+SQLiteDBCache::~SQLiteDBCache() {
+    delete _private;
 }
 
 bool SQLiteDBCache::init(const QVariantMap &params) {
