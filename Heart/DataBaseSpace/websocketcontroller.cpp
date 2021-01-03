@@ -51,9 +51,9 @@ const QSet<DbAddress> &WebSocketController::list(const QVariant &subscriber) {
     return _items[subscriber];
 }
 
-void WebSocketController::handleItemChanged(const DBObject *item) {
-    auto obj = dynamic_cast<const DBObject*>(item);
-    if (obj)
+void WebSocketController::handleItemChanged(const QSharedPointer<DBObject> &item) {
+    auto obj = item.dynamicCast<DBObject>();
+    if (!obj)
         return;
 
     QMutexLocker locker(&_subscribsMutex);
@@ -61,14 +61,14 @@ void WebSocketController::handleItemChanged(const DBObject *item) {
     foreachSubscribers(item, _subscribs.value(obj->dbAddress()));
 }
 
-void WebSocketController::foreachSubscribers(const DBObject *item,
+void WebSocketController::foreachSubscribers(const QSharedPointer<DBObject> &item,
                                              const QSet<QVariant> &subscribersList) {
 
     for (const auto &subscriber : subscribersList) {
         bool fAllowed = _node->checkPermission(subscriber, item->dbAddress(), Permission::Read) ==
                 DBOperationResult::Allowed;
 
-        if (fAllowed &&  !_node->sendData(item, subscriber)) {
+        if (fAllowed &&  !_node->sendData(item.data(), subscriber)) {
             QuasarAppUtils::Params::log("Send update failed for " + subscriber.toString(),
                                                QuasarAppUtils::Warning);
 
@@ -77,7 +77,7 @@ void WebSocketController::foreachSubscribers(const DBObject *item,
 
         if (!fAllowed) {
             QuasarAppUtils::Params::log(QString("Internal Error. Member:%0  not have permission to object %1").
-                                        arg(QString(subscriber.toString())).arg(item->toString()),
+                                        arg(subscriber.toString(), item->toString()),
                                             QuasarAppUtils::Error);
             unsubscribe(subscriber, item->dbAddress());
         }

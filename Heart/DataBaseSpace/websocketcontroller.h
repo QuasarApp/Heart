@@ -63,10 +63,10 @@ public slots:
      * @brief handleItemChanged This method invoked when item on database changed.
      * @param item This is changed item.
      */
-    void handleItemChanged(const PKG::DBObject *item);
+    void handleItemChanged(const QSharedPointer<PKG::DBObject> &item);
 
 private:
-    void foreachSubscribers(const PKG::DBObject *item,
+    void foreachSubscribers(const QSharedPointer<PKG::DBObject> &item,
                             const QSet<QVariant> &subscribersList);
 
     /// subscribers it is nodes or clients

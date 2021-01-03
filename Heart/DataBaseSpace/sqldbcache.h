@@ -15,7 +15,7 @@
 namespace QH {
 
 /**
- * @brief The SqlDBCache class is default universal implementation of the database cache.
+ * @brief The SqlDBCache class is universal implementation of the database cache.
  * This implementation have a one hashMap for the databae object.
  *  This is work for all Dabatases types but some objects like a DBObjectSet or DBObjectsRequest class.
  */

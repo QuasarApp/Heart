@@ -145,7 +145,7 @@ public:
     void setSQLSources(const QStringList &list) override;
 
 protected:
-    virtual void prepareForDelete() override;
+    void prepareForDelete() override;
 
     /**
      * @brief getLastUpdateTime This method return time of last update.
@@ -223,6 +223,14 @@ protected:
     virtual void globalUpdateDataBase(SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
 
 private:
+
+    bool updateObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                      bool wait = false);
+    bool deleteObjectP(const QSharedPointer<QH::PKG::DBObject>& delObj,
+                      bool wait = false);
+    bool insertObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                      bool wait = false);
+
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;
 
@@ -234,7 +242,21 @@ private:
     QMutex _saveLaterMutex;
 
 signals:
-    void sigItemChanged(const PKG::DBObject *obj);
+    /**
+     * @brief sigItemChanged This signal imited when database object is changed.
+     * @note emit implementeed in updateObject and insertObject methods.
+     *  So If you override then methods do not forget add emit of the sigItemChanged signal.
+     * @param obj This is changed object
+     */
+    void sigItemChanged(const QSharedPointer<QH::PKG::DBObject> &obj);
+
+    /**
+     * @brief sigItemDeleted This method imited when database object is deleted.
+     * @note emit implementeed in the deleteObject method.
+     *  So If you override the deleteObject method do not forget add emit of the sigItemChanged signal.
+     * @param obj
+     */
+    void sigItemDeleted(const QVariant& obj);
 
 };
 

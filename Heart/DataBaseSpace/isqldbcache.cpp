@@ -40,6 +40,60 @@ void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     }
 }
 
+bool ISqlDBCache::updateObjectP(const QSharedPointer<DBObject> &saveObject,
+                                bool wait) {
+
+    if (saveObject->isCached() && updateCache(saveObject)) {
+
+        if (getMode() == SqlDBCasheWriteMode::Force) {
+            return _writer && _writer->isValid() &&
+                    _writer->updateObject(saveObject, wait);
+        }
+
+        pushToQueue(saveObject, CacheAction::Update);
+        globalUpdateDataBase(getMode());
+
+        return true;
+    }
+
+    return  _writer && _writer->isValid() &&
+            _writer->updateObject(saveObject);
+}
+
+bool ISqlDBCache::deleteObjectP(const QSharedPointer<DBObject> &delObj,
+                                bool wait) {
+
+    deleteFromCache(delObj);
+    pushToQueue(delObj, CacheAction::Delete);
+
+    if (_writer && _writer->isValid()) {
+        return _writer->deleteObject(delObj, wait);
+    }
+
+    return false;
+}
+
+bool ISqlDBCache::insertObjectP(const QSharedPointer<DBObject> &saveObject,
+                                bool wait) {
+
+    if (saveObject->isCached() && insertToCache(saveObject)) {
+
+        if (getMode() == SqlDBCasheWriteMode::Force) {
+
+            return _writer && _writer->isValid() &&
+                    _writer->insertObject(saveObject, wait);
+        }
+
+        pushToQueue(saveObject, CacheAction::Update);
+        globalUpdateDataBase(getMode());
+
+        return true;
+    }
+
+    return _writer && _writer->isValid() &&
+            _writer->insertObject(saveObject);
+}
+
 qint64 ISqlDBCache::getLastUpdateTime() const {
     return lastUpdateTime;
 }
@@ -109,44 +163,39 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
     return false;
 }
 
-bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj, bool wait) {
+bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj,
+                               bool wait) {
 
     if (!delObj)
         return false;
 
-    deleteFromCache(delObj);
-    pushToQueue(delObj, CacheAction::Delete);
+    QVariant id = delObj->getId();
 
-    if (_writer && _writer->isValid()) {
-        return _writer->deleteObject(delObj, wait);
+    if (!deleteObjectP(delObj, wait)) {
+        return false;
     }
 
-    return false;
+    if (id.isValid())
+        emit sigItemDeleted(id);
+
+    return true;
 
 }
 
-bool ISqlDBCache::updateObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
+bool ISqlDBCache::updateObject(const QSharedPointer<DBObject> &saveObject,
+                               bool wait) {
 
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
 
-    if (saveObject->isCached() && updateCache(saveObject)) {
-
-        if (getMode() == SqlDBCasheWriteMode::Force) {
-            return _writer && _writer->isValid() &&
-                    _writer->updateObject(saveObject, wait);
-        }
-
-        pushToQueue(saveObject, CacheAction::Update);
-        globalUpdateDataBase(getMode());
-
-        return true;
+    if (!updateObjectP(saveObject, wait)) {
+        return false;
     }
 
-    return  _writer && _writer->isValid() &&
-            _writer->updateObject(saveObject);
+    emit sigItemChanged(saveObject);
 
+    return true;
 }
 
 bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
@@ -154,22 +203,13 @@ bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool 
         return false;
     }
 
-    if (saveObject->isCached() && insertToCache(saveObject)) {
-
-        if (getMode() == SqlDBCasheWriteMode::Force) {
-
-            return _writer && _writer->isValid() &&
-                    _writer->insertObject(saveObject, wait);
-        }
-
-        pushToQueue(saveObject, CacheAction::Update);
-        globalUpdateDataBase(getMode());
-
-        return true;
+    if (!insertObjectP(saveObject, wait)) {
+        return false;
     }
 
-    return _writer && _writer->isValid() &&
-            _writer->insertObject(saveObject);
+    emit sigItemChanged(saveObject);
+
+    return true;
 }
 
 bool ISqlDBCache::init(const QString &initDbParams) {
