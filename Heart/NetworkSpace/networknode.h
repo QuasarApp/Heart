@@ -83,7 +83,7 @@ public:
 protected:
 
     /**
-     * @brief sendData This implementation of the sendData sending pacakge to the network to node id.
+     * @brief sendData This implementation of the sendData sending pacakge to the network by node id.
      * @param resp This is sendet pacakge
      * @param nodeId This is id of target node
      * @param req This is header of pacakga that this pacakge ansvered.

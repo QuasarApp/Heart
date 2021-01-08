@@ -155,7 +155,7 @@ bool NetworkNode::sendData(AbstractData *resp, const NodeId &nodeId, const Heade
         return false;
     }
 
-    return sendData(resp, nodeId, req);
+    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
 }
 
 
