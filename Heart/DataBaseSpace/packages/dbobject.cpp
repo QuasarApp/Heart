@@ -21,7 +21,7 @@ namespace QH {
 namespace PKG {
 
 DBObject::DBObject(const QString &tableName) {
-    clear();
+    DBObject::clear();
     _dbId.setTable(tableName);
 }
 
@@ -184,8 +184,21 @@ QString DBObject::condition() const {
         return key + "= '" + val + "'";
     };
 
+    auto byteArrayWarning = [](){
+        QuasarAppUtils::Params::log("You try generate a condition from the raw bytes array. This operation can not be brok the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.", QuasarAppUtils::Warning);
+    };
+
+    QString errorString = "WRONG OBJECT";
+
     // if object have a primaryKey then return primary key
-    if (primaryValue().isValid()) {
+    auto primaryVal = primaryValue();
+    if (primaryVal.isValid()) {
+
+        if (primaryVal.type() == QVariant::ByteArray) {
+            byteArrayWarning();
+            return errorString;
+        }
+
         return prepareCondition(primaryKey(), primaryValue().toString());
     }
 
@@ -204,6 +217,7 @@ QString DBObject::condition() const {
                     return prepareCondition(it.key(), val);
                 }
             } else if (type == QVariant::ByteArray) {
+                byteArrayWarning();
                 continue;
             } else if (it.value().value.isValid()) {
                 return prepareCondition(it.key(), it.value().value.toString());
@@ -216,7 +230,7 @@ QString DBObject::condition() const {
                                 QuasarAppUtils::Error);
 
 
-    return "WRONG OBJECT";
+    return errorString;
 }
 
 const QVariant &DBObject::primaryValue() const {

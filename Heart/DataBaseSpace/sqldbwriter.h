@@ -183,7 +183,18 @@ protected:
     virtual QSqlDatabase initSqlDataBasse(const QString &driverName,
                                           const QString &name);
 
-    QSqlDatabase db;
+    /**
+     * @brief db This method return db connection. If SqlDBWriter in not inited then return nullptr.
+     *  For more information about initialization the SqlDBWriter see the SqlDBWriter::initDb method.
+     * @return pointer to actualy databae connection.
+     */
+    QSqlDatabase* db();
+
+    /**
+     * @brief db This is constant implementation of the SqlDBWriter::db method.
+     * @return return const pointer to database connection.
+     */
+    const QSqlDatabase* db() const;
 
 private:
 
@@ -211,6 +222,8 @@ private:
     bool initSuccessful = false;
     QVariantMap _config;
     QStringList _SQLSources;
+
+    QSqlDatabase *_db = nullptr;
 
 };
 

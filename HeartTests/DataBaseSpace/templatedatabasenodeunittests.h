@@ -286,7 +286,7 @@ protected:
     }
 
 private:
-    QSharedPointer<WorkType> testObjec = nullptr;
+    QSharedPointer<QH::PKG::NetworkMember> testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
 
 };

@@ -72,7 +72,7 @@ void testProtockol::unitTests() {
 
     QTimer::singleShot(0, [&app, this]() {
 
-        for (auto test : _tests ) {
+        for (auto test : qAsConst(_tests) ) {
             test->test();
             delete test;
         }

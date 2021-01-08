@@ -86,7 +86,7 @@ public:
      * @brief isValid This method check this object to valid.
      * @return true if object is valid.
      */
-    virtual bool isValid() const;
+    bool isValid() const;
 
     /**
      * @brief clear This method reset all data members of this object.

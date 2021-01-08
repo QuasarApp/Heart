@@ -77,8 +77,11 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
 bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     _config = params;
 
-    db = initSqlDataBasse(_config["DBDriver"].toString(),
-            _config["DBFilePath"].toString());
+    if (_db)
+        delete _db;
+
+    _db = new QSqlDatabase(initSqlDataBasse(_config["DBDriver"].toString(),
+            _config["DBFilePath"].toString()));
 
     if (_config.contains("DBFilePath")) {
 
@@ -87,33 +90,33 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
             return false;
         }
 
-        db.setDatabaseName(path.absoluteFilePath());
+        _db->setDatabaseName(path.absoluteFilePath());
     }
 
     if (_config.contains("DBLogin")) {
-        db.setPassword(_config["DBLogin"].toString());
+        _db->setPassword(_config["DBLogin"].toString());
     }
 
     if (_config.contains("DBPass")) {
-        db.setPassword(_config["DBPass"].toString());
+        _db->setPassword(_config["DBPass"].toString());
     }
 
     if (_config.contains("DBHost")) {
-        db.setHostName(_config["DBHost"].toString());
+        _db->setHostName(_config["DBHost"].toString());
     }
 
     if (_config.contains("DBPort")) {
-        db.setPort(_config["DBPort"].toInt());
+        _db->setPort(_config["DBPort"].toInt());
     }
 
-    if (!db.open()) {
-        QuasarAppUtils::Params::log(db.lastError().text(),
+    if (!_db->open()) {
+        QuasarAppUtils::Params::log(_db->lastError().text(),
                                     QuasarAppUtils::Error);
         return false;
     }
 
     for (const QString& sqlFile : qAsConst(_SQLSources)) {
-        QSqlQuery query(db);
+        QSqlQuery query(*_db);
         if (!exec(&query, sqlFile)) {
             return false;
         }
@@ -122,18 +125,22 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     if (_config.contains("DBInitFile")) {
         auto path = QFileInfo(_config["DBInitFile"].toString()).absoluteFilePath();
 
-        QSqlQuery query(db);
+        QSqlQuery query(*_db);
         if (!exec(&query, path)) {
             return false;
         }
     }
 
-    initSuccessful = db.isValid();
+    initSuccessful = _db->isValid();
     return initSuccessful;
 }
 
 bool SqlDBWriter::enableFK() {
-    QSqlQuery query(db);
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery query(*db());
     QString request = QString("PRAGMA foreign_keys = ON");
     if (!query.exec(request)) {
         QuasarAppUtils::Params::log("request error : " + query.lastError().text());
@@ -145,7 +152,11 @@ bool SqlDBWriter::enableFK() {
 
 bool SqlDBWriter::disableFK() {
 
-    QSqlQuery query(db);
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery query(*db());
     QString request = QString("PRAGMA foreign_keys = OFF");
     if (!query.exec(request)) {
         QuasarAppUtils::Params::log("request error : " + query.lastError().text());
@@ -192,6 +203,14 @@ QSqlDatabase SqlDBWriter::initSqlDataBasse(const QString& driverName,
                                      QFileInfo(name).fileName());
 }
 
+QSqlDatabase *SqlDBWriter::db() {
+    return _db;
+}
+
+const QSqlDatabase *SqlDBWriter::db() const {
+    return _db;
+}
+
 SqlDBWriter::SqlDBWriter(QObject* ptr):
     Async(ptr) {
 }
@@ -217,11 +236,11 @@ bool SqlDBWriter::initDb(const QVariantMap &params) {
 }
 
 bool SqlDBWriter::isValid() const {
-    return db.isValid() && db.isOpen() && initSuccessful;
+    return db() && db()->isValid() && db()->isOpen() && initSuccessful;
 }
 
 bool SqlDBWriter::getAllObjects(const DBObject &templateObject,
-                                QList<QSharedPointer<PKG::DBObject>> &result) {
+                                QList<QSharedPointer<DBObject>> &result) {
 
     auto getAll = [&templateObject, &result, this]() {
         return SqlDBWriter::selectQuery(templateObject, result);
@@ -263,18 +282,35 @@ void SqlDBWriter::setSQLSources(const QStringList &list) {
 }
 
 QString SqlDBWriter::databaseLocation() const {
-    return db.databaseName();
+    if (!db())
+        return "";
+
+    return db()->databaseName();
 }
 
 SqlDBWriter::~SqlDBWriter() {
-    db.close();
+    if (_db) {
+        _db->close();
+
+        QString connectionName = _db->connectionName();
+
+        delete _db;
+        _db = nullptr;
+
+        QSqlDatabase::removeDatabase(connectionName);
+    }
+
 }
 
 bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
     if (!ptr)
         return false;
 
-    QSqlQuery q(db);
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery q(*db());
 
     auto prepare = [ptr](QSqlQuery&q) {
         return ptr->prepareInsertQuery(q);
@@ -288,7 +324,11 @@ bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
                               QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
-    QSqlQuery q(db);
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery q(*db());
     auto prepare = [&requestObject](QSqlQuery&q) {
         return requestObject.prepareSelectQuery(q);
     };
@@ -337,7 +377,7 @@ bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) cons
     if (!deleteObject)
         return false;
 
-    QSqlQuery q(db);
+    QSqlQuery q(*db());
 
     auto prepare = [deleteObject](QSqlQuery&q) {
         return deleteObject->prepareRemoveQuery(q);
@@ -355,7 +395,7 @@ bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
     if (!ptr)
         return false;
 
-    QSqlQuery q(db);
+    QSqlQuery q(*db());
 
     auto prepare = [ptr](QSqlQuery&q) {
         return ptr->prepareUpdateQuery(q);

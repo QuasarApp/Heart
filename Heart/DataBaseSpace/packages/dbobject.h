@@ -415,15 +415,19 @@ protected:
     /**
      * @brief condition This method must to return a condition of the WHERE block of the sql query.
      * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
-     * The default implementation return dbId value.
+     * The default implementation generate wher blok by map for more information see the variantMap nethod.
+     * Override this method for customize your select or delete query.
+     * @return condition string.
+     * @note This operation can not be brok the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.
+     *
+     * Exmaple of overriding:
      * \code{cpp}
      *  QString DBObject::condition() const {
             return {"id = '" + getId().toRaw() + "'"};
         }
      * \endcode
-     * Override this method for customize your select or delete query.
-     * @return condition string.
      */
+
     virtual QString condition() const;
 
     /**

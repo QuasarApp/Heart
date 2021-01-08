@@ -46,7 +46,8 @@ bool NodeObject::init() {
         return true;
     }
 
-    setId(QCryptographicHash::hash(authenticationData(), QCryptographicHash::Sha256));
+    setId(QString(NodeId(QCryptographicHash::hash(authenticationData(),
+                                          QCryptographicHash::Sha256)).toBase64()));
 
     return true;
 }

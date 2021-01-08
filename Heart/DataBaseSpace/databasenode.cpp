@@ -301,7 +301,7 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
 
         if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
             badRequest(sender->networkAddress(), pkg.hdr, {
-                            ErrorCodes::OperatioForbiden,
+                           ErrorCodes::OperatioForbiden,
                            "Permision denied"
                        });
             return ParserResult::Error;
@@ -402,7 +402,7 @@ DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
         return DBOperationResult::Unknown;
     }
 
-    for (const auto& obj: result) {
+    for (const auto& obj: qAsConst(result)) {
         if (!obj)
             return DBOperationResult::Unknown;
 
@@ -417,7 +417,7 @@ DBOperationResult DataBaseNode::getObjects(const QVariant &requester,
 }
 
 DBOperationResult DataBaseNode::updateObject(const QVariant &requester,
-                                          const QSharedPointer<DBObject> &saveObject) {
+                                             const QSharedPointer<DBObject> &saveObject) {
 
     if (!_db) {
         return DBOperationResult::Unknown;
@@ -517,25 +517,34 @@ DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
                                                 const DbAddress &objectAddress,
                                                 const Permission& requarimentPermision) const {
 
-     auto member = _db->getObjectRaw(PermisionControlMember{requester}).
-             dynamicCast<NetworkMember>();
+    if (!_db) {
+        return DBOperationResult::Unknown;
+    }
 
-     if (!member) {
-         return DBOperationResult::Unknown;
-     }
+    auto tmp = _db->getObjectRaw(PermisionControlMember{requester});
 
-     auto permision =
-             _db->getObject(MemberPermisionObject({requester, objectAddress}));
+    if (!tmp) {
+        return DBOperationResult::Unknown;
+    }
 
-     if (!permision) {
-         return DBOperationResult::Unknown;
-     }
+    auto member = tmp.dynamicCast<NetworkMember>();
 
-     if (permision->permisions() < requarimentPermision) {
-         return DBOperationResult::Forbidden;
-     }
+    if (!member) {
+        return DBOperationResult::Unknown;
+    }
 
-     return DBOperationResult::Allowed;
+    auto permision =
+            _db->getObject(MemberPermisionObject({requester, objectAddress}));
+
+    if (!permision) {
+        return DBOperationResult::Unknown;
+    }
+
+    if (permision->permisions() < requarimentPermision) {
+        return DBOperationResult::Forbidden;
+    }
+
+    return DBOperationResult::Allowed;
 }
 
 bool DataBaseNode::addUpdatePermission(const QVariant &member,
