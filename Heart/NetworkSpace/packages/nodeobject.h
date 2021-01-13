@@ -31,7 +31,6 @@ protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     bool init() override;
-
 };
 }
 }

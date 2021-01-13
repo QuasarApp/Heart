@@ -30,7 +30,7 @@ void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
 
         if (static_cast<bool>(mode & SqlDBCasheWriteMode::On_New_Thread)) {
 
-            QtConcurrent::run([currentTime, this](){
+            QtConcurrent::run([currentTime, this]() {
                 globalUpdateDataBasePrivate(currentTime);
             });
 
@@ -57,7 +57,7 @@ bool ISqlDBCache::updateObjectP(const QSharedPointer<DBObject> &saveObject,
     }
 
     return  _writer && _writer->isValid() &&
-            _writer->updateObject(saveObject);
+            _writer->updateObject(saveObject, wait);
 }
 
 bool ISqlDBCache::deleteObjectP(const QSharedPointer<DBObject> &delObj,
@@ -91,7 +91,7 @@ bool ISqlDBCache::insertObjectP(const QSharedPointer<DBObject> &saveObject,
     }
 
     return _writer && _writer->isValid() &&
-            _writer->insertObject(saveObject);
+            _writer->insertObject(saveObject, wait);
 }
 
 qint64 ISqlDBCache::getLastUpdateTime() const {

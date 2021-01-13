@@ -77,6 +77,7 @@ public:
     /**
      * @brief updateObject This method execute a update method of the saveObject and save all changes into database.
      * @note This method update object in the database only. If you try update not exists object then this method return false.
+     * @warning This method do not guarantee that return false if The updated object is not exist.
      * @param saveObject This is object for updating.
      * @param wait This arguments force current thread wait for the function finishing.
      * @return true if objects is updated successful else false.

@@ -51,9 +51,9 @@ bool Async::asyncLauncher(const Async::Job &job, bool await) {
 
     if (!await) {
         return  QMetaObject::invokeMethod(this,
-                                       "asyncHandler",
-                                       Qt::QueuedConnection,
-                                       Q_ARG(QH::Async::Job, job));
+                                          "asyncHandler",
+                                          Qt::QueuedConnection,
+                                          Q_ARG(QH::Async::Job, job));
     }
 
     bool workOfEnd = false, workResult = false;

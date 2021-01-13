@@ -13,7 +13,7 @@
 namespace QH {
 
 Package::Package() {
-    reset();
+    Package::reset();
 }
 
 bool Package::isValid() const {
@@ -37,7 +37,7 @@ bool Package::isValid() const {
             return false;
     }
 
-    return qHash(data) == hdr.hash;
+    return static_cast<uint>(qHash(data)) == hdr.hash;
 }
 
 void Package::reset() {

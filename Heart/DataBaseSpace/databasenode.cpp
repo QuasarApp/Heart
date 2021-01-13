@@ -164,28 +164,6 @@ AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const Ho
     return new BaseNodeInfo(socket, clientAddress);
 }
 
-void DataBaseNode::badRequest(const HostAddress &address, const Header &req,
-                              const ErrorData &err, qint8 diff) {
-
-    if (!changeTrust(address, diff)) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because trust not changed",
-                                    QuasarAppUtils::Error);
-
-        return;
-    }
-
-    auto bad = BadRequest(err);
-    if (!sendData(&bad, address, &req)) {
-        return;
-    }
-
-    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                address.toString(),
-                                QuasarAppUtils::Info);
-}
-
 bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
     auto info = dynamic_cast<const BaseNodeInfo*>(getInfoPtr(id));
     if (!info)

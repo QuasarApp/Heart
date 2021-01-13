@@ -93,6 +93,12 @@ public:
      */
     void clear();
 
+    /**
+     * @brief toString This method return base64 stringValue of the address.
+     * @return string value of address.
+     */
+    QString toString() const;
+
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 

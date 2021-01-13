@@ -184,8 +184,8 @@ void NetworkNode::thisNode(NodeObject& res) const {
 
 QSet<NodeId> NetworkNode::myKnowAddresses() const {
     QSet<NodeId> res;
-
-    for (const AbstractNodeInfo *i : connections()) {
+    const auto connects = connections();
+    for (const AbstractNodeInfo *i : connects) {
         auto info = dynamic_cast<const NetworkNodeInfo*>(i);
         if (info && info->selfId().isValid()) {
             res += info->selfId();
@@ -384,17 +384,25 @@ bool NetworkNode::workWithNodeObjectData(const QSharedPointer<NodeObject> &node,
 
     if (localObjec) {
         node->setTrust(std::min(node->trust(), localObjec->trust()));
+
+        if (!db()->updateObject(node)) {
+            QuasarAppUtils::Params::log("Error on precessing of NodeObject updateObject is failed");
+            return false;
+        };
     } else {
         node->setTrust(0);
+
+        if (!db()->insertObject(node)) {
+            QuasarAppUtils::Params::log("Error on precessing of NodeObject insertObject is failed");
+            return false;
+        };
     }
 
-    if (!db()->updateObject(node)) {
-        return false;
-    };
-
     auto peerNodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
-    if (!peerNodeInfo)
+    if (!peerNodeInfo) {
+        QuasarAppUtils::Params::log("Error on precessing of NodeObject peerNodeInfo is null");
         return false;
+    }
 
     peerNodeInfo->setSelfId(NodeId(node->getId()));
 
@@ -482,7 +490,12 @@ ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
                                     QuasarAppUtils::Error);
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    routeFromSenderToHere.erase(routeFromSenderToHere.cbegin(), routeFromSenderToHere.cbegin() + index);
+#else
     routeFromSenderToHere.erase(routeFromSenderToHere.begin(), routeFromSenderToHere.begin() + index);
+#endif
+
     // inversion route and update route to sender
     _router->updateRoute(cmd->senderID(),
     {routeFromSenderToHere.rbegin(), routeFromSenderToHere.rend()});
@@ -538,23 +551,22 @@ void NetworkNode::badRequest(const HostAddress &address, const Header &req,
 
 void NetworkNode::badRequest(const NodeId &address, const Header &req,
                              const ErrorData &err, qint8 diff) {
-
     if (!changeTrust(address, diff)) {
 
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+        QuasarAppUtils::Params::log("Bad request detected, bud response command not sent!"
                                     " because trust not changed",
                                     QuasarAppUtils::Error);
 
         return;
     }
 
-    auto bad = BadNodeRequest(err);
+    auto bad = BadRequest(err);
     if (!sendData(&bad, address, &req)) {
         return;
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                address.toBase64(),
+                                address.toString(),
                                 QuasarAppUtils::Info);
 }
 

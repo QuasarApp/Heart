@@ -58,12 +58,12 @@ void AbstractNode::stop() {
         i->disconnect();
     }
 
-    for (auto it: _workers) {
+    for (auto it: qAsConst(_workers)) {
         if (!it->isFinished())
             it->cancel();
     }
 
-    for (auto it: _receiveData) {
+    for (auto it: qAsConst(_receiveData)) {
         delete  it;
     }
     _receiveData.clear();
@@ -464,8 +464,7 @@ bool AbstractNode::sendData(const AbstractData *resp,
     auto client = getInfoPtr(addere);
 
     if (!client) {
-        QuasarAppUtils::Params::log("Response not sent because client == null",
-                                    QuasarAppUtils::Error);
+        QuasarAppUtils::Params::log("Response not sent because client == null");
         return false;
     }
 
@@ -498,19 +497,10 @@ bool AbstractNode::sendData(const AbstractData *resp,
 
 void AbstractNode::badRequest(const HostAddress &address, const Header &req,
                               const ErrorData &err, qint8 diff) {
-    auto client = getInfoPtr(address);
-
-    if (!client) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because client == null",
-                                    QuasarAppUtils::Error);
-        return;
-    }
 
     if (!changeTrust(address, diff)) {
 
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+        QuasarAppUtils::Params::log("Bad request detected, bud response command not sent!"
                                     " because trust not changed",
                                     QuasarAppUtils::Error);
 
@@ -523,7 +513,7 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                client->sct()->peerAddress().toString(),
+                                address.toString(),
                                 QuasarAppUtils::Info);
 }
 

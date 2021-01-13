@@ -67,6 +67,10 @@ void NodeId::clear() {
     _data.clear();
 }
 
+QString NodeId::toString() const {
+    return toBase64();
+}
+
 QDataStream &NodeId::fromStream(QDataStream &stream) {
     stream >> _data;
     return stream;
