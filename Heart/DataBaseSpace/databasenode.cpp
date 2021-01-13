@@ -19,7 +19,6 @@
 #include <websocketsubscriptions.h>
 #include <websocketcontroller.h>
 #include <QCoreApplication>
-#include <qsecretrsa2048.h>
 #include <ping.h>
 #include <keystorage.h>
 #include <basenodeinfo.h>

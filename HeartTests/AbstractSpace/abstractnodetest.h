@@ -30,11 +30,6 @@ private:
     bool connectTest();
     bool sendDataTest();
 
-    /**
-     * @brief testICtypto - testing ictypto class
-     * @return
-     */
-    bool testICtypto();
 };
 
 #endif // ABSTRACTNODETEST_H

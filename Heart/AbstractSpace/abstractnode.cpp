@@ -8,14 +8,12 @@
 #include "abstractnode.h"
 #include "datasender.h"
 #include "ping.h"
-#include "qsecretrsa2048.h"
 #include "workstate.h"
 #include <QHostInfo>
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslSocket>
 #include <badrequest.h>
-#include <qrsaencryption.h>
 #include <quasarapp.h>
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
@@ -118,6 +116,7 @@ bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
     }
 
     if (!registerSocket(socket, &address)) {
+        delete socket;
         return false;
     }
 
@@ -364,7 +363,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
             Qt::QueuedConnection);
 
     if (info->isConnected()) {
-        socket->connected();
+        emit socket->connected();
     }
 
 
@@ -823,6 +822,7 @@ void AbstractNode::nodeConfirmet(const HostAddress& node) {
         QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
                                     " address not valid",
                                     QuasarAppUtils::Error);
+        return;
     }
 
     ptr->setStatus(NodeCoonectionStatus::Confirmed);
@@ -867,8 +867,7 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
         ParserResult parseResult = parsePackage(pkg, sender);
         if (parseResult != ParserResult::Processed) {
             auto message = QString("Package not parsed! %0 result: %1").
-                    arg(pkg.toString()).
-                    arg(pareseResultToString(parseResult));
+                    arg(pkg.toString(), pareseResultToString(parseResult));
 
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 

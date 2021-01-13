@@ -29,6 +29,12 @@ private:
     QH::AbstractNode *_nodeC = nullptr;
 
 
+    /**
+     * @brief testICtypto This test checks a working of the keyStorages (QtSecret2048)
+     * @return true if tewst fifnished succesful
+     */
+    bool testICtypto();
+
 
     /**
      * @brief powerTest - this test just create a new object of node and distruct it.

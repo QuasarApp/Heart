@@ -10,7 +10,9 @@ cmake_minimum_required(VERSION 3.10)
 include(../QuasarAppLib/CMake/ProjectOut.cmake)
 include(../QuasarAppLib/CMake/Version.cmake)
 
-add_subdirectory(Qt-Secret)
+if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
+    add_subdirectory(Qt-Secret)
+endif()
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -78,7 +80,12 @@ set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crypto ssl Qt-Secret)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crypto ssl)
+
+if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
+    target_link_libraries(${PROJECT_NAME} PUBLIC Qt-Secret)
+endif()
+
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})

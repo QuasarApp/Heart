@@ -12,7 +12,6 @@
 #include <abstractnode.h>
 #include <keystorage.h>
 #include <ping.h>
-#include <qsecretrsa2048.h>
 
 class TestingClient: public QH::AbstractNode {
 
@@ -73,93 +72,4 @@ bool AbstractNodeTest::sendDataTest() {
     };
 
     return funcPrivateConnect(request, check);
-}
-
-template<class Crypto>
-bool validationCrypto() {
-    // create crypto oject
-    auto crypto = new QH::KeyStorage(new Crypto());
-
-
-    // get test pair keys
-    auto keys = crypto->getNextPair("TEST_KEY");
-
-    // must be failed becouse crypto object still not inited.
-    if (keys.isValid()) {
-        delete crypto;
-        return false;
-    }
-
-    if (!crypto->initDefaultStorageLocation()) {
-        delete crypto;
-        return false;
-    }
-
-    // get test pair keys
-    keys = crypto->getNextPair("TEST_KEY");
-
-    // chekck keys
-    if (!keys.isValid()) {
-        delete crypto;
-        return false;
-    }
-
-    // remove crypto object, after remove crypto object most be save all generated keys
-    delete crypto;
-
-    // second initialisin of crypto object
-    crypto = new QH::KeyStorage(new Crypto());
-    if (!crypto->initDefaultStorageLocation()) {
-        delete crypto;
-        return false;
-    }
-
-    // check get generated key pair
-    if (keys != crypto->getNextPair("TEST_KEY", 0)) {
-        delete crypto;
-        return false;
-    }
-
-    QByteArray msg = "test_message";
-
-    // check sign data
-    if (!crypto->sign(&msg, keys.privKey())) {
-        delete crypto;
-        return false;
-    }
-
-    if (!crypto->check(msg, keys.publicKey())) {
-        delete crypto;
-        return false;
-    }
-
-    // check genesis generation of keys
-    auto ThisIsKey = crypto->getNextPair("key", "this is key");
-    auto ThisIsKey2 = crypto->getNextPair("key2", "this is key");
-
-    if (ThisIsKey != ThisIsKey2) {
-        delete crypto;
-        return false;
-    }
-
-
-    delete crypto;
-
-    crypto = new QH::KeyStorage(new Crypto());
-    if (!crypto->initDefaultStorageLocation()) {
-        delete crypto;
-        return false;
-    }
-
-    auto lastKeys = crypto->getNextPair("key2", RAND_KEY, 0);
-    return lastKeys == ThisIsKey2;
-}
-
-bool AbstractNodeTest::testICtypto() {
-    // check
-    if (!validationCrypto<QH::QSecretRSA2048>()) {
-        return false;
-    }
-
-    return true;
 }

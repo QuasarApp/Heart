@@ -14,6 +14,7 @@
 #include <keystorage.h>
 #include <ping.h>
 #include <qsecretrsa2048.h>
+#include <keystoragetest.h>
 
 class TestingNetworkClient: public QH::NetworkNode {
 
@@ -159,6 +160,15 @@ bool NetworkNodeTest::performanceTest() {
 
 bool NetworkNodeTest::securityTest() {
     return false;
+}
+
+bool NetworkNodeTest::testICtypto() {
+    // check
+    if (!validationCrypto<QH::QSecretRSA2048>()) {
+        return false;
+    }
+
+    return true;
 }
 
 
