@@ -124,15 +124,6 @@ SqlDBWriter *ISqlDBCache::writer() const {
 }
 
 void ISqlDBCache::setWriter(SqlDBWriter *writer) {
-
-    if ((_mode == SqlDBCasheWriteMode::Force) && dynamic_cast<AsyncSqlDbWriter*>(writer)) {
-        throw std::runtime_error("You user the SqlDBCasheWriteMode::Force mode of ISqlDBCache and AsyncSqlDbWriter. "
-                                  "This is this can cause your client or server to crash. Since the asynchronous save will be "
-                                  "able to be performed for temporary objects. Use the SqlDBCasheWriteMode::Default or"
-                                  " not async SqlDbWriter");
-
-    }
-
     _writer = writer;
 }
 
