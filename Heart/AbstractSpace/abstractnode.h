@@ -16,7 +16,9 @@
 #include <QMutex>
 #include <QSslConfiguration>
 #include <QTcpServer>
+#include <QThreadPool>
 #include <QTimer>
+#include <softdelete.h>
 #include "abstractdata.h"
 #include "workstate.h"
 #include "package.h"
@@ -91,7 +93,7 @@ class Abstract;
  *  and work with crypto method for crease a security connections betwin nodes.
  *  AbstractNode - is thread save class
  */
-class HEARTSHARED_EXPORT AbstractNode : public QTcpServer
+class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {
     Q_OBJECT
 
@@ -505,6 +507,10 @@ protected:
      */
     QList<std::function<void ()>> takeFromQueue(const HostAddress& node,
                                                 NodeCoonectionStatus triggerStatus);
+
+
+    void prepareForDelete() override;
+
 private slots:
 
     void avelableBytes();
@@ -571,8 +577,9 @@ private:
     mutable QMutex _actionCacheMutex;
     mutable QMutex _confirmNodeMutex;
 
-    friend class WebSocketController;
+    QThreadPool *_threadPool = nullptr;
 
+    friend class WebSocketController;
 
 };
 

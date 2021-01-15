@@ -57,6 +57,13 @@ public:
      */
     friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
+    /**
+     * @brief operator = This is base copy operator for all StreamBase structures.
+     *  Default implementation it is copy from byteArray.
+     * @param righ input data object.
+     * @return return lvalue link to object.
+     */
+    StreamBase& operator=(const StreamBase &righ);
 
 protected:
 

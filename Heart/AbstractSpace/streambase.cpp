@@ -34,6 +34,15 @@ QByteArray StreamBase::toBytes() const {
     return res;
 }
 
+StreamBase &StreamBase::operator=(const StreamBase &righ) {
+    QByteArray res;
+    QDataStream stream(&res, QIODevice::WriteOnly);
+    righ.toStream(stream);
+    toStream(stream);
+
+    return *this;
+}
+
 QDataStream &operator<<(QDataStream &stream, const StreamBase &obj) {
     return (&obj)->toStream(stream);
 }

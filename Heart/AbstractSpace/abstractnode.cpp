@@ -31,6 +31,9 @@ AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
 
     _dataSender = new DataSender();
+    _threadPool = new QThreadPool(this);
+    _threadPool->setMaxThreadCount(QThread::idealThreadCount());
+    _threadPool->setObjectName("PackageWorker");
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -134,17 +137,19 @@ bool AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
             return;
         }
 
-        if (info.addresses().size() > 1) {
+        auto addresses = info.addresses();
+
+        if (addresses.size() > 1) {
             QuasarAppUtils::Params::log("The domain name :" + domain + " has more 1 ip addresses.",
                                         QuasarAppUtils::Warning);
         }
 
 
-        if (!connectToHost(HostAddress{info.addresses().first(), port}, mode)) {
+        if (!connectToHost(HostAddress{addresses.first(), port}, mode)) {
             return;
         }
 
-        auto hostObject = getInfoPtr(HostAddress{info.addresses().first(), port});
+        auto hostObject = getInfoPtr(HostAddress{addresses.first(), port});
 
         if (!hostObject) {
             QuasarAppUtils::Params::log("The domain name :" + domain + " has connected bud not have network object!",
@@ -191,8 +196,6 @@ HostAddress AbstractNode::address() const {
 }
 
 AbstractNode::~AbstractNode() {
-    //    delete _nodeKeys;
-    stop();
 }
 
 QSslConfiguration AbstractNode::getSslConfig() const {
@@ -892,7 +895,7 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
     };
 
     auto worker = new QFutureWatcher <bool>();
-    worker->setFuture(QtConcurrent::run(executeObject));
+    worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
     _workers.insert(worker);
 
     connect(worker, &QFutureWatcher<bool>::finished,
@@ -975,6 +978,10 @@ AbstractNode::takeFromQueue(const HostAddress &node,
     _actionCacheMutex.unlock();
 
     return list;
+}
+
+void AbstractNode::prepareForDelete() {
+    stop();
 }
 
 void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStatus status) {
