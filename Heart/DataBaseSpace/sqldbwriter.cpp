@@ -36,34 +36,24 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
 #endif
 
         while(!stream.atEnd()) {
+            QString line = stream.readLine();
+            int linedelimiterIndex = line.lastIndexOf(delimiter, -1, Qt::CaseInsensitive);
+            int delimiterIndex = temp.size() + linedelimiterIndex;
 
-            temp += stream.readLine();
+            if (line.contains("--"))
+                continue;
 
-            if (temp.lastIndexOf("delimiter", -1, Qt::CaseInsensitive) > -1) {
+            temp += line;
 
-                temp.remove("delimiter", Qt::CaseInsensitive);
+            if (linedelimiterIndex > -1) {
+                result = result && sq->exec(temp.left(delimiterIndex));
+                temp = temp.remove(0, delimiterIndex + 1);
 
-                int last = temp.indexOf(QRegularExpression("[^ \f\n\r\t\v]")) + 1;
-
-                int begin = temp.lastIndexOf(QRegularExpression("[^ \f\n\r\t\v]"));
-
-                delimiter = temp.mid(begin, last - begin);
-
-                temp = "";
-            } else {
-                if (temp.lastIndexOf(delimiter) >- 1) {
-                    temp.remove(delimiter);
-
-                    result = result && sq->exec(temp);
-
-                    if (!result) {
-                        QuasarAppUtils::Params::log("exec database error: " + sq->lastError().text(),
-                                                    QuasarAppUtils::Error);
-                        f.close();
-                        return false;
-                    }
-
-                    temp = "";
+                if (!result) {
+                    QuasarAppUtils::Params::log("exec database error: " + sq->lastError().text(),
+                                                QuasarAppUtils::Error);
+                    f.close();
+                    return false;
                 }
             }
         }
