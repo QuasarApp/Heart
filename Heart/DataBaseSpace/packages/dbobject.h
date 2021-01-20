@@ -97,6 +97,7 @@ public:
      * @param tableName This is table name
      */
     DBObject(const QString& tableName);
+    DBObject(const DbAddress& address);
 
     ~DBObject() override;
 

@@ -25,6 +25,10 @@ DBObject::DBObject(const QString &tableName) {
     _dbId.setTable(tableName);
 }
 
+DBObject::DBObject(const DbAddress &address) {
+    _dbId = address;
+}
+
 DBObject::~DBObject() {
 
 }
@@ -185,7 +189,11 @@ QString DBObject::condition() const {
     };
 
     auto byteArrayWarning = [](){
-        QuasarAppUtils::Params::log("You try generate a condition from the raw bytes array. This operation can not be brok the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.", QuasarAppUtils::Warning);
+        QuasarAppUtils::Params::log("You try generate a condition from the raw bytes array."
+                                    " This operation can not be brok the sql request."
+                                    " Use the QString or int type for values of condition."
+                                    " If you want to  bytes array in condition then override the DBObject::condition method.",
+                                    QuasarAppUtils::Warning);
     };
 
     QString errorString = "WRONG OBJECT";
