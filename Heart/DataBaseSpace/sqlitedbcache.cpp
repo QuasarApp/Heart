@@ -57,11 +57,11 @@ SQLiteDBCache::~SQLiteDBCache() {
 
 bool SQLiteDBCache::init(const QVariantMap &params) {
 
-    if (!_private->initDb(params)) {
+    if (!ISqlDBCache::init(params)) {
         return false;
     }
 
-    return ISqlDBCache::init(params);
+    return _private->initDb(params);
 }
 
 void SQLiteDBCache::deleteFromCache(const QSharedPointer<PKG::DBObject> &delObj) {

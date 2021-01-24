@@ -61,6 +61,10 @@ bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
         f.close();
         return result;
     }
+
+    QuasarAppUtils::Params::log("sql source file is not open: " + sqlFile,
+                                QuasarAppUtils::Error);
+
     return false;
 }
 

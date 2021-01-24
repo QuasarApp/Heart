@@ -49,6 +49,7 @@ protected:
 
 private:
     SQLiteDBCachePrivate * _private = nullptr;
+
 };
 }
 #endif // SQLITEDBCACHE_H
