@@ -61,9 +61,9 @@ uint qHash(NodeCoonectionStatus status);
  * all node Info classes must be initialized in the AbstractNode::createNodeInfo methods.
  * This implementation of nodeInf contains only trust of node and network socket.
  */
-class HEARTSHARED_EXPORT AbstractNodeInfo
+class HEARTSHARED_EXPORT AbstractNodeInfo: public QObject
 {
-
+    Q_OBJECT
 public:
 
     /**
@@ -87,8 +87,9 @@ public:
 
     /**
      * @brief disconnect This method disconnect device from host
+     * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object befor close connection. This using on the poweroff signals. By Default this arguments = false.
      */
-    virtual void disconnect();
+    virtual void disconnect(bool disableEvents = false);
 
     /**
      * @brief ban this node, set trust value to 0.
@@ -200,6 +201,34 @@ public:
      * @param isLocal
      */
     void setIsLocal(bool isLocal);
+
+signals:
+
+    /**
+     * @brief sigConnected This is wraper signal for the QAbstractSocket::connetced signal.
+     * @param thisNode This is pointer to current object.
+     */
+    void sigConnected(AbstractNodeInfo* thisNode);
+
+    /**
+     * @brief sigDisconnected This is wraper signal for the QAbstractSocket::disconnected signal.
+     * @param thisNode This is pointer to current object.
+     */
+    void sigDisconnected(AbstractNodeInfo* thisNode);
+
+    /**
+     * @brief sigReadyRead This is wraper signal for the QAbstractSocket::readyRead signal.
+     * @param thisNode This is pointer to current object.
+     */
+    void sigReadyRead(AbstractNodeInfo* thisNode);
+
+    /**
+     * @brief sigErrorOccurred This is wraper signal for the QAbstractSocket::errorOccurred signal.
+     * @param thisNode This is pointer to current object.
+     * @param socketError This is socket error code.
+     * For more information see the QAbstractSocket::SocketError enum class.
+     */
+    void sigErrorOccurred(AbstractNodeInfo* thisNode, QAbstractSocket::SocketError socketError);
 
 protected:
     /**

@@ -27,6 +27,6 @@ void Header::reset() {
 
 QString Header::toString() const {
     return QString("Header description: Size - %0, Command - %1, hash - %2, triggerHash - %3").
-            arg(size).arg(command).arg(QString::number(hash, 16)).arg(QString::number(triggerHash, 16));
+            arg(size, command).arg(QString::number(hash, 16), QString::number(triggerHash, 16));
 }
 }

@@ -37,9 +37,13 @@ AbstractNode::AbstractNode( QObject *ptr):
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
+
+    if (!port)
+        return false;
+
     HostAddress adr(addres, port);
     if (addres.isEmpty()) {
-        adr = HostAddress{QHostAddress::Any};
+        adr = HostAddress{QHostAddress::Any, port};
     }
 
     if (!listen(adr)) {
@@ -55,7 +59,7 @@ void AbstractNode::stop() {
     close();
 
     QMutexLocker locer(&_connectionsMutex);
-    for (auto &&i : _connections) {
+    for (const auto &i : qAsConst(_connections)) {
         i->disconnect();
     }
 
@@ -358,11 +362,13 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
 
     _connectionsMutex.unlock();
 
-    connect(socket, &QAbstractSocket::readyRead, this, &AbstractNode::avelableBytes);
-    connect(socket, &QAbstractSocket::disconnected, this, &AbstractNode::handleDisconnected,
-            Qt::QueuedConnection);
+    connect(info, &AbstractNodeInfo::sigReadyRead, this, &AbstractNode::avelableBytes);
 
-    connect(socket, &QAbstractSocket::connected, this, &AbstractNode::handleConnected,
+    // using direct connection because socket clear all data of ip and port after disconnected.
+    connect(info, &AbstractNodeInfo::sigDisconnected, this, &AbstractNode::handleDisconnected,
+            Qt::DirectConnection);
+
+    connect(info, &AbstractNodeInfo::sigConnected, this, &AbstractNode::handleConnected,
             Qt::QueuedConnection);
 
     if (info->isConnected()) {
@@ -683,15 +689,13 @@ void AbstractNode::incomingTcp(qintptr socketDescriptor) {
 }
 
 
-void AbstractNode::avelableBytes() {
+void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
 
-    auto client = dynamic_cast<QAbstractSocket*>(sender());
-
-    if (!client) {
+    if (!sender) {
         return;
     }
 
-    auto id = HostAddress{client->peerAddress(), client->peerPort()};
+    auto id = sender->networkAddress();
 
     if (!_connections.contains(id)) {
         return;
@@ -708,7 +712,7 @@ void AbstractNode::avelableBytes() {
     const int headerSize = sizeof(Header);
 
     // concat with old data of header.
-    const auto array = hdrArray + client->readAll();
+    const auto array = hdrArray + sender->sct()->readAll();
     const int arraySize = array.size();
     hdrArray.clear();
 
@@ -750,7 +754,7 @@ void AbstractNode::avelableBytes() {
         }
 
         if (pkg.isValid()) {
-            newWork(pkg, getInfoPtr(id), id);
+            newWork(pkg, sender, id);
         } else {
             QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
                                         QuasarAppUtils::Warning);
@@ -762,74 +766,45 @@ void AbstractNode::avelableBytes() {
     }
 }
 
-/// @todo create a new system of drop error nodes.
-/// if node closed by error then this node need to reconnect. bud if node longer time in disconnect statuse then drop this node.
-///
-void AbstractNode::handleDisconnected() {
-    auto _sender = dynamic_cast<QTcpSocket*>(sender());
-
-    if (_sender) {
-        // log error
-
-        auto ptr = getInfoPtr(HostAddress{_sender->peerAddress(), _sender->peerPort()});
-        if (!ptr) {
-            QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                        " address not valid",
-                                        QuasarAppUtils::Error);
-            return;
-        }
-
-        ptr->setStatus(NodeCoonectionStatus::NotConnected);
-        nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::NotConnected);
-        ptr->disconnect();
-
-        return;
-    }
-
-    QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                "dynamic_cast fail!",
-                                QuasarAppUtils::Error);
-}
-
-void AbstractNode::handleConnected() {
-
-    auto _sender = dynamic_cast<QTcpSocket*>(sender());
-
-    if (_sender) {
-
-        auto ptr = getInfoPtr(HostAddress{_sender->peerAddress(), _sender->peerPort()});
-
-        if (!ptr) {
-            QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                        " address not valid",
-                                        QuasarAppUtils::Error);
-            return;
-        }
-
-        ptr->setStatus(NodeCoonectionStatus::Connected);
-        nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::Connected);
-
-        return;
-    }
-
-    QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                "dynamic_cast fail!",
-                                QuasarAppUtils::Error);
-}
-
-void AbstractNode::nodeConfirmet(const HostAddress& node) {
-
-    auto ptr = getInfoPtr(node);
-
-    if (!ptr) {
+void AbstractNode::handleDisconnected(AbstractNodeInfo* sender) {
+    if (!sender) {
         QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
                                     " address not valid",
                                     QuasarAppUtils::Error);
         return;
     }
 
-    ptr->setStatus(NodeCoonectionStatus::Confirmed);
-    nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::Confirmed);
+    sender->setStatus(NodeCoonectionStatus::NotConnected);
+    nodeStatusChanged(sender->networkAddress(), NodeCoonectionStatus::NotConnected);
+
+    return;
+}
+
+void AbstractNode::handleConnected(AbstractNodeInfo *sender) {
+
+    if (!sender) {
+        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
+                                    " address not valid",
+                                    QuasarAppUtils::Error);
+        return;
+    }
+
+    sender->setStatus(NodeCoonectionStatus::Connected);
+    nodeStatusChanged(sender->networkAddress(), NodeCoonectionStatus::Connected);
+
+    return;
+}
+
+void AbstractNode::nodeConfirmet(AbstractNodeInfo *sender) {
+    if (!sender) {
+        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
+                                    " address not valid",
+                                    QuasarAppUtils::Error);
+        return;
+    }
+
+    sender->setStatus(NodeCoonectionStatus::Confirmed);
+    nodeStatusChanged(sender->networkAddress(), NodeCoonectionStatus::Confirmed);
 }
 
 void AbstractNode::handleCheckConfirmendOfNode(HostAddress node) {
@@ -860,7 +835,7 @@ void AbstractNode::connectNodePrivate(HostAddress address) {
     connectToHost(address, _mode);
 }
 
-void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
+void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
                            const HostAddress& id) {
 
     if (!sender)
@@ -885,7 +860,7 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
 
         bool fConfirmed = sender->confirmData();
         if (fConfirmed && sender->status() != NodeCoonectionStatus::Confirmed) {
-            nodeConfirmet(id);
+            nodeConfirmet(sender);
         }
 
         _confirmNodeMutex.unlock();

@@ -513,9 +513,9 @@ protected:
 
 private slots:
 
-    void avelableBytes();
-    void handleDisconnected();
-    void handleConnected();
+    void avelableBytes(AbstractNodeInfo* sender);
+    void handleDisconnected(AbstractNodeInfo* sender);
+    void handleConnected(AbstractNodeInfo* sender);
     void handleCheckConfirmendOfNode(HostAddress node);
 
     /**
@@ -547,14 +547,14 @@ private:
      * @param pkg
      * @param sender
      */
-    void newWork(const Package &pkg, const AbstractNodeInfo* sender, const HostAddress &id);
+    void newWork(const Package &pkg, AbstractNodeInfo *sender, const HostAddress &id);
 
 
     /**
      * @brief nodeConfirmet - this metthod invoked when node is confirment.
      * @param sender - node with new status;
     */
-    void nodeConfirmet(const HostAddress &node);
+    void nodeConfirmet(AbstractNodeInfo *sender);
 
     /**
      * @brief checkConfirmendOfNode - this method remove old not confirmed node.

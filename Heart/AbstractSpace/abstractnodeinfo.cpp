@@ -27,11 +27,16 @@ QAbstractSocket *AbstractNodeInfo::sct() const {
     return _sct;
 }
 
-void AbstractNodeInfo::disconnect() {
+void AbstractNodeInfo::disconnect(bool disableEvents) {
     if (_sct) {
-        _sct->close();
-        _sct->deleteLater();
+        auto socketPtr = _sct;
+
+        if (disableEvents)
+            socketPtr->disconnect();
+
         _sct = nullptr;
+        socketPtr->close();
+        socketPtr->deleteLater();
     }
 }
 
@@ -49,10 +54,28 @@ void AbstractNodeInfo::unBan() {
 }
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
+    QObject::disconnect(_sct, nullptr, this, nullptr);
+
     _sct = sct;
     if (_sct && !_sct->peerAddress().isNull()) {
         setNetworkAddress(HostAddress{_sct->peerAddress(), _sct->peerPort()});
     }
+
+    connect(_sct, &QAbstractSocket::connected,
+            this, [this] (){ emit sigConnected(this);},
+            Qt::DirectConnection);
+
+    connect(_sct, &QAbstractSocket::disconnected,
+            this, [this] (){ disconnect(), emit sigDisconnected(this);},
+            Qt::DirectConnection);
+
+    connect(_sct, &QAbstractSocket::errorOccurred,
+            this, [this] (QAbstractSocket::SocketError err){emit sigErrorOccurred(this, err);},
+            Qt::DirectConnection);
+
+    connect(_sct, &QAbstractSocket::readyRead,
+            this, [this] (){ emit sigReadyRead(this);},
+            Qt::DirectConnection);
 }
 
 void AbstractNodeInfo::setIsLocal(bool isLocal) {
@@ -123,7 +146,7 @@ bool AbstractNodeInfo::isValid() const {
 }
 
 bool AbstractNodeInfo::isConnected() const {
-    return isValid() && _sct->isOpen();
+    return isValid() && _sct->state() == QAbstractSocket::ConnectedState;
 }
 
 QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
