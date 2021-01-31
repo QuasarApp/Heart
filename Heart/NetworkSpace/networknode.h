@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -186,30 +186,25 @@ protected:
      */
     QSet<NodeId> myKnowAddresses() const;
 
-    /**
-     * @brief welcomeAddress - this method send to the ip information about yaster self.
-     * @param ip - host address of the peer node obeject
-     * @return true if all iformation sendet succesful
-     */
-    bool welcomeAddress(const HostAddress &ip) override;
+    bool welcomeAddress(AbstractNodeInfo *node) override;
 
     /**
      * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
      * @param info incominng node info.
      */
-    void nodeConnected(const HostAddress& node) override;
+    void nodeConnected(AbstractNodeInfo *node) override;
 
     /**
      * @brief nodeConfirmend - this implementation test nodes to double connections
      * @param mode
      */
-    void nodeConfirmend(const HostAddress& sender) override;
+    void nodeConfirmend(AbstractNodeInfo *sender) override;
 
     /**
      * @brief nodeDisconnected - this implementation remove nodes info from connection cache
      * @param sender
      */
-    void nodeDisconnected(const HostAddress& node) override;
+    void nodeDisconnected(AbstractNodeInfo *node) override;
 
     /**
      * @brief incomingData - this signal invoked when node get command or ansver

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -195,11 +195,11 @@ QSet<NodeId> NetworkNode::myKnowAddresses() const {
     return res;
 }
 
-bool NetworkNode::welcomeAddress(const HostAddress& ip) {
+bool NetworkNode::welcomeAddress(AbstractNodeInfo *node) {
     NodeObject self;
     thisNode(self);
 
-    if (!sendData(&self, ip)) {
+    if (!sendData(&self, node->networkAddress())) {
         return false;
     }
 
@@ -210,7 +210,7 @@ bool NetworkNode::welcomeAddress(const HostAddress& ip) {
             KnowAddresses addressesData;
             addressesData.setKnowAddresses(knowAddresses);
 
-            if (!sendData(&addressesData, ip)) {
+            if (!sendData(&addressesData, node->networkAddress())) {
                 return false;
             }
         }
@@ -220,17 +220,14 @@ bool NetworkNode::welcomeAddress(const HostAddress& ip) {
 
 }
 
-void NetworkNode::nodeConnected(const HostAddress &node) {
+void NetworkNode::nodeConnected(AbstractNodeInfo *node) {
     DataBaseNode::nodeConnected(node);
-
-    welcomeAddress(node);
-
 }
 
-void NetworkNode::nodeConfirmend(const HostAddress &node) {
+void NetworkNode::nodeConfirmend(AbstractNodeInfo *node) {
     DataBaseNode::nodeConfirmend(node);
 
-    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(node));
+    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(node);
     if (!nodeInfo) {
         return;
     }
@@ -240,7 +237,7 @@ void NetworkNode::nodeConfirmend(const HostAddress &node) {
     _connectionsMutex.unlock();
 
     if (oldNodeInfo) {
-        removeNode(node);
+        removeNode(node->networkAddress());
         return;
     }
 
@@ -251,10 +248,10 @@ void NetworkNode::nodeConfirmend(const HostAddress &node) {
 
 }
 
-void NetworkNode::nodeDisconnected(const HostAddress &node) {
+void NetworkNode::nodeDisconnected(AbstractNodeInfo *node) {
     AbstractNode::nodeDisconnected(node);
 
-    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(node));
+    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(node);
     if (!nodeInfo) {
         return;
     }

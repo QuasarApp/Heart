@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -89,7 +89,7 @@ public:
      * @brief disconnect This method disconnect device from host
      * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object befor close connection. This using on the poweroff signals. By Default this arguments = false.
      */
-    virtual void disconnect(bool disableEvents = false);
+    virtual void disconnect();
 
     /**
      * @brief ban this node, set trust value to 0.
@@ -184,11 +184,9 @@ public:
     void setStatus(const NodeCoonectionStatus &status);
 
     /**
-     * @brief confirmData This method check all data of node and return true
-     * if node is confirmed.
-     * @return true if node is confirmed
+     * @brief updateConfirmStatus This method invoked after process a received pacakge and update confitm status of the node.
      */
-    virtual bool confirmData() const;
+    void updateConfirmStatus();
 
     /**
      * @brief isLocal return true if connectuion opened on this node.
@@ -230,7 +228,28 @@ signals:
      */
     void sigErrorOccurred(AbstractNodeInfo* thisNode, QAbstractSocket::SocketError socketError);
 
+    /**
+     * @brief sigConfirmed This signal emitted when node is confirmend. The confirm status sets in the confirmData method.
+     * @param thisNode This is pointer to current object.
+     */
+    void sigConfirmed(AbstractNodeInfo* thisNode);
+
+    /**
+     * @brief statusChaned This signal emitted when nodes status is changed.
+     * @param thisNode This is pointer to current object.
+     * @param status This is status og node. For more information see the NodeCoonectionStatus enum.
+     */
+    void statusChaned(AbstractNodeInfo* thisNode, NodeCoonectionStatus status);
+
 protected:
+
+    /**
+     * @brief confirmData This method check all data of node and return true
+     * if node is confirmed.
+     * @return true if node is confirmed
+     */
+    virtual bool confirmData() const;
+
     /**
      * @brief setSct - set socket for this node or client
      * @param sct
@@ -250,4 +269,7 @@ private:
 };
 
 }
+
+Q_DECLARE_METATYPE(QH::NodeCoonectionStatus)
+
 #endif // ABSTRACTNODEINFO_H

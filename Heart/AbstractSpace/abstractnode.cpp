@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -177,12 +177,6 @@ void AbstractNode::addNode(const HostAddress &nodeAdderess) {
 }
 
 void AbstractNode::removeNode(const HostAddress &nodeAdderess) {
-
-    for (int status = static_cast<int>(NodeCoonectionStatus::NotConnected);
-         status < static_cast<int>(NodeCoonectionStatus::Confirmed); ++status) {
-
-        takeFromQueue(nodeAdderess, static_cast<NodeCoonectionStatus>(status));
-    }
 
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
 
@@ -362,23 +356,18 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
 
     _connectionsMutex.unlock();
 
-    connect(info, &AbstractNodeInfo::sigReadyRead, this, &AbstractNode::avelableBytes);
+    connect(info, &AbstractNodeInfo::sigReadyRead,
+            this, &AbstractNode::avelableBytes);
 
     // using direct connection because socket clear all data of ip and port after disconnected.
-    connect(info, &AbstractNodeInfo::sigDisconnected, this, &AbstractNode::handleDisconnected,
-            Qt::DirectConnection);
-
-    connect(info, &AbstractNodeInfo::sigConnected, this, &AbstractNode::handleConnected,
+    connect(info, &AbstractNodeInfo::statusChaned,
+            this, &AbstractNode::handleNodeStatusChanged,
             Qt::QueuedConnection);
 
-    if (info->isConnected()) {
-        emit socket->connected();
-    }
-
-
     // check node confirmed
-    QTimer::singleShot(WAIT_TIME, this,
-                       std::bind(&AbstractNode::handleCheckConfirmendOfNode, this, cliAddress));
+    QTimer::singleShot(WAIT_TIME, [this, info]() {
+        checkConfirmendOfNode(info);
+    });
 
     connectionRegistered(info);
 
@@ -766,51 +755,6 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
     }
 }
 
-void AbstractNode::handleDisconnected(AbstractNodeInfo* sender) {
-    if (!sender) {
-        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                    " address not valid",
-                                    QuasarAppUtils::Error);
-        return;
-    }
-
-    sender->setStatus(NodeCoonectionStatus::NotConnected);
-    nodeStatusChanged(sender->networkAddress(), NodeCoonectionStatus::NotConnected);
-
-    return;
-}
-
-void AbstractNode::handleConnected(AbstractNodeInfo *sender) {
-
-    if (!sender) {
-        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                    " address not valid",
-                                    QuasarAppUtils::Error);
-        return;
-    }
-
-    sender->setStatus(NodeCoonectionStatus::Connected);
-    nodeStatusChanged(sender->networkAddress(), NodeCoonectionStatus::Connected);
-
-    return;
-}
-
-void AbstractNode::nodeConfirmet(AbstractNodeInfo *sender) {
-    if (!sender) {
-        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                    " address not valid",
-                                    QuasarAppUtils::Error);
-        return;
-    }
-
-    sender->setStatus(NodeCoonectionStatus::Confirmed);
-    nodeStatusChanged(sender->networkAddress(), NodeCoonectionStatus::Confirmed);
-}
-
-void AbstractNode::handleCheckConfirmendOfNode(HostAddress node) {
-    checkConfirmendOfNode(node);
-}
-
 void AbstractNode::handleWorkerStoped() {
     auto senderObject = dynamic_cast<QFutureWatcher <bool>*>(sender());
 
@@ -857,12 +801,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
         }
 
         _confirmNodeMutex.lock();
-
-        bool fConfirmed = sender->confirmData();
-        if (fConfirmed && sender->status() != NodeCoonectionStatus::Confirmed) {
-            nodeConfirmet(sender);
-        }
-
+        sender->updateConfirmStatus();
         _confirmNodeMutex.unlock();
 
 
@@ -928,44 +867,11 @@ void AbstractNode::connectionRegistered(const AbstractNodeInfo *info) {
     Q_UNUSED(info)
 }
 
-void AbstractNode::pushToQueue(const std::function<void()>& action,
-                               const HostAddress &node,
-                               NodeCoonectionStatus triggerStatus) {
-
-    _actionCacheMutex.lock();
-    _actionCache[node][triggerStatus].push_back(action);
-    _actionCacheMutex.unlock();
-
-}
-
-QList<std::function<void ()> >
-AbstractNode::takeFromQueue(const HostAddress &node,
-                            NodeCoonectionStatus triggerStatus) {
-
-    _actionCacheMutex.lock();
-
-    auto list = _actionCache[node][triggerStatus];
-    _actionCache[node].remove(triggerStatus);
-
-    if (_actionCache[node].size() == 0)
-        _actionCache.remove(node);
-
-    _actionCacheMutex.unlock();
-
-    return list;
-}
-
 void AbstractNode::prepareForDelete() {
     stop();
 }
 
-void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStatus status) {
-
-    auto list = takeFromQueue(node, status);
-
-    for (const auto &action : list) {
-        action();
-    }
+void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectionStatus status) {
 
     if (status == NodeCoonectionStatus::NotConnected) {
         nodeDisconnected(node);
@@ -976,26 +882,25 @@ void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStat
     }
 }
 
-void AbstractNode::nodeConfirmend(const HostAddress &node) {
+void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
     Q_UNUSED(node)
 }
 
-void AbstractNode::nodeConnected(const HostAddress &node) {
+void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
 }
 
-void AbstractNode::nodeDisconnected(const HostAddress &node) {
+void AbstractNode::nodeDisconnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
 }
 
-void AbstractNode::checkConfirmendOfNode(const HostAddress &node) {
-    auto info = getInfoPtr(node);
+void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
 
     if(!info)
         return;
 
     if (info->status() != NodeCoonectionStatus::Confirmed) {
-        removeNode(node);
+        removeNode(info->networkAddress());
     }
 }
 

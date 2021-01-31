@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -27,16 +27,16 @@ QAbstractSocket *AbstractNodeInfo::sct() const {
     return _sct;
 }
 
-void AbstractNodeInfo::disconnect(bool disableEvents) {
+void AbstractNodeInfo::disconnect() {
     if (_sct) {
         auto socketPtr = _sct;
-
-        if (disableEvents)
-            socketPtr->disconnect();
+        socketPtr->disconnect();
 
         _sct = nullptr;
         socketPtr->close();
         socketPtr->deleteLater();
+
+        setStatus(NodeCoonectionStatus::NotConnected);
     }
 }
 
@@ -54,20 +54,37 @@ void AbstractNodeInfo::unBan() {
 }
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
-    QObject::disconnect(_sct, nullptr, this, nullptr);
+
+    AbstractNodeInfo::disconnect();
 
     _sct = sct;
-    if (_sct && !_sct->peerAddress().isNull()) {
+
+    if (!_sct)
+        return;
+
+
+    if (!_sct->peerAddress().isNull()) {
         setNetworkAddress(HostAddress{_sct->peerAddress(), _sct->peerPort()});
     }
 
+    auto connectedF = [this] () {
+
+        setStatus(NodeCoonectionStatus::Connected);
+        emit sigConnected(this);
+    };
+
+    auto diconnectedF = [this] () {
+
+        disconnect();
+        setStatus(NodeCoonectionStatus::NotConnected);
+        emit sigDisconnected(this);
+    };
+
     connect(_sct, &QAbstractSocket::connected,
-            this, [this] (){ emit sigConnected(this);},
-            Qt::DirectConnection);
+            this, connectedF, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::disconnected,
-            this, [this] (){ disconnect(), emit sigDisconnected(this);},
-            Qt::DirectConnection);
+            this, diconnectedF, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::errorOccurred,
             this, [this] (QAbstractSocket::SocketError err){emit sigErrorOccurred(this, err);},
@@ -76,6 +93,10 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
     connect(_sct, &QAbstractSocket::readyRead,
             this, [this] (){ emit sigReadyRead(this);},
             Qt::DirectConnection);
+
+    if (_sct->state() == QAbstractSocket::ConnectedState) {
+        connectedF();
+    }
 }
 
 void AbstractNodeInfo::setIsLocal(bool isLocal) {
@@ -87,11 +108,22 @@ NodeCoonectionStatus AbstractNodeInfo::status() const {
 }
 
 void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
+    if (status == _status) {
+        return;
+    }
+
     _status = status;
+
+    emit statusChaned(this, _status);
 }
 
 bool AbstractNodeInfo::confirmData() const {
     return _status != NodeCoonectionStatus::NotConnected;
+}
+
+void AbstractNodeInfo::updateConfirmStatus() {
+    if (confirmData())
+        setStatus(NodeCoonectionStatus::Confirmed);
 }
 
 bool AbstractNodeInfo::isLocal() const {
@@ -146,7 +178,7 @@ bool AbstractNodeInfo::isValid() const {
 }
 
 bool AbstractNodeInfo::isConnected() const {
-    return isValid() && _sct->state() == QAbstractSocket::ConnectedState;
+    return isValid() && status() != NodeCoonectionStatus::NotConnected;
 }
 
 QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {

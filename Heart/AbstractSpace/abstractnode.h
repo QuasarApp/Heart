@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -458,55 +458,25 @@ protected:
     virtual void connectionRegistered(const AbstractNodeInfo *info);
 
     /**
-     * @brief nodeStatusChanged This method invoked when status of node chganged.
-     *  Base implementation do nothing. Override this method for add own functionality.
-     * @param node This is address of changed node.
-     * @param status This is new status of node.
-     *
-     */
-    void nodeStatusChanged(const HostAddress& node, NodeCoonectionStatus status);
-
-    /**
      * @brief nodeConfirmend This method invocked when the node status changed to "confirmend"
      *  default implementatio do nothing
      * @param node This is address of changed node
      */
-    virtual void nodeConfirmend(const HostAddress& node);
+    virtual void nodeConfirmend(AbstractNodeInfo *node);
 
     /**
      * @brief nodeConnected This method invocked when the node status changed to "connected"
      *  default implementatio do nothing
      * @param node This is address of changed node
      */
-    virtual void nodeConnected(const HostAddress& node);
+    virtual void nodeConnected(AbstractNodeInfo *node);
 
     /**
      * @brief nodeConnected This method invocked when the node status changed to "disconnected"
      *  default implementatio do nothing
      * @param node This is address of changed node
      */
-    virtual void nodeDisconnected(const HostAddress& node);
-
-
-    /**
-     * @brief pushToQueue - This method add action to queue. When the node status will be equal 'triggerStatus' then node run a action method.
-     * @param node This is address of node that changed status.
-     * @param action This is lyamda function with action.
-     * @param triggerStatus This is awaiting status of node.
-     */
-    void pushToQueue(const std::function<void ()> &action,
-                     const HostAddress& node,
-                     NodeCoonectionStatus triggerStatus);
-
-    /**
-     * @brief takeFromQueue This method take the list of actions of node.
-     *  After invoke take elements will be removed.
-     * @param node This is address of node that changed status.
-     * @param triggerStatus This is awaiting status of node.
-     * @return The list of an actions
-     */
-    QList<std::function<void ()>> takeFromQueue(const HostAddress& node,
-                                                NodeCoonectionStatus triggerStatus);
+    virtual void nodeDisconnected(AbstractNodeInfo *node);
 
 
     void prepareForDelete() override;
@@ -514,9 +484,14 @@ protected:
 private slots:
 
     void avelableBytes(AbstractNodeInfo* sender);
-    void handleDisconnected(AbstractNodeInfo* sender);
-    void handleConnected(AbstractNodeInfo* sender);
-    void handleCheckConfirmendOfNode(HostAddress node);
+
+    /**
+     * @brief handleNodeStatusChanged This method invoked when status of peer node chganged.
+     * @param node This is address of changed node.
+     * @param status This is new status of node.
+     *
+     */
+    void handleNodeStatusChanged(AbstractNodeInfo* node, NodeCoonectionStatus status);
 
     /**
      * @brief handleWorkerStoped
@@ -549,32 +524,22 @@ private:
      */
     void newWork(const Package &pkg, AbstractNodeInfo *sender, const HostAddress &id);
 
-
-    /**
-     * @brief nodeConfirmet - this metthod invoked when node is confirment.
-     * @param sender - node with new status;
-    */
-    void nodeConfirmet(AbstractNodeInfo *sender);
-
     /**
      * @brief checkConfirmendOfNode - this method remove old not confirmed node.
      * @param node - node address
      */
-    void checkConfirmendOfNode(const HostAddress& node);
+    void checkConfirmendOfNode(AbstractNodeInfo *node);
 
     SslMode _mode = SslMode::NoSSL;
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, ReceiveData*> _receiveData;
 
-    QHash<HostAddress, QHash<NodeCoonectionStatus, QList<std::function<void()>>>> _actionCache;
-
     DataSender * _dataSender = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
 
     mutable QMutex _connectionsMutex;
-    mutable QMutex _actionCacheMutex;
     mutable QMutex _confirmNodeMutex;
 
     QThreadPool *_threadPool = nullptr;

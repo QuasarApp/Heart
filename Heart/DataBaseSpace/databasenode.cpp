@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -125,7 +125,7 @@ void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
 }
 
 
-bool DataBaseNode::welcomeAddress(const HostAddress&) {
+bool DataBaseNode::welcomeAddress(AbstractNodeInfo *) {
     return true;
 }
 
@@ -146,7 +146,7 @@ QSet<QString> DataBaseNode::systemTables() const {
     return {"NetworkMembers", "MemberPermisions"};
 }
 
-void DataBaseNode::nodeConnected(const HostAddress &node) {
+void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
     AbstractNode::nodeConnected(node);
     welcomeAddress(node);
 }

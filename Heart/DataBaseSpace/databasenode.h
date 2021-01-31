@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -147,7 +147,7 @@ protected:
      */
     virtual QByteArray hashgenerator(const QByteArray &data);
 
-    void nodeConnected(const HostAddress &node) override;
+    void nodeConnected(AbstractNodeInfo *node) override;
 
     /**
      * @brief db this node return pointer to database object.
@@ -296,12 +296,12 @@ protected:
     QString dbLocation() const;
 
     /**
-     * @brief welcomeAddress This method send to the ip information about yaster self.
+     * @brief welcomeAddress This method send to the node information about yaster self.
      * Override this method if you want send custom data to incomming connection.
-     * @param ip This is host address of the peer node obeject
+     * @param node This is info object of the peer node
      * @return true if all iformation sendet succesful
      */
-    virtual bool welcomeAddress(const HostAddress &ip);
+    virtual bool welcomeAddress(AbstractNodeInfo *node);
 
     /**
      * @brief isBanned This method check trust of node, if node trus is lover of 0 return true.
