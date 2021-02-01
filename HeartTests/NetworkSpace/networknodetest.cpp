@@ -46,9 +46,9 @@ NetworkNodeTest::NetworkNodeTest() {
 }
 
 NetworkNodeTest::~NetworkNodeTest() {
-    delete _nodeA;
-    delete _nodeB;
-    delete _nodeC;
+    _nodeA->softDelete();
+    _nodeB->softDelete();
+    _nodeC->softDelete();
 
 }
 
@@ -70,7 +70,7 @@ bool NetworkNodeTest::powerTest() {
         return false;
     };
 
-    delete _nodeAPtr;
+    _nodeAPtr->softDelete();
 
     return true;
 }
@@ -82,7 +82,7 @@ bool NetworkNodeTest::dbTest() {
         return false;
     }
 
-    delete node;
+    node->softDelete();
 
     return true;
 }

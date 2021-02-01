@@ -23,9 +23,9 @@ class UserMember;
 #define REQUEST_LOGIN_ERROR -1
 
 /**
- * @brief The RegisteruserResult enum
+ * @brief The UserOperationResult enum
  */
-enum class RegisteruserResult {
+enum class UserOperationResult {
     /// User not registered because database not inited or other error occurred.
     InternalError,
     /// User not registered because user already exists.
@@ -36,6 +36,8 @@ enum class RegisteruserResult {
     UserInvalidPasswoed,
     /// User Already Logged.
     UserAlreadyLogged,
+    /// User is not Loggined.
+    UserNotLogged,
     /// User registered successful.
     Success
 };
@@ -68,11 +70,11 @@ protected:
      * @param user This is data of new user.
      * @param info This is info about requested client.
 
-     * @return status of registration a new user. For more information about result statuses see the RegisteruserResult enum.
+     * @return status of registration a new user. For more information about result statuses see the UserOperationResult enum.
      *
      * @note This method send userData with new token to the client.
      */
-    virtual RegisteruserResult registerNewUser(PKG::UserMember user,
+    virtual UserOperationResult registerNewUser(PKG::UserMember user,
                                                const AbstractNodeInfo* info);
 
     /**
@@ -80,11 +82,19 @@ protected:
      * @param user This is user data with name and password.
      *  For login use PKG::User::getID and PKG::User::authenticationData like userName and password hash.
      * @param info This is info about requested client.
-     * @return status of login a user. For more information about result statuses see the RegisteruserResult enum.
+     * @return status of login a user. For more information about result statuses see the UserOperationResult enum.
      *
      * @note This method send userData with new token to the client.
      */
-    virtual RegisteruserResult loginUser(PKG::UserMember user, const AbstractNodeInfo* info);
+    virtual UserOperationResult loginUser(PKG::UserMember user, const AbstractNodeInfo* info);
+
+    /**
+     * @brief loginOutUser This method remove the generated accsses token from server.
+     * @param user This is network member data (user data)
+     * @param info This is info about requested client.
+     * @return status of operation. For more information about result statuses see the UserOperationResult enum.
+     */
+    virtual UserOperationResult loginOutUser(PKG::UserMember user, const AbstractNodeInfo* info);
 
     /**
      * @brief generateToken This method generate a new toke.
@@ -97,7 +107,9 @@ protected:
     QByteArray hashgenerator(const QByteArray &data) override;
 
 private:
-    bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj, const Package &pkg, const AbstractNodeInfo *sender);
+    bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj,
+                             const Package &pkg,
+                             const AbstractNodeInfo *sender);
 
 };
 

@@ -40,6 +40,8 @@ private slots:
 
 testProtockol::testProtockol() {
 
+    QH::init();
+
 #if HEART_BUILD_LVL >= 0
     _tests.push_back(new AbstractNodeTest);
 #endif

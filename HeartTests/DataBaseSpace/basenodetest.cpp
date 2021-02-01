@@ -14,7 +14,6 @@
 #include <hostaddress.h>
 #include <keystorage.h>
 #include <ping.h>
-#include <qsecretrsa2048.h>
 
 class TestingBaseClient: public QH::DataBaseNode {
 
@@ -52,10 +51,9 @@ BaseNodeTest::BaseNodeTest() {
 }
 
 BaseNodeTest::~BaseNodeTest() {
-    delete _client1;
-    delete _client2;
-    delete _server;
-
+    _client1->softDelete();
+    _client2->softDelete();
+    _server->softDelete();
 }
 
 void BaseNodeTest::test() {
@@ -72,7 +70,7 @@ bool BaseNodeTest::powerTest() {
         return false;
     }
 
-    delete _nodeAPtr;
+    _nodeAPtr->softDelete();
 
     return true;
 }

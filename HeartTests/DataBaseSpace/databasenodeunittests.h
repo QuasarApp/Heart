@@ -19,6 +19,7 @@ class DataBaseNodeUnitTests: public iTest {
     // Test interface
 public:
     bool test() override;
+
 };
 
 #endif // DBTESTS_H

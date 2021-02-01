@@ -8,7 +8,8 @@
 class iTest
 {
 public:
-    iTest();
+    iTest() = default;
+    virtual ~iTest() = default;
 
     /**
      * @brief test run tests of object.

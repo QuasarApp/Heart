@@ -21,6 +21,8 @@
 #include "networknode.h"
 #endif
 
+inline void initResources() { Q_INIT_RESOURCE(ProtockolResusces); }
+
 /**
  * @brief The QH namespace - QuasarApp Heart namespace. This namespace contains all classes of the Heart library.
  * Usage:
@@ -164,6 +166,24 @@ protected:
  *\image html Async.svg width=800px
  */
 namespace QH {
+    /**
+         * @brief init This method initialize default resources of the Heart Library.
+         * @warning Do not Forget invoke this method before using library.
+         *
+         *  Example :
+         *  @code {cpp}
+         *  #include <heart.h>
+         *  int main() {
+         *      if (!QH::init()) {
+         *          return 1;
+         *      }
+         *      // some code
+         *      return 0
+         *  }
+         *  @endcode
+         * @return true if all resources initialize successful.
+         */
+    bool init();
 
     /** @brief The PKG namesapce - this namespace contains all default packages of the Heart library.
      *  If you want create a pool request for Heart Library with own implemented packages

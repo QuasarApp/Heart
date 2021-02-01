@@ -99,7 +99,6 @@ public:
      */
     void disconnectFromServer();
 
-
 signals:
     /**
      * @brief statusChanged This sigmnal emited when the client change an own status.
@@ -115,6 +114,20 @@ protected:
      */
     void setStatus(const ClientStatus &status);
 
+    /**
+     * @brief getMember This method return the UserMember object of loffined user.
+     * @return UserMember object.
+     */
+    const PKG::UserMember &getMember() const;
+
+    /**
+     * @brief serverAddress This method return the addres of server.
+     *  Override this method for change server address.
+     *  Default implementation return the localhost address with the 3090 port.
+     * @return host of the server.
+     */
+    virtual HostAddress serverAddress() const;
+
 protected slots:
     /**
      * @brief handleError This handle method invoked when the client received the BadRequest from server. Ovveride this method for add actions for this event.
@@ -126,7 +139,8 @@ protected slots:
 private:
 
     bool p_login(const QString &userId, const QByteArray &hashPassword = {});
-    bool p_signIn(const QString &userId, const QByteArray &hashPassword);
+    bool p_signup(const QString &userId, const QByteArray &hashPassword);
+    void setMember(const PKG::UserMember &member);
 
     ClientStatus _status;
     PKG::UserMember _member;

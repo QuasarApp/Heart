@@ -12,4 +12,9 @@
 
 namespace QH {
 
+bool init() {
+    initResources();
+    return true;
+}
+
 }

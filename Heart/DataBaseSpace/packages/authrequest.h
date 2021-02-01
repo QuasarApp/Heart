@@ -23,9 +23,11 @@ namespace PKG {
  */
 enum class UserRequestType: unsigned char {
     /// Request to registration a new user.
-    SignIn,
+    SignUp,
     /// Request to login an exists user.
-    Login,
+    LogIn,
+    /// Request to logout an exists user. This request remove the generated accsses token from server.
+    LogOut,
     /// Remove all data of this user from server
     Remove
 };

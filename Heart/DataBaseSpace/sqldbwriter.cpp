@@ -24,7 +24,7 @@
 namespace QH {
 using namespace PKG;
 
-bool SqlDBWriter::exec(QSqlQuery *sq,const QString& sqlFile) {
+bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) {
     QFile f(sqlFile);
     bool result = true;
     if (f.open(QIODevice::ReadOnly)) {

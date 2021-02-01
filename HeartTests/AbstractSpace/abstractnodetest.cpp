@@ -41,8 +41,8 @@ AbstractNodeTest::AbstractNodeTest() {
 }
 
 AbstractNodeTest::~AbstractNodeTest() {
-    delete _nodeA;
-    delete _nodeB;
+    _nodeA->softDelete();
+    _nodeB->softDelete();
 }
 
 void AbstractNodeTest::test() {

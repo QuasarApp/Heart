@@ -32,8 +32,12 @@ bool testCase(const T& t) {
 }
 
 #define RUN_TEST_CASE(TYPE) \
-    if (!testCase(Case0{})) \
-        return false;
+    { \
+    TYPE *tst = new TYPE(); \
+    if (!testCase(*tst)) \
+        return false; \
+    tst->softDelete(); \
+    }
 
 bool DataBaseNodeUnitTests::test() {
     RUN_TEST_CASE(Case0)
