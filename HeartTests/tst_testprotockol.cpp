@@ -13,6 +13,7 @@
 #endif
 #if HEART_BUILD_LVL >= 1
 #include <basenodetest.h>
+#include <singleservertest.h>
 #endif
 #if HEART_BUILD_LVL >= 2
 #include <networknodetest.h>
@@ -47,6 +48,8 @@ testProtockol::testProtockol() {
 #endif
 #if HEART_BUILD_LVL >= 1
     _tests.push_back(new BaseNodeTest);
+    _tests.push_back(new SingleServerTest);
+
 #endif
 #if HEART_BUILD_LVL >= 2
     _tests.push_back(new NetworkNodeTest);

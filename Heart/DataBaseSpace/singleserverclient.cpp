@@ -58,6 +58,13 @@ bool SingleServerClient::login(const QString &userId, const QString &rawPassword
         setStatus(ClientStatus::Loginning);
     }
 
+    if (getStatus() == ClientStatus::Logined) {
+        QuasarAppUtils::Params::log("You try make login on alredy lofined client."
+                                    " Please run logout method befor login.",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
     if (!p_login(userId, hashgenerator(rawPassword.toLatin1()))) {
         return false;
     };

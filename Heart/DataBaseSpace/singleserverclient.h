@@ -80,7 +80,7 @@ public:
      * @return true if the user send registration request successful.
 
     */
-    bool signup(const QString &userId, const QString &rawPassword = {});
+    bool signup(const QString &userId, const QString &rawPassword);
 
     /**
      * @brief removeUser This method send to server the remove user and user datat request.
