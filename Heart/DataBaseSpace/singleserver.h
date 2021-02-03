@@ -19,11 +19,8 @@ class AuthRequest;
 class UserMember;
 }
 
-#define REQUEST_INTERNAL_ERROR 0
-#define REQUEST_LOGIN_ERROR -1
-
 /**
- * @brief The UserOperationResult enum
+ * @brief The UserOperationResult enum contains result codes for the login, signup and connect requests.
  */
 enum class UserOperationResult {
     /// User not registered because database not inited or other error occurred.
@@ -41,6 +38,9 @@ enum class UserOperationResult {
     /// User registered successful.
     Success
 };
+
+#define REQUEST_INTERNAL_ERROR 0
+#define REQUEST_LOGIN_ERROR -1
 
 /**
  * @brief The SingleServer class This class is classic server with support all base server functions.
@@ -110,6 +110,11 @@ private:
     bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj,
                              const Package &pkg,
                              const AbstractNodeInfo *sender);
+
+    void prepareAndSendBadRequest(const HostAddress& address,
+                                  const Header& lastHeader,
+                                  unsigned char error,
+                                  int punishment);
 
 };
 

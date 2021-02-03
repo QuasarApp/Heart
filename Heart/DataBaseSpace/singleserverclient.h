@@ -111,6 +111,7 @@ protected:
     /**
      * @brief setStatus This method sets a new status of the client. This method will be emited the statusChanged signal.
      * @param status This is new status of the client.
+     * @note The ClientStatus::Loginning and ClientStatus::Connecting statuses create a singleshot timer for check if the server response times out.
      */
     void setStatus(const ClientStatus &status);
 
@@ -128,9 +129,14 @@ protected:
      */
     virtual HostAddress serverAddress() const;
 
+    void nodeConfirmend(AbstractNodeInfo *node) override;
+    void nodeConnected(AbstractNodeInfo *node) override;
+    void nodeDisconnected(AbstractNodeInfo *node) override;
+
 protected slots:
     /**
-     * @brief handleError This handle method invoked when the client received the BadRequest from server. Ovveride this method for add actions for this event.
+     * @brief handleError This handle method invoked when the client received the BadRequest from server.
+     *  Ovveride this method for add actions for this event.
      * @param code This is number of the error code.
      * @param error This is test message from a server.
      */

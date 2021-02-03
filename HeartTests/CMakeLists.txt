@@ -36,7 +36,7 @@ endif()
 if (${HEART_BUILD_LVL} GREATER_EQUAL 1)
     message("BUILD LVL >= 1")
     file(GLOB SOURCE_CPP_LVL_1
-        "DataBaseSpace/*.cpp" "DataBaseSpace/*.qrc"
+        "DataBaseSpace/*.cpp" "DataBaseSpace/private/*.cpp" "DataBaseSpace/*.qrc"
     )
     set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace")
 

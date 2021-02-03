@@ -1,76 +1,21 @@
+/*
+ * Copyright (C) 2020-2021 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
 #include "singleservertest.h"
 
-#include <ping.h>
 #include <singleserver.h>
-#include <singleserverclient.h>
 
-class TestingServer: public QH::SingleServer {
+#include <private/testsingleserver.h>
+#include <private/testsingleserverclient.h>
 
-    Q_OBJECT
-
-    // AbstractNode interface
-public:
-    const QH::PKG::Ping& getPing() const {
-        return _ping;
-    }
-
-protected:
-    void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) override {
-        Q_UNUSED(sender)
-
-        auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
-        if (ping)
-            _ping.setAnsver(ping->ansver());
-    }
-
-private:
-    QH::PKG::Ping _ping;
-};
-
-class TestingClient: public QH::SingleServerClient {
-
-    Q_OBJECT
-
-    // AbstractNode interface
-public:
-    const QH::PKG::Ping& getPing() const {
-        return _ping;
-    }
-
-    int getLastError() const {
-        return _lastError;
-    }
-
-    void setStatus(const QH::ClientStatus &status) {
-        QH::SingleServerClient::setStatus(status);
-    };
-
-protected:
-    QH::HostAddress serverAddress() const override {
-        return QH::HostAddress{TEST_LOCAL_HOST, TEST_PORT};
-    }
-
-    void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) override {
-        Q_UNUSED(sender)
-
-        auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
-        if (ping)
-            _ping.setAnsver(ping->ansver());
-    }
-
-protected slots:
-    void handleError(unsigned char code, const QString &) override {
-        _lastError = code;
-    }
-
-private:
-    QH::PKG::Ping _ping;
-    int _lastError;
-};
 
 SingleServerTest::SingleServerTest() {
-    _client = new TestingClient();
-    _server = new TestingServer();
+    _client = new TestSingleServerClient();
+    _server = new TestSingleServer();
 }
 
 SingleServerTest::~SingleServerTest() {
@@ -85,8 +30,8 @@ void SingleServerTest::test() {
 bool SingleServerTest::connectNetworkTest() {
 
     // Init default client and server objects.
-    auto client = dynamic_cast<TestingClient*>(_client);
-    auto server = dynamic_cast<TestingServer*>(_server);
+    auto client = dynamic_cast<TestSingleServerClient*>(_client);
+    auto server = dynamic_cast<TestSingleServer*>(_server);
 
     const QString user = "client";
     const QString userPassword = "123";
@@ -166,7 +111,7 @@ bool SingleServerTest::connectNetworkTest() {
         return false;
 
     // Run server
-    if (server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer"))
+    if (!server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer"))
         return false;
 
     // Clent must be connected because the server alredy started successful.
@@ -276,7 +221,3 @@ bool SingleServerTest::connectNetworkTest() {
     // all tests is completed
     return true;
 }
-
-
-
-#include "singleservertest.moc"

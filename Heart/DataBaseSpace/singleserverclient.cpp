@@ -8,11 +8,14 @@
 #include "singleserverclient.h"
 #include "quasarapp.h"
 #include "authrequest.h"
+#include "dberrorcodes.h"
 
 namespace QH {
 
 SingleServerClient::SingleServerClient() {
 
+    connect(this, &SingleServerClient::requestError,
+            this, &SingleServerClient::handleError);
 }
 
 ParserResult SingleServerClient::parsePackage(const Package &pkg,
@@ -160,6 +163,18 @@ void SingleServerClient::setStatus(const ClientStatus &status) {
     if (status == _status)
         return;
 
+    auto oldStatus = _status;
+
+    if (status == ClientStatus::Connecting || status == ClientStatus::Loginning) {
+        QTimer::singleShot(WAIT_RESPOCE_TIME, [this, oldStatus]() {
+            if (_status == ClientStatus::Connecting || _status == ClientStatus::Loginning) {
+                setStatus(oldStatus);
+                emit requestError(static_cast<unsigned char >(ErrorCodes::TimeOutError),
+                                  ErrorCodes::DBErrorCodesHelper::toString(ErrorCodes::TimeOutError));
+            }
+        });
+    }
+
     _status = status;
     emit statusChanged(_status);
 }
@@ -200,6 +215,23 @@ const PKG::UserMember &SingleServerClient::getMember() const {
 
 HostAddress SingleServerClient::serverAddress() const {
     return HostAddress{"localhost", DEFAULT_PORT};
+}
+
+
+
+void SingleServerClient::nodeConfirmend(AbstractNodeInfo *node) {
+    Q_UNUSED(node)
+    setStatus(ClientStatus::Connected);
+}
+
+void QH::SingleServerClient::nodeConnected(AbstractNodeInfo *node) {
+    Q_UNUSED(node)
+    setStatus(ClientStatus::Connected);
+}
+
+void QH::SingleServerClient::nodeDisconnected(AbstractNodeInfo *node) {
+    Q_UNUSED(node)
+    setStatus(ClientStatus::Dissconnected);
 }
 
 void SingleServerClient::setMember(const PKG::UserMember &member) {

@@ -143,11 +143,8 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
             auto obj = QSharedPointer<QH::PKG::AuthRequest>::create(pkg);
 
             if (!obj->isValid()) {
-                badRequest(sender->networkAddress(), pkg.hdr,
-                           {
-                               ErrorCodes::InvalidRequest,
-                               "AuthRequest is invalid"
-                           });
+                prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                         ErrorCodes::InvalidRequest, REQUEST_ERROR);
                 return ParserResult::Error;
             }
 
@@ -190,11 +187,8 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
         auto requesterId = getSender(sender, obj.data());
 
         if (requesterId && deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
-            badRequest(sender->networkAddress(), pkg.hdr,
-                       {
-                           ErrorCodes::OperatioForbiden,
-                          " Permission denied"
-                       });
+            prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                     ErrorCodes::OperatioForbiden, REQUEST_ERROR);
         }
     }
 
@@ -203,69 +197,43 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     case UserOperationResult::InternalError: {
         QuasarAppUtils::Params::log("Internal error ocured in the loginUser or registerNewUser method.",
                                     QuasarAppUtils::Error);
-        badRequest(sender->networkAddress(), pkg.hdr,
-                   {
-                       ErrorCodes::InternalError,
-                      "Internal server error."
-                      " Please create issue about this problem in the support page "
-                      " https://github.com/QuasarApp/Heart/issues/new"
-                   },
-                   REQUEST_INTERNAL_ERROR);
+        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                 ErrorCodes::InternalError, REQUEST_INTERNAL_ERROR);
 
         return false;
     }
 
     case UserOperationResult::UserExits: {
-        badRequest(sender->networkAddress(), pkg.hdr,
-                   {
-                       ErrorCodes::InternalError,
-                       "Such user already exists "
-                   },
-                   REQUEST_LOGIN_ERROR);
+        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                 ErrorCodes::UserExits, REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
     case UserOperationResult::UserNotExits: {
-        badRequest(sender->networkAddress(), pkg.hdr,
-                   {
-                       ErrorCodes::UserNotExits,
-                       "Such user not exists "
-                   },
-                   REQUEST_LOGIN_ERROR);
+        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                 ErrorCodes::UserNotExits, REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
-    case UserOperationResult::UserInvalidPasswoed: {
-        badRequest(sender->networkAddress(), pkg.hdr,
-                   {
-                       ErrorCodes::UserInvalidPasswoed,
-                       "Invalid password "
-                   },
-                   REQUEST_LOGIN_ERROR);
+    case UserOperationResult::UserInvalidPasswoed: {        
+        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                 ErrorCodes::UserInvalidPasswoed, REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
-    case UserOperationResult::UserAlreadyLogged: {
-        badRequest(sender->networkAddress(), pkg.hdr,
-                   {
-                       ErrorCodes::UserInvalidPasswoed,
-                       "User Already Logged"
-                   },
-                   REQUEST_LOGIN_ERROR);
+    case UserOperationResult::UserAlreadyLogged: {        
+        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                 ErrorCodes::UserAlreadyLogged, REQUEST_LOGIN_ERROR);
         return true;
 
     }
 
     case UserOperationResult::UserNotLogged: {
-        badRequest(sender->networkAddress(), pkg.hdr,
-                   {
-                       ErrorCodes::UserInvalidPasswoed,
-                       "User is not Logged"
-                   },
-                   REQUEST_LOGIN_ERROR);
+        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                                 ErrorCodes::UserNotLogged, REQUEST_LOGIN_ERROR);
         return true;
 
     }
@@ -275,15 +243,23 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     }
     }
 
-    badRequest(sender->networkAddress(), pkg.hdr,
-               {
-                   ErrorCodes::InternalError,
-                  "Internal server error."
-                  " Please create issue about this problem in the support page "
-                  " https://github.com/QuasarApp/Heart/issues/new"
-               },
-               REQUEST_INTERNAL_ERROR);
+    prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                             ErrorCodes::InternalError, REQUEST_INTERNAL_ERROR);
     return false;
+}
+
+void SingleServer::prepareAndSendBadRequest(const HostAddress& address,
+                                            const Header& lastHeader,
+                                            unsigned char error,
+                                            int punishment) {
+
+    badRequest(address, lastHeader,
+               {
+                   error,
+                   ErrorCodes::DBErrorCodesHelper::toString(error)
+               },
+               punishment);
+
 }
 
 }
