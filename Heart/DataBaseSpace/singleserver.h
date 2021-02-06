@@ -19,26 +19,6 @@ class AuthRequest;
 class UserMember;
 }
 
-/**
- * @brief The UserOperationResult enum contains result codes for the login, signup and connect requests.
- */
-enum class UserOperationResult {
-    /// User not registered because database not inited or other error occurred.
-    InternalError,
-    /// User not registered because user already exists.
-    UserExits,
-    /// User not logined because you need register user befor login.
-    UserNotExits,
-    /// User not logined because have an invalid password.
-    UserInvalidPasswoed,
-    /// User Already Logged.
-    UserAlreadyLogged,
-    /// User is not Loggined.
-    UserNotLogged,
-    /// User registered successful.
-    Success
-};
-
 #define REQUEST_INTERNAL_ERROR 0
 #define REQUEST_LOGIN_ERROR -1
 
@@ -74,7 +54,7 @@ protected:
      *
      * @note This method send userData with new token to the client.
      */
-    virtual UserOperationResult registerNewUser(PKG::UserMember user,
+    virtual ErrorCodes::Code registerNewUser(PKG::UserMember user,
                                                const AbstractNodeInfo* info);
 
     /**
@@ -86,15 +66,15 @@ protected:
      *
      * @note This method send userData with new token to the client.
      */
-    virtual UserOperationResult loginUser(PKG::UserMember user, const AbstractNodeInfo* info);
+    virtual ErrorCodes::Code loginUser(const PKG::UserMember &user, const AbstractNodeInfo* info);
 
     /**
-     * @brief loginOutUser This method remove the generated accsses token from server.
+     * @brief logOutUser This method remove the generated accsses token from server.
      * @param user This is network member data (user data)
      * @param info This is info about requested client.
      * @return status of operation. For more information about result statuses see the UserOperationResult enum.
      */
-    virtual UserOperationResult loginOutUser(PKG::UserMember user, const AbstractNodeInfo* info);
+    virtual ErrorCodes::Code logOutUser(const PKG::UserMember &user, const AbstractNodeInfo* info);
 
     /**
      * @brief generateToken This method generate a new toke.
@@ -104,7 +84,9 @@ protected:
     AccessToken generateToken(int duration = AccessToken::Day);
 
     ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
-    QByteArray hashgenerator(const QByteArray &data) override;
+    QByteArray hashgenerator(const QByteArray &data) const override;
+    QStringList SQLSources() const override;
+
 
 private:
     bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj,

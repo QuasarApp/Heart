@@ -15,7 +15,7 @@
 #include <dbobjectsrequest.h>
 #include <itest.h>
 #include <test.h>
-#include <networkmember.h>
+#include <abstractnetworkmember.h>
 #include "sqldbcache.h"
 
 template <class BASE, class WorkType>
@@ -104,7 +104,12 @@ protected:
 
         // generate random objects for database.
         for (int i = 0; i < 100; ++i) {
-            if (!BASE::db()->insertObject(QSharedPointer<WorkType>(randomMember()), true)) {
+            auto obj = QSharedPointer<WorkType>(randomMember());
+
+            if (!obj->isValid())
+                return false;
+
+            if (!BASE::db()->insertObject(obj, true)) {
                 return false;
             }
         }
@@ -179,7 +184,7 @@ protected:
             return false;
         }
 
-        auto clone = objectFromDataBase->clone().template staticCast<QH::PKG::NetworkMember>();
+        auto clone = objectFromDataBase->clone().template staticCast<QH::PKG::AbstractNetworkMember>();
 
         clone->setTrust(20);
 
@@ -286,7 +291,7 @@ protected:
     }
 
 private:
-    QSharedPointer<QH::PKG::NetworkMember> testObjec = nullptr;
+    QSharedPointer<QH::PKG::AbstractNetworkMember> testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
 
 };

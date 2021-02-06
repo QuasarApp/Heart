@@ -17,13 +17,13 @@ NodeObject::NodeObject() {
 }
 
 NodeObject::NodeObject(const Package &pkg):
-    NetworkMember(pkg) {
+    AbstractNetworkMember(pkg) {
 
 }
 
 QDataStream &NodeObject::fromStream(QDataStream &stream) {
 
-    NetworkMember::fromStream(stream);
+    AbstractNetworkMember::fromStream(stream);
 
     stream >> _senderID;
 
@@ -31,7 +31,7 @@ QDataStream &NodeObject::fromStream(QDataStream &stream) {
 }
 
 QDataStream &NodeObject::toStream(QDataStream &stream) const {
-    NetworkMember::toStream(stream);
+    AbstractNetworkMember::toStream(stream);
 
     stream << _senderID;
 
@@ -39,7 +39,7 @@ QDataStream &NodeObject::toStream(QDataStream &stream) const {
 }
 
 bool NodeObject::init() {
-    if (!NetworkMember::init())
+    if (!AbstractNetworkMember::init())
         return false;
 
     if (authenticationData().isEmpty()) {
@@ -57,7 +57,7 @@ DBObject *NodeObject::createDBObject() const {
 }
 
 bool NodeObject::copyFrom(const AbstractData *other) {
-    if (!NetworkMember::copyFrom(other)) {
+    if (!AbstractNetworkMember::copyFrom(other)) {
         return false;
     }
 

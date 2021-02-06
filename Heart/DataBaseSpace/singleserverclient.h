@@ -10,7 +10,7 @@
 
 #include "databasenode.h"
 #include <usermember.h>
-
+#include "dberrorcodes.h"
 
 namespace QH {
 
@@ -99,6 +99,18 @@ public:
      */
     void disconnectFromServer();
 
+    /**
+     * @brief getLastError return last error code.
+     * @return last error code.
+     */
+    ErrorCodes::Code getLastError() const;
+
+    /**
+     * @brief getLastErrorString This method return the string implementation of a last code error.
+     * @return string calue of the last error.
+     */
+    QString getLastErrorString() const;
+
 signals:
     /**
      * @brief statusChanged This sigmnal emited when the client change an own status.
@@ -122,6 +134,12 @@ protected:
     const PKG::UserMember &getMember() const;
 
     /**
+     * @brief setLastError This method sets new error code.
+     * @param lastError This is new error code.
+     */
+    void setLastError(const ErrorCodes::Code &lastError);
+
+    /**
      * @brief serverAddress This method return the addres of server.
      *  Override this method for change server address.
      *  Default implementation return the localhost address with the 3090 port.
@@ -133,14 +151,14 @@ protected:
     void nodeConnected(AbstractNodeInfo *node) override;
     void nodeDisconnected(AbstractNodeInfo *node) override;
 
-protected slots:
+private slots:
     /**
      * @brief handleError This handle method invoked when the client received the BadRequest from server.
      *  Ovveride this method for add actions for this event.
      * @param code This is number of the error code.
      * @param error This is test message from a server.
      */
-    virtual void handleError(unsigned char code, const QString& error);
+    void handleError(unsigned char code, QString error);
 
 private:
 
@@ -150,6 +168,7 @@ private:
 
     ClientStatus _status;
     PKG::UserMember _member;
+    ErrorCodes::Code _lastError = ErrorCodes::NoError;
 };
 }
 #endif // SINGLESERVERCLIENT_H

@@ -231,7 +231,7 @@ signals:
      * @param code This is code of error.
      * @param msg - received text of remoute node (server).
      */
-    void requestError(unsigned char code, const QString& msg);
+    void requestError(unsigned char code, QString msg);
 
 protected:
 
@@ -374,6 +374,8 @@ protected:
      */
     QList<HostAddress> banedList() const;
 
+    // TO-DO Need to add new method fo collect banned addresses for exmaple use the mask.
+    // See Task https://github.com/QuasarApp/Heart/issues/13
     /**
      * @brief isBanned This method checks if the node is banned.
      * @param socket This is node info object for validation

@@ -10,7 +10,7 @@ namespace QH {
 
 namespace ErrorCodes {
 
-QString DBErrorCodesHelper::toString(unsigned char enumData) {
+QString DBErrorCodesHelper::toString(QH::ErrorCodes::Code enumData) {
     switch (enumData) {
 
     case ErrorCodes::InternalError: {

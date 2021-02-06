@@ -9,7 +9,7 @@
 #ifndef NODEOBJECT_H
 #define NODEOBJECT_H
 
-#include <networkmember.h>
+#include <abstractnetworkmember.h>
 #include <senderdata.h>
 namespace QH {
 namespace PKG {
@@ -17,7 +17,7 @@ namespace PKG {
 /**
  * @brief The NodeObject class
  */
-class HEARTSHARED_EXPORT NodeObject: public NetworkMember, public SenderData
+class HEARTSHARED_EXPORT NodeObject: public AbstractNetworkMember, public SenderData
 {
 public:
     NodeObject();

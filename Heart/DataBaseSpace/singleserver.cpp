@@ -11,6 +11,7 @@
 #include <sqldbcache.h>
 #include <basenodeinfo.h>
 #include <badrequest.h>
+#include <getmaxintegerid.h>
 
 namespace QH {
 
@@ -19,113 +20,123 @@ SingleServer::SingleServer()
 
 }
 
-UserOperationResult SingleServer::registerNewUser(PKG::UserMember user,
+ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
                                                  const AbstractNodeInfo *info) {
     if (!db()) {
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
     }
 
     auto localObject = db()->getObject(user);
 
     if (localObject) {
-        return UserOperationResult::UserExits;
+        return ErrorCodes::UserExits;
     }
 
-    user.setAuthenticationData(hashgenerator(user.authenticationData()));
-
-    auto requester = getSender(info, &user);
-
-    addUpdatePermission(requester, user.dbAddress(), Permission::Write);
+    auto rawPassword = user.authenticationData();
+    user.setAuthenticationData(hashgenerator(rawPassword));
 
     if (!db()->insertObject(QSharedPointer<decltype(user)>::create(user))) {
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
     };
+
+    user.setAuthenticationData(rawPassword);
+
+    // get id of the user
+    auto userID = db()->getObject(PKG::GetMaxIntegerId(user.tableName(), "id"))->value();
+    user.setId(userID);
+    addUpdatePermission(userID, user.dbAddress(), Permission::Write);
 
     return loginUser(user, info);
 }
 
 // To-Do fix me bug  #12 https://github.com/QuasarApp/Heart/issues/12
-UserOperationResult SingleServer::loginUser(PKG::UserMember user,
-                                           const AbstractNodeInfo *info) {
+ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
+                                         const AbstractNodeInfo *info) {
 
     if (!db()) {
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
     }
 
     auto localObject = db()->getObject(user);
 
     if (!localObject) {
-        return UserOperationResult::UserNotExits;
-    }
-
-    if (localObject->authenticationData() != hashgenerator(user.authenticationData())) {
-        return UserOperationResult::UserInvalidPasswoed;
+        return ErrorCodes::UserNotExits;
     }
 
     auto nodeinfo = dynamic_cast<const BaseNodeInfo*>(info);
     if (!nodeinfo)
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
 
     AccessToken token((nodeinfo->token().toBytes()));
 
     if (token.isValid()) {
-        return UserOperationResult::UserAlreadyLogged;
+        return ErrorCodes::UserAlreadyLogged;
     }
 
     token = localObject->token();
-
     if (!token.isValid()) {
         token = generateToken(AccessToken::Year);
     }
 
+    if (token != user.token()) {
+        if (localObject->authenticationData() != hashgenerator(user.authenticationData())) {
+            return ErrorCodes::UserInvalidPasswoed;
+        }
+    }
+
     auto editableNodeInfo = static_cast<BaseNodeInfo*>(getInfoPtr(info->networkAddress()));
     if (!editableNodeInfo)
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
 
     editableNodeInfo->setToken(token);
-    user.setToken(token);
-    user.setAuthenticationData("");
+    editableNodeInfo->setId(localObject->getId());
 
-    if (!sendData(&user, info->networkAddress())) {
-        return UserOperationResult::InternalError;
+    localObject->setToken(token);
+    if (!db()->updateObject(localObject)) {
+        return ErrorCodes::InternalError;
+    }
+
+    localObject->setAuthenticationData("");
+    if (!sendData(localObject.data(), info->networkAddress())) {
+        return ErrorCodes::InternalError;
     };
 
-    return UserOperationResult::Success;
+    return ErrorCodes::NoError;
 }
 
-UserOperationResult SingleServer::loginOutUser(PKG::UserMember user,
-                                              const AbstractNodeInfo *info) {
+ErrorCodes::Code SingleServer::logOutUser(const PKG::UserMember &user,
+                                          const AbstractNodeInfo *info) {
 
     if (!db()) {
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
     }
 
     auto localObject = db()->getObject(user);
 
     if (!localObject) {
-        return UserOperationResult::UserNotExits;
+        return ErrorCodes::UserNotExits;
     }
 
     auto nodeinfo = dynamic_cast<const BaseNodeInfo*>(info);
     if (!nodeinfo)
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
 
     AccessToken token((nodeinfo->token().toBytes()));
     if (!token.isValid()) {
-        return UserOperationResult::UserNotLogged;
+        return ErrorCodes::UserNotLogged;
     }
 
     if (user.token() != token) {
-        return UserOperationResult::UserNotLogged;
+        return ErrorCodes::UserNotLogged;
     }
 
     auto mutableNodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(info->networkAddress()));
     if (!mutableNodeInfo)
-        return UserOperationResult::InternalError;
+        return ErrorCodes::InternalError;
 
     mutableNodeInfo->setToken(AccessToken{});
 
-    return UserOperationResult::Success;
+    return ErrorCodes::NoError;
 
 }
 
@@ -160,7 +171,7 @@ ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeIn
 
 }
 
-QByteArray SingleServer::hashgenerator(const QByteArray &data) {
+QByteArray SingleServer::hashgenerator(const QByteArray &data) const {
     return DataBaseNode::hashgenerator(data + "singelserversoult");
 }
 
@@ -168,7 +179,7 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
                                        const Package &pkg,
                                        const AbstractNodeInfo *sender) {
 
-    UserOperationResult result = UserOperationResult::InternalError;
+    ErrorCodes::Code result = ErrorCodes::InternalError;
 
     auto request = obj.dynamicCast<Request>();
 
@@ -181,7 +192,7 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::SignUp)) {
         result = registerNewUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::LogOut)) {
-        result = loginOutUser(*obj, sender);
+        result = logOutUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
 
         auto requesterId = getSender(sender, obj.data());
@@ -192,60 +203,21 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
         }
     }
 
-    switch (result) {
-
-    case UserOperationResult::InternalError: {
+    if (result == ErrorCodes::InternalError) {
         QuasarAppUtils::Params::log("Internal error ocured in the loginUser or registerNewUser method.",
                                     QuasarAppUtils::Error);
         prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                                 ErrorCodes::InternalError, REQUEST_INTERNAL_ERROR);
+                                 result, REQUEST_INTERNAL_ERROR);
 
         return false;
     }
 
-    case UserOperationResult::UserExits: {
+    if (result != ErrorCodes::NoError) {
         prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                                 ErrorCodes::UserExits, REQUEST_LOGIN_ERROR);
-        return true;
-
+                                 result, REQUEST_INTERNAL_ERROR);
     }
 
-    case UserOperationResult::UserNotExits: {
-        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                                 ErrorCodes::UserNotExits, REQUEST_LOGIN_ERROR);
-        return true;
-
-    }
-
-    case UserOperationResult::UserInvalidPasswoed: {        
-        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                                 ErrorCodes::UserInvalidPasswoed, REQUEST_LOGIN_ERROR);
-        return true;
-
-    }
-
-    case UserOperationResult::UserAlreadyLogged: {        
-        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                                 ErrorCodes::UserAlreadyLogged, REQUEST_LOGIN_ERROR);
-        return true;
-
-    }
-
-    case UserOperationResult::UserNotLogged: {
-        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                                 ErrorCodes::UserNotLogged, REQUEST_LOGIN_ERROR);
-        return true;
-
-    }
-
-    case UserOperationResult::Success: {
-        return true;
-    }
-    }
-
-    prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
-                             ErrorCodes::InternalError, REQUEST_INTERNAL_ERROR);
-    return false;
+    return true;
 }
 
 void SingleServer::prepareAndSendBadRequest(const HostAddress& address,
@@ -260,6 +232,10 @@ void SingleServer::prepareAndSendBadRequest(const HostAddress& address,
                },
                punishment);
 
+}
+
+QStringList SingleServer::SQLSources() const {
+    return {":/sql/DataBaseSpace/Res/UserDB.sql"};
 }
 
 }

@@ -3,5 +3,6 @@
         <file>DataBaseSpace/Res/DbConfig.json</file>
         <file>DataBaseSpace/Res/BaseDB.sql</file>
         <file>NetworkSpace/Res/NetworkDB.sql</file>
+        <file>DataBaseSpace/Res/UserDB.sql</file>
     </qresource>
 </RCC>

@@ -14,7 +14,7 @@ namespace QH {
  */
 namespace ErrorCodes {
 
-QString AbstractErrorCodesHelper::toString(unsigned char enumData) {
+QString AbstractErrorCodesHelper::toString(Code enumData) {
     switch (enumData) {
     case NoError: {
         return "Command executed or accepted successful.";

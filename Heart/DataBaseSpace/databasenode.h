@@ -145,7 +145,7 @@ protected:
      * Override this method for set your custom salt.
      * @param data This input byte array
      */
-    virtual QByteArray hashgenerator(const QByteArray &data);
+    virtual QByteArray hashgenerator(const QByteArray &data) const;
 
     void nodeConnected(AbstractNodeInfo *node) override;
 

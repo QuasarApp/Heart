@@ -29,10 +29,10 @@
 #include <knowaddresses.h>
 #include <longping.h>
 #include <networkrequest.h>
-#include <networkmember.h>
+#include <abstractnetworkmember.h>
 #include <networknodeinfo.h>
 #include <nodeobject.h>
-#include <permisioncontrolmember.h>
+#include <networkmember.h>
 #include "networkerrorcodes.h"
 
 
@@ -167,7 +167,7 @@ bool NetworkNode::checkSignOfRequest(const AbstractData *request) {
         return false;
     }
 
-    auto node = db()->getObject(PermisionControlMember{dbObject->senderID().toRaw()});
+    auto node = db()->getObject(NetworkMember{dbObject->senderID().toRaw()});
     return _nodeKeys->check(_nodeKeys->concatSign(object->dataForSigned(),
                                                   object->sign()), node->authenticationData());
 }

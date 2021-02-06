@@ -34,9 +34,7 @@ ParserResult SingleServerClient::parsePackage(const Package &pkg,
         }
 
         setMember(obj);
-
-        if (getStatus() == ClientStatus::Loginning)
-            setStatus(ClientStatus::Logined);
+        setStatus(ClientStatus::Logined);
 
         return QH::ParserResult::Processed;
 
@@ -57,12 +55,8 @@ bool SingleServerClient::login(const QString &userId, const QString &rawPassword
         return false;
     }
 
-    if (getStatus() < ClientStatus::Loginning) {
-        setStatus(ClientStatus::Loginning);
-    }
-
     if (getStatus() == ClientStatus::Logined) {
-        QuasarAppUtils::Params::log("You try make login on alredy lofined client."
+        QuasarAppUtils::Params::log("You try make login on alredy logined client."
                                     " Please run logout method befor login.",
                                     QuasarAppUtils::Error);
         return false;
@@ -71,6 +65,10 @@ bool SingleServerClient::login(const QString &userId, const QString &rawPassword
     if (!p_login(userId, hashgenerator(rawPassword.toLatin1()))) {
         return false;
     };
+
+    if (getStatus() < ClientStatus::Loginning) {
+        setStatus(ClientStatus::Loginning);
+    }
 
     return true;
 }
@@ -85,12 +83,16 @@ bool SingleServerClient::logout() {
 
 
     QH::PKG::AuthRequest request;
-    const auto &user = getMember();
-    request.setId(user.getId());
+    request.copyFrom(&getMember());
     request.setRequest(PKG::UserRequestType::LogOut);
+
     if (!sendData(&request, serverAddress())) {
         return false;
     };
+
+    setMember({});
+    if (getStatus() > ClientStatus::Connected)
+        setStatus(ClientStatus::Connected);
 
     return true;
 }
@@ -103,13 +105,13 @@ bool SingleServerClient::signup(const QString &userId, const QString &rawPasswor
         return false;
     }
 
-    if (getStatus() < ClientStatus::Loginning) {
-        setStatus(ClientStatus::Loginning);
-    }
-
     if (!p_signup(userId, hashgenerator(rawPassword.toLatin1()))) {
         return false;
     };
+
+    if (getStatus() < ClientStatus::Loginning) {
+        setStatus(ClientStatus::Loginning);
+    }
 
     return true;
 }
@@ -124,8 +126,7 @@ bool SingleServerClient::removeUser() {
 
 
     QH::PKG::AuthRequest request;
-    const auto &user = getMember();
-    request.setId(user.getId());
+    request.copyFrom(&getMember());
     request.setRequest(PKG::UserRequestType::Remove);
     if (!sendData(&request, serverAddress())) {
         return false;
@@ -179,13 +180,20 @@ void SingleServerClient::setStatus(const ClientStatus &status) {
     emit statusChanged(_status);
 }
 
-void SingleServerClient::handleError(unsigned char, const QString &error) {
+void SingleServerClient::handleError(unsigned char code, QString error) {
     QuasarAppUtils::Params::log(error, QuasarAppUtils::Error);
+
+    if (code != ErrorCodes::NoError && getStatus() == ClientStatus::Loginning) {
+        setStatus(ClientStatus::Connected);
+    }
+
+    _lastError = code;
 }
 
 bool SingleServerClient::p_login(const QString &userId, const QByteArray &hashPassword) {
     QH::PKG::AuthRequest request;
-    request.setId(userId);
+    request.setName(userId);
+
     request.setRequest(QH::PKG::UserRequestType::LogIn);
 
     if (hashPassword.isEmpty()) {
@@ -195,6 +203,8 @@ bool SingleServerClient::p_login(const QString &userId, const QByteArray &hashPa
         }
 
         request.setToken(member.token());
+    } else {
+        request.setAuthenticationData(hashPassword);
     }
 
     return sendData(&request, serverAddress());
@@ -202,7 +212,7 @@ bool SingleServerClient::p_login(const QString &userId, const QByteArray &hashPa
 
 bool SingleServerClient::p_signup(const QString &userId, const QByteArray &hashPassword) {
     QH::PKG::AuthRequest request;
-    request.setId(userId);
+    request.setName(userId);
     request.setAuthenticationData(hashPassword);
     request.setRequest(QH::PKG::UserRequestType::SignUp);
 
@@ -236,5 +246,17 @@ void QH::SingleServerClient::nodeDisconnected(AbstractNodeInfo *node) {
 
 void SingleServerClient::setMember(const PKG::UserMember &member) {
     _member = member;
+}
+
+ErrorCodes::Code SingleServerClient::getLastError() const {
+    return _lastError;
+}
+
+QString SingleServerClient::getLastErrorString() const {
+    return ErrorCodes::DBErrorCodesHelper::toString(_lastError);
+}
+
+void SingleServerClient::setLastError(const ErrorCodes::Code &lastError) {
+    _lastError = lastError;
 }
 }

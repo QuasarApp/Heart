@@ -17,8 +17,8 @@ AuthRequest::AuthRequest() {
 
 }
 
-AuthRequest::AuthRequest(const Package &pkg):UserMember(pkg) {
-
+AuthRequest::AuthRequest(const Package &pkg) {
+    fromBytes(pkg.data);
 }
 
 unsigned char AuthRequest::getRequestCmd() const {

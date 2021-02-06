@@ -501,6 +501,12 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
                                     " because trust not changed",
                                     QuasarAppUtils::Error);
 
+        QuasarAppUtils::Params::log("SECURITY LOG: Force block the " + address.toString() +
+                                    " because trust defined",
+                                    QuasarAppUtils::Error);
+
+        ban(address);
+
         return;
     }
 

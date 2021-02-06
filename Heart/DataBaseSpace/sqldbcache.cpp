@@ -30,8 +30,8 @@ QSharedPointer<DBObject> SqlDBCache::getFromCacheById(quint32 dbKey) {
 }
 
 
-SqlDBCache::SqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode):
-    ISqlDBCache(updateInterval, mode) {
+SqlDBCache::SqlDBCache(qint64 updateInterval):
+    ISqlDBCache(updateInterval, SqlDBCasheWriteMode::Force) {
 
 }
 

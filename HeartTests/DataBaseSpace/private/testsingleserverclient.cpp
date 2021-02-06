@@ -13,10 +13,6 @@ const QH::PKG::Ping &TestSingleServerClient::getPing() const {
     return _ping;
 }
 
-int TestSingleServerClient::getLastError() const {
-    return _lastError;
-}
-
 void TestSingleServerClient::setStatus(const QH::ClientStatus &status) {
     QH::SingleServerClient::setStatus(status);
 }
@@ -31,8 +27,4 @@ void TestSingleServerClient::incomingData(QH::PKG::AbstractData *pkg, const QH::
     auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
     if (ping)
         _ping.setAnsver(ping->ansver());
-}
-
-void TestSingleServerClient::handleError(unsigned char code, const QString &) {
-    _lastError = code;
 }

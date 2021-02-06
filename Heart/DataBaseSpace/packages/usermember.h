@@ -1,7 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
-#include "networkmember.h"
+#include "abstractnetworkmember.h"
 #include "accesstoken.h"
 
 namespace QH {
@@ -11,13 +11,13 @@ namespace PKG {
 
 
 /**
- * @brief The UserMember class is some as a NetworkMember class.
+ * @brief The UserMember class is some as a AbstractNetworkMember class.
  * All registered users on the singelServer have own list database object with own permisions.
  * If you want create a custom permisions table with the custom user then ovveride this class.
  *
- * @note The UserMember class has no members of its own, so it is safe to use static_cast on User <<>> NetworkMember.
+ * @note The UserMember class has no members of its own, so it is safe to use static_cast on User <<>> AbstractNetworkMember.
  */
-class UserMember: public NetworkMember
+class UserMember: public AbstractNetworkMember
 {
 public:
     UserMember();

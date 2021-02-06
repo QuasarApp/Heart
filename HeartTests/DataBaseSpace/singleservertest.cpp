@@ -16,6 +16,8 @@
 SingleServerTest::SingleServerTest() {
     _client = new TestSingleServerClient();
     _server = new TestSingleServer();
+
+
 }
 
 SingleServerTest::~SingleServerTest() {
@@ -70,19 +72,19 @@ bool SingleServerTest::connectNetworkTest() {
     };
 
     auto checkLoginNonExitsUser = [client](){
-        return client->getLastError() == static_cast<int>(QH::UserOperationResult::UserNotExits);
+        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserNotExits);
     };
 
     auto checksigupExitsUser = [client](){
-        return client->getLastError() == static_cast<int>(QH::UserOperationResult::UserExits);
+        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserExits);
     };
 
     auto checkLoginInvalidPassword = [client](){
-        return client->getLastError() == static_cast<int>(QH::UserOperationResult::UserInvalidPasswoed);
+        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserInvalidPasswoed);
     };
 
     auto checkRemoveNotLoginningClient = [client](){
-        return client->getLastError() == static_cast<int>(QH::UserOperationResult::UserNotLogged);
+        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserNotLogged);
     };
 
     if (!(client && server)) {
@@ -115,15 +117,15 @@ bool SingleServerTest::connectNetworkTest() {
         return false;
 
     // Clent must be connected because the server alredy started successful.
-    if (!funcPrivateConnect([](){return true;}, checkConnectedStatus)) {
+    if (!funcPrivateConnect(connectToserver, checkConnectedStatus)) {
         return false;
     }
 
     // The attempt of the login must be failed bacause the server do not have a user with wroted name.
-    if (!client->login(user))
+    if (!client->login(user, userPassword))
         return false;
 
-    // Client must be gat a QH::ClientStatus::Loginning status after a succesful login.
+    // Client must be gat a QH::ClientStatus::Loginning status after a successful login.
     if (client->getStatus() != QH::ClientStatus::Loginning)
         return false;
 
@@ -147,11 +149,14 @@ bool SingleServerTest::connectNetworkTest() {
     // logout client and try login again.
     client->logout();
 
+    // waiting of the reflection of the server. This needed because server do not responce about successful logout.
+    wait([](){return false;}, 500);
+
     // This login must be failed bacause clients token is removed after logout mehod.
     if (client->login(user))
         return false;
 
-    // must be finished succesful because client is unlogined.
+    // must be finished successful because client is unlogined.
     if (!funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus)) {
         return false;
     }
@@ -168,13 +173,15 @@ bool SingleServerTest::connectNetworkTest() {
         return false;
     }
 
-    // must be finished succesful because an unlogined client have a valid token.
+    // must be finished successful because an unlogined client have a valid token.
     if (!funcPrivateConnect(loginRequestUsesToken, checkLoginedStatus)) {
         return false;
     }
 
     // logout client and try login again.
     client->logout();
+    // waiting of the reflection of the server. This needed because server do not responce about successful logout.
+    wait([](){return false;}, 500);
 
     // must be finished failed because client wrote invalid password.
     if (!funcPrivateConnect(loginRequestWithInvalidPassword, checkLoginInvalidPassword)) {
@@ -198,22 +205,25 @@ bool SingleServerTest::connectNetworkTest() {
     client->setStatus(QH::ClientStatus::Logined);
 
     // must be finished failed because client is not loginned. and failed
-    if (!funcPrivateConnect(removeRequest, checkRemoveNotLoginningClient)) {
+    if (funcPrivateConnect(removeRequest, checkRemoveNotLoginningClient)) {
         return false;
     }
+
     client->setStatus(QH::ClientStatus::Connected);
 
-
-    // must be finished succesful because client is unlogined.
+    // must be finished successful because client is unlogined.
     if (!funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus)) {
         return false;
     }
 
-    //must be finished succesful bacause client is loginned
+    //must be finished successful bacause client is loginned
     if (!client->removeUser())
         return false;
 
-    // must be finished succesful because old user is removeed.
+    // waiting of the reflection of the server. This needed because server do not responce about successful operation.
+    wait([](){return false;}, 500);
+
+    // must be finished successful because old user is removeed.
     if (!funcPrivateConnect(sigupRequest, checkLoginedStatus)) {
         return false;
     }

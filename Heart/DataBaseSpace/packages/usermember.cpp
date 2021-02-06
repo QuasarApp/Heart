@@ -19,7 +19,7 @@ UserMember::UserMember(const QVariant &id):
 }
 
 bool UserMember::copyFrom(const AbstractData *other) {
-    if (!NetworkMember::copyFrom(other))
+    if (!AbstractNetworkMember::copyFrom(other))
         return false;
 
     auto otherObject = dynamic_cast<const UserMember*>(other);
@@ -33,7 +33,7 @@ bool UserMember::copyFrom(const AbstractData *other) {
 }
 
 bool UserMember::fromSqlRecord(const QSqlRecord &q) {
-    if (!NetworkMember::fromSqlRecord(q)) {
+    if (!AbstractNetworkMember::fromSqlRecord(q)) {
         return false;
     }
 
@@ -48,11 +48,11 @@ DBObject *UserMember::createDBObject() const {
 }
 
 bool UserMember::isValid() const {
-    return NetworkMember::isValid() && trust() <= 100 && _name.size();
+    return AbstractNetworkMember::isValid() && trust() <= 100 && _name.size();
 }
 
 QDataStream &UserMember::fromStream(QDataStream &stream) {
-    NetworkMember::fromStream(stream);
+    AbstractNetworkMember::fromStream(stream);
     stream >> _token;
     stream >> _name;
 
@@ -60,7 +60,7 @@ QDataStream &UserMember::fromStream(QDataStream &stream) {
 }
 
 QDataStream &UserMember::toStream(QDataStream &stream) const {
-    NetworkMember::toStream(stream);
+    AbstractNetworkMember::toStream(stream);
     stream << _token;
     stream << _name;
 
@@ -76,7 +76,7 @@ void UserMember::setName(const QString &name) {
 }
 
 DBVariantMap UserMember::variantMap() const {
-    auto map = NetworkMember::variantMap();
+    auto map = AbstractNetworkMember::variantMap();
     map[primaryKey()].type = MemberType::PrimaryKeyAutoIncrement;
     map.insert("token",     {_token.toBytes(),  MemberType::InsertUpdate});
     map.insert("userName",  {_name,             MemberType::InsertUpdate | MemberType::Unique});

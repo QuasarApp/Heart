@@ -18,7 +18,7 @@
 namespace QH {
 
 namespace PKG {
-class NetworkMember;
+class AbstractNetworkMember;
 class MemberPermisionObject;
 class KnowAddresses;
 }

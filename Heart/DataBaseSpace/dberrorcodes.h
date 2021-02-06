@@ -16,7 +16,7 @@ namespace ErrorCodes {
 /**
  * @brief The DBErrorCodes enum This is AuthRequest error codes. For more indormation see the QH::AuthRequest class.
  */
-enum DBErrorCodes: unsigned char {
+enum DBErrorCodes: Code {
     /// User not registered because database not inited or other error occurred.
     InternalError = AbstractErrorCodes::AbstractErrorCodes,
     /// User not have a permision of execute a requested operation.
@@ -51,7 +51,7 @@ public:
      * @return string value of the error code.
      * @note Tihis helper sopport all enum from the AbstractErrorCodesHelper class.
      */
-    static QString toString(unsigned char enumData);
+    static QString toString(Code enumData);
 
 private:
     DBErrorCodesHelper() = default;

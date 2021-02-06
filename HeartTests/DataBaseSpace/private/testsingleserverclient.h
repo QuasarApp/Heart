@@ -20,19 +20,16 @@ public:
     // AbstractNode interface
 public:
     const QH::PKG::Ping& getPing() const;
-    int getLastError() const;
     void setStatus(const QH::ClientStatus &status);;
 
 protected:
     QH::HostAddress serverAddress() const override;
     void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) override;
 
-protected slots:
-    void handleError(unsigned char code, const QString &) override;
-
 private:
     QH::PKG::Ping _ping;
-    int _lastError;
+
+    friend class SingleServerTest;
 };
 
 #endif // TESTSINGLESERVERCLIENT_H

@@ -22,7 +22,7 @@ protected:
         MEMBER * res = new MEMBER();
         res->setAuthenticationData(this->randomArray(64));
         res->setTrust(0);
-        res->setName(this->randomArray(5).toHex());
+        res->setId(QString(this->randomArray(5).toHex()));
 
         res->prepareToSend();
 

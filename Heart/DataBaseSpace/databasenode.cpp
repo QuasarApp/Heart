@@ -22,9 +22,9 @@
 #include <ping.h>
 #include <keystorage.h>
 #include <basenodeinfo.h>
-#include <networkmember.h>
+#include <abstractnetworkmember.h>
 #include <memberpermisionobject.h>
-#include <permisioncontrolmember.h>
+#include <networkmember.h>
 #include <deleteobject.h>
 #include "dberrorcodes.h"
 #include <QSet>
@@ -130,8 +130,8 @@ bool DataBaseNode::welcomeAddress(AbstractNodeInfo *) {
 }
 
 bool DataBaseNode::isBanned(const QVariant &node) const {
-    PermisionControlMember member(node);
-    auto objectFromDataBase = db()->getObject<NetworkMember>(member);
+    NetworkMember member(node);
+    auto objectFromDataBase = db()->getObject<AbstractNetworkMember>(member);
 
     return objectFromDataBase->trust() <= 0;
 }
@@ -163,12 +163,15 @@ AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const Ho
     return new BaseNodeInfo(socket, clientAddress);
 }
 
-bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
+bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {    
     auto info = dynamic_cast<const BaseNodeInfo*>(getInfoPtr(id));
     if (!info)
         return false;
 
-    return changeTrust(info->id(), diff);
+    if (info->id().isValid())
+        return changeTrust(info->id(), diff);
+
+    return AbstractNode::changeTrust(id, diff);
 }
 
 bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
@@ -176,7 +179,7 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
         return false;
 
     auto action = [diff](const QSharedPointer<DBObject> &object) {
-        auto obj = object.dynamicCast<NetworkMember>();
+        auto obj = object.dynamicCast<AbstractNetworkMember>();
         if (!obj) {
             return false;
         }
@@ -186,7 +189,7 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
         return true;
     };
 
-    return _db->changeObjects(PermisionControlMember{id}, action);
+    return _db->changeObjects(NetworkMember{id}, action);
 }
 
 bool DataBaseNode::sendData(AbstractData *resp,
@@ -290,7 +293,10 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
     return ParserResult::NotProcessed;
 }
 
-QByteArray DataBaseNode::hashgenerator(const QByteArray &pass) {
+QByteArray DataBaseNode::hashgenerator(const QByteArray &pass) const {
+    if (pass.isEmpty())
+        return {};
+
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
                 QCryptographicHash::Sha256);
@@ -498,13 +504,13 @@ DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
         return DBOperationResult::Unknown;
     }
 
-    auto tmp = _db->getObjectRaw(PermisionControlMember{requester});
+    auto tmp = _db->getObjectRaw(NetworkMember{requester});
 
     if (!tmp) {
         return DBOperationResult::Unknown;
     }
 
-    auto member = tmp.dynamicCast<NetworkMember>();
+    auto member = tmp.dynamicCast<AbstractNetworkMember>();
 
     if (!member) {
         return DBOperationResult::Unknown;

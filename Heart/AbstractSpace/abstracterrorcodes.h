@@ -64,9 +64,14 @@ namespace QH {
 namespace ErrorCodes {
 
 /**
+ * @brief Code This is aliase for the unsigned char type.
+ */
+using Code = unsigned char;
+
+/**
  * @brief The AbstractErrorCodes enum This enum with dafault error codes.
  */
-enum AbstractErrorCodes: unsigned char {
+enum AbstractErrorCodes: Code {
 
     /// This reqest executed successful.
     NoError = 0,
@@ -90,7 +95,7 @@ public:
      * @param enumData This is erorr code.
      * @return string value of the error code.
      */
-    static QString toString(unsigned char enumData);
+    static QString toString(Code enumData);
 
 private:
     AbstractErrorCodesHelper() = default;
