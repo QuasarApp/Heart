@@ -166,7 +166,7 @@ private:
     bool p_signup(const QString &userId, const QByteArray &hashPassword);
     void setMember(const PKG::UserMember &member);
 
-    ClientStatus _status;
+    ClientStatus _status = ClientStatus::Dissconnected;
     PKG::UserMember _member;
     ErrorCodes::Code _lastError = ErrorCodes::NoError;
 };
