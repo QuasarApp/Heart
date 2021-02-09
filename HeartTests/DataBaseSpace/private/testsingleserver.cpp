@@ -11,7 +11,7 @@ const QH::PKG::Ping &TestSingleServer::getPing() const {
     return _ping;
 }
 
-void TestSingleServer::incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress &sender) {
+void TestSingleServer::incomingData(QH::PKG::AbstractData *pkg, const QH::AbstractNodeInfo *sender) {
     Q_UNUSED(sender)
 
     auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);

@@ -398,12 +398,12 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
             sendData(&cmd, sender->networkAddress(), &pkg.hdr);
         }
 
-        incomingData(&cmd, sender->networkAddress());
+        incomingData(&cmd, sender);
         return ParserResult::Processed;
     } else if (H_16<BadRequest>() == pkg.hdr.command) {
         BadRequest cmd(pkg);
 
-        incomingData(&cmd, sender->networkAddress());
+        incomingData(&cmd, sender);
         emit requestError(cmd.errCode(), cmd.err());
 
         return ParserResult::Processed;
@@ -859,7 +859,7 @@ bool AbstractNode::disableSSL() {
     return true;
 }
 
-void AbstractNode::incomingData(AbstractData *pkg, const HostAddress &sender) {
+void AbstractNode::incomingData(AbstractData *pkg, const AbstractNodeInfo *sender) {
     Q_UNUSED(pkg)
     Q_UNUSED(sender)
 

@@ -272,7 +272,7 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
             return ParserResult::Error;
         }
 
-        incomingData(&obj, sender->networkAddress());
+        incomingData(&obj, sender);
         return ParserResult::Processed;
     } else if (H_16<DeleteObject>() == pkg.hdr.command) {
         auto obj = QSharedPointer<DeleteObject>::create(pkg);

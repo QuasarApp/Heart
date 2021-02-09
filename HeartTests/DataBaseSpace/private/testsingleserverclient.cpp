@@ -21,7 +21,7 @@ QH::HostAddress TestSingleServerClient::serverAddress() const {
     return QH::HostAddress{TEST_LOCAL_HOST, TEST_PORT};
 }
 
-void TestSingleServerClient::incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress &sender) {
+void TestSingleServerClient::incomingData(QH::PKG::AbstractData *pkg, const QH::AbstractNodeInfo *sender) {
     Q_UNUSED(sender)
 
     auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);

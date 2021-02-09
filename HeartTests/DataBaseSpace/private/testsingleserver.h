@@ -20,7 +20,7 @@ public:
     const QH::PKG::Ping& getPing() const;
 
 protected:
-    void incomingData(QH::PKG::AbstractData *pkg, const QH::HostAddress&  sender) override;
+    void incomingData(QH::PKG::AbstractData *pkg, const QH::AbstractNodeInfo*  sender) override;
 
 private:
     QH::PKG::Ping _ping;

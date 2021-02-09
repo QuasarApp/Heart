@@ -35,6 +35,7 @@ ParserResult SingleServerClient::parsePackage(const Package &pkg,
 
         setMember(obj);
         setStatus(ClientStatus::Logined);
+        incomingData(&obj, sender);
 
         return QH::ParserResult::Processed;
 

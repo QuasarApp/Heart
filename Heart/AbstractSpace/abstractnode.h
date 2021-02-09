@@ -445,7 +445,7 @@ protected:
      * @note override this method for get a signals.
      */
     virtual void incomingData(PKG::AbstractData* pkg,
-                              const HostAddress&  sender);
+                              const AbstractNodeInfo* sender);
 
     /**
      * @brief connections - return hash map of all connections of this node.
