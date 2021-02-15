@@ -381,4 +381,6 @@ private:
 
 
 }
+
+Q_DECLARE_METATYPE(QSharedPointer<QH::PKG::DBObject>)
 #endif // DATABASENODE_H

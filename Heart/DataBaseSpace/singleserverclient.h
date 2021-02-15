@@ -33,6 +33,7 @@ enum class ClientStatus: unsigned char {
     Logined
 };
 
+
 /**
  * @brief The SingleServerClient class This class provide login and singup user functionality for the SingleServer class.
  */
@@ -117,7 +118,7 @@ signals:
      * @param status This is new status of the client.
      *  For more information about the statuses see the ClientStatus enum.
      */
-    void statusChanged(ClientStatus status);
+    void statusChanged(QH::ClientStatus status);
 
 protected:
     /**
@@ -170,5 +171,8 @@ private:
     PKG::UserMember _member;
     ErrorCodes::Code _lastError = ErrorCodes::NoError;
 };
+
 }
+Q_DECLARE_METATYPE(QH::ClientStatus)
+
 #endif // SINGLESERVERCLIENT_H

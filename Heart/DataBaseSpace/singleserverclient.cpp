@@ -14,6 +14,8 @@ namespace QH {
 
 SingleServerClient::SingleServerClient() {
 
+    qRegisterMetaType<QH::ClientStatus>();
+
     connect(this, &SingleServerClient::requestError,
             this, &SingleServerClient::handleError);
 }
@@ -232,7 +234,6 @@ HostAddress SingleServerClient::serverAddress() const {
 
 void SingleServerClient::nodeConfirmend(AbstractNodeInfo *node) {
     Q_UNUSED(node)
-    setStatus(ClientStatus::Connected);
 }
 
 void QH::SingleServerClient::nodeConnected(AbstractNodeInfo *node) {
