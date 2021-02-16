@@ -58,10 +58,11 @@ public:
      * @param userId This is userID. In The base implementation it is String value.
      *  The userId must be unique for all users.
      *  If You want you can use the email address of the user as a user id.
+     *  If you want login uses your local user data jusst sets userId is empty. This method try login uses data from the getMember method.
      * @param rawPassword This is raw passwork of the userId. This method calc hash from the rawPassword and send getting value to server. For calculated hash uses the hashgenerator method. If you want to oveeride own behaviof for hashing or add an own salt then you need to override the hashgenerator method.
      * @return true if the user send autorisation request successful.
      */
-    bool login(const QString &userId, const QString &rawPassword = {});
+    bool login(const QString &userId = {}, const QString &rawPassword = {});
 
     /**
      * @brief logout This method send to server request for logout.
@@ -91,9 +92,11 @@ public:
 
     /**
      * @brief connectToServer This method try connect client ot server.
+     * @param @member This is user member oibject. If you want automaticly login to server then set the member object.
+     *  By Default member is nullptr.
      * @return true if the connect request sendet successful.
      */
-    bool connectToServer();
+    bool connectToServer(const PKG::UserMember *member = nullptr);
 
     /**
      * @brief disconnectFromServer This method disconnect the clinet from server.
@@ -111,6 +114,18 @@ public:
      * @return string calue of the last error.
      */
     QString getLastErrorString() const;
+
+    /**
+     * @brief isConnected This method retrun true if the client is connected to server.
+     * @return true if the server has "Connected" status
+     */
+    bool isConnected() const;
+
+    /**
+     * @brief isLogined This method return true if the client is logined.
+     * @return true if the server has "Logined" status
+     */
+    bool isLogined() const;
 
 signals:
     /**
@@ -133,6 +148,12 @@ protected:
      * @return UserMember object.
      */
     const PKG::UserMember &getMember() const;
+
+    /**
+     * @brief setMember This method sets memeber data. Use this method if you restore your account data from the local storage.
+     * @param member This is new network member data.
+     */
+    void setMember(const PKG::UserMember &member);
 
     /**
      * @brief setLastError This method sets new error code.
@@ -165,7 +186,6 @@ private:
 
     bool p_login(const QString &userId, const QByteArray &hashPassword = {});
     bool p_signup(const QString &userId, const QByteArray &hashPassword);
-    void setMember(const PKG::UserMember &member);
 
     ClientStatus _status = ClientStatus::Dissconnected;
     PKG::UserMember _member;

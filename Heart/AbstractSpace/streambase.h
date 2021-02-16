@@ -9,6 +9,7 @@
 #define STREAMBASE_H
 
 #include <QByteArray>
+#include <QDataStream>
 #include <QVariantMap>
 #include "heart_global.h"
 
@@ -58,12 +59,19 @@ public:
     friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
     /**
-     * @brief operator = This is base copy operator for all StreamBase structures.
+     * @brief copy This is base copy method for all StreamBase structures.
      *  Default implementation it is copy from byteArray.
      * @param righ input data object.
      * @return return lvalue link to object.
      */
-    StreamBase& operator=(const StreamBase &righ);
+    template<class T>
+    T& copy(const StreamBase& right) {
+        static_assert(std::is_base_of_v<StreamBase, T>,
+                "The argument of the copy method must be base type of the StreamBase class");
+
+        fromBytes(right.toBytes());
+        return static_cast<T&>(*this);
+    }
 
 protected:
 

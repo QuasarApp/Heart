@@ -138,7 +138,7 @@ bool SingleServerClient::removeUser() {
     return true;
 }
 
-bool SingleServerClient::connectToServer() {
+bool SingleServerClient::connectToServer(const PKG::UserMember* member) {
     if (getStatus() >= ClientStatus::Connected) {
         QuasarAppUtils::Params::log("You try make connect on the online client."
                                     " This client alredy connected to server.",
@@ -151,6 +151,11 @@ bool SingleServerClient::connectToServer() {
     }
 
     addNode(serverAddress());
+
+    if (member) {
+        setMember(*member);
+    }
+
     return true;
 }
 
@@ -194,8 +199,16 @@ void SingleServerClient::handleError(unsigned char code, QString error) {
 }
 
 bool SingleServerClient::p_login(const QString &userId, const QByteArray &hashPassword) {
+    auto userMember = getMember();
+    if ((userId.isEmpty() || hashPassword.isEmpty()) && !userMember.isValid()) {
+        return false;
+    }
+
     QH::PKG::AuthRequest request;
-    request.setName(userId);
+    if (userId.isEmpty())
+        request.setName(userMember.name());
+    else
+        request.setName(userId);
 
     request.setRequest(QH::PKG::UserRequestType::LogIn);
 
@@ -230,8 +243,6 @@ HostAddress SingleServerClient::serverAddress() const {
     return HostAddress{"localhost", DEFAULT_PORT};
 }
 
-
-
 void SingleServerClient::nodeConfirmend(AbstractNodeInfo *node) {
     Q_UNUSED(node)
 }
@@ -239,6 +250,10 @@ void SingleServerClient::nodeConfirmend(AbstractNodeInfo *node) {
 void QH::SingleServerClient::nodeConnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
     setStatus(ClientStatus::Connected);
+    auto member = getMember();
+    if (member.isValid()) {
+        login();
+    }
 }
 
 void QH::SingleServerClient::nodeDisconnected(AbstractNodeInfo *node) {
@@ -258,7 +273,16 @@ QString SingleServerClient::getLastErrorString() const {
     return ErrorCodes::DBErrorCodesHelper::toString(_lastError);
 }
 
+bool SingleServerClient::isConnected() const {
+    return getStatus() >= ClientStatus::Connected;
+}
+
+bool SingleServerClient::isLogined() const {
+    return getStatus() >= ClientStatus::Logined;
+}
+
 void SingleServerClient::setLastError(const ErrorCodes::Code &lastError) {
     _lastError = lastError;
 }
+
 }
