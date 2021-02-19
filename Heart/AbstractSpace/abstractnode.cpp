@@ -377,7 +377,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
 ParserResult AbstractNode::parsePackage(const Package &pkg,
                                         const AbstractNodeInfo *sender) {
 
-    if (!(sender && sender->isValid())) {
+    if (!(sender)) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
                                     QuasarAppUtils::Error);
         return ParserResult::Error;
@@ -436,12 +436,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
         return false;
     }
 
-    return QMetaObject::invokeMethod(const_cast<DataSender*>(_dataSender),
-                                     "sendPackagePrivate",
-                                     Qt::QueuedConnection,
-                                     Q_ARG(QByteArray, pkg.toBytes()),
-                                     Q_ARG(void*, target));
-
+    return _dataSender->sendData(pkg.toBytes(), target, true);
 }
 
 bool AbstractNode::sendData(AbstractData *resp,

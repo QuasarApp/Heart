@@ -244,7 +244,6 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
         WebSocket obj(pkg);
 
         QVariant requesterId = getSender(sender, &obj);
-
         if (!obj.isValid()) {
             badRequest(sender->networkAddress(), pkg.hdr,
                        {
@@ -280,7 +279,6 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
         auto obj = QSharedPointer<DeleteObject>::create(pkg);
 
         auto requesterId = getSender(sender, obj.data());
-
         if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
             badRequest(sender->networkAddress(), pkg.hdr, {
                            ErrorCodes::OperatioForbiden,
@@ -493,15 +491,14 @@ DataBaseNode::changeObjects(const QVariant &requester,
     return result;
 }
 
-const QVariant* DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
+QVariant DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
                                         const AbstractData *) const {
 
     auto info = dynamic_cast<const BaseNodeInfo*>(connectInfo);
-
     if (!info)
-        return nullptr;
+        return {};
 
-    return &info->id();
+    return info->id();
 }
 
 DBOperationResult
@@ -509,18 +506,14 @@ DataBaseNode::checkPermission(const QVariant &requester,
                               const DbAddress &objectAddress,
                               const Permission& requarimentPermision) const {
 
+    if (!requester.isValid())
+        return DBOperationResult::Unknown;
+
     if (!_db) {
         return DBOperationResult::Unknown;
     }
 
-    auto tmp = _db->getObjectRaw(NetworkMember{requester});
-
-    if (!tmp) {
-        return DBOperationResult::Unknown;
-    }
-
-    auto member = tmp.dynamicCast<AbstractNetworkMember>();
-
+    auto member = _db->getObjectRaw(NetworkMember{requester});
     if (!member) {
         return DBOperationResult::Unknown;
     }

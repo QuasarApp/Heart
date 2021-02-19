@@ -78,10 +78,20 @@ public:
      */
     void setId(const QVariant &id);
 
+    /**
+     * @brief SHA256Hash This method return address hash.
+     * This hash using into database.
+     * @return return array of the hash of this address.
+     */
+    QByteArray SHA256Hash() const;
+
 private:
+
+    void recalcHash();
 
     QString _table;
     QVariant _value;
+    QByteArray _SHA256Hash;
 };
 
 /**

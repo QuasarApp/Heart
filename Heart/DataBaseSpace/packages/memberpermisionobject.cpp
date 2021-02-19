@@ -58,13 +58,12 @@ uint MemberPermisionObject::dbKey() const {
 
 bool MemberPermisionObject::fromSqlRecord(const QSqlRecord &q) {
 
-    DbAddress address;
-    address.fromBytes(q.value("dbAddress").toByteArray());
+    PermisionData permision(q.value("memberId"),
+                            q.value("dbAddress").toString());
 
-    PermisionData permision(q.value("memberId"), address);
+    setKey(permision);
 
     setPermisions(static_cast<Permission>(q.value("lvl").toUInt()));
-
     return isValid();
 }
 
@@ -89,7 +88,7 @@ QDataStream &MemberPermisionObject::toStream(QDataStream &stream) const {
 
 DBVariantMap MemberPermisionObject::variantMap() const {
     return {{"memberId",               {_key.id(),                  MemberType::InsertUpdate}},
-            {"dbAddress",              {_key.address().toBytes(),   MemberType::InsertUpdate}},
+            {"dbAddress",              {_key.addressHash(),         MemberType::InsertUpdate}},
             {"lvl",                    {static_cast<unsigned char>(_permision), MemberType::InsertUpdate}}};
 }
 
@@ -101,9 +100,9 @@ QString MemberPermisionObject::condition() const {
 
     if (_key.id().isValid()) {
         if (result.size()) {
-            result += ", ";
+            result += " AND ";
         }
-        result += "dbAddress=" + _key.address().toBytes();
+        result += "dbAddress='" + _key.addressHash()+ "'";
     }
 
     return result;

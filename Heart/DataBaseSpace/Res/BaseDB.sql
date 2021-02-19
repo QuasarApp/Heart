@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS NetworkMembers (
 -- The MemberPermisions table contains link to anothe database object and links to users of the database with permission lvl.
 CREATE TABLE IF NOT EXISTS MemberPermisions (
     memberId VARCHAR(32) NOT NULL,
-    dbAddress BLOB NOT NULL,
+    -- This field contatins a base64 implementation of a sha256 (requariment 44 bytes) hash code of a database address
+    dbAddress VARCHAR(44) NOT NULL,
     lvl tinyint NOT NULL,
 
     FOREIGN KEY(memberId) REFERENCES NetworkMembers(id)

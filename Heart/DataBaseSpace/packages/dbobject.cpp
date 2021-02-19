@@ -214,7 +214,7 @@ QString DBObject::condition() const {
 
     // check all objects fields
     for (auto it = map.begin(); it != map.end(); ++it) {
-        // if field if unique then to
+        // if field is unique then
         if (bool(it.value().type & MemberType::Unique)) {
             QVariant::Type type = it.value().value.type();
 

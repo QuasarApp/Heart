@@ -250,7 +250,7 @@ protected:
      * @param requestData This is data of request.
      * @return id of requester member.
      */
-    virtual const QVariant *getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
+    virtual QVariant getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
 
     /**
      * @brief checkPermision This method check a permision of requester to database object with objectAddress.

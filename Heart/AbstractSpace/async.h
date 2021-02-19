@@ -57,7 +57,7 @@ protected:
      * @return true if the job function started correctly. IF the await option is true then
      * this method return result of job function.
      */
-    bool asyncLauncher(const Job &job, bool await = false);
+    bool asyncLauncher(const Job &job, bool await = false) const;
 private slots:
 
     /**

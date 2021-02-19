@@ -8,17 +8,20 @@
 #include "dbaddress.h"
 #include <QDataStream>
 #include <QHash>
+#include <QCryptographicHash>
 
 
 namespace QH {
 
 qint64 qHash(const DbAddress &address) {
-    return qHash(address.table() + address.id().toString());
+    return qHash(address.SHA256Hash());
 }
 
 DbAddress::DbAddress(const QString &table, const QVariant &id) {
     this->_table = table;
     this->_value = id;
+    recalcHash();
+
 }
 
 bool operator==(const DbAddress & left, const DbAddress &other) {
@@ -28,6 +31,8 @@ bool operator==(const DbAddress & left, const DbAddress &other) {
 QDataStream &DbAddress::fromStream(QDataStream &stream) {
     stream >> _value;
     stream >> _table;
+    recalcHash();
+
     return stream;
 }
 
@@ -38,8 +43,8 @@ QDataStream &DbAddress::toStream(QDataStream &stream) const {
 }
 
 QString DbAddress::toString() const {
-    return QString("DbAddress: table:%0, value:%1").
-            arg(_table, _value.toString());
+    return QString("DbAddress: table:%0, value:%1, Sha256:%2").
+            arg(_table, _value.toString(), _SHA256Hash.toHex());
 }
 
 bool operator!=(const DbAddress &left, const DbAddress &other) {
@@ -56,6 +61,7 @@ const QString& DbAddress::table() const {
 
 void DbAddress::setTable(const QString &table) {
     _table = table;
+    recalcHash();
 }
 
 const QVariant &DbAddress::id() const {
@@ -64,6 +70,15 @@ const QVariant &DbAddress::id() const {
 
 void DbAddress::setId(const QVariant &id){
     _value = id;
+    recalcHash();
+}
+
+QByteArray DbAddress::SHA256Hash() const {
+    return _SHA256Hash;
+}
+
+void DbAddress::recalcHash() {
+    _SHA256Hash = QCryptographicHash::hash(toBytes(), QCryptographicHash::Sha256);
 }
 
 }

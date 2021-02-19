@@ -51,13 +51,13 @@ bool Async::waitFor(bool *condition, int timeout) const {
     waitPrivate(*condition, timeout)
 }
 
-bool Async::asyncLauncher(const Async::Job &job, bool await) {
+bool Async::asyncLauncher(const Async::Job &job, bool await) const {
     if (QThread::currentThread() == thread()) {
         return job();
     }
 
     if (!await) {
-        return  QMetaObject::invokeMethod(this,
+        return  QMetaObject::invokeMethod(const_cast<Async*>(this),
                                           "asyncHandler",
                                           Qt::QueuedConnection,
                                           Q_ARG(QH::Async::Job, job));
@@ -65,7 +65,7 @@ bool Async::asyncLauncher(const Async::Job &job, bool await) {
 
     bool workOfEnd = false, workResult = false;
 
-    bool invockeResult = QMetaObject::invokeMethod(this,
+    bool invockeResult = QMetaObject::invokeMethod(const_cast<Async*>(this),
                                                    "asyncHandler",
                                                    Qt::QueuedConnection,
                                                    Q_ARG(QH::Async::Job, job),

@@ -17,6 +17,8 @@ namespace QH {
  */
 class SQLiteDBCachePrivate;
 
+// TO-DO see task https://github.com/QuasarApp/Heart/issues/15
+
 /**
  * @brief The SQLiteDBCache class using sqliete database for save all temp values.
  * This class use the in memory mode of the sqlite https://sqlite.org/inmemorydb.html

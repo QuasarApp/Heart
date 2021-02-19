@@ -196,8 +196,7 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
 
         auto requesterId = getSender(sender, obj.data());
-
-        if (requesterId && deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
+        if (deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
             prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
                                      ErrorCodes::OperatioForbiden, REQUEST_ERROR);
         }
