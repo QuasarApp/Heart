@@ -5,6 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
+#include "itoken.h"
 #include "singleserver.h"
 
 #include <authrequest.h>
@@ -18,6 +19,7 @@ namespace QH {
 SingleServer::SingleServer()
 {
 
+    registerPackageType<QH::PKG::AuthRequest>();
 }
 
 ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
@@ -135,8 +137,20 @@ ErrorCodes::Code SingleServer::logOutUser(const PKG::UserMember &user,
         return ErrorCodes::InternalError;
 
     mutableNodeInfo->setToken(AccessToken{});
+    mutableNodeInfo->setId({});
 
     return ErrorCodes::NoError;
+
+}
+
+bool SingleServer::signValidation(const PKG::AbstractData *data, const AbstractNodeInfo *sender) const {
+    auto iToken = dynamic_cast<const IToken*>(data);
+    auto senderInfo = dynamic_cast<const BaseNodeInfo*>(sender);
+
+    if (!iToken || !senderInfo)
+        return false;
+
+    return iToken->getSignToken() == senderInfo->token();
 
 }
 
@@ -144,22 +158,32 @@ AccessToken SingleServer::generateToken(int length) {
     return AccessToken(length);
 }
 
-ParserResult SingleServer::parsePackage(const Package &pkg, const AbstractNodeInfo *sender) {
-    auto parentResult = DataBaseNode::parsePackage(pkg, sender);
+ParserResult SingleServer::parsePackage(PKG::AbstractData *pkg,
+                                        const Header &pkgHeader,
+                                        const AbstractNodeInfo *sender) {
+    auto parentResult = DataBaseNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != QH::ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    if (H_16<QH::PKG::AuthRequest>() == pkg.hdr.command) {
-            auto obj = QSharedPointer<QH::PKG::AuthRequest>::create(pkg);
+    if (!signValidation(pkg, sender)) {
+
+        prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
+                                 ErrorCodes::OperatioForbiden, REQUEST_ERROR);
+
+        return ParserResult::Error;
+    };
+
+    if (H_16<QH::PKG::AuthRequest>() == pkg->cmd()) {
+            auto obj = QSharedPointer<QH::PKG::AuthRequest>(static_cast<PKG::AuthRequest*>(pkg));
 
             if (!obj->isValid()) {
-                prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+                prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
                                          ErrorCodes::InvalidRequest, REQUEST_ERROR);
                 return ParserResult::Error;
             }
 
-            if (!workWithUserRequest(obj, pkg, sender)) {
+            if (!workWithUserRequest(obj, pkgHeader, sender)) {
                 return QH::ParserResult::Error;
             }
 
@@ -176,7 +200,7 @@ QByteArray SingleServer::hashgenerator(const QByteArray &data) const {
 }
 
 bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& obj,
-                                       const Package &pkg,
+                                       const Header &hdr,
                                        const AbstractNodeInfo *sender) {
 
     ErrorCodes::Code result = ErrorCodes::InternalError;
@@ -197,7 +221,7 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
 
         auto requesterId = getSender(sender, obj.data());
         if (deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
-            prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+            prepareAndSendBadRequest(sender->networkAddress(), hdr,
                                      ErrorCodes::OperatioForbiden, REQUEST_ERROR);
         }
     }
@@ -205,14 +229,14 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     if (result == ErrorCodes::InternalError) {
         QuasarAppUtils::Params::log("Internal error ocured in the loginUser or registerNewUser method.",
                                     QuasarAppUtils::Error);
-        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+        prepareAndSendBadRequest(sender->networkAddress(), hdr,
                                  result, REQUEST_INTERNAL_ERROR);
 
         return false;
     }
 
     if (result != ErrorCodes::NoError) {
-        prepareAndSendBadRequest(sender->networkAddress(), pkg.hdr,
+        prepareAndSendBadRequest(sender->networkAddress(), hdr,
                                  result, REQUEST_INTERNAL_ERROR);
     }
 

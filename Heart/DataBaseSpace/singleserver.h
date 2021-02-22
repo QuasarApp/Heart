@@ -77,20 +77,30 @@ protected:
     virtual ErrorCodes::Code logOutUser(const PKG::UserMember &user, const AbstractNodeInfo* info);
 
     /**
+     * @brief signValidation This method return true if the package of the user have a token and it token is valid.
+     *  Ecxept is login request. User must be send own login and hash password.
+     *  @param data This is validation pacakage data.
+     * @return true if the token is valid.
+     */
+    virtual bool signValidation(const PKG::AbstractData* data, const AbstractNodeInfo *sender) const;
+
+    /**
      * @brief generateToken This method generate a new toke.
      * @param duration this is duration of valid
      * @return a new token.
      */
     AccessToken generateToken(int duration = AccessToken::Day);
 
-    ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo *sender) override;
+    ParserResult parsePackage(PKG::AbstractData *pkg,
+                              const Header& pkgHeader,
+                              const AbstractNodeInfo* sender) override;
     QByteArray hashgenerator(const QByteArray &data) const override;
     QStringList SQLSources() const override;
 
 
 private:
     bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj,
-                             const Package &pkg,
+                             const Header &pkg,
                              const AbstractNodeInfo *sender);
 
     void prepareAndSendBadRequest(const HostAddress& address,

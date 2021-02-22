@@ -16,28 +16,31 @@ SingleServerClient::SingleServerClient() {
 
     qRegisterMetaType<QH::ClientStatus>();
 
+    registerPackageType<PKG::UserMember>();
+
     connect(this, &SingleServerClient::requestError,
             this, &SingleServerClient::handleError);
 }
 
-ParserResult SingleServerClient::parsePackage(const Package &pkg,
-                                              const AbstractNodeInfo *sender) {
+ParserResult SingleServerClient::parsePackage(PKG::AbstractData *pkg,
+                                              const Header& pkgHeader,
+                                              const AbstractNodeInfo* sender) {
 
-    auto parentResult = DataBaseNode::parsePackage(pkg, sender);
+    auto parentResult = DataBaseNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != QH::ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    if (H_16<QH::PKG::UserMember>() == pkg.hdr.command) {
-        QH::PKG::UserMember obj(pkg);
+    if (H_16<QH::PKG::UserMember>() == pkg->cmd()) {
+        QH::PKG::UserMember *obj = static_cast<QH::PKG::UserMember*>(pkg);
 
-        if (!(obj.isValid() && obj.token().isValid())) {
+        if (!(obj->isValid() && obj->token().isValid())) {
             return ParserResult::Error;
         }
 
-        setMember(obj);
+        setMember(*obj);
         setStatus(ClientStatus::Logined);
-        incomingData(&obj, sender);
+        incomingData(obj, sender);
 
         return QH::ParserResult::Processed;
 
@@ -59,10 +62,9 @@ bool SingleServerClient::login(const QString &userId, const QString &rawPassword
     }
 
     if (getStatus() == ClientStatus::Logined) {
-        QuasarAppUtils::Params::log("You try make login on alredy logined client."
-                                    " Please run logout method befor login.",
-                                    QuasarAppUtils::Error);
-        return false;
+        QuasarAppUtils::Params::log("This cliet is alredy logined.",
+                                    QuasarAppUtils::Warning);
+        return true;
     }
 
     if (!p_login(userId, hashgenerator(rawPassword.toLatin1()))) {
@@ -74,6 +76,20 @@ bool SingleServerClient::login(const QString &userId, const QString &rawPassword
     }
 
     return true;
+}
+
+bool SingleServerClient::login(const PKG::UserMember &memberData) {
+
+    if (memberData.token() == getMember().token()) {
+        if (isLogined()) {
+            return true;
+        }
+
+        return login();
+    }
+
+    setMember(memberData);
+    return login();
 }
 
 bool SingleServerClient::logout() {
@@ -138,12 +154,11 @@ bool SingleServerClient::removeUser() {
     return true;
 }
 
-bool SingleServerClient::connectToServer(const PKG::UserMember* member) {
+bool SingleServerClient::connectToServer() {
     if (getStatus() >= ClientStatus::Connected) {
-        QuasarAppUtils::Params::log("You try make connect on the online client."
-                                    " This client alredy connected to server.",
-                                    QuasarAppUtils::Error);
-        return false;
+        QuasarAppUtils::Params::log(" This client alredy connected to server.",
+                                    QuasarAppUtils::Warning);
+        return true;
     }
 
     if (getStatus() < ClientStatus::Connecting) {
@@ -151,10 +166,6 @@ bool SingleServerClient::connectToServer(const PKG::UserMember* member) {
     }
 
     addNode(serverAddress());
-
-    if (member) {
-        setMember(*member);
-    }
 
     return true;
 }
@@ -250,10 +261,6 @@ void SingleServerClient::nodeConfirmend(AbstractNodeInfo *node) {
 void QH::SingleServerClient::nodeConnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
     setStatus(ClientStatus::Connected);
-    auto member = getMember();
-    if (member.isValid()) {
-        login();
-    }
 }
 
 void QH::SingleServerClient::nodeDisconnected(AbstractNodeInfo *node) {

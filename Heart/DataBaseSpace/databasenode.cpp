@@ -41,6 +41,10 @@ DataBaseNode::DataBaseNode(QObject *ptr):
 
     qRegisterMetaType<QSharedPointer<QH::PKG::DBObject>>();
 
+    registerPackageType<WebSocket>();
+    registerPackageType<WebSocketSubscriptions>();
+    registerPackageType<DeleteObject>();
+
 }
 
 bool DataBaseNode::initSqlDb(QString DBparamsFile,
@@ -233,19 +237,20 @@ bool DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
     return AbstractNode::sendData(resp, nodeId, req);
 }
 
-ParserResult DataBaseNode::parsePackage(const Package &pkg,
+ParserResult DataBaseNode::parsePackage(AbstractData *pkg,
+                                        const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
-    auto parentResult = AbstractNode::parsePackage(pkg, sender);
+    auto parentResult = AbstractNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    if (H_16<WebSocket>() == pkg.hdr.command) {
-        WebSocket obj(pkg);
+    if (H_16<WebSocket>() == pkg->cmd()) {
+        WebSocket *obj = static_cast<WebSocket*>(pkg);
 
-        QVariant requesterId = getSender(sender, &obj);
-        if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr,
+        QVariant requesterId = getSender(sender, obj);
+        if (!obj->isValid()) {
+            badRequest(sender->networkAddress(), pkgHeader,
                        {
                            ErrorCodes::InvalidRequest,
                            "WebSocket request is invalid"
@@ -253,8 +258,8 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
             return ParserResult::Error;
         }
 
-        if (!workWithSubscribe(obj, requesterId, *sender)) {
-            badRequest(sender->networkAddress(), pkg.hdr, {
+        if (!workWithSubscribe(*obj, requesterId, *sender)) {
+            badRequest(sender->networkAddress(), pkgHeader, {
                            ErrorCodes::InvalidRequest,
                            "WebSocket request is invalid"
                        });
@@ -263,24 +268,24 @@ ParserResult DataBaseNode::parsePackage(const Package &pkg,
 
         return ParserResult::Processed;
 
-    } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
-        WebSocketSubscriptions obj(pkg);
-        if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr, {
+    } else if (H_16<WebSocketSubscriptions>() == pkg->cmd()) {
+        WebSocketSubscriptions *obj = static_cast<WebSocketSubscriptions*>(pkg);
+        if (!obj->isValid()) {
+            badRequest(sender->networkAddress(), pkgHeader, {
                            ErrorCodes::InvalidRequest,
                            "WebSocketSubscriptions request is invalid"
                        });
             return ParserResult::Error;
         }
 
-        incomingData(&obj, sender);
+        incomingData(obj, sender);
         return ParserResult::Processed;
-    } else if (H_16<DeleteObject>() == pkg.hdr.command) {
-        auto obj = QSharedPointer<DeleteObject>::create(pkg);
+    } else if (H_16<DeleteObject>() == pkg->cmd()) {
+        auto obj = QSharedPointer<DeleteObject>(static_cast<DeleteObject*>(pkg));
 
         auto requesterId = getSender(sender, obj.data());
         if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
-            badRequest(sender->networkAddress(), pkg.hdr, {
+            badRequest(sender->networkAddress(), pkgHeader, {
                            ErrorCodes::OperatioForbiden,
                            "Permision denied"
                        });

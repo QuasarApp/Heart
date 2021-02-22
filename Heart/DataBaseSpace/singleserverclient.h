@@ -43,8 +43,9 @@ class SingleServerClient: public DataBaseNode
 public:
     SingleServerClient();
 
-    QH::ParserResult parsePackage(const QH::Package &pkg,
-                                  const QH::AbstractNodeInfo *sender) override;
+    QH::ParserResult parsePackage(PKG::AbstractData *pkg,
+                                  const Header& pkgHeader,
+                                  const AbstractNodeInfo* sender) override;
 
     /**
      * @brief getStatus This method return current status of the client.
@@ -63,6 +64,13 @@ public:
      * @return true if the user send autorisation request successful.
      */
     bool login(const QString &userId = {}, const QString &rawPassword = {});
+
+    /**
+     * @brief login This method try to loggin client with new memberData by token.
+     * @param memberData This is new member data, the client try login.
+     * @return true if the user send autorisation request successful.
+     */
+    bool login(const PKG::UserMember& memberData);
 
     /**
      * @brief logout This method send to server request for logout.
@@ -92,11 +100,9 @@ public:
 
     /**
      * @brief connectToServer This method try connect client ot server.
-     * @param @member This is user member oibject. If you want automaticly login to server then set the member object.
-     *  By Default member is nullptr.
      * @return true if the connect request sendet successful.
      */
-    bool connectToServer(const PKG::UserMember *member = nullptr);
+    bool connectToServer();
 
     /**
      * @brief disconnectFromServer This method disconnect the clinet from server.
@@ -150,12 +156,6 @@ protected:
     const PKG::UserMember &getMember() const;
 
     /**
-     * @brief setMember This method sets memeber data. Use this method if you restore your account data from the local storage.
-     * @param member This is new network member data.
-     */
-    void setMember(const PKG::UserMember &member);
-
-    /**
      * @brief setLastError This method sets new error code.
      * @param lastError This is new error code.
      */
@@ -183,6 +183,12 @@ private slots:
     void handleError(unsigned char code, QString error);
 
 private:
+
+    /**
+     * @brief setMember This method sets memeber data. Use this method if you restore your account data from the local storage.
+     * @param member This is new network member data.
+     */
+    void setMember(const PKG::UserMember &member);
 
     bool p_login(const QString &userId, const QByteArray &hashPassword = {});
     bool p_signup(const QString &userId, const QByteArray &hashPassword);

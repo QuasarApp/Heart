@@ -97,7 +97,8 @@ protected:
      */
     virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
 
-    ParserResult parsePackage(const Package &pkg,
+    ParserResult parsePackage(PKG::AbstractData *pkg,
+                              const Header& pkgHeader,
                               const AbstractNodeInfo* sender) override;
 
     AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;

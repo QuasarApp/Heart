@@ -283,16 +283,15 @@ protected:
      *  This method work on own thread.
      *  If you ovveride this method you need to create this than an example:
      * \code{cpp}
-        ParserResult DataBaseNode::parsePackage(const Package &pkg,
-                                                const AbstractNodeInfo *sender) {
+        ParserResult DataBaseNode::parsePackage(PKG::AbstractData *pkg,
+                                                const Header& pkgHeader,
+                                                const AbstractNodeInfo* sender) {
             auto parentResult = AbstractNode::parsePackage(pkg, sender);
             if (parentResult != ParserResult::NotProcessed) {
                 return parentResult;
             }
 
-            if (H_16<MyCommand>() == pkg.hdr.command) {
-                MyCommand obj
-                obj.fromPackage(pkg);
+            if (H_16<MyCommand>() == pkg->cmd()) {
 
                 BaseId requesterId = getSender(sender, &obj);
 
@@ -315,7 +314,7 @@ protected:
      * @param sender This is sender this pacakge
      * @return item of ParserResult. For more information see The ParserResult enum.
      */
-    virtual ParserResult parsePackage(const Package &pkg, const AbstractNodeInfo* sender);
+    virtual ParserResult parsePackage(PKG::AbstractData *pkg, const Header& pkgHeader, const AbstractNodeInfo* sender);
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
@@ -480,6 +479,16 @@ protected:
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
 
+    template<class T>
+    /**
+     * @brief registerPackageType This method register package type T.
+     * This is need to prepare pacakge for parsing in the parsePackage method.
+     */
+    void registerPackageType() {
+        _registeredTypes[H_16<T>()] = [](){
+            return new T();
+        };
+    };
 
     void prepareForDelete() override;
 
@@ -514,6 +523,14 @@ private slots:
 private:
 
     /**
+     * @brief prepareData This is private method for preparing package from the byteArray.
+     * @param pkg This is a raw package value.
+     * @return pointer into prepared data.
+     * @warning the return value do not clear automatically.
+     */
+    PKG::AbstractData* prepareData(const Package& pkg) const;
+
+    /**
       @note just disaable listen method in the node objects.
      */
     bool listen(const HostAddress& address = HostAddress::Any);
@@ -545,6 +562,7 @@ private:
     mutable QMutex _confirmNodeMutex;
 
     QThreadPool *_threadPool = nullptr;
+    QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
 
     friend class WebSocketController;
 

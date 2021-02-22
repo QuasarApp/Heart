@@ -34,6 +34,11 @@ AbstractNode::AbstractNode( QObject *ptr):
     _threadPool = new QThreadPool(this);
     _threadPool->setMaxThreadCount(QThread::idealThreadCount());
     _threadPool->setObjectName("PackageWorker");
+
+    registerPackageType<Ping>();
+    registerPackageType<BadRequest>();
+    registerPackageType<CloseConnection>();
+
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -365,7 +370,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
             Qt::QueuedConnection);
 
     // check node confirmed
-    QTimer::singleShot(WAIT_TIME, [this, info]() {
+    QTimer::singleShot(WAIT_TIME, this, [this, info]() {
         checkConfirmendOfNode(info);
     });
 
@@ -374,7 +379,8 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     return true;
 }
 
-ParserResult AbstractNode::parsePackage(const Package &pkg,
+ParserResult AbstractNode::parsePackage(AbstractData *pkg,
+                                        const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
 
     if (!(sender)) {
@@ -383,32 +389,31 @@ ParserResult AbstractNode::parsePackage(const Package &pkg,
         return ParserResult::Error;
     }
 
-    if (!pkg.isValid()) {
+    if (!pkg->isValid()) {
         QuasarAppUtils::Params::log("incomming package is not valid!",
                                     QuasarAppUtils::Error);
         changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
         return ParserResult::Error;
     }
 
-    if (H_16<Ping>() == pkg.hdr.command) {
-        Ping cmd(pkg);
-
-        if (!cmd.ansver()) {
-            cmd.setAnsver(true);
-            sendData(&cmd, sender->networkAddress(), &pkg.hdr);
+    if (H_16<Ping>() == pkg->cmd()) {
+        auto cmd = static_cast<Ping *>(pkg);
+        if (!cmd->ansver()) {
+            cmd->setAnsver(true);
+            sendData(cmd, sender->networkAddress(), &pkgHeader);
         }
 
-        incomingData(&cmd, sender);
+        incomingData(cmd, sender);
         return ParserResult::Processed;
-    } else if (H_16<BadRequest>() == pkg.hdr.command) {
-        BadRequest cmd(pkg);
+    } else if (H_16<BadRequest>() == pkg->cmd()) {
+        auto cmd = static_cast<BadRequest *>(pkg);
 
-        incomingData(&cmd, sender);
-        emit requestError(cmd.errCode(), cmd.err());
+        incomingData(cmd, sender);
+        emit requestError(cmd->errCode(), cmd->err());
 
         return ParserResult::Processed;
 
-    } else if (H_16<CloseConnection>() == pkg.hdr.command) {
+    } else if (H_16<CloseConnection>() == pkg->cmd()) {
 
         if (sender->isLocal()) {
             removeNode(sender->networkAddress());
@@ -780,6 +785,22 @@ void AbstractNode::connectNodePrivate(HostAddress address) {
     connectToHost(address, _mode);
 }
 
+AbstractData *AbstractNode::prepareData(const Package &pkg) const {
+
+    AbstractData* value = _registeredTypes.value(pkg.hdr.command, [](){return nullptr;})();
+
+    if (!value) {
+        QuasarAppUtils::Params::log("You try parse not registered package type."
+                                    " Plese use the registerPackageType method befor parsing."
+                                    " Example invoke registerPackageType<MyData>() into constructor of you client and server nodes.");
+
+        return nullptr;
+    }
+
+    value->fromPakcage(pkg);
+    return value;
+}
+
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
                            const HostAddress& id) {
 
@@ -787,7 +808,11 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
         return;
 
     auto executeObject = [pkg, sender, id, this]() {
-        ParserResult parseResult = parsePackage(pkg, sender);
+
+        AbstractData* data = prepareData(pkg);
+        ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
+        delete data;
+
         if (parseResult != ParserResult::Processed) {
             auto message = QString("Package not parsed! %0 result: %1").
                     arg(pkg.toString(), pareseResultToString(parseResult));
