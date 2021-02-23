@@ -15,6 +15,19 @@ namespace QH {
 
 /**
  * @brief The IToken classis interface for  the validation user packages and user dates.
+ *
+ * This is simple interface for validation packages.
+ *
+ * Example of use:
+ *
+ * @code{cpp}
+ * class MyPackageClass: public  IToken
+ * {
+ * ...
+ *    const AccessToken& getSignToken() const override;
+ * ...
+ * }
+ * @endcode
  */
 class IToken
 {

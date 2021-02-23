@@ -28,6 +28,7 @@
 #include <deleteobject.h>
 #include "dberrorcodes.h"
 #include <QSet>
+#include <itoken.h>
 #include <sqlitedbcache.h>
 
 #define THIS_NODE "this_node_key"
@@ -152,6 +153,10 @@ QSet<QString> DataBaseNode::systemTables() const {
     return {"NetworkMembers", "MemberPermisions"};
 }
 
+bool DataBaseNode::checkToken(const AbstractData *pkg) const {
+    return dynamic_cast<const IToken*>(pkg);
+}
+
 void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
     AbstractNode::nodeConnected(node);
     welcomeAddress(node);
@@ -237,7 +242,7 @@ bool DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
     return AbstractNode::sendData(resp, nodeId, req);
 }
 
-ParserResult DataBaseNode::parsePackage(AbstractData *pkg,
+ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
                                         const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
     auto parentResult = AbstractNode::parsePackage(pkg, pkgHeader, sender);
@@ -246,7 +251,7 @@ ParserResult DataBaseNode::parsePackage(AbstractData *pkg,
     }
 
     if (H_16<WebSocket>() == pkg->cmd()) {
-        WebSocket *obj = static_cast<WebSocket*>(pkg);
+        WebSocket *obj = static_cast<WebSocket*>(pkg.data());
 
         QVariant requesterId = getSender(sender, obj);
         if (!obj->isValid()) {
@@ -269,7 +274,7 @@ ParserResult DataBaseNode::parsePackage(AbstractData *pkg,
         return ParserResult::Processed;
 
     } else if (H_16<WebSocketSubscriptions>() == pkg->cmd()) {
-        WebSocketSubscriptions *obj = static_cast<WebSocketSubscriptions*>(pkg);
+        WebSocketSubscriptions *obj = static_cast<WebSocketSubscriptions*>(pkg.data());
         if (!obj->isValid()) {
             badRequest(sender->networkAddress(), pkgHeader, {
                            ErrorCodes::InvalidRequest,
@@ -281,7 +286,7 @@ ParserResult DataBaseNode::parsePackage(AbstractData *pkg,
         incomingData(obj, sender);
         return ParserResult::Processed;
     } else if (H_16<DeleteObject>() == pkg->cmd()) {
-        auto obj = QSharedPointer<DeleteObject>(static_cast<DeleteObject*>(pkg));
+        auto obj = pkg.staticCast<DeleteObject>();
 
         auto requesterId = getSender(sender, obj.data());
         if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {

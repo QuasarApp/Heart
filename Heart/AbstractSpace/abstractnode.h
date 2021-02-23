@@ -14,6 +14,7 @@
 #include <QAbstractSocket>
 #include <QFutureWatcher>
 #include <QMutex>
+#include <QSharedPointer>
 #include <QSslConfiguration>
 #include <QTcpServer>
 #include <QThreadPool>
@@ -314,7 +315,7 @@ protected:
      * @param sender This is sender this pacakge
      * @return item of ParserResult. For more information see The ParserResult enum.
      */
-    virtual ParserResult parsePackage(PKG::AbstractData *pkg, const Header& pkgHeader, const AbstractNodeInfo* sender);
+    virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg, const Header& pkgHeader, const AbstractNodeInfo* sender);
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
@@ -528,7 +529,7 @@ private:
      * @return pointer into prepared data.
      * @warning the return value do not clear automatically.
      */
-    PKG::AbstractData* prepareData(const Package& pkg) const;
+    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
 
     /**
       @note just disaable listen method in the node objects.

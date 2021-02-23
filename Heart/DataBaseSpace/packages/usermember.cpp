@@ -75,6 +75,10 @@ void UserMember::setName(const QString &name) {
     _name = name;
 }
 
+const AccessToken &UserMember::getSignToken() const {
+    return _token;
+}
+
 DBVariantMap UserMember::variantMap() const {
     auto map = AbstractNetworkMember::variantMap();
     map[primaryKey()].type = MemberType::PrimaryKeyAutoIncrement;

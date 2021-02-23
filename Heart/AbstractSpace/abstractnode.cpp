@@ -379,7 +379,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     return true;
 }
 
-ParserResult AbstractNode::parsePackage(AbstractData *pkg,
+ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
                                         const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
 
@@ -397,7 +397,7 @@ ParserResult AbstractNode::parsePackage(AbstractData *pkg,
     }
 
     if (H_16<Ping>() == pkg->cmd()) {
-        auto cmd = static_cast<Ping *>(pkg);
+        auto cmd = static_cast<Ping *>(pkg.data());
         if (!cmd->ansver()) {
             cmd->setAnsver(true);
             sendData(cmd, sender->networkAddress(), &pkgHeader);
@@ -406,7 +406,7 @@ ParserResult AbstractNode::parsePackage(AbstractData *pkg,
         incomingData(cmd, sender);
         return ParserResult::Processed;
     } else if (H_16<BadRequest>() == pkg->cmd()) {
-        auto cmd = static_cast<BadRequest *>(pkg);
+        auto cmd = static_cast<BadRequest *>(pkg.data());
 
         incomingData(cmd, sender);
         emit requestError(cmd->errCode(), cmd->err());
@@ -785,9 +785,9 @@ void AbstractNode::connectNodePrivate(HostAddress address) {
     connectToHost(address, _mode);
 }
 
-AbstractData *AbstractNode::prepareData(const Package &pkg) const {
+QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const {
 
-    AbstractData* value = _registeredTypes.value(pkg.hdr.command, [](){return nullptr;})();
+    auto value = QSharedPointer<AbstractData>(_registeredTypes.value(pkg.hdr.command, [](){return nullptr;})());
 
     if (!value) {
         QuasarAppUtils::Params::log("You try parse not registered package type."
@@ -809,9 +809,11 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
     auto executeObject = [pkg, sender, id, this]() {
 
-        AbstractData* data = prepareData(pkg);
+        auto data = prepareData(pkg);
+        if (!data)
+            return false;
+
         ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
-        delete data;
 
         if (parseResult != ParserResult::Processed) {
             auto message = QString("Package not parsed! %0 result: %1").

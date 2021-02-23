@@ -22,7 +22,7 @@ SingleServerClient::SingleServerClient() {
             this, &SingleServerClient::handleError);
 }
 
-ParserResult SingleServerClient::parsePackage(PKG::AbstractData *pkg,
+ParserResult SingleServerClient::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                               const Header& pkgHeader,
                                               const AbstractNodeInfo* sender) {
 
@@ -32,7 +32,7 @@ ParserResult SingleServerClient::parsePackage(PKG::AbstractData *pkg,
     }
 
     if (H_16<QH::PKG::UserMember>() == pkg->cmd()) {
-        QH::PKG::UserMember *obj = static_cast<QH::PKG::UserMember*>(pkg);
+        QH::PKG::UserMember *obj = static_cast<QH::PKG::UserMember*>(pkg.data());
 
         if (!(obj->isValid() && obj->token().isValid())) {
             return ParserResult::Error;
@@ -186,7 +186,7 @@ void SingleServerClient::setStatus(const ClientStatus &status) {
     auto oldStatus = _status;
 
     if (status == ClientStatus::Connecting || status == ClientStatus::Loginning) {
-        QTimer::singleShot(WAIT_RESPOCE_TIME, [this, oldStatus]() {
+        QTimer::singleShot(WAIT_RESPOCE_TIME, this, [this, oldStatus]() {
             if (_status == ClientStatus::Connecting || _status == ClientStatus::Loginning) {
                 setStatus(oldStatus);
                 emit requestError(static_cast<unsigned char >(ErrorCodes::TimeOutError),
@@ -266,6 +266,20 @@ void QH::SingleServerClient::nodeConnected(AbstractNodeInfo *node) {
 void QH::SingleServerClient::nodeDisconnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
     setStatus(ClientStatus::Dissconnected);
+}
+
+bool SingleServerClient::sendData(const PKG::AbstractData *resp, const HostAddress &address, const Header *req) {
+
+    if (!checkToken(resp)) {
+
+        QuasarAppUtils::Params::log("For The SingleServerClient classes you must be add support of the Token validation."
+                                    " All package classes must be inherited of the IToken interface",
+                                    QuasarAppUtils::Error);
+
+        return false;
+    }
+
+    return DataBaseNode::sendData(resp, address, req);
 }
 
 void SingleServerClient::setMember(const PKG::UserMember &member) {

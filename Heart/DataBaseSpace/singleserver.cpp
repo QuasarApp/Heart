@@ -158,15 +158,16 @@ AccessToken SingleServer::generateToken(int length) {
     return AccessToken(length);
 }
 
-ParserResult SingleServer::parsePackage(PKG::AbstractData *pkg,
+ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                         const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
+
     auto parentResult = DataBaseNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != QH::ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    if (!signValidation(pkg, sender)) {
+    if (!signValidation(pkg.data(), sender)) {
 
         prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
                                  ErrorCodes::OperatioForbiden, REQUEST_ERROR);
@@ -175,7 +176,7 @@ ParserResult SingleServer::parsePackage(PKG::AbstractData *pkg,
     };
 
     if (H_16<QH::PKG::AuthRequest>() == pkg->cmd()) {
-            auto obj = QSharedPointer<QH::PKG::AuthRequest>(static_cast<PKG::AuthRequest*>(pkg));
+            auto obj = pkg.staticCast<QH::PKG::AuthRequest>();
 
             if (!obj->isValid()) {
                 prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,

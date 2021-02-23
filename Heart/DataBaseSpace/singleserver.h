@@ -35,6 +35,9 @@ class UserMember;
  * \code{cpp}
  * \endcode
  *
+ * @note All pacakges that will be processed in this class should be sopport the token validation.
+ * For get more information about token validation see the IToken class.
+ *
  */
 class SingleServer : public DataBaseNode
 {
@@ -91,7 +94,7 @@ protected:
      */
     AccessToken generateToken(int duration = AccessToken::Day);
 
-    ParserResult parsePackage(PKG::AbstractData *pkg,
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                               const Header& pkgHeader,
                               const AbstractNodeInfo* sender) override;
     QByteArray hashgenerator(const QByteArray &data) const override;

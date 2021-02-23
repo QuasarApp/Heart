@@ -36,6 +36,9 @@ enum class ClientStatus: unsigned char {
 
 /**
  * @brief The SingleServerClient class This class provide login and singup user functionality for the SingleServer class.
+ *
+ * @note All pacakges that will be processed in this class should be sopport the token validation.
+ * For get more information about token validation see the IToken class.
  */
 class SingleServerClient: public DataBaseNode
 {
@@ -43,7 +46,7 @@ class SingleServerClient: public DataBaseNode
 public:
     SingleServerClient();
 
-    QH::ParserResult parsePackage(PKG::AbstractData *pkg,
+    QH::ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                   const Header& pkgHeader,
                                   const AbstractNodeInfo* sender) override;
 
@@ -173,6 +176,10 @@ protected:
     void nodeConnected(AbstractNodeInfo *node) override;
     void nodeDisconnected(AbstractNodeInfo *node) override;
 
+    bool sendData(const PKG::AbstractData *resp,
+                  const HostAddress &address,
+                  const Header *req = nullptr) override;
+
 private slots:
     /**
      * @brief handleError This handle method invoked when the client received the BadRequest from server.
@@ -196,6 +203,8 @@ private:
     ClientStatus _status = ClientStatus::Dissconnected;
     PKG::UserMember _member;
     ErrorCodes::Code _lastError = ErrorCodes::NoError;
+
+
 };
 
 }

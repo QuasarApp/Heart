@@ -97,7 +97,7 @@ protected:
      */
     virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
 
-    ParserResult parsePackage(PKG::AbstractData *pkg,
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                               const Header& pkgHeader,
                               const AbstractNodeInfo* sender) override;
 
@@ -202,7 +202,7 @@ protected:
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult updateObject(const QVariant &requester,
-                                const QSharedPointer<PKG::DBObject> &saveObject);
+                                   const QSharedPointer<PKG::DBObject> &saveObject);
 
     /**
      * @brief createObject This method create a new object in the database and add all permisions forthe objects creator.
@@ -213,7 +213,7 @@ protected:
      *  For more information about results see the DBOperationResult enum.
      */
     DBOperationResult createObject(const QVariant &requester,
-                                    const QSharedPointer<PKG::DBObject> &obj);
+                                   const QSharedPointer<PKG::DBObject> &obj);
 
     /**
      * @brief updateIfNotExistsCreateObject This is wraper of the updateObject and createObjects methods.
@@ -263,8 +263,8 @@ protected:
      *  For m more information about result see the DBOperationResult enum.
      */
     virtual DBOperationResult checkPermission(const QVariant &requester,
-                                const DbAddress& objectAddress,
-                                const Permission& requarimentPermision) const;
+                                              const DbAddress& objectAddress,
+                                              const Permission& requarimentPermision) const;
 
 
     /**
@@ -348,22 +348,31 @@ protected:
      *
      * @return the list to deploy sql files.
      */
-     virtual QStringList SQLSources() const;
+    virtual QStringList SQLSources() const;
 
     /**
      * @brief systemTables This method return the set of tables that forbidet for users.
      * By default is NetworkMembers and MemberPermisions tables.
      * @return set of tables names.
      */
-     virtual QSet<QString> systemTables() const;
+    virtual QSet<QString> systemTables() const;
+
+    /**
+     * @brief checkToken This method check pkg on token validation sopport.
+     * @param pkg This is parsed package.
+     * @return true if the package not support token validation.
+     *
+     * For get more information see  IToken class.
+     */
+    bool checkToken(const PKG::AbstractData *pkg) const;
 private:
 
     /**
-     * @brief workWithSubscribe This metod work work with subscribe commnads
-     * @param rec This is request data
-     * @param address This is sendet address
-     * @return true if data parsed seccusseful
-     */
+         * @brief workWithSubscribe This metod work work with subscribe commnads
+         * @param rec This is request data
+         * @param address This is sendet address
+         * @return true if data parsed seccusseful
+         */
     bool workWithSubscribe(const PKG::WebSocket &rec,
                            const QVariant &clientOrNodeid,
                            const AbstractNodeInfo &sender);

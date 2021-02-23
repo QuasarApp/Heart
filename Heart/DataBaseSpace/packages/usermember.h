@@ -4,6 +4,8 @@
 #include "abstractnetworkmember.h"
 #include "accesstoken.h"
 
+#include "itoken.h"
+
 namespace QH {
 
 
@@ -17,7 +19,7 @@ namespace PKG {
  *
  * @note The UserMember class has no members of its own, so it is safe to use static_cast on User <<>> AbstractNetworkMember.
  */
-class UserMember: public AbstractNetworkMember
+class UserMember: public AbstractNetworkMember, public IToken
 {
 public:
     UserMember();
@@ -55,6 +57,9 @@ public:
      */
     void setName(const QString &name);
 
+    // IToken interface
+    const AccessToken &getSignToken() const override;
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
@@ -62,6 +67,8 @@ protected:
 private:
     AccessToken _token;
     QString _name;
+
+
 
 };
 }
