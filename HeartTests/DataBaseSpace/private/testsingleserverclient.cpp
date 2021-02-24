@@ -14,7 +14,7 @@ const QH::PKG::Ping &TestSingleServerClient::getPing() const {
 }
 
 void TestSingleServerClient::setStatus(const QH::ClientStatus &status) {
-    QH::SingleServerClient::setStatus(status);
+    QH::SingleClient::setStatus(status);
 }
 
 QH::HostAddress TestSingleServerClient::serverAddress() const {

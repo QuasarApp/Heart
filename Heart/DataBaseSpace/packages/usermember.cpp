@@ -67,16 +67,16 @@ QDataStream &UserMember::toStream(QDataStream &stream) const {
     return stream;
 }
 
+const AccessToken &UserMember::getSignToken() const {
+    return _token;
+}
+
 QString UserMember::name() const {
     return _name;
 }
 
 void UserMember::setName(const QString &name) {
     _name = name;
-}
-
-const AccessToken &UserMember::getSignToken() const {
-    return _token;
 }
 
 DBVariantMap UserMember::variantMap() const {

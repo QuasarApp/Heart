@@ -8,11 +8,11 @@
 #ifndef TESTSINGLESERVERCLIENT_H
 #define TESTSINGLESERVERCLIENT_H
 
-#include <singleserverclient.h>
+#include <singleclient.h>
 #include <ping.h>
 
 
-class TestSingleServerClient: public QH::SingleServerClient
+class TestSingleServerClient: public QH::SingleClient
 {
 public:
     Q_OBJECT

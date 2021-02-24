@@ -13,6 +13,7 @@
 #include <basenodeinfo.h>
 #include <badrequest.h>
 #include <getmaxintegerid.h>
+#include "getsinglevalue.h"
 
 namespace QH {
 
@@ -69,18 +70,7 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
     if (!nodeinfo)
         return ErrorCodes::InternalError;
 
-    AccessToken token((nodeinfo->token().toBytes()));
-
-    if (token.isValid()) {
-        return ErrorCodes::UserAlreadyLogged;
-    }
-
-    token = localObject->token();
-    if (!token.isValid()) {
-        token = generateToken(AccessToken::Year);
-    }
-
-    if (token != user.token()) {
+    if (!(user.token().isValid() && localObject->token() == user.token())) {
         if (localObject->authenticationData() != hashgenerator(user.authenticationData())) {
             return ErrorCodes::UserInvalidPasswoed;
         }
@@ -90,13 +80,15 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
     if (!editableNodeInfo)
         return ErrorCodes::InternalError;
 
-    editableNodeInfo->setToken(token);
-    editableNodeInfo->setId(localObject->getId());
-
-    localObject->setToken(token);
-    if (!db()->updateObject(localObject)) {
-        return ErrorCodes::InternalError;
+    if (!localObject->token().isValid()) {
+        localObject->setToken(generateToken(AccessToken::Year));
+        if (!db()->updateObject(localObject)) {
+            return ErrorCodes::InternalError;
+        }
     }
+
+    editableNodeInfo->setToken(localObject->token());
+    editableNodeInfo->setId(localObject->getId());
 
     localObject->setAuthenticationData("");
     if (!sendData(localObject.data(), info->networkAddress())) {
@@ -147,8 +139,9 @@ bool SingleServer::signValidation(const PKG::AbstractData *data, const AbstractN
     auto iToken = dynamic_cast<const IToken*>(data);
     auto senderInfo = dynamic_cast<const BaseNodeInfo*>(sender);
 
-    if (!iToken || !senderInfo)
+    if (!(iToken && senderInfo ))
         return false;
+
 
     return iToken->getSignToken() == senderInfo->token();
 
@@ -167,14 +160,6 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
         return parentResult;
     }
 
-    if (!signValidation(pkg.data(), sender)) {
-
-        prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
-                                 ErrorCodes::OperatioForbiden, REQUEST_ERROR);
-
-        return ParserResult::Error;
-    };
-
     if (H_16<QH::PKG::AuthRequest>() == pkg->cmd()) {
             auto obj = pkg.staticCast<QH::PKG::AuthRequest>();
 
@@ -191,6 +176,14 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
             return QH::ParserResult::Processed;
 
         }
+
+    if (!signValidation(pkg.data(), sender)) {
+
+        prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
+                                 ErrorCodes::OperatioForbiden, REQUEST_ERROR);
+
+        return ParserResult::Error;
+    };
 
     return QH::ParserResult::NotProcessed;
 
@@ -213,7 +206,7 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     }
 
     if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::LogIn)) {
-        result = loginUser(*obj.staticCast<PKG::UserMember>().data(), sender);
+        result = loginUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::SignUp)) {
         result = registerNewUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::LogOut)) {

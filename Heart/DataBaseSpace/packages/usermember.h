@@ -57,18 +57,15 @@ public:
      */
     void setName(const QString &name);
 
-    // IToken interface
-    const AccessToken &getSignToken() const override;
-
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
+    const AccessToken &getSignToken() const override;
+
     AccessToken _token;
     QString _name;
-
-
 
 };
 }

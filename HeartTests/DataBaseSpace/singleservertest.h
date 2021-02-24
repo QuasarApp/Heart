@@ -14,7 +14,7 @@
 #include <QtTest>
 
 /**
- * @brief The SingleServerTest class testing the QH::SingleServer and QH::SingleServerClient clases.
+ * @brief The SingleServerTest class testing the QH::SingleServer and QH::SingleClient clases.
  * This test case check next situations:
  * 1. connect client to sercer
  * 2. signup client to server

@@ -5,24 +5,24 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "singleserverclient.h"
+#include "singleclient.h"
 #include "quasarapp.h"
 #include "authrequest.h"
 #include "dberrorcodes.h"
 
 namespace QH {
 
-SingleServerClient::SingleServerClient() {
+SingleClient::SingleClient() {
 
     qRegisterMetaType<QH::ClientStatus>();
 
     registerPackageType<PKG::UserMember>();
 
-    connect(this, &SingleServerClient::requestError,
-            this, &SingleServerClient::handleError);
+    connect(this, &SingleClient::requestError,
+            this, &SingleClient::handleError);
 }
 
-ParserResult SingleServerClient::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                               const Header& pkgHeader,
                                               const AbstractNodeInfo* sender) {
 
@@ -49,11 +49,11 @@ ParserResult SingleServerClient::parsePackage(const QSharedPointer<PKG::Abstract
     return QH::ParserResult::NotProcessed;
 }
 
-ClientStatus SingleServerClient::getStatus() const {
+ClientStatus SingleClient::getStatus() const {
     return _status;
 }
 
-bool SingleServerClient::login(const QString &userId, const QString &rawPassword) {
+bool SingleClient::login(const QString &userId, const QString &rawPassword) {
     if (getStatus() < ClientStatus::Connected) {
         QuasarAppUtils::Params::log("You try make login on the offline client."
                                     " Please wait of ClientStatus::Connected status.",
@@ -78,7 +78,7 @@ bool SingleServerClient::login(const QString &userId, const QString &rawPassword
     return true;
 }
 
-bool SingleServerClient::login(const PKG::UserMember &memberData) {
+bool SingleClient::login(const PKG::UserMember &memberData) {
 
     if (memberData.token() == getMember().token()) {
         if (isLogined()) {
@@ -92,7 +92,7 @@ bool SingleServerClient::login(const PKG::UserMember &memberData) {
     return login();
 }
 
-bool SingleServerClient::logout() {
+bool SingleClient::logout() {
     if (getStatus() < ClientStatus::Logined) {
         QuasarAppUtils::Params::log("You try logout on the not Loggined client."
                                     " Please wait of ClientStatus::Logined status.",
@@ -116,7 +116,7 @@ bool SingleServerClient::logout() {
     return true;
 }
 
-bool SingleServerClient::signup(const QString &userId, const QString &rawPassword) {
+bool SingleClient::signup(const QString &userId, const QString &rawPassword) {
     if (getStatus() < ClientStatus::Connected) {
         QuasarAppUtils::Params::log("You try make signup on the offline client."
                                     " Please wait of ClientStatus::Connected status.",
@@ -135,7 +135,7 @@ bool SingleServerClient::signup(const QString &userId, const QString &rawPasswor
     return true;
 }
 
-bool SingleServerClient::removeUser() {
+bool SingleClient::removeUser() {
     if (getStatus() < ClientStatus::Logined) {
         QuasarAppUtils::Params::log("You try make remove on the not Loggined client."
                                     " Please wait of ClientStatus::Logined status.",
@@ -154,7 +154,7 @@ bool SingleServerClient::removeUser() {
     return true;
 }
 
-bool SingleServerClient::connectToServer() {
+bool SingleClient::connectToServer() {
     if (getStatus() >= ClientStatus::Connected) {
         QuasarAppUtils::Params::log(" This client alredy connected to server.",
                                     QuasarAppUtils::Warning);
@@ -170,7 +170,7 @@ bool SingleServerClient::connectToServer() {
     return true;
 }
 
-void SingleServerClient::disconnectFromServer() {
+void SingleClient::disconnectFromServer() {
     if (getStatus() == ClientStatus::Dissconnected) {
         return;
     }
@@ -179,7 +179,7 @@ void SingleServerClient::disconnectFromServer() {
     setStatus(ClientStatus::Dissconnected);
 }
 
-void SingleServerClient::setStatus(const ClientStatus &status) {
+void SingleClient::setStatus(const ClientStatus &status) {
     if (status == _status)
         return;
 
@@ -199,7 +199,7 @@ void SingleServerClient::setStatus(const ClientStatus &status) {
     emit statusChanged(_status);
 }
 
-void SingleServerClient::handleError(unsigned char code, QString error) {
+void SingleClient::handleError(unsigned char code, QString error) {
     QuasarAppUtils::Params::log(error, QuasarAppUtils::Error);
 
     if (code != ErrorCodes::NoError && getStatus() == ClientStatus::Loginning) {
@@ -209,7 +209,7 @@ void SingleServerClient::handleError(unsigned char code, QString error) {
     _lastError = code;
 }
 
-bool SingleServerClient::p_login(const QString &userId, const QByteArray &hashPassword) {
+bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword) {
     auto userMember = getMember();
     if ((userId.isEmpty() || hashPassword.isEmpty()) && !userMember.isValid()) {
         return false;
@@ -237,7 +237,7 @@ bool SingleServerClient::p_login(const QString &userId, const QByteArray &hashPa
     return sendData(&request, serverAddress());
 }
 
-bool SingleServerClient::p_signup(const QString &userId, const QByteArray &hashPassword) {
+bool SingleClient::p_signup(const QString &userId, const QByteArray &hashPassword) {
     QH::PKG::AuthRequest request;
     request.setName(userId);
     request.setAuthenticationData(hashPassword);
@@ -246,29 +246,29 @@ bool SingleServerClient::p_signup(const QString &userId, const QByteArray &hashP
     return sendData(&request, serverAddress());
 }
 
-const PKG::UserMember &SingleServerClient::getMember() const {
+const PKG::UserMember &SingleClient::getMember() const {
     return _member;
 }
 
-HostAddress SingleServerClient::serverAddress() const {
+HostAddress SingleClient::serverAddress() const {
     return HostAddress{"localhost", DEFAULT_PORT};
 }
 
-void SingleServerClient::nodeConfirmend(AbstractNodeInfo *node) {
+void SingleClient::nodeConfirmend(AbstractNodeInfo *node) {
     Q_UNUSED(node)
 }
 
-void QH::SingleServerClient::nodeConnected(AbstractNodeInfo *node) {
+void QH::SingleClient::nodeConnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
     setStatus(ClientStatus::Connected);
 }
 
-void QH::SingleServerClient::nodeDisconnected(AbstractNodeInfo *node) {
+void QH::SingleClient::nodeDisconnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
     setStatus(ClientStatus::Dissconnected);
 }
 
-bool SingleServerClient::sendData(const PKG::AbstractData *resp, const HostAddress &address, const Header *req) {
+bool SingleClient::sendData(const PKG::AbstractData *resp, const HostAddress &address, const Header *req) {
 
     if (!checkToken(resp)) {
 
@@ -282,27 +282,27 @@ bool SingleServerClient::sendData(const PKG::AbstractData *resp, const HostAddre
     return DataBaseNode::sendData(resp, address, req);
 }
 
-void SingleServerClient::setMember(const PKG::UserMember &member) {
+void SingleClient::setMember(const PKG::UserMember &member) {
     _member = member;
 }
 
-ErrorCodes::Code SingleServerClient::getLastError() const {
+ErrorCodes::Code SingleClient::getLastError() const {
     return _lastError;
 }
 
-QString SingleServerClient::getLastErrorString() const {
+QString SingleClient::getLastErrorString() const {
     return ErrorCodes::DBErrorCodesHelper::toString(_lastError);
 }
 
-bool SingleServerClient::isConnected() const {
+bool SingleClient::isConnected() const {
     return getStatus() >= ClientStatus::Connected;
 }
 
-bool SingleServerClient::isLogined() const {
+bool SingleClient::isLogined() const {
     return getStatus() >= ClientStatus::Logined;
 }
 
-void SingleServerClient::setLastError(const ErrorCodes::Code &lastError) {
+void SingleClient::setLastError(const ErrorCodes::Code &lastError) {
     _lastError = lastError;
 }
 

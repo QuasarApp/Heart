@@ -153,10 +153,6 @@ QSet<QString> DataBaseNode::systemTables() const {
     return {"NetworkMembers", "MemberPermisions"};
 }
 
-bool DataBaseNode::checkToken(const AbstractData *pkg) const {
-    return dynamic_cast<const IToken*>(pkg);
-}
-
 void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
     AbstractNode::nodeConnected(node);
     welcomeAddress(node);

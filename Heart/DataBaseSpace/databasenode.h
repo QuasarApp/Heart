@@ -357,14 +357,7 @@ protected:
      */
     virtual QSet<QString> systemTables() const;
 
-    /**
-     * @brief checkToken This method check pkg on token validation sopport.
-     * @param pkg This is parsed package.
-     * @return true if the package not support token validation.
-     *
-     * For get more information see  IToken class.
-     */
-    bool checkToken(const PKG::AbstractData *pkg) const;
+
 private:
 
     /**

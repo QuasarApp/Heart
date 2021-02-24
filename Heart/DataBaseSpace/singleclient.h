@@ -5,12 +5,12 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef SINGLESERVERCLIENT_H
-#define SINGLESERVERCLIENT_H
+#ifndef SINGLECLIENT_H
+#define SINGLECLIENT_H
 
-#include "databasenode.h"
 #include <usermember.h>
 #include "dberrorcodes.h"
+#include "singlebase.h"
 
 namespace QH {
 
@@ -35,16 +35,16 @@ enum class ClientStatus: unsigned char {
 
 
 /**
- * @brief The SingleServerClient class This class provide login and singup user functionality for the SingleServer class.
+ * @brief The SingleClient class This class provide login and singup user functionality for the SingleServer class.
  *
  * @note All pacakges that will be processed in this class should be sopport the token validation.
  * For get more information about token validation see the IToken class.
  */
-class SingleServerClient: public DataBaseNode
+class SingleClient: public SingleBase
 {
     Q_OBJECT
 public:
-    SingleServerClient();
+    SingleClient();
 
     QH::ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                   const Header& pkgHeader,
@@ -210,4 +210,4 @@ private:
 }
 Q_DECLARE_METATYPE(QH::ClientStatus)
 
-#endif // SINGLESERVERCLIENT_H
+#endif // SINGLECLIENT_H

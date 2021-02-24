@@ -8,9 +8,9 @@
 #ifndef SINGLESERVER_H
 #define SINGLESERVER_H
 
-#include <databasenode.h>
 #include <accesstoken.h>
 #include "dberrorcodes.h"
+#include "singlebase.h"
 
 namespace QH {
 
@@ -39,7 +39,7 @@ class UserMember;
  * For get more information about token validation see the IToken class.
  *
  */
-class SingleServer : public DataBaseNode
+class SingleServer : public SingleBase
 {
     Q_OBJECT
 public:
@@ -102,6 +102,7 @@ protected:
 
 
 private:
+
     bool workWithUserRequest(const QSharedPointer<PKG::UserMember> &obj,
                              const Header &pkg,
                              const AbstractNodeInfo *sender);
