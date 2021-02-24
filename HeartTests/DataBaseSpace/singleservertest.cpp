@@ -142,10 +142,6 @@ bool SingleServerTest::connectNetworkTest() {
         return false;
     }
 
-    // the login method must be return true because client alredy logginned.
-    if (!client->login(user, userPassword))
-        return false;
-
     // logout client and try login again.
     client->logout();
 

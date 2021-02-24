@@ -61,12 +61,6 @@ bool SingleClient::login(const QString &userId, const QString &rawPassword) {
         return false;
     }
 
-    if (getStatus() == ClientStatus::Logined) {
-        QuasarAppUtils::Params::log("This cliet is alredy logined.",
-                                    QuasarAppUtils::Warning);
-        return true;
-    }
-
     if (!p_login(userId, hashgenerator(rawPassword.toLatin1()))) {
         return false;
     };
