@@ -45,18 +45,6 @@ public:
      */
     void setToken(const AccessToken &token);
 
-    /**
-     * @brief name This is username.
-     * @return user name
-     */
-    QString name() const;
-
-    /**
-     * @brief setName This method sets new name for user.
-     * @param name This is a new value of naeme.
-     */
-    void setName(const QString &name);
-
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
@@ -65,7 +53,6 @@ private:
     const AccessToken &getSignToken() const override;
 
     AccessToken _token;
-    QString _name;
 
 };
 }

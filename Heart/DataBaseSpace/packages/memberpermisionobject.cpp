@@ -58,7 +58,7 @@ uint MemberPermisionObject::dbKey() const {
 
 bool MemberPermisionObject::fromSqlRecord(const QSqlRecord &q) {
 
-    PermisionData permision(q.value("memberId"),
+    PermisionData permision(q.value("memberId").toString(),
                             q.value("dbAddress").toString());
 
     setKey(permision);
@@ -95,7 +95,7 @@ DBVariantMap MemberPermisionObject::variantMap() const {
 QString MemberPermisionObject::condition() const {
     QString result;
     if (_key.id().isValid()) {
-        result += "memberId=" + _key.id().toString();
+        result += "memberId='" + _key.id().toString() + "'";
     }
 
     if (_key.id().isValid()) {

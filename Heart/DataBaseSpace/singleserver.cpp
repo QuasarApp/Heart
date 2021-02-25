@@ -45,9 +45,7 @@ ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
     user.setAuthenticationData(rawPassword);
 
     // get id of the user
-    auto userID = db()->getObject(PKG::GetMaxIntegerId(user.tableName(), "id"))->value();
-    user.setId(userID);
-    addUpdatePermission(userID, user.dbAddress(), Permission::Write);
+    addUpdatePermission(user.getId(), user.dbAddress(), Permission::Write);
 
     return loginUser(user, info);
 }

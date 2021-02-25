@@ -211,9 +211,9 @@ bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword
 
     QH::PKG::AuthRequest request;
     if (userId.isEmpty())
-        request.setName(userMember.name());
+        request.setId(userMember.getId());
     else
-        request.setName(userId);
+        request.setId(userId);
 
     request.setRequest(QH::PKG::UserRequestType::LogIn);
 
@@ -233,7 +233,7 @@ bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword
 
 bool SingleClient::p_signup(const QString &userId, const QByteArray &hashPassword) {
     QH::PKG::AuthRequest request;
-    request.setName(userId);
+    request.setId(userId);
     request.setAuthenticationData(hashPassword);
     request.setRequest(QH::PKG::UserRequestType::SignUp);
 

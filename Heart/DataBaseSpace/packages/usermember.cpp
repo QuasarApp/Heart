@@ -27,7 +27,6 @@ bool UserMember::copyFrom(const AbstractData *other) {
         return false;
 
     this->_token = otherObject->_token;
-    this->_name = otherObject->_name;
 
     return true;
 }
@@ -38,7 +37,6 @@ bool UserMember::fromSqlRecord(const QSqlRecord &q) {
     }
 
     setToken(AccessToken(q.value("token").toByteArray()));
-    setName(q.value("userName").toString());
 
     return UserMember::isValid();
 }
@@ -48,13 +46,12 @@ DBObject *UserMember::createDBObject() const {
 }
 
 bool UserMember::isValid() const {
-    return AbstractNetworkMember::isValid() && trust() <= 100 && _name.size();
+    return AbstractNetworkMember::isValid() && trust() <= 100;
 }
 
 QDataStream &UserMember::fromStream(QDataStream &stream) {
     AbstractNetworkMember::fromStream(stream);
     stream >> _token;
-    stream >> _name;
 
     return stream;
 }
@@ -62,7 +59,6 @@ QDataStream &UserMember::fromStream(QDataStream &stream) {
 QDataStream &UserMember::toStream(QDataStream &stream) const {
     AbstractNetworkMember::toStream(stream);
     stream << _token;
-    stream << _name;
 
     return stream;
 }
@@ -71,19 +67,10 @@ const AccessToken &UserMember::getSignToken() const {
     return _token;
 }
 
-QString UserMember::name() const {
-    return _name;
-}
-
-void UserMember::setName(const QString &name) {
-    _name = name;
-}
 
 DBVariantMap UserMember::variantMap() const {
     auto map = AbstractNetworkMember::variantMap();
-    map[primaryKey()].type = MemberType::PrimaryKeyAutoIncrement;
     map.insert("token",     {_token.toBytes(),  MemberType::InsertUpdate});
-    map.insert("userName",  {_name,             MemberType::InsertUpdate | MemberType::Unique});
 
     return map;
 }
