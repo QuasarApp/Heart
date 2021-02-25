@@ -33,16 +33,16 @@ public:
     /**
      * @brief addresses This is list of subscribes.
      */
-    QSet<DbAddress> addresses() const;
+    QSet<unsigned int> addresses() const;
 
     /**
      * @brief setAddresses This method set a new list of subscribers.
      * @param addresses This is a new list of subscribers.
      */
-    void setAddresses(const QSet<DbAddress> &addresses);
+    void setAddresses(const QSet<unsigned int> &addresses);
 
 private:
-    QSet<DbAddress> _addresses;
+    QSet<unsigned int> _subscribeIds;
 
 
 };

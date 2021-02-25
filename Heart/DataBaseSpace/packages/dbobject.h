@@ -14,6 +14,7 @@
 #include "dbaddress.h"
 #include "basedefines.h"
 #include "dbcachekey.h"
+#include "isubscribabledata.h"
 
 class QSqlQuery;
 
@@ -88,7 +89,7 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  *
  * @warning Object witj empty table name is invalid.
  */
-class HEARTSHARED_EXPORT DBObject : public AbstractData
+class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableData
 {
 public:
 
@@ -103,6 +104,7 @@ public:
 
     bool isValid() const override;
     bool copyFrom(const AbstractData * other) override;
+    unsigned int subscribeId() const override;
 
     /**
      * @brief isHaveAPrimaryKey This method return true if this object have a primary key.
@@ -463,6 +465,7 @@ private:
     QString getWhereBlock() const;
 
     DbAddress _dbId;
+
 };
 }
 }

@@ -28,6 +28,7 @@
 #include <deleteobject.h>
 #include "dberrorcodes.h"
 #include <QSet>
+#include <isubscribabledata.h>
 #include <itoken.h>
 #include <sqlitedbcache.h>
 
@@ -128,7 +129,7 @@ void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
     _db = cache;
 
     connect(_db, &SqlDBCache::sigItemChanged,
-            _webSocketWorker, &WebSocketController::handleItemChanged);
+            this, &DataBaseNode::hendleObjectChanged);
 }
 
 
@@ -151,6 +152,21 @@ QStringList DataBaseNode::SQLSources() const{
 
 QSet<QString> DataBaseNode::systemTables() const {
     return {"NetworkMembers", "MemberPermisions"};
+}
+
+bool DataBaseNode::objectChanged(const QSharedPointer<PKG::ISubscribableData> &item) {
+
+    if (!item.dynamicCast<PKG::AbstractData>()) {
+        return false;
+    }
+
+    _webSocketWorker->handleItemChanged(item);
+
+    return true;
+}
+
+void DataBaseNode::hendleObjectChanged(const QSharedPointer<DBObject> &item) {
+    objectChanged(item.staticCast<PKG::ISubscribableData>());
 }
 
 void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
@@ -323,11 +339,12 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
     switch (static_cast<WebSocketRequest>(rec.getRequestCmd())) {
 
     case WebSocketRequest::Subscribe: {
-        return _webSocketWorker->subscribe(clientOrNodeid, rec.address());
+        _webSocketWorker->subscribe(clientOrNodeid, rec.subscribeId());
+        return true;
     }
 
     case WebSocketRequest::Unsubscribe: {
-        _webSocketWorker->unsubscribe(clientOrNodeid, rec.address());
+        _webSocketWorker->unsubscribe(clientOrNodeid, rec.subscribeId());
         return true;
     }
 

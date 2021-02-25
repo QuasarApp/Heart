@@ -22,9 +22,8 @@ class DataBaseNode;
 /**
  * @brief The WebSocketController class is manage subscribe. This class contains information about users and him subscriptions
  */
-class HEARTSHARED_EXPORT WebSocketController : public QObject
+class HEARTSHARED_EXPORT WebSocketController
 {
-    Q_OBJECT
 
 public:
     /**
@@ -36,42 +35,47 @@ public:
     /**
      * @brief subscribe This method subscribe a subscriber to the item.
      * @param subscriber This is network member that want get information about update of the item.
-     * @param item This is database object.
+     * @param item This is a subsribable object id.
      * @return true if method finished succesful
      */
-    bool subscribe(const QVariant &subscriber,
-                   const DbAddress &item);
+    void subscribe(const QVariant &subscriber,
+                   unsigned int item);
 
     /**
      * @brief unsubscribe This method unsubscribe a subscriber from the item.
      * @param subscriber This is network member that want disable getting information about update of the item.
-     * @param item This is database object.
+     * @param item This is a subsribable object id.
      * @return true if method finished succesful
      */
     void unsubscribe(const QVariant &subscriber,
-                     const DbAddress &item);
+                     unsigned int item);
 
     /**
      * @brief list This method return a list of subscribed items of subscriber.
      * @param subscriber This is network member that want get alist of own subscription.
      * @return true if method finished succesful
      */
-    const QSet<DbAddress> &list(const QVariant& subscriber);
+    QSet<unsigned int> list(const QVariant& subscriber);
 
-public slots:
     /**
      * @brief handleItemChanged This method invoked when item on database changed.
      * @param item This is changed item.
      */
-    void handleItemChanged(const QSharedPointer<PKG::DBObject> &item);
+    void handleItemChanged(const QSharedPointer<PKG::ISubscribableData> &item);
 
 private:
-    void foreachSubscribers(const QSharedPointer<PKG::DBObject> &item,
+    void foreachSubscribers(const QSharedPointer<PKG::ISubscribableData> &item,
                             const QSet<QVariant> &subscribersList);
 
+    void unsubscribePrivate(const QVariant &subscriber,
+                            unsigned int item);
+
+    void subscribePrivate(const QVariant &subscriber,
+                          unsigned int item);
+
     /// subscribers it is nodes or clients
-    QHash<DbAddress, QSet<QVariant>> _subscribs;
-    QHash<QVariant, QSet<DbAddress>> _items;
+    QHash<unsigned int, QSet<QVariant>> _subscribs;
+    QHash<QVariant, QSet<unsigned int>> _items;
 
     QMutex _subscribsMutex;
     QMutex _itemsMutex;

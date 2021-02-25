@@ -44,27 +44,27 @@ public:
     bool isValid() const override;
 
     /**
-     * @brief address This method return address of the subscribe object.
-     * @return database address of the subscribe object
+     * @brief subscribeId This method return address(unique id) of the subscribe object.
+     * @return unique id of the subscribe object
      */
-    DbAddress address() const;
+    unsigned int subscribeId() const;
 
     /**
-     * @brief setAddress This method set a address of the subscribe object.
-     * @param address This is a new database address of the subscribe object.
+     * @brief setSubscribeId This method set a unique id of the subscribe object.
+     * @param address This is a new database unique id of the subscribe object.
      */
-    void setAddress(const DbAddress &address);
+    void setSubscribeId(unsigned int address);
 
+    unsigned char getRequestCmd() const override;
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    DbAddress _address;
+    unsigned int _subscribeId;
     WebSocketRequest _request = WebSocketRequest::Invalied;
     // Request interface
-public:
-    unsigned char getRequestCmd() const override;
+
 };
 
 }

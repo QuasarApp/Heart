@@ -345,6 +345,10 @@ bool DBObject::copyFrom(const AbstractData * other) {
     return true;
 }
 
+unsigned int DBObject::subscribeId() const {
+    return dbKey();
+}
+
 bool DBObject::isHaveAPrimaryKey() const {
     return primaryKey().size();
 }

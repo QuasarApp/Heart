@@ -18,6 +18,7 @@ namespace QH {
 
 namespace PKG {
 class WebSocket;
+class ISubscribableData;
 
 }
 
@@ -357,9 +358,18 @@ protected:
      */
     virtual QSet<QString> systemTables() const;
 
+    /**
+     * @brief objectChanged This method send all subscriptions message with this object.
+     * @param item changed object.
+     * @return true if an item object sendable.
+     */
+    bool objectChanged(const QSharedPointer<PKG::ISubscribableData> &item);
+
+private slots:
+    void hendleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
+
 
 private:
-
     /**
          * @brief workWithSubscribe This metod work work with subscribe commnads
          * @param rec This is request data

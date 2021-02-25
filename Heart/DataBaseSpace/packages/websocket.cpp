@@ -25,7 +25,7 @@ WebSocket::WebSocket(const Package &package):
 QDataStream &WebSocket::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
     stream >> _request;
-    stream >> _address;
+    stream >> _subscribeId;
 
     return stream;
 }
@@ -33,7 +33,7 @@ QDataStream &WebSocket::fromStream(QDataStream &stream) {
 QDataStream &WebSocket::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
     stream << _request;
-    stream << _address;
+    stream << _subscribeId;
 
     return stream;
 }
@@ -42,12 +42,12 @@ unsigned char WebSocket::getRequestCmd() const {
     return static_cast<unsigned char>(_request);
 }
 
-DbAddress WebSocket::address() const {
-    return _address;
+unsigned int WebSocket::subscribeId() const {
+    return _subscribeId;
 }
 
-void WebSocket::setAddress(const DbAddress &address) {
-    _address = address;
+void WebSocket::setSubscribeId(unsigned int address) {
+    _subscribeId = address;
 }
 
 bool WebSocket::isValid() const {
