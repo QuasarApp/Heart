@@ -133,6 +133,17 @@ ErrorCodes::Code SingleServer::logOutUser(const PKG::UserMember &user,
 
 }
 
+ErrorCodes::Code SingleServer::deleteUser(const QSharedPointer<PKG::UserMember> &user,
+                                          const AbstractNodeInfo *info) {
+
+    auto requesterId = getSender(info, user.data());
+    if (deleteObject(requesterId, user) != DBOperationResult::Allowed) {
+        return ErrorCodes::OperatioForbiden;
+    }
+
+    return ErrorCodes::NoError;
+}
+
 bool SingleServer::signValidation(const PKG::AbstractData *data, const AbstractNodeInfo *sender) const {
     auto iToken = dynamic_cast<const IToken*>(data);
     auto senderInfo = dynamic_cast<const BaseNodeInfo*>(sender);
@@ -173,7 +184,7 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
             return QH::ParserResult::Processed;
 
-        }
+    }
 
     if (!signValidation(pkg.data(), sender)) {
 
@@ -210,12 +221,7 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::LogOut)) {
         result = logOutUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
-
-        auto requesterId = getSender(sender, obj.data());
-        if (deleteObject(requesterId, obj) != DBOperationResult::Allowed) {
-            prepareAndSendBadRequest(sender->networkAddress(), hdr,
-                                     ErrorCodes::OperatioForbiden, REQUEST_ERROR);
-        }
+        result = deleteUser(obj, sender);
     }
 
     if (result == ErrorCodes::InternalError) {

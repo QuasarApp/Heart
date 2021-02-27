@@ -152,6 +152,20 @@ protected:
     void nodeConnected(AbstractNodeInfo *node) override;
 
     /**
+     * @brief memberSubsribed This method invoked when client with @a clientId subsribed on object with  @a subscribeId
+     * @param clientId This is id of the client member.
+     * @param subscribeId This is id of the subscribeObject.
+     */
+    virtual void memberSubsribed(const QVariant &clientId, unsigned int subscribeId);
+
+    /**
+     * @brief memberUnSubsribed This method invoked when client with @a clientId unsubsribed on object with  @a subscribeId
+     * @param clientId This is id of the client member.
+     * @param subscribeId This is id of the subscribeObject.
+     */
+    virtual void memberUnsubsribed(const QVariant &clientId, unsigned int subscribeId);
+
+    /**
      * @brief db this node return pointer to database object.
      * @return the pinter to data base
      */

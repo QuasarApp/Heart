@@ -174,6 +174,14 @@ void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
     welcomeAddress(node);
 }
 
+void DataBaseNode::memberSubsribed(const QVariant &, unsigned int ) {
+    return;
+}
+
+void DataBaseNode::memberUnsubsribed(const QVariant &, unsigned int ) {
+    return;
+}
+
 QString DataBaseNode::dbLocation() const {
     if (db() && db()->writer()) {
         return db()->writer()->databaseLocation();
@@ -340,11 +348,13 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
 
     case WebSocketRequest::Subscribe: {
         _webSocketWorker->subscribe(clientOrNodeid, rec.subscribeId());
+        memberSubsribed(clientOrNodeid, rec.subscribeId());
         return true;
     }
 
     case WebSocketRequest::Unsubscribe: {
         _webSocketWorker->unsubscribe(clientOrNodeid, rec.subscribeId());
+        memberUnsubsribed(clientOrNodeid, rec.subscribeId());
         return true;
     }
 
