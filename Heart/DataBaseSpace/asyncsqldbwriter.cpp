@@ -20,8 +20,8 @@ using namespace PKG;
 AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
     SqlDBWriter(ptr) {
 
-     _own = new QThread();
-     _own->setObjectName("AsyncSqlDbWriter");
+    _own = new QThread();
+    _own->setObjectName("AsyncSqlDbWriter");
     moveToThread(_own);
     _own->start();
 

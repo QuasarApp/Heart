@@ -50,6 +50,10 @@ void WebSocket::setSubscribeId(unsigned int address) {
     _subscribeId = address;
 }
 
+void WebSocket::setRequestCommnad(const WebSocketRequest &requset) {
+    _request = requset;
+}
+
 bool WebSocket::isValid() const {
     return _request > WebSocketRequest::Invalied
             && AbstractData::isValid();

@@ -136,6 +136,21 @@ public:
      */
     bool isLogined() const;
 
+    /**
+     * @brief subscribe This method subscribe current loggined user to the object with @a id.
+     * @param id This is subscriber id of the object.
+     * @return true if subscribe request sent successful.
+     */
+    bool subscribe(unsigned int id);
+
+    /**
+     * @brief unsubscribe This method unsubscribe current loggined user to the object with @a id.
+     * @param id This is unsubscribe id of the object.
+     * @return true if unsubscribe request sent successful.
+     */
+    bool unsubscribe(unsigned int id);
+
+
 signals:
     /**
      * @brief statusChanged This sigmnal emited when the client change an own status.

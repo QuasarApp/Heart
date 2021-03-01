@@ -55,6 +55,12 @@ public:
      */
     void setSubscribeId(unsigned int address);
 
+    /**
+     * @brief setRequestCommnad This method sets requset command.
+     * @param requset This is new request command
+     */
+    void setRequestCommnad(const WebSocketRequest& requset);
+
     unsigned char getRequestCmd() const override;
 protected:
     QDataStream &fromStream(QDataStream &stream) override;

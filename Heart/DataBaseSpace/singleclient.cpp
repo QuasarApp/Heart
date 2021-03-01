@@ -10,6 +10,8 @@
 #include "authrequest.h"
 #include "dberrorcodes.h"
 
+#include <websocket.h>
+
 namespace QH {
 
 SingleClient::SingleClient() {
@@ -294,6 +296,31 @@ bool SingleClient::isConnected() const {
 
 bool SingleClient::isLogined() const {
     return getStatus() >= ClientStatus::Logined;
+}
+
+bool SingleClient::subscribe(unsigned int id) {
+    if (getStatus() < ClientStatus::Logined) {
+        return false;
+    }
+
+    PKG::WebSocket request;
+    request.setSubscribeId(id);
+    request.setRequestCommnad(PKG::WebSocketRequest::Subscribe);
+
+    return sendData(&request, serverAddress());
+}
+
+bool SingleClient::unsubscribe(unsigned int id) {
+    if (getStatus() < ClientStatus::Logined) {
+        return false;
+    }
+
+    PKG::WebSocket request;
+    request.setSubscribeId(id);
+    request.setRequestCommnad(PKG::WebSocketRequest::Unsubscribe);
+
+    return sendData(&request, serverAddress());
+
 }
 
 void SingleClient::setLastError(const ErrorCodes::Code &lastError) {
