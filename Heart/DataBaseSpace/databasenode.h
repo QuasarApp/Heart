@@ -380,7 +380,7 @@ protected:
     bool objectChanged(const QSharedPointer<PKG::ISubscribableData> &item);
 
 private slots:
-    void hendleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
+    void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
 
 
 private:

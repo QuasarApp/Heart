@@ -129,7 +129,7 @@ void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
     _db = cache;
 
     connect(_db, &SqlDBCache::sigItemChanged,
-            this, &DataBaseNode::hendleObjectChanged);
+            this, &DataBaseNode::handleObjectChanged);
 }
 
 
@@ -165,7 +165,7 @@ bool DataBaseNode::objectChanged(const QSharedPointer<PKG::ISubscribableData> &i
     return true;
 }
 
-void DataBaseNode::hendleObjectChanged(const QSharedPointer<DBObject> &item) {
+void DataBaseNode::handleObjectChanged(const QSharedPointer<DBObject> &item) {
     objectChanged(item.staticCast<PKG::ISubscribableData>());
 }
 

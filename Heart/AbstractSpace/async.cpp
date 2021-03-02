@@ -69,8 +69,8 @@ bool Async::asyncLauncher(const Async::Job &job, bool await) const {
                                                    "asyncHandler",
                                                    Qt::QueuedConnection,
                                                    Q_ARG(QH::Async::Job, job),
-                                                   Q_ARG(bool *, &workOfEnd),
-                                                   Q_ARG(bool *, &workResult));
+                                                   Q_ARG(bool*, &workOfEnd),
+                                                   Q_ARG(bool*, &workResult));
 
 
     if (!invockeResult)
