@@ -341,7 +341,7 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
                                      const AbstractNodeInfo & sender) {
 
     auto _db = db();
-    if (_db)
+    if (!_db)
         return false;
 
     switch (static_cast<WebSocketRequest>(rec.getRequestCmd())) {
