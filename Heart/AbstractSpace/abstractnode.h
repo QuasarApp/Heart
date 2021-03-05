@@ -58,20 +58,20 @@ enum class ParserResult {
 };
 
 /**
- * @brief The SslMode enum  This enum contatins options for set ssl mode of node (server)
+ * @brief The SslMode enum  This enum contains options for set ssl mode of node (server)
  * For more information see AbstractNode::useSelfSignedSslConfiguration AbstractNode::useSystemSslConfiguration and AbstractNode::disableSSL methods.
  */
 enum class SslMode {
-    /// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr)
+    /// This is not secure connection without ssl encryption. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr)
     NoSSL,
     /// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
     InitFromSystem,
-    /// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslSrtData struct
+    /// This option force a current node generate self signed certificate and work with it. For more information see a SslSrtData struct
     InitSelfSigned
 };
 
 /**
- * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certefication.
+ * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certification.
  *  If yo want change selfSigned certificate then use method AbstractNode::useSelfSignedSslConfiguration
  */
 struct SslSrtData {
@@ -91,7 +91,7 @@ class Abstract;
 /**
  * @brief The AbstractNode class - Abstract implementation of node.
  *  this implementation have a methods for send and receive data messages,
- *  and work with crypto method for crease a security connections betwin nodes.
+ *  and work with crypto method for create a security connections between nodes.
  *  AbstractNode - is thread save class
  */
 class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
@@ -110,7 +110,7 @@ public:
     /**
      * @brief run This method implement deployment a network node (server) on selected address.
      * @param addres This is network address of work node or server.
-     *  If address is empty then server weel be listen all addreses of all interfaces else listen only selected address.
+     *  If address is empty then server will be listen all addreses of all interfaces else listen only selected address.
      * @param port This is port of deployment node (server)
      * @return Result of deployment node (sever). (True if deploy finished successful else false).
      */
@@ -122,7 +122,7 @@ public:
     virtual void stop();
 
     /**
-     * @brief getInfoPtr - This method return information class pointer about netwok connection.
+     * @brief getInfoPtr - This method return information class pointer about network connection.
      *  If Connection with id not found then return nullptr.
      * @param id - it is network address of requested node
      * @return The pointer of information about node. if address not found return nullptr
@@ -156,7 +156,7 @@ public:
     virtual bool connectToHost(const HostAddress &address, SslMode mode = SslMode::NoSSL);
 
     /**
-     * @brief connectToHost - connect to node (server) with domain, bud this method find ip address of domain befor connecting
+     * @brief connectToHost - connect to node (server) with domain, bud this method find ip address of domain before connecting
      * @param domain - This is domain address of node (server)
      * @param port - This is target port of node (server)
      * @param mode - This is mode of connection see SslMode. By default using SslMode::NoSSL connection mode, it is not secure.
@@ -165,20 +165,20 @@ public:
 
     /**
      * @brief addNode - add new node (server) for this mode
-     * @param nodeAdderess - This is network addres of a new node (server).
+     * @param nodeAdderess - This is network address of a new node (server).
      * @note By Default This immplementation move called function into main Thread and invoke connectToHost method.
      */
     void addNode(const HostAddress& nodeAdderess);
 
     /**
-     * @brief removeNode - remove node and disconnected forom node (server)
-     * @param nodeAdderess - This is network adddress of removed node (server).
+     * @brief removeNode - remove node and disconnected from node (server)
+     * @param nodeAdderess - This is network address of removed node (server).
      */
     void removeNode(const HostAddress& nodeAdderess);
 
     /**
      * @brief address - Thim method return own network address of current node (server)
-     * @return The current network adderss
+     * @return The current network address
      */
     HostAddress address() const;
 
@@ -203,41 +203,41 @@ public:
 
     /**
      * @brief pareseResultToString This method convert ParserResult value to string.
-     * @return The String value of pareseresult
+     * @return The String value of ParserResult
      */
     QString pareseResultToString(const ParserResult& parseResult) const;
 
     /**
-     * @brief connectionsCount - return count fo connections (connections with status connected)
+     * @brief connectionsCount - return count for connections (connections with status connected)
      * @return count valid connections.
      */
     int connectionsCount() const;
 
     /**
-     * @brief connectionsCount - return count of nodes with status confirmend
-     * @return return confirmend connections of this node (server)
+     * @brief connectionsCount - return count of nodes with status  confirmed
+     * @return return confirmed connections of this node (server)
      */
     int confirmendCount() const;
 
     /**
      * @brief ping This method send ping package to address for testing connection
      * @param address This is address of target node (server)
-     * @return true if ping sendet successful.
+     * @return true if ping sender successful.
      */
     bool ping( const HostAddress& address);
 
 signals:
     /**
-     * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
+     * @brief requestError This signal emitted when client or node received from remote server or node the BadRequest package.
      * @param code This is code of error.
-     * @param msg - received text of remoute node (server).
+     * @param msg - received text of remote node (server).
      */
     void requestError(unsigned char code, QString msg);
 
 protected:
 
     /**
-     * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned cetificate.
+     * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned certificate.
      *  By default generate RSA 2048, if you want change algorithm or keys size then override this method.
      * @param pkey This is openssl pointer to RSA pair key.
      * @return True if keys generated successful.
@@ -247,9 +247,9 @@ protected:
     /**
      * @brief generateSslDataPrivate This method generate a ssl certificate and a ssl keys using The SslSrtData structure.
      * @param data The data for generate a selfSigned certificate.
-     * @param r_srt This is return value of a certivicate
+     * @param r_srt This is return value of a certificate
      * @param r_key - This is return value of private ssl key
-     * @return True if generate the selfSigned certificate finished succesful.
+     * @return True if generate the selfSigned certificate finished successful.
      */
     virtual bool generateSslDataPrivate(const SslSrtData& data, QSslCertificate& r_srt, QSslKey& r_key);
 
@@ -264,7 +264,7 @@ protected:
      * @brief createNodeInfo This method create a nodeInfo object.
      *  override this method for create your own nodeInfo objects. for more in
      * @param socket This is socket of network address
-     * @param clientAddress This parameter need to set when the socket du not contains a address or invalid.
+     * @param clientAddress This parameter need to set when the socket do not contains a address or invalid.
      * @return return pointer to info object.
      */
     virtual AbstractNodeInfo* createNodeInfo(QAbstractSocket *socket,
@@ -272,17 +272,17 @@ protected:
 
     /**
      * @brief registerSocket This method registration new socket object.
-     * @param socket This is incomming socket pointer
+     * @param socket This is incoming socket pointer
      * @param address This is host address of socket. By default is nullptr.
      *  Set this value for nodes created on this host
-     * @return return true if the scoeket has been registered successful
+     * @return return true if the socket has been registered successful
      */
     virtual bool registerSocket(QAbstractSocket *socket, const HostAddress* address = nullptr);
 
     /**
      * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
      *  This method work on own thread.
-     *  If you ovveride this method you need to create this than an example:
+     *  If you override this method you need to create this than an example:
      * \code{cpp}
         ParserResult DataBaseNode::parsePackage(PKG::AbstractData *pkg,
                                                 const Header& pkgHeader,
@@ -311,44 +311,44 @@ protected:
             return ParserResult::NotProcessed;
         }
      * \endcode
-     * @param pkg This is package with incomming data.
-     * @param sender This is sender this pacakge
+     * @param pkg This is package with incoming data.
+     * @param sender This is sender this package
      * @return item of ParserResult. For more information see The ParserResult enum.
      */
     virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg, const Header& pkgHeader, const AbstractNodeInfo* sender);
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
-     * @param pkg This is sendet pakcage to target node.
+     * @param pkg This is sender package to target node.
      * @param target This is target node.
-     * @return return true if The package is sendet succesfull
+     * @return return true if The package is sender successful
      */
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
     /**
      * @brief sendData This pakcage send data package to address and prepare object to sending.
-     * @param resp This is pointer to sendet object
-     * @param address This is target addres for sending
+     * @param resp This is pointer to sender object
+     * @param address This is target address for sending
      * @param req This is header of request
-     * @return true if data sendet succesful.
+     * @return true if data sender successful.
      */
     virtual bool sendData(PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
 
     /**
-     * @brief sendData this is some as a sendData(AbstractData *resp ...) exept this method not prepare object for sending.
-     * @param resp This is pointer to sendet object
-     * @param address This is target addres for sending
+     * @brief sendData this is some as a sendData(AbstractData *resp ...) except this method not prepare object for sending.
+     * @param resp This is pointer to sender object
+     * @param address This is target address for sending
      * @param req This is header of request
-     * @return true if data sendet succesful.
+     * @return true if data sender successful.
      */
     virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
 
     /**
      * @brief badRequest This method is send data about error of request
-     * @param address This is addrees of receiver
-     * @param req This is header of incomming request
+     * @param address This is address of receiver
+     * @param req This is header of incoming request
      * @param err This is message and code of error. For more information see the ErrorData struct.
      * @param diff This is difference of current trust (currenTrus += diff)
      * By default diff equals REQUEST_ERROR
@@ -363,18 +363,18 @@ protected:
     virtual QString getWorkStateString() const;
 
     /**
-     * @brief connectionState This method return string value about the cocction state
+     * @brief connectionState This method return string value about the connection state
      * @return string with count users state
      */
     virtual QString connectionState() const;
 
     /**
-     * @brief banedList This method retrun list of banned clients of nodes.
-     * @return list of baned nodes
+     * @brief banedList This method return list of banned clients of nodes.
+     * @return list of banned nodes
      */
     QList<HostAddress> banedList() const;
 
-    // TO-DO Need to add new method fo collect banned addresses for exmaple use the mask.
+    // TO-DO Need to add new method for collect banned addresses for example use the mask.
     // See Task https://github.com/QuasarApp/Heart/issues/13
     /**
      * @brief isBanned This method checks if the node is banned.
@@ -384,8 +384,8 @@ protected:
     bool isBanned(QAbstractSocket* socket) const;
 
     /**
-     * @brief incomingConnection This is ovverided method of QTCPServer
-     * @param handle This is socket handel
+     * @brief incomingConnection This is override method of QTCPServer
+     * @param handle This is socket handle
      */
     void incomingConnection(qintptr handle) override final;
 
@@ -398,20 +398,20 @@ protected:
     virtual bool changeTrust(const HostAddress& id, int diff);
 
     /**
-    * @brief incomingConnection This methiod work with incomming  ssl sockets.
+    * @brief incomingConnection This method work with incoming  ssl sockets.
     * @param handle - handle of socket
     */
     virtual void incomingSsl(qintptr handle);
 
     /**
-    * @brief incomingConnection This methiod work with incomming  tcp sockets.
+    * @brief incomingConnection This method work with incoming  tcp sockets.
     * @param handle - handle of socket
     */
     virtual void incomingTcp(qintptr handle);
 
     /**
      * @brief useSelfSignedSslConfiguration This method reconfigure current node to use selfSigned certificate.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @note Before invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
      *  The self signed certificate is temp value, this is will be changed after reboot node (server)
      * @param crtData - This is data for generation a new self signed certification.
      * @return result of change node ssl configuration.
@@ -420,7 +420,7 @@ protected:
 
     /**
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @note Before invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
      * @param sslConfig This is ssl configuration ot a current node (server)
      * @return result of change node ssl configuration.
      */
@@ -428,14 +428,14 @@ protected:
 
     /**
      * @brief disableSSL This method disable ssl mode for this node
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @note Before invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
      * @return true if changes is completed.
      */
     bool disableSSL();
 
 
     /**
-     * @brief incomingData This method invoked when node get command or ansver. But in default implemmentation it using only for Ping command. Add
+     * @brief incomingData This method invoked when node get command or answer. But in default implemmentation it using only for Ping command. Add
      * \code{cpp}
      * incomingData(pkg, sender);
      * \endcode
@@ -460,22 +460,22 @@ protected:
     virtual void connectionRegistered(const AbstractNodeInfo *info);
 
     /**
-     * @brief nodeConfirmend This method invocked when the node status changed to "confirmend"
-     *  default implementatio do nothing
+     * @brief nodeConfirmend This method invoked when the node status changed to "confirmend"
+     *  default implementation do nothing
      * @param node This is address of changed node
      */
     virtual void nodeConfirmend(AbstractNodeInfo *node);
 
     /**
-     * @brief nodeConnected This method invocked when the node status changed to "connected"
-     *  default implementatio do nothing
+     * @brief nodeConnected This method invoked when the node status changed to "connected"
+     *  default implementation do nothing
      * @param node This is address of changed node
      */
     virtual void nodeConnected(AbstractNodeInfo *node);
 
     /**
-     * @brief nodeConnected This method invocked when the node status changed to "disconnected"
-     *  default implementatio do nothing
+     * @brief nodeConnected This method invoked when the node status changed to "disconnected"
+     *  default implementation do nothing
      * @param node This is address of changed node
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
@@ -483,7 +483,7 @@ protected:
     template<class T>
     /**
      * @brief registerPackageType This method register package type T.
-     * This is need to prepare pacakge for parsing in the parsePackage method.
+     * This is need to prepare package for parsing in the parsePackage method.
      */
     void registerPackageType() {
         _registeredTypes[H_16<T>()] = [](){
@@ -498,7 +498,7 @@ private slots:
     void avelableBytes(AbstractNodeInfo* sender);
 
     /**
-     * @brief handleNodeStatusChanged This method invoked when status of peer node chganged.
+     * @brief handleNodeStatusChanged This method invoked when status of peer node changed.
      * @param node This is address of changed node.
      * @param status This is new status of node.
      *
@@ -532,12 +532,12 @@ private:
     QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
 
     /**
-      @note just disaable listen method in the node objects.
+      @note just disable listen method in the node objects.
      */
     bool listen(const HostAddress& address = HostAddress::Any);
 
     /**
-     * @brief newWork - this method it is wraper of the parsePackage method.
+     * @brief newWork - this method it is wrapper of the parsePackage method.
      *  the newWork invoke a parsePackage in the new thread.
      * @param pkg
      * @param sender
