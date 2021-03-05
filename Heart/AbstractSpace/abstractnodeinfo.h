@@ -19,7 +19,7 @@ class QHostInfo;
 namespace QH {
 
 /**
- * @brief The TrustNode enum contains cases for trus of the client or nodes.
+ * @brief The TrustNode enum contains cases for trust of the client or nodes.
  */
 enum class TrustNode: unsigned char {
     /// Undefined node
@@ -28,11 +28,11 @@ enum class TrustNode: unsigned char {
     /// General trust of the node or client
     Default = 100,
 
-    /// This trusted of unbaned nodes or clients. Recomendet trus of unbaned client.
+    /// This trusted of unbanned nodes or clients. Recomended trust of unbanned client.
     /// For more informations see method AbstrcatData::unBan
     Restore = 20,
 
-    /// Node with this trusted is forbidden.
+    /// Node with this trust value is forbidden.
     Baned = 0
 };
 
@@ -44,8 +44,8 @@ enum class NodeCoonectionStatus: int {
     NotConnected,
     /// The node with this status has socket status is connected.
     Connected,
-    ///  The node confirmend. Node with it status sent a information
-    ///  requarement for confirm in to this node object.
+    ///  The node confirmed. Node with it status sent a information
+    ///  requirement for confirm in to this node object.
     Confirmed,
 };
 
@@ -80,14 +80,14 @@ public:
     virtual ~AbstractNodeInfo();
 
     /**
-     * @brief sct This method returtn socket of connection.
+     * @brief sct This method return socket of connection.
      * @return return socket of connection
      */
     QAbstractSocket *sct() const;
 
     /**
      * @brief disconnect This method disconnect device from host
-     * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object befor close connection. This using on the poweroff signals. By Default this arguments = false.
+     * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object before close connection. This using on the poweroff signals. By Default this arguments = false.
      */
     virtual void disconnect();
 
@@ -97,8 +97,8 @@ public:
     virtual void ban();
 
     /**
-     * @brief isBanned - check node of banned.
-     * @return true if the node is baned
+     * @brief isBanned - check node which banned.
+     * @return true if the node is banned
      */
     virtual bool isBanned() const;
 
@@ -109,19 +109,19 @@ public:
     virtual void unBan();
 
     /**
-     * @brief trust - return current trust level of thge node or client
+     * @brief trust - show current value of trust level node or client
      * @return current trust value
      */
     virtual int trust() const;
 
     /**
-     * @brief setTrust This method set manually value of a this node trust
+     * @brief setTrust This method set manually value of this node trust
      * @param trust - new value
      */
     virtual void setTrust(int trust);
 
     /**
-     * @brief isValid - check node of valid. This implementation check connect status of socket.
+     * @brief isValid - check node of valid. This method check connect status of socket.
      * @return true if node or client is valid.
      */
     virtual bool isValid() const;
@@ -161,7 +161,7 @@ public:
 
     /**
      * @brief networkAddress This method return network address of current node or client.
-     * @return network adderess of node
+     * @return network address of node
      */
     HostAddress networkAddress() const;
 
@@ -173,23 +173,23 @@ public:
 
     /**
      * @brief status This method return status of the node connection
-     * @return connection status for more info see NodeCoonectionStatus
+     * @return connection status, for more info see NodeCoonectionStatus
      */
     NodeCoonectionStatus status() const;
 
     /**
-     * @brief setStatus - set new value of status node
+     * @brief setStatus - set new status value of node
      * @param status - new status
      */
     void setStatus(const NodeCoonectionStatus &status);
 
     /**
-     * @brief updateConfirmStatus This method invoked after process a received pacakge and update confitm status of the node.
+     * @brief updateConfirmStatus This method invoked after process a received package and update confirm status of the node.
      */
     void updateConfirmStatus();
 
     /**
-     * @brief isLocal return true if connectuion opened on this node.
+     * @brief isLocal return true if connection opened on this node.
      * @return True if connection is opened on this host.
      */
     bool isLocal() const;
@@ -203,25 +203,25 @@ public:
 signals:
 
     /**
-     * @brief sigConnected This is wraper signal for the QAbstractSocket::connetced signal.
+     * @brief sigConnected This is wrapper signal for the QAbstractSocket::connetced signal.
      * @param thisNode This is pointer to current object.
      */
     void sigConnected(AbstractNodeInfo* thisNode);
 
     /**
-     * @brief sigDisconnected This is wraper signal for the QAbstractSocket::disconnected signal.
+     * @brief sigDisconnected This is wrapper signal for the QAbstractSocket::disconnected signal.
      * @param thisNode This is pointer to current object.
      */
     void sigDisconnected(AbstractNodeInfo* thisNode);
 
     /**
-     * @brief sigReadyRead This is wraper signal for the QAbstractSocket::readyRead signal.
+     * @brief sigReadyRead This is wrapper signal for the QAbstractSocket::readyRead signal.
      * @param thisNode This is pointer to current object.
      */
     void sigReadyRead(AbstractNodeInfo* thisNode);
 
     /**
-     * @brief sigErrorOccurred This is wraper signal for the QAbstractSocket::errorOccurred signal.
+     * @brief sigErrorOccurred This is wrapper signal for the QAbstractSocket::errorOccurred signal.
      * @param thisNode This is pointer to current object.
      * @param socketError This is socket error code.
      * For more information see the QAbstractSocket::SocketError enum class.
@@ -229,7 +229,7 @@ signals:
     void sigErrorOccurred(AbstractNodeInfo* thisNode, QAbstractSocket::SocketError socketError);
 
     /**
-     * @brief sigConfirmed This signal emitted when node is confirmend. The confirm status sets in the confirmData method.
+     * @brief sigConfirmed This signal emitted when node is confirmnd. The confirm status sets in the confirmData method.
      * @param thisNode This is pointer to current object.
      */
     void sigConfirmed(AbstractNodeInfo* thisNode);
@@ -237,7 +237,7 @@ signals:
     /**
      * @brief statusChaned This signal emitted when nodes status is changed.
      * @param thisNode This is pointer to current object.
-     * @param status This is status og node. For more information see the NodeCoonectionStatus enum.
+     * @param status This is status of node. For more information see the NodeCoonectionStatus enum.
      */
     void statusChaned(AbstractNodeInfo* thisNode, NodeCoonectionStatus status);
 
