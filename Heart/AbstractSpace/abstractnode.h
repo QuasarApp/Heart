@@ -330,9 +330,9 @@ protected:
      * @param resp This is pointer to sendet object
      * @param address This is target addres for sending
      * @param req This is header of request
-     * @return true if data sendet succesful.
+     * @return hash of the sendet package. If function is failed then return 0.
      */
-    virtual bool sendData(PKG::AbstractData *resp,  const HostAddress& address,
+    virtual unsigned int sendData(PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
 
     /**
@@ -340,9 +340,9 @@ protected:
      * @param resp This is pointer to sendet object
      * @param address This is target addres for sending
      * @param req This is header of request
-     * @return true if data sendet succesful.
+     * @return hash of the sendet package. If function is failed then return 0.
      */
-    virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& address,
+    virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
 
     /**
@@ -493,6 +493,14 @@ protected:
 
     void prepareForDelete() override;
 
+    /**
+     * @brief prepareData This is private method for preparing package from the byteArray.
+     * @param pkg This is a raw package value.
+     * @return pointer into prepared data.
+     * @warning the return value do not clear automatically.
+     */
+    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
+
 private slots:
 
     void avelableBytes(AbstractNodeInfo* sender);
@@ -522,14 +530,6 @@ private slots:
     void connectNodePrivate(QH::HostAddress);
 
 private:
-
-    /**
-     * @brief prepareData This is private method for preparing package from the byteArray.
-     * @param pkg This is a raw package value.
-     * @return pointer into prepared data.
-     * @warning the return value do not clear automatically.
-     */
-    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
 
     /**
       @note just disaable listen method in the node objects.

@@ -33,7 +33,6 @@ enum class ClientStatus: unsigned char {
     Logined
 };
 
-
 /**
  * @brief The SingleClient class This class provide login and singup user functionality for the SingleServer class.
  *
@@ -44,6 +43,9 @@ class SingleClient: public SingleBase
 {
     Q_OBJECT
 public:
+    typedef std::function<void (const QSharedPointer<const PKG::AbstractData> &)> HandlerMethod;
+    typedef QHash<unsigned int, HandlerMethod> HandlersCache;
+
     SingleClient();
 
     QH::ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
@@ -150,6 +152,26 @@ public:
      */
     bool unsubscribe(unsigned int id);
 
+    /**
+     * @brief restRequest This method sed to server rest request and if the server send responce invoke a handler method.
+     * @param req This is reqest object. This maybe any bojects from the PKH name space.
+     * @param handler This is lymbda function. This function invoked when client receive from server response of the sendet request.
+     * @return True if the request sendet successfull.
+     *
+     * @b Example
+     *  @code{cpp}
+     *  auto cb = [](const QSharedPointer<PKG::AbstractData> &pkg) {
+     *      ...
+     *
+     *  };
+     *
+     *      MyDataRequest request;
+            request.setId(userId);
+     *
+     *  restRequest()
+     *  @endcond
+     */
+    bool restRequest(PKG::AbstractData *req, const HandlerMethod& handler);
 
 signals:
     /**
@@ -187,13 +209,27 @@ protected:
      */
     virtual HostAddress serverAddress() const;
 
+    /**
+     * @brief signPackageWithToken This method insert token into sending pacakge. The pacakge @a pkg should be inherited  of the IToken interface. IF @a pkg do not have a Itoken parent then this method ignore this validation and return true.
+     * @param pkg This is pointer to the pacakge object.
+     * @note The @a pkg object will be changed after invoke this method.
+     * @return true if the pakge get a token successful or package not sopport token validation else false.
+     */
+    bool signPackageWithToken(PKG::AbstractData *pkg) const;
+
     void nodeConfirmend(AbstractNodeInfo *node) override;
     void nodeConnected(AbstractNodeInfo *node) override;
     void nodeDisconnected(AbstractNodeInfo *node) override;
 
-    bool sendData(const PKG::AbstractData *resp,
-                  const HostAddress &address,
-                  const Header *req = nullptr) override;
+    unsigned int sendData(PKG::AbstractData *resp,
+                          const HostAddress &address,
+                          const Header *req = nullptr) override;
+
+    unsigned int sendData(PKG::AbstractData *resp,
+                          const QVariant &nodeId,
+                          const Header *req = nullptr) override;
+
+
 
 private slots:
     /**
@@ -215,10 +251,16 @@ private:
     bool p_login(const QString &userId, const QByteArray &hashPassword = {});
     bool p_signup(const QString &userId, const QByteArray &hashPassword);
 
+    void handleRestRequest(const QSharedPointer<PKG::AbstractData> &pkg, const Header &pkgHeader);
+
     ClientStatus _status = ClientStatus::Dissconnected;
+    QMutex _handlerMemberMutex;
+
     PKG::UserMember _member;
     ErrorCodes::Code _lastError = ErrorCodes::NoError;
 
+    QMutex _handlerCacheMutex;
+    HandlersCache _handlersCache;
 
 };
 

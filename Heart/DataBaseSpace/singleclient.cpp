@@ -25,8 +25,8 @@ SingleClient::SingleClient() {
 }
 
 ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                                              const Header& pkgHeader,
-                                              const AbstractNodeInfo* sender) {
+                                        const Header& pkgHeader,
+                                        const AbstractNodeInfo* sender) {
 
     auto parentResult = DataBaseNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != QH::ParserResult::NotProcessed) {
@@ -36,7 +36,7 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
     if (H_16<QH::PKG::UserMember>() == pkg->cmd()) {
         QH::PKG::UserMember *obj = static_cast<QH::PKG::UserMember*>(pkg.data());
 
-        if (!(obj->isValid() && obj->token().isValid())) {
+        if (!(obj->isValid() && obj->getSignToken().isValid())) {
             return ParserResult::Error;
         }
 
@@ -47,6 +47,8 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
         return QH::ParserResult::Processed;
 
     }
+
+//    if (pkgHeader.triggerHash)
 
     return QH::ParserResult::NotProcessed;
 }
@@ -76,7 +78,7 @@ bool SingleClient::login(const QString &userId, const QString &rawPassword) {
 
 bool SingleClient::login(const PKG::UserMember &memberData) {
 
-    if (memberData.token() == getMember().token()) {
+    if (memberData.getSignToken() == getMember().getSignToken()) {
         if (isLogined()) {
             return true;
         }
@@ -221,11 +223,11 @@ bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword
 
     if (hashPassword.isEmpty()) {
         const auto &member = getMember();
-        if (!member.token().isValid()) {
+        if (!member.getSignToken().isValid()) {
             return false;
         }
 
-        request.setToken(member.token());
+        request.setSignToken(member.getSignToken());
     } else {
         request.setAuthenticationData(hashPassword);
     }
@@ -240,6 +242,16 @@ bool SingleClient::p_signup(const QString &userId, const QByteArray &hashPasswor
     request.setRequest(QH::PKG::UserRequestType::SignUp);
 
     return sendData(&request, serverAddress());
+}
+
+void SingleClient::handleRestRequest(const QSharedPointer<PKG::AbstractData> &pkg,
+                                     const Header& pkgHeader) {
+    QMutexLocker lock(&_handlerCacheMutex);
+
+    if (_handlersCache.contains(pkgHeader.triggerHash)) {
+        auto action = _handlersCache.take(pkgHeader.triggerHash);
+        action(pkg);
+    }
 }
 
 const PKG::UserMember &SingleClient::getMember() const {
@@ -264,21 +276,30 @@ void QH::SingleClient::nodeDisconnected(AbstractNodeInfo *node) {
     setStatus(ClientStatus::Dissconnected);
 }
 
-bool SingleClient::sendData(const PKG::AbstractData *resp, const HostAddress &address, const Header *req) {
+unsigned int SingleClient::sendData(PKG::AbstractData *resp,
+                                    const HostAddress &address,
+                                    const Header *req) {
 
-    if (!checkToken(resp)) {
-
-        QuasarAppUtils::Params::log("For The SingleServerClient classes you must be add support of the Token validation."
-                                    " All package classes must be inherited of the IToken interface",
-                                    QuasarAppUtils::Error);
-
-        return false;
+    if (!signPackageWithToken(resp)) {
+        return 0;
     }
 
     return DataBaseNode::sendData(resp, address, req);
 }
 
+unsigned int SingleClient::sendData(PKG::AbstractData *resp,
+                                    const QVariant &nodeId,
+                                    const Header *req) {
+
+    if (!signPackageWithToken(resp)) {
+        return 0;
+    }
+
+    return DataBaseNode::sendData(resp, nodeId, req);
+}
+
 void SingleClient::setMember(const PKG::UserMember &member) {
+    QMutexLocker lock (&_handlerMemberMutex);
     _member = member;
 }
 
@@ -321,6 +342,41 @@ bool SingleClient::unsubscribe(unsigned int id) {
 
     return sendData(&request, serverAddress());
 
+}
+
+
+bool SingleClient::signPackageWithToken(PKG::AbstractData *pkg) const {
+    if (!checkToken(pkg)) {
+        return true;
+    }
+
+    auto token = getMember().getSignToken();
+
+    if (!token.isValid())
+        return false;
+
+    (reinterpret_cast<IToken*>(pkg)->setSignToken(token));
+
+    return true;
+}
+
+bool SingleClient::restRequest(PKG::AbstractData *req,
+                               const HandlerMethod &handler) {
+
+    unsigned int pkgHash = sendData(req, serverAddress());
+
+    if (!pkgHash)
+        return false;
+
+    QMutexLocker lock(&_handlerCacheMutex);
+    _handlersCache[pkgHash] = handler;
+
+    QTimer::singleShot(WAIT_RESPOCE_TIME, this, [this, pkgHash]() {
+        QMutexLocker lock(&_handlerCacheMutex);
+        _handlersCache.remove(pkgHash);
+    });
+
+    return true;
 }
 
 void SingleClient::setLastError(const ErrorCodes::Code &lastError) {

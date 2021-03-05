@@ -444,7 +444,7 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
     return _dataSender->sendData(pkg.toBytes(), target, true);
 }
 
-bool AbstractNode::sendData(AbstractData *resp,
+unsigned int AbstractNode::sendData(AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
 
@@ -455,24 +455,24 @@ bool AbstractNode::sendData(AbstractData *resp,
     return sendData(const_cast<const AbstractData*>(resp), addere, req);
 }
 
-bool AbstractNode::sendData(const AbstractData *resp,
+unsigned int AbstractNode::sendData(const AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
     auto client = getInfoPtr(addere);
 
     if (!client) {
         QuasarAppUtils::Params::log("Response not sent because client == null");
-        return false;
+        return 0;
     }
 
     if (!resp) {
-        return false;
+        return 0;
     }
 
     Package pkg;
     bool convert = false;
     if (req) {
-        convert = resp->toPackage(pkg, req->command);
+        convert = resp->toPackage(pkg, req->hash);
     } else {
         convert = resp->toPackage(pkg);
     }
@@ -480,16 +480,16 @@ bool AbstractNode::sendData(const AbstractData *resp,
     if (!convert) {
         QuasarAppUtils::Params::log("Response not sent because dont create package from object",
                                     QuasarAppUtils::Error);
-        return false;
+        return 0;
     }
 
     if (!sendPackage(pkg, client->sct())) {
         QuasarAppUtils::Params::log("Response not sent!",
                                     QuasarAppUtils::Error);
-        return false;
+        return 0;
     }
 
-    return true;
+    return pkg.hdr.hash;
 }
 
 void AbstractNode::badRequest(const HostAddress &address, const Header &req,

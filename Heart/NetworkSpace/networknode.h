@@ -89,7 +89,7 @@ protected:
      * @param req This is header of pacakga that this pacakge ansvered.
      * @return true if the package sendet successful.
      */
-    virtual bool sendData(PKG::AbstractData *resp, const NodeId &nodeId,
+    virtual unsigned int sendData(PKG::AbstractData *resp, const NodeId &nodeId,
                   const Header *req = nullptr);
 
     /**
@@ -99,19 +99,19 @@ protected:
      * @param req This is header of pacakga that this pacakge ansvered.
      * @return true if the package sendet successful.
      */
-    virtual bool sendData(const PKG::AbstractData *resp, const NodeId &nodeId,
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const NodeId &nodeId,
                   const Header *req = nullptr);
 
-    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
+    unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
 
-    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
 
-    bool sendData(PKG::AbstractData *resp, const QVariant &nodeId,
+    unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
                   const Header *req = nullptr) override;
 
-    bool sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
+    unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
                   const Header *req = nullptr) override;
 
     void badRequest(const HostAddress &address, const Header &req,
@@ -149,7 +149,8 @@ protected:
      * @param sender
      * @return
      */
-    ParserResult parsePackage(const Package &pkg,
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header& pkgHeader,
                               const AbstractNodeInfo* sender) override;
 
     /**
@@ -215,6 +216,9 @@ protected:
     virtual void incomingData(PKG::AbstractData* pkg,
                               const NodeId&  sender);
 
+    void incomingData(PKG::AbstractData* pkg,
+                      const AbstractNodeInfo* sender) override;
+
     /**
      * @brief keyStorageLocation - return location of storagge of keys.
      * @return path to the location of keys storage
@@ -247,7 +251,8 @@ private:
      * @param pkg
      * @return
      */
-    ParserResult workWithTransportData(PKG::AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
+    ParserResult workWithTransportData(const QSharedPointer<PKG::AbstractData> &,
+                                       const AbstractNodeInfo *sender, const Header &hdr);
 
     /**
      * @brief workWithNetworkRequest
@@ -256,7 +261,8 @@ private:
      * @param pkg
      * @return
      */
-    ParserResult workWithNetworkRequest(PKG::AbstractData* networkRequest, const AbstractNodeInfo *sender);
+    ParserResult workWithNetworkRequest(const QSharedPointer<PKG::AbstractData> &networkRequest,
+                                        const AbstractNodeInfo *sender);
 
 
     /**

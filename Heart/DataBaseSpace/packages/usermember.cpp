@@ -36,7 +36,7 @@ bool UserMember::fromSqlRecord(const QSqlRecord &q) {
         return false;
     }
 
-    setToken(AccessToken(q.value("token").toByteArray()));
+    setSignToken(AccessToken(q.value("token").toByteArray()));
 
     return UserMember::isValid();
 }
@@ -75,11 +75,7 @@ DBVariantMap UserMember::variantMap() const {
     return map;
 }
 
-AccessToken UserMember::token() const {
-    return _token;
-}
-
-void UserMember::setToken(const AccessToken &token) {
+void UserMember::setSignToken(const AccessToken &token) {
     _token = token;
 }
 }
