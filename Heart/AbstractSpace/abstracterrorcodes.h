@@ -15,13 +15,13 @@ namespace QH {
 
 /**
  * @brief ErrorCodes This namesapce contains all error codes of the Heart Library.
- * @note If you want to add won error code in this namespace then you shold be create a own child of the AbstractErrorCodesHelper class
+ * @note If you want to add won error code in this namespace then you should be create a own child of the AbstractErrorCodesHelper class
  * and override toString method.
  *
  * @note you new enum must be declared in the ErrorCodes namespace and your enum must be beginned of the last value from the ErrorCodes class.
  *
  *
- * Exmample of the create a own error codes.
+ * Example of the create a own error codes.
  * @code cpp
  *  namespace QH {
 
@@ -58,18 +58,18 @@ namespace QH {
     }
     }
  * @endcode
- * @note in place  the AbstractErrorCodes you can use another errocodes class for example : DBErrorCodesHelper.
- *  Do not forget invoke toString method of the parrent eerorcodes class (in example case it is DBErrorCodesHelper class).
+ * @note in place  the AbstractErrorCodes you can use another erorcodes class for example : DBErrorCodesHelper.
+ *  Do not forget invoke toString method of the parent erorcodes class (in example case it is DBErrorCodesHelper class).
  */
 namespace ErrorCodes {
 
 /**
- * @brief Code This is aliase for the unsigned char type.
+ * @brief Code This is alias for the unsigned char type.
  */
 using Code = unsigned char;
 
 /**
- * @brief The AbstractErrorCodes enum This enum with dafault error codes.
+ * @brief The AbstractErrorCodes enum This enum with default error codes.
  */
 enum AbstractErrorCodes: Code {
 
@@ -77,7 +77,7 @@ enum AbstractErrorCodes: Code {
     NoError = 0,
     /// This is unknown error. Default value.
     UnknownError,
-    /// The sendet to remoute nodes request is invalid. This is default value.
+    /// The sender to remote nodes request is invalid. This is default value.
     InvalidRequest,
     /// This case using for inheritance new enum classes.
     AbstractErrorCodes
@@ -91,8 +91,8 @@ class AbstractErrorCodesHelper {
 
 public:
     /**
-     * @brief toString This method have a cases for the transate all ErrorCodes of the QuasarApp Heart library.
-     * @param enumData This is erorr code.
+     * @brief toString This method have a cases for the translate all ErrorCodes of the QuasarApp Heart library.
+     * @param enumData This is error code.
      * @return string value of the error code.
      */
     static QString toString(Code enumData);
