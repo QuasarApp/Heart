@@ -155,11 +155,11 @@ protected:
  *
  * Node - it is server or client implementation of any of AbstractNode class of it child classes.
  *  - The node receive raw data from another network connection.
- *  - After parsing a raw data the node conwert a bytes array to QH::Package.
- *  - The Package create a new thread fot working with received request, so, all working of pacakge working in own threads.
+ *  - After parsing a raw data the node convert a bytes array to QH::Package.
+ *  - The Package create a new thread for working with received request, so, all working of package working in own threads.
  *  - Next, the Node invoke a QH::AbstractNode::parsePackage method. This method must be return QH::ParserResult.
  *    @note Do not forget invoke the super class parsePackage method.
- *  - The Lasst step it is invoke your overridet parsePackage method on your server or client class.
+ *  - The Last step it is invoke your override parsePackage method on your server or client class.
  *     IF you need to send responce then use a  unsigned int sendData(PKG::AbstractData *resp,  const HostAddress& addere, const Header *req = nullptr).
  *
  * Work scheme:
