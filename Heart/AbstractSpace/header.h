@@ -22,17 +22,17 @@ struct HEARTSHARED_EXPORT Header{
     unsigned short size;
 
     /**
-     * @brief command of pacage for more information see the AbstractData::toPackage method.
+     * @brief command of package for more information see the AbstractData::toPackage method.
      */
     unsigned short command;
 
     /**
-     * @brief hash This is uniqueue id of a package. id calc with CRC32 function fo Qt implamentation. qHash(QByteArray)
+     * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation. qHash(QByteArray)
      */
     unsigned int hash;
 
     /**
-     * @brief triggerHash This is hash of request package that this package has been responded
+     * @brief triggerHash This is hash of request package that package has been responded
      *  the server should write to which command it responds.
      */
     unsigned int triggerHash;
