@@ -346,14 +346,26 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         return false;
     }
 
-    auto info = createNodeInfo(socket, clientAddress);
-
-    _connectionsMutex.lock();
     HostAddress cliAddress;
     if (clientAddress)
         cliAddress = *clientAddress;
     else
-        cliAddress = info->networkAddress();
+        cliAddress = HostAddress{socket->peerAddress(), socket->peerPort()};
+
+
+    _connectionsMutex.lock();
+
+    if (_connections.contains(cliAddress)) {
+        auto info =_connections.value(cliAddress);
+        info->setSct(socket);
+        info->setIsLocal(clientAddress);
+
+        _connectionsMutex.unlock();
+
+        return info->isValid();
+    }
+
+    auto info = createNodeInfo(socket, clientAddress);
 
     info->setIsLocal(clientAddress);
 

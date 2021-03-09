@@ -174,6 +174,16 @@ void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
     welcomeAddress(node);
 }
 
+void DataBaseNode::nodeDisconnected(AbstractNodeInfo *node) {
+    AbstractNode::nodeDisconnected(node);
+
+    auto baseInfo = dynamic_cast<BaseNodeInfo*>(node);
+
+    if (baseInfo) {
+        baseInfo->reset();
+    }
+}
+
 void DataBaseNode::memberSubsribed(const QVariant &, unsigned int ) {
     return;
 }
