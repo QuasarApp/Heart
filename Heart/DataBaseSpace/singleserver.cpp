@@ -68,7 +68,7 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
     if (!nodeinfo)
         return ErrorCodes::InternalError;
 
-    if (!(user.token().isValid() && localObject->token() == user.token())) {
+    if (!(user.getSignToken().isValid() && localObject->getSignToken() == user.getSignToken())) {
         if (localObject->authenticationData() != hashgenerator(user.authenticationData())) {
             return ErrorCodes::UserInvalidPasswoed;
         }
@@ -78,14 +78,14 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
     if (!editableNodeInfo)
         return ErrorCodes::InternalError;
 
-    if (!localObject->token().isValid()) {
-        localObject->setToken(generateToken(AccessToken::Year));
+    if (!localObject->getSignToken().isValid()) {
+        localObject->setSignToken(generateToken(AccessToken::Year));
         if (!db()->updateObject(localObject)) {
             return ErrorCodes::InternalError;
         }
     }
 
-    editableNodeInfo->setToken(localObject->token());
+    editableNodeInfo->setToken(localObject->getSignToken());
     editableNodeInfo->setId(localObject->getId());
 
     localObject->setAuthenticationData("");
@@ -118,7 +118,7 @@ ErrorCodes::Code SingleServer::logOutUser(const PKG::UserMember &user,
         return ErrorCodes::UserNotLogged;
     }
 
-    if (user.token() != token) {
+    if (user.getSignToken() != token) {
         return ErrorCodes::UserNotLogged;
     }
 
@@ -190,6 +190,13 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
         prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
                                  ErrorCodes::OperatioForbiden, REQUEST_ERROR);
+
+        QuasarAppUtils::Params::log("For The SingleServerClient classes you must be add"
+                                    " support of the Token validation."
+                                    " All package classes must be inherited"
+                                    " of the IToken interface",
+
+                                    QuasarAppUtils::Error);
 
         return ParserResult::Error;
     };

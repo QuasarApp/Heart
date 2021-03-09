@@ -340,7 +340,7 @@ protected:
      * @param resp This is pointer to sender object
      * @param address This is target address for sending
      * @param req This is header of request
-     * @return true if data sender successful.
+     * @return hash of the sendet package. If function is failed then return 0.
      */
     virtual bool sendData(const PKG::AbstractData *resp,  const HostAddress& address,
                           const Header *req = nullptr);
@@ -492,6 +492,14 @@ protected:
     };
 
     void prepareForDelete() override;
+
+    /**
+     * @brief prepareData This is private method for preparing package from the byteArray.
+     * @param pkg This is a raw package value.
+     * @return pointer into prepared data.
+     * @warning the return value do not clear automatically.
+     */
+    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
 
 private slots:
 

@@ -19,7 +19,7 @@ namespace PKG {
  *
  * @note The UserMember class has no members of its own, so it is safe to use static_cast on User <<>> AbstractNetworkMember.
  */
-class UserMember: public AbstractNetworkMember, public IToken
+class UserMember: public AbstractNetworkMember
 {
 public:
     UserMember();
@@ -32,25 +32,14 @@ public:
     bool isValid() const override;
     DBVariantMap variantMap() const override;
 
-    // DBObject interface
-    /**
-     * @brief token This method return access token of this user
-     * @return access token of this user.
-     */
-    AccessToken token() const;
-
-    /**
-     * @brief setToken This method set new value for access token of this user
-     * @param token This is new value for access token of this user
-     */
-    void setToken(const AccessToken &token);
+    void setSignToken(const AccessToken &token);
+    const AccessToken &getSignToken() const;
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    const AccessToken &getSignToken() const override;
 
     AccessToken _token;
 

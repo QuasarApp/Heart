@@ -123,7 +123,7 @@ protected:
      * @param req This is header of request.
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(PKG::AbstractData *resp, const QVariant &nodeId,
+    virtual unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
                           const Header *req = nullptr);
 
     /**
@@ -134,12 +134,12 @@ protected:
      * @param req This is header of request.
      * @return true if data sendet seccussful
      */
-    virtual bool sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
                           const Header *req = nullptr);
 
-    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
-    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
+    unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
 
     /**

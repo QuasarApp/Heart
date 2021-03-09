@@ -28,6 +28,9 @@ namespace QH {
  * ...
  * }
  * @endcode
+ *
+ * @warning This is not sign of object. This is just secret token value for validation. This validation method not guaranteed that package save own structure when received to server. If the traffic is not encrypted, a third party can spoof the packet values
+ *
  */
 class IToken
 {
@@ -40,6 +43,13 @@ public:
      * @return actualy access token.
      */
     virtual const AccessToken& getSignToken() const = 0;
+
+    /**
+     * @brief setSignToken This method sets a new token for object.
+     * @param token This is new token value
+     */
+    virtual void setSignToken(const AccessToken& token) = 0;
+
 };
 }
 #endif // ITOKEN_H

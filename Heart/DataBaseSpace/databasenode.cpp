@@ -223,19 +223,19 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     return _db->changeObjects(NetworkMember{id}, action);
 }
 
-bool DataBaseNode::sendData(AbstractData *resp,
+unsigned int DataBaseNode::sendData(AbstractData *resp,
                             const QVariant &nodeId,
                             const Header *req) {
 
 
     if (!resp || !resp->prepareToSend()) {
-        return false;
+        return 0;
     }
 
     return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
 }
 
-bool DataBaseNode::sendData(const AbstractData *resp,
+unsigned int DataBaseNode::sendData(const AbstractData *resp,
                             const QVariant &nodeId,
                             const Header *req) {
 
@@ -248,16 +248,16 @@ bool DataBaseNode::sendData(const AbstractData *resp,
         }
     }
 
-    return false;
+    return 0;
 }
 
-bool DataBaseNode::sendData(const AbstractData *resp, const HostAddress &nodeId,
+unsigned int DataBaseNode::sendData(const AbstractData *resp, const HostAddress &nodeId,
                             const Header *req) {
     return AbstractNode::sendData(resp, nodeId, req);
 
 }
 
-bool DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
+unsigned int DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
                             const Header *req) {
     return AbstractNode::sendData(resp, nodeId, req);
 }
