@@ -181,6 +181,12 @@ signals:
      */
     void statusChanged(QH::ClientStatus status);
 
+    /**
+     * @brief currentUserChanged This method invoked when user is logined and receive new token from server.
+     * handle this signal if you want to save token in to database.
+     */
+    void currentUserChanged();
+
 protected:
     /**
      * @brief setStatus This method sets a new status of the client. This method will be emited the statusChanged signal.

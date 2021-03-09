@@ -303,7 +303,6 @@ ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
             return ParserResult::Error;
         }
 
-        incomingData(obj, sender);
         return ParserResult::Processed;
     } else if (H_16<DeleteObject>() == pkg->cmd()) {
         auto obj = pkg.staticCast<DeleteObject>();

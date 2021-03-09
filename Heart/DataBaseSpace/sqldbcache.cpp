@@ -49,7 +49,7 @@ void SqlDBCache::deleteFromCache(const QSharedPointer<DBObject>& delObj) {
 }
 
 bool SqlDBCache::insertToCache(const QSharedPointer<DBObject>& obj) {
-    if (!obj)
+    if (!obj || !obj->isCached())
         return false;
 
     // obj must be have valid id of save into cache
@@ -69,7 +69,7 @@ bool SqlDBCache::insertToCache(const QSharedPointer<DBObject>& obj) {
 }
 
 bool SqlDBCache::updateCache(const QSharedPointer<DBObject>& obj) {
-    if (!obj)
+    if (!obj || !obj->isCached())
         return false;
 
     QMutexLocker lock(&_cacheMutex);
