@@ -411,7 +411,8 @@ protected:
 
     /**
      * @brief useSelfSignedSslConfiguration This method reconfigure current node to use selfSigned certificate.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
+     *  if mode will be working then this method return false.
      *  The self signed certificate is temp value, this is will be changed after reboot node (server)
      * @param crtData - This is data for generation a new self signed certification.
      * @return result of change node ssl configuration.
@@ -420,7 +421,8 @@ protected:
 
     /**
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
+     *  if mode will be working then this method return false.
      * @param sslConfig This is ssl configuration ot a current node (server)
      * @return result of change node ssl configuration.
      */
@@ -428,23 +430,24 @@ protected:
 
     /**
      * @brief disableSSL This method disable ssl mode for this node
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop. if mode will be working then this method return false.
+     * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
+     *  if mode will be working then this method return false.
      * @return true if changes is completed.
      */
     bool disableSSL();
 
 
     /**
-     * @brief incomingData This method invoked when node get command or ansver. But in default implemmentation it using only for Ping command. Add
-     * \code{cpp}
-     * incomingData(pkg, sender);
-     * \endcode
-     * Into the overrided AbstractNode::ParsePacakge method on your own server or client class.
+     * @brief incomingData This method invoked when node get command or ansver.
+     *  This method invoked befor parsing in the parsePackage method.
+     * @note use this method for handling received data, but do not change the @a pkg object.
+     *  If You want change pkg object use the parsePackage method.
      * @param pkg This is received package (in this implementation it is only the Ping command)
      * @param sender This is information of sender of the package
      * @note override this method for get a signals.
+     * @note This method will be invoked in the own thread.
      */
-    virtual void incomingData(PKG::AbstractData* pkg,
+    virtual void incomingData(const PKG::AbstractData* pkg,
                               const AbstractNodeInfo* sender);
 
     /**

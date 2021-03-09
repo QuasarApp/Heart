@@ -396,6 +396,8 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         return ParserResult::Error;
     }
 
+    incomingData(pkg.data(), sender);
+
     if (H_16<Ping>() == pkg->cmd()) {
         auto cmd = static_cast<Ping *>(pkg.data());
         if (!cmd->ansver()) {
@@ -403,12 +405,10 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
             sendData(cmd, sender->networkAddress(), &pkgHeader);
         }
 
-        incomingData(cmd, sender);
         return ParserResult::Processed;
     } else if (H_16<BadRequest>() == pkg->cmd()) {
         auto cmd = static_cast<BadRequest *>(pkg.data());
 
-        incomingData(cmd, sender);
         emit requestError(cmd->errCode(), cmd->err());
 
         return ParserResult::Processed;
@@ -881,7 +881,7 @@ bool AbstractNode::disableSSL() {
     return true;
 }
 
-void AbstractNode::incomingData(AbstractData *pkg, const AbstractNodeInfo *sender) {
+void AbstractNode::incomingData(const AbstractData *pkg, const AbstractNodeInfo *sender) {
     Q_UNUSED(pkg)
     Q_UNUSED(sender)
 

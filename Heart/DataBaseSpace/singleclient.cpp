@@ -42,13 +42,12 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
         setMember(*obj);
         setStatus(ClientStatus::Logined);
-        incomingData(obj, sender);
+
+        emit currentUserChanged();
 
         return QH::ParserResult::Processed;
 
     }
-
-//    if (pkgHeader.triggerHash)
 
     return QH::ParserResult::NotProcessed;
 }

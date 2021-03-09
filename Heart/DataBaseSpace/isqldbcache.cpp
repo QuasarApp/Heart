@@ -43,7 +43,7 @@ void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
 bool ISqlDBCache::updateObjectP(const QSharedPointer<DBObject> &saveObject,
                                 bool wait) {
 
-    if (saveObject->isCached() && updateCache(saveObject)) {
+    if (updateCache(saveObject)) {
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
             return _writer && _writer->isValid() &&
@@ -76,7 +76,7 @@ bool ISqlDBCache::deleteObjectP(const QSharedPointer<DBObject> &delObj,
 bool ISqlDBCache::insertObjectP(const QSharedPointer<DBObject> &saveObject,
                                 bool wait) {
 
-    if (saveObject->isCached() && insertToCache(saveObject)) {
+    if (insertToCache(saveObject)) {
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
 
@@ -156,6 +156,8 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
 
 bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj,
                                bool wait) {
+
+    deleteFromCache(delObj);
 
     if (!delObj)
         return false;

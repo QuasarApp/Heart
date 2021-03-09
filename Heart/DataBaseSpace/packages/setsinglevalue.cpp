@@ -29,15 +29,16 @@ DBObject *SetSingleValue::createDBObject() const {
 }
 
 PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
-    QString queryString = "UPDATE %0 SET %1= :%3 WHERE id='%2'";
+    QString queryString = "UPDATE %0 SET %1=:%1 WHERE id='%2'";
 
-    queryString = queryString.arg(tableName(), _field, getId().toString(), _field);
+    queryString = queryString.arg(tableName(), _field, getId().toString());
 
     if (!q.prepare(queryString)) {
-        q.bindValue(":" + _field, _value);
 
         return PrepareResult::Fail;
     }
+
+    q.bindValue(":" + _field, _value);
 
     return PrepareResult::Success;
 }
