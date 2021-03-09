@@ -21,7 +21,7 @@ class Package;
 /**
  * @brief The StreamBase class add support streaming data for all children classes.
  *  For correctly working all serializations functions you need to override fromStream and toStream methods.
- * All implementations of overriden method should be contains a invoke of method of base class.
+ * All implementations of overridden method should be contains a invoke of method of base class.
  */
 class HEARTSHARED_EXPORT StreamBase
 {
@@ -30,39 +30,39 @@ public:
     virtual ~StreamBase();
 
     /**
-     * @brief fromBytes This method method provide initialisation of object from byte array.
-     * @return true if all good
+     * @brief fromBytes This method provide initialization of object from byte array.
+     * @return true if all good.
      */
     bool fromBytes(const QByteArray &data);
 
     /**
      * @brief toBytes This method convert a current object to bytes array.
-     * @return bytes array for package
+     * @return bytes array for package.
      */
     QByteArray toBytes() const;
 
 
     /**
-     * @brief This is wraper over toStream
+     * @brief This is wrapper over toStream.
      * @param stream This is qt data stream object.
      * @param obj This is serialized object.
-     * @return stream object
+     * @return stream object.
      */
     friend QDataStream& operator<< (QDataStream& stream, const StreamBase& obj);
 
     /**
-     * @brief This is wraper over toStream
+     * @brief This is wraper over fromStream. For see more information see toStream method.
      * @param stream This is qt data stream object.
      * @param obj This is serialized object.
-     * @return stream object
+     * @return stream object.
      */
     friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
     /**
      * @brief copy This is base copy method for all StreamBase structures.
      *  Default implementation it is copy from byteArray.
-     * @param righ input data object.
-     * @return return lvalue link to object.
+     * @param right input data object.
+     * @return return value link to object.
      */
     template<class T>
     T& copy(const StreamBase& right) {
