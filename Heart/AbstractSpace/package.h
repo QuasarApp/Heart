@@ -49,7 +49,7 @@ public:
     virtual void reset();
 
     /**
-     * @brief toString This method convert a pakcage information to a string label
+     * @brief toString This method convert a package information to a string label
      * @return string value of the package.
      */
     QString toString() const;
