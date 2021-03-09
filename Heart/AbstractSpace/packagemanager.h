@@ -29,23 +29,23 @@ public:
     ~PackageManager();
 
     /**
-     * @brief getPkgFromArhive This method return pointer tot package from arhive.
-     * @param id This is id of the requariment package.
-     * @result pointer of the processed package, if package not findet then return nullptr.
+     * @brief getPkgFromArhive This method return pointer to package from archive.
+     * @param id This is id of the requirement package.
+     * @result pointer of the processed package, if package not find then return nullptr.
      */
     const Package * getPkgFromArhive(const unsigned int &id) const;
 
     /**
-     * @brief contains This method checks if the packge contains in this container by id.
+     * @brief contains This method checks if the package contains in this container by id.
      * @param id This is unique key of package.
-     * In Default implementation it is qHash of pacakge.
-     * @return True if the pakcge has been parsed
+     * In Default implementation it is qHash of package.
+     * @return True if the pakcage has been parsed.
      */
     bool contains(const unsigned int& id) const;
 
     /**
      * @brief processed This method add a package to the archive.
-     * @param pkg This is object of the package
+     * @param pkg This is object of the package.
      * @param processResult This is result of method parsePackage.
      * For more information see ParserResult enum.
      */
