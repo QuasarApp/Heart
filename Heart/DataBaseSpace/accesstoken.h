@@ -94,7 +94,7 @@ public:
     bool operator != (const AccessToken& other) const;
 
     /**
-     * @brief Operator = this is operator of copy objects.
+     * @brief operator = this is operator of copy objects.
      * @param other
      * @return
      */
