@@ -14,7 +14,7 @@ namespace QH {
 
 
 /**
- * @brief The AsyncSqlDbWriter class is some as SqlDBWriter bud run all commnad in own thread
+ * @brief The AsyncSqlDbWriter class is some as SqlDBWriter but run all command in own thread.
  * This class is thread save.
  */
 class AsyncSqlDbWriter final : public SqlDBWriter
