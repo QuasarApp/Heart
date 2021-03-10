@@ -4,9 +4,12 @@
 #include <abstractnetworkmember.h>
 #include <websocket.h>
 #include <websocketsubscriptions.h>
+#include "usermember.h"
+
 namespace QH {
 
 SingleBase::SingleBase() {
+    registerPackageType<PKG::UserMember>();
 
 }
 

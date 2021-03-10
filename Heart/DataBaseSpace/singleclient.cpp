@@ -18,7 +18,7 @@ SingleClient::SingleClient() {
 
     qRegisterMetaType<QH::ClientStatus>();
 
-    registerPackageType<PKG::UserMember>();
+    registerPackageType<PKG::AuthRequest>();
 
     connect(this, &SingleClient::requestError,
             this, &SingleClient::handleError);
