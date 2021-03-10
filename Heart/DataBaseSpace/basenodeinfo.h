@@ -19,7 +19,7 @@ namespace QH {
 class DbAddress;
 
 /**
- * @brief The BaseNodeInfo class contaisn the unique node id.
+ * @brief The BaseNodeInfo class contains the unique node id.
  * This object created in the DataBaseNode::createNodeInfo method.
  */
 class HEARTSHARED_EXPORT BaseNodeInfo: public AbstractNodeInfo {
@@ -28,7 +28,7 @@ public:
 
     /**
      * @brief BaseNodeInfo This constructor initialize the node info object from the tcp descriptor
-     * @param tcp This is  tcp socket dsscriptor
+     * @param tcp This is tcp socket descriptor.
      * @param clientAddress This is network address of socket.
      */
     explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr,
@@ -45,7 +45,7 @@ public:
 
     /**
      * @brief setToken This method set an token for the peer node or the client.
-     * @param token new value of token of the peer node.
+     * @param token New value of token of the peer node.
      */
     void setToken(const AccessToken &token);
 
@@ -53,7 +53,7 @@ public:
 
     /**
      * @brief id This method return id of the connected user.
-     * @return user id
+     * @return User id.
      */
     const QVariant &id() const;
 
