@@ -58,7 +58,7 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
         return ErrorCodes::InternalError;
     }
 
-    auto localObject = db()->getObject(user);
+    QSharedPointer<PKG::UserMember> localObject = db()->getObject<PKG::UserMember>(user);
 
     if (!localObject) {
         return ErrorCodes::UserNotExits;

@@ -22,3 +22,13 @@ CREATE TABLE IF NOT EXISTS MemberPermisions (
 );
 
 CREATE UNIQUE INDEX IF NOT EXISTS MemberPermisionsIndex ON MemberPermisions(memberId, dbAddress);
+
+-- The DefaultPermissions table contains addresses of tables. and default permisions for all network members
+CREATE TABLE IF NOT EXISTS DefaultPermissions (
+    dbAddress VARCHAR(44) NOT NULL UNIQUE,
+    lvl tinyint NOT NULL,
+
+    FOREIGN KEY(dbAddress) REFERENCES MemberPermisions(dbAddress)
+            ON UPDATE CASCADE
+            ON DELETE CASCADE
+);

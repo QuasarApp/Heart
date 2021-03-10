@@ -447,6 +447,12 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
         return false;
     }
 
+    if (!checkCommand(pkg.hdr.command)) {
+        QuasarAppUtils::Params::log("You sent not registered object ",
+                                    QuasarAppUtils::Warning);
+    }
+
+
     if (!target->waitForConnected()) {
         QuasarAppUtils::Params::log("no connected to server! " + target->errorString(),
                                     QuasarAppUtils::Error);
@@ -811,6 +817,10 @@ QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const
 
     value->fromPakcage(pkg);
     return value;
+}
+
+bool AbstractNode::checkCommand(unsigned short cmd) const {
+    return _registeredTypes.contains(cmd);
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

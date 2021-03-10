@@ -504,6 +504,13 @@ protected:
      */
     QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
 
+    /**
+     * @brief checkCommand This method check command are if registered type or not.
+     * @brief cmd This is command of a verifiable package.
+     * @return True if the package is registered in a node.
+     */
+    bool checkCommand(unsigned short cmd) const;
+
 private slots:
 
     void avelableBytes(AbstractNodeInfo* sender);

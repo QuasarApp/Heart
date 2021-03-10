@@ -349,6 +349,10 @@ unsigned int DBObject::subscribeId() const {
     return dbKey();
 }
 
+unsigned int DBObject::subscribeId(const DbAddress &address) {
+    return HASH_KEY(DbAddressKey(address));
+}
+
 bool DBObject::isHaveAPrimaryKey() const {
     return primaryKey().size();
 }
