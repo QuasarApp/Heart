@@ -87,7 +87,7 @@ public:
     bool operator == (const AccessToken& other) const;
 
     /**
-     * @brief Operator != compare left and right values with type AccessToken.
+     * @brief operator != compare left and right values with type AccessToken.
      * @param other This is another object of the AccessTokens.
      * @return False if 2 object is equals.
      */
