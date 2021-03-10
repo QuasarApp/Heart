@@ -18,14 +18,14 @@ namespace QH {
 
 /**
  * @brief The AccessToken class is contains info about token and duration of this token.
- * Tiken is byte array with privileges. In usuallu cases toke add permisions for database objects.
+ * Token is byte array with privileges. In usually cases toke add permissions for database objects.
  */
 class HEARTSHARED_EXPORT AccessToken : public StreamBase
 {
 public:
 
     /**
-     * @brief The Duration enum This enum contains a long time unit.
+     * @brief The Duration enum. This enum contains a long time unit.
      */
     enum Duration: int {
         /// The one second
@@ -45,65 +45,65 @@ public:
     };
 
     /**
-     * @brief AccsesToken This constructor create token on duration (s)
-     * @param duration This is value in secundes
-     * @param entropy This is random bytes array for generate token. By Default is empty string
+     * @brief AccessToken This constructor create token on duration (in seconds).
+     * @param duration This is value in seconds.
+     * @param entropy This is random bytes array for generate token. By Default is empty string.
      */
     explicit AccessToken(int duration, const QByteArray& entropy = "");
 
     /**
-     * @brief AccessToken - create token from bytes array of another token.
-     * @param other This is bytes Array of another token value.
+     * @brief AccessToken - Create token from bytes array of another token.
+     * @param other This is bytes array of another token value.
      */
     explicit AccessToken(const QByteArray& other);
 
     /**
-     * @brief AccsesToken constructor by default create not valid token
+     * @brief AccessToken constructor by default create not valid token.
      */
     explicit AccessToken();
 
     /**
-     * @brief AccessToken copy constructor
+     * @brief AccessToken copy constructor.
      * @param other
      */
     AccessToken(const AccessToken& other);
 
     /**
      * @brief isValid This method check this toke to valid.
-     * @return return true if token is valid;
+     * @return Return true if token is valid.
      */
     bool isValid() const;
 
     /**
-     * @brief clearThis method reset all data of token
+     * @brief clearThis Method reset all data of token.
      */
     void clear();
 
     /**
-     * @brief operator == compare left and right values with type AccessToken
-     * @param other This is another object of the AccessTokens
-     * @return true if 2 object is equals
+     * @brief Operator == compare left and right values with type AccessToken.
+     * @param other This is another object of the AccessTokens.
+     * @return True if 2 object is equals.
      */
     bool operator == (const AccessToken& other) const;
 
     /**
-     * @brief operator != compare left and right values with type AccessToken
-     * @param other This is another object of the AccessTokens
-     * @return false if 2 object is equals
+     * @brief Operator != compare left and right values with type AccessToken.
+     * @param other This is another object of the AccessTokens.
+     * @return False if 2 object is equals.
      */
     bool operator != (const AccessToken& other) const;
 
     /**
-     * @brief operator = this is operator of copy objects
+     * @brief Operator = this is operator of copy objects.
      * @param other
      * @return
      */
     AccessToken &operator =(const AccessToken& other);
 
     /**
-     * @brief qHash This is hash function of the AccessToken type
-     * @param token input value of AccessToken type
-     * @return hash code of the AccessToken value.
+     * @brief qHash This is hash function of the AccessToken type.
+     * @param token Input value of AccessToken type.
+     * @return Hash code of the AccessToken value.
      */
     friend uint qHash(const AccessToken& token);
 
