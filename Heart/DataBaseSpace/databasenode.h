@@ -121,7 +121,7 @@ protected:
      * @param resp This is sending object to the nodeId.
      * @param nodeId This is id of target node.
      * @param req This is header of request.
-     * @return true if data sender successful.
+     * @return true if a data send successful.
      */
     virtual unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
                           const Header *req = nullptr);
