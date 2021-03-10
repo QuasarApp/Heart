@@ -17,7 +17,7 @@ namespace PKG {
 
 /**
  * @brief The CloseConnection class - This commanad is request for close connection on parent node of connection.
- * This need becouse QAbstractSocket emit error when connection closed from remote node.
+ * This is necessary because QAbstractSocket emit error when connection closed from remote node.
  *
  * From QtDocumentation:
  *
