@@ -150,7 +150,7 @@ public:
     virtual bool copyFrom(const AbstractData* other);
 
     /**
-     * @brief toString - return a string implementation for this object.
+     * @brief toString - Return a string implementation for this object.
      * @return String of object.
      */
     virtual QString toString() const;
@@ -219,7 +219,7 @@ private:
     void initCmd();
 
     /**
-     * @brief _cmd - unique id of class using in Header of package for identification.
+     * @brief cmd - Unique id of class using in Header of package for identification.
      */
     unsigned short _cmd = 0;
 };
