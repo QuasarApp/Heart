@@ -362,6 +362,12 @@ bool SingleClient::signPackageWithToken(PKG::AbstractData *pkg) const {
 bool SingleClient::restRequest(PKG::AbstractData *req,
                                const HandlerMethod &handler) {
 
+
+    if (!signPackageWithToken(req)) {
+        QuasarAppUtils::Params::log("Fail to sign package with token", QuasarAppUtils::Error);
+        return false;
+    }
+
     unsigned int pkgHash = sendData(req, serverAddress());
 
     if (!pkgHash)

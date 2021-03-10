@@ -15,7 +15,7 @@ namespace QH {
 namespace PKG {
 
 MemberPermisionObject::MemberPermisionObject():
-    DBObject("MemberPermisions") {
+    MemberPermisionObject("MemberPermisions") {
     
 }
 
@@ -28,6 +28,11 @@ MemberPermisionObject::MemberPermisionObject(const Package &pkg):
 MemberPermisionObject::MemberPermisionObject(const PermisionData &id):
     MemberPermisionObject()  {
     setKey(id);
+}
+
+MemberPermisionObject::MemberPermisionObject(const QString &tableName):
+   DBObject(tableName) {
+
 }
 
 bool MemberPermisionObject::isValid() const {
@@ -98,7 +103,7 @@ QString MemberPermisionObject::condition() const {
         result += "memberId='" + _key.id().toString() + "'";
     }
 
-    if (_key.id().isValid()) {
+    if (_key.addressHash().size()) {
         if (result.size()) {
             result += " AND ";
         }

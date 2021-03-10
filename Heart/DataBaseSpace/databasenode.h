@@ -150,6 +150,8 @@ protected:
     virtual QByteArray hashgenerator(const QByteArray &data) const;
 
     void nodeConnected(AbstractNodeInfo *node) override;
+    void nodeDisconnected(AbstractNodeInfo *node) override;
+
 
     /**
      * @brief memberSubsribed This method invoked when client with @a clientId subscribed on object with  @a subscribeId.

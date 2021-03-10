@@ -133,18 +133,10 @@ public:
     virtual bool isConnected() const;
 
     /**
-     * @brief fromStream
-     * @param stream
-     * @return stream
+     * @brief reset This method reset all fields of the nodeInfo.
+     * @note override this method if your node info has new fields.
      */
-    virtual QDataStream& fromStream(QDataStream& stream);
-
-    /**
-     * @brief toStream
-     * @param stream
-     * @return stream
-     */
-    virtual QDataStream& toStream(QDataStream& stream) const;
+    virtual void reset();
 
     /**
      * @brief info - this method return Host domain information.
@@ -173,13 +165,13 @@ public:
 
     /**
      * @brief status This method return status of the node connection
-     * @return connection status, for more info see NodeCoonectionStatus
+     * @return connection status for more info see NodeCoonectionStatus
      */
     NodeCoonectionStatus status() const;
 
     /**
-     * @brief setStatus - set new status value of node
-     * @param status - new status
+     * @brief setStatus This method Sets new value of status node
+     * @param status This is a new status of the node.
      */
     void setStatus(const NodeCoonectionStatus &status);
 
@@ -195,10 +187,16 @@ public:
     bool isLocal() const;
 
     /**
-     * @brief setIsLocal - set local status for this Node.
-     * @param isLocal
+     * @brief setIsLocal This method sets local status for this Node.
+     * @param isLocal This is a new value.
      */
     void setIsLocal(bool isLocal);
+
+    /**
+     * @brief setSct This method sets a new socket for this node or client
+     * @param sct This is a new valuse of the socket.
+     */
+    void setSct(QAbstractSocket *sct);
 
 signals:
 

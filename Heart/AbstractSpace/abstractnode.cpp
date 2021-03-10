@@ -346,14 +346,26 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         return false;
     }
 
-    auto info = createNodeInfo(socket, clientAddress);
-
-    _connectionsMutex.lock();
     HostAddress cliAddress;
     if (clientAddress)
         cliAddress = *clientAddress;
     else
-        cliAddress = info->networkAddress();
+        cliAddress = HostAddress{socket->peerAddress(), socket->peerPort()};
+
+
+    _connectionsMutex.lock();
+
+    if (_connections.contains(cliAddress)) {
+        auto info =_connections.value(cliAddress);
+        info->setSct(socket);
+        info->setIsLocal(clientAddress);
+
+        _connectionsMutex.unlock();
+
+        return info->isValid();
+    }
+
+    auto info = createNodeInfo(socket, clientAddress);
 
     info->setIsLocal(clientAddress);
 
@@ -434,6 +446,12 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
                                     QuasarAppUtils::Error);
         return false;
     }
+
+    if (!checkCommand(pkg.hdr.command)) {
+        QuasarAppUtils::Params::log("You sent not registered object ",
+                                    QuasarAppUtils::Warning);
+    }
+
 
     if (!target->waitForConnected()) {
         QuasarAppUtils::Params::log("no connected to server! " + target->errorString(),
@@ -799,6 +817,10 @@ QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const
 
     value->fromPakcage(pkg);
     return value;
+}
+
+bool AbstractNode::checkCommand(unsigned short cmd) const {
+    return _registeredTypes.contains(cmd);
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

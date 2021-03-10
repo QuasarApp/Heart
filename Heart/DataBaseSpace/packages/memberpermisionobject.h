@@ -64,6 +64,12 @@ public:
     void setKey(const PermisionData &key);
 
 protected:
+    /**
+     * @brief MemberPermisionObject This is protected constructor for support inheritance functions.
+     */
+    MemberPermisionObject(const QString& tableName);
+
+
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;

@@ -181,14 +181,13 @@ bool AbstractNodeInfo::isConnected() const {
     return isValid() && status() != NodeCoonectionStatus::NotConnected;
 }
 
-QDataStream &AbstractNodeInfo::fromStream(QDataStream &stream) {
-    stream >> _networkAddress;
-    return stream;
-}
+void AbstractNodeInfo::reset() {
+    setSct(nullptr);
+    setNetworkAddress(HostAddress{});
+    setTrust(static_cast<int>(TrustNode::Default));
+    setStatus(NodeCoonectionStatus::NotConnected);
+    setIsLocal(false);
 
-QDataStream &AbstractNodeInfo::toStream(QDataStream &stream) const {
-    stream << _networkAddress;
-    return stream;
 }
 
 uint qHash(NodeCoonectionStatus status) {

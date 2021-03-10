@@ -30,6 +30,12 @@ void BaseNodeInfo::setToken(const AccessToken &token) {
     _token = token;
 }
 
+void BaseNodeInfo::reset() {
+    AbstractNodeInfo::reset();
+    setToken(AccessToken{});
+    setId({});
+}
+
 bool BaseNodeInfo::confirmData() const {
     return AbstractNodeInfo::confirmData();
 }

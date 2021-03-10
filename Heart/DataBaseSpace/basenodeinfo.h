@@ -49,6 +49,7 @@ public:
      */
     void setToken(const AccessToken &token);
 
+    void reset() override;
     bool confirmData() const override;
 
     /**
@@ -66,6 +67,7 @@ public:
 protected:
     AccessToken _token;
     QVariant _id;
+
 };
 
 }

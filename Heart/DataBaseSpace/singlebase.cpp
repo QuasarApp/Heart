@@ -1,12 +1,12 @@
 #include "itoken.h"
 #include "singlebase.h"
 
+#include <abstractnetworkmember.h>
 #include <websocket.h>
 #include <websocketsubscriptions.h>
 namespace QH {
 
-SingleBase::SingleBase()
-{
+SingleBase::SingleBase() {
 
 }
 

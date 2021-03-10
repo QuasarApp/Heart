@@ -107,6 +107,13 @@ public:
     unsigned int subscribeId() const override;
 
     /**
+     * @brief subscribeId This static method convert database address to the subscribe id.
+     * @param address This is input value of the database address.
+     * @return subscribe id.
+     */
+    static unsigned int subscribeId(const DbAddress& address);
+
+    /**
      * @brief isHaveAPrimaryKey This method return true if this object have a primary key.
      *  If you want to cache this database object then primary key must be not null.
      * @return true if object has a primary key.
