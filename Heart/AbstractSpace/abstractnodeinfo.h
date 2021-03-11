@@ -259,10 +259,6 @@ private:
     QHostInfo *_info = nullptr;
     HostAddress _networkAddress;
 
-    QAbstractSocket *_sct = nullptr;
-    int _trust = static_cast<int>(TrustNode::Default);
-    NodeCoonectionStatus _status = NodeCoonectionStatus::NotConnected;
-    bool _isLocal = false;
 
 };
 
