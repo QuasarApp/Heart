@@ -345,7 +345,8 @@ bool SingleClient::unsubscribe(unsigned int id) {
 
 
 bool SingleClient::signPackageWithToken(PKG::AbstractData *pkg) const {
-    if (!checkToken(pkg)) {
+    auto tokenObject = dynamic_cast<IToken*>(pkg);
+    if (!tokenObject) {
         return true;
     }
 
@@ -354,7 +355,7 @@ bool SingleClient::signPackageWithToken(PKG::AbstractData *pkg) const {
     if (!token.isValid())
         return false;
 
-    (reinterpret_cast<IToken*>(pkg)->setSignToken(token));
+    tokenObject->setSignToken(token);
 
     return true;
 }

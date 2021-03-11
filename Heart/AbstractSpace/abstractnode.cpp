@@ -762,7 +762,9 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
 
         if (pkg.isValid()) {
             newWork(pkg, sender, id);
-        } else {
+        }
+
+        if (pkg.data.size() > pkg.hdr.size) {
             QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
                                         QuasarAppUtils::Warning);
         }

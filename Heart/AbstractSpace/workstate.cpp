@@ -43,7 +43,7 @@ QString WorkState::toString() const {
     result = result.arg(connectionCount).arg(maxConnectionCount);
 
     QString  BanedList;
-    for (auto i: _banedList) {
+    for (const auto &i: _banedList) {
          BanedList += i.toString() + "\n";
     }
 
