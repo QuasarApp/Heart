@@ -248,12 +248,6 @@ protected:
      */
     virtual bool confirmData() const;
 
-    /**
-     * @brief setSct - set socket for this node or client
-     * @param sct
-     */
-    void setSct(QAbstractSocket *sct);
-
 private:
 
     QHostInfo *_info = nullptr;
