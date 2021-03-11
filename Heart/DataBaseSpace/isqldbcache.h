@@ -26,7 +26,7 @@ class SqlDBWriter;
 class DbAddress;
 
 /**
- * @brief The SqlDBCasheWriteMode enum contains list of available modes of write data ito database.
+ * @brief The SqlDBCasheWriteMode enum contains list of available modes of write data to database.
  */
 enum class SqlDBCasheWriteMode: int {
     /// This is default mode. The database is written to the database with each function call no more often than the specified update interval. The recording is done in thread in which this function was called.
@@ -56,19 +56,19 @@ enum class CacheAction: int {
 
 /**
  * @brief The ISqlDBCache class it is db cache and bridge for DbWriters.
- * Wor Scheme of the database cache:
+ * Work Scheme of the database cache:
  *
  * \image html DatabseCache.svg width=800px
  *
- * This class implements only base functions of the cache. You need to override this class and create implementation for all methods of work with tehe cacha.
+ * This class implements only base functions of the cache. You need to override this class and create implementation for all methods of work with the cache.
  * * updateCache
  * * insertToCache
  * * deleteFromCache
  * * getFromCache
  *
- * @note Objects of all implementation of this classs must be deleted using the softDelete.
+ * @note Objects of all implementation of this class must be deleted using the softDelete.
  * The softDelete method create save all cached data into database.
- * If you try delete this object wthout using softDelete method then distructor of this object emit runtime error exeption (on the debug mode only).
+ * If you try delete this object without using softDelete method then destructor of this object emit runtime error exception (on the debug mode only).
  *
  */
 class HEARTSHARED_EXPORT ISqlDBCache: public QObject, public iObjectProvider, public SoftDelete
@@ -77,7 +77,7 @@ class HEARTSHARED_EXPORT ISqlDBCache: public QObject, public iObjectProvider, pu
 
 public:
     /**
-     * @brief SqlDBCache This is default constructor of dbcache
+     * @brief SqlDBCache This is default constructor of dbcache.
      * @param updateInterval See the SqlDBCache::setUpdateInterval for more information.
      * @param mode See the SqlDBCache::setMode method  for more information.
      */
@@ -86,13 +86,13 @@ public:
     ~ISqlDBCache() override;
 
     /**
-     * @brief writer This method return is database writer object. For more inforamtion about writer see the SqlDBWriter class.
+     * @brief writer This method return is database writer object. For more inforamation about writer see the SqlDBWriter class.
      * @return the pointer to writer.
      */
     SqlDBWriter* writer() const;
 
     /**
-     * @brief setWriter This methd set new writer for this cache.
+     * @brief setWriter This method set new writer for this cache.
      * @param writer new writer.
      */
     void setWriter(SqlDBWriter* writer);
@@ -108,17 +108,17 @@ public:
                       bool wait = false) override;
 
     /**
-     * @brief changeObjects This method change objecst of the database.
+     * @brief changeObjects This method change object of the database.
      * @param templateObject This is template for get objects from database.
-     * @param changeAction This is lymbda function for work with non const pointer of the object for change.
-     * @note If templateObject selecte more than 1 objects then the lyambda function call for each all selected objects.
-     * @return true if function finished succesful.
+     * @param changeAction This is lambda function for work with non const pointer of the object for change.
+     * @note If templateObject selecte more than 1 objects then the lambda function call for each all selected objects.
+     * @return true if function finished successful.
      */
     bool changeObjects(const PKG::DBObject &templateObject,
                        const std::function<bool (const QSharedPointer<PKG::DBObject> &)> &changeAction);
     /**
      * @brief getUpdateInterval This method return update interval for save changes into database. This is work for default and On_New_Thread mdes. For more information see the QH::SqlDBCasheWriteMode enum.
-     * @return time in msecs
+     * @return time in milliseconds.
      */
     qint64 getUpdateInterval() const;
 
@@ -175,14 +175,14 @@ protected:
     virtual bool insertToCache(const QSharedPointer<QH::PKG::DBObject> &obj)  = 0;
 
     /**
-     * @brief updateCache This method update alredy exits object on the cache, but not database.
-     * @param obj This is object with chages for updae the object rtom cache.
+     * @brief updateCache This method update already exits object on the cache, but not database.
+     * @param obj This is object with changes for update the object rtom cache.
      * @return true if save finished successful. If the obj mot exits in the cache then return false.
      */
     virtual bool updateCache(const QSharedPointer<QH::PKG::DBObject> &obj) = 0;
 
     /**
-     * @brief getFromCache This method return strong pointer to the database objcet from cache (pool).
+     * @brief getFromCache This method return strong pointer to the database object from cache (pool).
      * @param objKey This is database cache id.
      * @return database Object from cache. if object with objKey not exits return nullptr.
      */
@@ -198,20 +198,20 @@ protected:
                              CacheAction type);
 
     /**
-     * @brief getMode This method return mode of work databnase cache. For mmore information see the QH::SqlDBCasheWriteMode enum.
+     * @brief getMode This method return mode of work database cache. For more information see the QH::SqlDBCasheWriteMode enum.
      * @return QH::SqlDBCasheWriteMode value.
      */
     SqlDBCasheWriteMode getMode() const;
 
     /**
      * @brief setMode This method set a new value of the mode database cache.
-     * @param mode This is new value of mode working the database cahce
+     * @param mode This is new value of mode working the database cache
      */
     void setMode(const SqlDBCasheWriteMode &mode);
 
     /**
-     * @brief globalUpdateDataBasePrivate This merhod update(write) all data from cache into database.
-     * Override this methd if you want change method of writinga data from cache.
+     * @brief globalUpdateDataBasePrivate This method update(write) all data from cache into database.
+     * Override this method if you want change method of writing a data from cache.
      * @param currentTime This is current time for saving time of the invoke of this method.
      */
     virtual void globalUpdateDataBasePrivate(qint64 currentTime);
@@ -243,17 +243,17 @@ private:
 
 signals:
     /**
-     * @brief sigItemChanged This signal imited when database object is changed.
-     * @note emit implementeed in updateObject and insertObject methods.
+     * @brief sigItemChanged This signal emitted when database object is changed.
+     * @note emit implemented in updateObject and insertObject methods.
      *  So If you override then methods do not forget add emit of the sigItemChanged signal.
-     * @param obj This is changed object
+     * @param obj This is changed object.
      */
     void sigItemChanged(const QSharedPointer<QH::PKG::DBObject> &obj);
 
     /**
-     * @brief sigItemDeleted This method imited when database object is deleted.
-     * @note emit implementeed in the deleteObject method.
-     *  So If you override the deleteObject method do not forget add emit of the sigItemChanged signal.
+     * @brief sigItemDeleted This signal emitted when database object is deleted.
+     * @note emit implemented in the deleteObject method.
+     *  So if you override the deleteObject method do not forget add emit of the sigItemChanged signal.
      * @param obj
      */
     void sigItemDeleted(const QVariant& obj);
