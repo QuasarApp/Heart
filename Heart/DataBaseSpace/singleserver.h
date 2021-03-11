@@ -27,15 +27,15 @@ class UserMember;
  * classic server support:
  *  - ssl encryption (See the SslMode enum).
  *  - multitrading working.
- *  - user registration. (See The PKG::User class)
- *  - working with dabase. (See the DBObject class)
+ *  - user registration (See The PKG::User class).
+ *  - working with dabase (See the DBObject class).
  *
  * Examples
  *
  * \code{cpp}
  * \endcode
  *
- * @note All pacakges that will be processed in this class should be sopport the token validation.
+ * @note All packges that will be processed in this class should be support the token validation.
  * For get more information about token validation see the IToken class.
  *
  */
@@ -72,7 +72,7 @@ protected:
     virtual ErrorCodes::Code loginUser(const PKG::UserMember &user, const AbstractNodeInfo* info);
 
     /**
-     * @brief logOutUser This method remove the generated accsses token from server.
+     * @brief logOutUser This method remove the generated accesses token from server.
      * @param user This is network member data (user data)
      * @param info This is info about requested client.
      * @return status of operation. For more information about result statuses see the UserOperationResult enum.
@@ -80,7 +80,7 @@ protected:
     virtual ErrorCodes::Code logOutUser(const PKG::UserMember &user, const AbstractNodeInfo* info);
 
     /**
-     * @brief deleteUser This method remve the user from server.
+     * @brief deleteUser This method remove the user from server.
      * @param user This is removable user.
      * @param info This is information about sender.
      * @return Error code of this operations.
@@ -90,16 +90,16 @@ protected:
 
     /**
      * @brief signValidation This method return true if the package of the user have a token and it token is valid.
-     *  Ecxept is login request. User must be send own login and hash password.
-     *  @param data This is validation pacakage data.
+     *  Except is login request. User must be send own login and hash password.
+     *  @param data This is validation package data.
      * @return true if the token is valid.
      */
     virtual bool signValidation(const PKG::AbstractData* data, const AbstractNodeInfo *sender) const;
 
     /**
-     * @brief generateToken This method generate a new toke.
-     * @param duration this is duration of valid
-     * @return a new token.
+     * @brief generateToken This method generate a new token.
+     * @param duration This is duration of valid.
+     * @return A new token.
      */
     AccessToken generateToken(int duration = AccessToken::Day);
 
