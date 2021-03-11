@@ -26,7 +26,7 @@ class SqlDBWriter;
 class DbAddress;
 
 /**
- * @brief The SqlDBCasheWriteMode enum contains list of available modes of write data to database.
+ * @brief The SqlDBCasheWriteMode enum contains list of available modes of write data into database.
  */
 enum class SqlDBCasheWriteMode: int {
     /// This is default mode. The database is written to the database with each function call no more often than the specified update interval. The recording is done in thread in which this function was called.
