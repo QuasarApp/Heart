@@ -290,12 +290,13 @@ protected:
      * @param member This is member id (user of node).
      * @param objectAddress This is database  object for which the permissions will be set.
      * @param permision This is permission level.
+     * @param defaultPermision This is default permision for all of rest objects. By default This is Permission::Read
      * @return true if method finished successful.
      */
     virtual bool addUpdatePermission(const QVariant &member,
                                      const DbAddress& objectAddress,
-                                     const Permission& permision) const;
-
+                                     const Permission& permision) 
+                                     const Permission& defaultPermision = Permission::Read) const;
 
     /**
      * @brief removePermission This method use to removed permission for member.
