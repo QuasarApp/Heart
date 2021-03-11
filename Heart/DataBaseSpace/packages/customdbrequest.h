@@ -19,7 +19,7 @@ template <class BASE>
 
 /**
  * @brief The CustomDBRequest class intended for send to database custom select request for working with multiple tables.
- * @note This s template class, then the BASE class should be sopprt results data of select reqest.
+ * @note This s template class, then the BASE class should be supprt results data of select request.
  *
  * Example:
  * @code{cpp}
