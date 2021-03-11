@@ -31,6 +31,7 @@ public:
 
     bool fromSqlRecord(const QSqlRecord &q) override;
     DBObject *createDBObject() const override;
+    QString condition() const override;
 };
 }
 }

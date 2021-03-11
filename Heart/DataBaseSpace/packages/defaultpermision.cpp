@@ -41,5 +41,12 @@ bool DefaultPermision::fromSqlRecord(const QSqlRecord &q) {
     return isValid();
 }
 
+QString DefaultPermision::condition() const {
+    QString result;
+
+    result += "dbAddress='" + key().addressHash() + "'";
+    return result;
+}
+
 }
 }

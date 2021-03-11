@@ -223,6 +223,12 @@ protected:
      */
     bool signPackageWithToken(PKG::AbstractData *pkg) const;
 
+    /**
+     * @brief resetUser This method remove user member data and sets new status for this node (client).
+     *  If user alredy loggined then status will be changed to connected.
+     */
+    void resetUser();
+
     void nodeConfirmend(AbstractNodeInfo *node) override;
     void nodeConnected(AbstractNodeInfo *node) override;
     void nodeDisconnected(AbstractNodeInfo *node) override;
@@ -234,6 +240,7 @@ protected:
     unsigned int sendData(PKG::AbstractData *resp,
                           const QVariant &nodeId,
                           const Header *req = nullptr) override;
+
 
 
 

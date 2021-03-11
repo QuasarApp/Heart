@@ -89,6 +89,8 @@ bool SingleClient::login(const PKG::UserMember &memberData) {
     return login();
 }
 
+
+
 bool SingleClient::logout() {
     if (getStatus() < ClientStatus::Logined) {
         QuasarAppUtils::Params::log("You try logout on the not Loggined client."
@@ -106,9 +108,7 @@ bool SingleClient::logout() {
         return false;
     };
 
-    setMember({});
-    if (getStatus() > ClientStatus::Connected)
-        setStatus(ClientStatus::Connected);
+    resetUser();
 
     return true;
 }
@@ -295,6 +295,12 @@ unsigned int SingleClient::sendData(PKG::AbstractData *resp,
     }
 
     return DataBaseNode::sendData(resp, nodeId, req);
+}
+
+void SingleClient::resetUser() {
+    setMember({});
+    if (getStatus() > ClientStatus::Connected)
+        setStatus(ClientStatus::Connected);
 }
 
 void SingleClient::setMember(const PKG::UserMember &member) {
