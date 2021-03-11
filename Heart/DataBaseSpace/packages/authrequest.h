@@ -26,9 +26,9 @@ enum class UserRequestType: unsigned char {
     SignUp,
     /// Request to login an exists user.
     LogIn,
-    /// Request to logout an exists user. This request remove the generated accsses token from server.
+    /// Request to logout an exists user. This request remove the generated accesses token from server.
     LogOut,
-    /// Remove all data of this user from server
+    /// Remove all data of this user from server.
     Remove
 };
 
@@ -45,7 +45,7 @@ public:
 
     // StreamBase interface
     /**
-     * @brief setRequest This method set request tyoe for this object.
+     * @brief setRequest This method set request type for this object.
      * @param request
      */
     void setRequest(const UserRequestType &request);
