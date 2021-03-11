@@ -295,7 +295,7 @@ protected:
      */
     virtual bool addUpdatePermission(const QVariant &member,
                                      const DbAddress& objectAddress,
-                                     const Permission& permision) 
+                                     const Permission& permision,
                                      const Permission& defaultPermision = Permission::Read) const;
 
     /**
