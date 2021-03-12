@@ -15,7 +15,7 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The GetMaxIntegerId class is intendet for get a maximum value of a sql tables column.
+ * @brief The GetMaxIntegerId class is intended for get a maximum value of a sql tables column.
  */
 class GetMaxIntegerId: public DBObject
 {
