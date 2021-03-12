@@ -40,25 +40,25 @@ enum class TrustNode: unsigned char {
  * @brief The AbstractNodeState enum - This is status of the known nodes or clients.
  */
 enum class NodeCoonectionStatus: int {
-    /// This node not sent data about its envirement and status of node socket is dissconnected.
+    /// This node not sent data about its envirement and status of node socket is disconnected.
     NotConnected,
     /// The node with this status has socket status is connected.
     Connected,
-    ///  The node confirmed. Node with it status sent a information
+    ///  The node confirmed. Node with it status sent a information.
     ///  requirement for confirm in to this node object.
     Confirmed,
 };
 
 /**
- * @brief qHash - simple hash function of NodeCoonectionStatus
- * @param status - input data.
+ * @brief qHash - Simple hash function of NodeCoonectionStatus
+ * @param status - Input data.
  * @return crc32 hash code
  */
 uint qHash(NodeCoonectionStatus status);
 
 /**
  * @brief The AbstractNodeInfo class contains information about client or server connection and tcp socket of node.
- * all node Info classes must be initialized in the AbstractNode::createNodeInfo methods.
+ * All node Info classes must be initialized in the AbstractNode::createNodeInfo methods.
  * This implementation of nodeInf contains only trust of node and network socket.
  */
 class HEARTSHARED_EXPORT AbstractNodeInfo: public QObject
@@ -121,7 +121,7 @@ public:
     virtual void setTrust(int trust);
 
     /**
-     * @brief isValid - Check node of valid. This method check connect status of socket.
+     * @brief isValid - Check valid of node. This method check connect status of socket.
      * @return true if node or client is valid.
      */
     virtual bool isValid() const;
@@ -139,14 +139,14 @@ public:
     virtual void reset();
 
     /**
-     * @brief info - this method return Host domain information.
+     * @brief info - This method return Host domain information.
      *  For more information see the Qt Documentation about QHostInfo.
      * @return Host info of this node.
      */
     QHostInfo *info() const;
 
     /**
-     * @brief setInfo - set new host info for this node.
+     * @brief setInfo - Set new host info for this node.
      * @param info - host info.
      */
     void setInfo(const QHostInfo &info);
@@ -243,7 +243,7 @@ protected:
 
     /**
      * @brief confirmData This method check all data of node and return true.
-     * if node is confirmed.
+     * If node is confirmed.
      * @return true if node is confirmed.
      */
     virtual bool confirmData() const;
