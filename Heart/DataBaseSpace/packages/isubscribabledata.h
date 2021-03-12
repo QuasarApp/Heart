@@ -17,7 +17,7 @@ namespace PKG {
 
 /**
  * @brief The ISubscribableData class is interface provide subscribe functionality.
- * If you want to create a data object with support of the subcribe functionality then you need to inherit form this class.
+ * If you want to create a data object with support of the subscribe functionality then you need to inherit form this class.
  */
 class ISubscribableData
 {
@@ -26,8 +26,8 @@ public:
 
     /**
      * @brief subscribeId All subscribable object should be override this method.
-     *  This method should be return insigned int id.
-     * @return unique id of the subscrine object.
+     *  This method should be return signed int id.
+     * @return unique id of the subscribe object.
      */
     virtual unsigned int subscribeId() const = 0;
 };
