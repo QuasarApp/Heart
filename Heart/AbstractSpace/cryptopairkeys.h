@@ -25,7 +25,7 @@ public:
 
     /**
      * @brief isValid - This Method check an internal keys.
-     * @return true if this objeсt contains a valid pair keys
+     * @return true if this objeсt contains a valid pair keys.
      */
     bool isValid() const;
 
@@ -48,19 +48,19 @@ public:
     QByteArray publicKey() const;
 
     /**
-     * @brief setPublicKey This method set new value of publickKey
-     * @param publicKey new value of publicKey
+     * @brief setPublicKey This method set new value of publickKey.
+     * @param publicKey new value of publicKey.
      */
     void setPublicKey(const QByteArray &publicKey);
 
     /**
-     * @brief bits This method return size pair of crypto keys in bits
+     * @brief bits This method return size pair of crypto keys in bits.
      * @return bits size of keys pair.
      */
     int bits() const;
 
     /**
-     * @brief setBits This method sets new value of keys pair
+     * @brief setBits This method sets new value of keys pair.
      * @param bits This is new value of size keys.
      */
     void setBits(int bits);
@@ -81,9 +81,9 @@ private:
 };
 
 /**
-     * @brief qHash This functions calc crc32 hash code of  CryptoPairKeys object
+     * @brief qHash This functions calc crc32 hash code of CryptoPairKeys object.
      * @param value -
-     * @return crc32 hash code
+     * @return crc32 hash code.
      */
     uint qHash(const CryptoPairKeys& value);
 }
