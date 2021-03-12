@@ -19,7 +19,7 @@ namespace PKG {
  * @brief The WebSocketRequest enum This enum is list of available request of WebSocket functions.
  */
 enum class WebSocketRequest {
-    /// This is value for reserve invalied data. All request must be not equal 0.
+    /// This is value for reserve invalid data. All request must be not equal 0.
     Invalied = 0,
     /// Subscribe to changes of the databases object.
     Subscribe = 1,
@@ -27,7 +27,7 @@ enum class WebSocketRequest {
     /// Subscribe to changes of the databases object.
     Unsubscribe = 2,
 
-    /// send request of get a list of curennt subscribes.
+    /// send request of get a list of current subscribes.
     SubscribeList = 3
 };
 
@@ -45,7 +45,7 @@ public:
 
     /**
      * @brief subscribeId This method return address(unique id) of the subscribe object.
-     * @return unique id of the subscribe object
+     * @return unique id of the subscribe object.
      */
     unsigned int subscribeId() const;
 
@@ -57,7 +57,7 @@ public:
 
     /**
      * @brief setRequestCommnad This method sets requset command.
-     * @param requset This is new request command
+     * @param requset This is new request command.
      */
     void setRequestCommnad(const WebSocketRequest& requset);
 
