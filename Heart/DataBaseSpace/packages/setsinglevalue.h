@@ -16,8 +16,8 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The SetSingleValue class This is simple class - reqest sets a single valuse into database.
- * @note This class working direct with the database then you shold be use carefully.
+ * @brief The SetSingleValue class This is simple class - request sets a single value into database.
+ * @note This class working direct with the database then you should be use carefully.
  *  Frequent use of this class can negatively affect the speed of your application.
  *
  *  Example of use:
