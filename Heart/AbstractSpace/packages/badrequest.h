@@ -19,7 +19,7 @@ namespace PKG {
  */
 struct ErrorData {
     /**
-     * @brief code This is code of error. By Default thim member equals EccorCodes::UnknownError.
+     * @brief code This is code of error. By Default this member equals EccorCodes::UnknownError.
      */
     unsigned char code = 0;
     /**
@@ -44,20 +44,20 @@ public:
 
     /**
      * @brief BadRequest Init BadRequest from the ErrorData struct.
-     * @param data this is error data. for more information see the ErrorData struct.
+     * @param data This is error data. for more information see the ErrorData struct.
      */
     explicit BadRequest(const ErrorData& data);
     explicit BadRequest(const Package& package);
 
     /**
      * @brief err This method return a text of error message.
-     * @return text of error message
+     * @return Text of error message.
      */
     QString err() const;
 
     /**
-     * @brief setErr - set a error mesage.
-     * @param err - message of error.
+     * @brief setErr - Set a error message.
+     * @param err - Message of error.
      */
     void setErr(const QString &err);
 
@@ -67,13 +67,13 @@ public:
 
     /**
      * @brief errCode This method return code of error.
-     * @return code of error.
+     * @return Code of error.
      */
     unsigned char errCode() const;
 
     /**
      * @brief setErrCode This method set error code.
-     * @param code this is new value of error.
+     * @param code This is new value of error.
      */
     void setErrCode(unsigned char code);
 

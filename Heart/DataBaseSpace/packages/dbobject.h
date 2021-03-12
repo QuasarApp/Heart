@@ -27,7 +27,7 @@ namespace PKG {
 enum class PrepareResult {
     /// prepare is failed.
     Fail,
-    /// prepare finished succussful.
+    /// prepare finished successful.
     Success,
     /// prepare disabled for method. Use this case for disable prepare method for object without errors.
     Disabled,
@@ -47,7 +47,7 @@ enum class MemberType {
     //// The Field With This type can be updated but not inserted.
     Update = 0x2,
 
-    //// The Field with Whis type can not be dublicate on a table. If a Database object do not have a primary key then default implementation fof select query try get object by fields with unique type.
+    //// The Field with this type can not be duplicate on a table. If a Database object do not have a primary key then default implementation for select query try get object by fields with unique type.
     Unique = 0x4,
 
     //// The Field With This type can be inserted and updated.
@@ -76,7 +76,7 @@ struct DBVariant {
 };
 
 /**
- * @brief DBVariantMap this is Map with key and valu with data type.
+ * @brief DBVariantMap this is Map with key, and value with data type.
  * \code{cpp}
  *  QMap<QString key, {QVariant value, MemberType type}>;
  * \endcode
@@ -87,15 +87,15 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  * @brief The DBObject class- main class for work with data base.
  * @note If you set in the default constructor primaryKey to empty value. The your object disable cache support. for more information see the DBObject::isCached method.
  *
- * @warning Object witj empty table name is invalid.
+ * @warning Object with empty table name is invalid.
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableData
 {
 public:
 
     /**
-     * @brief DBObject This is default constructor.Befor using this class tou need set the table name and primary key of this object.
-     * @param tableName This is table name
+     * @brief DBObject This is default constructor.Before using this class you need set the table name and primary key of this object.
+     * @param tableName This is table name.
      */
     DBObject(const QString& tableName);
     DBObject(const DbAddress& address);
@@ -114,7 +114,7 @@ public:
     static unsigned int subscribeId(const DbAddress& address);
 
     /**
-     * @brief isHaveAPrimaryKey This method return true if this object have a primary key.
+     * @brief isHaveAPrimaryKey This method return true if this object has a primary key.
      *  If you want to cache this database object then primary key must be not null.
      * @return true if object has a primary key.
      */
@@ -122,7 +122,7 @@ public:
 
     /**
      * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
-     * @return The id of database objcet.
+     * @return The id of database object.
      */
     const QVariant &getId() const;
 
@@ -151,13 +151,13 @@ public:
      *     return create<MyClassName>();
      * \endcode
      * @note The object created on this method not destroyed automatically.
-     * @return pointer of new object with the some type.
+     * @return pointer of new object with the same type.
      */
     virtual DBObject* createDBObject() const = 0;
 
     /**
      * @brief prepareSelectQuery This method should be prepare a query for selected data.
-     *  Override this metod for get item from database.
+     *  Override this method for get item from database.
      *  The default implementation generate default select:
      *  \code
      *   "select * from [table] where id=[id]".
@@ -174,9 +174,9 @@ public:
      * @brief fromSqlRecord This method should be initialize this object from the executed sqlRecord.
      *  The Default implementation get general dbObject information ( id and table name ).
      *  Override This method for initialize this object from sql query.
-     * @note This method weel be invoke for one object. But if isBundle return 'true' then a function fromSqlRecord moust be invoked foreach all elements of list.
+     * @note This method will be invoke for one object. But if isBundle return 'true' then a function fromSqlRecord moust be invoked for each all elements of list.
      * @param q This is query object.
-     * @return true if method finished succesful.
+     * @return true if method finished successful.
      *
      * Exampel of override fromSqlRecord method:
      * \code{cpp}
@@ -195,7 +195,7 @@ public:
     /**
      * @brief prepareInsertQuery This method should be prepare a query for insert object into database.
      * You need to create a own insert sql query for this object into database.
-     *  Override this metod for insert item into database.
+     *  Override this method for insert item into database.
      * By Default This method prepare a insert query using the data that returned from the variantMap method.
      *
      * Default insert query have a next template:
@@ -204,7 +204,7 @@ public:
      * \endcode
      *
      *  For more information see the DBObject::variantMap method.
-     * @note befor creating a own object you need to create a own database structure.
+     * @note before creating a own object you need to create a own database structure.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
      *
@@ -250,19 +250,19 @@ public:
         }
      * \endcode
      *
-     * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
+     * @note If you want disable this method, just override it and return the PrepareResult::Disabled value.
      */
     virtual PrepareResult prepareInsertQuery(QSqlQuery& q) const;
 
     /**
-     * @brief prepareUpdateQuery this method sould be prepare a insert data query.
+     * @brief prepareUpdateQuery this method should be prepare a insert data query.
      *
-     * Bt Default This method generate query like this
+     * Bt Default This method generate query like this:
      * \code{sql}
      *  UPDATE value SET value = 2 WHERE id = 1
      * \endcode
      *
-     * IF you want to create a own insert query override this method.
+     * If you want to create a own insert query override this method.
      *
      * Example of overriding this method:
      *
@@ -315,23 +315,23 @@ public:
     virtual PrepareResult prepareUpdateQuery(QSqlQuery& q) const;
 
     /**
-     * @brief prepareRemoveQuery This method method should be prepare a query for remove this object from a database.
+     * @brief prepareRemoveQuery This method should be prepare a query for remove this object from a database.
      * Override this method for remove this item from database.
-     * The default implementatin remove item from id or primaryKey for more information see DBObject::condition method.
+     * The default implementation remove item from id or primaryKey for more information see DBObject::condition method.
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
      *
-     * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
+     * @note If you want disable this method just override it and return the PrepareResult::Disabled value.
      */
     virtual PrepareResult prepareRemoveQuery(QSqlQuery& q) const;
 
     /**
-     * @brief isCached This method shold be retun status of object.
+     * @brief isCached This method sholud be return status of object.
      * If this method return true then this object can be saved into cache of database.
      * Override this method and set this value to false for composite objects
      * (objects for which a select query can return several objects
      * or an object that does not have a direct representation in the database
-     * but contains common characteristics of several objects)
+     * but contains common characteristics of several objects).
      * @return True if item in cache.
      * The Default implementation check the primary key if this object and if primary key is valid then return true else return false.
      *
@@ -339,18 +339,18 @@ public:
     virtual bool isCached() const;
 
     /**
-     * @brief isBundle This method definef determines whether the object will be abstract (composite objects) or singel object
+     * @brief isBundle This method definef determines whether the object will be abstract (composite objects) or single object
      * If this function return true then SqlDBWriter create only one object after invoked selectquery.
-     * And if the selectquery function return a list of more 1 elements then a method fromSqlRecord moust be invoked foreach all elements of list.
+     * And if the selectquery function return a list of more 1 elements then a method fromSqlRecord must be invoked for each all elements of list.
      * @return true if the object is a selection from a set of database object.
      */
     virtual bool isBundle() const;
 
     /**
-     * @brief dbKey This method return unique key obje this object.
-     * For more information see AbstractKey::hash methid.
+     * @brief dbKey This method return unique key for this object.
+     * For more information see AbstractKey::hash method.
      * This method calc hash of {id:table} data.
-     * @return unique key of this object
+     * @return unique key of this object.
      */
     virtual uint dbKey() const;
 
@@ -368,7 +368,7 @@ public:
      *  MyObject->clone<MyObjectType>();
      * \endcode
      * @note If you want to get raw pointer to the clone object use a DBObject::cloneRaw method.
-     * @return The Shared pointer to clone of current object.
+     * @return The shared pointer to clone of current object.
      */
     template<class Object = DBObject>
     QSharedPointer<Object> clone() const {
@@ -377,7 +377,7 @@ public:
 
     /**
      * @brief cloneRaw This method return a raw pointer to clone of this object.
-     * @warning clone object don not removed automatically and may result in a memory leak.
+     * @warning clone object do not removed automatically and may result in a memory leak.
      * @note for get a shared pointer of clone object use the DBObject::clone method.
      * @return The raw pointer to clone of this object.
      */
@@ -392,7 +392,7 @@ public:
      *  For more information see the MemberType::PrimaryKeyAutoIncrement attribute.
      *
      *
-     * Example of retuen value:
+     * Example of return value:
      *
      * \code{cpp}
      *  return {{"name",        {"Andrei",      MemberType::Insert}},
@@ -413,7 +413,7 @@ public:
      * @return the QVariantMap implementation of this database object.
      *
      * @note If you want disable this functionality then override this method and return an empty map.
-     *  But do not forget override the DBObject::prepareSelectQuery method because its default implementation return error message.
+     *  But do not forget override the DBObject::prepareSelectQuery method, because its default implementation return error message.
      */
     virtual DBVariantMap variantMap() const;
 
@@ -425,12 +425,12 @@ protected:
     /**
      * @brief condition This method must to return a condition of the WHERE block of the sql query.
      * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
-     * The default implementation generate wher blok by map for more information see the variantMap nethod.
+     * The default implementation generate when block by map for more information see the variantMap nethod.
      * Override this method for customize your select or delete query.
      * @return condition string.
-     * @note This operation can not be brok the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.
+     * @note This operation can not be block the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.
      *
-     * Exmaple of overriding:
+     * Example of overriding:
      * \code{cpp}
      *  QString DBObject::condition() const {
             return {"id = '" + getId().toRaw() + "'"};
@@ -463,7 +463,7 @@ protected:
 
     /**
      * @brief isInsertPrimaryKey This method check primaryKeys type.
-     *  If the priary key have a type MemberType::Insert then return true.
+     *  If the primary key have a type MemberType::Insert then return true.
      * @return true if the primary key have the MemberType::Insert type.
      */
     bool isInsertPrimaryKey() const;

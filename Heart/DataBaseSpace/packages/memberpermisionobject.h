@@ -17,7 +17,7 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The NodesPermisionObject class contains permisions data of node or client.
+ * @brief The NodesPermisionObject class contains permissions data of node or client.
  * This class is representation of database object from the MemberPermisions table.
  */
 class HEARTSHARED_EXPORT MemberPermisionObject: public DBObject
@@ -39,15 +39,15 @@ public:
     DBVariantMap variantMap() const override;
 
     /**
-     * @brief permisions This method return permision of object.
+     * @brief permisions This method return value permission of object.
      * For select object set it id using a MemberPermisionObject::setKey method.
-     * @return permision level. For more information see the Permission enum.
+     * @return Permission level. For more information see the Permission enum.
      */
     Permission permisions() const;
 
     /**
-     * @brief setPermisions This method set a new value of permisions level.
-     * @param permisions This is a new value of permisions.
+     * @brief setPermisions This method set a new value of permissions level.
+     * @param permisions This is a new value of permissions.
      */
     void setPermisions(const Permission &permisions);
 

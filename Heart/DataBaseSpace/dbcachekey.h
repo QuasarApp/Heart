@@ -16,12 +16,12 @@
 namespace QH {
 
 /**
- * @brief The DBCacheKey class is memory storrage for registered key values.
+ * @brief The DBCacheKey class is memory storage for registered key values.
  * This class have a static array for contains all child classes of the AbstractKey class.
  *
  * Description:
  *
- * Any key it is unsigned int implementatio of any AbstractKey child objects.
+ * Any key it is unsigned int implementation of any AbstractKey child objects.
  * This class provide functions:
  * - The Get of value of AbstractKey child classes (it hash). for more information see the AbstractKey::hash method.
  *   For this use the HASH_KEY(X) macros.
@@ -39,13 +39,13 @@ public:
 
     /**
      * @brief instance This method return instance of this singleton object.
-     * @return singleton of object
+     * @return singleton of object.
      */
     static DBCacheKey* instance();
 
     template <class TYPE = AbstractKey>
     /**
-     * @brief value This method return the vale from key. for more convenient use the HASH_KEY(X) macros.
+     * @brief value This method return the value from key. For more convenient use the HASH_KEY(X) macros.
      * @param key This is hash of key value
      * @return value of key.
      */
@@ -56,7 +56,7 @@ public:
     template <class TYPE>
     /**
      * @brief key This method return hash key and save object into objects table. For more convenient use the VALUE_KEY(X) macros
-     * @param value this is value of a key objekt
+     * @param value This is value of a key object.
      * @return hash of input value.
      */
     uint key(const TYPE& value) {
@@ -75,7 +75,7 @@ public:
 
     /**
      * @brief description This method return string description of id (hash). For more convenient use the DESCRIPTION_KEY(X) macros.
-     * @param hash this is hash value of object (id)
+     * @param hash This is hash value of object (id).
      * @return information about this hash value.
      */
     QString description(uint hash) const;

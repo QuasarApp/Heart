@@ -14,7 +14,7 @@
 namespace QH {
 
 /**
- * @brief The IToken classis interface for  the validation user packages and user dates.
+ * @brief The IToken classes interface for the validation user packages and user dates.
  *
  * This is simple interface for validation packages.
  *
@@ -39,14 +39,14 @@ public:
     virtual ~IToken() = default;
 
     /**
-     * @brief getSignToken This method should be return actualy token of the user.
-     * @return actualy access token.
+     * @brief getSignToken This method should be return actually token of the user.
+     * @return actually access token.
      */
     virtual const AccessToken& getSignToken() const = 0;
 
     /**
      * @brief setSignToken This method sets a new token for object.
-     * @param token This is new token value
+     * @param token This is new token value.
      */
     virtual void setSignToken(const AccessToken& token) = 0;
 

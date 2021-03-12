@@ -15,9 +15,9 @@
 namespace QH {
 
 /**
- * @brief The Async class This is bandele of async templates and async wrapers.
- * @note If you use this object then you do not need include QObject becouse this class include the  QObject class.
- * Do not forgae the Q_OBJECT mactoss.
+ * @brief The Async class This is bundle of async templates and async wrappers.
+ * @note If you use this object then you do not need include QObject because this class include the  QObject class.
+ * Do not forget the Q_OBJECT macross.
  */
 class Async: public QObject {
 
@@ -26,7 +26,7 @@ class Async: public QObject {
 public:
     /**
      * The Job is wrapper of the std::function<bool()> type. This type registered like the Qt meta type
-     * for using in the qt metasystem.
+     * For using in the qt metasystem.
      */
     using Job = std::function<bool()>;
 
@@ -37,7 +37,7 @@ protected:
     /**
      * @brief waitFor This is base wait function.
      * @param condition This is pointer to awaiting boolean variable.
-     * @param timeout This is maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @param timeout This is maximum time for wait. By default this value equals WAIT_TIME it is 30000 msec.
      * @return true if condition is true.
      */
     bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
@@ -45,16 +45,16 @@ protected:
     /**
      * @brief waitFor This is base wait function.
      * @param condition This is lambda method with condition results.
-     * @param timeout This is maximu time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @param timeout This is maximum time for wait. By default this value equals WAIT_TIME it is 30000 msec.
      * @return true if condition is true.
      */
     bool waitFor(const Job &condition, int timeout = WAIT_TIME) const;
 
     /**
-     * @brief asyncLauncher This method invoke a job on the thread (usnign the asyncHandler method) of this object.
+     * @brief asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object.
      * @param job This is function with needed job.
-     * @param await This is boolean option for enable or disable waiot of finish of the job function.
-     * @return true if the job function started correctly. IF the await option is true then
+     * @param await This is boolean option for enable or disable wait for finish of the job function.
+     * @return true if the job function started correctly. If the await option is true then
      * this method return result of job function.
      */
     bool asyncLauncher(const Job &job, bool await = false) const;
@@ -64,9 +64,9 @@ private slots:
      * @brief asyncHandler async This is base async launcher method for move jobs to new thread.
      * @param job This is job to do.
      * @param resultOfWork This is pointer of bool value of a result of the job method.
-     * @note If you want to disable check results just use nullptr value.
-     * @param endOfWork This is pointer to bool value. If balue of this method changed to true then the hob method has ben finished.
-     * For check result of the job dunction use the resultOfWork option.
+     * @note If you want to disable check results, just use nullptr value.
+     * @param endOfWork This is pointer to bool value. If value of this method changed to true then the job method has ben finished.
+     * For check result of the job function use the resultOfWork option.
      *
      * Example of use:
      *

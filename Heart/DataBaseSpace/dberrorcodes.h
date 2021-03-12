@@ -14,24 +14,24 @@ namespace QH {
 namespace ErrorCodes {
 
 /**
- * @brief The DBErrorCodes enum This is AuthRequest error codes. For more indormation see the QH::AuthRequest class.
+ * @brief The DBErrorCodes enum This is AuthRequest error codes. For more information see the QH::AuthRequest class.
  */
 enum DBErrorCodes: Code {
     /// User not registered because database not inited or other error occurred.
     InternalError = AbstractErrorCodes::AbstractErrorCodes,
-    /// User not have a permision of execute a requested operation.
+    /// User not have a permission of execute a requested operation.
     OperatioForbiden,
     /// User not registered because user already exists.
     UserExits,
-    /// User not logined because you need register user befor login.
+    /// User not logged because you need register user before login.
     UserNotExits,
-    /// User is not Loggined.
+    /// User is not Logged.
     UserNotLogged,
-    /// User not logined because have an invalid password.
+    /// User not logged because have an invalid password.
     UserInvalidPasswoed,
     /// User Already Logged.
     UserAlreadyLogged,
-    /// User not logged or registered because timeout. Emitted after 10 sec if not response from server.
+    /// User not logged or registered because time out. Emitted after 10 sec if not response from server.
     TimeOutError,
     /// This case using for inheritance new enum classes.
     DBErrorCodes,
@@ -40,16 +40,16 @@ enum DBErrorCodes: Code {
 };
 
 /**
- * @brief The DBErrorCodesHelper class Class for translate the error codes to the string values.
+ * @brief The DBErrorCodesHelper class use for translate the error codes to the string values.
  * This class known about all error codes of the DBErrorCodes enum and AbstractErrorCodes enum.
  */
 class DBErrorCodesHelper {
 public:
     /**
-     * @brief toString This method have a cases for the transate all ErrorCodes of the QuasarApp Heart library.
-     * @param enumData This is erorr code.
+     * @brief toString This method have a cases for the translate all ErrorCodes of the QuasarApp Heart library.
+     * @param enumData This is error code.
      * @return string value of the error code.
-     * @note Tihis helper sopport all enum from the AbstractErrorCodesHelper class.
+     * @note This helper support all enum from the AbstractErrorCodesHelper class.
      */
     static QString toString(Code enumData);
 
