@@ -17,7 +17,7 @@ namespace QH {
 /**
  * @brief The Async class This is bundle of async templates and async wrappers.
  * @note If you use this object then you do not need include QObject because this class include the  QObject class.
- * Do not forget the Q_OBJECT mactoss.
+ * Do not forget the Q_OBJECT macross.
  */
 class Async: public QObject {
 
@@ -26,7 +26,7 @@ class Async: public QObject {
 public:
     /**
      * The Job is wrapper of the std::function<bool()> type. This type registered like the Qt meta type
-     * for using in the qt metasystem.
+     * For using in the qt metasystem.
      */
     using Job = std::function<bool()>;
 
@@ -54,7 +54,7 @@ protected:
      * @brief asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object.
      * @param job This is function with needed job.
      * @param await This is boolean option for enable or disable wait for finish of the job function.
-     * @return true if the job function started correctly. IF the await option is true then
+     * @return true if the job function started correctly. If the await option is true then
      * this method return result of job function.
      */
     bool asyncLauncher(const Job &job, bool await = false) const;
