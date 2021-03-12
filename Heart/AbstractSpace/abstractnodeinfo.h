@@ -68,8 +68,8 @@ public:
 
     /**
      * @brief AbstractNodeInfo
-     * @param sct socket of connection
-     * @param address - address of socket
+     * @param sct Socket of connection
+     * @param address - Address of socket
      */
     AbstractNodeInfo(QAbstractSocket *sct = nullptr,
                      const HostAddress* address = nullptr);
@@ -81,54 +81,54 @@ public:
 
     /**
      * @brief sct This method return socket of connection.
-     * @return return socket of connection
+     * @return return socket of connection.
      */
     QAbstractSocket *sct() const;
 
     /**
-     * @brief disconnect This method disconnect device from host
+     * @brief disconnect This method disconnect device from host.
      * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object before close connection. This using on the poweroff signals. By Default this arguments = false.
      */
     virtual void disconnect();
 
     /**
-     * @brief ban this node, set trust value to 0.
+     * @brief ban This node, set trust value to 0.
      */
     virtual void ban();
 
     /**
      * @brief isBanned - check node which banned.
-     * @return true if the node is banned
+     * @return true if the node is banned.
      */
     virtual bool isBanned() const;
 
     /**
-     * @brief unBan - set trust value of node to TrustNode::Restore.
+     * @brief unBan - Set trust value of node to TrustNode::Restore.
      *  See TrustNode enum for more information.
      */
     virtual void unBan();
 
     /**
-     * @brief trust - show current value of trust level node or client
-     * @return current trust value
+     * @brief trust - Show current value of trust level node or client.
+     * @return current trust value.
      */
     virtual int trust() const;
 
     /**
-     * @brief setTrust This method set manually value of this node trust
-     * @param trust - new value
+     * @brief setTrust This method set manually value of this node trust.
+     * @param trust - new value.
      */
     virtual void setTrust(int trust);
 
     /**
-     * @brief isValid - check node of valid. This method check connect status of socket.
+     * @brief isValid - Check node of valid. This method check connect status of socket.
      * @return true if node or client is valid.
      */
     virtual bool isValid() const;
 
     /**
-     * @brief isConnected - check of node connect status.
-     * @return true if the socket connected
+     * @brief isConnected - Check of node connect status.
+     * @return true if the socket connected.
      */
     virtual bool isConnected() const;
 
@@ -146,31 +146,31 @@ public:
     QHostInfo *info() const;
 
     /**
-     * @brief setInfo - set new host info for this node
-     * @param info - host info
+     * @brief setInfo - set new host info for this node.
+     * @param info - host info.
      */
     void setInfo(const QHostInfo &info);
 
     /**
      * @brief networkAddress This method return network address of current node or client.
-     * @return network address of node
+     * @return network address of node.
      */
     HostAddress networkAddress() const;
 
     /**
-     * @brief setNetworkAddress This method update network address of the current node
-     * @param networkAddress new address
+     * @brief setNetworkAddress This method update network address of the current node.
+     * @param networkAddress new address.
      */
     void setNetworkAddress(const HostAddress &networkAddress);
 
     /**
-     * @brief status This method return status of the node connection
-     * @return connection status for more info see NodeCoonectionStatus
+     * @brief status This method return status of the node connection.
+     * @return connection status for more info see NodeCoonectionStatus.
      */
     NodeCoonectionStatus status() const;
 
     /**
-     * @brief setStatus This method Sets new value of status node
+     * @brief setStatus This method Sets new value of status node.
      * @param status This is a new status of the node.
      */
     void setStatus(const NodeCoonectionStatus &status);
@@ -193,7 +193,7 @@ public:
     void setIsLocal(bool isLocal);
 
     /**
-     * @brief setSct This method sets a new socket for this node or client
+     * @brief setSct This method sets a new socket for this node or client.
      * @param sct This is a new valuse of the socket.
      */
     void setSct(QAbstractSocket *sct);
@@ -242,9 +242,9 @@ signals:
 protected:
 
     /**
-     * @brief confirmData This method check all data of node and return true
+     * @brief confirmData This method check all data of node and return true.
      * if node is confirmed.
-     * @return true if node is confirmed
+     * @return true if node is confirmed.
      */
     virtual bool confirmData() const;
 
