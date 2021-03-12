@@ -17,7 +17,7 @@ namespace QH {
 #pragma pack(push, 1)
 struct HEARTSHARED_EXPORT Header{
     /**
-     * @brief size This is size of package data (exclude header size)
+     * @brief size This is size of package data (exclude header size).
      */
     unsigned short size;
 
@@ -32,8 +32,8 @@ struct HEARTSHARED_EXPORT Header{
     unsigned int hash;
 
     /**
-     * @brief triggerHash This is hash of request package that package has been responded
-     *  the server should write to which command it responds.
+     * @brief triggerHash This is hash of request package that package has been responded.
+     *  The server should write to which command it responds.
      */
     unsigned int triggerHash;
 
@@ -45,17 +45,17 @@ struct HEARTSHARED_EXPORT Header{
 
     /**
      * @brief isValid This method check header size and compare commands.
-     * @return true if header is valid
+     * @return true if header is valid.
      */
     bool isValid() const;
 
     /**
-     * @brief reset This method reset all data and set for header invalid status
+     * @brief reset This method reset all data and set for header invalid status.
      */
     void reset();
 
     /**
-     * @brief toString This method return string of header of package
+     * @brief toString This method return string of header of package.
      * @return string value.
      */
     QString toString() const;
