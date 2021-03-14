@@ -49,6 +49,8 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
     }
 
+    handleRestRequest(pkg, pkgHeader);
+
     return QH::ParserResult::NotProcessed;
 }
 
