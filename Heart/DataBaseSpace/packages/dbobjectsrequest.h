@@ -26,7 +26,7 @@ namespace PKG {
  *  SingleServer::getObject(query);
  * \endcode
  *
- * @note Any objects in the query well not be saved in to cache. For cahing your objects use the CachedDbObjectsRequest class.
+ * @note Any objects in the query well not be saved in to cache. For caching your objects use the CachedDbObjectsRequest class.
  */
 template <class T>
 class DBObjectsRequest final: public DBObjectSet
@@ -35,16 +35,16 @@ public:
 
     /**
      * @brief DBObjectsRequest This is default constructor for parsing packages.
-     * @param pkkg This is package
+     * @param pkkg This is package.
      */
     DBObjectsRequest(const Package& pkkg) {
         fromBytes(pkkg.toBytes());
     }
 
     /**
-     * @brief DBObjectsRequest This construcor create a object with request the array of T objects.
-     * @param table  This is namr of fatabase table.
-     * @param conditions This is string with conditions for creqtq sql query.
+     * @brief DBObjectsRequest This contsrucor create a object with request the array of T objects.
+     * @param table  This is name of database table.
+     * @param conditions This is string with conditions for create sql query.
      */
     DBObjectsRequest(const QString& table,
                      const QString& conditions):

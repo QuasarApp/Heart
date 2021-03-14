@@ -12,7 +12,7 @@
 namespace QH {
 
 /**
- * @brief The Abstractkey class is provid one hash function for all keys of Heart library.
+ * @brief The Abstractkey class is provide general hash function for all keys of Heart library.
  * This class using for generate a hash code of any keyObject.
  */
 class HEARTSHARED_EXPORT AbstractKey
@@ -24,26 +24,26 @@ public:
 
     /**
      * @brief hash This method must be calc hash int32 code of source object.
-     * @return hash 32 bits.
+     * @return Hash 32 bits.
      */
     virtual unsigned int hash() const = 0;
 
     /**
-     * @brief equal This method must be make compare betwin current object and other.
+     * @brief equal This method must be make compare between current object and other.
      * @param other This is other comparable object.
-     * @return ture if objects is equals.
+     * @return True if objects is equals.
      */
     virtual bool equal(const AbstractKey* other) const = 0;
 
     /**
-     * @brief toString This method should be return the string implementation of the this key.
-     * @return string value.
+     * @brief toString This method should be return the string implementation of this key.
+     * @return String value.
      */
     virtual QString toString() const = 0;
 
     /**
-     * @brief isValid This method check this key object to valid
-     * @return true if key is valid
+     * @brief isValid This method check this key object to valid.
+     * @return True if key is valid.
      */
     virtual bool isValid() const = 0;
 };

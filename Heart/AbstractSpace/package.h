@@ -39,17 +39,17 @@ public:
     /**
      * @brief isValid This method validation a current package.
      * Default implementation is checked a header and compare a size of package in header and size of source data.
-     * @return true if package is valid
+     * @return true if package is valid.
      */
     virtual bool isValid() const;
 
     /**
-     * @brief reset This method reset all data and set for package invalid status
+     * @brief reset This method reset all data and set for package invalid status.
      */
     virtual void reset();
 
     /**
-     * @brief toString This method convert a pakcage information to a string label
+     * @brief toString This method convert a package information to a string label.
      * @return string value of the package.
      */
     QString toString() const;

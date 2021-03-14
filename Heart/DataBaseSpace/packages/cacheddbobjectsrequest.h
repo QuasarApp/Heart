@@ -18,8 +18,8 @@ namespace PKG {
 template <class BASE>
 /**
  * @brief The CachedDbObjectsRequest class This is template class for generate request with the custom condition for BASE objects.
- * @note This request send request to the hardware and not used a cache to get database objects. But all objectes will be cahed for next singel requests.
- * @warning if BASE object is not cacheble then result objects well  not be saved into cache.
+ * @note This request send request to the hardware and not used a cache to get database objects. But all objects will be cached for next single requests.
+ * @warning if BASE object is uncachable then result objects will not be saved into cache.
  *
  * For more information see the DBObject::isCached method.
  *

@@ -35,7 +35,7 @@ public:
 
     /**
      * @brief setId This method set id of Network member.
-     * @param Id This
+     * @param Id Value of network member id.
      */
     void setId(const QVariant &Id);
 
@@ -48,13 +48,13 @@ public:
 
     /**
      * @brief setAddress This method set address of database object.
-     * @param address This is new valueof database address.
+     * @param address This is new value of database address.
      */
     void setAddress(const DbAddress &address);
 
     /**
-     * @brief setAddress This implementation sets sh256 hash og the address (hash must be write in base64 encoding)
-     * @param address This is base64 string of a sh256 hash code.
+     * @brief setAddress This implementation sets sha256 hash of the address (hash must be write in base64 encoding)
+     * @param address This is base64 string of a sha256 hash code.
      */
     void setAddress(const QString &addressHash);
 

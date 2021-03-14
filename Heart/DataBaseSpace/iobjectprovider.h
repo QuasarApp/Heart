@@ -30,7 +30,7 @@ public:
      * @brief getObject this method return a strong pointer to DBObject created by select method of the template object (templateVal).
      * @param templateVal This is template object with a select data base request.
      * @note This method return a database object with a type as a type of templateVal object.
-     * If you want to get a object of C class but the datatabase contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
+     * If you want to get a object of C class but the database contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
      * This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors.
      * @note The type of input templateVal object must be child type of the DBObject class.
      * @return return strong pointer to DBObject ot nullptr id object not exits.
@@ -58,16 +58,16 @@ public:
     }
 
     /**
-     * @brief getObjectRaw This method return object without test object type
-     * @note if you want get object with check object type use getObject method.
-     * @param templateVal This is  template object with request to database
-     * @return The database object pointer (not casted)
+     * @brief getObjectRaw This method return object without test object type.
+     * @note If you want get object with check object type use getObject method.
+     * @param templateVal This is template object with request to database.
+     * @return The database object pointer (not casted).
      */
     QSharedPointer<PKG::DBObject> getObjectRaw(const PKG::DBObject &templateVal);
 
     /**
      * @brief getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects
-     * @param templateObject This is template object for prepe a select request.
+     * @param templateObject This is template object for prepare a select request.
      * @param result This is return value, list of selected objects.
      * @return true if objects have in db else false.
      */

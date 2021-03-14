@@ -17,7 +17,7 @@ namespace PKG {
 
 /**
  * @brief The AbstractNetworkMember class is structure of network member.
- *  Usuallu it is base informations of node or client.
+ *  Usually it is base informations of node or client.
  */
 class HEARTSHARED_EXPORT AbstractNetworkMember: public DBObject
 {
@@ -30,7 +30,7 @@ public:
     bool fromSqlRecord(const QSqlRecord &q) override;
 
     /**
-     * @brief authenticationData is data array requeriment for authentication node or client on the network.
+     * @brief authenticationData is data array requirement for authentication node or client on the network.
      * @return The byte Array of authentication data.
      */
     QByteArray authenticationData() const;

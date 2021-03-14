@@ -25,7 +25,7 @@ public:
 
 protected:
     /**
-     * @brief checkToken This method check pkg on token validation sopport.
+     * @brief checkToken This method check pkg on token validation support.
      * @param pkg This is parsed package.
      * @return true if the package not support token validation.
      *

@@ -14,8 +14,8 @@ namespace PKG {
 
 /**
  * @brief The UserMember class is some as a AbstractNetworkMember class.
- * All registered users on the singelServer have own list database object with own permisions.
- * If you want create a custom permisions table with the custom user then ovveride this class.
+ * All registered users on the singelServer have own list database object with own permissions.
+ * If you want create a custom permissions table with the custom user then override this class.
  *
  * @note The UserMember class has no members of its own, so it is safe to use static_cast on User <<>> AbstractNetworkMember.
  */

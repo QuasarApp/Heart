@@ -16,9 +16,9 @@ namespace QH {
 
 /**
  * @brief The SqlDBCache class is universal implementation of the database cache.
- * This implementation have a one hashMap for the databae object.
- * This is work for all Dabatases types but some objects like a DBObjectSet or DBObjectsRequest class not supported because this is set objects.
- * @note This cache works only for select queries. Uses SqlDBCasheWriteMode::Force mode For more informatiom about modes see the SqlDBCasheWriteMode enum class.
+ * This implementation have a one hashMap for the database object.
+ * This is work for all Databases types but some objects like a DBObjectSet or DBObjectsRequest class not supported because this is set objects.
+ * @note This cache works only for select queries. Uses SqlDBCasheWriteMode::Force mode For more information about modes see the SqlDBCasheWriteMode enum class.
  */
 class HEARTSHARED_EXPORT SqlDBCache final: public ISqlDBCache
 {

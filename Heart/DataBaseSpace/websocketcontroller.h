@@ -20,14 +20,14 @@ class AbstractNodeInfo;
 class DataBaseNode;
 
 /**
- * @brief The WebSocketController class is manage subscribe. This class contains information about users and him subscriptions
+ * @brief The WebSocketController class is manage subscribe. This class contains information about users and him subscriptions.
  */
 class HEARTSHARED_EXPORT WebSocketController
 {
 
 public:
     /**
-     * @brief WebSocketController default construector.
+     * @brief WebSocketController default constructor.
      * @param node This is pointer to node object.
      */
     WebSocketController(DataBaseNode *node);
@@ -35,8 +35,8 @@ public:
     /**
      * @brief subscribe This method subscribe a subscriber to the item.
      * @param subscriber This is network member that want get information about update of the item.
-     * @param item This is a subsribable object id.
-     * @return true if method finished succesful
+     * @param item This is a subscribable object id.
+     * @return true if method finished successful.
      */
     void subscribe(const QVariant &subscriber,
                    unsigned int item);
@@ -44,16 +44,16 @@ public:
     /**
      * @brief unsubscribe This method unsubscribe a subscriber from the item.
      * @param subscriber This is network member that want disable getting information about update of the item.
-     * @param item This is a subsribable object id.
-     * @return true if method finished succesful
+     * @param item This is a subscribable object id.
+     * @return true if method finished successful.
      */
     void unsubscribe(const QVariant &subscriber,
                      unsigned int item);
 
     /**
      * @brief list This method return a list of subscribed items of subscriber.
-     * @param subscriber This is network member that want get alist of own subscription.
-     * @return true if method finished succesful
+     * @param subscriber This is network member that want get a list of own subscription.
+     * @return true if method finished successful.
      */
     QSet<unsigned int> list(const QVariant& subscriber);
 

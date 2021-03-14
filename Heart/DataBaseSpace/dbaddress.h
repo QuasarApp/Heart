@@ -14,7 +14,7 @@
 namespace QH {
 
 /**
- * @brief The DbAddress class uset to work with database addresses. Database Address it is structure with 2 values.
+ * @brief The DbAddress class use to work with database addresses. Database Address it is structure with 2 values.
  * \code
  * {
  *  QString _table;  // this is name of table of object.
@@ -29,7 +29,7 @@ public:
     DbAddress() = default;
 
     /**
-     * @brief DbAddress this constructo initialize a default database address.
+     * @brief DbAddress this constructor initialize a default database address.
      * @param table This is table name in database.
      * @param primaryKey This is primary key.
      * @param id This is id of object in table.
@@ -40,8 +40,8 @@ public:
     QDataStream &toStream(QDataStream &stream) const;
 
     /**
-     * @brief toString This method return a string implementation fo this object
-     * @return string of object
+     * @brief toString This method return a string implementation fo this object.
+     * @return string of object.
      */
     QString toString() const;
 
@@ -74,7 +74,7 @@ public:
 
     /**
      * @brief setId This method set id for this address.
-     * @param id tgis is new value of objects id.
+     * @param id this is new value of objects id.
      */
     void setId(const QVariant &id);
 
@@ -95,7 +95,7 @@ private:
 };
 
 /**
- * @brief qHash This functions cals int 32 hash of address.
+ * @brief qHash This functions calls int 32 hash of address.
  * @param address This is input address.
  * @return unsigned int 32 hash value.
  */

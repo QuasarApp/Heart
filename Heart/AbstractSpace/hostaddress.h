@@ -16,7 +16,7 @@
 namespace QH {
 
 /**
- * @brief The HostAddress class this is wraper of QHostAddress. Contains the NetworkAddress and network port.
+ * @brief The Host Address class this is wrapper of QHostAddress. Contains the NetworkAddress and network port.
  */
 class HEARTSHARED_EXPORT HostAddress: public QHostAddress
 {
@@ -36,7 +36,7 @@ public:
     unsigned short port() const;
 
     /**
-     * @brief setPort This method set new port.
+     * @brief setPort This method set new port value.
      * @param port This is new value of port.
      */
     void setPort(unsigned short port);
