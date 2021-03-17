@@ -21,6 +21,7 @@
 #include <QMetaObject>
 #include <QtConcurrent>
 #include <closeconnection.h>
+#include <socketfactory.h>
 #include "receivedata.h"
 
 namespace QH {
@@ -31,6 +32,18 @@ AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
 
     _dataSender = new DataSender();
+
+    _senderThread = new QThread();
+    _senderThread->setObjectName("Sender");
+
+    _socketFactory = new SocketFactory(this);
+
+    _dataSender->moveToThread(_senderThread);
+    _socketFactory->moveToThread(_senderThread);
+
+    _senderThread->start();
+
+
     _threadPool = new QThreadPool(this);
     _threadPool->setMaxThreadCount(QThread::idealThreadCount());
     _threadPool->setObjectName("PackageWorker");
@@ -127,7 +140,7 @@ bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
         socket = new QSslSocket(nullptr);
     }
 
-    if (!registerSocket(socket, &address)) {
+    if (!_socketFactory->registerSocket(socket, &address)) {
         delete socket;
         return false;
     }
@@ -199,6 +212,11 @@ HostAddress AbstractNode::address() const {
 }
 
 AbstractNode::~AbstractNode() {
+    _senderThread->quit();
+    _senderThread->wait();
+
+    delete _dataSender;
+    delete _senderThread;
 }
 
 QSslConfiguration AbstractNode::getSslConfig() const {
@@ -663,7 +681,7 @@ void AbstractNode::incomingSsl(qintptr socketDescriptor) {
 
     if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
         connect(socket, &QSslSocket::encrypted, [this, socket](){
-            if (!registerSocket(socket)) {
+            if (!_socketFactory->registerSocket(socket)) {
                 socket->deleteLater();
             }
         });
@@ -687,7 +705,7 @@ void AbstractNode::incomingSsl(qintptr socketDescriptor) {
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
     QTcpSocket *socket = new QTcpSocket();
     if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
-        if (!registerSocket(socket)) {
+        if (!_socketFactory->registerSocket(socket)) {
             delete socket;
         }
     } else {

@@ -157,8 +157,6 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
 bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj,
                                bool wait) {
 
-    deleteFromCache(delObj);
-
     if (!delObj)
         return false;
 

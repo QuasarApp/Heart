@@ -37,6 +37,7 @@ namespace QH {
 
 class DataSender;
 class ReceiveData;
+class SocketFactory;
 
 namespace PKG {
 class ErrorData;
@@ -322,6 +323,9 @@ protected:
      * @param pkg This is sendet pakcage to target node.
      * @param target This is target node.
      * @return return true if The package is sendet succesfull.
+     *
+     * @note All packages sendets on the sender threaed. But thread of the node is wait for sends result.
+     *  This is done that allthe data that is sent when node are dissconected come without fail.
      */
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
@@ -566,6 +570,8 @@ private:
     QHash<HostAddress, ReceiveData*> _receiveData;
 
     DataSender * _dataSender = nullptr;
+    SocketFactory * _socketFactory = nullptr;
+    QThread *_senderThread = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
 
@@ -576,6 +582,7 @@ private:
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
 
     friend class WebSocketController;
+    friend class SocketFactory;
 
 };
 

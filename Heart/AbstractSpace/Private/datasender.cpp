@@ -14,6 +14,7 @@
 namespace QH {
 
 DataSender::DataSender() {
+
 }
 
 bool DataSender::sendData(const QByteArray &array, void *target, bool await) const {

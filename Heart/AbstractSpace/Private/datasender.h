@@ -18,7 +18,6 @@ namespace QH {
 
 /**
  * @brief The DataSender class this class create a queue for sendet data to network.
- *  Work on a main thread.
  */
 class DataSender: public Async
 {
