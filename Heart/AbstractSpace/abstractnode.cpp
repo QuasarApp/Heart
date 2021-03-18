@@ -21,7 +21,7 @@
 #include <QMetaObject>
 #include <QtConcurrent>
 #include <closeconnection.h>
-#include <socketfactory.h>
+#include "asynclauncher.h"
 #include "receivedata.h"
 
 namespace QH {
@@ -36,10 +36,9 @@ AbstractNode::AbstractNode( QObject *ptr):
     _senderThread = new QThread();
     _senderThread->setObjectName("Sender");
 
-    _socketFactory = new SocketFactory(this);
+    _socketWorker = new AsyncLauncher(_senderThread);
 
     _dataSender->moveToThread(_senderThread);
-    _socketFactory->moveToThread(_senderThread);
 
     _senderThread->start();
 
@@ -133,21 +132,26 @@ void AbstractNode::unBan(const HostAddress &target) {
 }
 
 bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
-    QTcpSocket *socket;
-    if (mode == SslMode::NoSSL) {
-        socket = new QTcpSocket(nullptr);
-    } else {
-        socket = new QSslSocket(nullptr);
-    }
 
-    if (!_socketFactory->registerSocket(socket, &address)) {
-        delete socket;
-        return false;
-    }
+    AsyncLauncher::Job action = [this, mode, address]() -> bool {
+        QTcpSocket *socket;
+        if (mode == SslMode::NoSSL) {
+            socket = new QTcpSocket(nullptr);
+        } else {
+            socket = new QSslSocket(nullptr);
+        }
 
-    socket->connectToHost(address, address.port());
+        if (!registerSocket(socket, &address)) {
+            delete socket;
+            return false;
+        }
 
-    return true;
+        socket->connectToHost(address, address.port());
+
+        return true;
+    };
+
+    return _socketWorker->run(action);
 }
 
 bool AbstractNode::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
@@ -167,19 +171,7 @@ bool AbstractNode::connectToHost(const QString &domain, unsigned short port, Ssl
         }
 
 
-        if (!connectToHost(HostAddress{addresses.first(), port}, mode)) {
-            return;
-        }
-
-        auto hostObject = getInfoPtr(HostAddress{addresses.first(), port});
-
-        if (!hostObject) {
-            QuasarAppUtils::Params::log("The domain name :" + domain + " has connected bud not have network object!",
-                                        QuasarAppUtils::Error);
-            return;
-        }
-
-        hostObject->setInfo(info);
+        connectToHost(HostAddress{addresses.first(), port}, mode);
     });
 
     return true;
@@ -217,6 +209,7 @@ AbstractNode::~AbstractNode() {
 
     delete _dataSender;
     delete _senderThread;
+    delete _socketWorker;
 }
 
 QSslConfiguration AbstractNode::getSslConfig() const {
@@ -675,42 +668,62 @@ bool AbstractNode::changeTrust(const HostAddress &id, int diff) {
 }
 
 void AbstractNode::incomingSsl(qintptr socketDescriptor) {
-    QSslSocket *socket = new QSslSocket;
+    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
+        QSslSocket *socket = new QSslSocket;
 
-    socket->setSslConfiguration(_ssl);
+        socket->setSslConfiguration(_ssl);
 
-    if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
-        connect(socket, &QSslSocket::encrypted, [this, socket](){
-            if (!_socketFactory->registerSocket(socket)) {
+        if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+            connect(socket, &QSslSocket::encrypted, [this, socket]() {
+
+                if (!registerSocket(socket)) {
+                    socket->deleteLater();
+                }
+            });
+
+            connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+                    [socket](const QList<QSslError> &errors){
+
+                for (auto &error : errors) {
+                    QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
+                }
+
                 socket->deleteLater();
-            }
-        });
+            });
 
-        connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-                [socket](const QList<QSslError> &errors){
+            socket->startServerEncryption();
 
-            for (auto &error : errors) {
-                QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
-            }
+            return true;
+        } else {
+            delete socket;
+            return false;
+        }
 
-            socket->deleteLater();
-        });
+    };
 
-        socket->startServerEncryption();
-    } else {
-        delete socket;
-    }
+    _socketWorker->run(action);
 }
 
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
-    QTcpSocket *socket = new QTcpSocket();
-    if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
-        if (!_socketFactory->registerSocket(socket)) {
+    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
+
+
+        QTcpSocket *socket = new QTcpSocket();
+        if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
+            if (!registerSocket(socket)) {
+                delete socket;
+                return false;
+            }
+        } else {
             delete socket;
+            return false;
         }
-    } else {
-        delete socket;
-    }
+
+        return true;
+
+    };
+
+    _socketWorker->run(action);
 }
 
 

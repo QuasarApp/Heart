@@ -38,6 +38,7 @@ namespace QH {
 class DataSender;
 class ReceiveData;
 class SocketFactory;
+class AsyncLauncher;
 
 namespace PKG {
 class ErrorData;
@@ -570,7 +571,7 @@ private:
     QHash<HostAddress, ReceiveData*> _receiveData;
 
     DataSender * _dataSender = nullptr;
-    SocketFactory * _socketFactory = nullptr;
+    AsyncLauncher * _socketWorker = nullptr;
     QThread *_senderThread = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
