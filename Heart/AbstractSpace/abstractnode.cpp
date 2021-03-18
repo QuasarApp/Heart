@@ -750,7 +750,14 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
     const int headerSize = sizeof(Header);
 
     // concat with old data of header.
-    const auto array = hdrArray + sender->sct()->readAll();
+    auto socket = sender->sct();
+    if (!socket) {
+        pkg.reset();
+        hdrArray.clear();
+        return;
+    }
+
+    const auto array = hdrArray + socket->readAll();
     const int arraySize = array.size();
     hdrArray.clear();
 

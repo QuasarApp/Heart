@@ -10,6 +10,7 @@
 #include <QAbstractSocket>
 #include <QDataStream>
 #include <QHostInfo>
+#include <QMetaObject>
 
 namespace QH {
 
@@ -30,11 +31,14 @@ QAbstractSocket *AbstractNodeInfo::sct() const {
 void AbstractNodeInfo::disconnect() {
     if (_sct) {
         auto socketPtr = _sct;
-        socketPtr->disconnect();
+
+        // We invoke the delate later method on another thread (thread of the socket.)
+        // because all network sockets must be open adn closed in the one thread.
+        QMetaObject::invokeMethod(socketPtr,
+                                  "deleteLater",
+                                  Qt::QueuedConnection);
 
         _sct = nullptr;
-        socketPtr->close();
-        socketPtr->deleteLater();
 
         setStatus(NodeCoonectionStatus::NotConnected);
     }

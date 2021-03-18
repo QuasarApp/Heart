@@ -75,7 +75,7 @@ void testProtockol::unitTests() {
 
     QDir(path).removeRecursively();
 
-    QTimer::singleShot(0, [this, &app]() {
+    QTimer::singleShot(0, this, [this, &app]() {
 
         for (auto test : qAsConst(_tests) ) {
             test->test();
