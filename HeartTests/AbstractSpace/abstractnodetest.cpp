@@ -73,3 +73,4 @@ bool AbstractNodeTest::sendDataTest() {
 
     return funcPrivateConnect(request, check);
 }
+

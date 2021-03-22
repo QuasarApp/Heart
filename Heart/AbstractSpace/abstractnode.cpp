@@ -131,11 +131,11 @@ void AbstractNode::unBan(const HostAddress &target) {
     _connections[target]->unBan();
 }
 
-bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
+bool AbstractNode::addNode(const HostAddress &address) {
 
-    AsyncLauncher::Job action = [this, mode, address]() -> bool {
+    AsyncLauncher::Job action = [this, address]() -> bool {
         QTcpSocket *socket;
-        if (mode == SslMode::NoSSL) {
+        if (_mode == SslMode::NoSSL) {
             socket = new QTcpSocket(nullptr);
         } else {
             socket = new QSslSocket(nullptr);
@@ -154,35 +154,37 @@ bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
     return _socketWorker->run(action);
 }
 
-bool AbstractNode::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
-    QHostInfo::lookupHost(domain, [this, port, mode, domain](QHostInfo info) {
+bool AbstractNode::addNode(const QString &domain, unsigned short port) {
+    HostAddress address{domain, port};
+    if (address.isNull()) {
 
-        if (info.error() != QHostInfo::NoError) {
-            QuasarAppUtils::Params::log("The domain name :" + domain + " has error: " + info.errorString(),
-                                        QuasarAppUtils::Error);
-            return;
-        }
+        QHostInfo::lookupHost(domain, [this, port, domain](QHostInfo info) {
 
-        auto addresses = info.addresses();
+            if (info.error() != QHostInfo::NoError) {
+                QuasarAppUtils::Params::log("The domain name :" + domain +
+                                            " has error: " + info.errorString(),
+                                            QuasarAppUtils::Error);
+                return;
+            }
 
-        if (addresses.size() > 1) {
-            QuasarAppUtils::Params::log("The domain name :" + domain + " has more 1 ip addresses.",
-                                        QuasarAppUtils::Warning);
-        }
+            auto addresses = info.addresses();
+
+            if (addresses.size() > 1) {
+                QuasarAppUtils::Params::log("The domain name :" + domain +
+                                            " has more 1 ip addresses.",
+                                            QuasarAppUtils::Warning);
+            }
 
 
-        connectToHost(HostAddress{addresses.first(), port}, mode);
-    });
+            addNode(HostAddress{addresses.first(), port});
+        });
 
-    return true;
-}
 
-void AbstractNode::addNode(const HostAddress &nodeAdderess) {
+        return true;
+    }
 
-    QMetaObject::invokeMethod(this,
-                              "connectNodePrivate",
-                              Qt::QueuedConnection,
-                              Q_ARG(QH::HostAddress, nodeAdderess));
+
+    return addNode(address);
 
 }
 
@@ -831,10 +833,6 @@ void AbstractNode::handleForceRemoveNode(HostAddress node) {
 
 bool AbstractNode::listen(const HostAddress &address) {
     return QTcpServer::listen(address, address.port());
-}
-
-void AbstractNode::connectNodePrivate(HostAddress address) {
-    connectToHost(address, _mode);
 }
 
 QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const {

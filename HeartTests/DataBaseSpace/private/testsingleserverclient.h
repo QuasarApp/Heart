@@ -23,7 +23,7 @@ public:
     void setStatus(const QH::ClientStatus &status);;
 
 protected:
-    QH::HostAddress serverAddress() const override;
+    QPair<QString, unsigned short> serverAddress() const override;
     void incomingData(const QH::PKG::AbstractData *pkg, const QH::AbstractNodeInfo*  sender) override;
 
 private:

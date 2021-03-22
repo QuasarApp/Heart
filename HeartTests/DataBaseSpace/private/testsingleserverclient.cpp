@@ -17,11 +17,12 @@ void TestSingleServerClient::setStatus(const QH::ClientStatus &status) {
     QH::SingleClient::setStatus(status);
 }
 
-QH::HostAddress TestSingleServerClient::serverAddress() const {
-    return QH::HostAddress{TEST_LOCAL_HOST, TEST_PORT};
+QPair<QString, unsigned short> TestSingleServerClient::serverAddress() const {
+    return {TEST_LOCAL_HOST, TEST_PORT};
 }
 
-void TestSingleServerClient::incomingData(const QH::PKG::AbstractData *pkg, const QH::AbstractNodeInfo *sender) {
+void TestSingleServerClient::incomingData(const QH::PKG::AbstractData *pkg,
+                                          const QH::AbstractNodeInfo *sender) {
     Q_UNUSED(sender)
 
     auto ping = dynamic_cast<const QH::PKG::Ping*>(pkg);

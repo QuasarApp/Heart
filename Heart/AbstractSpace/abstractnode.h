@@ -151,26 +151,19 @@ public:
     virtual void unBan(const HostAddress& target);
 
     /**
-     * @brief connectToHost - Connect to node (server) with address.
+     * @brief addNode - Connect to node (server) with address.
      * @param address - This is Network address of node (server).
      * @param mode - This is mode of connection see SslMode.  By default using SslMode::NoSSL connection mode, it is not secure.
      */
-    virtual bool connectToHost(const HostAddress &address, SslMode mode = SslMode::NoSSL);
+    bool addNode(const HostAddress &address);
 
     /**
-     * @brief connectToHost - Connect to node (server) with domain, bud this method find ip address of domain befor connecting.
+     * @brief addNode - Connect to node (server) with domain, bud this method find ip address of domain befor connecting.
      * @param domain - This is domain address of node (server).
      * @param port - This is target port of node (server).
      * @param mode - This is mode of connection see SslMode. By default using SslMode::NoSSL connection mode, it is not secure.
      */
-    virtual bool connectToHost(const QString &domain, unsigned short port, SslMode mode = SslMode::NoSSL);
-
-    /**
-     * @brief addNode - Add new node (server) for this mode.
-     * @param nodeAdderess - This is network addres of a new node (server).
-     * @note By Default This immplementation move called function into main Thread and invoke connectToHost method.
-     */
-    void addNode(const HostAddress& nodeAdderess);
+    bool addNode(const QString &domain, unsigned short port);
 
     /**
      * @brief removeNode - Remove node and disconnected forom node (server).
@@ -538,11 +531,6 @@ private slots:
      * @param node
      */
     void handleForceRemoveNode(HostAddress node);
-
-    /**
-     * @brief connectNodePrivate
-     */
-    void connectNodePrivate(QH::HostAddress);
 
 private:
 

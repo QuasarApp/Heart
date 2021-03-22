@@ -41,9 +41,15 @@ unsigned short HostAddress::port() const {
 }
 
 void HostAddress::setPort(unsigned short port) {
-    debug_assert(port);
-
     _port = port;
+}
+
+bool HostAddress::isIP(const QString &address) {
+    return !QHostAddress{address}.isNull();
+}
+
+bool HostAddress::isValid() const {
+    return !isNull() && port();
 }
 
 QDataStream &operator >>(QDataStream &stream, HostAddress &address) {
@@ -59,6 +65,15 @@ QDataStream &operator <<(QDataStream &stream, const HostAddress &address) {
     stream << address._port;
 
     return stream;
+}
+
+#define base(obj) static_cast<const QHostAddress*>(&obj)
+bool operator ==(const HostAddress &left, const HostAddress &right) {
+    return base(left)->operator==(*base(right)) && left.port() == right.port();
+}
+
+bool operator !=(const HostAddress &left, const HostAddress &right) {
+    return base(left)->operator!=(*base(right)) && left.port() != right.port();
 }
 
 uint qHash(const HostAddress &address) {

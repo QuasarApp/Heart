@@ -44,6 +44,22 @@ public:
     friend QDataStream& operator << (QDataStream& stream, const HostAddress& address);
     friend QDataStream& operator >> (QDataStream& stream, HostAddress& address);
 
+    friend bool& operator == (QDataStream& stream, HostAddress& address);
+    friend bool& operator != (QDataStream& stream, HostAddress& address);
+
+    /**
+     * @brief isIP This method return true if the @a address is valid.
+     * @brief address This is tring value of the network ip address.
+     * @return true if the @a address is valid.
+     */
+    static bool isIP(const QString& address);
+
+    /**
+     * @brief isValid This method return true if the current network address is valid.
+     * @return true if the current network address is valid.
+     */
+    bool isValid() const;
+
 private:
     unsigned short _port = 0;
 };

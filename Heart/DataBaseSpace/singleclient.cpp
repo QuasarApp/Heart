@@ -18,6 +18,8 @@ SingleClient::SingleClient() {
 
     qRegisterMetaType<QH::ClientStatus>();
 
+    setMaxPendingConnections(1);
+
     registerPackageType<PKG::AuthRequest>();
 
     connect(this, &SingleClient::requestError,
@@ -106,7 +108,7 @@ bool SingleClient::logout() {
     request.copyFrom(&getMember());
     request.setRequest(PKG::UserRequestType::LogOut);
 
-    if (!sendData(&request, serverAddress())) {
+    if (!sendData(&request, realServerAddress())) {
         return false;
     };
 
@@ -146,7 +148,7 @@ bool SingleClient::removeUser() {
     QH::PKG::AuthRequest request;
     request.copyFrom(&getMember());
     request.setRequest(PKG::UserRequestType::Remove);
-    if (!sendData(&request, serverAddress())) {
+    if (!sendData(&request, realServerAddress())) {
         return false;
     };
 
@@ -163,8 +165,8 @@ bool SingleClient::connectToServer() {
     if (getStatus() < ClientStatus::Connecting) {
         setStatus(ClientStatus::Connecting);
     }
-
-    addNode(serverAddress());
+    auto address = serverAddress();
+    DataBaseNode::addNode(address.first, address.second);
 
     return true;
 }
@@ -174,7 +176,7 @@ void SingleClient::disconnectFromServer() {
         return;
     }
 
-    removeNode(serverAddress());
+    DataBaseNode::removeNode(realServerAddress());
     setStatus(ClientStatus::Dissconnected);
 }
 
@@ -233,7 +235,7 @@ bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword
         request.setAuthenticationData(hashPassword);
     }
 
-    return sendData(&request, serverAddress());
+    return sendData(&request, realServerAddress());
 }
 
 bool SingleClient::p_signup(const QString &userId, const QByteArray &hashPassword) {
@@ -242,7 +244,7 @@ bool SingleClient::p_signup(const QString &userId, const QByteArray &hashPasswor
     request.setAuthenticationData(hashPassword);
     request.setRequest(QH::PKG::UserRequestType::SignUp);
 
-    return sendData(&request, serverAddress());
+    return sendData(&request, realServerAddress());
 }
 
 void SingleClient::handleRestRequest(const QSharedPointer<PKG::AbstractData> &pkg,
@@ -255,12 +257,20 @@ void SingleClient::handleRestRequest(const QSharedPointer<PKG::AbstractData> &pk
     }
 }
 
+void SingleClient::setRealServerAddress(const HostAddress &realServerAddress) {
+    _realServerAddress = realServerAddress;
+}
+
+const HostAddress &SingleClient::realServerAddress() const {
+    return _realServerAddress;
+}
+
 const PKG::UserMember &SingleClient::getMember() const {
     return _member;
 }
 
-HostAddress SingleClient::serverAddress() const {
-    return HostAddress{"localhost", DEFAULT_PORT};
+QPair<QString, unsigned short> SingleClient::serverAddress() const {
+    return {"localhost", DEFAULT_PORT};
 }
 
 void SingleClient::nodeConfirmend(AbstractNodeInfo *node) {
@@ -268,12 +278,24 @@ void SingleClient::nodeConfirmend(AbstractNodeInfo *node) {
 }
 
 void QH::SingleClient::nodeConnected(AbstractNodeInfo *node) {
-    Q_UNUSED(node)
+
+    debug_assert(!realServerAddress().isValid(),
+                "Internal Error detected in "
+                "the  QH::SingleClient::nodeConnected(AbstractNodeInfo *node) method"
+                " If you see this error message"
+                " please send your bug report to the official github page"
+                " https://github.com/QuasarApp/Heart/issues/new" );
+
+
+    setRealServerAddress(node->networkAddress());
+
     setStatus(ClientStatus::Connected);
 }
 
 void QH::SingleClient::nodeDisconnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
+    setRealServerAddress(HostAddress{});
+
     setStatus(ClientStatus::Dissconnected);
 }
 
@@ -335,7 +357,7 @@ bool SingleClient::subscribe(unsigned int id) {
     request.setSubscribeId(id);
     request.setRequestCommnad(PKG::WebSocketRequest::Subscribe);
 
-    return sendData(&request, serverAddress());
+    return sendData(&request, realServerAddress());
 }
 
 bool SingleClient::unsubscribe(unsigned int id) {
@@ -347,7 +369,7 @@ bool SingleClient::unsubscribe(unsigned int id) {
     request.setSubscribeId(id);
     request.setRequestCommnad(PKG::WebSocketRequest::Unsubscribe);
 
-    return sendData(&request, serverAddress());
+    return sendData(&request, realServerAddress());
 
 }
 
@@ -377,7 +399,7 @@ bool SingleClient::restRequest(PKG::AbstractData *req,
         return false;
     }
 
-    unsigned int pkgHash = sendData(req, serverAddress());
+    unsigned int pkgHash = sendData(req, realServerAddress());
 
     if (!pkgHash)
         return false;

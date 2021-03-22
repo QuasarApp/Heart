@@ -38,6 +38,13 @@ enum class ClientStatus: unsigned char {
  *
  * @note All pacakges that will be processed in this class should be sopport the token validation.
  * For get more information about token validation see the IToken class.
+ *
+ * @note The client have next syntetic limitation:
+ *  1. Maximum connection count = 1
+ *  2. Connect possible only for one server overridden in the serverAddress method.
+ *  3. addNode and removeNode methods unavalable in the client node.
+ *
+ *
  */
 class SingleClient: public SingleBase
 {
@@ -47,6 +54,11 @@ public:
     typedef QHash<unsigned int, HandlerMethod> HandlersCache;
 
     SingleClient();
+
+
+    bool addNode(const HostAddress& address) = delete;
+    bool addNode(const QString& address, unsigned short) = delete;
+    bool removeNode(const HostAddress& address) = delete;
 
     QH::ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                   const Header& pkgHeader,
@@ -173,6 +185,7 @@ public:
      */
     bool restRequest(PKG::AbstractData *req, const HandlerMethod& handler);
 
+
 signals:
     /**
      * @brief statusChanged This signal emitted when the client change an own status.
@@ -208,12 +221,12 @@ protected:
     void setLastError(const ErrorCodes::Code &lastError);
 
     /**
-     * @brief serverAddress This method return the address of server.
+     * @brief serverAddress This method return the pair {ip/domain,port} of server.
      *  Override this method for change server address.
      *  Default implementation return the localhost address with the 3090 port.
      * @return host of the server.
      */
-    virtual HostAddress serverAddress() const;
+    virtual QPair<QString, unsigned short> serverAddress() const;
 
     /**
      * @brief signPackageWithToken This method insert token into sending package. The package @a pkg should be inherited  of the IToken interface. IF @a pkg do not have a Itoken parent then this method ignore this validation and return true.
@@ -241,6 +254,12 @@ protected:
                           const QVariant &nodeId,
                           const Header *req = nullptr) override;
 
+    /**
+     * @brief realServerAddress This method return the real server address that connected with this node.
+     * @return The real server address that connected with this node.
+     */
+    const HostAddress& realServerAddress() const;
+
 
 
 
@@ -265,6 +284,8 @@ private:
     bool p_signup(const QString &userId, const QByteArray &hashPassword);
 
     void handleRestRequest(const QSharedPointer<PKG::AbstractData> &pkg, const Header &pkgHeader);
+    void setRealServerAddress(const HostAddress &realServerAddress);
+
 
     ClientStatus _status = ClientStatus::Dissconnected;
     QMutex _handlerMemberMutex;
@@ -274,6 +295,8 @@ private:
 
     QMutex _handlerCacheMutex;
     HandlersCache _handlersCache;
+
+    HostAddress _realServerAddress;
 
 };
 
