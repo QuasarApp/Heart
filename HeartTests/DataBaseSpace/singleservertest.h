@@ -37,6 +37,8 @@ private:
      */
     bool connectNetworkTest();
 
+    bool initTest();
+
 
     QH::AbstractNode *_server = nullptr;
     QH::AbstractNode *_client = nullptr;

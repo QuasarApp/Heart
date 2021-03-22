@@ -26,6 +26,7 @@ SingleServerTest::~SingleServerTest() {
 }
 
 void SingleServerTest::test() {
+    QVERIFY(initTest());
     QVERIFY(connectNetworkTest());
 }
 
@@ -225,5 +226,22 @@ bool SingleServerTest::connectNetworkTest() {
     }
 
     // all tests is completed
+    return true;
+}
+
+bool SingleServerTest::initTest() {
+    auto server = dynamic_cast<TestSingleServer*>(_server);
+
+    if (!server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer")) {
+        return false;
+    }
+
+    QString database = server->dbLocation();
+    server->stop();
+
+    if (QFileInfo::exists(database) && !QFile::remove(database)) {
+        return false;
+    }
+
     return true;
 }

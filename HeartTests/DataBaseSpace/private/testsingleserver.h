@@ -24,6 +24,8 @@ protected:
 
 private:
     QH::PKG::Ping _ping;
+
+    friend class SingleServerTest;
 };
 
 #endif // TESTSINGLESERVER_H

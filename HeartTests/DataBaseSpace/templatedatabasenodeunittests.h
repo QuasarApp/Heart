@@ -77,7 +77,7 @@ protected:
         QString database = BASE::dbLocation();
         BASE::stop();
 
-        if (QFileInfo(database).exists() && !QFile::remove(database)) {
+        if (QFileInfo::exists(database) && !QFile::remove(database)) {
             return false;
         }
 
