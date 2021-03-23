@@ -16,15 +16,16 @@ namespace QH {
 
 /**
  * @brief The AsyncLauncher class is wraper of the Async class for support moving invokes to thread of the current object.
+ * @note For create this object use the AsyncFacrtory class.
  * Exmaple:
  * @code{cpp}
  *  QThread *thread = new QThread();
- *  AsyncLauncher async(thread);
+ *  AsyncLauncher *async = AsyncFacrtory::makeAsyncObject<AsyncLauncher>(thread);
  *  AsyncLauncher::Job action = []() -> bool {
  *      ...
  *  }
  *
- *  async.run(action);
+ *  async->run(action);
  * @endcode
  */
 class AsyncLauncher final: public Async
@@ -36,13 +37,7 @@ public:
      * @param thread This is pointer to the work thread. If you want to change thread in run time just use the setThread method.
      * @param ptr This is QObject parent.
      */
-    AsyncLauncher(QThread * thread, QObject* ptr = nullptr);
-
-    /**
-     * @brief setThread This method sets new work thread.
-     * @param thread This is new value of the thread.
-     */
-    void setThread(QThread * thread);
+    AsyncLauncher(QThread *thread, QObject* ptr = nullptr);
 
     /**
      * @brief run This method run the @a action function in the work thread of this object.

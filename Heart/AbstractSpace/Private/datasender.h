@@ -23,7 +23,7 @@ class DataSender: public Async
 {
     Q_OBJECT
 public:
-    DataSender();
+    DataSender(QThread *thread);
 
     /**
      * @brief sendPackagePrivate This slot move send package to a main thread.

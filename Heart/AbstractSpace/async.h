@@ -11,6 +11,7 @@
 #include <functional>
 #include "config.h"
 #include "atomicmetatypes.h"
+#include "heart_global.h"
 
 namespace QH {
 
@@ -18,8 +19,11 @@ namespace QH {
  * @brief The Async class This is bundle of async templates and async wrappers.
  * @note If you use this object then you do not need include QObject because this class include the  QObject class.
  * Do not forget the Q_OBJECT macross.
+ *
+ * @note All objects of this class must be initialized with the .
+ * So The constructor is private and the AsynFactyry class is a friend class of the Async class.
  */
-class Async: public QObject {
+class HEARTSHARED_EXPORT Async: public QObject {
 
     Q_OBJECT
 
@@ -32,7 +36,19 @@ public:
 
 
 protected:
-    Async(QObject* ptr = nullptr);
+    /**
+     * @brief Async This is default constructor of the async object.
+     * @param thread This is work thread of the async object.
+     * @param ptr This is pointer to qtparent of this object.
+     * @note @a thread must be different of the main thread.
+     */
+    Async(QThread* thread, QObject* ptr = nullptr);
+
+    /**
+      @note This is async distructor.
+        This distructor wait for finishing of the own threads befor delete.
+    */
+    ~Async();
 
     /**
      * @brief waitFor This is base wait function.
@@ -120,7 +136,15 @@ private slots:
                        bool* resultOfWork = nullptr) const;
 
 
-  };
+private:
+    /**
+     * @brief threadAnalize This method check @a thread.
+     *  if @a a thread is main thread then this method print error message in release build and
+     *  invoke abort method in debug.
+     * @param thread This is checked thread object.
+     */
+    void threadAnalize(QThread* thread);
+};
 
 }
 

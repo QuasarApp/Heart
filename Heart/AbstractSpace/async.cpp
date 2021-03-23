@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QThread>
 #include <QDebug>
+#include <quasarapp.h>
 
 // Private implementation of waitFor functions.
 #define waitPrivate(CONDITION, TIMEOUT) \
@@ -21,16 +22,21 @@
     QCoreApplication::processEvents(); \
     return CONDITION; \
 
-
 namespace QH {
-Async::Async(QObject *ptr):
+Async::Async(QThread *thread, QObject *ptr):
     QObject(ptr) {
+
+    threadAnalize(thread);
+    moveToThread(thread);
+}
+
+Async::~Async() {
 
 }
 
 void Async::asyncHandler(Job job,
-                          bool *endOfWork,
-                          bool *resultOfWork) const {
+                         bool *endOfWork,
+                         bool *resultOfWork) const {
 
     bool result = job();
 
@@ -40,8 +46,11 @@ void Async::asyncHandler(Job job,
     if (endOfWork) {
         *endOfWork = true;
     }
+}
 
-
+void Async::threadAnalize(QThread *thread) {
+    auto mainThread = QCoreApplication::instance()->thread();
+    debug_assert(mainThread == thread && !thread, "You try create async object into main thread");
 }
 
 bool Async::waitFor(bool *condition, int timeout) const {

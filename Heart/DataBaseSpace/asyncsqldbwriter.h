@@ -17,15 +17,12 @@ namespace QH {
  * @brief The AsyncSqlDbWriter class is some as SqlDBWriter but run all command in own thread.
  * This class is thread save.
  */
-class AsyncSqlDbWriter final : public SqlDBWriter
+class AsyncSqlDBWriter : public SqlDBWriter
 {
     Q_OBJECT
 public:
-    AsyncSqlDbWriter(QObject* ptr = nullptr);
-    ~AsyncSqlDbWriter();
-
-private:
-    QThread *_own = nullptr;
+    AsyncSqlDBWriter(QObject* ptr = nullptr);
+    ~AsyncSqlDBWriter();
 
 };
 

@@ -5,8 +5,9 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "sqldbwriter.h"
+#include "asyncsqldbwriter.h"
 #include "sqlitedbcache.h"
+#include <QThread>
 
 namespace QH {
 
@@ -14,8 +15,13 @@ namespace QH {
 /**
  * @brief The SQLiteDBCachePrivate class is private implementation of the sqllite database for working in the RAM.
  */
-class SQLiteDBCachePrivate: public SqlDBWriter {
+class SQLiteDBCachePrivate: public AsyncSqlDBWriter {
 
+public:
+    SQLiteDBCachePrivate():
+        AsyncSqlDBWriter() {
+        thread()->setObjectName("DBCache");
+    }
 
     // SqlDBWriter interface
 protected:

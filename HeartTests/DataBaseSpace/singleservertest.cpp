@@ -27,10 +27,10 @@ SingleServerTest::~SingleServerTest() {
 
 void SingleServerTest::test() {
     QVERIFY(initTest());
-    QVERIFY(connectNetworkTest());
+    connectNetworkTest();
 }
 
-bool SingleServerTest::connectNetworkTest() {
+void SingleServerTest::connectNetworkTest() {
 
     // Init default client and server objects.
     auto client = dynamic_cast<TestSingleServerClient*>(_client);
@@ -88,145 +88,110 @@ bool SingleServerTest::connectNetworkTest() {
         return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserNotLogged);
     };
 
-    if (!(client && server)) {
-        return false;
-    }
+    QVERIFY(client && server);
+
+    if (!client)
+        return;
 
     // Client must be gat a QH::ClientStatus::Dissconnected status.
-    if (client->getStatus() != QH::ClientStatus::Dissconnected)
-        return false;
+    QVERIFY(client->getStatus() == QH::ClientStatus::Dissconnected);
 
-    if (!client->connectToServer())
-        return false;
+    QVERIFY(client->connectToServer());
+
 
     // Client must be gat a QH::ClientStatus::Connecting status after connect.
-    if (client->getStatus() != QH::ClientStatus::Connecting)
-        return false;
+    QVERIFY(client->getStatus() == QH::ClientStatus::Connecting);
 
     // All attempts of the loginor or registered must be failed because the client have an offline status.
-    if (client->login(user))
-        return false;
+    QVERIFY(!client->login(user));
 
-    if (client->login(user, userPassword))
-        return false;
+    QVERIFY(!client->login(user, userPassword));
 
-    if (client->signup(user, userPassword))
-        return false;
+    QVERIFY(!client->signup(user, userPassword));
 
     // Run server
-    if (!server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer"))
-        return false;
+    QVERIFY(server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer"));
 
     // Clent must be connected because the server alredy started successful.
-    if (!funcPrivateConnect(connectToserver, checkConnectedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(connectToserver, checkConnectedStatus));
 
     // The attempt of the login must be failed bacause the server do not have a user with wroted name.
-    if (!client->login(user, userPassword))
-        return false;
+    QVERIFY(client->login(user, userPassword));
 
     // Client must be gat a QH::ClientStatus::Loginning status after a successful login.
-    if (client->getStatus() != QH::ClientStatus::Loginning)
-        return false;
+    QVERIFY(client->getStatus() == QH::ClientStatus::Loginning);
 
-    if (!funcPrivateConnect([](){return true;}, checkLoginNonExitsUser)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect([](){return true;}, checkLoginNonExitsUser));
 
-    if (!funcPrivateConnect(loginRequestWithPassword, checkLoginNonExitsUser)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(loginRequestWithPassword, checkLoginNonExitsUser));
 
     // The attempt of the signup must be finished successful bacause user with wroted name not exists.
-    if (!funcPrivateConnect(sigupRequest, checkLoginedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(sigupRequest, checkLoginedStatus));
 
     // logout client and try login again.
-    client->logout();
+    QVERIFY(client->logout());
 
     // waiting of the reflection of the server. This needed because server do not responce about successful logout.
-    wait([](){return false;}, 500);
+    QVERIFY(wait([](){return true;}, 500));
 
     // This login must be failed bacause clients token is removed after logout mehod.
-    if (client->login(user))
-        return false;
+    QVERIFY(!client->login(user));
 
     // must be finished successful because client is unlogined.
-    if (!funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus));
 
     // disconnect client and try login again with login without password.
     client->disconnectFromServer();
 
     // Client must be gat a QH::ClientStatus::Dissconnected status.
-    if (client->getStatus() != QH::ClientStatus::Dissconnected)
-        return false;
+    QVERIFY(client->getStatus() == QH::ClientStatus::Dissconnected);
 
     // Clent must be connected because the server alredy started successful.
-    if (!funcPrivateConnect(connectToserver, checkConnectedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(connectToserver, checkConnectedStatus));
 
     // must be finished successful because an unlogined client have a valid token.
-    if (!funcPrivateConnect(loginRequestUsesToken, checkLoginedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(loginRequestUsesToken, checkLoginedStatus));
 
     // logout client and try login again.
-    client->logout();
+    QVERIFY(client->logout());
+
     // waiting of the reflection of the server. This needed because server do not responce about successful logout.
-    wait([](){return false;}, 500);
+    QVERIFY(wait([](){return true;}, 500));
 
     // must be finished failed because client wrote invalid password.
-    if (!funcPrivateConnect(loginRequestWithInvalidPassword, checkLoginInvalidPassword)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(loginRequestWithInvalidPassword, checkLoginInvalidPassword));
 
     // check client status after invalid login. status must be equal Connected because client receive a error message from server.
-    if (client->getStatus() != QH::ClientStatus::Connected)
-        return false;
+    QVERIFY(client->getStatus() == QH::ClientStatus::Connected);
 
     // must be finished failed because client with wroted name is exists.
-    if (!funcPrivateConnect(sigupRequest, checksigupExitsUser)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(sigupRequest, checksigupExitsUser));
 
     //must be failed
-    if (client->removeUser())
-        return false;
+    QVERIFY(!client->removeUser());
 
     // force set status loginned for testing validation on server.
     client->setStatus(QH::ClientStatus::Logined);
 
     // must be finished failed because client is not loginned. and failed
-    if (funcPrivateConnect(removeRequest, checkRemoveNotLoginningClient)) {
-        return false;
-    }
+    QVERIFY(!funcPrivateConnect(removeRequest, checkRemoveNotLoginningClient));
 
     client->setStatus(QH::ClientStatus::Connected);
 
     // must be finished successful because client is unlogined.
-    if (!funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus));
 
     //must be finished successful bacause client is loginned
-    if (!client->removeUser())
-        return false;
+    QVERIFY(client->removeUser());
 
     // waiting of the reflection of the server. This needed because server do not responce about successful operation.
-    wait([](){return false;}, 500);
+    QVERIFY(wait([](){return true;}, 500));
 
     // must be finished successful because old user is removeed.
-    if (!funcPrivateConnect(sigupRequest, checkLoginedStatus)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(sigupRequest, checkLoginedStatus));
 
     // all tests is completed
-    return true;
+
 }
 
 bool SingleServerTest::initTest() {

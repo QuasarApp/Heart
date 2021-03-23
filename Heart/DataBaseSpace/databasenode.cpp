@@ -120,7 +120,7 @@ DataBaseNode::~DataBaseNode() {
 void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
                                         SqlDBWriter *writer) {
     if (!writer) {
-        writer = new AsyncSqlDbWriter();
+        writer = new AsyncSqlDBWriter();
     }
 
     if (!cache) {

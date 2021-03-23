@@ -31,14 +31,15 @@ using namespace PKG;
 AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
 
-    _dataSender = new DataSender();
+
+
 
     _senderThread = new QThread();
     _senderThread->setObjectName("Sender");
 
+    // This object moving to _senderThread.
+    _dataSender = new DataSender(_senderThread);
     _socketWorker = new AsyncLauncher(_senderThread);
-
-    _dataSender->moveToThread(_senderThread);
 
     _senderThread->start();
 
@@ -46,6 +47,7 @@ AbstractNode::AbstractNode( QObject *ptr):
     _threadPool = new QThreadPool(this);
     _threadPool->setMaxThreadCount(QThread::idealThreadCount());
     _threadPool->setObjectName("PackageWorker");
+
 
     registerPackageType<Ping>();
     registerPackageType<BadRequest>();

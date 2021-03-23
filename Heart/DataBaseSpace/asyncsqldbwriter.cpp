@@ -17,20 +17,16 @@ namespace QH {
 
 using namespace PKG;
 
-AsyncSqlDbWriter::AsyncSqlDbWriter(QObject *ptr):
-    SqlDBWriter(ptr) {
-
-    _own = new QThread();
-    _own->setObjectName("AsyncSqlDbWriter");
-    moveToThread(_own);
-    _own->start();
-
+AsyncSqlDBWriter::AsyncSqlDBWriter(QObject *ptr):
+    SqlDBWriter(new QThread(), ptr) {
+    thread()->setObjectName("AsyncSqlDbWriter");
+    thread()->start();
 }
 
-AsyncSqlDbWriter::~AsyncSqlDbWriter() {
-    _own->quit();
-    _own->wait();
+AsyncSqlDBWriter::~AsyncSqlDBWriter() {
+    thread()->quit();
+    thread()->wait();
 
-    _own->deleteLater();
+    thread()->deleteLater();
 }
 }

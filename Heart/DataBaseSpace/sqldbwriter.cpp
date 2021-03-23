@@ -205,8 +205,8 @@ const QSqlDatabase *SqlDBWriter::db() const {
     return _db;
 }
 
-SqlDBWriter::SqlDBWriter(QObject* ptr):
-    Async(ptr) {
+SqlDBWriter::SqlDBWriter(QThread *thread, QObject* ptr):
+    Async(thread, ptr) {
 }
 
 bool SqlDBWriter::initDb(const QString &initDbParams) {

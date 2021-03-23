@@ -30,13 +30,13 @@ namespace QH {
  *  Before working with database you need to initialize it. The SqlDBWriter support a any sql databases,
  *  For list of supported drivers see the Qt Docummentation https://doc.qt.io/qt-5/sql-driver.html
  *  For initialize a custom database driver you need to set an own params see the SqlDBWriter::initDb metthod.
- *  This class work only on single thread. For change working thread use the Qt method moveToThread.
+ *  This class work only on own thread. For change working thread use the Qt method moveToThread.
  */
 class HEARTSHARED_EXPORT SqlDBWriter : public Async, public iObjectProvider
 {
     Q_OBJECT
 public:
-    SqlDBWriter(QObject* ptr = nullptr);
+    SqlDBWriter(QThread *thread, QObject* ptr = nullptr);
 
     /**
      * @brief initDb This method is wraper of the initDb(const QVariantMap &params) method.

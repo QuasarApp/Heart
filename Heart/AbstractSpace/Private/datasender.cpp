@@ -13,7 +13,8 @@
 
 namespace QH {
 
-DataSender::DataSender() {
+DataSender::DataSender(QThread *thread):
+    Async(thread ) {
 
 }
 

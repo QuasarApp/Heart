@@ -8,15 +8,10 @@
 #include "asynclauncher.h"
 namespace QH {
 
-AsyncLauncher::AsyncLauncher(QThread * thread, QObject *ptr):
-    Async(ptr) {
-
-    setThread(thread);
+AsyncLauncher::AsyncLauncher(QThread *thread, QObject *ptr):
+    Async(thread, ptr) {
 }
 
-void AsyncLauncher::setThread(QThread *thread) {
-    moveToThread(thread);
-}
 
 bool AsyncLauncher::run(const Async::Job &action, bool wait) {
     return asyncLauncher(action, wait);

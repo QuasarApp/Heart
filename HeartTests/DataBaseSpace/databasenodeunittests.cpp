@@ -19,12 +19,9 @@
             BASE, MEMBER, CACHE, WRITER> { \
     };
 
-TEST_CASE(Case0, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDBCache, QH::SqlDBWriter)
-TEST_CASE(Case1, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDBCache, QH::AsyncSqlDbWriter)
-TEST_CASE(Case2, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SQLiteDBCache, QH::SqlDBWriter)
-TEST_CASE(Case3, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SQLiteDBCache, QH::AsyncSqlDbWriter)
-TEST_CASE(Case4, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDB, QH::SqlDBWriter)
-TEST_CASE(Case5, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDB, QH::AsyncSqlDbWriter)
+TEST_CASE(Case0, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDBCache, QH::AsyncSqlDBWriter)
+TEST_CASE(Case1, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SQLiteDBCache, QH::AsyncSqlDBWriter)
+TEST_CASE(Case2, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDB, QH::AsyncSqlDBWriter)
 
 
 template <class T>
@@ -44,9 +41,6 @@ bool DataBaseNodeUnitTests::test() {
     RUN_TEST_CASE(Case0)
     RUN_TEST_CASE(Case1)
     RUN_TEST_CASE(Case2)
-    RUN_TEST_CASE(Case3)
-    RUN_TEST_CASE(Case4)
-    RUN_TEST_CASE(Case5)
 
     return true;
 }
