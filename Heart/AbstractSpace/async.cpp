@@ -5,6 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
+#include "abstractnode.h"
 #include "async.h"
 
 #include <QCoreApplication>
@@ -49,8 +50,9 @@ void Async::asyncHandler(Job job,
 }
 
 void Async::threadAnalize(QThread *thread) {
-    auto mainThread = QCoreApplication::instance()->thread();
-    debug_assert(mainThread == thread && !thread, "You try create async object into main thread");
+    auto mainThread = AbstractNode::mainThreadID();
+
+    debug_assert(mainThread != thread && thread, "You try create async object into main thread");
 }
 
 bool Async::waitFor(bool *condition, int timeout) const {

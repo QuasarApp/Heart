@@ -221,6 +221,12 @@ public:
      */
     bool ping( const HostAddress& address);
 
+    /**
+     * @brief mainThreadID This method return the pointer to main thread
+     * @return pointer to main thread
+     */
+    static QThread * mainThreadID();
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -228,6 +234,8 @@ signals:
      * @param msg - received text of remoute node (server).
      */
     void requestError(unsigned char code, QString msg);
+
+
 
 protected:
 
@@ -552,6 +560,11 @@ private:
      * @param node - Node address.
      */
     void checkConfirmendOfNode(AbstractNodeInfo *node);
+
+    /**
+     * @brief initThreadId This method save curent thread as a main thread.
+     */
+    void initThreadId() const;
 
     SslMode _mode = SslMode::NoSSL;
     QSslConfiguration _ssl;

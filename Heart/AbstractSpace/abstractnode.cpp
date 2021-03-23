@@ -31,8 +31,7 @@ using namespace PKG;
 AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
 
-
-
+    initThreadId();
 
     _senderThread = new QThread();
     _senderThread->setObjectName("Sender");
@@ -986,6 +985,16 @@ void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
     if (info->status() != NodeCoonectionStatus::Confirmed) {
         removeNode(info->networkAddress());
     }
+}
+
+void AbstractNode::initThreadId() const {
+    mainThreadID();
+}
+
+QThread *AbstractNode::mainThreadID() {
+    static auto thread = QThread::currentThread();
+
+    return thread;
 }
 
 }
