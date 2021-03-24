@@ -44,7 +44,6 @@ AbstractNode::AbstractNode( QObject *ptr):
 
 
     _threadPool = new QThreadPool(this);
-    _threadPool->setMaxThreadCount(QThread::idealThreadCount());
     _threadPool->setObjectName("PackageWorker");
 
 
@@ -70,16 +69,20 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
         return false;
     }
 
+    QMutexLocker lock(&_threadPoolMutex);
+    _threadPool->setMaxThreadCount(QThread::idealThreadCount());
+
     return true;
 }
 
 void AbstractNode::stop() {
     close();
 
-    QMutexLocker locer(&_connectionsMutex);
+    _connectionsMutex.lock();
     for (const auto &i : qAsConst(_connections)) {
         i->disconnect();
     }
+    _connectionsMutex.unlock();
 
     for (auto it: qAsConst(_workers)) {
         if (!it->isFinished())
@@ -91,6 +94,9 @@ void AbstractNode::stop() {
     }
     _receiveData.clear();
 
+    QMutexLocker lock(&_threadPoolMutex);
+    _threadPool->waitForDone(WAIT_TIME);
+    _threadPool->setMaxThreadCount(0);
 }
 
 AbstractNodeInfo *AbstractNode::getInfoPtr(const HostAddress &id) {
@@ -892,7 +898,11 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
     };
 
     auto worker = new QFutureWatcher <bool>();
+
+    _threadPoolMutex.lock();
     worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
+    _threadPoolMutex.unlock();
+
     _workers.insert(worker);
 
     connect(worker, &QFutureWatcher<bool>::finished,

@@ -579,6 +579,7 @@ private:
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;
+    mutable QMutex _threadPoolMutex;
 
     QThreadPool *_threadPool = nullptr;
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;

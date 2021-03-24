@@ -10,10 +10,18 @@
 #include <QStandardPaths>
 
 
+#ifdef RELEASE_BUILD
+    #define WAIT_TIME 30000
+    #define WAIT_RESPOCE_TIME 10000
+#else
+    #define WAIT_TIME 300000000
+    #define WAIT_RESPOCE_TIME 100000000
+#endif
+
 // network settings
 #define LOCAL_SERVER          "127.0.0.1"
 #define DEFAULT_PORT          3090  // Default work port
-#define WAIT_CONFIRM_TIME     30000 // timeout for waiting responce of server or client. 30000 msec = 30 sec
+#define WAIT_CONFIRM_TIME   WAIT_TIME // timeout for waiting responce of server or client. 30000 msec = 30 sec
 
 // Data Base settings
 #define DEFAULT_DB_NAME "Storage.sqlite" // default database name of server
@@ -28,13 +36,8 @@
 // Node Settings
 #define PACKAGE_CACHE_SIZE 1000         // this is default count limit of received packages
 
+
 // Other settings
-#ifdef RELEASE_BUILD
-    #define WAIT_TIME 30000
-    #define WAIT_RESPOCE_TIME 10000
-#else
-    #define WAIT_TIME 300000000
-    #define WAIT_RESPOCE_TIME 100000000
-#endif
+
 
 #endif // CONFIG_H

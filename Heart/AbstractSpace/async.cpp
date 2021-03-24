@@ -63,8 +63,17 @@ bool Async::waitFor(bool *condition, int timeout) const {
 }
 
 bool Async::asyncLauncher(const Async::Job &job, bool await) const {
+
     if (QThread::currentThread() == thread()) {
         return job();
+    }
+
+    if (!thread()->isRunning()) {
+
+        QuasarAppUtils::Params::log("The work threand of the async object is not running",
+                                    QuasarAppUtils::Error);
+
+        return false;
     }
 
     if (!await) {
