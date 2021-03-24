@@ -50,7 +50,7 @@ void Async::asyncHandler(Job job,
 }
 
 void Async::threadAnalize(QThread *thread) {
-    auto mainThread = AbstractNode::mainThreadID();
+    QThread * mainThread = AbstractNode::mainThreadID();
 
     debug_assert((mainThread != thread) && thread, "You try create async object into main thread");
 }
