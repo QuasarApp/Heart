@@ -141,7 +141,7 @@ void SingleServerTest::connectNetworkTest() {
     QVERIFY(client->logout());
 
     // waiting of the reflection of the server. This needed because server do not responce about successful logout.
-    QVERIFY(wait([](){return true;}, 500));
+    wait([](){return false;}, 500);
 
     // This login must be failed bacause clients token is removed after logout mehod.
     QVERIFY(!client->login(user));
@@ -165,7 +165,7 @@ void SingleServerTest::connectNetworkTest() {
     QVERIFY(client->logout());
 
     // waiting of the reflection of the server. This needed because server do not responce about successful logout.
-    QVERIFY(wait([](){return true;}, 500));
+    wait([](){return false;}, 500);
 
     // must be finished failed because client wrote invalid password.
     QVERIFY(funcPrivateConnect(loginRequestWithInvalidPassword, checkLoginInvalidPassword));
@@ -194,7 +194,7 @@ void SingleServerTest::connectNetworkTest() {
     QVERIFY(client->removeUser());
 
     // waiting of the reflection of the server. This needed because server do not responce about successful operation.
-    QVERIFY(wait([](){return true;}, 500));
+    wait([](){return false;}, 500);
 
     // must be finished successful because old user is removeed.
     QVERIFY(funcPrivateConnect(sigupRequest, checkLoginedStatus));
