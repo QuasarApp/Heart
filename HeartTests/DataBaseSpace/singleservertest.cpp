@@ -64,8 +64,17 @@ void SingleServerTest::connectNetworkTest() {
         return client->signup(user, userPassword);
     };
 
+    auto dissconnectRequest = [client]() {
+        client->disconnectFromServer();
+        return true;
+    };
+
     auto checkLoginedStatus = [client](){
         return client->getStatus() == QH::ClientStatus::Logined;
+    };
+
+    auto checkDisconnectedStatus = [client](){
+        return client->getStatus() == QH::ClientStatus::Dissconnected;
     };
 
     auto checkConnectedStatus = [client](){
@@ -141,7 +150,7 @@ void SingleServerTest::connectNetworkTest() {
     QVERIFY(funcPrivateConnect(loginRequestWithPassword, checkLoginedStatus));
 
     // disconnect client and try login again with login without password.
-    client->disconnectFromServer();
+    QVERIFY(funcPrivateConnect(dissconnectRequest, checkDisconnectedStatus));
 
     // Client must be gat a QH::ClientStatus::Dissconnected status.
     QVERIFY(client->getStatus() == QH::ClientStatus::Dissconnected);

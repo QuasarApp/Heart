@@ -177,7 +177,6 @@ void SingleClient::disconnectFromServer() {
     }
 
     DataBaseNode::removeNode(realServerAddress());
-    setStatus(ClientStatus::Dissconnected);
 }
 
 void SingleClient::setStatus(const ClientStatus &status) {

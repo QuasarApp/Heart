@@ -154,6 +154,7 @@ public:
      * @brief addNode - Connect to node (server) with address.
      * @param address - This is Network address of node (server).
      * @param mode - This is mode of connection see SslMode.  By default using SslMode::NoSSL connection mode, it is not secure.
+     * @return true if the node aaded successful
      */
     bool addNode(const HostAddress &address);
 
@@ -162,14 +163,16 @@ public:
      * @param domain - This is domain address of node (server).
      * @param port - This is target port of node (server).
      * @param mode - This is mode of connection see SslMode. By default using SslMode::NoSSL connection mode, it is not secure.
+     * @return true if the node aaded successful
      */
     bool addNode(const QString &domain, unsigned short port);
 
     /**
      * @brief removeNode - Remove node and disconnected forom node (server).
      * @param nodeAdderess - This is network adddress of removed node (server).
+     * @return true if the node removed successful. If the nde with @a nodeAdderess is not exits return false.
      */
-    void removeNode(const HostAddress& nodeAdderess);
+    bool removeNode(const HostAddress& nodeAdderess);
 
     /**
      * @brief address - Thim method return own network address of current node (server).

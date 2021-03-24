@@ -195,17 +195,20 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port) {
 
 }
 
-void AbstractNode::removeNode(const HostAddress &nodeAdderess) {
+bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
 
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
 
         if (ptr->isLocal()) {
             ptr->disconnect();
+            return true;
         } else {
             QTimer::singleShot(WAIT_CONFIRM_TIME, this,
                                std::bind(&AbstractNode::handleForceRemoveNode, this, nodeAdderess));
         }
     }
+
+    return false;
 }
 
 HostAddress AbstractNode::address() const {
