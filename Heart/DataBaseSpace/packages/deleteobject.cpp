@@ -33,7 +33,7 @@ void DeleteObject::setSignToken(const AccessToken &token) {
 }
 
 QString DeleteObject::primaryKey() const {
-    return "";
+    return "id";
 }
 
 QDataStream &DeleteObject::fromStream(QDataStream &stream) {

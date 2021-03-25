@@ -113,6 +113,7 @@ ISqlDBCache::ISqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode) {
     lastUpdateTime = QDateTime::currentMSecsSinceEpoch();
     this->updateInterval = updateInterval;
     setMode(mode);
+
 }
 
 ISqlDBCache::~ISqlDBCache() {

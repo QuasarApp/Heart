@@ -25,7 +25,7 @@ SingleServer::SingleServer()
 }
 
 ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
-                                                 const AbstractNodeInfo *info) {
+                                               const AbstractNodeInfo *info) {
     if (!db()) {
         return ErrorCodes::InternalError;
     }
@@ -160,19 +160,19 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
     }
 
     if (H_16<QH::PKG::AuthRequest>() == pkg->cmd()) {
-            auto obj = pkg.staticCast<QH::PKG::AuthRequest>();
+        auto obj = pkg.staticCast<QH::PKG::AuthRequest>();
 
-            if (!obj->isValid()) {
-                prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
-                                         ErrorCodes::InvalidRequest, REQUEST_ERROR);
-                return ParserResult::Error;
-            }
+        if (!obj->isValid()) {
+            prepareAndSendBadRequest(sender->networkAddress(), pkgHeader,
+                                     ErrorCodes::InvalidRequest, REQUEST_ERROR);
+            return ParserResult::Error;
+        }
 
-            if (!workWithUserRequest(obj, pkgHeader, sender)) {
-                return QH::ParserResult::Error;
-            }
+        if (!workWithUserRequest(obj, pkgHeader, sender)) {
+            return QH::ParserResult::Error;
+        }
 
-            return QH::ParserResult::Processed;
+        return QH::ParserResult::Processed;
 
     }
 
@@ -193,17 +193,19 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
 
     if (H_16<PKG::DeleteObject>() == pkg->cmd()) {
-            auto obj = pkg.staticCast<PKG::DeleteObject>();
+        auto obj = pkg.staticCast<PKG::DeleteObject>();
 
-            auto requesterId = getSender(sender, obj.data());
-            if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
-                badRequest(sender->networkAddress(), pkgHeader, {
-                               ErrorCodes::OperatioForbiden,
-                               "Permision denied"
-                           });
-                return ParserResult::Error;
+        auto requesterId = getSender(sender, obj.data());
+        if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
+            badRequest(sender->networkAddress(), pkgHeader, {
+                           ErrorCodes::OperatioForbiden,
+                           "Permision denied"
+                       });
+            return ParserResult::Error;
 
-            }
+        }
+
+        return QH::ParserResult::Processed;
     }
 
     return QH::ParserResult::NotProcessed;

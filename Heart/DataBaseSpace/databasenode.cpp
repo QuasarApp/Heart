@@ -131,10 +131,12 @@ void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
     _db = cache;
 
     connect(_db, &SqlDBCache::sigItemChanged,
-            this, &DataBaseNode::handleObjectChanged);
+            this, &DataBaseNode::handleObjectChanged,
+            Qt::DirectConnection);
 
     connect(_db, &SqlDBCache::sigItemDeleted,
-            this, &DataBaseNode::handleObjectDeleted);
+            this, &DataBaseNode::handleObjectDeleted,
+            Qt::DirectConnection);
 }
 
 

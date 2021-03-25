@@ -103,5 +103,6 @@ qint64 qHash(const DbAddress& address);
 
 }
 
+Q_DECLARE_METATYPE(QH::DbAddress)
 
 #endif // DBADDRESS_H
