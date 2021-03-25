@@ -42,14 +42,11 @@ AbstractNode::AbstractNode( QObject *ptr):
 
     _senderThread->start();
 
-
-    _threadPool = new QThreadPool(this);
-    _threadPool->setObjectName("PackageWorker");
-
-
     registerPackageType<Ping>();
     registerPackageType<BadRequest>();
     registerPackageType<CloseConnection>();
+
+    initThreadPool();
 
 }
 
@@ -69,8 +66,7 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
         return false;
     }
 
-    QMutexLocker lock(&_threadPoolMutex);
-    _threadPool->setMaxThreadCount(QThread::idealThreadCount());
+    initThreadPool();
 
     return true;
 }
@@ -94,9 +90,7 @@ void AbstractNode::stop() {
     }
     _receiveData.clear();
 
-    QMutexLocker lock(&_threadPoolMutex);
-    _threadPool->waitForDone(WAIT_TIME);
-    _threadPool->setMaxThreadCount(0);
+    deinitThreadPool();
 }
 
 AbstractNodeInfo *AbstractNode::getInfoPtr(const HostAddress &id) {
@@ -200,11 +194,14 @@ bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
 
         if (ptr->isLocal()) {
-            ptr->disconnect();
+            ptr->removeSocket();
             return true;
         } else {
             QTimer::singleShot(WAIT_CONFIRM_TIME, this,
                                std::bind(&AbstractNode::handleForceRemoveNode, this, nodeAdderess));
+
+            CloseConnection close;
+            return sendData(&close, nodeAdderess);
         }
     }
 
@@ -388,7 +385,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         return info->isValid();
     }
 
-    auto info = createNodeInfo(socket, clientAddress);
+    auto info = createNodeInfo(socket, &cliAddress);
 
     info->setIsLocal(clientAddress);
 
@@ -837,7 +834,7 @@ void AbstractNode::handleWorkerStoped() {
 void AbstractNode::handleForceRemoveNode(HostAddress node) {
     AbstractNodeInfo* info = getInfoPtr(node);
     if (info) {
-        info->disconnect();
+        info->removeSocket();
     }
 }
 
@@ -900,16 +897,17 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
         return true;
     };
 
-    auto worker = new QFutureWatcher <bool>();
 
-    _threadPoolMutex.lock();
-    worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
-    _threadPoolMutex.unlock();
+    QMutexLocker locer(&_threadPoolMutex);
 
-    _workers.insert(worker);
+    if (_threadPool) {
+        auto worker = new QFutureWatcher <bool>();
+        worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
+        _workers.insert(worker);
 
-    connect(worker, &QFutureWatcher<bool>::finished,
-            this, &AbstractNode::handleWorkerStoped);
+        connect(worker, &QFutureWatcher<bool>::finished,
+                this, &AbstractNode::handleWorkerStoped);
+    }
 }
 
 SslMode AbstractNode::getMode() const {
@@ -1002,6 +1000,27 @@ void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
 
 void AbstractNode::initThreadId() const {
     mainThreadID();
+}
+
+void AbstractNode::initThreadPool() {
+    deinitThreadPool();
+
+    QMutexLocker lock(&_threadPoolMutex);
+    _threadPool = new QThreadPool();
+    _threadPool->setObjectName("PackageWorker");
+    _threadPool->setMaxThreadCount(QThread::idealThreadCount());
+}
+
+void AbstractNode::deinitThreadPool() {
+    QMutexLocker lock(&_threadPoolMutex);
+
+    if (!_threadPool) {
+        return;
+    }
+
+    _threadPool->waitForDone(WAIT_TIME);
+    delete _threadPool;
+    _threadPool = nullptr;
 }
 
 QThread *AbstractNode::mainThreadID() {

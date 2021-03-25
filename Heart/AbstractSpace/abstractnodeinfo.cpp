@@ -28,9 +28,12 @@ QAbstractSocket *AbstractNodeInfo::sct() const {
     return _sct;
 }
 
-void AbstractNodeInfo::disconnect() {
+void AbstractNodeInfo::removeSocket() {
     if (_sct) {
         auto socketPtr = _sct;
+        _sct = nullptr;
+
+        disconnect(socketPtr);
 
         // We invoke the delate later method on another thread (thread of the socket.)
         // because all network sockets must be open adn closed in the one thread.
@@ -38,15 +41,16 @@ void AbstractNodeInfo::disconnect() {
                                   "deleteLater",
                                   Qt::QueuedConnection);
 
-        _sct = nullptr;
 
         setStatus(NodeCoonectionStatus::NotConnected);
+        emit sigDisconnected(this);
+
     }
 }
 
 void AbstractNodeInfo::ban() {
     _trust = static_cast<int>(TrustNode::Baned);
-    disconnect();
+    removeSocket();
 }
 
 bool AbstractNodeInfo::isBanned() const {
@@ -59,7 +63,7 @@ void AbstractNodeInfo::unBan() {
 
 void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
 
-    AbstractNodeInfo::disconnect();
+    AbstractNodeInfo::removeSocket();
 
     _sct = sct;
 
@@ -77,18 +81,11 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
         emit sigConnected(this);
     };
 
-    auto diconnectedF = [this] () {
-
-        disconnect();
-        setStatus(NodeCoonectionStatus::NotConnected);
-        emit sigDisconnected(this);
-    };
-
     connect(_sct, &QAbstractSocket::connected,
             this, connectedF, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::disconnected,
-            this, diconnectedF, Qt::DirectConnection);
+            this, &AbstractNodeInfo::removeSocket, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::errorOccurred,
             this, [this] (QAbstractSocket::SocketError err){emit sigErrorOccurred(this, err);},
@@ -173,7 +170,7 @@ void AbstractNodeInfo::setTrust(int trust) {
     _trust = trust;
 
     if (isBanned()) {
-        disconnect();
+        removeSocket();
     }
 }
 

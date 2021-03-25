@@ -27,10 +27,10 @@ SingleServerTest::~SingleServerTest() {
 
 void SingleServerTest::test() {
     QVERIFY(initTest());
-    connectNetworkTest();
+    loginTest();
 }
 
-void SingleServerTest::connectNetworkTest() {
+void SingleServerTest::loginTest() {
 
     // Init default client and server objects.
     auto client = dynamic_cast<TestSingleServerClient*>(_client);

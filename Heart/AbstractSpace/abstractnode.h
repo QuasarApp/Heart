@@ -569,6 +569,16 @@ private:
      */
     void initThreadId() const;
 
+    /**
+     * @brief initThreadPool This method initialize thread pool of the workers
+     */
+    void initThreadPool();
+
+    /**
+     * @brief deinitThreadPool This method remove all workers threads
+     */
+    void deinitThreadPool();
+
     SslMode _mode = SslMode::NoSSL;
     QSslConfiguration _ssl;
     QHash<HostAddress, AbstractNodeInfo*> _connections;

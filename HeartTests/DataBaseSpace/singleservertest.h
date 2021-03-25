@@ -35,7 +35,7 @@ private:
      *  this test check nodes connections greatThen 3 node
      * @return
      */
-    void connectNetworkTest();
+    void loginTest();
 
     bool initTest();
 

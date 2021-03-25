@@ -86,12 +86,6 @@ public:
     QAbstractSocket *sct() const;
 
     /**
-     * @brief disconnect This method disconnect device from host.
-     * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object before close connection. This using on the poweroff signals. By Default this arguments = false.
-     */
-    virtual void disconnect();
-
-    /**
      * @brief ban This node, set trust value to 0.
      */
     virtual void ban();
@@ -198,6 +192,13 @@ public:
      */
     void setSct(QAbstractSocket *sct);
 
+public slots:
+    /**
+     * @brief disconnectNetworkConnection This method disconnect device from host.
+     * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object before close connection. This using on the poweroff signals. By Default this arguments = false.
+     */
+    void removeSocket();
+
 signals:
 
     /**
@@ -247,6 +248,7 @@ protected:
      * @return true if node is confirmed.
      */
     virtual bool confirmData() const;
+
 
 private:
 
