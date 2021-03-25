@@ -13,6 +13,7 @@
 #include <basenodeinfo.h>
 #include <badrequest.h>
 #include <getmaxintegerid.h>
+#include "deleteobject.h"
 #include "getsinglevalue.h"
 
 namespace QH {
@@ -133,17 +134,6 @@ ErrorCodes::Code SingleServer::logOutUser(const PKG::UserMember &user,
 
 }
 
-ErrorCodes::Code SingleServer::deleteUser(const QSharedPointer<PKG::UserMember> &user,
-                                          const AbstractNodeInfo *info) {
-
-    auto requesterId = getSender(info, user.data());
-    if (deleteObject(requesterId, user) != DBOperationResult::Allowed) {
-        return ErrorCodes::OperatioForbiden;
-    }
-
-    return ErrorCodes::NoError;
-}
-
 bool SingleServer::signValidation(const PKG::AbstractData *data, const AbstractNodeInfo *sender) const {
     auto iToken = dynamic_cast<const IToken*>(data);
     auto senderInfo = dynamic_cast<const BaseNodeInfo*>(sender);
@@ -201,6 +191,21 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
         return ParserResult::Error;
     };
 
+
+    if (H_16<PKG::DeleteObject>() == pkg->cmd()) {
+            auto obj = pkg.staticCast<PKG::DeleteObject>();
+
+            auto requesterId = getSender(sender, obj.data());
+            if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
+                badRequest(sender->networkAddress(), pkgHeader, {
+                               ErrorCodes::OperatioForbiden,
+                               "Permision denied"
+                           });
+                return ParserResult::Error;
+
+            }
+    }
+
     return QH::ParserResult::NotProcessed;
 
 }
@@ -227,8 +232,6 @@ bool SingleServer::workWithUserRequest(const QSharedPointer<PKG::UserMember>& ob
         result = registerNewUser(*obj, sender);
     } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::LogOut)) {
         result = logOutUser(*obj, sender);
-    } else if (request->getRequestCmd() == static_cast<quint8>(PKG::UserRequestType::Remove)) {
-        result = deleteUser(obj, sender);
     }
 
     if (result == ErrorCodes::InternalError) {

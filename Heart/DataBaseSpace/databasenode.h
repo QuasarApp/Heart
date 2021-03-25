@@ -376,14 +376,30 @@ protected:
     virtual QSet<QString> systemTables() const;
 
     /**
-     * @brief objectChanged This method send all subscriptions message with this object.
+     * @brief notifyObjectChanged This method send all subscriptions message with this object.
      * @param item changed object.
      * @return true if an item object sendible.
      */
-    bool objectChanged(const QSharedPointer<PKG::ISubscribableData> &item);
+    bool notifyObjectChanged(const QSharedPointer<PKG::ISubscribableData> &item);
+
+    /**
+     * @brief objectRemoved This method invoked when object with @a address removed from database.
+     *  Oberride this method for handle this event. Default implementation do nothing.
+     * @param address This is address of the deteted object.
+     */
+    virtual void objectRemoved(const DbAddress& address);
+
+    /**
+     * @brief objectRemoved This method invoked when object with @a address changed in database.
+     *  Override this method for handle this event. Default implementation do nothing.
+     * @param address This is address of the changed object.
+     */
+    virtual void objectChanged(const QSharedPointer<PKG::DBObject>& obj);
+
 
 private slots:
     void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
+    void handleObjectDeleted(const DbAddress &item);
 
 
 private:

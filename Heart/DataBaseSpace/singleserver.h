@@ -80,15 +80,6 @@ protected:
     virtual ErrorCodes::Code logOutUser(const PKG::UserMember &user, const AbstractNodeInfo* info);
 
     /**
-     * @brief deleteUser This method remove the user from server.
-     * @param user This is removable user.
-     * @param info This is information about sender.
-     * @return Error code of this operations.
-     */
-    virtual ErrorCodes::Code deleteUser(const QSharedPointer<PKG::UserMember> &user,
-                                        const AbstractNodeInfo* info);
-
-    /**
      * @brief signValidation This method return true if the package of the user have a token and it token is valid.
      *  Except is login request. User must be send own login and hash password.
      *  @param data This is validation package data.

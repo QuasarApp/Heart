@@ -24,8 +24,32 @@ DBVariantMap DeleteObject::variantMap() const {
     return {};
 }
 
+const AccessToken &DeleteObject::getSignToken() const {
+    return _token;
+}
+
+void DeleteObject::setSignToken(const AccessToken &token) {
+    _token = token;
+}
+
 QString DeleteObject::primaryKey() const {
     return "";
+}
+
+QDataStream &DeleteObject::fromStream(QDataStream &stream) {
+    DBObject::fromStream(stream);
+
+    stream >> _token;
+
+    return stream;
+}
+
+QDataStream &DeleteObject::toStream(QDataStream &stream) const {
+    DBObject::toStream(stream);
+
+    stream << _token;
+
+    return stream;
 }
 
 bool DeleteObject::isCached() const {

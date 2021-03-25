@@ -8,6 +8,7 @@
 */
 
 #include <dbobject.h>
+#include <itoken.h>
 
 
 namespace QH {
@@ -16,7 +17,7 @@ namespace PKG {
 /**
  * @brief The DeleteObject class is request for update object with dbId;
  */
-class DeleteObject: public DBObject
+class DeleteObject: public DBObject, public IToken
 {
 public:
     DeleteObject();
@@ -24,13 +25,21 @@ public:
 
     DBObject *createDBObject() const override;
     DBVariantMap variantMap() const override;
+    const AccessToken &getSignToken() const override;
+    void setSignToken(const AccessToken &token) override;
 
 protected:
     QString primaryKey() const override;
 
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
+
     // DBObject interface
 public:
     bool isCached() const override;
+
+    AccessToken _token;
+
 };
 }
 }

@@ -132,6 +132,9 @@ void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
 
     connect(_db, &SqlDBCache::sigItemChanged,
             this, &DataBaseNode::handleObjectChanged);
+
+    connect(_db, &SqlDBCache::sigItemDeleted,
+            this, &DataBaseNode::handleObjectDeleted);
 }
 
 
@@ -156,7 +159,7 @@ QSet<QString> DataBaseNode::systemTables() const {
     return {"NetworkMembers", "MemberPermisions"};
 }
 
-bool DataBaseNode::objectChanged(const QSharedPointer<PKG::ISubscribableData> &item) {
+bool DataBaseNode::notifyObjectChanged(const QSharedPointer<PKG::ISubscribableData> &item) {
 
     if (!item.dynamicCast<PKG::AbstractData>()) {
         return false;
@@ -167,8 +170,22 @@ bool DataBaseNode::objectChanged(const QSharedPointer<PKG::ISubscribableData> &i
     return true;
 }
 
+void DataBaseNode::objectRemoved(const DbAddress &) {
+
+}
+
+void DataBaseNode::objectChanged(const QSharedPointer<DBObject> &) {
+
+}
+
 void DataBaseNode::handleObjectChanged(const QSharedPointer<DBObject> &item) {
-    objectChanged(item.staticCast<PKG::ISubscribableData>());
+    notifyObjectChanged(item.staticCast<PKG::ISubscribableData>());
+    objectChanged(item);
+
+}
+
+void DataBaseNode::handleObjectDeleted(const DbAddress &item) {
+    objectRemoved(item);
 }
 
 void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
@@ -316,19 +333,6 @@ ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         }
 
         return ParserResult::Processed;
-    } else if (H_16<DeleteObject>() == pkg->cmd()) {
-        auto obj = pkg.staticCast<DeleteObject>();
-
-        auto requesterId = getSender(sender, obj.data());
-        if (deleteObject(requesterId, obj) == DBOperationResult::Forbidden) {
-            badRequest(sender->networkAddress(), pkgHeader, {
-                           ErrorCodes::OperatioForbiden,
-                           "Permision denied"
-                       });
-            return ParserResult::Error;
-
-        }
-
     }
 
     return ParserResult::NotProcessed;
@@ -640,6 +644,7 @@ DataBaseNode::deleteObject(const QVariant &requester,
         return permisionResult;
     }
 
+    auto address = dbObject->dbAddress();
     if (!_db->deleteObject(dbObject)) {
         return DBOperationResult::Unknown;
     }

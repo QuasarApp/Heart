@@ -10,6 +10,7 @@
 #include "authrequest.h"
 #include "dberrorcodes.h"
 
+#include <deleteobject.h>
 #include <websocket.h>
 
 namespace QH {
@@ -145,9 +146,8 @@ bool SingleClient::removeUser() {
     }
 
 
-    QH::PKG::AuthRequest request;
+    QH::PKG::DeleteObject request;
     request.copyFrom(&getMember());
-    request.setRequest(PKG::UserRequestType::Remove);
     if (!sendData(&request, realServerAddress())) {
         return false;
     };

@@ -27,9 +27,7 @@ enum class UserRequestType: unsigned char {
     /// Request to login an exists user.
     LogIn,
     /// Request to logout an exists user. This request remove the generated accesses token from server.
-    LogOut,
-    /// Remove all data of this user from server.
-    Remove
+    LogOut
 };
 
 /**

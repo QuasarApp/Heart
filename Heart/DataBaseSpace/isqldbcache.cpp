@@ -160,7 +160,7 @@ bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj,
     if (!delObj)
         return false;
 
-    QVariant id = delObj->getId();
+    auto id = delObj->dbAddress();
 
     if (!deleteObjectP(delObj, wait)) {
         return false;

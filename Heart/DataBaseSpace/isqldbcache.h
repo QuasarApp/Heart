@@ -254,9 +254,9 @@ signals:
      * @brief sigItemDeleted This signal emitted when database object is deleted.
      * @note emit implemented in the deleteObject method.
      *  So if you override the deleteObject method do not forget add emit of the sigItemChanged signal.
-     * @param obj
+     * @param obj This is address of the removed object.
      */
-    void sigItemDeleted(const QVariant& obj);
+    void sigItemDeleted(const DbAddress& obj);
 
 };
 
