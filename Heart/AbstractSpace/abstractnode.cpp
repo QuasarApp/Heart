@@ -758,7 +758,6 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
     int workIndex = 0;
     const int headerSize = sizeof(Header);
 
-    // concat with old data of header.
     auto socket = sender->sct();
     if (!socket) {
         pkg.reset();
@@ -766,13 +765,14 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
         return;
     }
 
+    // concat with old data of header.
     const auto array = hdrArray + socket->readAll();
     const int arraySize = array.size();
     hdrArray.clear();
 
     while (arraySize > workIndex) {
 
-        int workSize = arraySize - workIndex;
+        int offset = arraySize - workIndex;
 
         if (pkg.hdr.isValid()) {
             // CASE 1: The Package data is still not collected, but the header is already collected. performs full or partial filling of packet data.
@@ -784,7 +784,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             workIndex += dataLength;
 
 
-        } else if (workSize >= headerSize) {
+        } else if (offset >= headerSize) {
 
             // CASE 2: The header and package still do not exist and the amount of data allows you to create a new header. A header is created and will fill in all or part of the package data.
 
@@ -809,15 +809,16 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
 
         if (pkg.isValid()) {
             newWork(pkg, sender, id);
+            pkg.reset();
+            hdrArray.clear();
         }
 
         if (pkg.data.size() > pkg.hdr.size) {
             QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
                                         QuasarAppUtils::Warning);
-        }
-
-        if (pkg.data.size() >= pkg.hdr.size) {
             pkg.reset();
+            hdrArray.clear();
+
         }
     }
 }
