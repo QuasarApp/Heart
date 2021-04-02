@@ -16,12 +16,30 @@ if(NOT DEFINED HEART_BUILD_LVL)
     set(HEART_BUILD_LVL 1)
 endif()
 
+if (NOT DEFINED HEART_TESTS)
+    set(HEART_TESTS ON)
+
+    if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
+        if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
+            set(HEART_TESTS OFF)
+        endif()
+    endif()
+
+    if (ANDROID)
+        set(HEART_TESTS OFF)
+    endif()
+endif()
+
+
 include(QuasarAppLib/CMake/ccache.cmake)
 
 # Add sub directories
 add_subdirectory(QuasarAppLib)
 add_subdirectory(Heart)
-add_subdirectory(HeartTests)
+
+if (HEART_TESTS)
+    add_subdirectory(HeartTests)
+endif()
 
 include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 initAll()
