@@ -20,7 +20,7 @@ namespace PKG {
  *
  * For using This class override the DBObject::condition and DBObject::fromSqlRecord methods.
  */
-class DBObjectSet: public DBObject
+class HEARTSHARED_EXPORT DBObjectSet: public DBObject
 {
 public:
     DBObjectSet(const QString table);

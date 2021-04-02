@@ -31,7 +31,7 @@ struct ErrorData {
 /**
  * @brief The BadRequest class send response about error to client
  */
-class BadRequest : public AbstractData
+class HEARTSHARED_EXPORT BadRequest : public AbstractData
 {
 public:
 

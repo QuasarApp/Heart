@@ -39,7 +39,7 @@ class UserMember;
  * For get more information about token validation see the IToken class.
  *
  */
-class SingleServer : public SingleBase
+class HEARTSHARED_EXPORT SingleServer : public SingleBase
 {
     Q_OBJECT
 public:

@@ -16,7 +16,7 @@ namespace QH {
 /**
  * @brief The WorkState class is simple class with data of work state of node.
  */
-class WorkState
+class HEARTSHARED_EXPORT WorkState
 {
 public:
 

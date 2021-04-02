@@ -21,7 +21,7 @@ PackageManager::PackageManager()
 }
 
 PackageManager::~PackageManager() {
-    for (const auto& data : _parseResults) {
+    for (const auto& data : qAsConst(_parseResults)) {
         delete data;
     }
 

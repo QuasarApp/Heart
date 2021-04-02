@@ -43,7 +43,7 @@ enum DBErrorCodes: Code {
  * @brief The DBErrorCodesHelper class use for translate the error codes to the string values.
  * This class known about all error codes of the DBErrorCodes enum and AbstractErrorCodes enum.
  */
-class DBErrorCodesHelper {
+class HEARTSHARED_EXPORT DBErrorCodesHelper {
 public:
     /**
      * @brief toString This method have a cases for the translate all ErrorCodes of the QuasarApp Heart library.

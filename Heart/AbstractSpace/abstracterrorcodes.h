@@ -9,6 +9,7 @@
 #define ABSTRACT_ERRORCODES_H
 
 #include <QString>
+#include "heart_global.h"
 
 
 namespace QH {
@@ -87,7 +88,7 @@ enum AbstractErrorCodes: Code {
  * @brief The AbstractErrorCodesHelper class is helper class with static methods for translate the ErrorCodes enums to text.
  * This helper know only about the AbstractErrorCodes enum.
  */
-class AbstractErrorCodesHelper {
+class HEARTSHARED_EXPORT AbstractErrorCodesHelper {
 
 public:
     /**

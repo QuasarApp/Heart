@@ -22,7 +22,7 @@ class PackaData;
 /**
  * @brief The PakcageManager class contains all processed packages. Working like a cache of packages.
  */
-class PackageManager
+class HEARTSHARED_EXPORT PackageManager
 {
 public:
     PackageManager();

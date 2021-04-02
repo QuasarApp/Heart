@@ -18,7 +18,7 @@ namespace PKG {
  * This class contains all default settings of the AbstractNetworkMember class.
  * If you want to create a own member class then use the AbstractNetworkMember class.
  */
-class NetworkMember: public AbstractNetworkMember
+class HEARTSHARED_EXPORT NetworkMember: public AbstractNetworkMember
 {
 public:
     NetworkMember();

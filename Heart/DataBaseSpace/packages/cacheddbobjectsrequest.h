@@ -10,6 +10,7 @@
 #define CACHEDDBOBJECTSREQUEST_H
 
 #include <QString>
+#include "heart_global.h"
 
 
 namespace QH {
@@ -33,7 +34,7 @@ template <class BASE>
         }
  * \endcode
  */
-class CachedDbObjectsRequest : public BASE
+class HEARTSHARED_EXPORT CachedDbObjectsRequest : public BASE
 {
 public:
     CachedDbObjectsRequest(const QString& condition) {

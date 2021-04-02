@@ -46,7 +46,7 @@ enum class ClientStatus: unsigned char {
  *
  *
  */
-class SingleClient: public SingleBase
+class HEARTSHARED_EXPORT SingleClient: public SingleBase
 {
     Q_OBJECT
 public:

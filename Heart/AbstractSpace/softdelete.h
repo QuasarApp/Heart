@@ -7,6 +7,7 @@
 
 #ifndef SOFTDELETE_H
 #define SOFTDELETE_H
+#include "heart_global.h"
 
 namespace QH {
 
@@ -16,7 +17,7 @@ namespace QH {
  * IF you delete object without prepare then destructor invoke the abort function in debug mode.
  * For release mode destructor print error message only.
  */
-class SoftDelete {
+class HEARTSHARED_EXPORT SoftDelete {
 public:
     SoftDelete();
     /**

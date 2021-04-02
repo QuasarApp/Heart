@@ -32,7 +32,7 @@ namespace QH {
  * @warning This is not sign of object. This is just secret token value for validation. This validation method not guaranteed that package save own structure when received to server. If the traffic is not encrypted, a third party can spoof the packet values
  *
  */
-class IToken
+class HEARTSHARED_EXPORT IToken
 {
 public:
     IToken() = default;

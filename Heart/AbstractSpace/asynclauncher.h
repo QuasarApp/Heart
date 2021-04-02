@@ -28,7 +28,7 @@ namespace QH {
  *  async->run(action);
  * @endcode
  */
-class AsyncLauncher final: public Async
+class HEARTSHARED_EXPORT AsyncLauncher final: public Async
 {
     Q_OBJECT
 public:

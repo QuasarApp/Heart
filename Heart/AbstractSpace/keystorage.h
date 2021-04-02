@@ -33,7 +33,7 @@ class ICrypto;
  * Work scheme:
  *\image html KeyStorage.svg width=800px
  */
-class KeyStorage: public QThread
+class HEARTSHARED_EXPORT KeyStorage: public QThread
 {
     Q_OBJECT
 public:

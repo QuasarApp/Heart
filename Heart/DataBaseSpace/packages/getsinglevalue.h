@@ -20,7 +20,7 @@ namespace PKG {
  * @brief The GetSingleValue class is intended for get a single value from database.
  * The value is selected by id.
  */
-class GetSingleValue final: public DBObject
+class HEARTSHARED_EXPORT GetSingleValue final: public DBObject
 {
 public:
     /**

@@ -17,7 +17,7 @@ namespace PKG {
 /**
  * @brief The GetMaxIntegerId class is intended for get a maximum value of a sql tables column.
  */
-class GetMaxIntegerId: public DBObject
+class HEARTSHARED_EXPORT GetMaxIntegerId: public DBObject
 {
 public:
     /**

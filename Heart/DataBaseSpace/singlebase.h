@@ -17,7 +17,7 @@ namespace QH {
 /**
  * @brief The SingleServerBase class This is base class of SingleClient adn SingleServer
  */
-class SingleBase: public DataBaseNode
+class HEARTSHARED_EXPORT SingleBase: public DataBaseNode
 {
     Q_OBJECT
 public:

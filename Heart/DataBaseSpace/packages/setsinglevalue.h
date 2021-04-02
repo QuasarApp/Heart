@@ -28,7 +28,7 @@ namespace PKG {
  *      ...
  *  @endcode
  */
-class SetSingleValue final: public DBObject
+class HEARTSHARED_EXPORT SetSingleValue final: public DBObject
 {
 public:
     /**

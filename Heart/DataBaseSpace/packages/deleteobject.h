@@ -17,7 +17,7 @@ namespace PKG {
 /**
  * @brief The DeleteObject class is request for update object with dbId;
  */
-class DeleteObject: public DBObject, public IToken
+class HEARTSHARED_EXPORT DeleteObject: public DBObject, public IToken
 {
 public:
     DeleteObject();

@@ -33,7 +33,7 @@ class SQLiteDBCachePrivate;
  * else your cache will be have a depricated or invalid data of objects.
  *
  */
-class SQLiteDBCache : public ISqlDBCache
+class HEARTSHARED_EXPORT SQLiteDBCache : public ISqlDBCache
 {
 public:
     SQLiteDBCache();

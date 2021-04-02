@@ -19,7 +19,7 @@ namespace PKG {
  *
  * @note The UserMember class has no members of its own, so it is safe to use static_cast on User <<>> AbstractNetworkMember.
  */
-class UserMember: public AbstractNetworkMember
+class HEARTSHARED_EXPORT UserMember: public AbstractNetworkMember
 {
 public:
     UserMember();

@@ -19,7 +19,7 @@ namespace PKG {
  * @brief The ISubscribableData class is interface provide subscribe functionality.
  * If you want to create a data object with support of the subscribe functionality then you need to inherit form this class.
  */
-class ISubscribableData
+class HEARTSHARED_EXPORT ISubscribableData
 {
 public:
     ISubscribableData();
