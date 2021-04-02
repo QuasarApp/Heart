@@ -6,10 +6,19 @@
 #
 
 cmake_minimum_required(VERSION 3.10)
+
 project(Heart)
 if(TARGET ${PROJECT_NAME})
   message("The ${PROJECT_NAME} arledy included in main Project")
   return()
+endif()
+
+if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
+    if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
+        include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
+        initAll()
+        return()
+    endif()
 endif()
 
 if(NOT DEFINED HEART_BUILD_LVL)
@@ -18,12 +27,6 @@ endif()
 
 if (NOT DEFINED HEART_TESTS)
     set(HEART_TESTS ON)
-
-    if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
-        if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
-            set(HEART_TESTS OFF)
-        endif()
-    endif()
 
     if (ANDROID)
         set(HEART_TESTS OFF)
