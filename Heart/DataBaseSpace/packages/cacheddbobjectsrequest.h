@@ -34,7 +34,7 @@ template <class BASE>
         }
  * \endcode
  */
-class HEARTSHARED_EXPORT CachedDbObjectsRequest : public BASE
+class CachedDbObjectsRequest : public BASE
 {
 public:
     CachedDbObjectsRequest(const QString& condition) {

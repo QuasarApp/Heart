@@ -183,7 +183,7 @@ namespace QH {
          *  @endcode
          * @return true if all resources initialize successful.
          */
-    bool init();
+    bool HEARTSHARED_EXPORT init();
 
     /** @brief The PKG namesapce - this namespace contains all default packages of the Heart library.
      *  If you want create a pool request for Heart Library with own implemented packages
