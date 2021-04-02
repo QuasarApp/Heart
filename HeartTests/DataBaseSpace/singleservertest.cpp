@@ -60,6 +60,10 @@ void SingleServerTest::loginTest() {
         return client->login(user);
     };
 
+    auto logout = [client]() {
+        return client->logout();
+    };
+
     auto sigupRequest = [client, &user, &userPassword]() {
         return client->signup(user, userPassword);
     };
@@ -138,7 +142,7 @@ void SingleServerTest::loginTest() {
     QVERIFY(funcPrivateConnect(sigupRequest, checkLoginedStatus));
 
     // logout client and try login again.
-    QVERIFY(client->logout());
+    QVERIFY(funcPrivateConnect(logout, checkConnectedStatus));
 
     // waiting of the reflection of the server. This needed because server do not responce about successful logout.
     wait([](){return false;}, 500);
@@ -162,7 +166,7 @@ void SingleServerTest::loginTest() {
     QVERIFY(funcPrivateConnect(loginRequestUsesToken, checkLoginedStatus));
 
     // logout client and try login again.
-    QVERIFY(client->logout());
+    QVERIFY(funcPrivateConnect(logout, checkConnectedStatus));
 
     // waiting of the reflection of the server. This needed because server do not responce about successful logout.
     wait([](){return false;}, 500);
