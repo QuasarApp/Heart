@@ -24,6 +24,7 @@ add_definitions(-DHEART_LIBRARY)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
+
 find_package(OpenSSL REQUIRED)
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
