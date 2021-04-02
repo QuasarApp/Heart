@@ -48,7 +48,7 @@ public:
      * @param obj This is serialized object.
      * @return stream object.
      */
-    friend QDataStream& operator<< (QDataStream& stream, const StreamBase& obj);
+    HEARTSHARED_EXPORT friend QDataStream& operator<< (QDataStream& stream, const StreamBase& obj);
 
     /**
      * @brief This is wraper over fromStream. For see more information see toStream method.
@@ -56,7 +56,7 @@ public:
      * @param obj This is serialized object.
      * @return stream object.
      */
-    friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
+    HEARTSHARED_EXPORT friend QDataStream& operator>> (QDataStream& stream, StreamBase& obj);
 
     /**
      * @brief copy This is base copy method for all StreamBase structures.
