@@ -33,7 +33,7 @@ void AbstractNodeInfo::removeSocket() {
         auto socketPtr = _sct;
         _sct = nullptr;
 
-        disconnect(socketPtr);
+        socketPtr->disconnect();
 
         // We invoke the delate later method on another thread (thread of the socket.)
         // because all network sockets must be open adn closed in the one thread.
