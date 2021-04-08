@@ -63,6 +63,9 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
     if (!listen(adr)) {
         QuasarAppUtils::Params::log("Run fail " + this->errorString(),
                                     QuasarAppUtils::Error);
+
+        QuasarAppUtils::Params::log("Address:: " + adr.toString(),
+                                    QuasarAppUtils::Error);
         return false;
     }
 
