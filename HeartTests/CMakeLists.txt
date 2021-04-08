@@ -23,7 +23,6 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
 add_definitions(-DHEART_BUILD_LVL=${HEART_BUILD_LVL})
 
-
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
