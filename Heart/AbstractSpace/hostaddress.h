@@ -60,6 +60,12 @@ public:
      */
     bool isValid() const;
 
+    /**
+     * @brief toString this method convert the Host Address value to string value.
+     * @return string value of the HostAddress object.
+     */
+    QString toString() const;
+
 private:
     unsigned short _port = 0;
 };
