@@ -17,8 +17,9 @@
 namespace QH {
 
 /**
- * @brief The AccessToken class is contains info about token and duration of this token.
- * Token is byte array with privileges. In usually cases toke add permissions for database objects.
+ * @brief The AccessToken class contains information duration of the access.
+ * Token are byte array for validation access users or another network member on nodes.
+ *  In usually cases toke add permissions for database objects.
  */
 class HEARTSHARED_EXPORT AccessToken : public StreamBase
 {
