@@ -26,6 +26,8 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
 
 find_package(OpenSSL REQUIRED)
+SET(OPENSSL_LIBRARIES_DIR "${OPENSSL_ROOT_DIR}/lib")
+SET(OPENSSL_INCLUDE_DIR "${OPENSSL_ROOT_DIR}/include")
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
