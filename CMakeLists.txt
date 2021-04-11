@@ -37,6 +37,9 @@ endif()
 include(QuasarAppLib/CMake/ccache.cmake)
 
 # Add sub directories
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
+
 add_subdirectory(QuasarAppLib)
 add_subdirectory(Heart)
 
