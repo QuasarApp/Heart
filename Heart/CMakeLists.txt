@@ -25,7 +25,7 @@ add_definitions(-DHEART_LIBRARY)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
 
-
+list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
 find_package(OpenSSL REQUIRED)
 
 
