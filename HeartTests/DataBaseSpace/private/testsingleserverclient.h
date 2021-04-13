@@ -10,6 +10,7 @@
 
 #include <singleclient.h>
 #include <ping.h>
+#define LOCAL_TEST_PORT TEST_PORT + 3
 
 
 class TestSingleServerClient: public QH::SingleClient

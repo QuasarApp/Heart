@@ -18,7 +18,7 @@ void TestSingleServerClient::setStatus(const QH::ClientStatus &status) {
 }
 
 QPair<QString, unsigned short> TestSingleServerClient::serverAddress() const {
-    return {TEST_LOCAL_HOST, TEST_PORT};
+    return {TEST_LOCAL_HOST, LOCAL_TEST_PORT};
 }
 
 void TestSingleServerClient::incomingData(const QH::PKG::AbstractData *pkg,

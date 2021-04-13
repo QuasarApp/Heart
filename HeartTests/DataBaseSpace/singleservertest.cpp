@@ -12,7 +12,6 @@
 #include <private/testsingleserver.h>
 #include <private/testsingleserverclient.h>
 
-
 SingleServerTest::SingleServerTest() {
     _client = new TestSingleServerClient();
     _server = new TestSingleServer();
@@ -123,7 +122,7 @@ void SingleServerTest::loginTest() {
     QVERIFY(!client->signup(user, userPassword));
 
     // Run server
-    QVERIFY(server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer"));
+    QVERIFY(server->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "SingleServer"));
 
     // Clent must be connected because the server alredy started successful.
     QVERIFY(funcPrivateConnect(connectToserver, checkConnectedStatus));
@@ -210,7 +209,7 @@ void SingleServerTest::loginTest() {
 bool SingleServerTest::initTest() {
     auto server = dynamic_cast<TestSingleServer*>(_server);
 
-    if (!server->run(TEST_LOCAL_HOST, TEST_PORT, "SingleServer")) {
+    if (!server->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "SingleServer")) {
         return false;
     }
 

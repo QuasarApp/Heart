@@ -13,6 +13,8 @@
 #include <keystorage.h>
 #include <ping.h>
 
+#define LOCAL_TEST_PORT TEST_PORT + 1
+
 class TestingClient: public QH::AbstractNode {
 
 
@@ -52,17 +54,17 @@ void AbstractNodeTest::test() {
 
 bool AbstractNodeTest::connectTest() {
 
-    if (!_nodeA->run(TEST_LOCAL_HOST, TEST_PORT)) {
+    if (!_nodeA->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT)) {
         return false;
     }
 
-    return connectFunc(_nodeB, TEST_LOCAL_HOST, TEST_PORT);
+    return connectFunc(_nodeB, TEST_LOCAL_HOST, LOCAL_TEST_PORT);
 }
 
 bool AbstractNodeTest::sendDataTest() {
 
     auto request = [this](){
-        return _nodeB->ping(QH::HostAddress(TEST_LOCAL_HOST, TEST_PORT));
+        return _nodeB->ping(QH::HostAddress(TEST_LOCAL_HOST, LOCAL_TEST_PORT));
     };
 
     auto client = dynamic_cast<TestingClient*>(_nodeB);
