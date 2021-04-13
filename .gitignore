@@ -58,3 +58,4 @@ Heart/Heart_autogen/
 Heart/cmake_install.cmake
 HeartTests/cmake_install.cmake
 cmake_install.cmake
+docs/
