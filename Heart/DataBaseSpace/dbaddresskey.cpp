@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -18,21 +18,13 @@ DbAddressKey::DbAddressKey(const DbAddress &address):
 
 }
 
-DbAddressKey::DbAddressKey(const QString &address, const BaseId &id):
-   DbAddress(address, id) {
+DbAddressKey::DbAddressKey(const QString &table, const QVariant &value):
+   DbAddress(table, value) {
 
 }
 
 unsigned int DbAddressKey::hash() const {
     return qHash(*static_cast<const DbAddress*>(this));
-}
-
-const BaseId &DbAddressKey::id() const {
-    return DbAddress::id();
-}
-
-const QString &DbAddressKey::table() const {
-    return DbAddress::table();
 }
 
 bool DbAddressKey::equal(const AbstractKey *other) const {
@@ -46,5 +38,9 @@ bool DbAddressKey::equal(const AbstractKey *other) const {
 
 bool DbAddressKey::isValid() const {
     return DbAddress::isValid();
+}
+
+QString DbAddressKey::toString() const {
+    return DbAddress::toString();
 }
 }

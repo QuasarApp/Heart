@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -16,7 +16,7 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The Ping class - test class for translate data on network
+ * @brief The Ping class - test class for translate data on network.
  */
 class HEARTSHARED_EXPORT Ping: public AbstractData
 {
@@ -26,21 +26,23 @@ public:
 
     // AbstractData interface
     /**
-     * @brief isValid - heck this package if valid.
-     * @return
+     * @brief isValid - Check this package if valid.
+     * @return True if package is valid.
      */
     bool isValid() const;
 
     /**
-     * @brief ansver This is bool value for check this objec that it si ansver or request.
-     *  using on tessts.
-     * @return true if this object is ansver from server
+     * @brief answer This is bool value for check this object that it is answer or request.
+     *  Using on tests.
+     * @return True if this object is answer from server.
      */
     bool ansver() const;
 
+/* I thing you need to correct the name of this method. From "setAnsver" to "setAnswer" */
+
     /**
-     * @brief setAnsver - set the ansver otion
-     * @param ansver - new ansver value
+     * @brief setAnsver - Set the answer option.
+     * @param ansver - New answer value.
      */
     void setAnsver(bool ansver);
 

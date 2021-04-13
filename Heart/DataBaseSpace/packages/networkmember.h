@@ -1,85 +1,33 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
 */
 
-
 #ifndef NETWORKMEMBER_H
 #define NETWORKMEMBER_H
 
-#include "dbobject.h"
-
+#include <abstractnetworkmember.h>
 
 namespace QH {
 namespace PKG {
 
 /**
- * @brief The NodeObject class is structure of network member.
- *  Usuallu it is base informations of node or client.
+ * @brief The NetworkMember class is base implementation of the AbstractNetworkMember.
+ * This class contains all default settings of the AbstractNetworkMember class.
+ * If you want to create a own member class then use the AbstractNetworkMember class.
  */
-class HEARTSHARED_EXPORT NetworkMember: public DBObject
+class HEARTSHARED_EXPORT NetworkMember: public AbstractNetworkMember
 {
 public:
     NetworkMember();
-    NetworkMember(const Package& pkg);
-    NetworkMember(const BaseId& id);
+    NetworkMember(const QVariant& id);
 
-    // DBObject interface
+public:
     DBObject *createDBObject() const override;
-    PrepareResult prepareSaveQuery(QSqlQuery &q) const override;
-    bool fromSqlRecord(const QSqlRecord &q) override;
-
-    /**
-     * @brief authenticationData is data array requeriment for authentication node or client on the network.
-     * @return The byte Array of authentication data.
-     */
-    QByteArray authenticationData() const;
-
-    /**
-     * @brief setAuthenticationData This method set new array of authentication data.
-     * @param data This is new data of authentication data.
-     */
-    void setAuthenticationData(const QByteArray &data);
-
-    // AbstractData interface
-    bool isValid() const override;
-    bool copyFrom(const AbstractData *) override;
-
-    QPair<QString, QString> altarnativeKey() const override;
-
-    /**
-     * @brief trust This is trust level of current Network member.
-     * IF  the trust level less then 0 node or client will be blocked (banned).
-     * @return current trust level of this node.
-     */
-    int trust() const;
-
-    /**
-     * @brief changeTrust This method change a current trust level.
-     * @param diff This is a diff of current value. (currentTrust += diff;)
-     */
-    void changeTrust(int diff);
-
-    /**
-     * @brief setTrust This method set a new value of trust  level of the node.
-     * @param trust This is a new value.
-     */
-    void setTrust(int trust);
-
-
-protected:
-
-    // StreamBase interface
-    QDataStream &fromStream(QDataStream &stream) override;
-    QDataStream &toStream(QDataStream &stream) const override;
-    BaseId generateId() const override;
-
-private:
-    QByteArray _authenticationData;
-    int _trust;
 };
+
 }
 }
 #endif // NETWORKMEMBER_H

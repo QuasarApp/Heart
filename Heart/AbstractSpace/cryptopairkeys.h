@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -15,7 +15,7 @@
 namespace QH {
 
 /**
- * @brief The CryptoPairKeys class contains pair keys. This is wraper for cripto grafick keys.
+ * @brief The CryptoPairKeys class contains pair keys. This is wraper for cripto graphick keys.
  */
 class HEARTSHARED_EXPORT CryptoPairKeys: public StreamBase
 {
@@ -24,13 +24,13 @@ public:
     CryptoPairKeys(const QByteArray& pubKey, const QByteArray& privKey);
 
     /**
-     * @brief isValid - This Method check a internal keys.
-     * @return true if this objcet contains a valid pair keys
+     * @brief isValid - This Method check an internal keys.
+     * @return true if this objeсt contains a valid pair keys.
      */
     bool isValid() const;
 
     /**
-     * @brief privKey This method retun private key of current keys pair.
+     * @brief privKey This method return private key of current keys pair.
      * @return return byteArray of private key.
      */
     QByteArray privKey() const;
@@ -43,24 +43,24 @@ public:
 
     /**
      * @brief publicKey This method return public key of array.
-     * @return pubkic key of current key pair.
+     * @return publicKey of current key pair.
      */
     QByteArray publicKey() const;
 
     /**
-     * @brief setPublicKey This method set new value of pablickKey
-     * @param publicKey new value of publicKey
+     * @brief setPublicKey This method set new value of publickKey.
+     * @param publicKey new value of publicKey.
      */
     void setPublicKey(const QByteArray &publicKey);
 
     /**
-     * @brief bits This method returm size pair of crypto keys in bits
+     * @brief bits This method return size pair of crypto keys in bits.
      * @return bits size of keys pair.
      */
     int bits() const;
 
     /**
-     * @brief setBits This method sets new value of keys pair
+     * @brief setBits This method sets new value of keys pair.
      * @param bits This is new value of size keys.
      */
     void setBits(int bits);
@@ -81,9 +81,9 @@ private:
 };
 
 /**
-     * @brief qHash This functions calc crc32 hash code of  CryptoPairKeys object
+     * @brief qHash This functions calc crc32 hash code of CryptoPairKeys object.
      * @param value -
-     * @return crc32 hash code
+     * @return crc32 hash code.
      */
     uint qHash(const CryptoPairKeys& value);
 }

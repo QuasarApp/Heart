@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -29,9 +29,13 @@
 #include <knowaddresses.h>
 #include <longping.h>
 #include <networkrequest.h>
-#include <networkmember.h>
+#include <abstractnetworkmember.h>
 #include <networknodeinfo.h>
 #include <nodeobject.h>
+#include <networkmember.h>
+#include <QSharedPointer>
+#include "networkerrorcodes.h"
+
 
 
 #define THIS_NODE "this_node_key"
@@ -82,11 +86,85 @@ NetworkNode::~NetworkNode() {
     delete _router;
 }
 
-BaseId NetworkNode::nodeId() const {
+NodeId NetworkNode::nodeId() const {
 
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
     return QCryptographicHash::hash(keys.publicKey(), QCryptographicHash::Sha256);
 }
+
+unsigned int NetworkNode::sendData(AbstractData *resp, const QVariant &nodeId, const Header *req) {
+    return sendData(resp, NodeId(nodeId), req);
+}
+
+unsigned int NetworkNode::sendData(const AbstractData *resp, const QVariant  &nodeId, const Header *req) {
+    return sendData(resp, NodeId(nodeId), req);
+}
+
+unsigned int NetworkNode::sendData(AbstractData *resp,
+                           const HostAddress &nodeId,
+                           const Header *req) {
+    return DataBaseNode::sendData(resp, nodeId, req);
+}
+
+unsigned int NetworkNode::sendData(const AbstractData *resp,
+                           const HostAddress &nodeId,
+                           const Header *req) {
+    return DataBaseNode::sendData(resp, nodeId, req);
+}
+
+unsigned int NetworkNode::sendData(const AbstractData *resp,
+                           const NodeId &nodeId,
+                           const Header *req) {
+    auto nodes = connections();
+
+    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+        auto info = dynamic_cast<NetworkNodeInfo*>(it.value());
+        if (info && info->isKnowAddress(nodeId)) {
+            return sendData(resp, it.key(), req);
+        }
+    }
+
+    auto brodcast = [this, &nodes, req](const AbstractData *data) -> unsigned int {
+        bool result = false;
+        unsigned int hashCode = 0;
+        for (auto it = nodes.begin(); it != nodes.end(); ++it) {
+            hashCode = sendData(data, it.key(), req);
+            result += hashCode;
+        }
+
+        if (result) {
+            return hashCode;
+        }
+
+        return 0;
+    };
+
+
+    if (resp->cmd() != H_16<TransportData>()) {
+        TransportData data(address());
+        data.setTargetAddress(nodeId);
+        if (!data.setData(*resp)) {
+            return false;
+        }
+
+        data.setRoute(_router->getRoute(nodeId));
+        data.setSenderID(this->nodeId());
+        data.prepareToSend();
+
+        return brodcast(&data);
+    }
+
+    return brodcast(resp);
+}
+
+unsigned int NetworkNode::sendData(AbstractData *resp, const NodeId &nodeId, const Header *req) {
+    if (!resp || !resp->prepareToSend()) {
+        return false;
+    }
+
+    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
+}
+
 
 bool NetworkNode::checkSignOfRequest(const AbstractData *request) {
     auto object = dynamic_cast<const Sign*>(request);
@@ -96,13 +174,12 @@ bool NetworkNode::checkSignOfRequest(const AbstractData *request) {
         return false;
     }
 
-    auto node = db()->getObject(NetworkMember{dbObject->senderID()});
+    auto node = db()->getObject(NetworkMember{dbObject->senderID().toRaw()});
     return _nodeKeys->check(_nodeKeys->concatSign(object->dataForSigned(),
                                                   object->sign()), node->authenticationData());
 }
 
-NodeObject NetworkNode::thisNode() const {
-    NodeObject res;
+void NetworkNode::thisNode(NodeObject& res) const {
     auto keys = _nodeKeys->getNextPair(THIS_NODE);
 
     res.setAuthenticationData(keys.publicKey());
@@ -110,14 +187,13 @@ NodeObject NetworkNode::thisNode() const {
 
     res.prepareToSend();
 
-    return res;
 }
 
-QSet<BaseId> NetworkNode::myKnowAddresses() const {
-    QSet<BaseId> res;
-
-    for (const AbstractNodeInfo *i : connections()) {
-        auto info = dynamic_cast<const BaseNodeInfo*>(i);
+QSet<NodeId> NetworkNode::myKnowAddresses() const {
+    QSet<NodeId> res;
+    const auto connects = connections();
+    for (const AbstractNodeInfo *i : connects) {
+        auto info = dynamic_cast<const NetworkNodeInfo*>(i);
         if (info && info->selfId().isValid()) {
             res += info->selfId();
         }
@@ -126,10 +202,11 @@ QSet<BaseId> NetworkNode::myKnowAddresses() const {
     return res;
 }
 
-bool NetworkNode::welcomeAddress(const HostAddress& ip) {
-    NodeObject self = thisNode();
+bool NetworkNode::welcomeAddress(AbstractNodeInfo *node) {
+    NodeObject self;
+    thisNode(self);
 
-    if (!sendData(&self, ip)) {
+    if (!sendData(&self, node->networkAddress())) {
         return false;
     }
 
@@ -140,7 +217,7 @@ bool NetworkNode::welcomeAddress(const HostAddress& ip) {
             KnowAddresses addressesData;
             addressesData.setKnowAddresses(knowAddresses);
 
-            if (!sendData(&addressesData, ip)) {
+            if (!sendData(&addressesData, node->networkAddress())) {
                 return false;
             }
         }
@@ -150,17 +227,14 @@ bool NetworkNode::welcomeAddress(const HostAddress& ip) {
 
 }
 
-void NetworkNode::nodeConnected(const HostAddress &node) {
+void NetworkNode::nodeConnected(AbstractNodeInfo *node) {
     DataBaseNode::nodeConnected(node);
-
-    welcomeAddress(node);
-
 }
 
-void NetworkNode::nodeConfirmend(const HostAddress &node) {
+void NetworkNode::nodeConfirmend(AbstractNodeInfo *node) {
     DataBaseNode::nodeConfirmend(node);
 
-    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(node));
+    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(node);
     if (!nodeInfo) {
         return;
     }
@@ -170,7 +244,7 @@ void NetworkNode::nodeConfirmend(const HostAddress &node) {
     _connectionsMutex.unlock();
 
     if (oldNodeInfo) {
-        removeNode(node);
+        removeNode(node->networkAddress());
         return;
     }
 
@@ -181,10 +255,10 @@ void NetworkNode::nodeConfirmend(const HostAddress &node) {
 
 }
 
-void NetworkNode::nodeDisconnected(const HostAddress &node) {
+void NetworkNode::nodeDisconnected(AbstractNodeInfo *node) {
     AbstractNode::nodeDisconnected(node);
 
-    auto nodeInfo = dynamic_cast<BaseNodeInfo*>(getInfoPtr(node));
+    auto nodeInfo = dynamic_cast<NetworkNodeInfo*>(node);
     if (!nodeInfo) {
         return;
     }
@@ -194,120 +268,160 @@ void NetworkNode::nodeDisconnected(const HostAddress &node) {
     _connectionsMutex.unlock();
 }
 
-void NetworkNode::incomingData(AbstractData *, const BaseId &) {}
+void NetworkNode::incomingData(AbstractData *, const NodeId &) {}
+
+void NetworkNode::incomingData(AbstractData *pkg, const AbstractNodeInfo *sender) {
+    DataBaseNode::incomingData(pkg, sender);
+}
 
 QString NetworkNode::keyStorageLocation() const {
     return _nodeKeys->storageLocation();
 }
 
-ParserResult NetworkNode::parsePackage(const Package &pkg,
-                                    const AbstractNodeInfo *sender) {
-    auto parentResult = DataBaseNode::parsePackage(pkg, sender);
+ParserResult NetworkNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
+                                       const Header &pkgHeader,
+                                       const AbstractNodeInfo *sender) {
+    auto parentResult = DataBaseNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    auto baseSender = dynamic_cast<const BaseNodeInfo*>(sender);
+    auto baseSender = dynamic_cast<const NetworkNodeInfo*>(sender);
     if (!baseSender) {
         QuasarAppUtils::Params::log("Sender is not basenode info!",
                                     QuasarAppUtils::Error);
         return ParserResult::Error;
     }
 
-    if (H_16<BadNodeRequest>() == pkg.hdr.command) {
-        BadNodeRequest cmd(pkg);
+    if (H_16<BadNodeRequest>() == pkgHeader.command) {
+        auto cmd = pkg.staticCast<BadNodeRequest>();
 
-        incomingData(&cmd, baseSender->selfId());
-        emit requestError(cmd.err());
+        incomingData(cmd.data(), baseSender->selfId());
+        emit requestError(cmd->errCode(), cmd->err());
 
         return ParserResult::Processed;
 
-    } else if (H_16<TransportData>() == pkg.hdr.command) {
-        TransportData cmd(pkg);
-        return workWithTransportData(&cmd, sender, pkg);
+    } else if (H_16<TransportData>() == pkgHeader.command) {
+        auto cmd = pkg.staticCast<TransportData>();
+
+        return workWithTransportData(cmd.data(), sender, pkgHeader);
 
 
-    } else if (H_16<NodeObject>() == pkg.hdr.command) {
-        NodeObject obj(pkg);
-        if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+    } else if (H_16<NodeObject>() == pkgHeader.command) {
+        auto obj = QSharedPointer<NodeObject>::create(pkg);
+        if (!obj->isValid()) {
+            badRequest(sender->networkAddress(), pkgHeader,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "NodeObject request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
         if (!workWithNodeObjectData(obj, sender)) {
-            badRequest(obj.senderID(), pkg.hdr);
+            badRequest(obj->senderID(), pkgHeader,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "NodeObject request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
         return ParserResult::Processed;
-    } else if (H_16<KnowAddresses>() == pkg.hdr.command) {
-        KnowAddresses obj(pkg);
-        if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+    } else if (H_16<KnowAddresses>() == pkgHeader.command) {
+        auto obj = pkg.staticCast<KnowAddresses>();
+
+        if (!obj->isValid()) {
+            badRequest(sender->networkAddress(), pkgHeader,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "KnowAddresses request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
-        if (!workWithKnowAddresses(obj, sender)) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+        if (!workWithKnowAddresses(*obj, sender)) {
+            badRequest(sender->networkAddress(), pkgHeader,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "KnowAddresses request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
         return ParserResult::Processed;
-    } else if (H_16<LongPing>() == pkg.hdr.command) {
-        LongPing cmd(pkg);
+    } else if (H_16<LongPing>() == pkgHeader.command) {
+        auto cmd = pkg.staticCast<LongPing>();
 
-        if (!cmd.ansver()) {
-            cmd.setAnsver(true);
-            sendData(&cmd, cmd.senderID(), &pkg.hdr);
+        if (!cmd->ansver()) {
+            cmd->setAnsver(true);
+            sendData(cmd.data(), cmd->senderID(), &pkgHeader);
         }
 
-        incomingData(&cmd, baseSender->selfId());
+        incomingData(cmd.data(), baseSender->selfId());
         return ParserResult::Processed;
-    } else if (H_16<NetworkRequest>() == pkg.hdr.command) {
-        NetworkRequest cmd(pkg);
+    } else if (H_16<NetworkRequest>() == pkgHeader.command) {
+        auto cmd = pkg.staticCast<NetworkRequest>();
 
-        if (!cmd.isValid()) {
-            badRequest(baseSender->selfId(), pkg.hdr);
+        if (!cmd->isValid()) {
+            badRequest(baseSender->selfId(), pkgHeader,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "NetworkRequest request is invalid"
+                       }
+                       );
             return ParserResult::Error;
         }
 
-        workWithNetworkRequest(&cmd, baseSender);
+        workWithNetworkRequest(cmd.data(), baseSender);
         return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
 }
 
-bool NetworkNode::workWithNodeObjectData(NodeObject &node,
+bool NetworkNode::workWithNodeObjectData(const QSharedPointer<NodeObject> &node,
                                       const AbstractNodeInfo* nodeInfo) {
 
     if (!db()) {
         return false;
     }
 
-    auto localObjec = db()->getObject(node);
+    auto localObjec = db()->getObject(*node.data());
 
     if (localObjec) {
-        node.setTrust(std::min(node.trust(), localObjec->trust()));
+        node->setTrust(std::min(node->trust(), localObjec->trust()));
+
+        if (!db()->updateObject(node)) {
+            QuasarAppUtils::Params::log("Error on precessing of NodeObject updateObject is failed");
+            return false;
+        };
     } else {
-        node.setTrust(0);
+        node->setTrust(0);
+
+        if (!db()->insertObject(node)) {
+            QuasarAppUtils::Params::log("Error on precessing of NodeObject insertObject is failed");
+            return false;
+        };
     }
 
-    if (!db()->saveObject(&node)) {
-        return false;
-    };
-
     auto peerNodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
-    if (!peerNodeInfo)
+    if (!peerNodeInfo) {
+        QuasarAppUtils::Params::log("Error on precessing of NodeObject peerNodeInfo is null");
         return false;
+    }
 
-    peerNodeInfo->setSelfId(node.getId());
+    peerNodeInfo->setSelfId(NodeId(node->getId()));
 
     return true;
 }
 
 bool NetworkNode::workWithKnowAddresses(const KnowAddresses &obj,
-                                     const AbstractNodeInfo *nodeInfo) {
+                                        const AbstractNodeInfo *nodeInfo) {
 
     auto peerNodeInfo = dynamic_cast<NetworkNodeInfo*>(getInfoPtr(nodeInfo->networkAddress()));
     if (!peerNodeInfo)
@@ -318,12 +432,12 @@ bool NetworkNode::workWithKnowAddresses(const KnowAddresses &obj,
     return true;
 }
 
-ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
+ParserResult NetworkNode::workWithTransportData(const QSharedPointer<PKG::AbstractData> & transportData,
                                              const AbstractNodeInfo* sender,
-                                             const Package& pkg) {
+                                             const Header& hdr) {
 
     // convert transoprt pakcage
-    auto cmd = dynamic_cast<TransportData*>(transportData);
+    auto cmd = transportData.dynamicCast<TransportData>();
 
     if (!cmd)
         return ParserResult::Error;
@@ -339,7 +453,7 @@ ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
         _router->updateRoute(cmd->senderID(),
         {cmd->route().rbegin(), cmd->route().rend()});
 
-        return parsePackage(cmd->data(), sender);
+        return parsePackage(transportData, hdr, sender);
     }
 
     bool fRouteIsValid = false;
@@ -367,7 +481,7 @@ ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
 
         // send this package to first available node of knownnodes route nodes
         auto it = cmd->route().rbegin();
-        while (it != cmd->route().rend() && !sendData(cmd, *it, &pkg.hdr)) {
+        while (it != cmd->route().rend() && !sendData(cmd.data(), *it, &hdr)) {
             it++;
         }
 
@@ -387,7 +501,12 @@ ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
                                     QuasarAppUtils::Error);
     }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
+    routeFromSenderToHere.erase(routeFromSenderToHere.cbegin(), routeFromSenderToHere.cbegin() + index);
+#else
     routeFromSenderToHere.erase(routeFromSenderToHere.begin(), routeFromSenderToHere.begin() + index);
+#endif
+
     // inversion route and update route to sender
     _router->updateRoute(cmd->senderID(),
     {routeFromSenderToHere.rbegin(), routeFromSenderToHere.rend()});
@@ -398,7 +517,7 @@ ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
         cmd->completeRoute(false);
 
         // send bodcast if route is invalid
-        if (!sendData(cmd, cmd->targetAddress(), &pkg.hdr)) {
+        if (!sendData(cmd.data(), cmd->targetAddress(), &hdr)) {
             return ParserResult::Error;
         }
     }
@@ -408,17 +527,21 @@ ParserResult NetworkNode::workWithTransportData(AbstractData *transportData,
 
 }
 
-ParserResult NetworkNode::workWithNetworkRequest(AbstractData *networkRequest,
+ParserResult NetworkNode::workWithNetworkRequest(const QSharedPointer<PKG::AbstractData> &networkRequest,
                                               const AbstractNodeInfo *sender) {
     // convert transoprt pakcage
-    auto cmd = dynamic_cast<NetworkRequest*>(networkRequest);
+    auto cmd = networkRequest.dynamicCast<NetworkRequest>();
 
     if (!cmd)
         return ParserResult::Error;
 
     if (cmd->isComplete()) {
         if (cmd->askedNodes().contains(nodeId())) {
-            return parsePackage(cmd->dataResponce(), sender);
+            auto data = prepareData(cmd->dataResponce());
+            if (!data)
+                return ParserResult::Error;
+
+            return parsePackage(data, sender);
         }
 
         return ParserResult::Processed;
@@ -436,56 +559,49 @@ AbstractNodeInfo *NetworkNode::createNodeInfo(QAbstractSocket *socket,
     return  new NetworkNodeInfo(socket, clientAddress);
 }
 
-bool NetworkNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
-    auto nodes = connections();
+void NetworkNode::badRequest(const HostAddress &address, const Header &req,
+                             const ErrorData &err, qint8 diff) {
+    DataBaseNode::badRequest(address, req, err, diff);
+}
 
-    for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-        auto info = dynamic_cast<NetworkNodeInfo*>(it.value());
-        if (info && info->isKnowAddress(nodeId)) {
-            return sendData(resp, it.key(), req);
-        }
+void NetworkNode::badRequest(const NodeId &address, const Header &req,
+                             const ErrorData &err, qint8 diff) {
+    if (!changeTrust(address, diff)) {
+
+        QuasarAppUtils::Params::log("Bad request detected, bud response command not sent!"
+                                    " because trust not changed",
+                                    QuasarAppUtils::Error);
+
+        return;
     }
 
-    auto brodcast = [this, &nodes, req](const AbstractData *data){
-        bool result = false;
-        for (auto it = nodes.begin(); it != nodes.end(); ++it) {
-            result = result || sendData(data, it.key(), req);
-        }
-
-        return result;
-    };
-
-
-    if (resp->cmd() != H_16<TransportData>()) {
-        TransportData data(address());
-        data.setTargetAddress(nodeId);
-        if (!data.setData(*resp)) {
-            return false;
-        }
-
-        data.setRoute(_router->getRoute(nodeId));
-        data.setSenderID(this->nodeId());
-        data.prepareToSend();
-
-        return brodcast(&data);
+    auto bad = BadRequest(err);
+    if (!sendData(&bad, address, &req)) {
+        return;
     }
 
-    return brodcast(resp);
+    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
+                                address.toString(),
+                                QuasarAppUtils::Info);
 }
 
-bool NetworkNode::sendData(AbstractData *resp, const BaseId &nodeId, const Header *req) {
-    return DataBaseNode::sendData(resp, nodeId, req);
+bool NetworkNode::changeTrust(const QVariant &id, int diff) {
+    return DataBaseNode::changeTrust(id, diff);
 }
 
-bool NetworkNode::sendData(const AbstractData *resp, const HostAddress &nodeId, const Header *req) {
-    return DataBaseNode::sendData(resp, nodeId, req);
+bool NetworkNode::changeTrust(const HostAddress &id, int diff) {
+    return DataBaseNode::changeTrust(id, diff);
 }
 
-bool NetworkNode::sendData(AbstractData *resp, const HostAddress &nodeId, const Header *req) {
-    return DataBaseNode::sendData(resp, nodeId, req);
+QStringList NetworkNode::SQLSources() const {
+    return {":/sql/NetworkSpace/Res/NetworkDB.sql"};
 }
 
-bool NetworkNode::ping(const BaseId &id) {
+bool NetworkNode::changeTrust(const NodeId &id, int diff) {
+    return DataBaseNode::changeTrust(id.toRaw(), diff);
+}
+
+bool NetworkNode::ping(const NodeId &id) {
     LongPing cmd(nodeId());
     return sendData(&cmd, id);
 }

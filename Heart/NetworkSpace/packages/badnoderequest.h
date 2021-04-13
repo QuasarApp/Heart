@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -22,7 +22,7 @@ class HEARTSHARED_EXPORT BadNodeRequest: public BadRequest, public SenderData
 {
 public:
     explicit BadNodeRequest();
-    explicit BadNodeRequest(const QString & err = "");
+    explicit BadNodeRequest(const ErrorData &err);
     explicit BadNodeRequest(const Package& package);
 
     // AbstractData interface

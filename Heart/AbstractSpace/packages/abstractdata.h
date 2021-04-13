@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -16,8 +16,8 @@ namespace PKG {
 
 /**
  * @brief The AbstractData class is provide base functions for transport data by network
- *  For create You own Package you need to inherited from this class.
- *  Simmple Example:
+ *  For create you own package you need to inherited from this class.
+ *  Simple Example:
  *
  *  \code{cpp}
  * class MyPackage: public QH::AbstractData
@@ -43,10 +43,9 @@ protected:
 
 };
  *  \endcode
- * This is simple implaementation of package for transort text data.
- * You need to override 2 serialization methods (fromStream and toStream)
- *
- * For add The copying functionality of you class, you need to ovveride the copyFrom  method.
+ * This is simple implementation of package for transport text data.
+ * You need to override 2 serialization methods (fromStream and toStream).
+ * For add the copying functionality of you class, you need to override the copyFrom  method.
  * \code {cpp}
  * class MyPackage: public QH::AbstractData
 {
@@ -78,7 +77,7 @@ A * c = new C;
 \endcode
 
  * The situation when the classes have the same type.
- *  In this case, all object fields will be copied.
+ * In this case, all object fields will be copied.
 
 \code{cpp}
 b.copyFrom (b1) // true
@@ -93,14 +92,14 @@ c.copyFrom (a) // false
 
 * In this case, copying will be partially performed and the result of calling the copyFrom method will be false, since the data has not been copied for all members of the child class.
 * The situation when the class Requesting data to be copied is the parent of the class from which data to be copied is requested.
-*  in this case, all possible data will be copied and returned true.
+* In this case, all possible data will be copied and returned true.
 
 \code{cpp}
 a.copyFrom (b) // true
 a.copyFrom (c) // true
 \endcode
  * That is why it is important that the implementation of the copyFrom method is exactly the same as shown in the example.
- *  If the implementation of this method differs from the example, the data will not be copied correctly.
+ * If the implementation of this method differs from the example, the data will not be copied correctly.
  */
 class HEARTSHARED_EXPORT AbstractData : public StreamBase
 {
@@ -109,29 +108,29 @@ public:
     virtual ~AbstractData() override;
 
     /**
-     * @brief cmd - this is command of this object, (for generate cmd use macross H16<ClassName>)
-     * @return command of package.
+     * @brief cmd - This is command of this object, (for generate cmd use macross H16<ClassName>)
+     * @return Command of package.
      */
     unsigned short cmd() const;
 
     /**
-     * @brief toPackage This method convert this class obejct to the package.
+     * @brief toPackage This method convert this class object to the package.
      *  For more info see Package class.
      * @param package  This is return value of Package class.
      * @param triggerHash This is hash of the package the current class is responding to.
-     * @return True if convert to pacakge finished successful.
+     * @return True if convert to package finished successful.
      */
     bool toPackage(Package &package, unsigned int triggerHash = 0) const;
 
     /**
-     * @brief isValid This method check current package to valid.
-     * @return true if class isValid
+     * @brief isValid This method check current object to valid.
+     * @return True if class isValid.
      */
     virtual bool isValid() const;
 
     /**
      * @brief copyFrom This method copyFrom supports copying between parent and child classes.
-     *  @note The implementaion of this method must be like a example:
+     *  @note The implementation of this method must be like a example:
      *   \code
          bool copyFrom(const AbstractData *other) {
             if (!AbstractData::copyFrom(other))
@@ -145,27 +144,27 @@ public:
             return true;
         };
      *   \endcode
-     * @param other - pointer to anther object.
-     * @return true all members of current object is updated.
+     * @param other - Pointer to anther object.
+     * @return True all members of current object is updated.
      */
     virtual bool copyFrom(const AbstractData* other);
 
     /**
-     * @brief toString - return a string implementation fo this object
-     * @return string of object.
+     * @brief toString - Return a string implementation for this object.
+     * @return String of object.
      */
     virtual QString toString() const;
 
     /**
-     * @brief prepareToSend - this method check object to valid and if an object is invalid invoke method init.
-     * @return return true if the object prepared for sending.
+     * @brief prepareToSend - This method check object to valid and if an object is invalid invoke method init.
+     * @return Return true if the object prepared for sending.
      */
     bool prepareToSend();
 
     /**
-     * @brief create - this is factory method for create a new object.
-     * @param args - list of arguments for create object
-     * @return pointer to created Object.
+     * @brief create - This is factory method for create a new object.
+     * @param args - List of arguments for create object.
+     * @return Pointer to created object.
      */
     template<class C, class... Args>
     C* create(Args&&... args) const {
@@ -175,29 +174,29 @@ public:
     }
 
     /**
-     * @brief fromPakcage - this method initialize the corrent object from a package class obejct
-     * @param pkg - input pacakge value
+     * @brief fromPakcage - This method initialize the current object from a package class object.
+     * @param pkg - Input package value.
      */
     void fromPakcage(const Package& pkg);
 
 protected:
     /**
-     * @brief AbstractData - base constructor of this object
+     * @brief AbstractData - Base constructor of this object.
      */
     explicit AbstractData();
 
 
     /**
-     * @brief setCmd - set the new value command of object.
-     * @param cmd - new value
+     * @brief setCmd - Set the new value command of object.
+     * @param cmd - New value.
      */
     void setCmd(unsigned short cmd);
 
     /**
-     * @brief init This method need to invoke after create object for initialize all componet of ojects.
-     * @note do not invode this method on constructor of object, becose object wel be initialized not correctly.
-     *  By defaul implementation of object init comand of object.
-     * @return true if object initialized correctly.
+     * @brief Init This method need to invoke after create object for initialize all component of objects.
+     * @note Do not invade this method on constructor of object, because object will be initialized not correctly.
+     *  By default implementation of object init command.
+     * @return True if object initialized correctly.
      */
     virtual bool init();
 
@@ -206,12 +205,21 @@ protected:
 
 private:
     /**
-     * @brief generateCmd set cmd from class name.
-     * @note call this method only after create objects. do not call in constructor of class.
+     * @brief generateCmd Generate command from name of this class object.
+     * @note Call this method only after create objects. Do not call in constructor of class.
+     * @return Command of object.
      */
-    void generateCmd();
+    unsigned short generateCmd() const;
+
+
     /**
-     * @brief _cmd - unique id of class using in Header of package for identification.
+     * @brief initCmd Set cmd from class name.
+     * @note Call this method only after create objects. Do not call in constructor of class.
+     */
+    void initCmd();
+
+    /**
+     * @brief cmd - Unique id of class using in Header of package for identification.
      */
     unsigned short _cmd = 0;
 };

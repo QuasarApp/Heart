@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -18,8 +18,8 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The WebSocketSubscriptions class is list of subscribrs object.
- *  Using for transporting a informations about subscribes
+ * @brief The WebSocketSubscriptions class is list of subscribers object.
+ *  Using for transporting a informations about subscribers.
  */
 class HEARTSHARED_EXPORT WebSocketSubscriptions: public AbstractData
 {
@@ -31,18 +31,18 @@ public:
     QDataStream &toStream(QDataStream &stream) const override;
 
     /**
-     * @brief addresses This is list of subscribes.
+     * @brief addresses This is list of subscribers.
      */
-    QSet<DbAddress> addresses() const;
+    QSet<unsigned int> addresses() const;
 
     /**
      * @brief setAddresses This method set a new list of subscribers.
      * @param addresses This is a new list of subscribers.
      */
-    void setAddresses(const QSet<DbAddress> &addresses);
+    void setAddresses(const QSet<unsigned int> &addresses);
 
 private:
-    QSet<DbAddress> _addresses;
+    QSet<unsigned int> _subscribeIds;
 
 
 };

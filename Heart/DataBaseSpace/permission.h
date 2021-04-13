@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -15,13 +15,13 @@ namespace QH {
  * permision to data in database
  */
 enum class Permission: unsigned char {
-    /// The network member do not have any permisions for an object
+    /// The network member do not have any permissions for an object.
     NoPermission = 0x00,
     /// The network member can read a object.
     Read = 0x01,
     /// The network member can Read and Write a new data into object. But can not be removed.
     Update = 0x02,
-    /// The network member have all permisions to an object
+    /// The network member have all permissions to an object.
     Write = 0x03,
 };
 

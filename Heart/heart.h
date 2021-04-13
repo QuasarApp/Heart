@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -20,6 +20,8 @@
 #if HEART_BUILD_LVL >= 2
 #include "networknode.h"
 #endif
+
+inline void initResources() { Q_INIT_RESOURCE(ProtockolResusces); }
 
 /**
  * @brief The QH namespace - QuasarApp Heart namespace. This namespace contains all classes of the Heart library.
@@ -153,17 +155,35 @@ protected:
  *
  * Node - it is server or client implementation of any of AbstractNode class of it child classes.
  *  - The node receive raw data from another network connection.
- *  - After parsing a raw data the node conwert a bytes array to QH::Package.
- *  - The Package create a new thread fot working with received request, so, all working of pacakge working in own threads.
+ *  - After parsing a raw data the node convert a bytes array to QH::Package.
+ *  - The Package create a new thread for working with received request, so, all working of package working in own threads.
  *  - Next, the Node invoke a QH::AbstractNode::parsePackage method. This method must be return QH::ParserResult.
  *    @note Do not forget invoke the super class parsePackage method.
- *  - The Lasst step it is invoke your overridet parsePackage method on your server or client class.
- *     IF you need to send responce then use a  bool sendData(PKG::AbstractData *resp,  const HostAddress& addere, const Header *req = nullptr).
+ *  - The Last step it is invoke your override parsePackage method on your server or client class.
+ *     IF you need to send responce then use a  unsigned int sendData(PKG::AbstractData *resp,  const HostAddress& addere, const Header *req = nullptr).
  *
  * Work scheme:
  *\image html Async.svg width=800px
  */
 namespace QH {
+    /**
+         * @brief init This method initialize default resources of the Heart Library.
+         * @warning Do not Forget invoke this method before using library.
+         *
+         *  Example :
+         *  @code {cpp}
+         *  #include <heart.h>
+         *  int main() {
+         *      if (!QH::init()) {
+         *          return 1;
+         *      }
+         *      // some code
+         *      return 0
+         *  }
+         *  @endcode
+         * @return true if all resources initialize successful.
+         */
+    bool HEARTSHARED_EXPORT init();
 
     /** @brief The PKG namesapce - this namespace contains all default packages of the Heart library.
      *  If you want create a pool request for Heart Library with own implemented packages

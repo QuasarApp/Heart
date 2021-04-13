@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -21,7 +21,7 @@ PackageManager::PackageManager()
 }
 
 PackageManager::~PackageManager() {
-    for (const auto& data : _parseResults) {
+    for (const auto& data : qAsConst(_parseResults)) {
         delete data;
     }
 
@@ -58,7 +58,7 @@ void PackageManager::processed(const Package &pkg, char processResult) {
                              new Package(pkg)
                          });
 
-    _processTime.insert(static_cast<int>(time(0)), pkg.hdr.hash);
+    _processTime.insert(static_cast<int>(time(nullptr)), pkg.hdr.hash);
 }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -11,7 +11,7 @@
 
 #include <QSet>
 #include <abstractdata.h>
-#include <baseid.h>
+#include <nodeid.h>
 
 namespace QH {
 namespace PKG {
@@ -29,8 +29,8 @@ public:
     bool isValid() const override;
     bool copyFrom(const AbstractData *) override;
 
-    QSet<BaseId> knowAddresses() const;
-    void setKnowAddresses(const QSet<BaseId> &knowAddresses);
+    QSet<NodeId> knowAddresses() const;
+    void setKnowAddresses(const QSet<NodeId> &knowAddresses);
 
 
     // StreamBase interface
@@ -39,7 +39,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    QSet<BaseId> _knowAddresses;
+    QSet<NodeId> _knowAddresses;
 };
 }
 }

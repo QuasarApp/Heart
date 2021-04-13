@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -68,10 +68,10 @@ bool NetworkTestUtils::deployNewNode(QH::NetworkNode* node) const {
     return true;
 }
 
-QHash<QH::BaseId, QH::NetworkNode *>
+QHash<QH::NodeId, QH::NetworkNode *>
 NetworkTestUtils::generateNetworkNode(int count) const {
 
-    QHash<QH::BaseId, QH::NetworkNode *> result;
+    QHash<QH::NodeId, QH::NetworkNode *> result;
     QSet<QH::NetworkNode *> tmp;
 
     auto deinit = [&tmp]() {

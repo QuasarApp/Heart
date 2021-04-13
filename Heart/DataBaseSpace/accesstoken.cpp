@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -27,6 +27,10 @@ QByteArray AccessToken::generate(const QByteArray &entropy) {
 AccessToken::AccessToken(int duration, const QByteArray &entropy) {
     _duration = static_cast<int>(QDateTime::currentSecsSinceEpoch()) + duration;
     _data = generate(entropy);
+}
+
+AccessToken::AccessToken(const QByteArray &other) {
+    fromBytes(other);
 }
 
 AccessToken::AccessToken() = default;

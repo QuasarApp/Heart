@@ -1,28 +1,51 @@
 #
-# Copyright (C) 2018-2020 QuasarApp.
+# Copyright (C) 2018-2021 QuasarApp.
 # Distributed under the lgplv3 software license, see the accompanying
 # Everyone is permitted to copy and distribute verbatim copies
 # of this license document, but changing it is not allowed.
 #
 
 cmake_minimum_required(VERSION 3.10)
+
 project(Heart)
 if(TARGET ${PROJECT_NAME})
   message("The ${PROJECT_NAME} arledy included in main Project")
   return()
 endif()
 
-find_package(Qt5 COMPONENTS Core Test REQUIRED)
-if(NOT DEFINED HEART_BUILD_LVL)
-    set(HEART_BUILD_LVL 2)
+if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
+    if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
+        include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
+        initAll()
+        return()
+    endif()
 endif()
+
+if(NOT DEFINED HEART_BUILD_LVL)
+    set(HEART_BUILD_LVL 1)
+endif()
+
+if (NOT DEFINED HEART_TESTS)
+    set(HEART_TESTS ON)
+
+    if (ANDROID)
+        set(HEART_TESTS OFF)
+    endif()
+endif()
+
 
 include(QuasarAppLib/CMake/ccache.cmake)
 
 # Add sub directories
+find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
+
 add_subdirectory(QuasarAppLib)
 add_subdirectory(Heart)
-add_subdirectory(HeartTests)
+
+if (HEART_TESTS)
+    add_subdirectory(HeartTests)
+endif()
 
 include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 initAll()

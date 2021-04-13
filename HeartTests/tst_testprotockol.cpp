@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -13,9 +13,10 @@
 #endif
 #if HEART_BUILD_LVL >= 1
 #include <basenodetest.h>
-#include <networknodetest.h>
+#include <singleservertest.h>
 #endif
 #if HEART_BUILD_LVL >= 2
+#include <networknodetest.h>
 #endif
 
 
@@ -40,11 +41,15 @@ private slots:
 
 testProtockol::testProtockol() {
 
+    QH::init();
+
 #if HEART_BUILD_LVL >= 0
     _tests.push_back(new AbstractNodeTest);
 #endif
 #if HEART_BUILD_LVL >= 1
     _tests.push_back(new BaseNodeTest);
+    _tests.push_back(new SingleServerTest);
+
 #endif
 #if HEART_BUILD_LVL >= 2
     _tests.push_back(new NetworkNodeTest);
@@ -70,9 +75,9 @@ void testProtockol::unitTests() {
 
     QDir(path).removeRecursively();
 
-    QTimer::singleShot(0, [&app, this]() {
+    QTimer::singleShot(0, this, [this, &app]() {
 
-        for (auto test : _tests ) {
+        for (auto test : qAsConst(_tests) ) {
             test->test();
             delete test;
         }

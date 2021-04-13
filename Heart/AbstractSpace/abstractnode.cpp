@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -8,14 +8,12 @@
 #include "abstractnode.h"
 #include "datasender.h"
 #include "ping.h"
-#include "qsecretrsa2048.h"
 #include "workstate.h"
 #include <QHostInfo>
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslSocket>
 #include <badrequest.h>
-#include <qrsaencryption.h>
 #include <quasarapp.h>
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
@@ -23,6 +21,7 @@
 #include <QMetaObject>
 #include <QtConcurrent>
 #include <closeconnection.h>
+#include "asynclauncher.h"
 #include "receivedata.h"
 
 namespace QH {
@@ -32,20 +31,45 @@ using namespace PKG;
 AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
 
-    _dataSender = new DataSender();
+    initThreadId();
+
+    _senderThread = new QThread();
+    _senderThread->setObjectName("Sender");
+
+    // This object moving to _senderThread.
+    _dataSender = new DataSender(_senderThread);
+    _socketWorker = new AsyncLauncher(_senderThread);
+
+    _senderThread->start();
+
+    registerPackageType<Ping>();
+    registerPackageType<BadRequest>();
+    registerPackageType<CloseConnection>();
+
+    initThreadPool();
+
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
+
+    if (!port)
+        return false;
+
     HostAddress adr(addres, port);
     if (addres.isEmpty()) {
-        adr = HostAddress{QHostAddress::Any};
+        adr = HostAddress{QHostAddress::Any, port};
     }
 
     if (!listen(adr)) {
         QuasarAppUtils::Params::log("Run fail " + this->errorString(),
                                     QuasarAppUtils::Error);
+
+        QuasarAppUtils::Params::log("Address:: " + adr.toString(),
+                                    QuasarAppUtils::Error);
         return false;
     }
+
+    initThreadPool();
 
     return true;
 }
@@ -53,21 +77,23 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
 void AbstractNode::stop() {
     close();
 
-    QMutexLocker locer(&_connectionsMutex);
-    for (auto &&i : _connections) {
+    _connectionsMutex.lock();
+    for (const auto &i : qAsConst(_connections)) {
         i->disconnect();
     }
+    _connectionsMutex.unlock();
 
-    for (auto it: _workers) {
+    for (auto it: qAsConst(_workers)) {
         if (!it->isFinished())
             it->cancel();
     }
 
-    for (auto it: _receiveData) {
+    for (auto it: qAsConst(_receiveData)) {
         delete  it;
     }
     _receiveData.clear();
 
+    deinitThreadPool();
 }
 
 AbstractNodeInfo *AbstractNode::getInfoPtr(const HostAddress &id) {
@@ -109,82 +135,80 @@ void AbstractNode::unBan(const HostAddress &target) {
     _connections[target]->unBan();
 }
 
-bool AbstractNode::connectToHost(const HostAddress &address, SslMode mode) {
-    QTcpSocket *socket;
-    if (mode == SslMode::NoSSL) {
-        socket = new QTcpSocket(nullptr);
-    } else {
-        socket = new QSslSocket(nullptr);
-    }
+bool AbstractNode::addNode(const HostAddress &address) {
 
-    if (!registerSocket(socket, &address)) {
-        return false;
-    }
+    AsyncLauncher::Job action = [this, address]() -> bool {
+        QTcpSocket *socket;
+        if (_mode == SslMode::NoSSL) {
+            socket = new QTcpSocket(nullptr);
+        } else {
+            socket = new QSslSocket(nullptr);
+        }
 
-    socket->connectToHost(address, address.port());
+        if (!registerSocket(socket, &address)) {
+            delete socket;
+            return false;
+        }
 
-    return true;
+        socket->connectToHost(address, address.port());
+
+        return true;
+    };
+
+    return _socketWorker->run(action);
 }
 
-bool AbstractNode::connectToHost(const QString &domain, unsigned short port, SslMode mode) {
-    QHostInfo::lookupHost(domain, [this, port, mode, domain](QHostInfo info) {
+bool AbstractNode::addNode(const QString &domain, unsigned short port) {
+    HostAddress address{domain, port};
+    if (address.isNull()) {
 
-        if (info.error() != QHostInfo::NoError) {
-            QuasarAppUtils::Params::log("The domain name :" + domain + " has error: " + info.errorString(),
-                                        QuasarAppUtils::Error);
-            return;
-        }
+        QHostInfo::lookupHost(domain, [this, port, domain](QHostInfo info) {
 
-        if (info.addresses().size() > 1) {
-            QuasarAppUtils::Params::log("The domain name :" + domain + " has more 1 ip addresses.",
-                                        QuasarAppUtils::Warning);
-        }
+            if (info.error() != QHostInfo::NoError) {
+                QuasarAppUtils::Params::log("The domain name :" + domain +
+                                            " has error: " + info.errorString(),
+                                            QuasarAppUtils::Error);
+                return;
+            }
+
+            auto addresses = info.addresses();
+
+            if (addresses.size() > 1) {
+                QuasarAppUtils::Params::log("The domain name :" + domain +
+                                            " has more 1 ip addresses.",
+                                            QuasarAppUtils::Warning);
+            }
 
 
-        if (!connectToHost(HostAddress{info.addresses().first(), port}, mode)) {
-            return;
-        }
+            addNode(HostAddress{addresses.first(), port});
+        });
 
-        auto hostObject = getInfoPtr(HostAddress{info.addresses().first(), port});
 
-        if (!hostObject) {
-            QuasarAppUtils::Params::log("The domain name :" + domain + " has connected bud not have network object!",
-                                        QuasarAppUtils::Error);
-            return;
-        }
-
-        hostObject->setInfo(info);
-    });
-
-    return true;
-}
-
-void AbstractNode::addNode(const HostAddress &nodeAdderess) {
-
-    QMetaObject::invokeMethod(this,
-                              "connectNodePrivate",
-                              Qt::QueuedConnection,
-                              Q_ARG(QH::HostAddress, nodeAdderess));
-
-}
-
-void AbstractNode::removeNode(const HostAddress &nodeAdderess) {
-
-    for (int status = static_cast<int>(NodeCoonectionStatus::NotConnected);
-         status < static_cast<int>(NodeCoonectionStatus::Confirmed); ++status) {
-
-        takeFromQueue(nodeAdderess, static_cast<NodeCoonectionStatus>(status));
+        return true;
     }
+
+
+    return addNode(address);
+
+}
+
+bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
 
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
 
         if (ptr->isLocal()) {
-            ptr->disconnect();
+            ptr->removeSocket();
+            return true;
         } else {
             QTimer::singleShot(WAIT_CONFIRM_TIME, this,
                                std::bind(&AbstractNode::handleForceRemoveNode, this, nodeAdderess));
+
+            CloseConnection close;
+            return sendData(&close, nodeAdderess);
         }
     }
+
+    return false;
 }
 
 HostAddress AbstractNode::address() const {
@@ -192,8 +216,12 @@ HostAddress AbstractNode::address() const {
 }
 
 AbstractNode::~AbstractNode() {
-    //    delete _nodeKeys;
-    stop();
+    _senderThread->quit();
+    _senderThread->wait();
+
+    delete _dataSender;
+    delete _senderThread;
+    delete _socketWorker;
 }
 
 QSslConfiguration AbstractNode::getSslConfig() const {
@@ -341,14 +369,26 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         return false;
     }
 
-    auto info = createNodeInfo(socket, clientAddress);
-
-    _connectionsMutex.lock();
     HostAddress cliAddress;
     if (clientAddress)
         cliAddress = *clientAddress;
     else
-        cliAddress = info->networkAddress();
+        cliAddress = HostAddress{socket->peerAddress(), socket->peerPort()};
+
+
+    _connectionsMutex.lock();
+
+    if (_connections.contains(cliAddress)) {
+        auto info =_connections.value(cliAddress);
+        info->setSct(socket);
+        info->setIsLocal(clientAddress);
+
+        _connectionsMutex.unlock();
+
+        return info->isValid();
+    }
+
+    auto info = createNodeInfo(socket, &cliAddress);
 
     info->setIsLocal(clientAddress);
 
@@ -356,62 +396,59 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
 
     _connectionsMutex.unlock();
 
-    connect(socket, &QAbstractSocket::readyRead, this, &AbstractNode::avelableBytes);
-    connect(socket, &QAbstractSocket::disconnected, this, &AbstractNode::handleDisconnected,
+    connect(info, &AbstractNodeInfo::sigReadyRead,
+            this, &AbstractNode::avelableBytes);
+
+    // using direct connection because socket clear all data of ip and port after disconnected.
+    connect(info, &AbstractNodeInfo::statusChaned,
+            this, &AbstractNode::handleNodeStatusChanged,
             Qt::QueuedConnection);
-
-    connect(socket, &QAbstractSocket::connected, this, &AbstractNode::handleConnected,
-            Qt::QueuedConnection);
-
-    if (info->isConnected()) {
-        socket->connected();
-    }
-
 
     // check node confirmed
-    QTimer::singleShot(WAIT_TIME, this,
-                       std::bind(&AbstractNode::handleCheckConfirmendOfNode, this, cliAddress));
+    QTimer::singleShot(WAIT_TIME, this, [this, info]() {
+        checkConfirmendOfNode(info);
+    });
 
     connectionRegistered(info);
 
     return true;
 }
 
-ParserResult AbstractNode::parsePackage(const Package &pkg,
+ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
+                                        const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
 
-    if (!(sender && sender->isValid())) {
+    if (!(sender)) {
         QuasarAppUtils::Params::log("sender socket is not valid!",
                                     QuasarAppUtils::Error);
         return ParserResult::Error;
     }
 
-    if (!pkg.isValid()) {
+    if (!pkg->isValid()) {
         QuasarAppUtils::Params::log("incomming package is not valid!",
                                     QuasarAppUtils::Error);
         changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
         return ParserResult::Error;
     }
 
-    if (H_16<Ping>() == pkg.hdr.command) {
-        Ping cmd(pkg);
+    incomingData(pkg.data(), sender);
 
-        if (!cmd.ansver()) {
-            cmd.setAnsver(true);
-            sendData(&cmd, sender->networkAddress(), &pkg.hdr);
+    if (H_16<Ping>() == pkg->cmd()) {
+        auto cmd = static_cast<Ping *>(pkg.data());
+        if (!cmd->ansver()) {
+            cmd->setAnsver(true);
+            sendData(cmd, sender->networkAddress(), &pkgHeader);
         }
 
-        incomingData(&cmd, sender->networkAddress());
         return ParserResult::Processed;
-    } else if (H_16<BadRequest>() == pkg.hdr.command) {
-        BadRequest cmd(pkg);
+    } else if (H_16<BadRequest>() == pkg->cmd()) {
+        auto cmd = static_cast<BadRequest *>(pkg.data());
 
-        incomingData(&cmd, sender->networkAddress());
-        emit requestError(cmd.err());
+        emit requestError(cmd->errCode(), cmd->err());
 
         return ParserResult::Processed;
 
-    } else if (H_16<CloseConnection>() == pkg.hdr.command) {
+    } else if (H_16<CloseConnection>() == pkg->cmd()) {
 
         if (sender->isLocal()) {
             removeNode(sender->networkAddress());
@@ -439,15 +476,10 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
         return false;
     }
 
-    return QMetaObject::invokeMethod(const_cast<DataSender*>(_dataSender),
-                                     "sendPackagePrivate",
-                                     Qt::QueuedConnection,
-                                     Q_ARG(QByteArray, pkg.toBytes()),
-                                     Q_ARG(void*, target));
-
+    return _dataSender->sendData(pkg.toBytes(), target, true);
 }
 
-bool AbstractNode::sendData(AbstractData *resp,
+unsigned int AbstractNode::sendData(AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
 
@@ -458,25 +490,24 @@ bool AbstractNode::sendData(AbstractData *resp,
     return sendData(const_cast<const AbstractData*>(resp), addere, req);
 }
 
-bool AbstractNode::sendData(const AbstractData *resp,
+unsigned int AbstractNode::sendData(const AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
     auto client = getInfoPtr(addere);
 
     if (!client) {
-        QuasarAppUtils::Params::log("Response not sent because client == null",
-                                    QuasarAppUtils::Error);
-        return false;
+        QuasarAppUtils::Params::log("Response not sent because client == null");
+        return 0;
     }
 
     if (!resp) {
-        return false;
+        return 0;
     }
 
     Package pkg;
     bool convert = false;
     if (req) {
-        convert = resp->toPackage(pkg, req->command);
+        convert = resp->toPackage(pkg, req->hash);
     } else {
         convert = resp->toPackage(pkg);
     }
@@ -484,46 +515,43 @@ bool AbstractNode::sendData(const AbstractData *resp,
     if (!convert) {
         QuasarAppUtils::Params::log("Response not sent because dont create package from object",
                                     QuasarAppUtils::Error);
-        return false;
+        return 0;
     }
 
     if (!sendPackage(pkg, client->sct())) {
         QuasarAppUtils::Params::log("Response not sent!",
                                     QuasarAppUtils::Error);
-        return false;
+        return 0;
     }
 
-    return true;
+    return pkg.hdr.hash;
 }
 
 void AbstractNode::badRequest(const HostAddress &address, const Header &req,
-                              const QString msg) {
-    auto client = getInfoPtr(address);
+                              const ErrorData &err, qint8 diff) {
 
-    if (!client) {
+    if (!changeTrust(address, diff)) {
 
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because client == null",
-                                    QuasarAppUtils::Error);
-        return;
-    }
-
-    if (!changeTrust(address, REQUEST_ERROR)) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
+        QuasarAppUtils::Params::log("Bad request detected, bud response command not sent!"
                                     " because trust not changed",
                                     QuasarAppUtils::Error);
 
+        QuasarAppUtils::Params::log("SECURITY LOG: Force block the " + address.toString() +
+                                    " because trust defined",
+                                    QuasarAppUtils::Error);
+
+        ban(address);
+
         return;
     }
 
-    auto bad = BadRequest(msg);
+    auto bad = BadRequest(err);
     if (!sendData(&bad, address, &req)) {
         return;
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                client->sct()->peerAddress().toString(),
+                                address.toString(),
                                 QuasarAppUtils::Info);
 }
 
@@ -652,54 +680,72 @@ bool AbstractNode::changeTrust(const HostAddress &id, int diff) {
 }
 
 void AbstractNode::incomingSsl(qintptr socketDescriptor) {
-    QSslSocket *socket = new QSslSocket;
+    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
+        QSslSocket *socket = new QSslSocket;
 
-    socket->setSslConfiguration(_ssl);
+        socket->setSslConfiguration(_ssl);
 
-    if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
-        connect(socket, &QSslSocket::encrypted, [this, socket](){
-            if (!registerSocket(socket)) {
+        if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+            connect(socket, &QSslSocket::encrypted, [this, socket]() {
+
+                if (!registerSocket(socket)) {
+                    socket->deleteLater();
+                }
+            });
+
+            connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+                    [socket](const QList<QSslError> &errors){
+
+                for (auto &error : errors) {
+                    QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
+                }
+
                 socket->deleteLater();
-            }
-        });
+            });
 
-        connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-                [socket](const QList<QSslError> &errors){
+            socket->startServerEncryption();
 
-            for (auto &error : errors) {
-                QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
-            }
+            return true;
+        } else {
+            delete socket;
+            return false;
+        }
 
-            socket->deleteLater();
-        });
+    };
 
-        socket->startServerEncryption();
-    } else {
-        delete socket;
-    }
+    _socketWorker->run(action);
 }
 
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
-    QTcpSocket *socket = new QTcpSocket();
-    if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
-        if (!registerSocket(socket)) {
+    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
+
+
+        QTcpSocket *socket = new QTcpSocket();
+        if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
+            if (!registerSocket(socket)) {
+                delete socket;
+                return false;
+            }
+        } else {
             delete socket;
+            return false;
         }
-    } else {
-        delete socket;
-    }
+
+        return true;
+
+    };
+
+    _socketWorker->run(action);
 }
 
 
-void AbstractNode::avelableBytes() {
+void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
 
-    auto client = dynamic_cast<QAbstractSocket*>(sender());
-
-    if (!client) {
+    if (!sender) {
         return;
     }
 
-    auto id = HostAddress{client->peerAddress(), client->peerPort()};
+    auto id = sender->networkAddress();
 
     if (!_connections.contains(id)) {
         return;
@@ -713,133 +759,71 @@ void AbstractNode::avelableBytes() {
     auto &hdrArray = _receiveData[id]->_hdrArray;
 
     int workIndex = 0;
-    auto array = client->readAll();
+    const int headerSize = sizeof(Header);
+
+    auto socket = sender->sct();
+    if (!socket) {
+        pkg.reset();
+        hdrArray.clear();
+        return;
+    }
 
     // concat with old data of header.
-    array.insert(0, hdrArray);
+    const auto array = hdrArray + socket->readAll();
+    const int arraySize = array.size();
     hdrArray.clear();
 
-    while (array.size() > workIndex) {
+    while (arraySize > workIndex) {
 
-        unsigned int workSize = array.size() - workIndex;
+        int offset = arraySize - workIndex;
 
         if (pkg.hdr.isValid()) {
             // CASE 1: The Package data is still not collected, but the header is already collected. performs full or partial filling of packet data.
 
-            unsigned int dataLength = std::min(pkg.hdr.size - pkg.data.size(),
-                                               array.size() - workIndex);
-            pkg.data.append(array.mid(workIndex + sizeof(Header), dataLength));
+            int dataLength = std::min(static_cast<int>(pkg.hdr.size - pkg.data.size()),
+                                               arraySize - workIndex);
+            pkg.data.append(array.mid(workIndex + headerSize, dataLength));
 
             workIndex += dataLength;
 
 
-        } else if (workSize >= sizeof(Header)) {
+        } else if (offset >= headerSize) {
 
             // CASE 2: The header and package still do not exist and the amount of data allows you to create a new header. A header is created and will fill in all or part of the package data.
 
             pkg.reset();
 
             memcpy(&pkg.hdr,
-                   array.data() + workIndex, sizeof(Header));
+                   array.data() + workIndex, headerSize);
 
-            unsigned int dataLength = std::min(static_cast<unsigned long>(pkg.hdr.size),
-                                               array.size() - sizeof(Header) - workIndex);
+            int dataLength = std::min(static_cast<int>(pkg.hdr.size),
+                                      arraySize - headerSize - workIndex);
 
-            pkg.data.append(array.mid(workIndex + sizeof(Header), dataLength));
-            workIndex += sizeof(Header) + dataLength;
+            pkg.data.append(array.mid(workIndex + headerSize, dataLength));
+            workIndex += headerSize + dataLength;
 
         } else {
             // CASE 3: There is not enough data to initialize the header. The data will be placed in temporary storage and will be processed the next time the data is received.
 
-            unsigned char dataLength = array.size() - workIndex;
+            unsigned char dataLength = static_cast<unsigned char>(arraySize - workIndex);
             hdrArray += array.mid(workIndex, dataLength);
             workIndex += dataLength;
         }
 
         if (pkg.isValid()) {
-            newWork(pkg, getInfoPtr(id), id);
-        } else {
+            newWork(pkg, sender, id);
+            pkg.reset();
+            hdrArray.clear();
+        }
+
+        if (pkg.data.size() > pkg.hdr.size) {
             QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
                                         QuasarAppUtils::Warning);
-        }
-
-        if (pkg.data.size() >= pkg.hdr.size) {
             pkg.reset();
+            hdrArray.clear();
+
         }
     }
-}
-
-/// @todo create a new system of drop error nodes.
-/// if node closed by error then this node need to reconnect. bud if node longer time in disconnect statuse then drop this node.
-///
-void AbstractNode::handleDisconnected() {
-    auto _sender = dynamic_cast<QTcpSocket*>(sender());
-
-    if (_sender) {
-        // log error
-
-        auto ptr = getInfoPtr(HostAddress{_sender->peerAddress(), _sender->peerPort()});
-        if (!ptr) {
-            QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                        " address not valid",
-                                        QuasarAppUtils::Error);
-            return;
-        }
-
-        ptr->setStatus(NodeCoonectionStatus::NotConnected);
-        nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::NotConnected);
-        ptr->disconnect();
-
-        return;
-    }
-
-    QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                "dynamic_cast fail!",
-                                QuasarAppUtils::Error);
-}
-
-void AbstractNode::handleConnected() {
-
-    auto _sender = dynamic_cast<QTcpSocket*>(sender());
-
-    if (_sender) {
-
-        auto ptr = getInfoPtr(HostAddress{_sender->peerAddress(), _sender->peerPort()});
-
-        if (!ptr) {
-            QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                        " address not valid",
-                                        QuasarAppUtils::Error);
-            return;
-        }
-
-        ptr->setStatus(NodeCoonectionStatus::Connected);
-        nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::Connected);
-
-        return;
-    }
-
-    QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                "dynamic_cast fail!",
-                                QuasarAppUtils::Error);
-}
-
-void AbstractNode::nodeConfirmet(const HostAddress& node) {
-
-    auto ptr = getInfoPtr(node);
-
-    if (!ptr) {
-        QuasarAppUtils::Params::log("system error in void Server::handleDisconected()"
-                                    " address not valid",
-                                    QuasarAppUtils::Error);
-    }
-
-    ptr->setStatus(NodeCoonectionStatus::Confirmed);
-    nodeStatusChanged(ptr->networkAddress(), NodeCoonectionStatus::Confirmed);
-}
-
-void AbstractNode::handleCheckConfirmendOfNode(HostAddress node) {
-    checkConfirmendOfNode(node);
 }
 
 void AbstractNode::handleWorkerStoped() {
@@ -854,7 +838,7 @@ void AbstractNode::handleWorkerStoped() {
 void AbstractNode::handleForceRemoveNode(HostAddress node) {
     AbstractNodeInfo* info = getInfoPtr(node);
     if (info) {
-        info->disconnect();
+        info->removeSocket();
     }
 }
 
@@ -862,29 +846,43 @@ bool AbstractNode::listen(const HostAddress &address) {
     return QTcpServer::listen(address, address.port());
 }
 
-void AbstractNode::connectNodePrivate(HostAddress address) {
-    connectToHost(address, _mode);
+QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const {
+
+    auto value = QSharedPointer<AbstractData>(_registeredTypes.value(pkg.hdr.command, [](){return nullptr;})());
+
+    if (!value) {
+        QuasarAppUtils::Params::log("You try parse not registered package type."
+                                    " Plese use the registerPackageType method befor parsing."
+                                    " Example invoke registerPackageType<MyData>() into constructor of you client and server nodes.");
+
+        return nullptr;
+    }
+
+    value->fromPakcage(pkg);
+    return value;
 }
 
-void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
+bool AbstractNode::checkCommand(unsigned short cmd) const {
+    return _registeredTypes.contains(cmd);
+}
+
+void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
                            const HostAddress& id) {
 
     if (!sender)
         return;
 
-    if (_packageManager.contains(pkg.hdr.hash)) {
-        return;
-    }
-
     auto executeObject = [pkg, sender, id, this]() {
-        ParserResult parseResult = parsePackage(pkg, sender);
 
-        _packageManager.processed(pkg, static_cast<char>(parseResult));
+        auto data = prepareData(pkg);
+        if (!data)
+            return false;
+
+        ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
 
         if (parseResult != ParserResult::Processed) {
             auto message = QString("Package not parsed! %0 result: %1").
-                    arg(pkg.toString()).
-                    arg(pareseResultToString(parseResult));
+                    arg(pkg.toString(), pareseResultToString(parseResult));
 
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 
@@ -896,24 +894,24 @@ void AbstractNode::newWork(const Package &pkg, const AbstractNodeInfo *sender,
         }
 
         _confirmNodeMutex.lock();
-
-        bool fConfirmed = sender->confirmData();
-        if (fConfirmed && sender->status() != NodeCoonectionStatus::Confirmed) {
-            nodeConfirmet(id);
-        }
-
+        sender->updateConfirmStatus();
         _confirmNodeMutex.unlock();
 
 
         return true;
     };
 
-    auto worker = new QFutureWatcher <bool>();
-    worker->setFuture(QtConcurrent::run(executeObject));
-    _workers.insert(worker);
 
-    connect(worker, &QFutureWatcher<bool>::finished,
-            this, &AbstractNode::handleWorkerStoped);
+    QMutexLocker locer(&_threadPoolMutex);
+
+    if (_threadPool) {
+        auto worker = new QFutureWatcher <bool>();
+        worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
+        _workers.insert(worker);
+
+        connect(worker, &QFutureWatcher<bool>::finished,
+                this, &AbstractNode::handleWorkerStoped);
+    }
 }
 
 SslMode AbstractNode::getMode() const {
@@ -953,7 +951,7 @@ bool AbstractNode::disableSSL() {
     return true;
 }
 
-void AbstractNode::incomingData(AbstractData *pkg, const HostAddress &sender) {
+void AbstractNode::incomingData(const AbstractData *pkg, const AbstractNodeInfo *sender) {
     Q_UNUSED(pkg)
     Q_UNUSED(sender)
 
@@ -964,43 +962,14 @@ QHash<HostAddress, AbstractNodeInfo *> AbstractNode::connections() const {
 }
 
 void AbstractNode::connectionRegistered(const AbstractNodeInfo *info) {
-    Q_UNUSED(info);
+    Q_UNUSED(info)
 }
 
-void AbstractNode::pushToQueue(const std::function<void()>& action,
-                               const HostAddress &node,
-                               NodeCoonectionStatus triggerStatus) {
-
-    _actionCacheMutex.lock();
-    _actionCache[node][triggerStatus].push_back(action);
-    _actionCacheMutex.unlock();
-
+void AbstractNode::prepareForDelete() {
+    stop();
 }
 
-QList<std::function<void ()> >
-AbstractNode::takeFromQueue(const HostAddress &node,
-                            NodeCoonectionStatus triggerStatus) {
-
-    _actionCacheMutex.lock();
-
-    auto list = _actionCache[node][triggerStatus];
-    _actionCache[node].remove(triggerStatus);
-
-    if (_actionCache[node].size() == 0)
-        _actionCache.remove(node);
-
-    _actionCacheMutex.unlock();
-
-    return list;
-}
-
-void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStatus status) {
-
-    auto list = takeFromQueue(node, status);
-
-    for (const auto &action : list) {
-        action();
-    }
+void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectionStatus status) {
 
     if (status == NodeCoonectionStatus::NotConnected) {
         nodeDisconnected(node);
@@ -1011,27 +980,57 @@ void AbstractNode::nodeStatusChanged(const HostAddress &node, NodeCoonectionStat
     }
 }
 
-void AbstractNode::nodeConfirmend(const HostAddress &node) {
-    Q_UNUSED(node);
+void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
+    Q_UNUSED(node)
 }
 
-void AbstractNode::nodeConnected(const HostAddress &node) {
-    Q_UNUSED(node);
+void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
+    Q_UNUSED(node)
 }
 
-void AbstractNode::nodeDisconnected(const HostAddress &node) {
-    Q_UNUSED(node);
+void AbstractNode::nodeDisconnected(AbstractNodeInfo *node) {
+    Q_UNUSED(node)
 }
 
-void AbstractNode::checkConfirmendOfNode(const HostAddress &node) {
-    auto info = getInfoPtr(node);
+void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
 
     if(!info)
         return;
 
     if (info->status() != NodeCoonectionStatus::Confirmed) {
-        removeNode(node);
+        removeNode(info->networkAddress());
     }
+}
+
+void AbstractNode::initThreadId() const {
+    mainThreadID();
+}
+
+void AbstractNode::initThreadPool() {
+    deinitThreadPool();
+
+    QMutexLocker lock(&_threadPoolMutex);
+    _threadPool = new QThreadPool();
+    _threadPool->setObjectName("PackageWorker");
+    _threadPool->setMaxThreadCount(QThread::idealThreadCount());
+}
+
+void AbstractNode::deinitThreadPool() {
+    QMutexLocker lock(&_threadPoolMutex);
+
+    if (!_threadPool) {
+        return;
+    }
+
+    _threadPool->waitForDone(WAIT_TIME);
+    delete _threadPool;
+    _threadPool = nullptr;
+}
+
+QThread *AbstractNode::mainThreadID() {
+    static auto thread = QThread::currentThread();
+
+    return thread;
 }
 
 }

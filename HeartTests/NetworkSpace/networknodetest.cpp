@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -14,6 +14,7 @@
 #include <keystorage.h>
 #include <ping.h>
 #include <qsecretrsa2048.h>
+#include <keystoragetest.h>
 
 class TestingNetworkClient: public QH::NetworkNode {
 
@@ -25,7 +26,7 @@ public:
     }
 
 protected:
-    void incomingData(QH::PKG::AbstractData *pkg, const QH::BaseId &sender) {
+    void incomingData(QH::PKG::AbstractData *pkg, const QH::NodeId &sender) {
         Q_UNUSED(sender);
 
         auto ping = dynamic_cast<QH::PKG::Ping*>(pkg);
@@ -45,9 +46,9 @@ NetworkNodeTest::NetworkNodeTest() {
 }
 
 NetworkNodeTest::~NetworkNodeTest() {
-    delete _nodeA;
-    delete _nodeB;
-    delete _nodeC;
+    _nodeA->softDelete();
+    _nodeB->softDelete();
+    _nodeC->softDelete();
 
 }
 
@@ -69,7 +70,7 @@ bool NetworkNodeTest::powerTest() {
         return false;
     };
 
-    delete _nodeAPtr;
+    _nodeAPtr->softDelete();
 
     return true;
 }
@@ -81,7 +82,7 @@ bool NetworkNodeTest::dbTest() {
         return false;
     }
 
-    delete node;
+    node->softDelete();
 
     return true;
 }
@@ -159,6 +160,15 @@ bool NetworkNodeTest::performanceTest() {
 
 bool NetworkNodeTest::securityTest() {
     return false;
+}
+
+bool NetworkNodeTest::testICtypto() {
+    // check
+    if (!validationCrypto<QH::QSecretRSA2048>()) {
+        return false;
+    }
+
+    return true;
 }
 
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -8,39 +8,43 @@
 #include "dbaddress.h"
 #include <QDataStream>
 #include <QHash>
+#include <QCryptographicHash>
 
 
 namespace QH {
 
 qint64 qHash(const DbAddress &address) {
-    return qHash(address.id().toRaw() + address.table());
+    return qHash(address.SHA256Hash());
 }
 
-DbAddress::DbAddress(const QString &table, const BaseId &id) {
+DbAddress::DbAddress(const QString &table, const QVariant &id) {
     this->_table = table;
-    this->_id = id;
+    this->_value = id;
+    recalcHash();
+
 }
 
 bool operator==(const DbAddress & left, const DbAddress &other) {
-    return left._table == other._table && left._id == other._id;
+    return left._table == other._table &&  left._value == other._value;
 }
 
 QDataStream &DbAddress::fromStream(QDataStream &stream) {
-    stream >> _id;
+    stream >> _value;
     stream >> _table;
+    recalcHash();
+
     return stream;
 }
 
 QDataStream &DbAddress::toStream(QDataStream &stream) const {
-    stream << _id;
+    stream << _value;
     stream << _table;
     return stream;
 }
 
 QString DbAddress::toString() const {
-    return QString("DbAddress: id:%0, table:%1").
-            arg(QString(_id.toBase64())).
-            arg(_table);
+    return QString("DbAddress: table:%0, value:%1, Sha256:%2").
+            arg(_table, _value.toString(), _SHA256Hash.toHex());
 }
 
 bool operator!=(const DbAddress &left, const DbAddress &other) {
@@ -48,7 +52,7 @@ bool operator!=(const DbAddress &left, const DbAddress &other) {
 }
 
 bool DbAddress::isValid() const {
-    return _id.isValid() && _table.size();
+    return _value.isValid() && _table.size();
 }
 
 const QString& DbAddress::table() const {
@@ -57,14 +61,24 @@ const QString& DbAddress::table() const {
 
 void DbAddress::setTable(const QString &table) {
     _table = table;
+    recalcHash();
 }
 
-const BaseId& DbAddress::id() const {
-    return _id;
+const QVariant &DbAddress::id() const {
+    return _value;
 }
 
-void DbAddress::setId(const BaseId &id) {
-    _id = id;
+void DbAddress::setId(const QVariant &id){
+    _value = id;
+    recalcHash();
+}
+
+QByteArray DbAddress::SHA256Hash() const {
+    return _SHA256Hash;
+}
+
+void DbAddress::recalcHash() {
+    _SHA256Hash = QCryptographicHash::hash(toBytes(), QCryptographicHash::Sha256);
 }
 
 }

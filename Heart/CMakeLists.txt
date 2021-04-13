@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018-2020 QuasarApp.
+# Copyright (C) 2018-2021 QuasarApp.
 # Distributed under the lgplv3 software license, see the accompanying
 # Everyone is permitted to copy and distribute verbatim copies
 # of this license document, but changing it is not allowed.
@@ -10,21 +10,21 @@ cmake_minimum_required(VERSION 3.10)
 include(../QuasarAppLib/CMake/ProjectOut.cmake)
 include(../QuasarAppLib/CMake/Version.cmake)
 
-add_subdirectory(Qt-Secret)
-
+if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
+    add_subdirectory(Qt-Secret)
+endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 add_definitions(-DHEART_LIBRARY)
 
+list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
+find_package(OpenSSL REQUIRED)
 
-find_package(Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
@@ -77,11 +77,16 @@ endif()
 set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 
-add_library(${PROJECT_NAME} SHARED ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt5::Core Qt5::Network Qt5::Sql Qt5::Concurrent QuasarApp crypto ssl Qt-Secret)
+add_library(${PROJECT_NAME} ${SOURCE_CPP})
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp OpenSSL::Crypto OpenSSL::SSL)
+
+if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
+    target_link_libraries(${PROJECT_NAME} PUBLIC Qt-Secret)
+endif()
+
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 
-setVersion(1 1 0)
+setVersion(1 1 1)

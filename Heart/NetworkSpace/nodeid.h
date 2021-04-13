@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -14,32 +14,39 @@
 namespace QH {
 
 /**
- * @brief The BaseId class. General class for work with database id.
+ * @brief The NodeId class. General class for work with database id.
  * The Database id is hash (sha256) from object value.
  *  For more information about get hash code of databae objects see the DBObject::generateId method.
  */
-class HEARTSHARED_EXPORT BaseId: public StreamBase
+class HEARTSHARED_EXPORT NodeId: public StreamBase
 {
 public:
-    BaseId();
+    NodeId();
 
     /**
-     * @brief BaseId This contructor init the id from int value.
+     * @brief NodeId This constructor for init NodeId from the QVariantObject
+     * @param val
+     */
+    explicit NodeId(const QVariant& val);
+
+
+    /**
+     * @brief NodeId This contructor init the id from int value.
      * @param val This is new data value.
      */
-    BaseId(unsigned int val);
+    NodeId(unsigned int val);
 
     /**
-     * @brief BaseId This contructor init this object from raw bytearray.
+     * @brief NodeId This contructor init this object from raw bytearray.
      * @param raw
      */
-    BaseId(const QByteArray& raw);
+    NodeId(const QByteArray& raw);
 
     /**
-     * @brief BaseId This constructor init this object from base 64 codec.
+     * @brief NodeId This constructor init this object from base 64 codec.
      * @param base64 string with base 64 codec. This string will bew converted to a bytes array.
      */
-    BaseId(const QString& base64);
+    NodeId(const QString& base64);
 
     /**
      * @brief fromBase64 This method is wraper of QByteArray::fromBase64 method of Qt.
@@ -79,17 +86,23 @@ public:
      * @brief isValid This method check this object to valid.
      * @return true if object is valid.
      */
-    virtual bool isValid() const;
+    bool isValid() const;
 
     /**
      * @brief clear This method reset all data members of this object.
      */
     void clear();
 
+    /**
+     * @brief toString This method return base64 stringValue of the address.
+     * @return string value of address.
+     */
+    QString toString() const;
+
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
-    friend bool operator== (const BaseId& left, const BaseId& other);
+    friend bool operator== (const NodeId& left, const NodeId& other);
 
 private:
     QByteArray _data;
@@ -101,7 +114,7 @@ private:
  * @param object This is input object data.
  * @return unsigned int 32 value.
  */
-uint qHash(const QH::BaseId& object);
+uint qHash(const QH::NodeId& object);
 
 }
 

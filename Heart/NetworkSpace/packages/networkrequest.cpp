@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -61,7 +61,7 @@ bool NetworkRequest::isComplete() const {
     return _dataResponce.isValid();
 }
 
-void NetworkRequest::addNodeRequiringData(const BaseId &node) {
+void NetworkRequest::addNodeRequiringData(const NodeId &node) {
     _askedNodes.insert(node);
 }
 
@@ -85,11 +85,11 @@ QDataStream &NetworkRequest::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QSet<BaseId> NetworkRequest::askedNodes() const {
+QSet<NodeId> NetworkRequest::askedNodes() const {
     return _askedNodes;
 }
 
-void NetworkRequest::removeNodeFromAskedList(const BaseId &node) {
+void NetworkRequest::removeNodeFromAskedList(const NodeId &node) {
     _askedNodes.remove(node);
 }
 

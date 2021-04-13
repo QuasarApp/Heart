@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -9,17 +9,15 @@
 
 namespace QH {
 using namespace PKG;
-iObjectProvider::iObjectProvider() = default;
 
-iObjectProvider::~iObjectProvider() = default;
-
-const DBObject *iObjectProvider::getObjectRaw(const DBObject &templateVal) {
+QSharedPointer<DBObject> iObjectProvider::getObjectRaw(
+        const DBObject &templateVal) {
 
     if (!dynamic_cast<const DBObject*>(&templateVal)) {
         return nullptr;
     }
 
-    QList<const DBObject *> list;
+    QList<QSharedPointer<PKG::DBObject>> list;
     if (!getAllObjects(templateVal, list)) {
         return nullptr;
     }

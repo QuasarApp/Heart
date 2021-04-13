@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -87,7 +87,7 @@ QDataStream &TransportData::toStream(QDataStream &stream) const {
     return stream;
 }
 
-BaseId TransportData::packageId() const {
+const NodeId& TransportData::packageId() const {
     return _packageId;
 }
 
@@ -140,11 +140,11 @@ bool TransportData::strip(const HostAddress &correntAddress,
     return false;
 }
 
-BaseId TransportData::targetAddress() const {
+const NodeId &TransportData::targetAddress() const {
     return _targetAddress;
 }
 
-void TransportData::setTargetAddress(const BaseId &targetAddress) {
+void TransportData::setTargetAddress(const NodeId &targetAddress) {
     _targetAddress = targetAddress;
 }
 

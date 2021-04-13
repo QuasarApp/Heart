@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -24,30 +24,38 @@ WebSocket::WebSocket(const Package &package):
 
 QDataStream &WebSocket::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
-    stream >> requestCmd;
-    stream >> _address;
+    stream >> _request;
+    stream >> _subscribeId;
 
     return stream;
 }
 
 QDataStream &WebSocket::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
-    stream << requestCmd;
-    stream << _address;
+    stream << _request;
+    stream << _subscribeId;
 
     return stream;
 }
 
-DbAddress WebSocket::address() const {
-    return _address;
+unsigned char WebSocket::getRequestCmd() const {
+    return static_cast<unsigned char>(_request);
 }
 
-void WebSocket::setAddress(const DbAddress &address) {
-    _address = address;
+unsigned int WebSocket::subscribeId() const {
+    return _subscribeId;
+}
+
+void WebSocket::setSubscribeId(unsigned int address) {
+    _subscribeId = address;
+}
+
+void WebSocket::setRequestCommnad(const WebSocketRequest &requset) {
+    _request = requset;
 }
 
 bool WebSocket::isValid() const {
-    return requestCmd > static_cast<int>(WebSocketRequest::Invalied)
+    return _request > WebSocketRequest::Invalied
             && AbstractData::isValid();
 }
 

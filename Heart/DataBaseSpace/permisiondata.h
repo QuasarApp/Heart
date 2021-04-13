@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -24,34 +24,43 @@ class HEARTSHARED_EXPORT PermisionData: public AbstractKey, public StreamBase {
 public:
 
     PermisionData() = default;
-    PermisionData(const BaseId& subject, const DbAddress& objcet);
+    PermisionData(const QVariant& subject, const DbAddress& objcet);
+    PermisionData(const QVariant& subject, const QString& objectAddress);
 
     friend bool operator == (const PermisionData& left, const PermisionData& right);
     unsigned int hash() const override;
-    const BaseId & id() const override;
-    const QString &table() const override;
     bool isValid() const override;
     bool equal(const AbstractKey *other) const override;
+    QString toString() const override;
 
     /**
      * @brief setId This method set id of Network member.
-     * @param Id This
+     * @param Id Value of network member id.
      */
-    void setId(const BaseId &Id);
+    void setId(const QVariant &Id);
 
     /**
-     * @brief address This method return address of database object.
+     * @brief addressHash This method return sha256 hash of the address of database object.
+     *  The hash encoded as a base64.
      * @return address of database object.
      */
-    DbAddress address() const;
+    const QString &addressHash() const;
 
     /**
      * @brief setAddress This method set address of database object.
-     * @param address This is new valueof database address.
+     * @param address This is new value of database address.
      */
     void setAddress(const DbAddress &address);
 
+    /**
+     * @brief setAddress This implementation sets sha256 hash of the address (hash must be write in base64 encoding)
+     * @param address This is base64 string of a sha256 hash code.
+     */
+    void setAddress(const QString &addressHash);
+
     // StreamBase interface
+    const QVariant &id() const;
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
@@ -59,11 +68,10 @@ protected:
 private:
 
     /// id  of user of node
-    BaseId _id;
+    QVariant _id;
 
     /// table of target object (second part of key)
-    DbAddress _address;
-
+    QString _addressHash;
 
 };
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -54,11 +54,11 @@ QDataStream &KnowAddresses::toStream(QDataStream &stream) const {
     return stream;
 }
 
-QSet<BaseId> KnowAddresses::knowAddresses() const {
+QSet<NodeId> KnowAddresses::knowAddresses() const {
     return _knowAddresses;
 }
 
-void KnowAddresses::setKnowAddresses(const QSet<BaseId> &knowAddresses) {
+void KnowAddresses::setKnowAddresses(const QSet<NodeId> &knowAddresses) {
     _knowAddresses = knowAddresses;
 }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -19,12 +19,19 @@
 #include <websocketsubscriptions.h>
 #include <websocketcontroller.h>
 #include <QCoreApplication>
-#include <qsecretrsa2048.h>
 #include <ping.h>
 #include <keystorage.h>
 #include <basenodeinfo.h>
-#include <networkmember.h>
+#include <abstractnetworkmember.h>
 #include <memberpermisionobject.h>
+#include <networkmember.h>
+#include <deleteobject.h>
+#include "dberrorcodes.h"
+#include <QSet>
+#include <defaultpermision.h>
+#include <isubscribabledata.h>
+#include <itoken.h>
+#include <sqlitedbcache.h>
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -35,15 +42,23 @@ DataBaseNode::DataBaseNode(QObject *ptr):
 
     _webSocketWorker = new WebSocketController(this);
 
+    qRegisterMetaType<QSharedPointer<QH::PKG::DBObject>>();
+
+    registerPackageType<WebSocket>();
+    registerPackageType<WebSocketSubscriptions>();
+    registerPackageType<DeleteObject>();
+
+
 }
 
 bool DataBaseNode::initSqlDb(QString DBparamsFile,
-                             SqlDBCache *cache,
+                             ISqlDBCache *cache,
                              SqlDBWriter *writer) {
 
     initDefaultDbObjects(cache, writer);
 
     QVariantMap params;
+    _db->setSQLSources(SQLSources());
 
     if (DBparamsFile.isEmpty()) {
         params = defaultDbParams();
@@ -91,7 +106,7 @@ void DataBaseNode::stop() {
 
     if (db()) {
         auto writer = _db->writer();
-        delete _db;
+        _db->softDelete();
         _db = nullptr;
         delete writer;
 
@@ -102,37 +117,100 @@ void DataBaseNode::stop() {
 DataBaseNode::~DataBaseNode() {
 }
 
-void DataBaseNode::initDefaultDbObjects(SqlDBCache *cache, SqlDBWriter *writer) {
+void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
+                                        SqlDBWriter *writer) {
     if (!writer) {
-        writer = new AsyncSqlDbWriter();
+        writer = new AsyncSqlDBWriter();
     }
 
     if (!cache) {
-        cache = new SqlDBCache();
+        cache = new SQLiteDBCache();
     }
 
     cache->setWriter(writer);
     _db = cache;
 
     connect(_db, &SqlDBCache::sigItemChanged,
-            _webSocketWorker, &WebSocketController::handleItemChanged);
+            this, &DataBaseNode::handleObjectChanged,
+            Qt::DirectConnection);
+
+    connect(_db, &SqlDBCache::sigItemDeleted,
+            this, &DataBaseNode::handleObjectDeleted,
+            Qt::DirectConnection);
 }
 
 
-bool DataBaseNode::welcomeAddress(const HostAddress&) {
+bool DataBaseNode::welcomeAddress(AbstractNodeInfo *) {
     return true;
 }
 
-bool DataBaseNode::isBanned(const BaseId &node) const {
+bool DataBaseNode::isBanned(const QVariant &node) const {
     NetworkMember member(node);
-    auto objectFromDataBase = db()->getObject(member);
+    auto objectFromDataBase = db()->getObject<AbstractNetworkMember>(member);
 
     return objectFromDataBase->trust() <= 0;
 }
 
-void DataBaseNode::nodeConnected(const HostAddress &node) {
+QStringList DataBaseNode::SQLSources() const{
+    return {
+        DEFAULT_DB_INIT_FILE_PATH
+    };
+}
+
+QSet<QString> DataBaseNode::systemTables() const {
+    return {"NetworkMembers", "MemberPermisions"};
+}
+
+bool DataBaseNode::notifyObjectChanged(const QSharedPointer<PKG::ISubscribableData> &item) {
+
+    if (!item.dynamicCast<PKG::AbstractData>()) {
+        return false;
+    }
+
+    _webSocketWorker->handleItemChanged(item);
+
+    return true;
+}
+
+void DataBaseNode::objectRemoved(const DbAddress &) {
+
+}
+
+void DataBaseNode::objectChanged(const QSharedPointer<DBObject> &) {
+
+}
+
+void DataBaseNode::handleObjectChanged(const QSharedPointer<DBObject> &item) {
+    notifyObjectChanged(item.staticCast<PKG::ISubscribableData>());
+    objectChanged(item);
+
+}
+
+void DataBaseNode::handleObjectDeleted(const DbAddress &item) {
+    objectRemoved(item);
+}
+
+void DataBaseNode::nodeConnected(AbstractNodeInfo *node) {
     AbstractNode::nodeConnected(node);
     welcomeAddress(node);
+}
+
+void DataBaseNode::nodeDisconnected(AbstractNodeInfo *node) {
+    AbstractNode::nodeDisconnected(node);
+
+    auto baseInfo = dynamic_cast<BaseNodeInfo*>(node);
+
+    if (baseInfo) {
+        baseInfo->reset();
+    }
+}
+
+void DataBaseNode::memberSubsribed(const QVariant &, unsigned int ) {
+    return;
+}
+
+void DataBaseNode::memberUnsubsribed(const QVariant &, unsigned int ) {
+    return;
 }
 
 QString DataBaseNode::dbLocation() const {
@@ -143,168 +221,157 @@ QString DataBaseNode::dbLocation() const {
     return "";
 }
 
-
-bool DataBaseNode::sendData(AbstractData *resp,
-                        const HostAddress &addere,
-                        const Header *req) {
-    return AbstractNode::sendData(resp, addere, req);
+AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
+    return new BaseNodeInfo(socket, clientAddress);
 }
 
-bool DataBaseNode::sendData(const AbstractData *resp,
-                        const HostAddress &addere,
-                        const Header *req) {
+bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {    
+    auto info = dynamic_cast<const BaseNodeInfo*>(getInfoPtr(id));
+    if (!info)
+        return false;
 
-    return AbstractNode::sendData(resp, addere, req);
+    if (info->id().isValid())
+        return changeTrust(info->id(), diff);
+
+    return AbstractNode::changeTrust(id, diff);
 }
 
+bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
+    if (!_db)
+        return false;
 
+    auto action = [diff](const QSharedPointer<DBObject> &object) {
+        auto obj = object.dynamicCast<AbstractNetworkMember>();
+        if (!obj) {
+            return false;
+        }
 
-bool DataBaseNode::sendData(AbstractData *resp,
-                        const BaseId &nodeId,
-                        const Header *req) {
+        obj->changeTrust(diff);
+
+        return true;
+    };
+
+    return _db->changeObjects(NetworkMember{id}, action);
+}
+
+unsigned int DataBaseNode::sendData(AbstractData *resp,
+                            const QVariant &nodeId,
+                            const Header *req) {
 
 
     if (!resp || !resp->prepareToSend()) {
-        return false;
+        return 0;
     }
 
     return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
 }
 
-AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
-    return new BaseNodeInfo(socket, clientAddress);;
-}
+unsigned int DataBaseNode::sendData(const AbstractData *resp,
+                            const QVariant &nodeId,
+                            const Header *req) {
 
-bool DataBaseNode::sendData(const AbstractData *resp, const BaseId &nodeId, const Header *req) {
     auto nodes = connections();
 
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
         auto info = dynamic_cast<BaseNodeInfo*>(it.value());
-        if (info && info->selfId() == nodeId) {
+        if (info && info->id() == nodeId) {
             return sendData(resp, it.key(), req);
         }
     }
 
-    return false;
+    return 0;
 }
 
-void DataBaseNode::badRequest(const HostAddress &address, const Header &req, const QString msg) {
-    AbstractNode::badRequest(address, req, msg);
+unsigned int DataBaseNode::sendData(const AbstractData *resp, const HostAddress &nodeId,
+                            const Header *req) {
+    return AbstractNode::sendData(resp, nodeId, req);
+
 }
 
-void DataBaseNode::badRequest(const BaseId &address, const Header &req, const QString msg) {
-
-    if (!changeTrust(address, REQUEST_ERROR)) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because trust not changed",
-                                    QuasarAppUtils::Error);
-
-        return;
-    }
-
-    auto bad = BadRequest(msg);
-    if (!sendData(&bad, address, &req)) {
-        return;
-    }
-
-    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                address.toBase64(),
-                                QuasarAppUtils::Info);
+unsigned int DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
+                            const Header *req) {
+    return AbstractNode::sendData(resp, nodeId, req);
 }
 
-bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
-    return AbstractNode::changeTrust(id, diff);
-}
-
-bool DataBaseNode::changeTrust(const BaseId &id, int diff) {
-    if (!_db)
-        return false;
-
-    auto client = _db->getObject(NetworkMember{id});
-
-    if (!client) {
-
-        QuasarAppUtils::Params::log("Bad request detected, bud responce command not sendet!"
-                                    " because client == null",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    auto clone = client->clone().staticCast<NetworkMember>();
-    clone->changeTrust(diff);
-
-    if (!_db->saveObject(clone.data())) {
-        return false;
-    }
-
-    return true;
-}
-
-ParserResult DataBaseNode::parsePackage(const Package &pkg,
+ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
+                                        const Header &pkgHeader,
                                         const AbstractNodeInfo *sender) {
-    auto parentResult = AbstractNode::parsePackage(pkg, sender);
+    auto parentResult = AbstractNode::parsePackage(pkg, pkgHeader, sender);
     if (parentResult != ParserResult::NotProcessed) {
         return parentResult;
     }
 
-    if (H_16<WebSocket>() == pkg.hdr.command) {
-        WebSocket obj(pkg);
+    if (H_16<WebSocket>() == pkg->cmd()) {
+        WebSocket *obj = static_cast<WebSocket*>(pkg.data());
 
-        BaseId requesterId = getSender(sender, &obj);
-
-        if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+        QVariant requesterId = getSender(sender, obj);
+        if (!obj->isValid()) {
+            badRequest(sender->networkAddress(), pkgHeader,
+                       {
+                           ErrorCodes::InvalidRequest,
+                           "WebSocket request is invalid"
+                       });
             return ParserResult::Error;
         }
 
-        if (!workWithSubscribe(obj, requesterId, *sender)) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+        if (!workWithSubscribe(*obj, requesterId, *sender)) {
+            badRequest(sender->networkAddress(), pkgHeader, {
+                           ErrorCodes::InvalidRequest,
+                           "WebSocket request is invalid"
+                       });
             return ParserResult::Error;
         }
 
         return ParserResult::Processed;
 
-    } else if (H_16<WebSocketSubscriptions>() == pkg.hdr.command) {
-        WebSocketSubscriptions obj(pkg);
-        if (!obj.isValid()) {
-            badRequest(sender->networkAddress(), pkg.hdr);
+    } else if (H_16<WebSocketSubscriptions>() == pkg->cmd()) {
+        WebSocketSubscriptions *obj = static_cast<WebSocketSubscriptions*>(pkg.data());
+        if (!obj->isValid()) {
+            badRequest(sender->networkAddress(), pkgHeader, {
+                           ErrorCodes::InvalidRequest,
+                           "WebSocketSubscriptions request is invalid"
+                       });
             return ParserResult::Error;
         }
 
-        incomingData(&obj, sender->networkAddress());
         return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;
 }
 
-QString DataBaseNode::hashgenerator(const QByteArray &pass) {
+QByteArray DataBaseNode::hashgenerator(const QByteArray &pass) const {
+    if (pass.isEmpty())
+        return {};
+
     return QCryptographicHash::hash(
                 QCryptographicHash::hash(pass, QCryptographicHash::Sha256) + "QuassarAppSoult",
                 QCryptographicHash::Sha256);
 }
 
-SqlDBCache *DataBaseNode::db() const {
+ISqlDBCache *DataBaseNode::db() const {
     return _db;
 }
 
 bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
-                                     const BaseId &clientOrNodeid,
+                                     const QVariant &clientOrNodeid,
                                      const AbstractNodeInfo & sender) {
 
     auto _db = db();
-    if (_db)
+    if (!_db)
         return false;
 
     switch (static_cast<WebSocketRequest>(rec.getRequestCmd())) {
 
     case WebSocketRequest::Subscribe: {
-        return _webSocketWorker->subscribe(clientOrNodeid, rec.address());
+        _webSocketWorker->subscribe(clientOrNodeid, rec.subscribeId());
+        memberSubsribed(clientOrNodeid, rec.subscribeId());
+        return true;
     }
 
     case WebSocketRequest::Unsubscribe: {
-        _webSocketWorker->unsubscribe(clientOrNodeid, rec.address());
+        _webSocketWorker->unsubscribe(clientOrNodeid, rec.subscribeId());
+        memberUnsubsribed(clientOrNodeid, rec.subscribeId());
         return true;
     }
 
@@ -322,18 +389,22 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
     return false;
 }
 
+bool DataBaseNode::isForbidenTable(const QString &table) {
+    return systemTables().contains(table);
+}
+
 QVariantMap DataBaseNode::defaultDbParams() const {
 
     return {
         {"DBDriver", "QSQLITE"},
         {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + _localNodeName + "_" + DEFAULT_DB_NAME},
-        {"DBInitFile", DEFAULT_DB_INIT_FILE_PATH}
     };
 }
 
-DBOperationResult QH::DataBaseNode::getObject(const QH::BaseId &requester,
-                                              const QH::DBObject &templateObj,
-                                              const DBObject** result) const {
+DBOperationResult
+QH::DataBaseNode::getObject(const QVariant &requester,
+                            const QH::DBObject &templateObj,
+                            QSharedPointer<QH::PKG::DBObject> &result) const {
 
     if (!_db && !result) {
         return DBOperationResult::Unknown;
@@ -350,22 +421,23 @@ DBOperationResult QH::DataBaseNode::getObject(const QH::BaseId &requester,
         return DBOperationResult::Unknown;
     }
 
-    *result = obj;
+    result = obj;
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::getObjects(const BaseId &requester,
-                                           const DBObject &templateObj,
-                                           QList<const DBObject *> *result) const {
-    if (!_db && !result) {
+DBOperationResult
+DataBaseNode::getObjects(const QVariant &requester,
+                         const DBObject &templateObj,
+                         QList<QSharedPointer<DBObject>> &result) const {
+    if (!_db) {
         return DBOperationResult::Unknown;
     }
 
-    if (!_db->getAllObjects(templateObj, *result)) {
+    if (!_db->getAllObjects(templateObj, result)) {
         return DBOperationResult::Unknown;
     }
 
-    for (const auto& obj: *result) {
+    for (const auto& obj: qAsConst(result)) {
         if (!obj)
             return DBOperationResult::Unknown;
 
@@ -379,8 +451,9 @@ DBOperationResult DataBaseNode::getObjects(const BaseId &requester,
     return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::setObject(const BaseId &requester,
-                                          const DBObject *saveObject) {
+DBOperationResult
+DataBaseNode::updateObject(const QVariant &requester,
+                           const QSharedPointer<DBObject> &saveObject) {
 
     if (!_db) {
         return DBOperationResult::Unknown;
@@ -393,47 +466,174 @@ DBOperationResult DataBaseNode::setObject(const BaseId &requester,
         return permisionResult;
     }
 
-    if (!_db->saveObject(saveObject)) {
+    if (!_db->updateObject(saveObject)) {
         return DBOperationResult::Unknown;
     }
 
     return DBOperationResult::Allowed;
 }
 
-BaseId DataBaseNode::getSender(const AbstractNodeInfo *connectInfo, const AbstractData *) const {
+DBOperationResult
+DataBaseNode::createObject(const QVariant &requester,
+                           const QSharedPointer<DBObject> &obj) {
+
+    if (!_db) {
+        return DBOperationResult::Unknown;
+    }
+
+    if (isForbidenTable(obj->tableName())) {
+        return DBOperationResult::Forbidden;
+    }
+
+    if (!_db->insertObject(obj)) {
+        return DBOperationResult::Unknown;
+    }
+
+    if (!addUpdatePermission(requester, obj->dbAddress(), Permission::Write)) {
+
+        _db->deleteObject(obj);
+
+        return DBOperationResult::Forbidden;
+    }
+
+    return DBOperationResult::Allowed;
+
+}
+
+DBOperationResult
+DataBaseNode::updateIfNotExistsCreateObject(const QVariant &requester,
+                                            const QSharedPointer<DBObject> &obj) {
+
+    auto opResult = updateObject(requester, obj);
+    if (opResult != QH::DBOperationResult::Unknown) {
+        return opResult;
+    }
+
+    return createObject(requester, obj);
+}
+
+DBOperationResult
+DataBaseNode::changeObjects(const QVariant &requester,
+                            const DBObject &templateObj,
+                            const std::function<bool (const QSharedPointer<DBObject> &)> &changeAction) {
+
+    DBOperationResult result = DBOperationResult::Unknown;
+
+    if (!_db) {
+        return result;
+    }
+
+    auto execWithCheck = [this, requester, &result, &changeAction]
+            (const QSharedPointer<DBObject> & obj) {
+
+        result = checkPermission(requester, obj->dbAddress(), Permission::Update);
+        if (result != DBOperationResult::Allowed) {
+            return false;
+        }
+
+        return changeAction(obj);
+    };
+
+    if (!db()->changeObjects(templateObj, execWithCheck)) {
+        return result;
+    }
+
+    return result;
+}
+
+QVariant DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
+                                        const AbstractData *) const {
 
     auto info = dynamic_cast<const BaseNodeInfo*>(connectInfo);
-
     if (!info)
         return {};
 
-    return info->selfId();
+    return info->id();
 }
 
-DBOperationResult DataBaseNode::checkPermission(const BaseId &requester,
-                                                const DbAddress &objectAddress,
-                                                const Permission& requarimentPermision) const {
-     const NetworkMember *member = _db->getObject(NetworkMember{requester});
-     if (!member) {
-         return DBOperationResult::Unknown;
-     }
+DBOperationResult
+DataBaseNode::checkPermission(const QVariant &requester,
+                              const DbAddress &objectAddress,
+                              const Permission& requarimentPermision) const {
 
-     const MemberPermisionObject *permision =
-             _db->getObject(MemberPermisionObject({requester, objectAddress}));
+    if (!requester.isValid())
+        return DBOperationResult::Unknown;
 
-     if (!permision) {
-         return DBOperationResult::Unknown;
-     }
+    if (!_db) {
+        return DBOperationResult::Unknown;
+    }
 
-     if (permision->permisions() < requarimentPermision) {
-         return DBOperationResult::Forbidden;
-     }
+    auto member = _db->getObjectRaw(NetworkMember{requester});
+    if (!member) {
+        return DBOperationResult::Unknown;
+    }
 
-     return DBOperationResult::Allowed;
+    auto permision =
+            _db->getObject(MemberPermisionObject({requester, objectAddress}));
+
+    if (!permision) {
+
+        permision = _db->getObject(DefaultPermision({requester, objectAddress}));
+        if (!permision)
+            return DBOperationResult::Unknown;
+    }
+
+    if (permision->permisions() < requarimentPermision) {
+        return DBOperationResult::Forbidden;
+    }
+
+    return DBOperationResult::Allowed;
 }
 
-DBOperationResult DataBaseNode::deleteObject(const BaseId &requester,
-                                             const DBObject *dbObject) {
+bool DataBaseNode::addUpdatePermission(const QVariant &member,
+                                       const DbAddress &objectAddress,
+                                       const Permission &permision,
+                                       const Permission &defaultPermision) const {
+
+    if (!_db) {
+        return false;
+    }
+
+    auto object = QSharedPointer<MemberPermisionObject>::create();
+    object->setKey(PermisionData(member, objectAddress));
+    object->setPermisions(permision);
+
+    if (!_db->insertObject(object) && !_db->updateObject(object)) {
+        return false;
+    }
+
+    auto defaultPermisionObject = QSharedPointer<DefaultPermision>::create();
+    defaultPermisionObject->setKey(PermisionData({}, objectAddress));
+    defaultPermisionObject->setPermisions(defaultPermision);
+
+    if (!_db->insertObject(defaultPermisionObject) &&
+            !_db->updateObject(defaultPermisionObject)) {
+        return false;
+    }
+
+    return true;
+}
+
+bool DataBaseNode::removePermission(const QVariant &member,
+                                    const DbAddress &objectAddress) const {
+
+    if (!_db) {
+        return false;
+    }
+
+    auto object = QSharedPointer<MemberPermisionObject>::create();
+    object->setKey(PermisionData(member, objectAddress));
+
+    if (!_db->deleteObject(object)) {
+        return false;
+    }
+
+    return true;
+}
+
+DBOperationResult
+DataBaseNode::deleteObject(const QVariant &requester,
+                           const QSharedPointer<DBObject> &dbObject) {
 
     if (!_db) {
         return DBOperationResult::Unknown;
@@ -446,6 +646,7 @@ DBOperationResult DataBaseNode::deleteObject(const BaseId &requester,
         return permisionResult;
     }
 
+    auto address = dbObject->dbAddress();
     if (!_db->deleteObject(dbObject)) {
         return DBOperationResult::Unknown;
     }

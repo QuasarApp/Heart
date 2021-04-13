@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -10,16 +10,15 @@
 
 #include "streambase.h"
 #include "basedefines.h"
-#include "baseid.h"
 
 namespace QH {
 
 /**
- * @brief The DbAddress class is class for work with database addresses. Database Address it is structure with 2 values.
+ * @brief The DbAddress class use to work with database addresses. Database Address it is structure with 2 values.
  * \code
  * {
- *  QString _table; // this is name of table of object.
-    BaseId _id;     // this is id of object.
+ *  QString _table;  // this is name of table of object.
+    QVariant _id;     // this is id of object.
  * }
  * \endcode
  */
@@ -30,18 +29,19 @@ public:
     DbAddress() = default;
 
     /**
-     * @brief DbAddress this constructo initialize a default database address.
+     * @brief DbAddress this constructor initialize a default database address.
      * @param table This is table name in database.
+     * @param primaryKey This is primary key.
      * @param id This is id of object in table.
      */
-    DbAddress(const QString& table, const BaseId& id);
+    DbAddress(const QString& table,  const QVariant& id);
 
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
 
     /**
-     * @brief toString This method return a string implementation fo this object
-     * @return string of object
+     * @brief toString This method return a string implementation fo this object.
+     * @return string of object.
      */
     QString toString() const;
 
@@ -70,22 +70,32 @@ public:
      * @brief id This method return id of object in table.
      * @return id of object.
      */
-    const BaseId &id() const;
+    const QVariant &id() const;
 
     /**
      * @brief setId This method set id for this address.
-     * @param id tgis is new value of objects id.
+     * @param id this is new value of objects id.
      */
-    void setId(const BaseId &id);
+    void setId(const QVariant &id);
+
+    /**
+     * @brief SHA256Hash This method return address hash.
+     * This hash using into database.
+     * @return return array of the hash of this address.
+     */
+    QByteArray SHA256Hash() const;
 
 private:
 
+    void recalcHash();
+
     QString _table;
-    BaseId _id;
+    QVariant _value;
+    QByteArray _SHA256Hash;
 };
 
 /**
- * @brief qHash This functions cals int 32 hash of address.
+ * @brief qHash This functions calls int 32 hash of address.
  * @param address This is input address.
  * @return unsigned int 32 hash value.
  */
@@ -93,5 +103,6 @@ qint64 qHash(const DbAddress& address);
 
 }
 
+Q_DECLARE_METATYPE(QH::DbAddress)
 
 #endif // DBADDRESS_H

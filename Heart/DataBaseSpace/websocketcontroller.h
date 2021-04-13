@@ -1,6 +1,6 @@
 
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -12,7 +12,6 @@
 #include <QHash>
 #include <QSharedPointer>
 #include <dbobject.h>
-#include <baseid.h>
 #include <QMutex>
 
 namespace QH {
@@ -21,15 +20,14 @@ class AbstractNodeInfo;
 class DataBaseNode;
 
 /**
- * @brief The WebSocketController class is manage subscribe. This class contains information about users and him subscriptions
+ * @brief The WebSocketController class is manage subscribe. This class contains information about users and him subscriptions.
  */
-class HEARTSHARED_EXPORT WebSocketController : public QObject
+class HEARTSHARED_EXPORT WebSocketController
 {
-    Q_OBJECT
 
 public:
     /**
-     * @brief WebSocketController default construector.
+     * @brief WebSocketController default constructor.
      * @param node This is pointer to node object.
      */
     WebSocketController(DataBaseNode *node);
@@ -37,42 +35,47 @@ public:
     /**
      * @brief subscribe This method subscribe a subscriber to the item.
      * @param subscriber This is network member that want get information about update of the item.
-     * @param item This is database object.
-     * @return true if method finished succesful
+     * @param item This is a subscribable object id.
+     * @return true if method finished successful.
      */
-    bool subscribe(const BaseId &subscriber,
-                   const DbAddress &item);
+    void subscribe(const QVariant &subscriber,
+                   unsigned int item);
 
     /**
      * @brief unsubscribe This method unsubscribe a subscriber from the item.
      * @param subscriber This is network member that want disable getting information about update of the item.
-     * @param item This is database object.
-     * @return true if method finished succesful
+     * @param item This is a subscribable object id.
+     * @return true if method finished successful.
      */
-    void unsubscribe(const BaseId &subscriber,
-                     const DbAddress &item);
+    void unsubscribe(const QVariant &subscriber,
+                     unsigned int item);
 
     /**
      * @brief list This method return a list of subscribed items of subscriber.
-     * @param subscriber This is network member that want get alist of own subscription.
-     * @return true if method finished succesful
+     * @param subscriber This is network member that want get a list of own subscription.
+     * @return true if method finished successful.
      */
-    const QSet<DbAddress> &list(const BaseId& subscriber);
+    QSet<unsigned int> list(const QVariant& subscriber);
 
-public slots:
     /**
      * @brief handleItemChanged This method invoked when item on database changed.
      * @param item This is changed item.
      */
-    void handleItemChanged(const PKG::DBObject *item);
+    void handleItemChanged(const QSharedPointer<PKG::ISubscribableData> &item);
 
 private:
-    void foreachSubscribers(const PKG::DBObject *item,
-                            const QSet<BaseId> &subscribersList);
+    void foreachSubscribers(const QSharedPointer<PKG::ISubscribableData> &item,
+                            const QSet<QVariant> &subscribersList);
+
+    void unsubscribePrivate(const QVariant &subscriber,
+                            unsigned int item);
+
+    void subscribePrivate(const QVariant &subscriber,
+                          unsigned int item);
 
     /// subscribers it is nodes or clients
-    QHash<DbAddress, QSet<BaseId>> _subscribs;
-    QHash<BaseId, QSet<DbAddress>> _items;
+    QHash<unsigned int, QSet<QVariant>> _subscribs;
+    QHash<QVariant, QSet<unsigned int>> _items;
 
     QMutex _subscribsMutex;
     QMutex _itemsMutex;
@@ -82,4 +85,6 @@ private:
 };
 
 }
+
+uint qHash(const QVariant& variant);
 #endif // WEBSOCKETCONTROLLER_H

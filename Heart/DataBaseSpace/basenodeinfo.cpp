@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -22,16 +22,31 @@ bool BaseNodeInfo::isValid() const {
     return AbstractNodeInfo::isValid();
 }
 
-BaseId BaseNodeInfo::selfId() const {
-    return _selfId;
+const AccessToken &BaseNodeInfo::token() const {
+    return _token;
 }
 
-void BaseNodeInfo::setSelfId(const BaseId &selfId) {
-    _selfId = selfId;
+void BaseNodeInfo::setToken(const AccessToken &token) {
+    _token = token;
+}
+
+void BaseNodeInfo::reset() {
+    AbstractNodeInfo::reset();
+    setToken(AccessToken{});
+    setId({});
 }
 
 bool BaseNodeInfo::confirmData() const {
     return AbstractNodeInfo::confirmData();
+}
+
+const QVariant& BaseNodeInfo::id() const {
+    return _id;
+}
+
+void BaseNodeInfo::setId(const QVariant &id)
+{
+    _id = id;
 }
 
 }

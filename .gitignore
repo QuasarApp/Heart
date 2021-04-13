@@ -50,3 +50,12 @@ target_wrapper.*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+CMakeCache.txt
+CMakeFiles/
+*_autogen
+
+Heart/Heart_autogen/
+Heart/cmake_install.cmake
+HeartTests/cmake_install.cmake
+cmake_install.cmake
+docs/

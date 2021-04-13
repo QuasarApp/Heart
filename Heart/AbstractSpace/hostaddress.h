@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -16,7 +16,7 @@
 namespace QH {
 
 /**
- * @brief The HostAddress class this is wraper of QHostAddress. Contains the NetworkAddress and network port.
+ * @brief The Host Address class this is wrapper of QHostAddress. Contains the NetworkAddress and network port.
  */
 class HEARTSHARED_EXPORT HostAddress: public QHostAddress
 {
@@ -36,13 +36,35 @@ public:
     unsigned short port() const;
 
     /**
-     * @brief setPort This method set new port.
+     * @brief setPort This method set new port value.
      * @param port This is new value of port.
      */
     void setPort(unsigned short port);
 
     friend QDataStream& operator << (QDataStream& stream, const HostAddress& address);
     friend QDataStream& operator >> (QDataStream& stream, HostAddress& address);
+
+    friend bool& operator == (QDataStream& stream, HostAddress& address);
+    friend bool& operator != (QDataStream& stream, HostAddress& address);
+
+    /**
+     * @brief isIP This method return true if the @a address is valid.
+     * @brief address This is tring value of the network ip address.
+     * @return true if the @a address is valid.
+     */
+    static bool isIP(const QString& address);
+
+    /**
+     * @brief isValid This method return true if the current network address is valid.
+     * @return true if the current network address is valid.
+     */
+    bool isValid() const;
+
+    /**
+     * @brief toString this method convert the Host Address value to string value.
+     * @return string value of the HostAddress object.
+     */
+    QString toString() const;
 
 private:
     unsigned short _port = 0;

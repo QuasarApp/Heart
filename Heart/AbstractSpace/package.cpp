@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -13,11 +13,15 @@
 namespace QH {
 
 Package::Package() {
-    reset();
+    Package::reset();
 }
 
 bool Package::isValid() const {
     if (!hdr.isValid()) {
+        return false;
+    }
+
+    if (hdr.size != data.size()) {
         return false;
     }
 
@@ -33,11 +37,7 @@ bool Package::isValid() const {
             return false;
     }
 
-    if (hdr.size != data.size()) {
-        return false;
-    }
-
-    return qHash(data) == hdr.hash;
+    return static_cast<uint>(qHash(data)) == hdr.hash;
 }
 
 void Package::reset() {

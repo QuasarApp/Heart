@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -16,17 +16,17 @@ namespace QH {
 Router::Router() {
 }
 
-QList<HostAddress> Router::getRoute(const BaseId &node) const {
+QList<HostAddress> Router::getRoute(const NodeId &node) const {
     QMutexLocker locker(&_routesMutex);
     return _routes.value(node);
 }
 
-bool Router::contains(const BaseId &node) const {
+bool Router::contains(const NodeId &node) const {
     QMutexLocker locker(&_routesMutex);
     return _routes.contains(node);
 }
 
-void Router::updateRoute(const BaseId &node, const QList<HostAddress> &route) {
+void Router::updateRoute(const NodeId &node, const QList<HostAddress> &route) {
     QMutexLocker locker(&_routesMutex);
 
     debug_assert(node.isValid());
@@ -43,7 +43,7 @@ void Router::updateRoute(const BaseId &node, const QList<HostAddress> &route) {
     }
 }
 
-void Router::addProcesedPackage(const BaseId &id) {
+void Router::addProcesedPackage(const NodeId &id) {
     QMutexLocker locker(&_processedPackagesMutex);
 
     _processedPackages.insert(id);
@@ -55,7 +55,7 @@ void Router::addProcesedPackage(const BaseId &id) {
     }
 }
 
-bool Router::isProcessed(const BaseId &id) const {
+bool Router::isProcessed(const NodeId &id) const {
     QMutexLocker locker(&_processedPackagesMutex);
 
     return _processedPackages.contains(id);

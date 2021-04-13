@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -17,23 +17,23 @@ namespace QH {
 #pragma pack(push, 1)
 struct HEARTSHARED_EXPORT Header{
     /**
-     * @brief size This is size of package data (exclude header size)
+     * @brief size This is size of package data (exclude header size).
      */
     unsigned short size;
 
     /**
-     * @brief command of pacage for more information see the AbstractData::toPackage method.
+     * @brief command of package for more information see the AbstractData::toPackage method.
      */
     unsigned short command;
 
     /**
-     * @brief hash This is uniqueue id of a package. id calc with CRC32 function fo Qt implamentation. qHash(QByteArray)
+     * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation. qHash(QByteArray)
      */
     unsigned int hash;
 
     /**
-     * @brief triggerHash This is hash of request package that this package has been responded
-     *  the server should write to which command it responds.
+     * @brief triggerHash This is hash of request package that package has been responded.
+     *  The server should write to which command it responds.
      */
     unsigned int triggerHash;
 
@@ -45,17 +45,17 @@ struct HEARTSHARED_EXPORT Header{
 
     /**
      * @brief isValid This method check header size and compare commands.
-     * @return true if header is valid
+     * @return true if header is valid.
      */
     bool isValid() const;
 
     /**
-     * @brief reset This method reset all data and set for header invalid status
+     * @brief reset This method reset all data and set for header invalid status.
      */
     void reset();
 
     /**
-     * @brief toString This method return string of header of package
+     * @brief toString This method return string of header of package.
      * @return string value.
      */
     QString toString() const;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -28,21 +28,21 @@ WebSocketSubscriptions::WebSocketSubscriptions(const QH::Package &package):
 QDataStream &WebSocketSubscriptions::fromStream(QDataStream &stream) {
     AbstractData::fromStream(stream);
 
-    return stream >> _addresses;
+    return stream >> _subscribeIds;
 }
 
 QDataStream &WebSocketSubscriptions::toStream(QDataStream &stream) const {
     AbstractData::toStream(stream);
 
-    return stream << _addresses;
+    return stream << _subscribeIds;
 }
 
-QSet<DbAddress> WebSocketSubscriptions::addresses() const {
-    return _addresses;
+QSet<unsigned int> WebSocketSubscriptions::addresses() const {
+    return _subscribeIds;
 }
 
-void WebSocketSubscriptions::setAddresses(const QSet<DbAddress> &addresses) {
-    _addresses = addresses;
+void WebSocketSubscriptions::setAddresses(const QSet<unsigned int> &addresses) {
+    _subscribeIds = addresses;
 }
 
 }

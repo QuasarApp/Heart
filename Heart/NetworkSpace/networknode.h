@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -13,11 +13,12 @@
 #include <hostaddress.h>
 #include <nodeobject.h>
 
+#include "nodeid.h"
 
 namespace QH {
 
 namespace PKG {
-class NetworkMember;
+class AbstractNetworkMember;
 class MemberPermisionObject;
 class KnowAddresses;
 }
@@ -71,32 +72,76 @@ public:
      * @param id
      * @return
      */
-    bool ping( const BaseId& id);
+    bool ping( const NodeId& id);
 
     /**
      * @brief nodeId
      * @return
      */
-    BaseId nodeId() const;
+    NodeId nodeId() const;
 
 protected:
 
     /**
-     * @brief sendDataToId - send data to node or clientby them id.
-     * @param resp - responce package
-     * @param nodeId - id of target node
-     * @param req - header of request
-     * @return true if data sendet seccussful
+     * @brief sendData This implementation of the sendData sending pacakge to the network by node id.
+     * @param resp This is sendet pacakge
+     * @param nodeId This is id of target node
+     * @param req This is header of pacakga that this pacakge ansvered.
+     * @return true if the package sendet successful.
      */
-    bool sendData(const PKG::AbstractData *resp, const BaseId &nodeId,
+    virtual unsigned int sendData(PKG::AbstractData *resp, const NodeId &nodeId,
+                  const Header *req = nullptr);
+
+    /**
+     * @brief sendData This implementation no prepare data for sendint. for prepare data for sending use the not const object of resp.
+     * @param resp This is sendet pacakge
+     * @param nodeId This is id of target node
+     * @param req This is header of pacakga that this pacakge ansvered.
+     * @return true if the package sendet successful.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const NodeId &nodeId,
+                  const Header *req = nullptr);
+
+    unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
 
-    bool sendData(PKG::AbstractData *resp, const BaseId &nodeId,
+    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
-    bool sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+
+    unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
                   const Header *req = nullptr) override;
-    bool sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
+
+    unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
                   const Header *req = nullptr) override;
+
+    void badRequest(const HostAddress &address, const Header &req,
+                    const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR) override;
+
+    /**
+     * @brief badRequest This implementation of the AbstractNode::badRequest method
+     *  send bad request to node with id.
+     * @param address This is id of target node or client
+     * @param req This is header of request.
+     * @param err This is message and code for target node about error. For more onformation see the PKG::ErrorData struct.
+     * @param diff This is difference of current trust (currenTrus += diff)
+     * By default diff equals REQUEST_ERROR
+     */
+    virtual void badRequest(const NodeId &address, const Header &req,
+                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
+
+
+    bool changeTrust(const QVariant &id, int diff) override;
+    bool changeTrust(const HostAddress &id, int diff) override;
+
+    QStringList SQLSources() const override;
+
+    /**
+     * @brief changeTrust This implementation is some as AbstractNode::changeTrust but change trust of node by id and save changes on local database.
+     * @param id This is id of node or client.
+     * @param diff This is integer value of trust lavel changes.
+     * @return true if functin finished seccussful
+     */
+    virtual bool changeTrust(const NodeId &id, int diff);
 
     /**
      * @brief parsePackage
@@ -104,7 +149,8 @@ protected:
      * @param sender
      * @return
      */
-    ParserResult parsePackage(const Package &pkg,
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header& pkgHeader,
                               const AbstractNodeInfo* sender) override;
 
     /**
@@ -129,41 +175,37 @@ protected:
     virtual bool checkSignOfRequest(const PKG::AbstractData *request);
 
     /**
-     * @brief thisNode
+     * @brief thisNode This method return the node object of this node
+     * @param returnValue This is return value of nodeobject
      * @return This node object value.
      */
-    PKG::NodeObject thisNode() const;
+    void thisNode(PKG::NodeObject & returnValue) const;
 
     /**
      * @brief myKnowAddresses
      * @return set of know addresses
      */
-    QSet<BaseId> myKnowAddresses() const;
+    QSet<NodeId> myKnowAddresses() const;
 
-    /**
-     * @brief welcomeAddress - this method send to the ip information about yaster self.
-     * @param ip - host address of the peer node obeject
-     * @return true if all iformation sendet succesful
-     */
-    bool welcomeAddress(const HostAddress &ip) override;
+    bool welcomeAddress(AbstractNodeInfo *node) override;
 
     /**
      * @brief connectionRegistered - this impletation send incomming node welcom message with information about yaster self.
      * @param info incominng node info.
      */
-    void nodeConnected(const HostAddress& node) override;
+    void nodeConnected(AbstractNodeInfo *node) override;
 
     /**
      * @brief nodeConfirmend - this implementation test nodes to double connections
      * @param mode
      */
-    void nodeConfirmend(const HostAddress& sender) override;
+    void nodeConfirmend(AbstractNodeInfo *sender) override;
 
     /**
      * @brief nodeDisconnected - this implementation remove nodes info from connection cache
      * @param sender
      */
-    void nodeDisconnected(const HostAddress& node) override;
+    void nodeDisconnected(AbstractNodeInfo *node) override;
 
     /**
      * @brief incomingData - this signal invoked when node get command or ansver
@@ -172,13 +214,17 @@ protected:
      * @note override this method for get a signals.
      */
     virtual void incomingData(PKG::AbstractData* pkg,
-                              const BaseId&  sender);
+                              const NodeId&  sender);
+
+    void incomingData(PKG::AbstractData* pkg,
+                      const AbstractNodeInfo* sender) override;
 
     /**
      * @brief keyStorageLocation - return location of storagge of keys.
      * @return path to the location of keys storage
      */
     QString keyStorageLocation() const;
+
 
 private:
 
@@ -188,7 +234,7 @@ private:
      * @param nodeInfo
      * @return true if function finished successful
      */
-    bool workWithNodeObjectData(PKG::NodeObject &node, const AbstractNodeInfo *nodeInfo);
+    bool workWithNodeObjectData(const QSharedPointer<PKG::NodeObject> &node, const AbstractNodeInfo *nodeInfo);
 
     /**
      * @brief workWithKnowAddresses
@@ -205,7 +251,8 @@ private:
      * @param pkg
      * @return
      */
-    ParserResult workWithTransportData(PKG::AbstractData* transportData, const AbstractNodeInfo *sender, const Package &pkg);
+    ParserResult workWithTransportData(const QSharedPointer<PKG::AbstractData> &,
+                                       const AbstractNodeInfo *sender, const Header &hdr);
 
     /**
      * @brief workWithNetworkRequest
@@ -214,7 +261,8 @@ private:
      * @param pkg
      * @return
      */
-    ParserResult workWithNetworkRequest(PKG::AbstractData* networkRequest, const AbstractNodeInfo *sender);
+    ParserResult workWithNetworkRequest(const QSharedPointer<PKG::AbstractData> &networkRequest,
+                                        const AbstractNodeInfo *sender);
 
 
     /**
@@ -223,7 +271,7 @@ private:
      * @param rawRoute
      * @return
      */
-    bool optimizeRoute(const BaseId& node,
+    bool optimizeRoute(const NodeId& node,
                        const HostAddress& currentNodeAddress, const AbstractNodeInfo *sender,
                        QList<HostAddress> rawRoute);
 
@@ -241,7 +289,7 @@ private:
 
     Router *_router = nullptr;
 
-    QHash<BaseId, NetworkNodeInfo*> _connections;
+    QHash<NodeId, NetworkNodeInfo*> _connections;
 
     mutable QMutex _connectionsMutex;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -15,13 +15,18 @@
 #include <QSqlRecord>
 #include <QVariantMap>
 #include <QSharedPointer>
+#include <quasarapp.h>
 
 namespace QH {
 namespace PKG {
 
 DBObject::DBObject(const QString &tableName) {
-    clear();
+    DBObject::clear();
     _dbId.setTable(tableName);
+}
+
+DBObject::DBObject(const DbAddress &address) {
+    _dbId = address;
 }
 
 DBObject::~DBObject() {
@@ -34,7 +39,9 @@ QString DBObject::tableName() const {
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
-    QString queryString = "SELECT * FROM %0 " + getWhereBlock();
+    auto map = variantMap().keys();
+
+    QString queryString = "SELECT " + map.join(",") + " FROM %0 " + getWhereBlock();
 
     queryString = queryString.arg(tableName());
 
@@ -47,16 +54,123 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
 bool DBObject::fromSqlRecord(const QSqlRecord &q) {
 
-    if (q.contains("id")) {
-        setId(q.value("id").toString());
+    QString key = primaryKey();
+    if (key.size() && q.contains(key)) {
+        setId(q.value(key));
         return true;
     }
 
     return false;
 }
 
+PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
+
+    DBVariantMap map = variantMap();
+
+    if (!map.size()) {
+        QuasarAppUtils::Params::log("The variantMap method return an empty map.",
+                                    QuasarAppUtils::Error);
+
+        return PrepareResult::Fail;
+    }
+
+    QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
+
+
+    queryString = queryString.arg(tableName());
+    QString tableInsertHeader = "";
+    QString tableInsertValues = "";
+
+    for (auto it = map.begin(); it != map.end(); ++it) {
+
+        if (!bool(it.value().type & MemberType::Insert)) {
+            continue;
+        }
+
+        tableInsertHeader += it.key();
+        tableInsertValues += ":" + it.key();
+        if (std::next(it, 1) != map.end()) {
+            tableInsertHeader += ", ";
+            tableInsertValues += ", ";
+        }
+
+    }
+
+    queryString = queryString.arg(tableInsertHeader);
+    queryString = queryString.arg(tableInsertValues);
+
+    if (q.prepare(queryString)) {
+
+        for (auto it = map.begin(); it != map.end(); ++it) {
+            if (!bool(it.value().type & MemberType::Insert)) {
+                continue;
+            }
+
+            q.bindValue(":" + it.key(), it.value().value);
+        }
+
+        return PrepareResult::Success;
+    }
+
+    return PrepareResult::Fail;
+}
+
+PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
+
+    if (!isHaveAPrimaryKey()) {
+
+        QuasarAppUtils::Params::log("The databae object do not has a primary key. ",
+                                    QuasarAppUtils::Error);
+        return PrepareResult::Fail;
+    }
+
+    DBVariantMap map = variantMap();
+
+    if (!map.size()) {
+        QuasarAppUtils::Params::log("The variantMap method return an empty map.",
+                                    QuasarAppUtils::Error);
+
+        return PrepareResult::Fail;
+    }
+
+    QString queryString = "UPDATE %0 SET %1 WHERE " + DBObject::condition();
+
+    queryString = queryString.arg(tableName());
+    QString tableUpdateValues = "";
+
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        if (!bool(it.value().type & MemberType::Update)) {
+            continue;
+        }
+
+        if (tableUpdateValues.size()) {
+            tableUpdateValues += ", ";
+        }
+
+        tableUpdateValues += QString("%0= :%0").arg(it.key());
+
+    }
+
+    queryString = queryString.arg(tableUpdateValues);
+
+    if (q.prepare(queryString)) {
+
+        for (auto it = map.begin(); it != map.end(); ++it) {
+            if (!bool(it.value().type & MemberType::Update)) {
+                continue;
+            }
+
+            q.bindValue(":" + it.key(), it.value().value);
+        }
+
+        return PrepareResult::Success;
+    }
+
+    return PrepareResult::Fail;
+}
+
 bool DBObject::isCached() const {
-    return true;
+    return isHaveAPrimaryKey();
 }
 
 bool DBObject::isBundle() const {
@@ -67,16 +181,80 @@ uint DBObject::dbKey() const {
     return HASH_KEY(DbAddressKey(_dbId));
 }
 
-QPair<QString, QString> DBObject::altarnativeKey() const {
-    return {};
+QString DBObject::condition() const {
+
+    // prepare key value to string condition
+    auto prepareCondition = [](const QString& key, const QString &val){
+        return key + "= '" + val + "'";
+    };
+
+    auto byteArrayWarning = [](){
+        QuasarAppUtils::Params::log("You try generate a condition from the raw bytes array."
+                                    " This operation can not be brok the sql request."
+                                    " Use the QString or int type for values of condition."
+                                    " If you want to  bytes array in condition then override the DBObject::condition method.",
+                                    QuasarAppUtils::Warning);
+    };
+
+    QString errorString = "WRONG OBJECT";
+
+    // if object have a primaryKey then return primary key
+    auto primaryVal = primaryValue();
+    if (primaryVal.isValid()) {
+
+        if (primaryVal.type() == QVariant::ByteArray) {
+            byteArrayWarning();
+            return errorString;
+        }
+
+        return prepareCondition(primaryKey(), primaryValue().toString());
+    }
+
+    auto map = variantMap();
+
+    // check all objects fields
+    for (auto it = map.begin(); it != map.end(); ++it) {
+        // if field is unique then
+        if (bool(it.value().type & MemberType::Unique)) {
+            QVariant::Type type = it.value().value.type();
+
+            // if field is string then check size.
+            if (type == QVariant::String) {
+                QString val = it.value().value.toString();
+                if (val.size()) {
+                    return prepareCondition(it.key(), val);
+                }
+            } else if (type == QVariant::ByteArray) {
+                byteArrayWarning();
+                continue;
+            } else if (it.value().value.isValid()) {
+                return prepareCondition(it.key(), it.value().value.toString());
+            }
+        }
+    }
+
+    QuasarAppUtils::Params::log("Fail to generate condition for object: " + toString() +
+                                ". Object do not have valid unique fields or valid database address.",
+                                QuasarAppUtils::Error);
+
+
+    return errorString;
 }
 
-DbAddress DBObject::dbAddress() const {
+const QVariant &DBObject::primaryValue() const {
+    return _dbId.id();
+}
+
+void DBObject::setDbAddress(const DbAddress &address) {
+    _dbId = address;
+}
+
+bool DBObject::isInsertPrimaryKey() const {
+    return bool(variantMap().value(primaryKey()).type & MemberType::Insert);
+}
+
+const DbAddress &DBObject::dbAddress() const {
     return _dbId;
-}
-
-QSharedPointer<DBObject> DBObject::clone() const {
-    return QSharedPointer<DBObject>(cloneRaw());
 }
 
 DBObject *DBObject::cloneRaw() const {
@@ -96,18 +274,12 @@ QString DBObject::toString() const {
 }
 
 QString DBObject::getWhereBlock() const {
-    QString whereBlock = "WHERE ";
+    auto con = condition();
 
-    if (getId().isValid()) {
-        whereBlock += "id='" + getId().toBase64() + "'";
-    } else {
-        auto altKeys = altarnativeKey();
-        if (altKeys.first.isEmpty()) {
-            return {};
-        }
-        whereBlock +=  altKeys.first + "='" + altKeys.second + "'";
+    if (!con.size())
+        return "";
 
-    }
+    QString whereBlock = "WHERE " + con;
 
     return whereBlock;
 }
@@ -141,20 +313,23 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
     return stream;
 }
 
-bool DBObject::init() {
-    if (!AbstractData::init())
-        return false;
-
-    if (isBundle()) {
-        return true;
+DBVariantMap DBObject::variantMap() const {
+    if (isHaveAPrimaryKey()) {
+        return {{primaryKey(), {_dbId.id(), MemberType::PrimaryKey}}};
     }
 
-    _dbId.setId(generateId());
-    return _dbId.isValid();
+    return {};
 }
 
 bool DBObject::isValid() const {
-    return AbstractData::isValid() && _dbId.isValid();
+    if (!AbstractData::isValid())
+        return false;
+
+    if (isInsertPrimaryKey()) {
+        return _dbId.isValid();
+    }
+
+    return _dbId.table().size();
 }
 
 bool DBObject::copyFrom(const AbstractData * other) {
@@ -170,16 +345,37 @@ bool DBObject::copyFrom(const AbstractData * other) {
     return true;
 }
 
-BaseId DBObject::getId() const {
+unsigned int DBObject::subscribeId() const {
+    return dbKey();
+}
+
+unsigned int DBObject::subscribeId(const DbAddress &address) {
+    return HASH_KEY(DbAddressKey(address));
+}
+
+bool DBObject::isHaveAPrimaryKey() const {
+    return primaryKey().size();
+}
+
+const QVariant& DBObject::getId() const {
     return dbAddress().id();
 }
 
-void DBObject::setId(const BaseId& id) {
+void DBObject::setId(const QVariant& id) {
     _dbId.setId(id);
 }
 
 void DBObject::clear() {
     setId({});
+}
+
+DBVariant::DBVariant() {
+
+}
+
+DBVariant::DBVariant(const QVariant &value, MemberType type) {
+    this->value = value;
+    this->type = type;
 }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2020 QuasarApp.
+ * Copyright (C) 2018-2021 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -10,7 +10,6 @@
 
 #include "abstractnodeinfo.h"
 #include "accesstoken.h"
-#include "baseid.h"
 #include "heart_global.h"
 #include <QByteArray>
 
@@ -20,7 +19,7 @@ namespace QH {
 class DbAddress;
 
 /**
- * @brief The BaseNodeInfo class contaisn the unique node id.
+ * @brief The BaseNodeInfo class contains the unique node id.
  * This object created in the DataBaseNode::createNodeInfo method.
  */
 class HEARTSHARED_EXPORT BaseNodeInfo: public AbstractNodeInfo {
@@ -29,7 +28,7 @@ public:
 
     /**
      * @brief BaseNodeInfo This constructor initialize the node info object from the tcp descriptor
-     * @param tcp This is  tcp socket dsscriptor
+     * @param tcp This is tcp socket descriptor.
      * @param clientAddress This is network address of socket.
      */
     explicit BaseNodeInfo(QAbstractSocket * tcp = nullptr,
@@ -39,21 +38,36 @@ public:
     bool isValid() const override;
 
     /**
-     * @brief selfId This method return id of peer node or client.
+     * @brief token This method return id of peer node or client.
      * @return The id of peer node or client.
      */
-    BaseId selfId() const;
+    const AccessToken& token() const;
 
     /**
-     * @brief setSelfId This method set an id for the peer node or the client.
-     * @param selfId new value of id of the peer node.
+     * @brief setToken This method set an token for the peer node or the client.
+     * @param token New value of token of the peer node.
      */
-    void setSelfId(const BaseId &selfId);
+    void setToken(const AccessToken &token);
 
+    void reset() override;
     bool confirmData() const override;
 
+    /**
+     * @brief id This method return id of the connected user.
+     * @return User id.
+     */
+    const QVariant &id() const;
+
+    /**
+     * @brief setId This method set userId for connected object.
+     * @param id This is new value of user id.
+     */
+    void setId(const QVariant &id);
+
 protected:
-    BaseId _selfId;
+    AccessToken _token;
+    QVariant _id;
+
 };
 
 }
