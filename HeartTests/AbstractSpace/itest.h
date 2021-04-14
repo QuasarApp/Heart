@@ -15,7 +15,7 @@ public:
      * @brief test run tests of object.
      * @return true if test finished successful
      */
-    virtual bool test() = 0;
+    virtual void test() = 0;
 };
 
 #endif // ITEST_H

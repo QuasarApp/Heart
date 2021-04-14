@@ -35,26 +35,26 @@ private:
      *  check constructors and distructors of nodes objects.
      * @return true if the test finished successful
      */
-    bool powerTest();
+    void powerTest();
 
     /**
      * @brief dbTest - test base functions of database of nodes.
      * @return true if test finished successful.
      */
-    bool dbTest();
+    void dbTest();
 
     /**
      * @brief connectNetworkTest
      *  this test check nodes connections greatThen 3 node
      * @return
      */
-    bool connectNetworkTest();
+    void connectNetworkTest();
 
     /**
      * @brief securityTest - this test create 2 clinet app and try get or change data of another client.
      * @return
      */
-    bool securityTest();
+    void securityTest();
 
 };
 

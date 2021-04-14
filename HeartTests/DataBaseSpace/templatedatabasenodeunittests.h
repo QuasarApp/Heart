@@ -17,6 +17,8 @@
 #include <test.h>
 #include <abstractnetworkmember.h>
 #include "sqldbcache.h"
+#include <QtTest>
+
 
 template <class BASE, class WorkType>
 /**
@@ -35,27 +37,16 @@ public:
      * @brief test - test work database
      * @return true if database of node work is correctly.
      */
-    bool test() override{
+    void test() override{
 
         testObjec = QSharedPointer<WorkType>(randomMember());
-        if (!initUnitTests()) {
-            return false;
-        }
 
-        if (!testReadWrite()) {
-            return false;
-        }
-
-        if (!testUpdate()) {
-            return false;
-        }
-
-        if (!testChangeTrust()) {
-            return false;
-        }
+        initUnitTests();
+        testReadWrite();
+        testUpdate();
+        testChangeTrust();
 
         BASE::stop();
-        return true;
     }
 
 protected:
@@ -69,49 +60,37 @@ protected:
      * @brief initUnitTests - init database.
      * @return return true if test module initialized successful
      */
-    virtual bool initUnitTests() {
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+    virtual void initUnitTests() {
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
         QString database = BASE::dbLocation();
         BASE::stop();
 
-        if (QFileInfo::exists(database) && !QFile::remove(database)) {
-            return false;
-        }
-
-        return true;
+        QVERIFY(QFileInfo::exists(database) && QFile::remove(database));
     }
 
     /**
      * @brief testReadWrite - test save and get object functions
      * @return true if all test finished successful
      */
-    bool testReadWrite() {
+    void testReadWrite() {
         // test init database
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+
 
         // try get not exists object
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
         // objectFromDataBase must be equal 0x0
-        if (objectFromDataBase) {
-            return false;
-        }
+        QVERIFY(!objectFromDataBase);
 
         // generate random objects for database.
         for (int i = 0; i < 100; ++i) {
             auto obj = QSharedPointer<WorkType>(randomMember());
 
-            if (!obj->isValid())
-                return false;
+            QVERIFY(obj->isValid());
 
-            if (!BASE::db()->insertObject(obj, true)) {
-                return false;
-            }
+            QVERIFY(BASE::db()->insertObject(obj, true));
         }
 
         // create request for get all objects from database.
@@ -120,31 +99,23 @@ protected:
 
         auto list = BASE::db()->getObject(setRequest);
 
-        if (list && list->data().size() != 100)
-            return false;
+        QVERIFY(list && list->data().size() == 100);
 
         // create request for get all objects from database and cached it.
         QH::PKG::CachedDbObjectsRequest<WorkType> request("");
 
         QList<QSharedPointer<QH::PKG::DBObject>> result;
-        if (!BASE::db()->getAllObjects(request, result)) {
-            return false;
-        }
+        QVERIFY(BASE::db()->getAllObjects(request, result));
 
-        if (list->data().size() != result.size())
-            return false;
+        QVERIFY(list->data().size() == result.size());
 
         // insert main object inot database.
-        if (!BASE::db()->insertObject(testObjec)) {
-            return false;
-        }
+        QVERIFY(BASE::db()->insertObject(testObjec));
 
         // get main object from cache database.
         auto object = BASE::db()->getObject(*testObjec);
 
-        if (!object || !object->isValid()) {
-            return false;
-        }
+        QVERIFY(object && object->isValid());
 
         testObjec->copyFrom(object.data());
 
@@ -152,127 +123,89 @@ protected:
         BASE::stop();
 
         // run new session of server dataqbase.
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
         // try get object from not cache.
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        if (objectFromDataBase && objectFromDataBase->trust() == 0) {
-            return true;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
 
-        return false;
     }
 
     /**
      * @brief testUpdate - test update functions
      * @return true if all test finished successful.
      */
-    bool testUpdate() {
+    void testUpdate() {
         BASE::stop();
 
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
 
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
 
         auto clone = objectFromDataBase->clone().template staticCast<QH::PKG::AbstractNetworkMember>();
 
         clone->setTrust(20);
 
-        if (!BASE::db()->updateObject(clone)) {
-            return false;
-        }
+        QVERIFY(BASE::db()->updateObject(clone));
 
         objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
-        if (objectFromDataBase && objectFromDataBase->trust() != 20) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 20);
 
         BASE::stop();
 
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
         objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
-        if (!objectFromDataBase || objectFromDataBase->trust() != 20) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 20);
 
-        return true;
     }
 
     /**
      * @brief testChangeTrust - this test check bad request responce for node
      * @return true if all test finished successful
      */
-    bool testChangeTrust() {
+    void testChangeTrust() {
         BASE::stop();
 
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
-        if(BASE::changeTrust(QVariant{}, -10)) {
-            return false;
-        };
+        QVERIFY(!BASE::changeTrust(QVariant{}, -10));
 
-        if(!BASE::changeTrust(testObjec->getId(), -10)) {
-            return false;
-        };
+        QVERIFY(BASE::changeTrust(testObjec->getId(), -10));
 
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        if (objectFromDataBase && objectFromDataBase->trust() != 10) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 10);
 
         BASE::stop();
 
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        if (!objectFromDataBase || objectFromDataBase->trust() != 10) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 10);
 
-        if(!BASE::changeTrust(testObjec->getId(), -10)) {
-            return false;
-        };
+        QVERIFY(BASE::changeTrust(testObjec->getId(), -10));
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        if (objectFromDataBase && objectFromDataBase->trust() != 0) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
 
         BASE::stop();
 
-        if (!BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName)) {
-            return false;
-        }
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        if (!objectFromDataBase || objectFromDataBase->trust() != 0) {
-            return false;
-        }
+        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
 
-        return BASE::isBanned(testObjec->getId());
+        QVERIFY(BASE::isBanned(testObjec->getId()));
 
     }
 

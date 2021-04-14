@@ -25,22 +25,20 @@ TEST_CASE(Case2, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDB, QH::AsyncS
 
 
 template <class T>
-bool testCase(const T& t) {
-    return const_cast<T&>(t).test();
+void testCase(const T& t) {
+    const_cast<T&>(t).test();
 }
 
 #define RUN_TEST_CASE(TYPE) \
     { \
     TYPE *tst = new TYPE(); \
-    if (!testCase(*tst)) \
-        return false; \
+    testCase(*tst); \
     tst->softDelete(); \
     }
 
-bool DataBaseNodeUnitTests::test() {
+void DataBaseNodeUnitTests::test() {
     RUN_TEST_CASE(Case0)
     RUN_TEST_CASE(Case1)
     RUN_TEST_CASE(Case2)
 
-    return true;
 }

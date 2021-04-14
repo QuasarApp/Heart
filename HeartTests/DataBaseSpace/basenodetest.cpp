@@ -59,45 +59,36 @@ BaseNodeTest::~BaseNodeTest() {
 }
 
 void BaseNodeTest::test() {
-    QVERIFY(dbTest());
-    QVERIFY(powerTest());
-    QVERIFY(connectNetworkTest());
-    QVERIFY(securityTest());
+    dbTest();
+    powerTest();
+    connectNetworkTest();
+    securityTest();
 }
 
-bool BaseNodeTest::powerTest() {
+void BaseNodeTest::powerTest() {
     auto _nodeAPtr = new QH::DataBaseNode();
 
-    if (!_nodeAPtr->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "powerTest")) {
-        return false;
-    }
+    QVERIFY(_nodeAPtr->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "powerTest"));
 
     _nodeAPtr->softDelete();
-
-    return true;
 }
 
-bool BaseNodeTest::dbTest() {
+void BaseNodeTest::dbTest() {
     auto node = new DataBaseNodeUnitTests;
 
-    if (!node->test()) {
-        return false;
-    }
+    node->test();
 
     delete node;
 
-    return true;
 }
 
-bool BaseNodeTest::connectNetworkTest() {
+void BaseNodeTest::connectNetworkTest() {
 
     auto client1 = dynamic_cast<QH::DataBaseNode*>(_client1);
     auto client2 = dynamic_cast<QH::DataBaseNode*>(_client2);
     auto server = dynamic_cast<QH::DataBaseNode*>(_server);
 
-    if (!server->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "ServerDataBaseNode")) {
-        return false;
-    }
+    QVERIFY(server->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "ServerDataBaseNode"));
 
     auto addNodeRequest = [client1, client2]() {
         client1->addNode(QH::HostAddress(TEST_LOCAL_HOST, LOCAL_TEST_PORT));
@@ -110,9 +101,7 @@ bool BaseNodeTest::connectNetworkTest() {
         return server->connectionsCount() == 2;
     };
 
-    if (!funcPrivateConnect(addNodeRequest, checkNode)) {
-        return false;
-    }
+    QVERIFY(funcPrivateConnect(addNodeRequest, checkNode));
 
     // need to wait for add node
 
@@ -129,15 +118,12 @@ bool BaseNodeTest::connectNetworkTest() {
                tstclient2->getPing().ansver();
     };
 
-    return funcPrivateConnect(request, check);
+    QVERIFY(funcPrivateConnect(request, check));
 
 }
 
-bool BaseNodeTest::securityTest() {
-
-
-
-    return true;
+void BaseNodeTest::securityTest() {
+    return;
 }
 
 

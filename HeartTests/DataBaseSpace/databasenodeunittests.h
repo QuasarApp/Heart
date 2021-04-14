@@ -18,7 +18,7 @@ class DataBaseNodeUnitTests: public iTest {
 
     // Test interface
 public:
-    bool test() override;
+    void test() override;
 
 };
 
