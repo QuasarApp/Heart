@@ -66,7 +66,8 @@ protected:
         QString database = BASE::dbLocation();
         BASE::stop();
 
-        QVERIFY(QFileInfo::exists(database) && QFile::remove(database));
+        QVERIFY(QFileInfo::exists(database));
+        QVERIFY(QFile::remove(database));
     }
 
     /**
@@ -98,8 +99,8 @@ protected:
                     testObjec->tableName(), "");
 
         auto list = BASE::db()->getObject(setRequest);
-
-        QVERIFY(list && list->data().size() == 100);
+        QVERIFY(list);
+        QVERIFY(list->data().size() == 100);
 
         // create request for get all objects from database and cached it.
         QH::PKG::CachedDbObjectsRequest<WorkType> request("");
@@ -115,7 +116,8 @@ protected:
         // get main object from cache database.
         auto object = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(object && object->isValid());
+        QVERIFY(object);
+        QVERIFY(object->isValid());
 
         testObjec->copyFrom(object.data());
 
@@ -128,7 +130,8 @@ protected:
         // try get object from not cache.
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 0);
 
     }
 
@@ -144,7 +147,8 @@ protected:
 
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 0);
 
         auto clone = objectFromDataBase->clone().template staticCast<QH::PKG::AbstractNetworkMember>();
 
@@ -154,7 +158,8 @@ protected:
 
         objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 20);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 20);
 
         BASE::stop();
 
@@ -162,7 +167,8 @@ protected:
 
         objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 20);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 20);
 
     }
 
@@ -181,7 +187,8 @@ protected:
 
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 10);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 10);
 
         BASE::stop();
 
@@ -189,13 +196,15 @@ protected:
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 10);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 10);
 
         QVERIFY(BASE::changeTrust(testObjec->getId(), -10));
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 0);
 
         BASE::stop();
 
@@ -203,7 +212,8 @@ protected:
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
-        QVERIFY(objectFromDataBase && objectFromDataBase->trust() == 0);
+        QVERIFY(objectFromDataBase);
+        QVERIFY(objectFromDataBase->trust() == 0);
 
         QVERIFY(BASE::isBanned(testObjec->getId()));
 
