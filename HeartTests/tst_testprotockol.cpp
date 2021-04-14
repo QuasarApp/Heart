@@ -19,23 +19,39 @@
 #include <networknodetest.h>
 #endif
 
+#define TestCase(name, testClass) \
+    void name() { \
+    initTest(new testClass()); \
+    }
 
 class testProtockol : public QObject
 {
     Q_OBJECT
-
-private:
-    QList<Test*> _tests;
-
-
 public:
     testProtockol();
 
     ~testProtockol();
 
 private slots:
-    void initTestCase();
-    void unitTests();
+    // BEGIN TESTS CASES
+#if HEART_BUILD_LVL >= 0
+
+    TestCase(abstractNodeTest, AbstractNodeTest)
+#endif
+#if HEART_BUILD_LVL >= 1
+    TestCase(baseNodeTest, BaseNodeTest)
+    TestCase(singleNodeTest, SingleServerTest)
+#endif
+#if HEART_BUILD_LVL >= 2
+    TestCase(networkNodeTest, NetworkNodeTest)
+#endif
+
+    // END TEST CASES
+
+private:
+    void initTest(Test* test);
+
+    QCoreApplication *_app = nullptr;
 
 };
 
@@ -43,49 +59,32 @@ testProtockol::testProtockol() {
 
     QH::init();
 
-#if HEART_BUILD_LVL >= 0
-    _tests.push_back(new AbstractNodeTest);
-#endif
-#if HEART_BUILD_LVL >= 1
-    _tests.push_back(new BaseNodeTest);
-    _tests.push_back(new SingleServerTest);
-
-#endif
-#if HEART_BUILD_LVL >= 2
-    _tests.push_back(new NetworkNodeTest);
-#endif
-}
-
-testProtockol::~testProtockol() {
-
-}
-
-void testProtockol::initTestCase() {
-}
-
-void testProtockol::unitTests() {
+    // init xample unit test
     int argc =0;
     char * argv[] = {nullptr};
 
-    QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName("TestQNP");
+    _app = new QCoreApplication(argc, argv);
+    QCoreApplication::setApplicationName("testHeart");
     QCoreApplication::setOrganizationName("QuasarApp");
 
     auto path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
     QDir(path).removeRecursively();
+}
 
-    QTimer::singleShot(0, this, [this, &app]() {
+testProtockol::~testProtockol() {
+    _app->exit(0);
+    delete _app;
+}
 
-        for (auto test : qAsConst(_tests) ) {
-            test->test();
-            delete test;
-        }
-
-        app.exit(0);
+void testProtockol::initTest(Test *test) {
+    QTimer::singleShot(0, this, [this, test]() {
+        test->test();
+        delete test;
+        _app->exit(0);
     });
 
-    app.exec();
+    _app->exec();
 }
 
 QTEST_APPLESS_MAIN(testProtockol)
