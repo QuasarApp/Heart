@@ -83,18 +83,14 @@ public:
      * @brief updateQuery This method execute update query of object.
      *  For more Information see DBObject::prepareUpdateQuery.
      * @param ptr This is strong pointer to object that need to update into a database.
-     * @param resultOfWork This is bool variable contains result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This wariable set true when the SqlDBWriter::saveObject is finished.
-     * @return true if function finished successful
+     * @return true if function finished successful.
      */
     virtual bool updateQuery(const QSharedPointer<QH::PKG::DBObject> &ptr) const;
 
     /**
      * @brief selectQuery generate select query to database from parameters.
      * @param requestObject This is template object for generate select query.
-     * @param result This is return values
-     * @param resultOfWork This is bool variable contains result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This variable set true when the SqlDBWriter::selectQuery is finished.
+     * @param result This is return values.
      * @return true if all good else false.
      */
     virtual bool selectQuery(const QH::PKG::DBObject &requestObject,
@@ -103,8 +99,6 @@ public:
     /**
      * @brief deleteQuery This method prepare the delete object query.
      * @param deleteObject This is tempalte object for generate a  delete query.
-     * @param resultOfWork This is bool variable contains result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This variable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if query generated successful.
      */
     virtual bool deleteQuery(const QSharedPointer<QH::PKG::DBObject> &deleteObject) const;
@@ -112,8 +106,6 @@ public:
     /**
      * @brief insertQuery This method prepare the insert object query.
      * @param insertObject This is strong pointer of object for generate the insert query.
-     * @param resultOfWork This is bool variable contains result of work a SqlDBWriter::saveObject method.
-     * @param endOfWork This variable set true when the SqlDBWriter::selectQuery is finished.
      * @return true if query generated successful.
      */
     virtual bool insertQuery(const QSharedPointer<QH::PKG::DBObject>& insertObject) const;
@@ -159,7 +151,7 @@ protected:
      * @brief defaultInitPararm This method return default parameters of the database.
      * @return map of database params.
      *
-     *  * Support parameters of database:
+     * Support parameters of database:
      *
      * - DBDriver - This is sql driver of data base for more information see The Qt Documentations https://doc.qt.io/qt-5/sql-driver.html
      * - DBFilePath - This is path to file of data base (sqlite only). This is phusical location of sqlite database.
