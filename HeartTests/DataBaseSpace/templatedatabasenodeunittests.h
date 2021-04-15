@@ -61,7 +61,7 @@ protected:
      * @return return true if test module initialized successful
      */
     virtual void initUnitTests() {
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
         QString database = BASE::dbLocation();
         BASE::stop();
@@ -76,7 +76,7 @@ protected:
      */
     void testReadWrite() {
         // test init database
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
 
         // try get not exists object
@@ -125,7 +125,7 @@ protected:
         BASE::stop();
 
         // run new session of server dataqbase.
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
         // try get object from not cache.
         objectFromDataBase = BASE::db()->getObject(*testObjec);
@@ -142,7 +142,7 @@ protected:
     void testUpdate() {
         BASE::stop();
 
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
 
         auto objectFromDataBase = BASE::db()->getObject(*testObjec);
@@ -163,7 +163,7 @@ protected:
 
         BASE::stop();
 
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
         objectFromDataBase = BASE::db()->getObject(*objectFromDataBase);
 
@@ -179,7 +179,7 @@ protected:
     void testChangeTrust() {
         BASE::stop();
 
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
         QVERIFY(!BASE::changeTrust(QVariant{}, -10));
 
@@ -192,7 +192,7 @@ protected:
 
         BASE::stop();
 
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
@@ -208,7 +208,7 @@ protected:
 
         BASE::stop();
 
-        QVERIFY(BASE::run(TEST_LOCAL_HOST, TEST_PORT, _dbNodeName));
+        QVERIFY(BASE::run(TEST_LOCAL_HOST, _testPort, _dbNodeName));
 
         objectFromDataBase = BASE::db()->getObject(*testObjec);
 
@@ -236,6 +236,7 @@ protected:
 private:
     QSharedPointer<QH::PKG::AbstractNetworkMember> testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
+    int _testPort = TEST_PORT + 2
 
 };
 
