@@ -30,7 +30,6 @@ if (NOT DEFINED HEART_TESTS)
 
     if (ANDROID)
         set(HEART_TESTS OFF)
-        add_definitions(HEART_TESTS OFF)
     endif()
 endif()
 
