@@ -5,6 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
+#ifdef HEART_DB_CACHE
+
 #include "asyncsqldbwriter.h"
 #include "sqlitedbcache.h"
 #include <QThread>
@@ -94,3 +96,5 @@ SQLiteDBCache::getFromCache(const PKG::DBObject *obj) {
 }
 
 }
+
+#endif

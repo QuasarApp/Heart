@@ -5,8 +5,11 @@
  * of this license document, but changing it is not allowed.
 */
 
+#ifdef HEART_DB_CACHE
+
 #ifndef SQLDBCASHE_H
 #define SQLDBCASHE_H
+
 
 #include "iobjectprovider.h"
 #include "isqldbcache.h"
@@ -48,3 +51,5 @@ private:
 
 }
 #endif // SQLDBCASHE_H
+
+#endif
