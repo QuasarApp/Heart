@@ -33,6 +33,17 @@ if (NOT DEFINED HEART_TESTS)
     endif()
 endif()
 
+if (NOT DEFINED HEART_DB_CACHE)
+    set(HEART_DB_CACHE OFF)
+
+    if (ANDROID OR WIN32)
+        set(HEART_DB_CACHE OFF)
+    endif()
+endif()
+
+if (HEART_DB_CACHE)
+    add_definitions(-DHEART_DB_CACHE)
+endif()
 
 include(QuasarAppLib/CMake/ccache.cmake)
 

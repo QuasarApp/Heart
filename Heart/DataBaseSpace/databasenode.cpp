@@ -32,6 +32,7 @@
 #include <isubscribabledata.h>
 #include <itoken.h>
 #include <sqlitedbcache.h>
+#include <sqldb.h>
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -124,17 +125,17 @@ void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
     }
 
     if (!cache) {
-        cache = new SQLiteDBCache();
+        cache = new SqlDB();
     }
 
     cache->setWriter(writer);
     _db = cache;
 
-    connect(_db, &SqlDBCache::sigItemChanged,
+    connect(_db, &ISqlDBCache::sigItemChanged,
             this, &DataBaseNode::handleObjectChanged,
             Qt::DirectConnection);
 
-    connect(_db, &SqlDBCache::sigItemDeleted,
+    connect(_db, &ISqlDBCache::sigItemDeleted,
             this, &DataBaseNode::handleObjectDeleted,
             Qt::DirectConnection);
 }

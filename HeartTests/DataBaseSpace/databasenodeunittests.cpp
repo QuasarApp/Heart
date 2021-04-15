@@ -19,8 +19,10 @@
             BASE, MEMBER, CACHE, WRITER> { \
     };
 
+#ifdef HEART_DB_CACHE
 TEST_CASE(Case0, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDBCache, QH::AsyncSqlDBWriter)
 TEST_CASE(Case1, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SQLiteDBCache, QH::AsyncSqlDBWriter)
+#endif
 TEST_CASE(Case2, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDB, QH::AsyncSqlDBWriter)
 
 
@@ -37,8 +39,11 @@ void testCase(const T& t) {
     }
 
 void DataBaseNodeUnitTests::test() {
+#ifdef HEART_DB_CACHE
+
     RUN_TEST_CASE(Case0)
     RUN_TEST_CASE(Case1)
+#endif
     RUN_TEST_CASE(Case2)
 
 }

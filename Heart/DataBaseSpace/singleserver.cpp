@@ -15,6 +15,7 @@
 #include <getmaxintegerid.h>
 #include "deleteobject.h"
 #include "getsinglevalue.h"
+#include "isqldbcache.h"
 
 namespace QH {
 
@@ -39,7 +40,7 @@ ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
     auto rawPassword = user.authenticationData();
     user.setAuthenticationData(hashgenerator(rawPassword));
 
-    if (!db()->insertObject(QSharedPointer<decltype(user)>::create(user))) {
+    if (!db()->insertObject(QSharedPointer<decltype(user)>::create(user), true)) {
         return ErrorCodes::InternalError;
     };
 
@@ -81,7 +82,7 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
 
     if (!localObject->getSignToken().isValid()) {
         localObject->setSignToken(generateToken(AccessToken::Year));
-        if (!db()->updateObject(localObject)) {
+        if (!db()->updateObject(localObject, true)) {
             return ErrorCodes::InternalError;
         }
     }

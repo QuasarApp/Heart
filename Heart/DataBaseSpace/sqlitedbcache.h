@@ -5,8 +5,12 @@
  * of this license document, but changing it is not allowed.
 */
 
+
+
 #ifndef SQLITEDBCACHE_H
 #define SQLITEDBCACHE_H
+
+#ifdef HEART_DB_CACHE
 
 #include "isqldbcache.h"
 
@@ -54,4 +58,6 @@ private:
 
 };
 }
+#endif
+
 #endif // SQLITEDBCACHE_H

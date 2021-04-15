@@ -5,6 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
+#ifdef HEART_DB_CACHE
+
 #include "sqldbcache.h"
 #include "quasarapp.h"
 #include "sqldbwriter.h"
@@ -107,3 +109,4 @@ SqlDBCache::getFromCache(const DBObject *obj) {
     return resultType{};
 }
 }
+#endif
