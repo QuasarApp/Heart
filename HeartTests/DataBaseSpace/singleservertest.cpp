@@ -209,7 +209,7 @@ void SingleServerTest::loginTest() {
 bool SingleServerTest::initTest() {
     auto server = dynamic_cast<TestSingleServer*>(_server);
 
-    if (!server->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "SingleServer")) {
+    if (!server->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT + 1, "SingleServer")) {
         return false;
     }
 
