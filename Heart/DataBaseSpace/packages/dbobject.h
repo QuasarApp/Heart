@@ -457,7 +457,7 @@ protected:
 
     /**
      * @brief setDbAddress This method set the new database address.
-     * @param This is a new value of database address.
+     * @param address This is a new value of database address.
      */
     void setDbAddress(const DbAddress &address);
 
