@@ -67,7 +67,7 @@ constexpr inline uint qHash(MemberType type) {
 /**
  * @brief The DBVariant struct contains QVariant value of the DBObjects member and it type.
  */
-struct DBVariant {
+struct HEARTSHARED_EXPORT DBVariant {
     DBVariant();
 
     DBVariant(const QVariant& value, MemberType type);
