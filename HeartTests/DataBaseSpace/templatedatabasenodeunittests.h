@@ -236,7 +236,7 @@ protected:
 private:
     QSharedPointer<QH::PKG::AbstractNetworkMember> testObjec = nullptr;
     QString _dbNodeName = "DatabaseTestNode";
-    int _testPort = TEST_PORT + 2
+    int _testPort = TEST_PORT + 2;
 
 };
 
