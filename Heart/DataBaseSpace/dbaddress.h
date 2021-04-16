@@ -31,7 +31,6 @@ public:
     /**
      * @brief DbAddress this constructor initialize a default database address.
      * @param table This is table name in database.
-     * @param primaryKey This is primary key.
      * @param id This is id of object in table.
      */
     DbAddress(const QString& table,  const QVariant& id);
