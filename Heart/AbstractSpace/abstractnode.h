@@ -153,7 +153,6 @@ public:
     /**
      * @brief addNode - Connect to node (server) with address.
      * @param address - This is Network address of node (server).
-     * @param mode - This is mode of connection see SslMode.  By default using SslMode::NoSSL connection mode, it is not secure.
      * @return true if the node aaded successful
      */
     bool addNode(const HostAddress &address);
@@ -162,7 +161,6 @@ public:
      * @brief addNode - Connect to node (server) with domain, bud this method find ip address of domain befor connecting.
      * @param domain - This is domain address of node (server).
      * @param port - This is target port of node (server).
-     * @param mode - This is mode of connection see SslMode. By default using SslMode::NoSSL connection mode, it is not secure.
      * @return true if the node aaded successful
      */
     bool addNode(const QString &domain, unsigned short port);

@@ -54,7 +54,7 @@ public:
 
     /**
      * @brief setAddress This implementation sets sha256 hash of the address (hash must be write in base64 encoding)
-     * @param address This is base64 string of a sha256 hash code.
+     * @param addressHash This is base64 string of a sha256 hash code.
      */
     void setAddress(const QString &addressHash);
 
