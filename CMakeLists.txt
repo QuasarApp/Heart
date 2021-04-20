@@ -13,9 +13,11 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
+include(QuasarAppLib/CMake/QuasarApp.cmake)
+include(QuasarAppLib/CMake/Version.cmake)
+
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
-        include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
         initAll()
         return()
     endif()
@@ -44,9 +46,6 @@ endif()
 if (HEART_DB_CACHE)
     add_definitions(-DHEART_DB_CACHE)
 endif()
-
-include(../QuasarAppLib/CMake/QuasarApp.cmake)
-include(../QuasarAppLib/CMake/Version.cmake)
 
 # Add sub directories
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
