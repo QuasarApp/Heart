@@ -13,9 +13,11 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
+include(QuasarAppLib/CMake/QuasarApp.cmake)
+include(QuasarAppLib/CMake/Version.cmake)
+
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
-        include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
         initAll()
         return()
     endif()
@@ -45,8 +47,6 @@ if (HEART_DB_CACHE)
     add_definitions(-DHEART_DB_CACHE)
 endif()
 
-include(QuasarAppLib/CMake/ccache.cmake)
-
 # Add sub directories
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
@@ -58,7 +58,6 @@ if (HEART_TESTS)
     add_subdirectory(HeartTests)
 endif()
 
-include(QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 initAll()
 
 addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)

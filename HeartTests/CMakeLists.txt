@@ -9,7 +9,6 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CURRENT_PROJECT ${PROJECT_NAME}Test)
 
-include(../QuasarAppLib/CMake/ProjectOut.cmake)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -62,6 +61,5 @@ target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 
-include(../QuasarAppLib/CMake/QuasarAppCITargets.cmake)
 initTests()
 addTests("NetworkProtokol" ${CURRENT_PROJECT})
