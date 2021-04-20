@@ -7,9 +7,6 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-include(../QuasarAppLib/CMake/ProjectOut.cmake)
-include(../QuasarAppLib/CMake/Version.cmake)
-
 if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
     add_subdirectory(Qt-Secret)
 endif()
