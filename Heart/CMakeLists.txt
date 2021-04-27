@@ -78,6 +78,8 @@ add_library(${PROJECT_NAME} ${SOURCE_CPP})
 target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp)
 if (ANDROID)
     set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
+    target_include_directories(${PROJECT_NAME} PRIVATE ${OPENSSL_ROOT_PATH}/include)
+
     target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.a ${OPENSSL_ROOT_PATH}/lib/libssl.a)
 else()
     target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
