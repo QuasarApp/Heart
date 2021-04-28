@@ -181,7 +181,7 @@ public:
             request.setId(userId);
      *
      *  restRequest()
-     *  @endcond
+     *  @endcode
      */
     bool restRequest(PKG::AbstractData *req, const HandlerMethod& handler);
 
