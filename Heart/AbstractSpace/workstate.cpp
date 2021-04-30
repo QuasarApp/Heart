@@ -19,9 +19,17 @@ void WorkState::setIsRun(bool value) {
     isRun = value;
 }
 
+const QList<HostAddress> &WorkState::getConnections() const {
+    return _connections;
+}
+
+void WorkState::setConnections(const QList<HostAddress> &connections) {
+    _connections = connections;
+}
+
 QString WorkState::getWorkStateString() const {
     if (isRun) {
-        if (connectionCount >= maxConnectionCount)
+        if (_connections.size() >= maxConnectionCount)
             return "overload";
         else {
             return "Work";
@@ -36,11 +44,20 @@ WorkState::WorkState() {}
 QString WorkState::toString() const {
     QString result("State: %0 \n"
                    "Connections: %1 / %2 \n"
+                   "Connected Addresses:\n"
+                   "%3 \n"
                    "Baned: \n "
-                   "%3");
+                   "%4");
 
     result = result.arg(getWorkStateString());
-    result = result.arg(connectionCount).arg(maxConnectionCount);
+    result = result.arg(_connections.size()).arg(maxConnectionCount);
+
+    QString  connections;
+    for (const auto &i: _connections) {
+         connections += i.toString() + "\n";
+    }
+
+    result = result.arg(connections);
 
     QString  BanedList;
     for (const auto &i: _banedList) {
@@ -50,14 +67,6 @@ QString WorkState::toString() const {
     result = result.arg(BanedList);
 
     return result;
-}
-
-int WorkState::getConnectionCount() const {
-    return connectionCount;
-}
-
-void WorkState::setConnectionCount(int value) {
-    connectionCount = value;
 }
 
 int WorkState::getMaxConnectionCount() const {

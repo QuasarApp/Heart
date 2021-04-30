@@ -32,18 +32,6 @@ public:
     QString toString() const;
 
     /**
-     * @brief getConnectionCount return connections count of node
-     * @return connection count on current time
-     */
-    int getConnectionCount() const;
-
-    /**
-     * @brief setConnectionCount set new connection count.
-     * @param value This is new value of connections count.
-     */
-    void setConnectionCount(int value);
-
-    /**
      * @brief getMaxConnectionCount This method return of limit of connections.
      * @return return maximum connection count.
      */
@@ -79,12 +67,24 @@ public:
      */
     void setIsRun(bool value);
 
+    /**
+     * @brief getConnections This method return list of the current server connections.
+     * @return list of the connections addresses
+     */
+    const QList<HostAddress>& getConnections() const;
+
+    /**
+     * @brief setConnections This method sets connections list.
+     * @param connections This is a new value of the connections list.
+     */
+    void setConnections(const QList<HostAddress> &connections);
+
 private:
-    int connectionCount = 0;
     int maxConnectionCount = 0;
     bool isRun = false;
 
     QList<HostAddress> _banedList;
+    QList<HostAddress> _connections;
 
     QString getWorkStateString() const;
 };

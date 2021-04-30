@@ -558,9 +558,10 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
 WorkState AbstractNode::getWorkState() const {
     WorkState state;
 
-    state.setConnectionCount(connectionsCount());
+    state.setConnections(connectionsList());
     state.setMaxConnectionCount(maxPendingConnections());
     state.setBanedList(banedList());
+    state.setIsRun(isListening());
 
     return state;
 
@@ -864,6 +865,12 @@ QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const
 
 bool AbstractNode::checkCommand(unsigned short cmd) const {
     return _registeredTypes.contains(cmd);
+}
+
+QList<HostAddress> AbstractNode::connectionsList() const {
+    QMutexLocker locer(&_connectionsMutex);
+
+    return _connections.keys();
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

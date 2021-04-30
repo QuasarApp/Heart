@@ -226,7 +226,7 @@ public:
      * @brief mainThreadID This method return the pointer to main thread
      * @return pointer to main thread
      */
-    static QThread * mainThreadID();
+    static QThread *mainThreadID();
 
 signals:
     /**
@@ -518,6 +518,12 @@ protected:
      */
     bool checkCommand(unsigned short cmd) const;
 
+    /**
+     * @brief connectionsList This method return list of all node connections
+     * @return list of node connections.
+     * @warning do not use this method for validation is connected.
+     */
+    QList<HostAddress> connectionsList() const;
 private slots:
 
     void avelableBytes(AbstractNodeInfo* sender);
