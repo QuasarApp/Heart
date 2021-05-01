@@ -170,7 +170,11 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
 }
 
 bool DBObject::isCached() const {
+#ifdef HEART_DB_CACHE
     return isHaveAPrimaryKey();
+#else
+    return false;
+#endif
 }
 
 bool DBObject::isBundle() const {
