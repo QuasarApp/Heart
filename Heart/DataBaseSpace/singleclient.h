@@ -289,8 +289,10 @@ protected:
      */
     const HostAddress& realServerAddress() const;
 
-
-
+protected slots:
+    void nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+                          QAbstractSocket::SocketError errorCode,
+                          QString errorString) override;
 
 private slots:
     /**
@@ -300,7 +302,7 @@ private slots:
      * @param error This is test message from a server.
      */
     void handleError(unsigned char code, QString error);
-
+    // AbstractNode interface
 private:
 
     /**
@@ -332,6 +334,7 @@ private:
     HandlersCache _handlersCache;
 
     HostAddress _realServerAddress;
+
 
 };
 

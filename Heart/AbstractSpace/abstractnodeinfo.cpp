@@ -88,8 +88,9 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
             this, &AbstractNodeInfo::removeSocket, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::errorOccurred,
-            this, [this] (QAbstractSocket::SocketError err){emit sigErrorOccurred(this, err);},
-            Qt::DirectConnection);
+            this, [this] (QAbstractSocket::SocketError err){
+        emit sigErrorOccurred(this, err, _sct->errorString());
+    }, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::readyRead,
             this, [this] (){ emit sigReadyRead(this);},

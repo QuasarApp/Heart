@@ -404,6 +404,12 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
             this, &AbstractNode::handleNodeStatusChanged,
             Qt::QueuedConnection);
 
+    // using direct connection because socket clear all data of ip and port after disconnected.
+    connect(info, &AbstractNodeInfo::sigErrorOccurred,
+            this, &AbstractNode::nodeErrorOccured,
+            Qt::QueuedConnection);
+
+
     // check node confirmed
     QTimer::singleShot(WAIT_TIME, this, [this, info]() {
         checkConfirmendOfNode(info);
@@ -997,6 +1003,17 @@ void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
 
 void AbstractNode::nodeDisconnected(AbstractNodeInfo *node) {
     Q_UNUSED(node)
+}
+
+void AbstractNode::nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+                                    QAbstractSocket::SocketError errorCode,
+                                    QString errorString) {
+    Q_UNUSED(errorCode)
+
+    QString message("Network error occured on the %0 node. Message: %1");
+    QuasarAppUtils::Params::log(
+                message.arg(nodeInfo->networkAddress().toString(), errorString),
+                QuasarAppUtils::Error);
 }
 
 void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {

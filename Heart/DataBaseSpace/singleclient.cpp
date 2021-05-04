@@ -286,6 +286,14 @@ const HostAddress &SingleClient::realServerAddress() const {
     return _realServerAddress;
 }
 
+void SingleClient::nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+                                    QAbstractSocket::SocketError errorCode,
+                                    QString errorString) {
+
+    setStatus(ClientStatus::Dissconnected);
+    SingleBase::nodeErrorOccured(nodeInfo, errorCode, errorString);
+}
+
 const PKG::UserMember &SingleClient::getMember() const {
     return _member;
 }

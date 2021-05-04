@@ -223,9 +223,12 @@ signals:
      * @brief sigErrorOccurred This is wrapper signal for the QAbstractSocket::errorOccurred signal.
      * @param thisNode This is pointer to current object.
      * @param socketError This is socket error code.
+     * @param message This is a error string message.
      * For more information see the QAbstractSocket::SocketError enum class.
      */
-    void sigErrorOccurred(AbstractNodeInfo* thisNode, QAbstractSocket::SocketError socketError);
+    void sigErrorOccurred(AbstractNodeInfo* thisNode,
+                          QAbstractSocket::SocketError socketError,
+                          QString message);
 
     /**
      * @brief sigConfirmed This signal emitted when node is confirmnd. The confirm status sets in the confirmData method.

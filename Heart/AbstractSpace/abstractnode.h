@@ -490,6 +490,7 @@ protected:
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
 
+
     template<class T>
     /**
      * @brief registerPackageType This method register package type T.
@@ -524,6 +525,19 @@ protected:
      * @warning do not use this method for validation is connected.
      */
     QList<HostAddress> connectionsList() const;
+
+protected slots:
+    /**
+     * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
+     * @param nodeInfo This is pinter to modeInfoObject.
+     * @param error This is error code.
+     * @param errorString This is string value of the error.
+     * @note default implementation do nothing. Override this method if you want to handle nodes network errors.
+     */
+    virtual void nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+                                  QAbstractSocket::SocketError errorCode,
+                                  QString errorString);
+
 private slots:
 
     void avelableBytes(AbstractNodeInfo* sender);
