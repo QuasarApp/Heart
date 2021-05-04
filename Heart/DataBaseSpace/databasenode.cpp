@@ -325,17 +325,6 @@ ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
 
         return ParserResult::Processed;
 
-    } else if (H_16<WebSocketSubscriptions>() == pkg->cmd()) {
-        WebSocketSubscriptions *obj = static_cast<WebSocketSubscriptions*>(pkg.data());
-        if (!obj->isValid()) {
-            badRequest(sender->networkAddress(), pkgHeader, {
-                           ErrorCodes::InvalidRequest,
-                           "WebSocketSubscriptions request is invalid"
-                       });
-            return ParserResult::Error;
-        }
-
-        return ParserResult::Processed;
     }
 
     return ParserResult::NotProcessed;

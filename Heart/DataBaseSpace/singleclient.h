@@ -154,6 +154,7 @@ public:
      * @brief subscribe This method subscribe current logged user to the object with @a id.
      * @param id This is subscriber id of the object.
      * @return true if subscribe request sent successful.
+     * \sa { syncSybscribeListWithServer, unsubscribe, isSubscribed, subscribesList }
      */
     bool subscribe(unsigned int id);
 
@@ -161,8 +162,36 @@ public:
      * @brief unsubscribe This method unsubscribe current logged user to the object with @a id.
      * @param id This is unsubscribe id of the object.
      * @return true if unsubscribe request sent successful.
+     * \sa { syncSybscribeListWithServer, subscribe, isSubscribed, subscribesList }
      */
     bool unsubscribe(unsigned int id);
+
+    /**
+     * @brief subscribesList This method returns local reference to local list with subsribes.
+     * @warning This list updated when invoked subscribe and unsubscribe methods, so if your client have a unstable network connectin this value may be wrong.
+     * @return lvalue to a subscrubes ids list.]
+     *
+     * @note This method is thread safe, so if you want check is subscribe only then use the SingleClient::isSubscribed method.
+     * \sa { syncSybscribeListWithServer, subscribe, isSubscribed, unsubscribe }
+
+     */
+    QSet<unsigned int> subscribesList() const;
+
+    /**
+     * @brief isSubscribed This method check object with @a subscribeId to isSubscribed.
+     * @warning This method use the local subscribed list, so it is may be works wrong if your client have a unstable network connection this value may be wrong.
+     * @return true if the your client subscribed to subscribeId.
+     * \sa { unsubscribe, subscribe, syncSybscribeListWithServer, subscribesList }
+     */
+    bool isSubscribed(unsigned int subscribeId) const;
+
+    /**
+     * @brief syncSybscribeListWithServer This method sends to server rest request to get subscribers list.
+     * @param cb This is call back functions with a new subcribes list.
+     * @return true if the reqest sendet successful.
+     * \sa { unsubscribe, subscribe, isSubscribed }
+     */
+    bool syncSybscribeListWithServer(const std::function<void (const QSet<unsigned int>&)> &cb = {});
 
     /**
      * @brief restRequest This method send to server rest request and if the server send response invoke a handler method.
@@ -286,6 +315,12 @@ private:
     void handleRestRequest(const QSharedPointer<PKG::AbstractData> &pkg, const Header &pkgHeader);
     void setRealServerAddress(const HostAddress &realServerAddress);
 
+    void addToSubscribesList(unsigned int id);
+    void removeFromSubscribesList(unsigned int id);
+    void setSubscribersList(QSet<unsigned int> ids);
+
+    mutable QMutex _subscribesMutex;
+    QSet<unsigned int> _subscribes;
 
     ClientStatus _status = ClientStatus::Dissconnected;
     QMutex _handlerMemberMutex;

@@ -12,6 +12,7 @@
 
 #include <deleteobject.h>
 #include <websocket.h>
+#include <websocketsubscriptions.h>
 
 namespace QH {
 
@@ -50,6 +51,14 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
         return QH::ParserResult::Processed;
 
+    } else if (H_16<PKG::WebSocketSubscriptions>() == pkg->cmd()) {
+        PKG::WebSocketSubscriptions *obj = static_cast<PKG::WebSocketSubscriptions*>(pkg.data());
+        if (!obj->isValid()) {
+            return ParserResult::Error;
+        }
+
+        setSubscribersList(obj->addresses());
+        return ParserResult::Processed;
     }
 
     handleRestRequest(pkg, pkgHeader);
@@ -93,8 +102,6 @@ bool SingleClient::login(const PKG::UserMember &memberData) {
     setMember(memberData);
     return login();
 }
-
-
 
 bool SingleClient::logout() {
     if (getStatus() < ClientStatus::Logined) {
@@ -260,6 +267,21 @@ void SingleClient::setRealServerAddress(const HostAddress &realServerAddress) {
     _realServerAddress = realServerAddress;
 }
 
+void SingleClient::addToSubscribesList(unsigned int id) {
+    QMutexLocker lock(&_subscribesMutex);
+    _subscribes.insert(id);
+}
+
+void SingleClient::removeFromSubscribesList(unsigned int id) {
+    QMutexLocker lock(&_subscribesMutex);
+    _subscribes.remove(id);
+}
+
+void SingleClient::setSubscribersList(QSet<unsigned int> ids) {
+    QMutexLocker lock(&_subscribesMutex);
+    _subscribes = ids;
+}
+
 const HostAddress &SingleClient::realServerAddress() const {
     return _realServerAddress;
 }
@@ -356,7 +378,12 @@ bool SingleClient::subscribe(unsigned int id) {
     request.setSubscribeId(id);
     request.setRequestCommnad(PKG::WebSocketRequest::Subscribe);
 
-    return sendData(&request, realServerAddress());
+    if (!sendData(&request, realServerAddress())) {
+        return false;
+    }
+
+    addToSubscribesList(id);
+    return true;
 }
 
 bool SingleClient::unsubscribe(unsigned int id) {
@@ -368,10 +395,38 @@ bool SingleClient::unsubscribe(unsigned int id) {
     request.setSubscribeId(id);
     request.setRequestCommnad(PKG::WebSocketRequest::Unsubscribe);
 
-    return sendData(&request, realServerAddress());
+    if (!sendData(&request, realServerAddress())) {
+        return false;
+    }
 
+    removeFromSubscribesList(id);
+    return true;
 }
 
+QSet<unsigned int> SingleClient::subscribesList() const {
+    QMutexLocker lock(&_subscribesMutex);
+    return _subscribes;
+}
+
+bool SingleClient::isSubscribed(unsigned int subscribeId) const {
+    QMutexLocker lock(&_subscribesMutex);
+    return _subscribes.contains(subscribeId);
+}
+
+bool SingleClient::syncSybscribeListWithServer(const std::function<void(const QSet<unsigned int> &)> &cb) {
+    QMutexLocker lock(&_subscribesMutex);
+
+    PKG::WebSocket request;
+    request.setRequestCommnad(PKG::WebSocketRequest::SubscribeList);
+
+    auto handler = [cb, this](const QSharedPointer<const PKG::AbstractData> & result){
+        auto subscribes = static_cast<const PKG::WebSocketSubscriptions*>(result.data());
+        setSubscribersList(subscribes->addresses());
+        cb(_subscribes);
+    };
+
+    return restRequest(&request, handler);
+}
 
 bool SingleClient::signPackageWithToken(PKG::AbstractData *pkg) const {
     auto tokenObject = dynamic_cast<IToken*>(pkg);
