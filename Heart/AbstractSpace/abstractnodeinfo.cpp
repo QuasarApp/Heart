@@ -85,7 +85,7 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
             this, connectedF, Qt::DirectConnection);
 
     connect(_sct, &QAbstractSocket::disconnected,
-            this, &AbstractNodeInfo::removeSocket, Qt::DirectConnection);
+            this, &AbstractNodeInfo::removeSocket, Qt::QueuedConnection);
 
     connect(_sct, &QAbstractSocket::errorOccurred,
             this, [this] (QAbstractSocket::SocketError err){
@@ -133,9 +133,6 @@ bool AbstractNodeInfo::isLocal() const {
 }
 
 HostAddress AbstractNodeInfo::networkAddress() const {
-    if (isValid() && _sct->isValid())
-        return HostAddress{_sct->peerAddress(), _sct->peerPort()};
-
     return _networkAddress;
 }
 
