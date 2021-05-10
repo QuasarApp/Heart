@@ -217,7 +217,7 @@ void SingleClient::handleError(unsigned char code, QString error) {
 }
 
 bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword) {
-    auto userMember = getMember();
+    const auto &userMember = getMember();
     if ((userId.isEmpty() || hashPassword.isEmpty()) && !userMember.isValid()) {
         return false;
     }
@@ -231,12 +231,11 @@ bool SingleClient::p_login(const QString &userId, const QByteArray &hashPassword
     request.setRequest(QH::PKG::UserRequestType::LogIn);
 
     if (hashPassword.isEmpty()) {
-        const auto &member = getMember();
-        if (!member.getSignToken().isValid()) {
+        if (!userMember.getSignToken().isValid()) {
             return false;
         }
 
-        request.setSignToken(member.getSignToken());
+        request.setSignToken(userMember.getSignToken());
     } else {
         request.setAuthenticationData(hashPassword);
     }

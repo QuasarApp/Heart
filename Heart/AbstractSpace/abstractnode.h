@@ -9,13 +9,16 @@
 #define ABSTRACTNODE_H
 
 #include "abstractnodeinfo.h"
+
+#ifdef HEART_SSL
 #include <openssl/evp.h>
+#include <QSslConfiguration>
+#endif
 
 #include <QAbstractSocket>
 #include <QFutureWatcher>
 #include <QMutex>
 #include <QSharedPointer>
-#include <QSslConfiguration>
 #include <QTcpServer>
 #include <QThreadPool>
 #include <QTimer>
@@ -29,9 +32,11 @@
 #include "packagemanager.h"
 #include "abstracterrorcodes.h"
 
+#ifdef HEART_SSL
 class QSslCertificate;
 class QSslKey;
 class QSslConfiguration;
+#endif
 
 namespace QH {
 
@@ -66,12 +71,16 @@ enum class ParserResult {
 enum class SslMode {
     /// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr).
     NoSSL,
+#ifdef HEART_SSL
+
     /// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
     InitFromSystem,
     /// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslSrtData struct.
     InitSelfSigned
+#endif
 };
 
+#ifdef HEART_SSL
 /**
  * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certefication.
  *  If you want change selfSigned certificate then use method AbstractNode::useSelfSignedSslConfiguration.
@@ -82,7 +91,7 @@ struct SslSrtData {
     QString commonName = "Dev";
     long long endTime = 31536000L; //1 year
 };
-
+#endif
 
 #define CRITICAL_ERROOR -50
 #define LOGICK_ERROOR   -20
@@ -178,12 +187,14 @@ public:
      */
     HostAddress address() const;
 
+#ifdef HEART_SSL
+
     /**
      * @brief getSslConfig - This method return ssl configuration of current node (server).
      * @return current ssl configuration on this node (server).
      */
     QSslConfiguration getSslConfig() const;
-
+#endif
     /**
      * @brief getMode - This method return SSL mode of corrent node (server).
      * @return current mode for more information see SslMode.
@@ -240,6 +251,8 @@ signals:
 
 protected:
 
+#ifdef HEART_SSL
+
     /**
      * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned cetificate.
      *  By default generate RSA 2048, if you want change algorithm or keys size then override this method.
@@ -247,7 +260,6 @@ protected:
      * @return True if keys generated successful.
      */
     virtual bool generateRSAforSSL(EVP_PKEY* pkey) const;
-
     /**
      * @brief generateSslDataPrivate This method generate a ssl certificate and a ssl keys using The SslSrtData structure.
      * @param data The data for generate a selfSigned certificate.
@@ -263,6 +275,7 @@ protected:
      * @return The new selfsigned ssl configuration.
      */
     virtual QSslConfiguration selfSignedSslConfiguration( const SslSrtData& data = {});
+#endif
 
     /**
      * @brief createNodeInfo This method create a nodeInfo object.
@@ -405,16 +418,17 @@ protected:
     virtual bool changeTrust(const HostAddress& id, int diff);
 
     /**
-    * @brief incomingConnection This methiod work with incomming  ssl sockets.
-    * @param handle - handle of socket.
-    */
-    virtual void incomingSsl(qintptr handle);
-
-    /**
     * @brief incomingConnection This methiod work with incomming  tcp sockets.
     * @param handle - handle of socket.
     */
     virtual void incomingTcp(qintptr handle);
+
+#ifdef HEART_SSL
+    /**
+    * @brief incomingConnection This methiod work with incomming  ssl sockets.
+    * @param handle - handle of socket.
+    */
+    virtual void incomingSsl(qintptr handle);
 
     /**
      * @brief useSelfSignedSslConfiguration This method reconfigure current node to use selfSigned certificate.
@@ -442,7 +456,7 @@ protected:
      * @return true if changes is completed.
      */
     bool disableSSL();
-
+#endif
 
     /**
      * @brief incomingData This method invoked when node get command or ansver.
@@ -598,7 +612,9 @@ private:
     void deinitThreadPool();
 
     SslMode _mode = SslMode::NoSSL;
+#ifdef HEART_SSL
     QSslConfiguration _ssl;
+#endif
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, ReceiveData*> _receiveData;
 
