@@ -15,9 +15,13 @@
 #include <QSslSocket>
 #include <badrequest.h>
 #include <quasarapp.h>
+
+#ifdef HEART_SSL
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
+#endif
+
 #include <QMetaObject>
 #include <QtConcurrent>
 #include <closeconnection.h>
@@ -224,6 +228,7 @@ AbstractNode::~AbstractNode() {
     delete _socketWorker;
 }
 
+#ifdef HEART_SSL
 QSslConfiguration AbstractNode::getSslConfig() const {
     return _ssl;
 }
@@ -357,6 +362,77 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration(const SslSrtData & ss
 
     return res;
 }
+
+void AbstractNode::incomingSsl(qintptr socketDescriptor) {
+    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
+        QSslSocket *socket = new QSslSocket;
+
+        socket->setSslConfiguration(_ssl);
+
+        if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
+            connect(socket, &QSslSocket::encrypted, [this, socket]() {
+
+                if (!registerSocket(socket)) {
+                    socket->deleteLater();
+                }
+            });
+
+            connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+                    [socket](const QList<QSslError> &errors){
+
+                for (auto &error : errors) {
+                    QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
+                }
+
+                socket->deleteLater();
+            });
+
+            socket->startServerEncryption();
+
+            return true;
+        } else {
+            delete socket;
+            return false;
+        }
+
+    };
+
+    _socketWorker->run(action);
+}
+
+bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
+
+    if (isListening()) {
+        return false;
+    }
+
+    _ssl = selfSignedSslConfiguration(crtData);
+    _mode = SslMode::InitSelfSigned;
+
+    return !_ssl.isNull();
+}
+
+bool AbstractNode::useSystemSslConfiguration(const QSslConfiguration &sslConfig) {
+    if (isListening()) {
+        return false;
+    }
+
+    _ssl = sslConfig;
+    _mode = SslMode::InitFromSystem;
+
+    return !_ssl.isNull();
+}
+
+bool AbstractNode::disableSSL() {
+    if (isListening()) {
+        return false;
+    }
+
+    _mode = SslMode::NoSSL;
+
+    return true;
+}
+#endif
 
 AbstractNodeInfo *AbstractNode::createNodeInfo(QAbstractSocket *socket,
                                                const HostAddress* clientAddress) const {
@@ -658,12 +734,16 @@ bool AbstractNode::isBanned(QAbstractSocket *socket) const {
 }
 
 void AbstractNode::incomingConnection(qintptr handle) {
-
+#ifdef HEART_SSL
     if (_mode == SslMode::NoSSL) {
         incomingTcp(handle);
     } else {
         incomingSsl(handle);
     }
+#else
+    incomingTcp(handle);
+#endif
+
 }
 
 bool AbstractNode::changeTrust(const HostAddress &id, int diff) {
@@ -684,43 +764,6 @@ bool AbstractNode::changeTrust(const HostAddress &id, int diff) {
 
     ptr->setTrust(objTrust + diff);
     return true;
-}
-
-void AbstractNode::incomingSsl(qintptr socketDescriptor) {
-    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
-        QSslSocket *socket = new QSslSocket;
-
-        socket->setSslConfiguration(_ssl);
-
-        if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
-            connect(socket, &QSslSocket::encrypted, [this, socket]() {
-
-                if (!registerSocket(socket)) {
-                    socket->deleteLater();
-                }
-            });
-
-            connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-                    [socket](const QList<QSslError> &errors){
-
-                for (auto &error : errors) {
-                    QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
-                }
-
-                socket->deleteLater();
-            });
-
-            socket->startServerEncryption();
-
-            return true;
-        } else {
-            delete socket;
-            return false;
-        }
-
-    };
-
-    _socketWorker->run(action);
 }
 
 void AbstractNode::incomingTcp(qintptr socketDescriptor) {
@@ -929,39 +972,6 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
 SslMode AbstractNode::getMode() const {
     return _mode;
-}
-
-bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
-
-    if (isListening()) {
-        return false;
-    }
-
-    _ssl = selfSignedSslConfiguration(crtData);
-    _mode = SslMode::InitSelfSigned;
-
-    return !_ssl.isNull();
-}
-
-bool AbstractNode::useSystemSslConfiguration(const QSslConfiguration &sslConfig) {
-    if (isListening()) {
-        return false;
-    }
-
-    _ssl = sslConfig;
-    _mode = SslMode::InitFromSystem;
-
-    return !_ssl.isNull();
-}
-
-bool AbstractNode::disableSSL() {
-    if (isListening()) {
-        return false;
-    }
-
-    _mode = SslMode::NoSSL;
-
-    return true;
 }
 
 void AbstractNode::incomingData(const AbstractData *pkg, const AbstractNodeInfo *sender) {

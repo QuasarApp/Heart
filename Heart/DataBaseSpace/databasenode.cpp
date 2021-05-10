@@ -33,6 +33,7 @@
 #include <itoken.h>
 #include <sqlitedbcache.h>
 #include <sqldb.h>
+#include <QCryptographicHash>
 
 #define THIS_NODE "this_node_key"
 namespace QH {
