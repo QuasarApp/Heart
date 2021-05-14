@@ -82,7 +82,8 @@ protected:
     /**
      * @brief signValidation This method return true if the package of the user have a token and it token is valid.
      *  Except is login request. User must be send own login and hash password.
-     *  @param data This is validation package data.
+     * @param data This is validation package data.
+     * @param sender This is package sender node information.
      * @return true if the token is valid.
      */
     virtual bool signValidation(const PKG::AbstractData* data, const AbstractNodeInfo *sender) const;
