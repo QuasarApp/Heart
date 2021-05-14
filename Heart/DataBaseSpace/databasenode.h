@@ -390,9 +390,9 @@ protected:
     virtual void objectRemoved(const DbAddress& address);
 
     /**
-     * @brief objectRemoved This method invoked when object with @a address changed in database.
+     * @brief objectChanged This method invoked when object with @a address changed in database.
      *  Override this method for handle this event. Default implementation do nothing.
-     * @param address This is address of the changed object.
+     * @param obj This is address of the changed object.
      */
     virtual void objectChanged(const QSharedPointer<PKG::DBObject>& obj);
 

@@ -183,7 +183,7 @@ protected:
 
     /**
      * @brief getFromCache This method return strong pointer to the database object from cache (pool).
-     * @param objKey This is database cache id.
+     * @param obj This is database cache id.
      * @return database Object from cache. if object with objKey not exits return nullptr.
      */
     virtual QList<QSharedPointer<QH::PKG::DBObject>>
