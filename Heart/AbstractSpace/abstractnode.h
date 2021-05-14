@@ -329,7 +329,8 @@ protected:
         }
      * \endcode
      * @param pkg This is package with incomming data.
-     * @param sender This is sender this pacakge
+     * @param sender This is sender this pacakge.
+     * @param pkgHeader This is header of the incoming packet is used to create a response.
      * @return item of ParserResult. For more information see The ParserResult enum.
      */
     virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg, const Header& pkgHeader, const AbstractNodeInfo* sender);
@@ -544,7 +545,7 @@ protected slots:
     /**
      * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
      * @param nodeInfo This is pinter to modeInfoObject.
-     * @param error This is error code.
+     * @param errorCode This is error code.
      * @param errorString This is string value of the error.
      * @note default implementation do nothing. Override this method if you want to handle nodes network errors.
      */

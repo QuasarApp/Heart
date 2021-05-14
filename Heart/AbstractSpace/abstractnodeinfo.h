@@ -194,8 +194,7 @@ public:
 
 public slots:
     /**
-     * @brief disconnectNetworkConnection This method disconnect device from host.
-     * @param disableEvents This argument force nodeInfo object invoke a QObject::disconect method of socket object before close connection. This using on the poweroff signals. By Default this arguments = false.
+     * @brief removeSocket This method use for remove socket.
      */
     void removeSocket();
 
