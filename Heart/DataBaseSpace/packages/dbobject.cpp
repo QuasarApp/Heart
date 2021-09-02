@@ -206,7 +206,13 @@ QString DBObject::condition() const {
     auto primaryVal = primaryValue();
     if (primaryVal.isValid()) {
 
-        if (primaryVal.type() == QVariant::ByteArray) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+        bool fWarning = primaryVal.type() == QVariant::ByteArray;
+
+#else
+        bool fWarning = primaryVal.metaType().id() == QMetaType::QByteArray;
+#endif
+        if (fWarning) {
             byteArrayWarning();
             return errorString;
         }
@@ -220,15 +226,30 @@ QString DBObject::condition() const {
     for (auto it = map.begin(); it != map.end(); ++it) {
         // if field is unique then
         if (bool(it.value().type & MemberType::Unique)) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+
             QVariant::Type type = it.value().value.type();
 
+            bool typeisString = type == QVariant::String;
+            bool typeisArray = type == QVariant::ByteArray;
+
+#else
+
+            int type = it.value().value.metaType().id();
+
+            bool typeisString = type == QMetaType::QString;
+            bool typeisArray = type == QMetaType::QByteArray;
+
+#endif
+
+
             // if field is string then check size.
-            if (type == QVariant::String) {
+            if (typeisString) {
                 QString val = it.value().value.toString();
                 if (val.size()) {
                     return prepareCondition(it.key(), val);
                 }
-            } else if (type == QVariant::ByteArray) {
+            } else if (typeisArray) {
                 byteArrayWarning();
                 continue;
             } else if (it.value().value.isValid()) {

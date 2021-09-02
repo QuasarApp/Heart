@@ -30,10 +30,13 @@ void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
 
         if (static_cast<bool>(mode & SqlDBCasheWriteMode::On_New_Thread)) {
 
-            QtConcurrent::run([currentTime, this]() {
+            auto future = QtConcurrent::run([currentTime, this]() {
                 globalUpdateDataBasePrivate(currentTime);
             });
 
+            if (!future.isValid()) {
+                QuasarAppUtils::Params::log("Failde to start update database thread");
+            }
         } else {
             globalUpdateDataBasePrivate(currentTime);
         }
