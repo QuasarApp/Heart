@@ -9,6 +9,7 @@
 #define NETWORKPROTOCOL_H
 
 #include "package.h"
+
 #if HEART_BUILD_LVL >= 0
 #include "abstractnode.h"
 #endif

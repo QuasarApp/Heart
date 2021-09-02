@@ -5,6 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
+
 #ifndef ABSTRACTNODE_H
 #define ABSTRACTNODE_H
 

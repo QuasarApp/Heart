@@ -24,6 +24,7 @@ if (HEART_SSL)
     find_package(OpenSSL REQUIRED)
 endif()
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h.in ${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h @ONLY)
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")

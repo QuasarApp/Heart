@@ -10,7 +10,7 @@
 
 #include <QtCore/qglobal.h>
 
-#define HEART_BUILD_LVL 1
+#define HEART_BUILD_LVL @HEART_BUILD_LVL@
 
 #if defined(HEART_LIBRARY)
 #  define HEARTSHARED_EXPORT Q_DECL_EXPORT

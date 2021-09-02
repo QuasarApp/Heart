@@ -9,7 +9,6 @@
 #define CONFIG_H
 #include <QStandardPaths>
 
-
 #ifdef RELEASE_BUILD
     #define WAIT_TIME 30000
     #define WAIT_RESPOCE_TIME 10000
