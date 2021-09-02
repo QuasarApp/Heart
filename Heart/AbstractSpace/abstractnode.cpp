@@ -11,6 +11,7 @@
 #include "workstate.h"
 #include <QHostInfo>
 #include <QSslCertificate>
+#include <QSslConfiguration>
 #include <QSslKey>
 #include <QSslSocket>
 #include <badrequest.h>
