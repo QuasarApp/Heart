@@ -32,11 +32,6 @@
 #include "packagemanager.h"
 #include "abstracterrorcodes.h"
 
-#ifdef HEART_SSL
-class QSslCertificate;
-class QSslKey;
-#endif
-
 namespace QH {
 
 class DataSender;
