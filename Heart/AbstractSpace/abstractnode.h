@@ -35,7 +35,6 @@
 #ifdef HEART_SSL
 class QSslCertificate;
 class QSslKey;
-class QSslConfiguration;
 #endif
 
 namespace QH {
