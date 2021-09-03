@@ -99,6 +99,7 @@ class Abstract;
  *  this implementation have a methods for send and receive data messages,
  *  and work with crypto method for crease a security connections betwin nodes.
  *  AbstractNode - is thread save class.
+ *  @see AbstractData
  */
 class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {

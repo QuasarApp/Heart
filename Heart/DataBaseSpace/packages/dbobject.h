@@ -66,7 +66,6 @@ constexpr inline uint qHash(MemberType type) {
 
 /**
  * @brief The DBVariant struct contains QVariant value of the DBObjects member and it type.
- * @see DataBaseNode
 */
 struct HEARTSHARED_EXPORT DBVariant {
     DBVariant();
@@ -86,9 +85,10 @@ typedef QMap<QString, DBVariant> DBVariantMap;
 
 /**
  * @brief The DBObject class- main class for work with data base.
- * @note If you set in the default constructor primaryKey to empty value. The your object disable cache support. for more information see the DBObject::isCached method.
+ * @note If you set in the default constructor primaryKey to empty value. The your object disable cache support. For more information see the DBObject::isCached method.
  *
  * @warning Object with empty table name is invalid.
+ * @see DataBaseNode
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableData
 {
