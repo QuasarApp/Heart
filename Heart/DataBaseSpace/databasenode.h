@@ -33,6 +33,7 @@ class NodeId;
  * @brief The BaseNode class is database base implementation of nodes or servers.
  *  This implementation contains methods for work with database.
  *  DataBaseNode is thread save class.
+ * @see DBObject
  */
 class HEARTSHARED_EXPORT DataBaseNode : public AbstractNode
 {

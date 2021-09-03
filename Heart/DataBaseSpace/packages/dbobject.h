@@ -38,22 +38,22 @@ enum class PrepareResult {
  * for more information see the DBObject::variantMap method.
  */
 enum class MemberType {
-    //// The Field with this type can not be update and Inserted.
+    /// The Field with this type can not be update and Inserted.
     None = 0x0,
 
-    //// The Field With This type can be inserted but not updated.
+    /// The Field With This type can be inserted but not updated.
     Insert = 0x1,
 
-    //// The Field With This type can be updated but not inserted.
+    /// The Field With This type can be updated but not inserted.
     Update = 0x2,
 
-    //// The Field with this type can not be duplicate on a table. If a Database object do not have a primary key then default implementation for select query try get object by fields with unique type.
+    /// The Field with this type can not be duplicate on a table. If a Database object do not have a primary key then default implementation for select query try get object by fields with unique type.
     Unique = 0x4,
 
-    //// The Field With This type can be inserted and updated.
+    /// The Field With This type can be inserted and updated.
     InsertUpdate = Insert | Update,
 
-    //// The primary key field without autoincrement.
+    /// The primary key field without autoincrement.
     PrimaryKey = Insert | Unique,
 
     //// The primary key field with autoincrement.
@@ -66,7 +66,8 @@ constexpr inline uint qHash(MemberType type) {
 
 /**
  * @brief The DBVariant struct contains QVariant value of the DBObjects member and it type.
- */
+ * @see DataBaseNode
+*/
 struct HEARTSHARED_EXPORT DBVariant {
     DBVariant();
 
