@@ -24,6 +24,7 @@ namespace PKG {
  * \code{cpp}
  *  DBObjectsRequest<User> query("users", "id='Andrei'");
  *  SingleServer::getObject(query);
+ *  auto result = query.data();
  * \endcode
  *
  * @note Any objects in the query well not be saved in to cache. For caching your objects use the CachedDbObjectsRequest class.
@@ -86,7 +87,7 @@ public:
      * @brief data This method return a list of getted objects.
      * @return list of const T * objects.
      */
-    const QList<const T *>& data() const {
+    const QList<T *>& data() const {
         return _data;;
     };
 
@@ -133,7 +134,7 @@ protected:
 
 private:
     QString _conditions;
-    QList<const T*> _data;
+    QList<T*> _data;
 
 };
 
