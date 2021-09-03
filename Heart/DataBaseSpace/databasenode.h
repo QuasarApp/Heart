@@ -87,93 +87,6 @@ public:
      */
     virtual QVariantMap defaultDbParams() const;
 
-protected:
-
-    /**
-     * @brief initDefaultDbObjects This method create a default cache and database writer objects if the input pointers is null
-     *  Override this method for create a custom database objects for your node class.
-     * @note If you override this object then you no longer need to overload the run method to set your own controls.
-     * This method invoked automatically when you call the DataBaseNode::run method.
-     * @param cache This is Cache database object.
-     * @param writer This is Database writerObject.
-     */
-    virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
-
-    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                              const Header& pkgHeader,
-                              const AbstractNodeInfo* sender) override;
-
-    AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
-
-    bool changeTrust(const HostAddress &id, int diff) override;
-
-    /**
-     * @brief changeTrust This implementation of change trust is change trust node or user by self id.
-     * All changes of trust saving into local database.
-     * @param id This is id of user of other network member object.
-     * @param diff This is difference of trust.
-     * @return true if trust of user changed successful.
-     */
-    virtual bool changeTrust(const QVariant &id, int diff);
-
-    /**
-     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
-     *  This implementation prepare object to sending.
-     * @param resp This is sending object to the nodeId.
-     * @param nodeId This is id of target node.
-     * @param req This is header of request.
-     * @return true if a data send successful.
-     */
-    virtual unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr);
-
-    /**
-     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
-     *  This implementation do not prepare object to sending.
-     * @param resp This is sending object to the nodeId.
-     * @param nodeId This is id of target node.
-     * @param req This is header of request.
-     * @return true if a data send successful.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr);
-
-    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
-    unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
-
-    /**
-     * @brief hashgenerator This method generate a hash from any value.
-     * Override this method for set your custom salt.
-     * @param data This input byte array.
-     */
-    virtual QByteArray hashgenerator(const QByteArray &data) const;
-
-    void nodeConnected(AbstractNodeInfo *node) override;
-    void nodeDisconnected(AbstractNodeInfo *node) override;
-
-
-    /**
-     * @brief memberSubsribed This method invoked when client with @a clientId subscribed on object with  @a subscribeId.
-     * @param clientId This is id of the client member.
-     * @param subscribeId This is id of the subscribeObject.
-     */
-    virtual void memberSubsribed(const QVariant &clientId, unsigned int subscribeId);
-
-    /**
-     * @brief memberUnSubsribed This method invoked when client with @a clientId unsubsribed on object with  @a subscribeId
-     * @param clientId This is id of the client member.
-     * @param subscribeId This is id of the subscribeObject.
-     */
-    virtual void memberUnsubsribed(const QVariant &clientId, unsigned int subscribeId);
-
-    /**
-     * @brief db This node return pointer to database object.
-     * @return The pointer to data base.
-     */
-    ISqlDBCache* db() const;
-
     /**
      * @brief deleteObject This method delete object by database address.
      *  @note If you want to delete any object use only this method because this method check permission of requester to execute this action.
@@ -260,6 +173,93 @@ protected:
                                     const PKG::DBObject &templateObj,
                                     const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
+
+protected:
+
+    /**
+     * @brief initDefaultDbObjects This method create a default cache and database writer objects if the input pointers is null
+     *  Override this method for create a custom database objects for your node class.
+     * @note If you override this object then you no longer need to overload the run method to set your own controls.
+     * This method invoked automatically when you call the DataBaseNode::run method.
+     * @param cache This is Cache database object.
+     * @param writer This is Database writerObject.
+     */
+    virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
+
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header& pkgHeader,
+                              const AbstractNodeInfo* sender) override;
+
+    AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
+
+    bool changeTrust(const HostAddress &id, int diff) override;
+
+    /**
+     * @brief changeTrust This implementation of change trust is change trust node or user by self id.
+     * All changes of trust saving into local database.
+     * @param id This is id of user of other network member object.
+     * @param diff This is difference of trust.
+     * @return true if trust of user changed successful.
+     */
+    virtual bool changeTrust(const QVariant &id, int diff);
+
+    /**
+     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
+     *  This implementation prepare object to sending.
+     * @param resp This is sending object to the nodeId.
+     * @param nodeId This is id of target node.
+     * @param req This is header of request.
+     * @return true if a data send successful.
+     */
+    virtual unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
+     *  This implementation do not prepare object to sending.
+     * @param resp This is sending object to the nodeId.
+     * @param nodeId This is id of target node.
+     * @param req This is header of request.
+     * @return true if a data send successful.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
+                          const Header *req = nullptr);
+
+    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
+    unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
+
+    /**
+     * @brief hashgenerator This method generate a hash from any value.
+     * Override this method for set your custom salt.
+     * @param data This input byte array.
+     */
+    virtual QByteArray hashgenerator(const QByteArray &data) const;
+
+    void nodeConnected(AbstractNodeInfo *node) override;
+    void nodeDisconnected(AbstractNodeInfo *node) override;
+
+
+    /**
+     * @brief memberSubsribed This method invoked when client with @a clientId subscribed on object with  @a subscribeId.
+     * @param clientId This is id of the client member.
+     * @param subscribeId This is id of the subscribeObject.
+     */
+    virtual void memberSubsribed(const QVariant &clientId, unsigned int subscribeId);
+
+    /**
+     * @brief memberUnSubsribed This method invoked when client with @a clientId unsubsribed on object with  @a subscribeId
+     * @param clientId This is id of the client member.
+     * @param subscribeId This is id of the subscribeObject.
+     */
+    virtual void memberUnsubsribed(const QVariant &clientId, unsigned int subscribeId);
+
+    /**
+     * @brief db This node return pointer to database object.
+     * @return The pointer to data base.
+     */
+    ISqlDBCache* db() const;
 
     /**
      * @brief getSender This method return id of requester.
