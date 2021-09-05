@@ -44,11 +44,12 @@ public:
 
     /**
      * @brief DBObjectsRequest This contsrucor create a object with request the array of T objects.
+     * @note If you want to get all elements from table then skip @a conditions argument or set it to empty string value.
      * @param table  This is name of database table.
-     * @param conditions This is string with conditions for create sql query.
+     * @param conditions This is string with conditions for create sql query. If you want to get all elemts just ignore this argument.
      */
     DBObjectsRequest(const QString& table,
-                     const QString& conditions):
+                     const QString& conditions = "" ):
         DBObjectSet (table) {
 
         _conditions = conditions;
@@ -76,7 +77,7 @@ public:
     };
 
     bool isValid() const override {
-        return _conditions.size();
+        return true;
     };
 
     bool copyFrom(const AbstractData *) override {
@@ -128,6 +129,7 @@ protected:
     QString condition() const override {
         return _conditions;
     }
+
     DBObject *createDBObject() const override {
         return create<DBObjectsRequest<T>>(tableName(), _conditions);
     };
