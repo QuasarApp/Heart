@@ -56,18 +56,14 @@ public:
     };
 
     void clear() override {
-        for (auto object: _data) {
-            delete object;
-        }
         _data.clear();
     };
 
     bool fromSqlRecord(const QSqlRecord &q) override {
-        T *ptr = new T;
+        auto ptr = QSharedPointer<T>::create();
 
         if (!ptr->fromSqlRecord(q)) {
             clear();
-            delete ptr;
             return false;
         }
 
@@ -88,8 +84,8 @@ public:
      * @brief data This method return a list of getted objects.
      * @return list of const T * objects.
      */
-    const QList<T *>& data() const {
-        return _data;;
+    const QList<QSharedPointer<T>> & data() const {
+        return _data;
     };
 
     DBVariantMap variantMap() const override {
@@ -105,7 +101,8 @@ protected:
         stream >> size;
 
         for (int i = 0; i < size; ++i) {
-            T *ptr = new T;
+            auto ptr = QSharedPointer<T>::create();
+
             stream >> *ptr;
 
             _data.push_back(ptr);
@@ -136,7 +133,7 @@ protected:
 
 private:
     QString _conditions;
-    QList<T*> _data;
+    QList<QSharedPointer<T>> _data;
 
 };
 
