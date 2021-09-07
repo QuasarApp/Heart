@@ -109,6 +109,17 @@ public:
      */
     virtual void setSQLSources(const QStringList& list) = 0;
 
+    /**
+     * @brief insertIfExistsUpdateObject This method try to insert object to database If object alredy exists in database then object will be updated.
+     * @param saveObject This is saved object pointer.
+     * @param wait This arguments force current thread wait for the function finishing.
+     * @return true if object is updated or inserted successful else false.
+     * @see iObjectProvider::insertObject
+     * @see iObjectProvider::updateObject
+     */
+    bool insertIfExistsUpdateObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                                    bool wait = true);
+
 };
 
 }

@@ -404,7 +404,7 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
                                 const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
                                 const std::function<bool ()> &cb) const {
 
-    auto erroPrint = [](const QSqlQuery &q){
+    auto printError = [](const QSqlQuery &q){
         QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
                                     QuasarAppUtils::Error);
 
@@ -417,7 +417,7 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
     case PrepareResult::Success: {
 
         if (!q.exec()) {
-            erroPrint(q);
+            printError(q);
             return false;
         }
 
@@ -430,7 +430,7 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
     }
 
     case PrepareResult::Fail: {
-        erroPrint(q);
+        printError(q);
         return false;
     }
 
