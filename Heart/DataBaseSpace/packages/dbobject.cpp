@@ -117,13 +117,6 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
 
 PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
 
-    if (!isHaveAPrimaryKey()) {
-
-        QuasarAppUtils::Params::log("The databae object do not has a primary key. ",
-                                    QuasarAppUtils::Error);
-        return PrepareResult::Fail;
-    }
-
     DBVariantMap map = variantMap();
 
     if (!map.size()) {
@@ -203,7 +196,7 @@ QString DBObject::condition() const {
     QString errorString = "WRONG OBJECT";
 
     // if object have a primaryKey then return primary key
-    auto primaryVal = primaryValue();
+    auto primaryVal = getId();
     if (primaryVal.isValid()) {
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -217,7 +210,7 @@ QString DBObject::condition() const {
             return errorString;
         }
 
-        return prepareCondition(primaryKey(), primaryValue().toString());
+        return prepareCondition(primaryKey(), primaryVal.toString());
     }
 
     auto map = variantMap();

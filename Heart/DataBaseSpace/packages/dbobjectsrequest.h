@@ -47,6 +47,7 @@ public:
      * @note If you want to get all elements from table then skip @a conditions argument or set it to empty string value.
      * @param table  This is name of database table.
      * @param conditions This is string with conditions for create sql query. If you want to get all elemts just ignore this argument.
+     * @see DBObjectsRequest::setConditions
      */
     DBObjectsRequest(const QString& table,
                      const QString& conditions = "" ):
@@ -91,6 +92,15 @@ public:
     DBVariantMap variantMap() const override {
         return T{}.variantMap();
     };
+
+    /**
+     * @brief setConditions This method sets condition value for request.
+     * @param newConditions This is new condition value.
+     */
+    void setConditions(const QString &newConditions) {
+        _conditions = newConditions;
+    }
+
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override {
