@@ -16,6 +16,7 @@
 #include <QSslSocket>
 #include <badrequest.h>
 #include <quasarapp.h>
+#include <QTcpServer>
 
 #ifdef HEART_SSL
 #include <openssl/rsa.h>
