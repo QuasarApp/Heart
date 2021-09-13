@@ -177,6 +177,14 @@ public:
 protected:
 
     /**
+     * @brief setLocalNodeName This method sets new local name of database file.
+     * @note This method must be invoked before the DataBaseNode::initsqlDb and the DataBaseNode::run methods.
+     * @param newLocalNodeName This is new name of node object and node databae file.
+     *
+     */
+    void setLocalNodeName(const QString &newLocalNodeName);
+
+    /**
      * @brief initDefaultDbObjects This method create a default cache and database writer objects if the input pointers is null
      *  Override this method for create a custom database objects for your node class.
      * @note If you override this object then you no longer need to overload the run method to set your own controls.

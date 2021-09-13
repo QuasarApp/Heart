@@ -5,8 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef HEART_CONFIG_H
+#define HEART_CONFIG_H
 #include <QStandardPaths>
 
 #ifdef RELEASE_BUILD
@@ -39,4 +39,4 @@
 // Other settings
 
 
-#endif // CONFIG_H
+#endif // HEART_CONFIG_H

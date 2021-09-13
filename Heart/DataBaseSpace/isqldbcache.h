@@ -16,7 +16,7 @@
 #include <QSet>
 #include <QVariantMap>
 #include <QMutex>
-#include "config.h"
+#include <AbstractSpace/config.h>
 #include "basedefines.h"
 #include "softdelete.h"
 

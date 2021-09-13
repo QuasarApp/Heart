@@ -384,6 +384,10 @@ bool DataBaseNode::isForbidenTable(const QString &table) {
     return systemTables().contains(table);
 }
 
+void DataBaseNode::setLocalNodeName(const QString &newLocalNodeName) {
+    _localNodeName = newLocalNodeName;
+}
+
 QVariantMap DataBaseNode::defaultDbParams() const {
 
     return {
