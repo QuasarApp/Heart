@@ -126,7 +126,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "UPDATE %0 SET %1 WHERE " + DBObject::condition();
+    QString queryString = "UPDATE %0 SET %1 WHERE " + condition();
 
     queryString = queryString.arg(tableName());
     QString tableUpdateValues = "";
@@ -142,6 +142,13 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
 
         tableUpdateValues += QString("%0= :%0").arg(it.key());
 
+    }
+
+    if (tableUpdateValues.isEmpty()) {
+        QuasarAppUtils::Params::log("Fail to generate condition for object: " + toString() +
+                                    ". The object do not have valid update fields.",
+                                    QuasarAppUtils::Error);
+        return PrepareResult::Fail;
     }
 
     queryString = queryString.arg(tableUpdateValues);
@@ -234,7 +241,6 @@ QString DBObject::condition() const {
             bool typeisArray = type == QMetaType::QByteArray;
 
 #endif
-
 
             // if field is string then check size.
             if (typeisString) {
