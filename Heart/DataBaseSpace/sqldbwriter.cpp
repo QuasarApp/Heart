@@ -34,9 +34,10 @@ bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) {
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         stream.setCodec("UTF8");
 #endif
-
+        int lineNumber = 0;
         while(!stream.atEnd()) {
             QString line = stream.readLine();
+            lineNumber++;
             int linedelimiterIndex = line.lastIndexOf(delimiter, -1, Qt::CaseInsensitive);
             int delimiterIndex = temp.size() + linedelimiterIndex;
 
@@ -50,7 +51,8 @@ bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) {
                 temp = temp.remove(0, delimiterIndex + 1);
 
                 if (!result) {
-                    QuasarAppUtils::Params::log("exec database error: " + sq->lastError().text(),
+                    QuasarAppUtils::Params::log(QString("exec database error. line:%0: %1").
+                                                arg(lineNumber).arg(sq->lastError().text()),
                                                 QuasarAppUtils::Error);
                     f.close();
                     return false;
@@ -312,7 +314,7 @@ bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb);
+    return workWithQuery(q, prepare, cb, ptr->printError());
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
@@ -364,7 +366,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
         return result.size();
     };
 
-    return workWithQuery(q, prepare, cb);
+    return workWithQuery(q, prepare, cb, requestObject.printError());
 }
 
 bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) const {
@@ -382,7 +384,7 @@ bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) cons
     };
 
 
-    return workWithQuery(q, prepare, cb);
+    return workWithQuery(q, prepare, cb, deleteObject->printError());
 }
 
 bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
@@ -397,14 +399,19 @@ bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb);
+    return workWithQuery(q, prepare, cb, ptr->printError());
 }
 
 bool SqlDBWriter::workWithQuery(QSqlQuery &q,
                                 const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
-                                const std::function<bool ()> &cb) const {
+                                const std::function<bool ()> &cb,
+                                bool printErrors) const {
 
-    auto printError = [](const QSqlQuery &q){
+    auto printError = [printErrors](const QSqlQuery &q) {
+
+        if (!printErrors)
+            return ;
+
         QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
                                     QuasarAppUtils::Error);
 

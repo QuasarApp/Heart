@@ -120,6 +120,7 @@ public:
     bool insertIfExistsUpdateObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                                     bool wait = true);
 
+
 };
 
 }

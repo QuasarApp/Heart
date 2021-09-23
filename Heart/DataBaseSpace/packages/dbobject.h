@@ -418,6 +418,20 @@ public:
      */
     virtual DBVariantMap variantMap() const;
 
+    /**
+     * @brief printError This method return status of printing error messages for sql quries. by default this propertye is enabled.
+     * @return true if printing error messages is enabled else false.
+     * @see DBObject::setPrintError
+     */
+    bool printError() const;
+
+    /**
+     * @brief setPrintError This method sets new value for printError propertye.
+     * @param newPrintError This is new value for printError propertye
+     * @see DBObject::printError
+     */
+    void setPrintError(bool newPrintError);
+
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override;
@@ -471,7 +485,7 @@ protected:
 
 private:
     QString getWhereBlock() const;
-
+    bool _printError = true;
     DbAddress _dbId;
 
 };

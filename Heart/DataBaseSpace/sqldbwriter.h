@@ -196,11 +196,13 @@ private:
      * @param q - query object with a request.
      * @param prepareFunc - function with prepare data for query.
      * @param cb - call after success exec and prepare steps.
+     * @param printErrors This propertye enabled or disabled printing error messages. By default is enabled.
      * @return true if all steps finished successful.
      */
     bool workWithQuery(QSqlQuery &q,
                       const std::function< PKG::PrepareResult (QSqlQuery &)> &prepareFunc,
-                      const std::function<bool()>& cb) const;
+                      const std::function<bool()>& cb,
+                      bool printErrors = true) const;
 
     bool exec(QSqlQuery *sq, const QString &sqlFile);
 

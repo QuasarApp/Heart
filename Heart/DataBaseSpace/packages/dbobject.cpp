@@ -308,6 +308,14 @@ QString DBObject::getWhereBlock() const {
     return whereBlock;
 }
 
+bool DBObject::printError() const {
+    return _printError;
+}
+
+void DBObject::setPrintError(bool newPrintError) {
+    _printError = newPrintError;
+}
+
 PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
 
     QString queryString = "DELETE FROM %0 " + getWhereBlock();
