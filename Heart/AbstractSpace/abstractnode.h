@@ -341,6 +341,10 @@ protected:
      * @param sender This is sender this pacakge.
      * @param pkgHeader This is header of the incoming packet is used to create a response.
      * @return item of ParserResult. For more information see The ParserResult enum.
+     * @see AbstractNode::commandHandler
+     * @see AbstractNode::sendData
+     * @see AbstractNode::badRequest
+
      */
     virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                       const Header& pkgHeader, const AbstractNodeInfo* sender);
