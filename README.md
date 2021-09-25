@@ -64,27 +64,10 @@ class MyPackage: public QH::AbstractData
 public:
     MyPackage();
 
-    // constructor for create object from package
-    MyPackage(const Package& from): QH::AbstractData(from) {
-
-    };
-
     // override this method for validation your package class
     bool isValid() const {
         return AbstractData::isValid();
     };                     /
-    // override this method for copy object data from other to this object
-    bool copyFrom(const AbstractData *other) {
-        if (!AbstractData::copyFrom(other))
-            return false;
-
-        auto otherObject = dynamic_cast<const MyPackage*>(other);
-        if (!otherObject)
-            return false;
-
-        this->_data = otherObject->_data;
-        return true;
-    };
 
     // your data for for server of client
     std::string _data = "";
@@ -108,35 +91,44 @@ protected:
 Create a server class and override parsePackage method for work with packages.
 ```cpp
 class TestingServer: public QH::AbstractNode {
-
-
+    Q_OBJECT
+public:
+    TestingServer() {
+        registerPackageType<MyPackage>();
+    }
+ 
 protected:
     // override this method for processed received data.
     ParserResult parsePackage(const Package &pkg,
-                                            const AbstractNodeInfo *sender) {
-                                            
+                              const AbstractNodeInfo *sender) {
+ 
         auto parentResult = AbstractNode::parsePackage(pkg, sender);
         if (parentResult != ParserResult::NotProcessed) {
             return parentResult;
         }
-    
-        if (H_16<MyPackage>() == pkg.hdr.command) {
-            MyPackage obj(pkg);
-    
-            BaseId requesterId = getSender(sender, &obj);
-    
-            if (!obj.isValid()) {
-                badRequest(sender->networkAddress(), pkg.hdr);
-                return ParserResult::Error;
-            }
-            
-            obj._data = "responce for client "
-            
-            SendData(&obj, sender->networkAddress(), &pkg.hdr);
-            return ParserResult::Processed;            
+ 
+        auto result = commandHandler<MyPackage>(&MyClass::processMyPackage, pkg, sender, pkgHeader);
+        if (result != QH::ParserResult::NotProcessed) {
+            return result;
         }
+ 
         return ParserResult::NotProcessed;
-    
+    }
+ 
+    bool processMyPackage(const QSharedPointer<MyPackage> &cardrequest,
+                    const QH::AbstractNodeInfo *sender, const QH::Header &hdr) {
+ 
+        BaseId requesterId = getSender(sender, &cardrequest);
+ 
+        if (!cardrequest.isValid()) {
+            badRequest(sender->networkAddress(), hdr);
+            return ParserResult::Error;
+        }
+ 
+        cardrequest._data = "responce for client "
+ 
+        SendData(cardrequest, sender->networkAddress(), &pkg.hdr);
+        return ParserResult::Processed;
     }
 };
 ```
