@@ -329,7 +329,7 @@ protected:
 
             // Or with the commandHandler method
 
-            auto result = commandHandler<MyPackage>(&MyClass::processMyPackage, pkg, sender, pkgHeader);
+            auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
             if (result != QH::ParserResult::NotProcessed) {
                 return result;
             }
@@ -559,16 +559,19 @@ protected:
      * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
      * Exmaple of use :
      * @code{cpp}
-     *      auto result = commandHandler<MyPackage>(&MyClass::processMyPackage, pkg, sender, pkgHeader);
+     *      auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
             if (result != QH::ParserResult::NotProcessed) {
                 return result;
             }
             ...
      * @endcode
      * @tparam PackageClass This is class name that you want handle.  All classes mist be inhert of the QH::PKG::AbstractData class.
+     * @tparam HandlerType This is type of the handler object that will invoke @a HandlerMethod method.
+
      * @tparam HandlerMethod This is name of the handler method.
      * The handler method should be support next signature:
      *  **bool Method(const QSharedPointer<QH::PKG::PackageClass> &, const QH::Header &pkgHeader, const QH::AbstractNodeInfo *sender)**.
+     * @param handlerObject This is pointer to handler object.
      * @param method This is handler method.
      * @param pkg This is package data from the AbstractNode::parsePackage argumetns
      * @param pkgHeader This is header of an incomming package.
@@ -578,9 +581,9 @@ protected:
      * @see AbstractNode::parsePackage
      * @see ParserResult
      */
-    template<class PackageClass, class HandlerMethod>
+    template<class PackageClass,class HandlerType, class HandlerMethod>
 
-    inline ParserResult commandHandler(HandlerMethod method,
+    inline ParserResult commandHandler(HandlerType handlerObject, HandlerMethod method,
                                        const QSharedPointer<QH::PKG::AbstractData> &pkg,
                                        const QH::AbstractNodeInfo *sender,
                                        const QH::Header &pkgHeader) {
@@ -592,12 +595,14 @@ protected:
                 return QH::ParserResult::Error;
             }
 
-            if(!(*method(data, sender, pkgHeader))) {
+            if(!(handlerObject->*method)(data, sender, pkgHeader)) {
                 return QH::ParserResult::Error;
             }
 
             return QH::ParserResult::Processed;
         }
+
+        return QH::ParserResult::NotProcessed;
     }
 
 protected slots:

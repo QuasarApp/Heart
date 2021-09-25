@@ -80,7 +80,7 @@ protected:
             return parentResult;
         }
 
-        auto result = commandHandler<MyPackage>(&MyClass::processMyPackage, pkg, sender, pkgHeader);
+        auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
         if (result != QH::ParserResult::NotProcessed) {
             return result;
         }
