@@ -99,7 +99,11 @@ class Abstract;
  *  this implementation have a methods for send and receive data messages,
  *  and work with crypto method for crease a security connections betwin nodes.
  *  AbstractNode - is thread save class.
+ *
+ * @note For correctly working this class you should be register all you data types using the AbstractNode::registerPackageType method.
  *  @see AbstractData
+ *  @see AbstractNode::registerPackageType
+ *  @see AbstractNode::parsePackage
  */
 class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {
@@ -110,6 +114,7 @@ public:
     /**
      * @brief AbstractNode - Base constructor of node.
      * @param ptr - Pointrt to parent Qt object, the AbstractNode class is Q_OBJECT.
+     * @note For correctly working this class you should be register all you data types using the AbstractNode::registerPackageType method.
      */
     AbstractNode(QObject * ptr = nullptr);
     ~AbstractNode() override;
@@ -305,6 +310,7 @@ protected:
                 return parentResult;
             }
 
+            // you can use parsing without the commandHandler method
             if (H_16<MyCommand>() == pkg->cmd()) {
 
                 BaseId requesterId = getSender(sender, &obj);
@@ -321,6 +327,13 @@ protected:
 
             }
 
+            // Or with the commandHandler method
+
+            auto result = commandHandler<MyPackage>(&MyClass::processMyPackage, pkg, sender, pkgHeader);
+            if (result != QH::ParserResult::NotProcessed) {
+                return result;
+            }
+
             return ParserResult::NotProcessed;
         }
      * \endcode
@@ -329,7 +342,8 @@ protected:
      * @param pkgHeader This is header of the incoming packet is used to create a response.
      * @return item of ParserResult. For more information see The ParserResult enum.
      */
-    virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg, const Header& pkgHeader, const AbstractNodeInfo* sender);
+    virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                                      const Header& pkgHeader, const AbstractNodeInfo* sender);
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
@@ -536,6 +550,51 @@ protected:
      * @warning do not use this method for validation is connected.
      */
     QList<HostAddress> connectionsList() const;
+
+    /**
+     * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
+     * Exmaple of use :
+     * @code{cpp}
+     *      auto result = commandHandler<MyPackage>(&MyClass::processMyPackage, pkg, sender, pkgHeader);
+            if (result != QH::ParserResult::NotProcessed) {
+                return result;
+            }
+            ...
+     * @endcode
+     * @tparam PackageClass This is class name that you want handle.  All classes mist be inhert of the QH::PKG::AbstractData class.
+     * @tparam HandlerMethod This is name of the handler method.
+     * The handler method should be support next signature:
+     *  **bool Method(const QSharedPointer<QH::PKG::PackageClass> &, const QH::Header &pkgHeader, const QH::AbstractNodeInfo *sender)**.
+     * @param method This is handler method.
+     * @param pkg This is package data from the AbstractNode::parsePackage argumetns
+     * @param pkgHeader This is header of an incomming package.
+     * @param sender This is socket object of a sender that send this package.
+     * @return item of ParserResult. For more information see The ParserResult enum.
+     *
+     * @see AbstractNode::parsePackage
+     * @see ParserResult
+     */
+    template<class PackageClass, class HandlerMethod>
+
+    inline ParserResult commandHandler(HandlerMethod method,
+                                       const QSharedPointer<QH::PKG::AbstractData> &pkg,
+                                       const QH::AbstractNodeInfo *sender,
+                                       const QH::Header &pkgHeader) {
+
+        if (H_16<PackageClass>() == pkg->cmd()) {
+            auto data = pkg.staticCast<PackageClass>();
+
+            if (!data->isValid()) {
+                return QH::ParserResult::Error;
+            }
+
+            if(!(*method(data, sender, pkgHeader))) {
+                return QH::ParserResult::Error;
+            }
+
+            return QH::ParserResult::Processed;
+        }
+    }
 
 protected slots:
     /**
