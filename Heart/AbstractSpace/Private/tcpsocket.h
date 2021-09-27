@@ -21,6 +21,10 @@ class TcpSocket: public QTcpSocket
 public:
     TcpSocket(QObject *parent);
 public slots:
+
+    /**
+     * @brief handleDisckonnetFromHost This is slot wrapper of the disconectFromHost method of QAbstractSocket class.
+     */
     void handleDisckonnetFromHost();
 
 };
