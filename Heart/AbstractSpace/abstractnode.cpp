@@ -27,6 +27,7 @@
 #include <QMetaObject>
 #include <QtConcurrent>
 #include <closeconnection.h>
+#include "tcpsocket.h"
 #include "asynclauncher.h"
 #include "receivedata.h"
 
@@ -144,9 +145,9 @@ void AbstractNode::unBan(const HostAddress &target) {
 bool AbstractNode::addNode(const HostAddress &address) {
 
     AsyncLauncher::Job action = [this, address]() -> bool {
-        QTcpSocket *socket;
+        QAbstractSocket *socket;
         if (_mode == SslMode::NoSSL) {
-            socket = new QTcpSocket(nullptr);
+            socket = new TcpSocket(nullptr);
         } else {
             socket = new QSslSocket(nullptr);
         }
@@ -772,7 +773,7 @@ void AbstractNode::incomingTcp(qintptr socketDescriptor) {
     AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
 
 
-        QTcpSocket *socket = new QTcpSocket();
+        TcpSocket *socket = new TcpSocket(nullptr);
         if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
             if (!registerSocket(socket)) {
                 delete socket;
@@ -939,8 +940,9 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
         ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
 
         if (parseResult != ParserResult::Processed) {
-            auto message = QString("Package not parsed! %0 result: %1").
-                    arg(pkg.toString(), pareseResultToString(parseResult));
+
+            auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").
+                    arg(pkg.toString(), pareseResultToString(parseResult), data->toString());
 
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 

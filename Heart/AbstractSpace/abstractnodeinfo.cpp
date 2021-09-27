@@ -37,6 +37,11 @@ void AbstractNodeInfo::removeSocket() {
 
         // We invoke the delate later method on another thread (thread of the socket.)
         // because all network sockets must be open adn closed in the one thread.
+
+        QMetaObject::invokeMethod(socketPtr,
+                                  "handleDisckonnetFromHost",
+                                  Qt::QueuedConnection);
+
         QMetaObject::invokeMethod(socketPtr,
                                   "deleteLater",
                                   Qt::QueuedConnection);
