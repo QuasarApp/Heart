@@ -14,6 +14,10 @@ TcpSocket::TcpSocket(QObject *parent):
 
 }
 
+TcpSocket::~TcpSocket() {
+    int i  = 3;
+}
+
 void TcpSocket::handleDisckonnetFromHost() {
     disconnectFromHost();
 }

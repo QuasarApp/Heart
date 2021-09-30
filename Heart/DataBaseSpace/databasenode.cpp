@@ -277,7 +277,7 @@ unsigned int DataBaseNode::sendData(const AbstractData *resp,
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
         auto info = dynamic_cast<BaseNodeInfo*>(it.value());
         if (info && info->id() == nodeId) {
-            return sendData(resp, it.key(), req);
+            return sendData(resp, info, req);
         }
     }
 
@@ -293,6 +293,18 @@ unsigned int DataBaseNode::sendData(const AbstractData *resp, const HostAddress 
 unsigned int DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
                             const Header *req) {
     return AbstractNode::sendData(resp, nodeId, req);
+}
+
+unsigned int DataBaseNode::sendData(const PKG::AbstractData *resp,
+                                    const AbstractNodeInfo *node,
+                                    const Header *req) {
+    return AbstractNode::sendData(resp, node, req);
+}
+
+unsigned int DataBaseNode::sendData(PKG::AbstractData *resp,
+                                    const AbstractNodeInfo *node,
+                                    const Header *req) {
+    return AbstractNode::sendData(resp, node, req);
 }
 
 ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
@@ -316,7 +328,7 @@ ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
             return ParserResult::Error;
         }
 
-        if (!workWithSubscribe(*obj, requesterId, *sender)) {
+        if (!workWithSubscribe(*obj, requesterId, sender)) {
             badRequest(sender->networkAddress(), pkgHeader, {
                            ErrorCodes::InvalidRequest,
                            "WebSocket request is invalid"
@@ -346,7 +358,7 @@ ISqlDBCache *DataBaseNode::db() const {
 
 bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
                                      const QVariant &clientOrNodeid,
-                                     const AbstractNodeInfo & sender) {
+                                     const AbstractNodeInfo * sender) {
 
     auto _db = db();
     if (!_db)
@@ -371,7 +383,7 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
         WebSocketSubscriptions resp;
         resp.setAddresses(_webSocketWorker->list(clientOrNodeid));
 
-        return sendData(&resp, sender.networkAddress());
+        return sendData(&resp, sender);
     }
 
     default: break;

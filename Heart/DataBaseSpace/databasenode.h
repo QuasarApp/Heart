@@ -238,6 +238,11 @@ protected:
     unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
 
+    unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
+                  const Header *req = nullptr) override;
+    unsigned int sendData(PKG::AbstractData *resp, const AbstractNodeInfo *node,
+                  const Header *req = nullptr) override;
+
     /**
      * @brief hashgenerator This method generate a hash from any value.
      * Override this method for set your custom salt.
@@ -420,7 +425,7 @@ private:
          */
     bool workWithSubscribe(const PKG::WebSocket &rec,
                            const QVariant &clientOrNodeid,
-                           const AbstractNodeInfo &sender);
+                           const AbstractNodeInfo *sender);
 
 
     bool isForbidenTable(const QString& table);

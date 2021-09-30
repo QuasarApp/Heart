@@ -183,6 +183,13 @@ public:
     bool removeNode(const HostAddress& nodeAdderess);
 
     /**
+     * @brief removeNode - Remove node and disconnected forom node (server).
+     * @param node - This is removed node (server).
+     * @return true if the node removed successful. If the nde with @a nodeAdderess is not exits return false.
+     */
+    bool removeNode(AbstractNodeInfo* node);
+
+    /**
      * @brief address - Thim method return own network address of current node (server).
      * @return The current network adderss.
      */
@@ -378,6 +385,26 @@ protected:
      * @return hash of the sendet package. If function is failed then return 0.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief sendData This pakcage send data package to node object and prepare object to sending.
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    virtual unsigned int sendData(PKG::AbstractData *resp,  const AbstractNodeInfo *node,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief sendData this is some as a sendData(AbstractData *resp ...) exept this method not prepare object for sending.
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
                           const Header *req = nullptr);
 
     /**

@@ -208,7 +208,8 @@ bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
             return true;
         } else {
             QTimer::singleShot(WAIT_CONFIRM_TIME, this,
-                               std::bind(&AbstractNode::handleForceRemoveNode, this, nodeAdderess));
+                               std::bind(&AbstractNode::handleForceRemoveNode,
+                                         this, nodeAdderess));
 
             CloseConnection close;
             return sendData(&close, nodeAdderess);
@@ -216,6 +217,24 @@ bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
     }
 
     return false;
+}
+
+bool AbstractNode::removeNode(AbstractNodeInfo *node) {
+    if (!(node && node->isValid())) {
+        return false;
+    }
+
+    if (node->isLocal()) {
+        node->removeSocket();
+        return true;
+    }
+
+    QTimer::singleShot(WAIT_CONFIRM_TIME, this,
+                       std::bind(&AbstractNode::handleForceRemoveNode,
+                                 this, node->networkAddress()));
+
+    CloseConnection close;
+    return sendData(&close, node);
 }
 
 HostAddress AbstractNode::address() const {
@@ -522,7 +541,7 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         auto cmd = static_cast<Ping *>(pkg.data());
         if (!cmd->ansver()) {
             cmd->setAnsver(true);
-            sendData(cmd, sender->networkAddress(), &pkgHeader);
+            sendData(cmd, sender, &pkgHeader);
         }
 
         return ParserResult::Processed;
@@ -568,19 +587,31 @@ unsigned int AbstractNode::sendData(AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
 
-    if (!resp || !resp->prepareToSend()) {
-        return false;
-    }
-
-    return sendData(const_cast<const AbstractData*>(resp), addere, req);
+    return sendData(resp, getInfoPtr(addere), req);
 }
 
 unsigned int AbstractNode::sendData(const AbstractData *resp,
                             const HostAddress &addere,
                             const Header *req) {
-    auto client = getInfoPtr(addere);
+    return sendData(resp, getInfoPtr(addere), req);
+}
 
-    if (!client) {
+unsigned int AbstractNode::sendData(PKG::AbstractData *resp,
+                                    const AbstractNodeInfo *node,
+                                    const Header *req) {
+
+    if (!resp || !resp->prepareToSend()) {
+        return false;
+    }
+
+    return sendData(const_cast<const AbstractData*>(resp), node, req);
+}
+
+unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
+                                    const AbstractNodeInfo *node,
+                                    const Header *req) {
+
+    if (!node) {
         QuasarAppUtils::Params::log("Response not sent because client == null");
         return 0;
     }
@@ -603,7 +634,7 @@ unsigned int AbstractNode::sendData(const AbstractData *resp,
         return 0;
     }
 
-    if (!sendPackage(pkg, client->sct())) {
+    if (!sendPackage(pkg, node->sct())) {
         QuasarAppUtils::Params::log("Response not sent!",
                                     QuasarAppUtils::Error);
         return 0;

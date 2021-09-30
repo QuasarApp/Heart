@@ -46,7 +46,6 @@ void AbstractNodeInfo::removeSocket() {
                                   "deleteLater",
                                   Qt::QueuedConnection);
 
-
         setStatus(NodeCoonectionStatus::NotConnected);
         emit sigDisconnected(this);
 
