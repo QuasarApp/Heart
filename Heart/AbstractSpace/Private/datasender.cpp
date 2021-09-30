@@ -29,7 +29,7 @@ bool QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
         return false;
     }
 
-    return true;
+    return ptr->waitForBytesWritten();;
 }
 
 }

@@ -22,7 +22,9 @@ AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct,
 
 }
 
-AbstractNodeInfo::~AbstractNodeInfo() {}
+AbstractNodeInfo::~AbstractNodeInfo() {
+    removeSocket();
+}
 
 QAbstractSocket *AbstractNodeInfo::sct() const {
     return _sct;

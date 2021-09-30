@@ -15,7 +15,7 @@ TcpSocket::TcpSocket(QObject *parent):
 }
 
 TcpSocket::~TcpSocket() {
-    int i  = 3;
+    handleDisckonnetFromHost();
 }
 
 void TcpSocket::handleDisckonnetFromHost() {
