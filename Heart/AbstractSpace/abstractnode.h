@@ -39,6 +39,7 @@ class DataSender;
 class ReceiveData;
 class SocketFactory;
 class AsyncLauncher;
+class BigDataManager;
 
 namespace PKG {
 class ErrorData;
@@ -569,6 +570,16 @@ protected:
     QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
 
     /**
+     * @brief genPackage This is factory method that generate data pacakge objects by command.
+     *  All object should be registered before using this method.
+     * @param cmd This is command of pacakge see Header::command.
+     * @return shared pointer to new data object.
+     * @see AbstractNode::registerPackageType
+     * @see Header::command
+     */
+    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
+
+    /**
      * @brief checkCommand This method check command are if registered type or not.
      * @brief cmd This is command of a verifiable package.
      * @return True if the package is registered in a node.
@@ -713,6 +724,7 @@ private:
     DataSender * _dataSender = nullptr;
     AsyncLauncher * _socketWorker = nullptr;
     QThread *_senderThread = nullptr;
+    BigDataManager *_bigdatamanager = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
 

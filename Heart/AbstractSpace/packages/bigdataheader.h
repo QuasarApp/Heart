@@ -46,12 +46,25 @@ public:
      */
     void setPackagesCount(int newPackagesCount);
 
+    /**
+     * @brief getCommand This method return commnad of moving package.
+     * @return commnad of moving package.
+     */
+    unsigned short getCommand() const;
+
+    /**
+     * @brief setCommand This method sets new value for package command that will moved
+     * @param newCommand new value for package command that will moved
+     */
+    void setCommand(unsigned short newCommand);
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
     int packagesCount;
+    unsigned short command;
 };
 }
 }

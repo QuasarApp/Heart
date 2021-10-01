@@ -15,13 +15,15 @@ BigDataHeader::BigDataHeader() {
 }
 
 bool BigDataHeader::isValid() const {
-    return BigDataBase::isValid() && packagesCount >= 2;
+    return BigDataBase::isValid() && packagesCount >= 2 && command;
 }
 
 QString BigDataHeader::toString() const {
     return BigDataBase::toString() +
             " Packages count: " +
-            QString::number(packagesCount);
+            QString::number(packagesCount) +
+            " Packages command: " +
+            QString::number(command);
 }
 
 int BigDataHeader::getPackagesCount() const {
@@ -36,6 +38,7 @@ QDataStream &BigDataHeader::fromStream(QDataStream &stream) {
     BigDataBase::fromStream(stream);
 
     stream >> packagesCount;
+    stream >> command;
 
     return stream;
 }
@@ -44,8 +47,17 @@ QDataStream &BigDataHeader::toStream(QDataStream &stream) const {
     BigDataBase::toStream(stream);
 
     stream << packagesCount;
+    stream << command;
 
     return stream;
+}
+
+unsigned short BigDataHeader::getCommand() const {
+    return command;
+}
+
+void BigDataHeader::setCommand(unsigned short newCommand) {
+    command = newCommand;
 }
 
 }
