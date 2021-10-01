@@ -725,6 +725,7 @@ private:
 
     friend class WebSocketController;
     friend class SocketFactory;
+    friend class BigDataManager;
 
 };
 
