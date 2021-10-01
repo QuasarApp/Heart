@@ -48,7 +48,7 @@ bool BigDataBase::isValid() const {
 QString BigDataBase::toString() const {
     return AbstractData::toString() +
             " packageId: " +
-            _packageId;
+            QString::number(_packageId);
 }
 
 }

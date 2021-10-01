@@ -27,7 +27,7 @@ bool BigDataPart::isValid() const {
 QString BigDataPart::toString() const {
     return BigDataBase::toString() +
             " packageNumber: " +
-            _pakckageNumber +
+            QString::number(_pakckageNumber) +
             " raw data size : " + QString::number(_data.size());
 }
 

@@ -21,7 +21,7 @@ bool BigDataHeader::isValid() const {
 QString BigDataHeader::toString() const {
     return BigDataBase::toString() +
             " Packages count: " +
-            packagesCount;
+            QString::number(packagesCount);
 }
 
 int BigDataHeader::getPackagesCount() const {
