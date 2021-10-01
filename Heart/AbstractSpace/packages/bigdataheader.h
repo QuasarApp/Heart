@@ -25,7 +25,7 @@ namespace PKG {
  * 2. Prepare The BigDataHeader pacakge with unique id and count of the parts
  * 3. Part data pacakages.
  */
-class BigDataHeader : public BigDataBase
+class HEARTSHARED_EXPORT BigDataHeader : public BigDataBase
 {
 public:
     BigDataHeader();

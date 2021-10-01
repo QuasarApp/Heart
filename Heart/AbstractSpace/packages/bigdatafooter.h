@@ -17,7 +17,7 @@ namespace PKG {
 /**
  * @brief The BigDataFooter class This is last package of big data transaction.
  */
-class BigDataFooter: public BigDataBase
+class HEARTSHARED_EXPORT BigDataFooter: public BigDataBase
 {
 public:
     BigDataFooter();

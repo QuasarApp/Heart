@@ -9,6 +9,7 @@
 #ifndef BIGDATAMANAGER_H
 #define BIGDATAMANAGER_H
 
+#include <QSharedPointer>
 #include <bigdatafooter.h>
 #include <bigdataheader.h>
 #include <bigdatapart.h>
