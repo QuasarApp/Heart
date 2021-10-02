@@ -32,7 +32,7 @@ bool BigDataManager::newPackage(const QSharedPointer<PKG::BigDataHeader> &header
 
     if (!_pool.contains(header->packageId())) {
         QVector<QSharedPointer<PKG::BigDataPart>> _array;
-        _array.reserve(header->getPackagesCount());
+        _array.resize(header->getPackagesCount());
         _pool[header->packageId()] = {header, _array, static_cast<int>(time(0))};
     }
 
@@ -78,6 +78,9 @@ bool BigDataManager::finishPart(const QSharedPointer<PKG::BigDataFooter> &footer
     if (invalidParts.isEmpty()) {
 
         auto package = _node->genPackage(localPool.header->getCommand());
+        if (!package)
+            return false;
+
         package->fromBytes(packageRawData);
 
         if (_node->parsePackage(package, pkgHeader, sender) == ParserResult::Error) {
@@ -105,13 +108,14 @@ bool BigDataManager::processRequest(const QSharedPointer<PKG::BigDataRequest> &r
 
 }
 
-bool BigDataManager::sendBigDataPackage(const QSharedPointer<PKG::AbstractData> &data,
+bool BigDataManager::sendBigDataPackage(const PKG::AbstractData *data,
                                         const AbstractNodeInfo *sender,
-                                        const QH::Header &pkgHeader) {
+                                        const QH::Header *pkgHeader) {
 
 
 
-    unsigned int sizeLimit = std::numeric_limits<decltype (pkgHeader.size)>::max();
+    unsigned int sizeLimit = std::numeric_limits<decltype (pkgHeader->size)>::max() -
+            PKG::BigDataPart::getMetaSize();
     auto rawData = data->toBytes();
 
     auto hdr = QSharedPointer<PKG::BigDataHeader>::create();
@@ -123,7 +127,7 @@ bool BigDataManager::sendBigDataPackage(const QSharedPointer<PKG::AbstractData> 
         return false;
     }
 
-    if (!_node->sendData(hdr.data(), sender, &pkgHeader)) {
+    if (!_node->sendData(hdr.data(), sender, pkgHeader)) {
         return false;
     }
 
@@ -135,7 +139,7 @@ bool BigDataManager::sendBigDataPackage(const QSharedPointer<PKG::AbstractData> 
 
         _pool[hdr->packageId()].chaindata[i] = part;
 
-        if (!_node->sendData(part.data(), sender, &pkgHeader)) {
+        if (!_node->sendData(part.data(), sender, pkgHeader)) {
             return false;
         }
     }
@@ -143,7 +147,7 @@ bool BigDataManager::sendBigDataPackage(const QSharedPointer<PKG::AbstractData> 
     auto footer = QSharedPointer<PKG::BigDataFooter>::create();
     footer->setPackageId(hdr->packageId());
 
-    return _node->sendData(footer.data(), sender, &pkgHeader);
+    return _node->sendData(footer.data(), sender, pkgHeader);
 }
 
 void BigDataManager::checkOutDatedPacakges() {

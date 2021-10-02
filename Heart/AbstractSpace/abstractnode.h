@@ -93,6 +93,8 @@ struct SslSrtData {
 #define LOGICK_ERROOR   -20
 #define REQUEST_ERROR   -5
 
+#define BIG_DATA_HASH_ID 0xFFFF
+
 class Abstract;
 
 /**

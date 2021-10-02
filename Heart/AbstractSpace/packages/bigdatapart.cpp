@@ -57,5 +57,9 @@ void BigDataPart::setData(const QByteArray &newData) {
     _data = newData;
 }
 
+int BigDataPart::getMetaSize() {
+    return 20;
+}
+
 }
 }

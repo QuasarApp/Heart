@@ -87,9 +87,9 @@ public:
                     const QH::Header &pkgHeader);
 
     // To Do
-    bool sendBigDataPackage(const QSharedPointer<PKG::AbstractData>& data,
+    bool sendBigDataPackage(const PKG::AbstractData *data,
                             const QH::AbstractNodeInfo *sender,
-                            const QH::Header &pkgHeader);
+                            const Header *pkgHeader);
 
 private:
     void checkOutDatedPacakges();

@@ -665,6 +665,19 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     }
 
     if (!convert) {
+
+        if (pkg.data.size() > pkg.hdr.size && _bigdatamanager) {
+            // big data
+
+            if (!_bigdatamanager->sendBigDataPackage(resp,
+                                                     node,
+                                                     req)) {
+                return 0;
+            }
+
+            return BIG_DATA_HASH_ID;
+        }
+
         QuasarAppUtils::Params::log("Response not sent because dont create package from object",
                                     QuasarAppUtils::Error);
         return 0;

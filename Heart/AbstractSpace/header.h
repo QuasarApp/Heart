@@ -11,11 +11,12 @@
 
 
 namespace QH {
+
 /**
  * @brief The Header struct 12 bytes.
  */
 #pragma pack(push, 1)
-struct HEARTSHARED_EXPORT Header{
+struct HEARTSHARED_EXPORT Header {
     /**
      * @brief size This is size of package data (exclude header size).
      */

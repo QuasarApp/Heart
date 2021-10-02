@@ -13,6 +13,7 @@
 #endif
 #if HEART_BUILD_LVL >= 1
 #include <basenodetest.h>
+#include <bigdatatest.h>
 #include <singleservertest.h>
 #endif
 #if HEART_BUILD_LVL >= 2
@@ -37,6 +38,7 @@ private slots:
 #if HEART_BUILD_LVL >= 0
 
     TestCase(abstractNodeTest, AbstractNodeTest)
+    TestCase(bigDataTest, BigDataTest);
 #endif
 #if HEART_BUILD_LVL >= 1
     TestCase(baseNodeTest, BaseNodeTest)
