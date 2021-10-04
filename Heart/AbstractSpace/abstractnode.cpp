@@ -31,6 +31,8 @@
 #include "asynclauncher.h"
 #include "receivedata.h"
 
+#include <bigdatamanager.h>
+
 namespace QH {
 
 using namespace PKG;
@@ -46,12 +48,18 @@ AbstractNode::AbstractNode( QObject *ptr):
     // This object moving to _senderThread.
     _dataSender = new DataSender(_senderThread);
     _socketWorker = new AsyncLauncher(_senderThread);
+    _bigdatamanager = new BigDataManager(this);
 
     _senderThread->start();
 
     registerPackageType<Ping>();
     registerPackageType<BadRequest>();
     registerPackageType<CloseConnection>();
+
+    registerPackageType<BigDataRequest>();
+    registerPackageType<BigDataFooter>();
+    registerPackageType<BigDataHeader>();
+    registerPackageType<BigDataPart>();
 
     initThreadPool();
 
@@ -560,6 +568,34 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         return ParserResult::Processed;
     }
 
+    auto result = commandHandler<BigDataRequest>(_bigdatamanager,
+                                                 &BigDataManager::processRequest,
+                                                 pkg, sender, pkgHeader);
+    if (result != QH::ParserResult::NotProcessed) {
+        return result;
+    }
+
+    result = commandHandler<BigDataHeader>(_bigdatamanager,
+                                           &BigDataManager::newPackage,
+                                           pkg, sender, pkgHeader);
+    if (result != QH::ParserResult::NotProcessed) {
+        return result;
+    }
+
+    result = commandHandler<BigDataPart>(_bigdatamanager,
+                                         &BigDataManager::processPart,
+                                         pkg, sender, pkgHeader);
+    if (result != QH::ParserResult::NotProcessed) {
+        return result;
+    }
+
+    result = commandHandler<BigDataFooter>(_bigdatamanager,
+                                           &BigDataManager::finishPart,
+                                           pkg, sender, pkgHeader);
+    if (result != QH::ParserResult::NotProcessed) {
+        return result;
+    }
+
     return ParserResult::NotProcessed;
 }
 
@@ -584,15 +620,15 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
 }
 
 unsigned int AbstractNode::sendData(AbstractData *resp,
-                            const HostAddress &addere,
-                            const Header *req) {
+                                    const HostAddress &addere,
+                                    const Header *req) {
 
     return sendData(resp, getInfoPtr(addere), req);
 }
 
 unsigned int AbstractNode::sendData(const AbstractData *resp,
-                            const HostAddress &addere,
-                            const Header *req) {
+                                    const HostAddress &addere,
+                                    const Header *req) {
     return sendData(resp, getInfoPtr(addere), req);
 }
 
@@ -865,7 +901,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             // CASE 1: The Package data is still not collected, but the header is already collected. performs full or partial filling of packet data.
 
             int dataLength = std::min(static_cast<int>(pkg.hdr.size - pkg.data.size()),
-                                               arraySize - workIndex);
+                                      arraySize - workIndex);
             pkg.data.append(array.mid(workIndex + headerSize, dataLength));
 
             workIndex += dataLength;
@@ -914,8 +950,8 @@ void AbstractNode::handleWorkerStoped() {
     auto senderObject = dynamic_cast<QFutureWatcher <bool>*>(sender());
 
     if (senderObject) {
-       _workers.remove(senderObject);
-       delete senderObject;
+        _workers.remove(senderObject);
+        delete senderObject;
     }
 }
 
@@ -932,8 +968,7 @@ bool AbstractNode::listen(const HostAddress &address) {
 
 QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const {
 
-    auto value = QSharedPointer<AbstractData>(_registeredTypes.value(pkg.hdr.command, [](){return nullptr;})());
-
+    auto value = genPackage (pkg.hdr.command);
     if (!value) {
         QuasarAppUtils::Params::log("You try parse not registered package type."
                                     " Plese use the registerPackageType method befor parsing."
@@ -944,6 +979,10 @@ QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const
 
     value->fromPakcage(pkg);
     return value;
+}
+
+QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd) const {
+    return QSharedPointer<AbstractData>(_registeredTypes.value(cmd, [](){return nullptr;})());
 }
 
 bool AbstractNode::checkCommand(unsigned short cmd) const {
