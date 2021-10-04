@@ -17,6 +17,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
+updateGitVars()
+
 add_definitions(-DHEART_LIBRARY)
 
 if (HEART_SSL)
@@ -99,4 +101,4 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 
-setVersion(1 1 1)
+setVersion(1 1 ${GIT_COMMIT_COUNT})

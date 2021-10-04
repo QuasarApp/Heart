@@ -17,4 +17,8 @@ bool init() {
     return true;
 }
 
+QString heartLibVersion() {
+    return HEART_VERSION;
+}
+
 }
