@@ -50,12 +50,6 @@ public:
      */
     void setData(const QByteArray &newData);
 
-    /**
-     * @brief getMetaSize return static size of package. static size is minimum size of all child fields of this class.
-     * @return static size of this class;
-     */
-    static int getMetaSize();
-
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;

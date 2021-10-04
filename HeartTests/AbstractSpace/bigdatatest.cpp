@@ -102,7 +102,7 @@ bool BigDataTest::connectTest() {
 bool BigDataTest::sendDataTest() {
 
     QByteArray testData;
-    for (int i = 0; i < 128999; i++) {
+    for (int i = 0; i < 12899900; i++) {
         testData.push_back(rand());
     }
 

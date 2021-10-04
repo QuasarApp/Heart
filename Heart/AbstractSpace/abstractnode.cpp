@@ -57,7 +57,6 @@ AbstractNode::AbstractNode( QObject *ptr):
     registerPackageType<CloseConnection>();
 
     registerPackageType<BigDataRequest>();
-    registerPackageType<BigDataFooter>();
     registerPackageType<BigDataHeader>();
     registerPackageType<BigDataPart>();
 
@@ -585,13 +584,6 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
     result = commandHandler<BigDataPart>(_bigdatamanager,
                                          &BigDataManager::processPart,
                                          pkg, sender, pkgHeader);
-    if (result != QH::ParserResult::NotProcessed) {
-        return result;
-    }
-
-    result = commandHandler<BigDataFooter>(_bigdatamanager,
-                                           &BigDataManager::finishPart,
-                                           pkg, sender, pkgHeader);
     if (result != QH::ParserResult::NotProcessed) {
         return result;
     }
