@@ -86,8 +86,11 @@ BigDataTest::~BigDataTest() {
 }
 
 void BigDataTest::test() {
+#ifdef Q_OS_LINUX
+
     QVERIFY(connectTest());
     QVERIFY(sendDataTest());
+#endif
 }
 
 bool BigDataTest::connectTest() {
@@ -101,8 +104,9 @@ bool BigDataTest::connectTest() {
 
 bool BigDataTest::sendDataTest() {
 
+
     QByteArray testData;
-    for (int i = 0; i < 128999; i++) {
+    for (int i = 0; i < 1289990; i++) {
         testData.push_back(rand());
     }
 
