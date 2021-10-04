@@ -57,7 +57,6 @@ AbstractNode::AbstractNode( QObject *ptr):
     registerPackageType<CloseConnection>();
 
     registerPackageType<BigDataRequest>();
-    registerPackageType<BigDataFooter>();
     registerPackageType<BigDataHeader>();
     registerPackageType<BigDataPart>();
 
@@ -589,13 +588,6 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         return result;
     }
 
-    result = commandHandler<BigDataFooter>(_bigdatamanager,
-                                           &BigDataManager::finishPart,
-                                           pkg, sender, pkgHeader);
-    if (result != QH::ParserResult::NotProcessed) {
-        return result;
-    }
-
     return ParserResult::NotProcessed;
 }
 
@@ -665,6 +657,19 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     }
 
     if (!convert) {
+
+        if (pkg.data.size() > pkg.hdr.size && _bigdatamanager) {
+            // big data
+
+            if (!_bigdatamanager->sendBigDataPackage(resp,
+                                                     node,
+                                                     req)) {
+                return 0;
+            }
+
+            return BIG_DATA_HASH_ID;
+        }
+
         QuasarAppUtils::Params::log("Response not sent because dont create package from object",
                                     QuasarAppUtils::Error);
         return 0;

@@ -22,33 +22,26 @@ class HEARTSHARED_EXPORT BigDataRequest: public BigDataBase
 public:
     BigDataRequest();
 
-    /**
-     * @brief neededParts This method retunr list of missng parts ids.
-     * @return list of the missing parts ids.
-     * @see BigDataRequest::isFinishedSuccessful
-     */
-    const QList<int> &neededParts() const;
-
-    /**
-     * @brief setNeededParts This method sets new list of missing package parts.
-     * @param newNeededParts new list of the missing pacakge parts.
-     */
-    void setNeededParts(const QList<int> &newNeededParts);
-
-    /**
-     * @brief isFinishedSuccessful This method return true if the pacakge donwload sucessfull else false.
-     * @return true if the pacakge donwload sucessfull else false.
-     */
-    bool isFinishedSuccessful() const;
-
-
     // StreamBase interface
+
+    /**
+     * @brief currentPart This method return current part number.
+     * @return current part numbep of moved pacakged.
+     */
+    int currentPart() const;
+
+    /**
+     * @brief setCurrentPart This method sets current new value of current page
+     * @param newCurrentPart This is new value of current part.
+     */
+    void setCurrentPart(int newCurrentPart);
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    QList<int> _neededParts;
+    int _currentPart = 0;
 
 };
 

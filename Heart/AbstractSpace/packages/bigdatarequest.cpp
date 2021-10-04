@@ -14,22 +14,10 @@ BigDataRequest::BigDataRequest() {
 
 }
 
-const QList<int> &BigDataRequest::neededParts() const {
-    return _neededParts;
-}
-
-void BigDataRequest::setNeededParts(const QList<int> &newNeededParts) {
-    _neededParts = newNeededParts;
-}
-
-bool BigDataRequest::isFinishedSuccessful() const {
-    return _neededParts.isEmpty();
-}
-
 QDataStream &BigDataRequest::fromStream(QDataStream &stream) {
     BigDataBase::fromStream(stream);
 
-    stream >> _neededParts;
+    stream >> _currentPart;
 
     return stream;
 }
@@ -37,9 +25,17 @@ QDataStream &BigDataRequest::fromStream(QDataStream &stream) {
 QDataStream &BigDataRequest::toStream(QDataStream &stream) const {
     BigDataBase::toStream(stream);
 
-    stream << _neededParts;
+    stream << _currentPart;
 
     return stream;
+}
+
+int BigDataRequest::currentPart() const {
+    return _currentPart;
+}
+
+void BigDataRequest::setCurrentPart(int newCurrentPart) {
+    _currentPart = newCurrentPart;
 }
 
 }
