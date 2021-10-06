@@ -40,11 +40,7 @@ QString Package::toString() const {
 }
 
 unsigned int Package::calcHash() const{
-    QByteArray hashArray(data);
-    hashArray.push_back(QByteArray::fromRawData(reinterpret_cast<const char*>(&hdr.command),
-                                                sizeof (hdr.command)));
-
-    return qHash(hashArray);
+    return qHash(data + QByteArray::number(hdr.command));
 }
 
 QDataStream &Package::fromStream(QDataStream &stream) {
