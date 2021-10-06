@@ -23,6 +23,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT WebSocketSubscriptions: public AbstractData
 {
+    QH_PACKAGE(WebSocketSubscriptions, "WebSocketSubscriptions")
+
 public:
     WebSocketSubscriptions();
     WebSocketSubscriptions(const Package& package);

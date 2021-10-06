@@ -54,6 +54,12 @@ public:
      */
     QString toString() const;
 
+    /**
+     * @brief calcHash This method recalc hash sum for this pacakge.
+     * @return int32 hash of pacakge.
+     */
+    unsigned int calcHash() const;
+
     // StreamBase interface
 protected:
     QDataStream &fromStream(QDataStream &stream) override;

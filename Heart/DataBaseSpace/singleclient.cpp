@@ -37,7 +37,7 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
         return parentResult;
     }
 
-    if (H_16<QH::PKG::UserMember>() == pkg->cmd()) {
+    if (QH::PKG::UserMember::command() == pkg->cmd()) {
         QH::PKG::UserMember *obj = static_cast<QH::PKG::UserMember*>(pkg.data());
 
         if (!(obj->isValid() && obj->getSignToken().isValid())) {
@@ -51,7 +51,7 @@ ParserResult SingleClient::parsePackage(const QSharedPointer<PKG::AbstractData> 
 
         return QH::ParserResult::Processed;
 
-    } else if (H_16<PKG::WebSocketSubscriptions>() == pkg->cmd()) {
+    } else if (PKG::WebSocketSubscriptions::command() == pkg->cmd()) {
         PKG::WebSocketSubscriptions *obj = static_cast<PKG::WebSocketSubscriptions*>(pkg.data());
         if (!obj->isValid()) {
             return ParserResult::Error;
@@ -336,6 +336,16 @@ unsigned int SingleClient::sendData(PKG::AbstractData *resp,
     }
 
     return DataBaseNode::sendData(resp, address, req);
+}
+
+unsigned int SingleClient::sendData(PKG::AbstractData *resp,
+                                    const AbstractNode *node,
+                                    const Header *req) {
+    if (!signPackageWithToken(resp)) {
+        return 0;
+    }
+
+    return DataBaseNode::sendData(resp, node, req);
 }
 
 unsigned int SingleClient::sendData(PKG::AbstractData *resp,

@@ -20,6 +20,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT NetworkMember: public AbstractNetworkMember
 {
+    QH_PACKAGE(NetworkMember, "NetworkMember")
+
 public:
     NetworkMember();
     NetworkMember(const QVariant& id);

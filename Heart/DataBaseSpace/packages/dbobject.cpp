@@ -287,8 +287,6 @@ DBObject *DBObject::cloneRaw() const {
         return nullptr;
     }
 
-    cloneObject->init();
-
     return cloneObject;
 }
 

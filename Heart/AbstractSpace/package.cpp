@@ -25,19 +25,7 @@ bool Package::isValid() const {
         return false;
     }
 
-    auto rawint = data.mid(0, sizeof (decltype (hdr.command)));
-    decltype (hdr.command) cmd;
-    memcpy(&cmd, rawint.data(), sizeof (cmd));
-
-    if (data.size() && hdr.command != cmd) {
-        std::reverse(rawint.begin(), rawint.end());
-        memcpy(&cmd, rawint.data(), sizeof (cmd));
-
-        if (hdr.command != cmd)
-            return false;
-    }
-
-    return static_cast<uint>(qHash(data)) == hdr.hash;
+    return calcHash() == hdr.hash;
 }
 
 void Package::reset() {
@@ -49,6 +37,14 @@ QString Package::toString() const {
     return QString("Pakcage description: %0."
                    " Data description: Data size - %1, Data: %2").
             arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
+}
+
+unsigned int Package::calcHash() const{
+    QByteArray hashArray(data);
+    hashArray.push_back(QByteArray::fromRawData(reinterpret_cast<const char*>(&hdr.command),
+                                                sizeof (hdr.command)));
+
+    return qHash(hashArray);
 }
 
 QDataStream &Package::fromStream(QDataStream &stream) {

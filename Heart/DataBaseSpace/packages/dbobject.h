@@ -92,6 +92,8 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableData
 {
+    QH_PACKAGE(DBObject, "DBObject")
+
 public:
 
     /**

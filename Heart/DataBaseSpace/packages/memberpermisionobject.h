@@ -22,6 +22,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT MemberPermisionObject: public DBObject
 {
+    QH_PACKAGE(MemberPermisionObject, "MemberPermisionObject")
+
 public:
     MemberPermisionObject();
     MemberPermisionObject(const Package& pkg);
@@ -75,7 +77,6 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
     QString condition() const override;
     QString primaryKey() const override;
-    bool init() override;
 
 private:
     Permission _permision;

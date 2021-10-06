@@ -22,6 +22,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT DBObjectSet: public DBObject
 {
+    QH_PACKAGE(DBObjectSet, "DBObjectSet")
+
 public:
     DBObjectSet(const QString table);
 

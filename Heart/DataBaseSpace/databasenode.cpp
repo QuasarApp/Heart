@@ -256,18 +256,6 @@ bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     return _db->changeObjects(NetworkMember{id}, action);
 }
 
-unsigned int DataBaseNode::sendData(AbstractData *resp,
-                            const QVariant &nodeId,
-                            const Header *req) {
-
-
-    if (!resp || !resp->prepareToSend()) {
-        return 0;
-    }
-
-    return sendData(const_cast<const AbstractData*>(resp), nodeId, req);
-}
-
 unsigned int DataBaseNode::sendData(const AbstractData *resp,
                             const QVariant &nodeId,
                             const Header *req) {
@@ -290,18 +278,7 @@ unsigned int DataBaseNode::sendData(const AbstractData *resp, const HostAddress 
 
 }
 
-unsigned int DataBaseNode::sendData(AbstractData *resp, const HostAddress &nodeId,
-                            const Header *req) {
-    return AbstractNode::sendData(resp, nodeId, req);
-}
-
 unsigned int DataBaseNode::sendData(const PKG::AbstractData *resp,
-                                    const AbstractNodeInfo *node,
-                                    const Header *req) {
-    return AbstractNode::sendData(resp, node, req);
-}
-
-unsigned int DataBaseNode::sendData(PKG::AbstractData *resp,
                                     const AbstractNodeInfo *node,
                                     const Header *req) {
     return AbstractNode::sendData(resp, node, req);
@@ -315,7 +292,7 @@ ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         return parentResult;
     }
 
-    if (H_16<WebSocket>() == pkg->cmd()) {
+    if (WebSocket::command() == pkg->cmd()) {
         WebSocket *obj = static_cast<WebSocket*>(pkg.data());
 
         QVariant requesterId = getSender(sender, obj);

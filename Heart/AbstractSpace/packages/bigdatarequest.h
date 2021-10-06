@@ -19,6 +19,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT BigDataRequest: public BigDataBase
 {
+    QH_PACKAGE(BigDataRequest, "BigDataRequest")
+
 public:
     BigDataRequest();
 
@@ -42,6 +44,7 @@ protected:
 
 private:
     int _currentPart = 0;
+
 
 };
 

@@ -21,6 +21,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT AbstractNetworkMember: public DBObject
 {
+    QH_PACKAGE(AbstractNetworkMember, "AbstractNetworkMember")
+
 public:
     AbstractNetworkMember();
     AbstractNetworkMember(const Package& pkg);

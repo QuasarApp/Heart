@@ -321,7 +321,7 @@ protected:
             }
 
             // you can use parsing without the commandHandler method
-            if (H_16<MyCommand>() == pkg->cmd()) {
+            if (MyCommand::command() == pkg->cmd()) {
 
                 BaseId requesterId = getSender(sender, &obj);
 
@@ -371,44 +371,24 @@ protected:
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
     /**
-     * @brief sendData This pakcage send data package to address and prepare object to sending.
-     * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
-     * @param req This is header of request.
-     * @return hash of the sendet package. If function is failed then return 0.
-     */
-    virtual unsigned int sendData(PKG::AbstractData *resp,  const HostAddress& address,
-                          const Header *req = nullptr);
-
-    /**
-     * @brief sendData this is some as a sendData(AbstractData *resp ...) exept this method not prepare object for sending.
+     * @brief sendData This method send data  object another to node
      * @param resp This is pointer to sendet object.
      * @param address This is target addres for sending.
      * @param req This is header of request.
      * @return hash of the sendet package. If function is failed then return 0.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
-                          const Header *req = nullptr);
+                                  const Header *req = nullptr);
 
     /**
-     * @brief sendData This pakcage send data package to node object and prepare object to sending.
-     * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
-     * @param req This is header of request.
-     * @return hash of the sendet package. If function is failed then return 0.
-     */
-    virtual unsigned int sendData(PKG::AbstractData *resp,  const AbstractNodeInfo *node,
-                          const Header *req = nullptr);
-
-    /**
-     * @brief sendData this is some as a sendData(AbstractData *resp ...) exept this method not prepare object for sending.
+     * @brief sendData This method send data  object another to node
      * @param resp This is pointer to sendet object.
      * @param address This is target addres for sending.
      * @param req This is header of request.
      * @return hash of the sendet package. If function is failed then return 0.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                          const Header *req = nullptr);
+                                  const Header *req = nullptr);
 
     /**
      * @brief badRequest This method is send data about error of request.
@@ -556,7 +536,7 @@ protected:
      * This is need to prepare pacakge for parsing in the parsePackage method.
      */
     void registerPackageType() {
-        _registeredTypes[H_16<T>()] = [](){
+        _registeredTypes[T::command()] = [](){
             return new T();
         };
     };
@@ -628,7 +608,7 @@ protected:
                                        const QH::AbstractNodeInfo *sender,
                                        const QH::Header &pkgHeader) {
 
-        if (H_16<PackageClass>() == pkg->cmd()) {
+        if (PackageClass::command() == pkg->cmd()) {
             auto data = pkg.staticCast<PackageClass>();
 
             if (!data->isValid()) {

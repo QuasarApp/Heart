@@ -15,7 +15,7 @@ Header::Header() {
 }
 
 bool Header::isValid() const {
-    return command && size && hash;
+    return command && hash;
 }
 
 void Header::reset() {

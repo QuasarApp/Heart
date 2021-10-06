@@ -12,7 +12,6 @@
 
 #include <request.h>
 
-
 namespace QH {
 
 
@@ -36,6 +35,8 @@ enum class UserRequestType: unsigned char {
  */
 class HEARTSHARED_EXPORT AuthRequest: public UserMember, public Request
 {
+    QH_PACKAGE(AuthRequest, "AuthRequest")
+
 public:
     AuthRequest();
     AuthRequest(const Package& pkg);

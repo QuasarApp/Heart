@@ -20,6 +20,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT Ping: public AbstractData
 {
+    QH_PACKAGE(Ping, "Ping")
+
 public:
     Ping();
     Ping(const Package& from);
@@ -29,7 +31,7 @@ public:
      * @brief isValid - Check this package if valid.
      * @return True if package is valid.
      */
-    bool isValid() const;
+    bool isValid() const override;
 
     /**
      * @brief answer This is bool value for check this object that it is answer or request.

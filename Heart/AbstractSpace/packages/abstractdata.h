@@ -11,6 +11,22 @@
 #include <streambase.h>
 #include <global.h>
 
+
+/**
+ * @brief QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id use the cmd method.
+ * For get quick access for global command use the ClassName::command() method. This method is static.
+*/
+#define QH_PACKAGE(X, S) \
+   public: \
+    static unsigned short command(){return qHash(QString(S)) % 0xFFFF;} \
+    static QString commandText(){return S;} \
+    unsigned short cmd() const override {return X::command();} \
+    QString cmdString() const override {return X::commandText();} \
+   protected: \
+    unsigned int localCode() const override {return typeid(X).hash_code();} \
+    \
+   private:
+
 namespace QH {
 namespace PKG {
 
@@ -49,6 +65,7 @@ protected:
  * \code {cpp}
  * class MyPackage: public QH::AbstractData
 {
+    QH_PACKAGE(MyPackage, "MyPackage")
     ...
     bool copyFrom(const AbstractData *other) {
         if (!AbstractData::copyFrom(other))
@@ -110,10 +127,20 @@ public:
     virtual ~AbstractData() override;
 
     /**
-     * @brief cmd - This is command of this object, (for generate cmd use macross H16<ClassName>)
-     * @return Command of package.
+     * @brief cmd - This is command of this object, (for generate cmd use macross QH_PACKAGE)
+     * @note Use the QH_PACKAGE macross for implement this method.
+     * @return global command of package.
+     * @see QH_PACKAGE
      */
-    unsigned short cmd() const;
+    virtual unsigned short cmd() const = 0;
+
+    /**
+     * @brief cmd - This is command string of this object, (for generate cmd use macross QH_PACKAGE)
+     * @note Use the QH_PACKAGE macross for implement this method.
+     * @return global command of package.
+     * @see QH_PACKAGE
+     */
+    virtual QString cmdString() const = 0;
 
     /**
      * @brief toPackage This method convert this class object to the package.
@@ -158,12 +185,6 @@ public:
     virtual QString toString() const;
 
     /**
-     * @brief prepareToSend - This method check object to valid and if an object is invalid invoke method init.
-     * @return Return true if the object prepared for sending.
-     */
-    bool prepareToSend();
-
-    /**
      * @brief create - This is factory method for create a new object.
      * @param args - List of arguments for create object.
      * @return Pointer to created object.
@@ -171,7 +192,6 @@ public:
     template<class C, class... Args>
     C* create(Args&&... args) const {
         C* object = new C(std::forward<Args>(args)...);
-        object->generateCmd();
         return object;
     }
 
@@ -181,49 +201,42 @@ public:
      */
     void fromPakcage(const Package& pkg);
 
+    /**
+     * @brief command This static method that return glaball code of this object.
+     * @note This method generated automaticaly in the QH_PACKAGE macross.
+     * @return global code
+     * @see QH_PACKAGE
+     */
+    static unsigned int command(){return 0;};
+
+    /**
+     * @brief commandText This method return text of package command
+     * @return text of pacakge command
+     */
+    static QString commandText(){return "NULL";};
+
 protected:
     /**
      * @brief AbstractData - Base constructor of this object.
      */
     explicit AbstractData();
 
-
     /**
-     * @brief setCmd - Set the new value command of object.
-     * @param cmd - New value.
+     * @brief localCode This method return local code
+     * @return local command of this class. used for check QH_PACKAGE macro before send pacakge.
      */
-    void setCmd(unsigned short cmd);
-
-    /**
-     * @brief Init This method need to invoke after create object for initialize all component of objects.
-     * @note Do not invade this method on constructor of object, because object will be initialized not correctly.
-     *  By default implementation of object init command.
-     * @return True if object initialized correctly.
-     */
-    virtual bool init();
+    virtual unsigned int localCode() const = 0;
 
     QDataStream& fromStream(QDataStream& stream) override;
     QDataStream& toStream(QDataStream& stream) const override;
 
 private:
     /**
-     * @brief generateCmd Generate command from name of this class object.
-     * @note Call this method only after create objects. Do not call in constructor of class.
-     * @return Command of object.
+     * @brief checkCmd This method check QH_PACKAGE macross.
+     * @return true if the QH_PACKAGE macross is enabled else fal.
      */
-    unsigned short generateCmd() const;
+    bool checkCmd() const;;
 
-
-    /**
-     * @brief initCmd Set cmd from class name.
-     * @note Call this method only after create objects. Do not call in constructor of class.
-     */
-    void initCmd();
-
-    /**
-     * @brief cmd - Unique id of class using in Header of package for identification.
-     */
-    unsigned short _cmd = 0;
 };
 
 
