@@ -50,8 +50,8 @@ public:
 
 protected:
     // StreamBase interface
-    QDataStream &fromStream(QDataStream &stream);
-    QDataStream &toStream(QDataStream &stream) const;
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 
 private:
     bool _ansver = false;
