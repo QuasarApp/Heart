@@ -544,7 +544,7 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
 
     incomingData(pkg.data(), sender);
 
-    if (H_16<Ping>() == pkg->cmd()) {
+    if (Ping::command() == pkg->cmd()) {
         auto cmd = static_cast<Ping *>(pkg.data());
         if (!cmd->ansver()) {
             cmd->setAnsver(true);
@@ -552,14 +552,14 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
         }
 
         return ParserResult::Processed;
-    } else if (H_16<BadRequest>() == pkg->cmd()) {
+    } else if (BadRequest::command() == pkg->cmd()) {
         auto cmd = static_cast<BadRequest *>(pkg.data());
 
         emit requestError(cmd->errCode(), cmd->err());
 
         return ParserResult::Processed;
 
-    } else if (H_16<CloseConnection>() == pkg->cmd()) {
+    } else if (CloseConnection::command() == pkg->cmd()) {
 
         if (sender->isLocal()) {
             removeNode(sender->networkAddress());
@@ -611,28 +611,10 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
     return _dataSender->sendData(pkg.toBytes(), target, true);
 }
 
-unsigned int AbstractNode::sendData(AbstractData *resp,
-                                    const HostAddress &addere,
-                                    const Header *req) {
-
-    return sendData(resp, getInfoPtr(addere), req);
-}
-
 unsigned int AbstractNode::sendData(const AbstractData *resp,
                                     const HostAddress &addere,
                                     const Header *req) {
     return sendData(resp, getInfoPtr(addere), req);
-}
-
-unsigned int AbstractNode::sendData(PKG::AbstractData *resp,
-                                    const AbstractNodeInfo *node,
-                                    const Header *req) {
-
-    if (!resp || !resp->prepareToSend()) {
-        return false;
-    }
-
-    return sendData(const_cast<const AbstractData*>(resp), node, req);
 }
 
 unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,

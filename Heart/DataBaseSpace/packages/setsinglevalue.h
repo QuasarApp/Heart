@@ -30,6 +30,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT SetSingleValue final: public DBObject
 {
+    QH_PACKAGE(SetSingleValue, "SetSingleValue")
+
 public:
     /**
      * @brief SetSingleValue This is default constructor of the update query generator.

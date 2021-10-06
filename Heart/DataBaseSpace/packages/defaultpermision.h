@@ -21,6 +21,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT DefaultPermision: public MemberPermisionObject
 {
+    QH_PACKAGE(DefaultPermision, "DefaultPermision")
+
 public:
     DefaultPermision();
     DefaultPermision(const PermisionData& permision);

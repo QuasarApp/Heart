@@ -275,13 +275,38 @@ protected:
     void nodeConnected(AbstractNodeInfo *node) override;
     void nodeDisconnected(AbstractNodeInfo *node) override;
 
+    /**
+     * @brief sendData This method is wraper of default sendData method but add sign to sendet pacakge.
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
     unsigned int sendData(PKG::AbstractData *resp,
                           const HostAddress &address,
-                          const Header *req = nullptr) override;
+                          const Header *req = nullptr);
 
+    /**
+     * @brief sendData This method is wraper of default sendData method but add sign to sendet pacakge.
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    unsigned int sendData(PKG::AbstractData *resp,
+                          const AbstractNode *node,
+                          const Header *req = nullptr);
+
+    /**
+     * @brief sendData This method is wraper of default sendData method but add sign to sendet pacakge.
+     * @param resp This is sending object to the nodeId.
+     * @param nodeId This is id of target node.
+     * @param req This is header of request.
+     * @return true if a data send successful.
+     */
     unsigned int sendData(PKG::AbstractData *resp,
                           const QVariant &nodeId,
-                          const Header *req = nullptr) override;
+                          const Header *req = nullptr);
 
     /**
      * @brief realServerAddress This method return the real server address that connected with this node.

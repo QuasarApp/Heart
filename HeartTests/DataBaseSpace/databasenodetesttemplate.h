@@ -24,8 +24,6 @@ protected:
         res->setTrust(0);
         res->setId(QString(this->randomArray(5).toHex()));
 
-        res->prepareToSend();
-
         return res;
 
     };

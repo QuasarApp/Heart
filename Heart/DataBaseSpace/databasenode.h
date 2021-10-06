@@ -213,17 +213,6 @@ protected:
 
     /**
      * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
-     *  This implementation prepare object to sending.
-     * @param resp This is sending object to the nodeId.
-     * @param nodeId This is id of target node.
-     * @param req This is header of request.
-     * @return true if a data send successful.
-     */
-    virtual unsigned int sendData(PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr);
-
-    /**
-     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
      *  This implementation do not prepare object to sending.
      * @param resp This is sending object to the nodeId.
      * @param nodeId This is id of target node.
@@ -235,12 +224,8 @@ protected:
 
     unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
                   const Header *req = nullptr) override;
-    unsigned int sendData(PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
 
     unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                  const Header *req = nullptr) override;
-    unsigned int sendData(PKG::AbstractData *resp, const AbstractNodeInfo *node,
                   const Header *req = nullptr) override;
 
     /**

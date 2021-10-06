@@ -33,6 +33,7 @@ struct ErrorData {
  */
 class HEARTSHARED_EXPORT BadRequest : public AbstractData
 {
+    QH_PACKAGE(BadRequest, "BadRequest")
 public:
 
     /**
@@ -62,8 +63,8 @@ public:
     void setErr(const QString &err);
 
     // StreamBase interface
-    QDataStream &fromStream(QDataStream &stream);
-    QDataStream &toStream(QDataStream &stream) const;
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 
     /**
      * @brief errCode This method return code of error.

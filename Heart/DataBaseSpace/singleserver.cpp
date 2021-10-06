@@ -160,7 +160,7 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
         return parentResult;
     }
 
-    if (H_16<QH::PKG::AuthRequest>() == pkg->cmd()) {
+    if (QH::PKG::AuthRequest::command() == pkg->cmd()) {
         auto obj = pkg.staticCast<QH::PKG::AuthRequest>();
 
         if (!obj->isValid()) {
@@ -193,7 +193,7 @@ ParserResult SingleServer::parsePackage(const QSharedPointer<PKG::AbstractData> 
     };
 
 
-    if (H_16<PKG::DeleteObject>() == pkg->cmd()) {
+    if (PKG::DeleteObject::command() == pkg->cmd()) {
         auto obj = pkg.staticCast<PKG::DeleteObject>();
 
         auto requesterId = getSender(sender, obj.data());

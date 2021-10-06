@@ -22,6 +22,8 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT GetSingleValue final: public DBObject
 {
+    QH_PACKAGE(GetSingleValue, "GetSingleValue")
+
 public:
     /**
      * @brief GetSingleValue This is default constructor of the GetMaxIntegerId class.

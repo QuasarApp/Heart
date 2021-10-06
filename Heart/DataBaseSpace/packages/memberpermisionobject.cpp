@@ -117,21 +117,13 @@ QString MemberPermisionObject::primaryKey() const {
     return "";
 }
 
-bool MemberPermisionObject::init() {
-    if (!DBObject::init())
-        return false;
-
-    setId(_key.hash());
-
-    return true;
-}
-
 PermisionData MemberPermisionObject::key() const {
     return _key;
 }
 
 void MemberPermisionObject::setKey(const PermisionData &key) {
     _key = key;
+    setId(_key.hash());
 }
 
 Permission MemberPermisionObject::permisions() const {

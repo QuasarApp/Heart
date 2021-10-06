@@ -16,40 +16,18 @@
 
 namespace QH {
 namespace PKG {
-unsigned short AbstractData::cmd() const {
-    if (_cmd)
-        return _cmd;
-
-    return generateCmd();
-}
-
-void AbstractData::setCmd(unsigned short cmd) {
-    _cmd = cmd;
-}
-
-bool AbstractData::init() {
-    if (typeid (*this).hash_code() == typeid(AbstractData).hash_code())
-        return false;
-
-    initCmd();
-
-    return true;
-}
-
-unsigned short AbstractData::generateCmd() const {
-    return H_16(*this);
-}
-
-void AbstractData::initCmd() {
-    setCmd(generateCmd());
-}
 
 AbstractData::AbstractData() {
-    setCmd(0);
 }
 
 bool AbstractData::toPackage(Package &package,
                              unsigned int triggerHash) const {
+
+    if (!checkCmd()) {
+        QuasarAppUtils::Params::log("You try send pacakge without QH_PACKAGE macross. Please add QH_PACKAGE macros to this class.",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
 
     if (!isValid()) {
         return false;
@@ -61,42 +39,36 @@ bool AbstractData::toPackage(Package &package,
     package.hdr.triggerHash = triggerHash;
     int realDataSize = package.data.size();
     package.hdr.size = static_cast<unsigned short>(realDataSize);
-    package.hdr.hash = qHash(package.data);
+    package.hdr.hash = package.calcHash();
 
     return package.isValid();
 }
 
 QDataStream &AbstractData::fromStream(QDataStream &stream) {
-    stream >> _cmd;
     return stream;
 }
 
 QDataStream &AbstractData::toStream(QDataStream &stream) const {
-    stream << cmd();
     return stream;
 }
 
+bool AbstractData::checkCmd() const {
+    unsigned int code = typeid (*this).hash_code();
+    return code == localCode(); \
+}
+
 bool AbstractData::isValid() const {
-    return cmd();
+    return true;
 }
 
 bool AbstractData::copyFrom(const AbstractData *other) {
-
     return other;
 }
 
 QString AbstractData::toString() const {
     return QString("Object: type:%0, command:%1").
-            arg(typeid(*this).name()).
+            arg(cmdString()).
             arg(cmd());
-}
-
-bool AbstractData::prepareToSend() {
-    if (isValid()) {
-        return true;
-    }
-
-    return init();
 }
 
 void AbstractData::fromPakcage(const Package &pkg) {

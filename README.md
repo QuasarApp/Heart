@@ -150,7 +150,7 @@ protected:
             return parentResult;
         }
     
-        if (H_16<MyPackage>() == pkg.hdr.command) {
+        if (MyPackage::command() == pkg.hdr.command) {
             MyPackage obj(pkg);
    
             // print responce of server

@@ -36,6 +36,7 @@ template <class BASE>
  */
 class CachedDbObjectsRequest : public BASE
 {
+
 public:
     CachedDbObjectsRequest(const QString& condition) {
         _condition = condition;

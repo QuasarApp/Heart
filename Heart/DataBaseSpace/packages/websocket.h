@@ -37,6 +37,8 @@ enum class WebSocketRequest {
 class HEARTSHARED_EXPORT WebSocket:
         public AbstractData, public Request
 {
+    QH_PACKAGE(WebSocket, "WebSocket")
+
 public:
     WebSocket();
     WebSocket(const Package& package);

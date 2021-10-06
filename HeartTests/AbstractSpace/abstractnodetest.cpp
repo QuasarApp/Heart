@@ -17,7 +17,6 @@
 
 class TestingClient: public QH::AbstractNode {
 
-
     // AbstractNode interface
 public:
     const QH::PKG::Ping& getPing() const {
