@@ -10,6 +10,7 @@
 #include <QSharedPointer>
 #include <QVector>
 #include <abstractnode.h>
+#include <bigdatapart.h>
 #include <bigdatarequest.h>
 #include <cmath>
 
@@ -139,7 +140,7 @@ bool BigDataManager::sendBigDataPackage(const PKG::AbstractData *data,
                                         const AbstractNodeInfo *sender,
                                         const QH::Header *pkgHeader) {
 
-    unsigned int sizeLimit = 32000;
+    unsigned int sizeLimit = Package::maximumSize() - sizeof (PKG::BigDataPart);
     auto rawData = data->toBytes();
 
     auto hdr = QSharedPointer<PKG::BigDataHeader>::create();

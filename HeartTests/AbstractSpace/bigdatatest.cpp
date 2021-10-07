@@ -106,7 +106,7 @@ bool BigDataTest::sendDataTest() {
 
 
     QByteArray testData;
-    for (int i = 0; i < 1289990; i++) {
+    for (int i = 0; i < 1024 * 1024 * 10; i++) {
         testData.push_back(rand());
     }
 

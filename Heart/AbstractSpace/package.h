@@ -60,6 +60,12 @@ public:
      */
     unsigned int calcHash() const;
 
+    /**
+     * @brief maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package will separate to BigDataPart in sending.
+     * @return size in bytes of pacakge.
+     */
+    static int maximumSize();
+
     // StreamBase interface
 protected:
     QDataStream &fromStream(QDataStream &stream) override;

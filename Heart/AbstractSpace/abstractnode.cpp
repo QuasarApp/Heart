@@ -640,7 +640,7 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
 
     if (!convert) {
 
-        if (pkg.data.size() > pkg.hdr.size && _bigdatamanager) {
+        if (pkg.data.size() > Package::maximumSize()) {
             // big data
 
             if (!_bigdatamanager->sendBigDataPackage(resp,

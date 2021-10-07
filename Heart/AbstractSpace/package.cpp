@@ -25,6 +25,9 @@ bool Package::isValid() const {
         return false;
     }
 
+    if (hdr.size > maximumSize())
+        return false;
+
     return calcHash() == hdr.hash;
 }
 
@@ -41,6 +44,10 @@ QString Package::toString() const {
 
 unsigned int Package::calcHash() const{
     return qHash(data + QByteArray::number(hdr.command));
+}
+
+int Package::maximumSize() {
+    return 1400;
 }
 
 QDataStream &Package::fromStream(QDataStream &stream) {
