@@ -502,7 +502,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     _connectionsMutex.unlock();
 
     connect(info, &AbstractNodeInfo::sigReadyRead,
-            this, &AbstractNode::avelableBytes, Qt::DirectConnection);
+            this, &AbstractNode::avelableBytes);
 
     // using direct connection because socket clear all data of ip and port after disconnected.
     connect(info, &AbstractNodeInfo::statusChaned,
@@ -640,7 +640,7 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
 
     if (!convert) {
 
-        if (pkg.data.size() > Package::maximumSize()) {
+        if (static_cast<unsigned int>(pkg.data.size()) > Package::maximumSize()) {
             // big data
 
             if (!_bigdatamanager->sendBigDataPackage(resp,
@@ -876,7 +876,11 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
     }
 
     // concat with old data of header.
-    const auto array = hdrArray + socket->readAll();
+    auto array = hdrArray;
+    while (socket->bytesAvailable() > 0) {
+        array += socket->readAll();
+    };
+
     const int arraySize = array.size();
     hdrArray.clear();
 
@@ -930,7 +934,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             hdrArray.clear();
         }
 
-        if (pkg.data.size() > pkg.hdr.size) {
+        if (static_cast<unsigned int>(pkg.data.size()) > pkg.hdr.size) {
             QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
                                         QuasarAppUtils::Warning);
             pkg.reset();

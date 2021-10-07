@@ -64,7 +64,7 @@ public:
      * @brief maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package will separate to BigDataPart in sending.
      * @return size in bytes of pacakge.
      */
-    static int maximumSize();
+    static unsigned int maximumSize();
 
     // StreamBase interface
 protected:

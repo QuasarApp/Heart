@@ -21,7 +21,7 @@ bool Package::isValid() const {
         return false;
     }
 
-    if (hdr.size != data.size()) {
+    if (hdr.size != static_cast<unsigned int>(data.size())) {
         return false;
     }
 
@@ -46,7 +46,7 @@ unsigned int Package::calcHash() const{
     return qHash(data + QByteArray::number(hdr.command));
 }
 
-int Package::maximumSize() {
+unsigned int Package::maximumSize() {
     return 1024 * 1024;
 }
 

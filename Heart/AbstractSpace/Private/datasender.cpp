@@ -47,6 +47,8 @@ bool QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
         return false;
     }
 
+    qDebug() << wrote;
+
     return true;
 }
 
