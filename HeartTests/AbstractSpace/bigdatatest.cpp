@@ -90,11 +90,11 @@ BigDataTest::~BigDataTest() {
 }
 
 void BigDataTest::test() {
-#ifdef Q_OS_LINUX
+//#ifdef Q_OS_LINUX
 
     QVERIFY(connectTest());
     QVERIFY(sendDataTest());
-#endif
+//#endif
 }
 
 bool BigDataTest::connectTest() {
