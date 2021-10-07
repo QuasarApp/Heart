@@ -60,3 +60,6 @@ HeartTests/cmake_install.cmake
 cmake_install.cmake
 docs/
 Heart/heart_global.h
+
+# git 
+*.orig

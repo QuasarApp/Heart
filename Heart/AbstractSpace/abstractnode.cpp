@@ -502,7 +502,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     _connectionsMutex.unlock();
 
     connect(info, &AbstractNodeInfo::sigReadyRead,
-            this, &AbstractNode::avelableBytes);
+            this, &AbstractNode::avelableBytes, Qt::DirectConnection);
 
     // using direct connection because socket clear all data of ip and port after disconnected.
     connect(info, &AbstractNodeInfo::statusChaned,

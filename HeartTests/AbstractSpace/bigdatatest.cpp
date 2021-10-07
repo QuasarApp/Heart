@@ -57,6 +57,7 @@ public:
     }
 
     const BigPackage* getData() const {
+        QMutexLocker locker(&_mData);
         return data;
     }
 
@@ -66,12 +67,15 @@ protected:
 
         if (pkg->cmd() == BigPackage::command()) {
 
+            _mData.lock();
             data->copy<BigPackage>(*pkg);
+            _mData.unlock();
             sendData(data, sender);
         }
     }
 
 private:
+    mutable QMutex _mData;
     BigPackage *data = nullptr;
 };
 
