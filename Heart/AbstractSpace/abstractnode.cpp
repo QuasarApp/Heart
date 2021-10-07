@@ -894,7 +894,6 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             int dataLength = std::min(static_cast<int>(pkg.hdr.size - pkg.data.size()),
                                       arraySize - workIndex);
             pkg.data.append(array.mid(workIndex + headerSize, dataLength));
-            qDebug() << "pkg.data:" << pkg.data.size() << "pkg.hdr.size:"  << pkg.hdr.size;
 
             workIndex += dataLength;
 
@@ -915,8 +914,6 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
                                       arraySize - headerSize - workIndex);
 
             pkg.data.append(array.mid(workIndex + headerSize, dataLength));
-
-            qDebug() << "pkg.data:" << pkg.data.size() << "pkg.hdr.size:"  << pkg.hdr.size;
 
             workIndex += headerSize + dataLength;
 
