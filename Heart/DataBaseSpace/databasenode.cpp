@@ -111,9 +111,7 @@ void DataBaseNode::stop() {
         _db->softDelete();
         _db = nullptr;
         delete writer;
-
     }
-
 }
 
 DataBaseNode::~DataBaseNode() {

@@ -45,12 +45,12 @@ AbstractNode::AbstractNode( QObject *ptr):
     _senderThread = new QThread();
     _senderThread->setObjectName("Sender");
 
+    _senderThread->start();
+
     // This object moving to _senderThread.
     _dataSender = new DataSender(_senderThread);
     _socketWorker = new AsyncLauncher(_senderThread);
     _bigdatamanager = new BigDataManager(this);
-
-    _senderThread->start();
 
     registerPackageType<Ping>();
     registerPackageType<BadRequest>();
@@ -62,6 +62,22 @@ AbstractNode::AbstractNode( QObject *ptr):
 
     initThreadPool();
 
+}
+
+AbstractNode::~AbstractNode() {
+
+    _senderThread->quit();
+    _senderThread->wait();
+
+    for (auto it: qAsConst(_receiveData)) {
+        delete  it;
+    }
+    _receiveData.clear();
+
+
+    delete _dataSender;
+    delete _senderThread;
+    delete _socketWorker;
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -101,11 +117,6 @@ void AbstractNode::stop() {
         if (!it->isFinished())
             it->cancel();
     }
-
-    for (auto it: qAsConst(_receiveData)) {
-        delete  it;
-    }
-    _receiveData.clear();
 
     deinitThreadPool();
 }
@@ -246,15 +257,6 @@ bool AbstractNode::removeNode(AbstractNodeInfo *node) {
 
 HostAddress AbstractNode::address() const {
     return HostAddress{serverAddress(), serverPort()};
-}
-
-AbstractNode::~AbstractNode() {
-    _senderThread->quit();
-    _senderThread->wait();
-
-    delete _dataSender;
-    delete _senderThread;
-    delete _socketWorker;
 }
 
 #ifdef HEART_SSL
@@ -1116,6 +1118,7 @@ void AbstractNode::initThreadPool() {
     _threadPool = new QThreadPool();
     _threadPool->setObjectName("PackageWorker");
     _threadPool->setMaxThreadCount(QThread::idealThreadCount());
+
 }
 
 void AbstractNode::deinitThreadPool() {
