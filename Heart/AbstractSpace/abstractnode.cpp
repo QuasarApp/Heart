@@ -893,7 +893,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
 
             int dataLength = std::min(static_cast<int>(pkg.hdr.size - pkg.data.size()),
                                       arraySize - workIndex);
-            pkg.data.append(array.mid(workIndex + headerSize, dataLength));
+            pkg.data.append(array.mid(workIndex, dataLength));
 
             workIndex += dataLength;
 
