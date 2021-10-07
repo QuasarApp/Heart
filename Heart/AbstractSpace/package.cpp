@@ -47,7 +47,7 @@ unsigned int Package::calcHash() const{
 }
 
 int Package::maximumSize() {
-    return 1400;
+    return 1024 * 1024;
 }
 
 QDataStream &Package::fromStream(QDataStream &stream) {

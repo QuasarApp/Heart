@@ -18,14 +18,14 @@ namespace QH {
 #pragma pack(push, 1)
 struct HEARTSHARED_EXPORT Header {
     /**
-     * @brief size This is size of package data (exclude header size).
-     */
-    unsigned short size;
-
-    /**
      * @brief command of package for more information see the AbstractData::toPackage method.
      */
     unsigned short command;
+
+    /**
+     * @brief size This is size of package data (exclude header size).
+     */
+    unsigned int size;
 
     /**
      * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation. qHash(QByteArray)

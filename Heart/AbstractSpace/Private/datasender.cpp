@@ -24,7 +24,25 @@ bool DataSender::sendData(const QByteArray &array, void *target, bool await) con
 
 bool QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
     auto ptr = static_cast<QAbstractSocket*>(target);
-    if (array.size() != ptr->write(array)) {
+
+    if (!(ptr && ptr->isValid() && ptr->isWritable())) {
+        QuasarAppUtils::Params::log("Send raw data error. Socket is invalid", QuasarAppUtils::Error);
+        return false;
+    }
+
+    int wrote = 0;
+
+    while (wrote < array.length() && ptr->isWritable()) {
+        wrote += ptr->write(array.mid(wrote, array.length()));
+    }
+
+    if (!ptr->flush()) {
+        QuasarAppUtils::Params::log("Send raw data error. data not flushed", QuasarAppUtils::Error);
+
+        return false;
+    }
+
+    if (array.size() != wrote) {
         QuasarAppUtils::Params::log("not writed data to socket", QuasarAppUtils::Error);
         return false;
     }

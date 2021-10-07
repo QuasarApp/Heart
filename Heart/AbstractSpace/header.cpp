@@ -6,7 +6,7 @@
 */
 
 #include "header.h"
-
+#include "package.h"
 #include <QString>
 
 namespace QH {
@@ -15,6 +15,9 @@ Header::Header() {
 }
 
 bool Header::isValid() const {
+    if (size > Package::maximumSize()) {
+        return false;
+    }
     return command && hash;
 }
 

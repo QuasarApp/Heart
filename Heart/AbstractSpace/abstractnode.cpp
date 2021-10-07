@@ -502,7 +502,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
     _connectionsMutex.unlock();
 
     connect(info, &AbstractNodeInfo::sigReadyRead,
-            this, &AbstractNode::avelableBytes);
+            this, &AbstractNode::avelableBytes, Qt::DirectConnection);
 
     // using direct connection because socket clear all data of ip and port after disconnected.
     connect(info, &AbstractNodeInfo::statusChaned,
@@ -890,6 +890,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             int dataLength = std::min(static_cast<int>(pkg.hdr.size - pkg.data.size()),
                                       arraySize - workIndex);
             pkg.data.append(array.mid(workIndex + headerSize, dataLength));
+            qDebug() << "pkg.data:" << pkg.data.size() << "pkg.hdr.size:"  << pkg.hdr.size;
 
             workIndex += dataLength;
 
@@ -903,10 +904,16 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             memcpy(&pkg.hdr,
                    array.data() + workIndex, headerSize);
 
+            if (!pkg.hdr.isValid())
+                return;
+
             int dataLength = std::min(static_cast<int>(pkg.hdr.size),
                                       arraySize - headerSize - workIndex);
 
             pkg.data.append(array.mid(workIndex + headerSize, dataLength));
+
+            qDebug() << "pkg.data:" << pkg.data.size() << "pkg.hdr.size:"  << pkg.hdr.size;
+
             workIndex += headerSize + dataLength;
 
         } else {

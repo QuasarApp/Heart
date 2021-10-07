@@ -37,8 +37,7 @@ bool AbstractData::toPackage(Package &package,
 
     package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
-    int realDataSize = package.data.size();
-    package.hdr.size = static_cast<unsigned short>(realDataSize);
+    package.hdr.size = package.data.size();
     package.hdr.hash = package.calcHash();
 
     return package.isValid();
