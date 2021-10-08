@@ -52,15 +52,16 @@ WorkState::WorkState() {}
 QString WorkState::toString() const {
     QString result("State: %0 \n"
                    "Connections: %1 \n"
-                   "Connections: %2 / %3 \n"
+                   "Actived connections: %2 / %3 \n"
                    "Connected Addresses:\n"
                    "%4 \n"
                    "Baned: \n "
                    "%5");
 
-    result = result.arg(getWorkStateString());
-    result = result.arg(_connections.size());
-    result = result.arg(_activeConnections.size()).arg(maxConnectionCount);
+    result = result.arg(getWorkStateString()).
+            arg(_connections.size()).
+            arg(_activeConnections.size()).
+            arg(maxConnectionCount);
 
     QString  connections;
     for (const auto &i: _activeConnections) {

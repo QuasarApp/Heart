@@ -9,7 +9,7 @@
 #define HEART_CONFIG_H
 #include <QStandardPaths>
 
-#ifdef QT_DEBUG
+#ifndef QT_DEBUG
     #define WAIT_TIME 30000
     #define WAIT_RESPOCE_TIME 10000
 #else

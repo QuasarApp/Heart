@@ -1004,7 +1004,7 @@ QList<HostAddress> AbstractNode::activeConnectionsList() const {
         }
     }
 
-    return _connections.keys();
+    return result;
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
