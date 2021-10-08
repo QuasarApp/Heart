@@ -79,12 +79,25 @@ public:
      */
     void setConnections(const QList<HostAddress> &connections);
 
+    /**
+     * @brief activeConnections This method return list of actived connections.
+     * @return list of active connections.
+     */
+    const QList<HostAddress> &activeConnections() const;
+
+    /**
+     * @brief setActiveConnections this method sets new list of active connections.
+     * @param newActiveConnections This is new list of active connections
+     */
+    void setActiveConnections(const QList<HostAddress> &newActiveConnections);
+
 private:
     int maxConnectionCount = 0;
     bool isRun = false;
 
     QList<HostAddress> _banedList;
     QList<HostAddress> _connections;
+    QList<HostAddress> _activeConnections;
 
     QString getWorkStateString() const;
 };

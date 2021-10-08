@@ -700,6 +700,7 @@ WorkState AbstractNode::getWorkState() const {
     WorkState state;
 
     state.setConnections(connectionsList());
+    state.setActiveConnections(activeConnectionsList());
     state.setMaxConnectionCount(maxPendingConnections());
     state.setBanedList(banedList());
     state.setIsRun(isListening());
@@ -988,6 +989,20 @@ bool AbstractNode::checkCommand(unsigned short cmd) const {
 
 QList<HostAddress> AbstractNode::connectionsList() const {
     QMutexLocker locer(&_connectionsMutex);
+
+    return _connections.keys();
+}
+
+QList<HostAddress> AbstractNode::activeConnectionsList() const {
+
+    QList<HostAddress> result;
+
+    QMutexLocker locer(&_connectionsMutex);
+    for (auto i : _connections) {
+        if (i->isConnected()) {
+            result.push_back(i->networkAddress());
+        }
+    }
 
     return _connections.keys();
 }

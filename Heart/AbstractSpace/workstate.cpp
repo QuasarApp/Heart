@@ -27,9 +27,17 @@ void WorkState::setConnections(const QList<HostAddress> &connections) {
     _connections = connections;
 }
 
+const QList<HostAddress> &WorkState::activeConnections() const {
+    return _activeConnections;
+}
+
+void WorkState::setActiveConnections(const QList<HostAddress> &newActiveConnections) {
+    _activeConnections = newActiveConnections;
+}
+
 QString WorkState::getWorkStateString() const {
     if (isRun) {
-        if (_connections.size() >= maxConnectionCount)
+        if (_activeConnections.size() >= maxConnectionCount)
             return "overload";
         else {
             return "Work";
@@ -43,17 +51,19 @@ WorkState::WorkState() {}
 
 QString WorkState::toString() const {
     QString result("State: %0 \n"
-                   "Connections: %1 / %2 \n"
+                   "Connections: %1 \n"
+                   "Connections: %2 / %3 \n"
                    "Connected Addresses:\n"
-                   "%3 \n"
+                   "%4 \n"
                    "Baned: \n "
-                   "%4");
+                   "%5");
 
     result = result.arg(getWorkStateString());
-    result = result.arg(_connections.size()).arg(maxConnectionCount);
+    result = result.arg(_connections.size());
+    result = result.arg(_activeConnections.size()).arg(maxConnectionCount);
 
     QString  connections;
-    for (const auto &i: _connections) {
+    for (const auto &i: _activeConnections) {
          connections += i.toString() + "\n";
     }
 

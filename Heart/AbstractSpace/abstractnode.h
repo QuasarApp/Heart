@@ -576,6 +576,13 @@ protected:
     QList<HostAddress> connectionsList() const;
 
     /**
+     * @brief activeConnectionsList This method return list of actived nodes connections
+     * @return list of actived nodes connections.
+     * @warning do not use this method for validation is connected.
+     */
+    QList<HostAddress> activeConnectionsList() const;
+
+    /**
      * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
      * Exmaple of use :
      * @code{cpp}
