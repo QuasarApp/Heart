@@ -121,6 +121,14 @@ public:
                                     bool wait = true);
 
 
+
+    /**
+     * @brief doQuery This method execute a @a query in this database.
+     * @param query This is query that will be executed.
+     * @return true if the query finished successful
+     */
+    virtual bool doQuery(const QString& query, bool wait = false) const = 0;
+
 };
 
 }

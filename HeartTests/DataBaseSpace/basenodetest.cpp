@@ -36,8 +36,14 @@ protected:
             _ping.setAnsver(ping->ansver());
     }
 
+    QMap<int, std::function<bool (const QH::iObjectProvider *)> > dbPatches() const override{
+        return {};
+    };
+
+
 private:
     QH::PKG::Ping _ping;
+
 };
 
 class BadTstClient: public QH::DataBaseNode {

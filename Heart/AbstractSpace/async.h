@@ -34,6 +34,14 @@ public:
      */
     using Job = std::function<bool()>;
 
+    /**
+     * @brief asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object.
+     * @param job This is function with needed job.
+     * @param await This is boolean option for enable or disable wait for finish of the job function.
+     * @return true if the job function started correctly. If the await option is true then
+     * this method return result of job function.
+     */
+    bool asyncLauncher(const Job &job, bool await = false) const;
 
 protected:
     /**
@@ -66,14 +74,6 @@ protected:
      */
     bool waitFor(const Job &condition, int timeout = WAIT_TIME) const;
 
-    /**
-     * @brief asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object.
-     * @param job This is function with needed job.
-     * @param await This is boolean option for enable or disable wait for finish of the job function.
-     * @return true if the job function started correctly. If the await option is true then
-     * this method return result of job function.
-     */
-    bool asyncLauncher(const Job &job, bool await = false) const;
 private slots:
 
     /**

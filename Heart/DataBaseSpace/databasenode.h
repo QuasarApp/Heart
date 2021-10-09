@@ -27,6 +27,7 @@ class SqlDBWriter;
 class WebSocketController;
 class DbAddress;
 class NodeId;
+class iObjectProvider;
 
 
 /**
@@ -395,6 +396,21 @@ protected:
      */
     virtual void objectChanged(const QSharedPointer<PKG::DBObject>& obj);
 
+    /**
+     * @brief dbPatches This method should be return map with functions that upgrade production data base.
+     *  Eeach function shoul be can upgrade databae from preview version to own version.
+     *  **Example**:
+     *
+     *  We have 3 version of data base {0, 1, 2} each version should be contains own function for upgrade data base.
+     *
+     *
+     *  @code{cpp}
+     *
+     *  @endcode
+     *
+     * @return
+     */
+    virtual QMap<int, std::function<bool(const iObjectProvider*)>> dbPatches() const;
 
 private slots:
     void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
@@ -414,6 +430,13 @@ private:
 
 
     bool isForbidenTable(const QString& table);
+
+    /**
+     * @brief upgradeDataBase This method upgrade data base to actyaly database version.
+     * @note The last version of dbPatches is actyaly version.
+     * @return true if operation finished successful
+     */
+    bool upgradeDataBase();
 
     ISqlDBCache *_db = nullptr;
     QString _localNodeName;
