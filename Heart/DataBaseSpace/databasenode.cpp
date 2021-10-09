@@ -66,11 +66,17 @@ bool DataBaseNode::initSqlDb(QString DBparamsFile,
 
     if (DBparamsFile.isEmpty()) {
         params = defaultDbParams();
-        return _db->init(params);
-    }
 
-    if (!_db->init(DBparamsFile)) {
-        return false;
+        if (!_db->init(params)) {
+            return false;
+        }
+
+    } else {
+
+        if (!_db->init(DBparamsFile)) {
+            return false;
+        }
+
     }
 
     if (!upgradeDataBase()) {

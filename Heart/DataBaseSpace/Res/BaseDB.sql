@@ -29,12 +29,12 @@ CREATE TABLE IF NOT EXISTS DefaultPermissions (
     FOREIGN KEY(dbAddress) REFERENCES MemberPermisions(dbAddress)
             ON UPDATE CASCADE
             ON DELETE CASCADE
-)
+);
 
 CREATE TABLE IF NOT EXISTS DataBaseAttributes (
     name TEXT NOT NULL PRIMARY KEY,
     value INT NOT NULL UNIQUE
-)
+);
 
 INSERT INTO "DataBaseAttributes" VALUES ("version", 0);
 
