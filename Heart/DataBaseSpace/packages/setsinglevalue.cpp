@@ -6,7 +6,8 @@
 */
 
 #include "setsinglevalue.h"
-
+#include "quasarapp.h"
+#include <QSqlError>
 #include <QSqlQuery>
 
 namespace QH {
@@ -37,6 +38,8 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
 
     if (!q.prepare(queryString)) {
 
+        QuasarAppUtils::Params::log("Failed to prepare query: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
         return PrepareResult::Fail;
     }
 
@@ -46,16 +49,19 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
 }
 
 PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q) const {
-    QString queryString = "INSERT INTO %0 VALUES (%1, :%1)";
+    QString queryString = "INSERT INTO %0 (%1, %2) VALUES (:%1, :%2)";
 
-    queryString = queryString.arg(tableName(), _field);
+    queryString = queryString.arg(tableName(), primaryKey(), _field, getId().toString());
 
     if (!q.prepare(queryString)) {
 
+        QuasarAppUtils::Params::log("Failed to prepare query: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
         return PrepareResult::Fail;
     }
 
     q.bindValue(":" + _field, _value);
+    q.bindValue(":" + primaryKey(), getId().toString());
 
     return PrepareResult::Success;
 }

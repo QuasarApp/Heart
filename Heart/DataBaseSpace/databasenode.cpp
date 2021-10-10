@@ -435,17 +435,18 @@ bool DataBaseNode::upgradeDataBase() {
             return false;
         }
 
-        auto request = QSharedPointer<PKG::SetSingleValue>::create(
-                    DbAddress{"DataBaseAttributes", "name"},
-                    "value", currentVersion);
-
-        if (!_db->insertIfExistsUpdateObject(request, true)) {
-            message = message.arg(currentVersion).arg(currentVersion);
-            QuasarAppUtils::Params::log("Failed to update version attribute",
-                                        QuasarAppUtils::Error);
-        }
-
         currentVersion++;
+    }
+
+
+    auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
+                DbAddress{"DataBaseAttributes", "version"},
+                "value", currentVersion, "name");
+
+    if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
+        QuasarAppUtils::Params::log("Failed to update version attribute",
+                                    QuasarAppUtils::Error);
+        return false;
     }
 
     return true;
