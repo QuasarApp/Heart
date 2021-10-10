@@ -38,13 +38,17 @@ public:
      * @param address This is address of the field intended for update object.
      * @param field This is field id (column name ) of the intended for update object.
      * @param value This is a new value.
+     * @param primaryKey This is primary key that will be used for insert of update value. By Default is is id
      */
     SetSingleValue(const DbAddress& address,
                    const QString& field,
-                   const QVariant& value);
+                   const QVariant& value,
+                   const QString& primaryKey = "id");
 
     DBObject *createDBObject() const override;
     PrepareResult prepareUpdateQuery(QSqlQuery &q) const override;
+    PrepareResult prepareInsertQuery(QSqlQuery &q) const override;
+
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;
 
@@ -54,6 +58,7 @@ protected:
 
 private:
     QString _field;
+    QString _primaryKey;
     QVariant _value;
 };
 

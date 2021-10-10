@@ -392,12 +392,15 @@ bool DataBaseNode::isForbidenTable(const QString &table) {
 
 bool DataBaseNode::upgradeDataBase() {
     auto patches = dbPatches();
-    int actyalyVersion = patches.cend().key();
+    int actyalyVersion = (patches.size())?patches.lastKey(): 0;
     int currentVersion = 0;
 
-    PKG::GetSingleValue request({"DataBaseAttributes", "name"}, "value");
-    auto responce = _db->getObject(request);
-    if (!responce) {
+    if (!db())
+        return false;
+
+    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", true);
+
+    if (!fsupportUpgrade) {
 
         QuasarAppUtils::Params::log("The data base of application do not support soft upgrade. "
                                     "Please remove database monyaly and restart application.",
@@ -405,10 +408,13 @@ bool DataBaseNode::upgradeDataBase() {
         return false;
     }
 
-    currentVersion = responce->value().toInt();
+    PKG::GetSingleValue request({"DataBaseAttributes", "version"}, "value", "name");
 
-    do {
-        currentVersion++;
+    if (auto responce = _db->getObject(request)) {
+        currentVersion = responce->value().toInt();
+    }
+
+    while (currentVersion < actyalyVersion) {
 
         auto patch = patches.value(currentVersion);
 
@@ -433,13 +439,14 @@ bool DataBaseNode::upgradeDataBase() {
                     DbAddress{"DataBaseAttributes", "name"},
                     "value", currentVersion);
 
-        if (!_db->updateObject(request, true)) {
+        if (!_db->insertIfExistsUpdateObject(request, true)) {
             message = message.arg(currentVersion).arg(currentVersion);
             QuasarAppUtils::Params::log("Failed to update version attribute",
                                         QuasarAppUtils::Error);
         }
+
+        currentVersion++;
     }
-    while ( currentVersion < actyalyVersion);
 
     return true;
 }

@@ -18,7 +18,7 @@ namespace PKG {
 
 /**
  * @brief The GetSingleValue class is intended for get a single value from database.
- * The value is selected by id.
+ * The value is selected by primaryKey. By Default the primary key is 'id'
  */
 class HEARTSHARED_EXPORT GetSingleValue final: public DBObject
 {
@@ -29,8 +29,9 @@ public:
      * @brief GetSingleValue This is default constructor of the GetMaxIntegerId class.
      * @param address This is address of getting object.
      * @param field This is name of field.
+     * @param primaryKey This is primary key that will be using in selected query.
      */
-    GetSingleValue(const DbAddress& address, const QString& field);
+    GetSingleValue(const DbAddress& address, const QString& field, const QString& primaryKey = "id");
 
     /**
      * @brief value This method return Maximum value of a sql tables field.
@@ -50,6 +51,7 @@ protected:
 private:
     QString _field;
     QVariant _value;
+    QString _key;
 
 };
 }

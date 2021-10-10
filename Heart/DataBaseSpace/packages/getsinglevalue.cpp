@@ -14,10 +14,11 @@ namespace QH {
 
 namespace PKG {
 
-GetSingleValue::GetSingleValue(const DbAddress& address, const QString& field):
+GetSingleValue::GetSingleValue(const DbAddress& address, const QString& field, const QString& primaryKey):
     DBObject(address) {
 
     _field = field;
+    _key = primaryKey;
 }
 
 QVariant GetSingleValue::value() const {
@@ -29,9 +30,9 @@ DBObject *GetSingleValue::createDBObject() const {
 }
 
 PrepareResult GetSingleValue::prepareSelectQuery(QSqlQuery &q) const {
-    QString queryString = "SELECT %0 FROM %1 WHERE id='%2'";
+    QString queryString = "SELECT %0 FROM %1 WHERE %2='%3'";
 
-    queryString = queryString.arg(_field, tableName(), getId().toString());
+    queryString = queryString.arg(_field, tableName(), _key, getId().toString());
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
@@ -51,7 +52,7 @@ bool GetSingleValue::isCached() const {
 }
 
 QString GetSingleValue::primaryKey() const {
-    return "";
+    return _key;
 }
 
 }

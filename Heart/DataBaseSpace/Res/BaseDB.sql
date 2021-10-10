@@ -36,6 +36,4 @@ CREATE TABLE IF NOT EXISTS DataBaseAttributes (
     value INT NOT NULL UNIQUE
 );
 
-INSERT INTO "DataBaseAttributes" VALUES ("version", 0);
-
 

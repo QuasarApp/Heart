@@ -107,7 +107,7 @@ public:
     bool insertObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                       bool wait = false) override;
 
-    bool doQuery(const QString &query, bool wait) const override;
+    bool doQuery(const QString &query, bool wait = false, QSqlQuery* result = nullptr) const override;
 
     /**
      * @brief changeObjects This method change object of the database.
