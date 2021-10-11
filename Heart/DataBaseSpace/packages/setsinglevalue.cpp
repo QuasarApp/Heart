@@ -60,8 +60,8 @@ PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    q.bindValue(":" + _field, _value);
     q.bindValue(":" + primaryKey(), getId().toString());
+    q.bindValue(":" + _field, _value);
 
     return PrepareResult::Success;
 }

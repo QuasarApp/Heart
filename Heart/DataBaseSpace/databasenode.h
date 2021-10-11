@@ -31,6 +31,19 @@ class iObjectProvider;
 
 
 /**
+ * @brief DBPatch This is function that should be upgrade database.
+ * @see DBPatchMap
+ * @see DataBaseNode::dbPatch
+ */
+typedef std::function<bool (const QH::iObjectProvider *)> DBPatch;
+/**
+ * @brief DBPatchMap This is list when index of list is version of database and value if function that should be upgrade database.
+ * @see DataBaseNode::dbPatch
+ * @see DBPatchMap
+ */
+typedef QList<DBPatch> DBPatchMap;
+
+/**
  * @brief The BaseNode class is database base implementation of nodes or servers.
  *  This implementation contains methods for work with database.
  *  DataBaseNode is thread save class.
@@ -405,12 +418,31 @@ protected:
      *
      *
      *  @code{cpp}
-     *
+     *    QH::DBPatchMap dbPatches() const {
+              QH::DBPatchMap result;
+
+              result[0] = [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for version 0
+              };
+
+              result[1] = [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for version 1
+              };
+
+              result[2] = [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for version 2
+              };
+
+              return result;
+          }
      *  @endcode
      *
-     * @return
+     * @return Map of database pactches.
+     *
+     * @see DBPatchMap
+     * @see DBPatch
      */
-    virtual QMap<int, std::function<bool(const iObjectProvider*)>> dbPatches() const;
+    virtual DBPatchMap dbPatches() const;
 
 private slots:
     void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);

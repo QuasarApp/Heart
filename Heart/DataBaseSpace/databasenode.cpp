@@ -194,8 +194,7 @@ void DataBaseNode::objectChanged(const QSharedPointer<DBObject> &) {
 
 }
 
-QMap<int, std::function<bool (const iObjectProvider *)> >
-DataBaseNode::dbPatches() const {
+DBPatchMap DataBaseNode::dbPatches() const {
     return {};
 }
 
@@ -392,7 +391,7 @@ bool DataBaseNode::isForbidenTable(const QString &table) {
 
 bool DataBaseNode::upgradeDataBase() {
     auto patches = dbPatches();
-    int actyalyVersion = (patches.size())?patches.lastKey(): 0;
+    int actyalyVersion = patches.size();
     int currentVersion = 0;
 
     if (!db())
@@ -414,9 +413,10 @@ bool DataBaseNode::upgradeDataBase() {
         currentVersion = responce->value().toInt();
     }
 
+    bool fUpdated = false;
     while (currentVersion < actyalyVersion) {
 
-        auto patch = patches.value(currentVersion);
+        auto patch = patches.value(currentVersion, {});
 
         QString message;
         if (currentVersion == 0) {
@@ -428,7 +428,7 @@ bool DataBaseNode::upgradeDataBase() {
         QuasarAppUtils::Params::log(message,
                                     QuasarAppUtils::Info);
 
-        if (!patch(db())) {
+        if (patch && !patch(db())) {
             message = message.arg(currentVersion).arg(currentVersion);
             QuasarAppUtils::Params::log("Failed to " + message,
                                         QuasarAppUtils::Error);
@@ -436,17 +436,19 @@ bool DataBaseNode::upgradeDataBase() {
         }
 
         currentVersion++;
+        fUpdated = true;
     }
 
+    if (fUpdated) {
+        auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
+                    DbAddress{"DataBaseAttributes", "version"},
+                    "value", currentVersion, "name");
 
-    auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
-                DbAddress{"DataBaseAttributes", "version"},
-                "value", currentVersion, "name");
-
-    if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
-        QuasarAppUtils::Params::log("Failed to update version attribute",
-                                    QuasarAppUtils::Error);
-        return false;
+        if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
+            QuasarAppUtils::Params::log("Failed to update version attribute",
+                                        QuasarAppUtils::Error);
+            return false;
+        }
     }
 
     return true;
