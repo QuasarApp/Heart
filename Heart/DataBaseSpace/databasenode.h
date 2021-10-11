@@ -414,23 +414,23 @@ protected:
      *  Eeach function shoul be can upgrade databae from preview version to own version.
      *  **Example**:
      *
-     *  We have 3 version of data base {0, 1, 2} each version should be contains own function for upgrade data base.
-     *
+     *  We have 4 version of data base {0, 1, 2, 3} each version should be contains own function for upgrade data base.
+     *  Where the 0 version is first version of database. (genesis)
      *
      *  @code{cpp}
      *    QH::DBPatchMap dbPatches() const {
               QH::DBPatchMap result;
 
-              result[0] = [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for version 0
+              result += [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for update from 0 to 1
               };
 
-              result[1] = [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for version 1
+              result += [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for update from 1 to 2
               };
 
-              result[2] = [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for version 2
+              result += [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for update from 2 to 3
               };
 
               return result;
