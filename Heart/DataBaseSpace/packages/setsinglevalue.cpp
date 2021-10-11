@@ -6,7 +6,8 @@
 */
 
 #include "setsinglevalue.h"
-
+#include "quasarapp.h"
+#include <QSqlError>
 #include <QSqlQuery>
 
 namespace QH {
@@ -17,11 +18,13 @@ namespace PKG {
 
 SetSingleValue::SetSingleValue(const DbAddress& address,
                                const QString& field,
-                               const QVariant& value):
+                               const QVariant& value,
+                               const QString &primaryKey):
     DBObject(address)
 {
     _field = field;
     _value = value;
+    _primaryKey = primaryKey;
 }
 
 DBObject *SetSingleValue::createDBObject() const {
@@ -29,15 +32,35 @@ DBObject *SetSingleValue::createDBObject() const {
 }
 
 PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
-    QString queryString = "UPDATE %0 SET %1=:%1 WHERE id='%2'";
+    QString queryString = "UPDATE %0 SET %1=:%1 WHERE %2='%3'";
 
-    queryString = queryString.arg(tableName(), _field, getId().toString());
+    queryString = queryString.arg(tableName(), _field, primaryKey(), getId().toString());
 
     if (!q.prepare(queryString)) {
 
+        QuasarAppUtils::Params::log("Failed to prepare query: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
         return PrepareResult::Fail;
     }
 
+    q.bindValue(":" + _field, _value);
+
+    return PrepareResult::Success;
+}
+
+PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q) const {
+    QString queryString = "INSERT INTO %0 (%1, %2) VALUES (:%1, :%2)";
+
+    queryString = queryString.arg(tableName(), primaryKey(), _field, getId().toString());
+
+    if (!q.prepare(queryString)) {
+
+        QuasarAppUtils::Params::log("Failed to prepare query: " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
+        return PrepareResult::Fail;
+    }
+
+    q.bindValue(":" + primaryKey(), getId().toString());
     q.bindValue(":" + _field, _value);
 
     return PrepareResult::Success;
@@ -52,7 +75,7 @@ bool SetSingleValue::isCached() const {
 }
 
 QString SetSingleValue::primaryKey() const {
-    return "";
+    return _primaryKey;
 }
 }
 }

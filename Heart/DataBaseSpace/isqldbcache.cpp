@@ -214,6 +214,16 @@ bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool 
     return true;
 }
 
+bool ISqlDBCache::doQuery(const QString &query, bool wait,
+                          QSqlQuery *result) const {
+
+    if (!_writer) {
+        return false;
+    }
+
+    return _writer->doQuery(query, wait, result);
+}
+
 bool ISqlDBCache::init(const QString &initDbParams) {
 
     if (!_writer) {

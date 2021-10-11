@@ -131,6 +131,26 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     return initSuccessful;
 }
 
+bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const {
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery q(query, *db());
+
+    if (!q.exec()) {
+        QuasarAppUtils::Params::log("request error : " + q.lastError().text());
+        return false;
+    }
+
+    if (result) {
+        *result = q;
+    }
+
+    return true;
+
+}
+
 bool SqlDBWriter::enableFK() {
     if (!db()) {
         return false;
@@ -315,6 +335,18 @@ bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
     auto cb = [](){return true;};
 
     return workWithQuery(q, prepare, cb, ptr->printError());
+}
+
+bool SqlDBWriter::doQuery(const QString &query,
+                          bool wait, QSqlQuery* result) const {
+
+    wait = result || wait;
+
+    Async::Job job = [this, query, result]() {
+        return doQueryPrivate(query, result);
+    };
+
+    return asyncLauncher(job, wait);
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,

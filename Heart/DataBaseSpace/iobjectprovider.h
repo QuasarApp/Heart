@@ -120,6 +120,14 @@ public:
     bool insertIfExistsUpdateObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                                     bool wait = true);
 
+    /**
+     * @brief doQuery This method execute a @a query in this database.
+     * @param query This is query that will be executed.
+     * @param result This is query result value.
+     * @warning The result works onlt on await mode. Set the @a wait param to true.
+     * @return true if the query finished successful
+     */
+    virtual bool doQuery(const QString& query, bool wait = false, QSqlQuery* result = nullptr) const = 0;
 
 };
 

@@ -36,8 +36,10 @@ protected:
             _ping.setAnsver(ping->ansver());
     }
 
+
 private:
     QH::PKG::Ping _ping;
+
 };
 
 class BadTstClient: public QH::DataBaseNode {

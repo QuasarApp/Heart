@@ -34,6 +34,8 @@
 #include <sqlitedbcache.h>
 #include <sqldb.h>
 #include <QCryptographicHash>
+#include "getsinglevalue.h"
+#include "setsinglevalue.h"
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -64,10 +66,22 @@ bool DataBaseNode::initSqlDb(QString DBparamsFile,
 
     if (DBparamsFile.isEmpty()) {
         params = defaultDbParams();
-        return _db->init(params);
+
+        if (!_db->init(params)) {
+            return false;
+        }
+
+    } else {
+
+        if (!_db->init(DBparamsFile)) {
+            return false;
+        }
+
     }
 
-    if (!_db->init(DBparamsFile)) {
+    if (!upgradeDataBase()) {
+        QuasarAppUtils::Params::log("Failed to upgrade database",
+                                    QuasarAppUtils::Error);
         return false;
     }
 
@@ -178,6 +192,10 @@ void DataBaseNode::objectRemoved(const DbAddress &) {
 
 void DataBaseNode::objectChanged(const QSharedPointer<DBObject> &) {
 
+}
+
+DBPatchMap DataBaseNode::dbPatches() const {
+    return {};
 }
 
 void DataBaseNode::handleObjectChanged(const QSharedPointer<DBObject> &item) {
@@ -369,6 +387,71 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
 
 bool DataBaseNode::isForbidenTable(const QString &table) {
     return systemTables().contains(table);
+}
+
+bool DataBaseNode::upgradeDataBase() {
+    auto patches = dbPatches();
+    int actyalyVersion = patches.size();
+    int currentVersion = 0;
+
+    if (!db())
+        return false;
+
+    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", true);
+
+    if (!fsupportUpgrade) {
+
+        QuasarAppUtils::Params::log("The data base of application do not support soft upgrade. "
+                                    "Please remove database monyaly and restart application.",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    PKG::GetSingleValue request({"DataBaseAttributes", "version"}, "value", "name");
+
+    if (auto responce = _db->getObject(request)) {
+        currentVersion = responce->value().toInt();
+    }
+
+    bool fUpdated = false;
+    while (currentVersion < actyalyVersion) {
+
+        auto patch = patches.value(currentVersion, {});
+
+        QString message;
+        if (currentVersion == 0) {
+            message = "Initialize data base!";
+        } else {
+            message = "Upgrade data base!. from %0 to %1 versions";
+        }
+
+        QuasarAppUtils::Params::log(message,
+                                    QuasarAppUtils::Info);
+
+        if (patch && !patch(db())) {
+            message = message.arg(currentVersion).arg(currentVersion);
+            QuasarAppUtils::Params::log("Failed to " + message,
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+
+        currentVersion++;
+        fUpdated = true;
+    }
+
+    if (fUpdated) {
+        auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
+                    DbAddress{"DataBaseAttributes", "version"},
+                    "value", currentVersion, "name");
+
+        if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
+            QuasarAppUtils::Params::log("Failed to update version attribute",
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void DataBaseNode::setLocalNodeName(const QString &newLocalNodeName) {

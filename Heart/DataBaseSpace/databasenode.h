@@ -27,7 +27,21 @@ class SqlDBWriter;
 class WebSocketController;
 class DbAddress;
 class NodeId;
+class iObjectProvider;
 
+
+/**
+ * @brief DBPatch This is function that should be upgrade database.
+ * @see DBPatchMap
+ * @see DataBaseNode::dbPatch
+ */
+typedef std::function<bool (const QH::iObjectProvider *)> DBPatch;
+/**
+ * @brief DBPatchMap This is list when index of list is version of database and value if function that should be upgrade database.
+ * @see DataBaseNode::dbPatch
+ * @see DBPatchMap
+ */
+typedef QList<DBPatch> DBPatchMap;
 
 /**
  * @brief The BaseNode class is database base implementation of nodes or servers.
@@ -395,6 +409,40 @@ protected:
      */
     virtual void objectChanged(const QSharedPointer<PKG::DBObject>& obj);
 
+    /**
+     * @brief dbPatches This method should be return map with functions that upgrade production data base.
+     *  Eeach function shoul be can upgrade databae from preview version to own version.
+     *  **Example**:
+     *
+     *  We have 4 version of data base {0, 1, 2, 3} each version should be contains own function for upgrade data base.
+     *  Where the 0 version is first version of database. (genesis)
+     *
+     *  @code{cpp}
+     *    QH::DBPatchMap dbPatches() const {
+              QH::DBPatchMap result;
+
+              result += [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for update from 0 to 1
+              };
+
+              result += [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for update from 1 to 2
+              };
+
+              result += [](const QH::iObjectProvider* database) -> bool {
+                  // Some code for update from 2 to 3
+              };
+
+              return result;
+          }
+     *  @endcode
+     *
+     * @return Map of database pactches.
+     *
+     * @see DBPatchMap
+     * @see DBPatch
+     */
+    virtual DBPatchMap dbPatches() const;
 
 private slots:
     void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
@@ -414,6 +462,13 @@ private:
 
 
     bool isForbidenTable(const QString& table);
+
+    /**
+     * @brief upgradeDataBase This method upgrade data base to actyaly database version.
+     * @note The last version of dbPatches is actyaly version.
+     * @return true if operation finished successful
+     */
+    bool upgradeDataBase();
 
     ISqlDBCache *_db = nullptr;
     QString _localNodeName;

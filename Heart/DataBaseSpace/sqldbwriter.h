@@ -69,6 +69,7 @@ public:
     bool deleteObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     bool insertObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     void setSQLSources(const QStringList &list) override;
+    bool doQuery(const QString& query, bool wait = false, QSqlQuery *result = nullptr) const override;
 
     /**
      * @brief databaseLocation This method return location of database.
@@ -212,6 +213,14 @@ private:
      * @return true if all good.
      */
     bool initDbPrivate(const QVariantMap &params);
+
+    /**
+     * @brief doQueryPrivate This method execute a @a query in this database.
+     * @param query This is query that will be executed.
+     * @param result This is pointer to result value.
+     * @return true if query finished successfull
+     */
+    bool doQueryPrivate(const QString& query, QSqlQuery *result) const;
 
     bool initSuccessful = false;
     QVariantMap _config;
