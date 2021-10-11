@@ -40,6 +40,8 @@ class ReceiveData;
 class SocketFactory;
 class AsyncLauncher;
 class BigDataManager;
+class TaskScheduler;
+class AbstractTask;
 
 namespace PKG {
 class ErrorData;
@@ -583,6 +585,18 @@ protected:
     QList<HostAddress> activeConnectionsList() const;
 
     /**
+     * @brief sheduleTask This method shedule execute task on this node.
+     * @param task This is task that will be sheduled.
+     */
+    void sheduleTask(const QSharedPointer<AbstractTask>& task);
+
+    /**
+     * @brief removeTask This method remove task from sheduler.
+     * @param taskId This is task id that will be removed.
+     */
+    void removeTask(int taskId);
+
+    /**
      * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
      * Exmaple of use :
      * @code{cpp}
@@ -667,6 +681,12 @@ private slots:
      */
     void handleForceRemoveNode(HostAddress node);
 
+    /**
+     * @brief handleBeginWork This method run task on new thread.
+     * @param work This is new work task
+     */
+    void handleBeginWork(QSharedPointer<QH::AbstractTask> work);
+
 private:
 
     /**
@@ -714,6 +734,7 @@ private:
     AsyncLauncher * _socketWorker = nullptr;
     QThread *_senderThread = nullptr;
     BigDataManager *_bigdatamanager = nullptr;
+    TaskScheduler *_tasksheduller = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
 
