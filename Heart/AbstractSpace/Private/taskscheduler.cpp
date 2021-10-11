@@ -43,8 +43,11 @@ bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
 
 
     int top = _taskQueue.begin().key();
+    int timeout = top - currentTime;
+    if (timeout < 0)
+        timeout = 0;
 
-    _timer->start(top * 1000);
+    _timer->start(timeout * 1000);
 
     return true;
 }
@@ -60,6 +63,10 @@ bool TaskScheduler::remove(int task) {
     _taskPool.remove(task);
 
     return true;
+}
+
+int TaskScheduler::taskCount() const {
+    return _taskPool.size();
 }
 
 void TaskScheduler::handleTimeOut() {

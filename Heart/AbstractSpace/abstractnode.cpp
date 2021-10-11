@@ -958,11 +958,6 @@ void AbstractNode::handleWorkerStoped() {
 
     if (senderObject) {
 
-        if (!senderObject->result()) {
-            QuasarAppUtils::Params::log("Work finished with an error.",
-                                        QuasarAppUtils::Error);
-        }
-
         _workers.remove(senderObject);
         delete senderObject;
     }
@@ -1049,6 +1044,10 @@ void AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {
 
 void AbstractNode::removeTask(int taskId) {
     _tasksheduller->remove(taskId);
+}
+
+int AbstractNode::sheduledTaskCount() const {
+    return _tasksheduller->taskCount();
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

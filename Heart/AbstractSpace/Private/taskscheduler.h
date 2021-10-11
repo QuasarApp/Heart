@@ -47,6 +47,12 @@ public:
      */
     bool remove(int task);
 
+    /**
+     * @brief taskCount This method return tasks count.
+     * @return tasks count
+     */
+    int taskCount() const;
+
 signals:
     /**
      * @brief sigPushWork This signal emited when the task @a work neet to execute.

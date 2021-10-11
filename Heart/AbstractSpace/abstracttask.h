@@ -15,7 +15,7 @@ class AbstractNode;
 /**
  * @brief The SheduleMode enum contails list of the shedule modes.
  */
-enum class SheduleMode {
+enum class SheduleMode: int{
     /// In this mode AbstractTask will be executed after **time** secunds from the moment of adding this task.
     SingleWork,
     /// In this mode AbstractTask will be executed task every **time** from the moment of adding this task.

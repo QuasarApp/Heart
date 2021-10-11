@@ -38,9 +38,11 @@ int AbstractTask::taskId() const {
 
 void AbstractTask::idGen() {
     QByteArray data;
-    data.push_back(_time);
-    data.push_back(static_cast<int>(_mode));
-    data.push_back(typeid(this).hash_code());
+    data.insert(0, reinterpret_cast<char*>(&_time), sizeof (_time));
+    data.insert(0, reinterpret_cast<char*>(&_mode), sizeof (_mode));
+    int code = typeid(this).hash_code();
+    data.insert(0, reinterpret_cast<char*>(&code), sizeof (code));
+
 
     _taskId = qHash(data);
 }
