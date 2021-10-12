@@ -30,8 +30,10 @@
 #include "tcpsocket.h"
 #include "asynclauncher.h"
 #include "receivedata.h"
+#include "abstracttask.h"
 
 #include <bigdatamanager.h>
+#include <taskscheduler.h>
 
 namespace QH {
 
@@ -51,6 +53,12 @@ AbstractNode::AbstractNode( QObject *ptr):
     _dataSender = new DataSender(_senderThread);
     _socketWorker = new AsyncLauncher(_senderThread);
     _bigdatamanager = new BigDataManager(this);
+    _tasksheduller = new TaskScheduler();
+
+    qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
+
+    connect(_tasksheduller, &TaskScheduler::sigPushWork,
+            this, &AbstractNode::handleBeginWork);
 
     registerPackageType<Ping>();
     registerPackageType<BadRequest>();
@@ -72,12 +80,13 @@ AbstractNode::~AbstractNode() {
     for (auto it: qAsConst(_receiveData)) {
         delete  it;
     }
-    _receiveData.clear();
 
+    _receiveData.clear();
 
     delete _dataSender;
     delete _senderThread;
     delete _socketWorker;
+    delete _tasksheduller;
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -948,6 +957,7 @@ void AbstractNode::handleWorkerStoped() {
     auto senderObject = dynamic_cast<QFutureWatcher <bool>*>(sender());
 
     if (senderObject) {
+
         _workers.remove(senderObject);
         delete senderObject;
     }
@@ -957,6 +967,27 @@ void AbstractNode::handleForceRemoveNode(HostAddress node) {
     AbstractNodeInfo* info = getInfoPtr(node);
     if (info) {
         info->removeSocket();
+    }
+}
+
+void AbstractNode::handleBeginWork(QSharedPointer<QH::AbstractTask> work) {
+
+    auto executeObject = [this, work]() -> bool {
+        if (!work)
+            return false;
+
+        return work->execute(this);
+    };
+
+    QMutexLocker locer(&_threadPoolMutex);
+
+    if (_threadPool) {
+        auto worker = new QFutureWatcher <bool>();
+        worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
+        _workers.insert(worker);
+
+        connect(worker, &QFutureWatcher<bool>::finished,
+                this, &AbstractNode::handleWorkerStoped);
     }
 }
 
@@ -1005,6 +1036,18 @@ QList<HostAddress> AbstractNode::activeConnectionsList() const {
     }
 
     return result;
+}
+
+void AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {
+    _tasksheduller->shedule(task);
+}
+
+void AbstractNode::removeTask(int taskId) {
+    _tasksheduller->remove(taskId);
+}
+
+int AbstractNode::sheduledTaskCount() const {
+    return _tasksheduller->taskCount();
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

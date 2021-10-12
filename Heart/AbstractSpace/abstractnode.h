@@ -40,6 +40,8 @@ class ReceiveData;
 class SocketFactory;
 class AsyncLauncher;
 class BigDataManager;
+class TaskScheduler;
+class AbstractTask;
 
 namespace PKG {
 class ErrorData;
@@ -250,6 +252,33 @@ public:
      */
     static QThread *mainThreadID();
 
+    /**
+     * @brief sheduleTask This method shedule execute task on this node.
+     * @param task This is task that will be sheduled.
+     * @see AbstractNode::removeTask
+     * @see AbstractNode::sheduledTaskCount
+
+     */
+    void sheduleTask(const QSharedPointer<AbstractTask>& task);
+
+    /**
+     * @brief removeTask This method remove task from sheduler.
+     * @param taskId This is task id that will be removed.
+     * @see AbstractNode::sheduleTask
+     * @see AbstractNode::sheduledTaskCount
+
+     */
+    void removeTask(int taskId);
+
+    /**
+     * @brief sheduledTaskCount This method return count of sheduled tasks.
+     * @return count of sheduled tasks.
+     * @see AbstractNode::sheduleTask
+     * @see AbstractNode::removeTask
+
+     */
+    int sheduledTaskCount() const;
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -257,7 +286,6 @@ signals:
      * @param msg - received text of remoute node (server).
      */
     void requestError(unsigned char code, QString msg);
-
 
 
 protected:
@@ -582,6 +610,7 @@ protected:
      */
     QList<HostAddress> activeConnectionsList() const;
 
+
     /**
      * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
      * Exmaple of use :
@@ -667,6 +696,12 @@ private slots:
      */
     void handleForceRemoveNode(HostAddress node);
 
+    /**
+     * @brief handleBeginWork This method run task on new thread.
+     * @param work This is new work task
+     */
+    void handleBeginWork(QSharedPointer<QH::AbstractTask> work);
+
 private:
 
     /**
@@ -714,6 +749,7 @@ private:
     AsyncLauncher * _socketWorker = nullptr;
     QThread *_senderThread = nullptr;
     BigDataManager *_bigdatamanager = nullptr;
+    TaskScheduler *_tasksheduller = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
 
