@@ -12,10 +12,11 @@
 #include "abstracttask.h"
 #include "ctime"
 #include <QTest>
-
+#include <QDateTime>
+#include <cmath>
 class ShedullerestNode: public QH::AbstractNode {
 public:
-    int executedTime = 0;
+    quint64 executedTime = 0;
 
 };
 
@@ -26,7 +27,7 @@ class TestTask: public QH::AbstractTask {
 public:
     bool execute(QH::AbstractNode *node) const override {
 
-        static_cast<ShedullerestNode*>(node)->executedTime = ::time(0);
+        static_cast<ShedullerestNode*>(node)->executedTime = QDateTime::currentMSecsSinceEpoch();
 
         return true;
     };
@@ -51,10 +52,11 @@ void ShedullerTest::testSingleMode() {
     task->setMode(QH::SheduleMode::SingleWork);
     task->setTime(2);
 
-    int ct = time(0);
+    quint64 ct = QDateTime::currentMSecsSinceEpoch();
     node->sheduleTask(task);
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
-    QVERIFY(node->executedTime == (ct + 2));
+    int diff = std::abs(static_cast<long long>(node->executedTime - (ct + 2000)));
+    QVERIFY(diff < 1000);
     node->executedTime = 0;
 
     QVERIFY(node->sheduledTaskCount() == 0);
@@ -65,19 +67,24 @@ void ShedullerTest::testSingleMode() {
 void ShedullerTest::testRepeatMode() {
     ShedullerestNode *node = new ShedullerestNode();
     auto task = QSharedPointer<TestTask>::create();
-
+    task->setTime(2);
     task->setMode(QH::SheduleMode::Repeat);
 
-    int ct = time(0);
+    quint64 ct = QDateTime::currentMSecsSinceEpoch();
     node->sheduleTask(task);
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
-    QVERIFY(node->executedTime = (ct + 2));
+
+    int diff = std::abs(static_cast<long long>(node->executedTime - (ct + 2000)));
+
+    QVERIFY(diff < 1000);
     node->executedTime = 0;
 
     QVERIFY(node->sheduledTaskCount() == 1);
 
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
-    QVERIFY(node->executedTime == (ct + 4));
+    diff = std::abs(static_cast<long long>(node->executedTime - (ct + 4000)));
+
+    QVERIFY(diff < 1000);
     QVERIFY(node->sheduledTaskCount() == 1);
 
     node->removeTask(task->taskId());
@@ -93,13 +100,15 @@ void ShedullerTest::testTimePointMode() {
     auto task = QSharedPointer<TestTask>::create();
 
     task->setMode(QH::SheduleMode::TimePoint);
-    int requestTime = time(0) + 2;
+
+    int requestTime = time(0) + 5;
     task->setTime(requestTime);
 
     node->sheduleTask(task);
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
+    int diff = std::abs(static_cast<long long>(node->executedTime - requestTime * 1000));
 
-    QVERIFY(node->executedTime == requestTime);
+    QVERIFY(diff < 1000);
     QVERIFY(node->sheduledTaskCount() == 0);
 
     node->softDelete();
