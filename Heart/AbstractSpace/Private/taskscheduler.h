@@ -10,6 +10,7 @@
 
 #include "abstracttask.h"
 
+#include <QHash>
 #include <QMap>
 #include <QSharedPointer>
 #include <QTimer>
@@ -25,6 +26,7 @@ class TaskScheduler: public QObject
     Q_OBJECT
 public:
     TaskScheduler();
+    ~TaskScheduler();
 
     /**
      * @brief shedule This method shedule new task in this node.
@@ -64,7 +66,7 @@ private slots:
     void handleTimeOut();
 
 private:
-    QMultiMap<int, int> _taskQueue;
+    QMultiMap<quint64, int> _taskQueue;
     QHash<int, QSharedPointer<AbstractTask>> _taskPool;
     QTimer *_timer = nullptr;
 };

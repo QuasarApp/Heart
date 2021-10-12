@@ -23,11 +23,11 @@ void AbstractTask::setMode(SheduleMode newMode) {
     idGen();
 }
 
-int AbstractTask::time() const {
+quint64 AbstractTask::time() const {
     return _time;
 }
 
-void AbstractTask::setTime(int newTime) {
+void AbstractTask::setTime(quint64 newTime) {
     _time = newTime;
     idGen();
 }

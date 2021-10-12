@@ -16,11 +16,11 @@ class AbstractNode;
  * @brief The SheduleMode enum contails list of the shedule modes.
  */
 enum class SheduleMode: int{
-    /// In this mode AbstractTask will be executed after **time** secunds from the moment of adding this task.
+    /// In this mode AbstractTask will be executed after **time** msecunds from the moment of adding this task.
     SingleWork,
     /// In this mode AbstractTask will be executed task every **time** from the moment of adding this task.
     Repeat,
-    /// In this mode AbstractTask will be executed int **time** secunds by Unix time.
+    /// In this mode AbstractTask will be executed int **time** msecunds by Unix time.
     TimePoint
 };
 
@@ -54,14 +54,14 @@ public:
      * @return time property.
      * @see AbstractTask::setTime
      */
-    int time() const;
+    quint64 time() const;
 
     /**
      * @brief setTime This method sets new value for the AbstractTask::time property.
      * @param newTime This is new value of the time propertye.
      * @see AbstractTask::time
      */
-    void setTime(int newTime);
+    void setTime(quint64 newTime);
 
     /**
      * @brief execute This method will be invoked when task be executed.
@@ -79,7 +79,7 @@ public:
 private:
     void idGen();
     SheduleMode _mode = SheduleMode::SingleWork;
-    int _time = 0;
+    quint64 _time = 0;
     int _taskId = 0;
 };
 

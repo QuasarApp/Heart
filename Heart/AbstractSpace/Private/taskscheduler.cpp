@@ -7,18 +7,24 @@
 
 
 #include "taskscheduler.h"
+#include <QDateTime>
 
 namespace QH {
 
 TaskScheduler::TaskScheduler() {
-    _timer = new  QTimer(this);
+    _timer = new  QTimer();
 
     connect(_timer, &QTimer::timeout, this, &TaskScheduler::handleTimeOut);
 }
 
+TaskScheduler::~TaskScheduler() {
+    _timer->stop();
+    delete _timer;
+}
+
 bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
-    int currentTime = time(0);
-    int invokeTime = 0;
+    quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+    quint64 invokeTime = 0;
 
     switch (task->mode()) {
     case SheduleMode::SingleWork: {
@@ -47,7 +53,7 @@ bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
     if (timeout < 0)
         timeout = 0;
 
-    _timer->start(timeout * 1000);
+    _timer->start(timeout);
 
     return true;
 }
