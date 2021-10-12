@@ -14,11 +14,11 @@
 namespace QH {
 
 
-SheduleMode AbstractTask::mode() const {
+ScheduleMode AbstractTask::mode() const {
     return _mode;
 }
 
-void AbstractTask::setMode(SheduleMode newMode) {
+void AbstractTask::setMode(ScheduleMode newMode) {
     _mode = newMode;
     idGen();
 }

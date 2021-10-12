@@ -15,9 +15,9 @@ namespace QH {
 
 class AbstractNode;
 /**
- * @brief The SheduleMode enum contails list of the shedule modes.
+ * @brief The ScheduleMode enum contails list of the shedule modes.
  */
-enum class SheduleMode: int{
+enum class ScheduleMode: int{
     /// In this mode AbstractTask will be executed after **time** msecunds from the moment of adding this task.
     SingleWork,
     /// In this mode AbstractTask will be executed task every **time** from the moment of adding this task.
@@ -32,6 +32,23 @@ enum class SheduleMode: int{
 class HEARTSHARED_EXPORT AbstractTask
 {
 public:
+
+    /**
+     * @brief The TimeVal enum contains all time values for a tasks scheduling
+     */
+    enum TimeVal {
+        /// Milessecundes
+        Msec = 1,
+        /// Secundes
+        Sec = 1000 * Msec,
+        /// Minutes
+        Min = 60 * Sec,
+        /// Hours
+        Hour = 60 * Min,
+        /// Days
+        Day = 24 * Hour
+    };
+
     AbstractTask() = default;
     virtual ~AbstractTask() = default;
 
@@ -40,19 +57,19 @@ public:
      * @return current mode of this task.
      * @see AbstractTask::setMode
      */
-    SheduleMode mode() const;
+    ScheduleMode mode() const;
 
     /**
      * @brief setMode This method sets new mode of this task.
      * @param newMode new mode of this task.
      * @see AbstractTask::mode
      */
-    void setMode(SheduleMode newMode);
+    void setMode(ScheduleMode newMode);
 
     /**
      * @brief time This is universal property.
      * This property has its own meaning for each AbstractTask::mode.
-     *  For more information see the SheduleMode enum.
+     *  For more information see the ScheduleMode enum.
      * @return time property.
      * @see AbstractTask::setTime
      */
@@ -80,7 +97,7 @@ public:
 
 private:
     void idGen();
-    SheduleMode _mode = SheduleMode::SingleWork;
+    ScheduleMode _mode = ScheduleMode::SingleWork;
     quint64 _time = 0;
     int _taskId = 0;
 };

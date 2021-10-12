@@ -27,15 +27,15 @@ bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
     quint64 invokeTime = 0;
 
     switch (task->mode()) {
-    case SheduleMode::SingleWork: {
+    case ScheduleMode::SingleWork: {
         invokeTime = currentTime + task->time();
         break;
     }
-    case SheduleMode::Repeat: {
+    case ScheduleMode::Repeat: {
         invokeTime = currentTime + task->time();
         break;
     }
-    case SheduleMode::TimePoint: {
+    case ScheduleMode::TimePoint: {
         invokeTime = task->time();
 
         if (invokeTime < currentTime)
@@ -95,7 +95,7 @@ void TaskScheduler::handleTimeOut() {
 
         remove(task);
 
-        if (task->mode() == SheduleMode::Repeat) {
+        if (task->mode() == ScheduleMode::Repeat) {
             shedule(task);
         }
 

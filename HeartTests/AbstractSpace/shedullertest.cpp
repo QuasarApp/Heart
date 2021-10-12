@@ -49,7 +49,7 @@ void ShedullerTest::testSingleMode() {
     ShedullerestNode *node = new ShedullerestNode();
     auto task = QSharedPointer<TestTask>::create();
 
-    task->setMode(QH::SheduleMode::SingleWork);
+    task->setMode(QH::ScheduleMode::SingleWork);
     task->setTime(2000);
 
     quint64 ct = QDateTime::currentMSecsSinceEpoch();
@@ -68,7 +68,7 @@ void ShedullerTest::testRepeatMode() {
     ShedullerestNode *node = new ShedullerestNode();
     auto task = QSharedPointer<TestTask>::create();
     task->setTime(2000);
-    task->setMode(QH::SheduleMode::Repeat);
+    task->setMode(QH::ScheduleMode::Repeat);
 
     quint64 ct = QDateTime::currentMSecsSinceEpoch();
     node->sheduleTask(task);
@@ -99,7 +99,7 @@ void ShedullerTest::testTimePointMode() {
     ShedullerestNode *node = new ShedullerestNode();
     auto task = QSharedPointer<TestTask>::create();
 
-    task->setMode(QH::SheduleMode::TimePoint);
+    task->setMode(QH::ScheduleMode::TimePoint);
 
     quint64 requestTime = QDateTime::currentMSecsSinceEpoch() + 5000;
     task->setTime(requestTime);
