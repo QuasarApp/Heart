@@ -7,7 +7,9 @@
 
 #ifndef ABSTRACTTASK_H
 #define ABSTRACTTASK_H
+
 #include <QSharedPointer>
+#include "heart_global.h"
 
 namespace QH {
 
@@ -27,7 +29,7 @@ enum class SheduleMode: int{
 /**
  * @brief The AbstractTask class. All tasks executed on separate thread.
  */
-class AbstractTask
+class HEARTSHARED_EXPORT AbstractTask
 {
 public:
     AbstractTask() = default;
