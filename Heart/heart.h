@@ -188,7 +188,7 @@ namespace QH {
      * @brief heartLibVersion This method return version of library in format : major.commit.hash
      * @return
      */
-    QString heartLibVersion();
+    HEARTSHARED_EXPORT QString heartLibVersion();
 
     /** @brief The PKG namesapce - this namespace contains all default packages of the Heart library.
      *  If you want create a pool request for Heart Library with own implemented packages
