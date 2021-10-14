@@ -22,7 +22,15 @@ TaskScheduler::~TaskScheduler() {
     delete _timer;
 }
 
+int QH::TaskScheduler::getTimeout(qint64 timeout) {
+    return std::max(std::min(static_cast<qint64>(AbstractTask::Day),
+                             timeout), static_cast<qint64>(0));
+}
+
 bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
+    if (!task->isValid())
+        return false;
+
     quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
     quint64 invokeTime = 0;
 
@@ -48,12 +56,10 @@ bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
     _taskQueue.insert(invokeTime, task->taskId());
 
 
-    int top = _taskQueue.begin().key();
-    int timeout = top - currentTime;
-    if (timeout < 0)
-        timeout = 0;
+    qint64 top = _taskQueue.begin().key();
+    qint64 timeout = top - currentTime;
 
-    _timer->start(timeout);
+    _timer->start(getTimeout(timeout));
 
     return true;
 }
@@ -80,6 +86,12 @@ void TaskScheduler::handleTimeOut() {
 
     if (top == _taskQueue.end()) {
         _timer->stop();
+        return;
+    }
+
+    auto currentTime = QDateTime::currentMSecsSinceEpoch();
+    if (top.key() > currentTime) {
+        _timer->start(getTimeout(top.key() - currentTime));
         return;
     }
 

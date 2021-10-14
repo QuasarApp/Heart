@@ -37,7 +37,7 @@ public:
     /**
      * @brief The TimeVal enum contains all time values for a tasks scheduling
      */
-    enum TimeValMsec: quint64 {
+    enum TimeValMsec: qint64 {
         /// Milessecundes
         Msec = 1,
         /// Secundes
@@ -95,6 +95,12 @@ public:
      * @return id of this task.
      */
     int taskId() const;
+
+    /**
+     * @brief isValid This method check task configuration and return true if task is valid else false.
+     * @return  true if task is valid else false.
+     */
+    virtual bool isValid() const;
 
 private:
     void idGen();

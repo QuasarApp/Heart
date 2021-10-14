@@ -36,6 +36,15 @@ int AbstractTask::taskId() const {
     return _taskId;
 }
 
+bool AbstractTask::isValid() const {
+    switch (_mode) {
+    case ScheduleMode::Repeat: {
+        return _time > 1000 && _taskId;
+    }
+    default: return _taskId;
+    }
+}
+
 void AbstractTask::idGen() {
     QByteArray data;
     data.insert(0, reinterpret_cast<char*>(&_time), sizeof (_time));

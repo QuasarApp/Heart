@@ -420,9 +420,8 @@ bool DataBaseNode::upgradeDataBase() {
 
         QString message;
         if (currentVersion == 0) {
-            message = "Initialize data base!";
-        } else {
             message = "Upgrade data base!. from %0 to %1 versions";
+            message = message.arg(currentVersion, currentVersion + 1);
         }
 
         QuasarAppUtils::Params::log(message,

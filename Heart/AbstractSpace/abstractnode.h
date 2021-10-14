@@ -255,11 +255,12 @@ public:
     /**
      * @brief sheduleTask This method shedule execute task on this node.
      * @param task This is task that will be sheduled.
+     * @return true if task added successfull else flase
      * @see AbstractNode::removeTask
      * @see AbstractNode::sheduledTaskCount
 
      */
-    void sheduleTask(const QSharedPointer<AbstractTask>& task);
+    bool sheduleTask(const QSharedPointer<AbstractTask>& task);
 
     /**
      * @brief removeTask This method remove task from sheduler.

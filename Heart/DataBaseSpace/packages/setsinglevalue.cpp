@@ -51,7 +51,7 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
 PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0 (%1, %2) VALUES (:%1, :%2)";
 
-    queryString = queryString.arg(tableName(), primaryKey(), _field, getId().toString());
+    queryString = queryString.arg(tableName(), primaryKey(), _field);
 
     if (!q.prepare(queryString)) {
 

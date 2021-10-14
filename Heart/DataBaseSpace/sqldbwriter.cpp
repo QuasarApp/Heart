@@ -132,6 +132,7 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
 }
 
 bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const {
+
     if (!db()) {
         return false;
     }

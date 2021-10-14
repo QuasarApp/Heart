@@ -66,6 +66,9 @@ private slots:
     void handleTimeOut();
 
 private:
+    int getTimeout(qint64 timeout);
+
+
     QMultiMap<quint64, int> _taskQueue;
     QHash<int, QSharedPointer<AbstractTask>> _taskPool;
     QTimer *_timer = nullptr;

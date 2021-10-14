@@ -1038,8 +1038,8 @@ QList<HostAddress> AbstractNode::activeConnectionsList() const {
     return result;
 }
 
-void AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {
-    _tasksheduller->shedule(task);
+bool AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {
+    return _tasksheduller->shedule(task);
 }
 
 void AbstractNode::removeTask(int taskId) {
