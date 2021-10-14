@@ -81,7 +81,12 @@ bool operator !=(const HostAddress &left, const HostAddress &right) {
 }
 
 uint qHash(const HostAddress &address) {
-    return qHash(QString("%1:%2").arg(address.toString()).arg(address.port()));
+    if (address.operator==(QHostAddress::LocalHost) ||
+            address.operator==(QHostAddress::LocalHostIPv6)) {
+        return qHash(QString("%1:%2").arg(address.toString()).arg(address.port()));
+    }
+
+    return qHash(*static_cast<const QHostAddress*>(&address));
 }
 
 }
