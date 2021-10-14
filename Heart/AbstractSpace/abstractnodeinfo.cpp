@@ -11,6 +11,7 @@
 #include <QDataStream>
 #include <QHostInfo>
 #include <QMetaObject>
+#include <quasarapp.h>
 
 namespace QH {
 
@@ -174,6 +175,9 @@ void AbstractNodeInfo::setTrust(int trust) {
     _trust = trust;
 
     if (isBanned()) {
+        QuasarAppUtils::Params::log(QString("The node %0 is banned!").
+                                    arg(_sct->peerAddress().toString()));
+
         removeSocket();
     }
 }

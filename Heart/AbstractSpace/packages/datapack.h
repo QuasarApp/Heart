@@ -57,7 +57,24 @@ public:
         return AbstractData::isValid() && _packData.size();
     };
 
-    // StreamBase interface
+    /**
+     * @brief token is custom data block.
+     * @note The custom data block do not validate.
+     *  If you want to add validation for custom data block then override the isValid method.
+     * @return custom data block
+     */
+    const QByteArray &customData() const {
+        return _data;
+    }
+
+    /**
+     * @brief setCustomData This method sets custom data block
+     * @param newToken
+     */
+    void setCustomData(const QByteArray &newToken) {
+        _data = newToken;
+    }
+
 protected:
     QDataStream &fromStream(QDataStream &stream) override {
         AbstractData::fromStream(stream);
@@ -72,6 +89,8 @@ protected:
             _packData.push_back(data);
         }
 
+        stream >> _data;
+
         return stream;
     };
 
@@ -83,12 +102,15 @@ protected:
             stream << *ptr;
         }
 
+        stream << _data;
+
         return stream;
     }
 
 
 private:
     QList<QSharedPointer<Package>> _packData;
+    QByteArray _data;
 
 };
 

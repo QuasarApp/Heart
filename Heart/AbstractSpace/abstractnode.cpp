@@ -944,10 +944,11 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
         }
 
         if (static_cast<unsigned int>(pkg.data.size()) > pkg.hdr.size) {
-            QuasarAppUtils::Params::log("Invalid Package received. " + pkg.toString(),
+            QuasarAppUtils::Params::log("Invalid Package received." + pkg.toString(),
                                         QuasarAppUtils::Warning);
             pkg.reset();
             hdrArray.clear();
+            changeTrust(id, CRITICAL_ERROOR);
 
         }
     }
