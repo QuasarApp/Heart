@@ -26,6 +26,7 @@ enum class ScheduleMode: int{
     TimePoint
 };
 
+
 /**
  * @brief The AbstractTask class. All tasks executed on separate thread.
  */
@@ -36,7 +37,7 @@ public:
     /**
      * @brief The TimeVal enum contains all time values for a tasks scheduling
      */
-    enum TimeVal {
+    enum TimeValMsec: quint64 {
         /// Milessecundes
         Msec = 1,
         /// Secundes
