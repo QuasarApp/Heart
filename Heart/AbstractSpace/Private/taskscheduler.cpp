@@ -89,7 +89,7 @@ void TaskScheduler::handleTimeOut() {
         return;
     }
 
-    auto currentTime = QDateTime::currentMSecsSinceEpoch();
+    unsigned long long currentTime = QDateTime::currentMSecsSinceEpoch();
     if (top.key() > currentTime) {
         _timer->start(getTimeout(top.key() - currentTime));
         return;
