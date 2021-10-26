@@ -419,16 +419,13 @@ bool DataBaseNode::upgradeDataBase() {
         auto patch = patches.value(currentVersion, {});
 
         QString message;
-        if (currentVersion == 0) {
-            message = "Upgrade data base!. from %0 to %1 versions";
-            message = message.arg(currentVersion, currentVersion + 1);
-        }
+        message = "Upgrade data base!. to %0 versions";
+        message = message.arg(currentVersion);
 
         QuasarAppUtils::Params::log(message,
                                     QuasarAppUtils::Info);
 
         if (patch && !patch(db())) {
-            message = message.arg(currentVersion).arg(currentVersion);
             QuasarAppUtils::Params::log("Failed to " + message,
                                         QuasarAppUtils::Error);
             return false;
