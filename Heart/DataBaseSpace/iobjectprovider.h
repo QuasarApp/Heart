@@ -129,6 +129,12 @@ public:
      */
     virtual bool doQuery(const QString& query, bool wait = false, QSqlQuery* result = nullptr) const = 0;
 
+    /**
+     * @brief doSql This method execute a @a query in this database.
+     * @param sqlFile This is sql file that will be executed.
+     * @return true if the query finished successful
+     */
+    virtual bool doSql(const QString& sqlFile, bool wait = true) const = 0;
 };
 
 }

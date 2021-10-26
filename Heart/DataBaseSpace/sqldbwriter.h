@@ -70,6 +70,7 @@ public:
     bool insertObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     void setSQLSources(const QStringList &list) override;
     bool doQuery(const QString& query, bool wait = false, QSqlQuery *result = nullptr) const override;
+    bool doSql(const QString &sqlFile, bool wait) const override;
 
     /**
      * @brief databaseLocation This method return location of database.
@@ -205,7 +206,7 @@ private:
                       const std::function<bool()>& cb,
                       bool printErrors = true) const;
 
-    bool exec(QSqlQuery *sq, const QString &sqlFile);
+    bool exec(QSqlQuery *sq, const QString &sqlFile) const;
 
     /**
      * @brief initDbPrivate This is private method of initialize database.
@@ -222,12 +223,13 @@ private:
      */
     bool doQueryPrivate(const QString& query, QSqlQuery *result) const;
 
+    bool doSqlPrivate(const QString &sqlFile) const;
+
     bool initSuccessful = false;
     QVariantMap _config;
     QStringList _SQLSources;
 
-    QSqlDatabase *_db = nullptr;
-
+    QSqlDatabase *_db = nullptr;    
 };
 
 }

@@ -224,6 +224,14 @@ bool ISqlDBCache::doQuery(const QString &query, bool wait,
     return _writer->doQuery(query, wait, result);
 }
 
+bool ISqlDBCache::doSql(const QString &sqlFile, bool wait) const {
+    if (!_writer) {
+        return false;
+    }
+
+    return _writer->doSql(sqlFile, wait);
+}
+
 bool ISqlDBCache::init(const QString &initDbParams) {
 
     if (!_writer) {

@@ -109,6 +109,8 @@ public:
 
     bool doQuery(const QString &query, bool wait = false, QSqlQuery* result = nullptr) const override;
 
+    bool doSql(const QString &sqlFile, bool wait) const override;
+
     /**
      * @brief changeObjects This method change object of the database.
      * @param templateObject This is template for get objects from database.
@@ -259,7 +261,6 @@ signals:
      * @param obj This is address of the removed object.
      */
     void sigItemDeleted(const DbAddress& obj);
-
 
 };
 
