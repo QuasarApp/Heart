@@ -11,7 +11,7 @@
 
 #include "abstractnodeinfo.h"
 
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
 #include <openssl/evp.h>
 #include <QSslConfiguration>
 #endif
@@ -42,6 +42,7 @@ class AsyncLauncher;
 class BigDataManager;
 class TaskScheduler;
 class AbstractTask;
+class SslSocket;
 
 namespace PKG {
 class ErrorData;
@@ -69,7 +70,7 @@ enum class ParserResult {
 enum class SslMode {
     /// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr).
     NoSSL,
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
 
     /// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
     InitFromSystem,
@@ -78,7 +79,7 @@ enum class SslMode {
 #endif
 };
 
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
 /**
  * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certefication.
  *  If you want change selfSigned certificate then use method AbstractNode::useSelfSignedSslConfiguration.
@@ -200,7 +201,7 @@ public:
      */
     HostAddress address() const;
 
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
 
     /**
      * @brief getSslConfig - This method return ssl configuration of current node (server).
@@ -291,7 +292,7 @@ signals:
 
 protected:
 
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
 
     /**
      * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned cetificate.
@@ -471,18 +472,8 @@ protected:
      */
     virtual bool changeTrust(const HostAddress& id, int diff);
 
-    /**
-    * @brief incomingConnection This methiod work with incomming  tcp sockets.
-    * @param handle - handle of socket.
-    */
-    virtual void incomingTcp(qintptr handle);
 
-#ifdef HEART_SSL
-    /**
-    * @brief incomingConnection This methiod work with incomming  ssl sockets.
-    * @param handle - handle of socket.
-    */
-    virtual void incomingSsl(qintptr handle);
+#ifdef USE_HEART_SSL
 
     /**
      * @brief useSelfSignedSslConfiguration This method reconfigure current node to use selfSigned certificate.
@@ -498,10 +489,9 @@ protected:
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
      * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
      *  if mode will be working then this method return false.
-     * @param sslConfig This is ssl configuration ot a current node (server).
      * @return result of change node ssl configuration.
      */
-    bool useSystemSslConfiguration(const QSslConfiguration& sslConfig);
+    bool useSystemSslConfiguration();
 
     /**
      * @brief disableSSL This method disable ssl mode for this node.
@@ -703,6 +693,16 @@ private slots:
      */
     void handleBeginWork(QSharedPointer<QH::AbstractTask> work);
 
+    /**
+     * @brief handleEncrypted invoke when a ssl socket is encripted!
+     */
+    void handleEncrypted(AbstractNodeInfo *node);
+
+    /**
+     * @brief handleSslErrorOcurred This method invoked when a ssl socket receive an error mesage.
+     */
+    void handleSslErrorOcurred(const QList<QSslError> & errors);
+
 private:
 
     /**
@@ -739,8 +739,10 @@ private:
      */
     void deinitThreadPool();
 
+
     SslMode _mode = SslMode::NoSSL;
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
+    bool configureSslSocket(AbstractNodeInfo *node, bool fServer);
     QSslConfiguration _ssl;
 #endif
     QHash<HostAddress, AbstractNodeInfo*> _connections;

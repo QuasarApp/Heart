@@ -18,10 +18,15 @@
 #include <quasarapp.h>
 #include <QTcpServer>
 
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
+
+#include <openssl/bn.h>
 #include <openssl/rsa.h>
-#include <openssl/x509.h>
 #include <openssl/pem.h>
+#include <openssl/bio.h>
+#include <openssl/x509.h>
+#include <sslsocket.h>
+
 #endif
 
 #include <QMetaObject>
@@ -176,7 +181,7 @@ bool AbstractNode::addNode(const HostAddress &address) {
         if (_mode == SslMode::NoSSL) {
             socket = new TcpSocket(nullptr);
         } else {
-            socket = new QSslSocket(nullptr);
+            socket = new SslSocket(nullptr);
         }
 
         if (!registerSocket(socket, &address)) {
@@ -268,18 +273,29 @@ HostAddress AbstractNode::address() const {
     return HostAddress{serverAddress(), serverPort()};
 }
 
-#ifdef HEART_SSL
+#ifdef USE_HEART_SSL
 QSslConfiguration AbstractNode::getSslConfig() const {
     return _ssl;
 }
 
 bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
-    RSA * rsa = nullptr;
+
     if (!pkey) {
         return false;
     }
 
-    if (!RSA_generate_key_ex(rsa, 2048, nullptr, nullptr)) {
+    BIGNUM * bn = BN_new();
+
+    int rc = BN_set_word(bn, RSA_F4);
+
+    if (rc != 1) {
+        BN_free(bn);
+        return false;
+    }
+
+    RSA * rsa = RSA_new();
+
+    if (!RSA_generate_key_ex(rsa, 2048, bn, nullptr)) {
         return false;
     }
 
@@ -403,42 +419,36 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration(const SslSrtData & ss
     return res;
 }
 
-void AbstractNode::incomingSsl(qintptr socketDescriptor) {
-    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
-        QSslSocket *socket = new QSslSocket;
+bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
 
-        socket->setSslConfiguration(_ssl);
+    if (!node)
+        return false;
 
-        if (!isBanned(socket) && socket->setSocketDescriptor(socketDescriptor)) {
-            connect(socket, &QSslSocket::encrypted, [this, socket]() {
+    auto socket = dynamic_cast<SslSocket*>(node->sct());
+    if (!socket) {
 
-                if (!registerSocket(socket)) {
-                    socket->deleteLater();
-                }
-            });
+        QuasarAppUtils::Params::log("Invalid ssl socket!! Connection not secure",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
 
-            connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
-                    [socket](const QList<QSslError> &errors){
+    socket->setSslConfiguration(_ssl);
 
-                for (auto &error : errors) {
-                    QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
-                }
+    auto address = node->networkAddress();
+    connect(socket, &QSslSocket::encrypted, this ,[this, address]() {
+        handleEncrypted(getInfoPtr(address));
+    });
 
-                socket->deleteLater();
-            });
+    connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+            this, &AbstractNode::handleSslErrorOcurred);
 
-            socket->startServerEncryption();
+    if (fServer)
+        socket->startServerEncryption();
+    else
+        socket->startClientEncryption();
 
-            return true;
-        } else {
-            delete socket;
-            return false;
-        }
-
-    };
-
-    _socketWorker->run(action);
-}
+    return true;
+};
 
 bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
 
@@ -452,12 +462,12 @@ bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
     return !_ssl.isNull();
 }
 
-bool AbstractNode::useSystemSslConfiguration(const QSslConfiguration &sslConfig) {
+bool AbstractNode::useSystemSslConfiguration() {
     if (isListening()) {
         return false;
     }
 
-    _ssl = sslConfig;
+    _ssl = QSslConfiguration::defaultConfiguration();
     _mode = SslMode::InitFromSystem;
 
     return !_ssl.isNull();
@@ -803,16 +813,43 @@ bool AbstractNode::isBanned(QAbstractSocket *socket) const {
 }
 
 void AbstractNode::incomingConnection(qintptr handle) {
-#ifdef HEART_SSL
-    if (_mode == SslMode::NoSSL) {
-        incomingTcp(handle);
-    } else {
-        incomingSsl(handle);
-    }
+    AsyncLauncher::Job action = [this, handle]() -> bool {
+#ifdef USE_HEART_SSL
+        QAbstractSocket* socket = nullptr;
+        if (_mode == SslMode::NoSSL) {
+            socket = new TcpSocket(nullptr);
+        } else {
+            socket = new SslSocket(nullptr);
+        }
+
 #else
-    incomingTcp(handle);
+        socket = new TcpSocket(nullptr);
 #endif
 
+        socket->setSocketDescriptor(handle);
+
+        if (!isBanned(socket)) {
+            QuasarAppUtils::Params::log("Income connection from banned address",
+                                        QuasarAppUtils::Error);
+
+            delete socket;
+            return false;
+        }
+
+        if (!registerSocket(socket)) {
+
+            QuasarAppUtils::Params::log("Failed to register new socket",
+                                        QuasarAppUtils::Error);
+
+            delete socket;
+            return false;
+        }
+
+        return true;
+
+    };
+
+    _socketWorker->run(action);
 }
 
 bool AbstractNode::changeTrust(const HostAddress &id, int diff) {
@@ -834,29 +871,6 @@ bool AbstractNode::changeTrust(const HostAddress &id, int diff) {
     ptr->setTrust(objTrust + diff);
     return true;
 }
-
-void AbstractNode::incomingTcp(qintptr socketDescriptor) {
-    AsyncLauncher::Job action = [this, socketDescriptor]() -> bool {
-
-
-        TcpSocket *socket = new TcpSocket(nullptr);
-        if (socket->setSocketDescriptor(socketDescriptor) && !isBanned(socket)) {
-            if (!registerSocket(socket)) {
-                delete socket;
-                return false;
-            }
-        } else {
-            delete socket;
-            return false;
-        }
-
-        return true;
-
-    };
-
-    _socketWorker->run(action);
-}
-
 
 void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
 
@@ -989,6 +1003,16 @@ void AbstractNode::handleBeginWork(QSharedPointer<QH::AbstractTask> work) {
 
         connect(worker, &QFutureWatcher<bool>::finished,
                 this, &AbstractNode::handleWorkerStoped);
+    }
+}
+
+void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
+    handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
+}
+
+void AbstractNode::handleSslErrorOcurred(const QList<QSslError> &errors) {
+    for (auto &error : errors) {
+        QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
     }
 }
 
@@ -1127,6 +1151,22 @@ void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectio
     if (status == NodeCoonectionStatus::NotConnected) {
         nodeDisconnected(node);
     } else if (status == NodeCoonectionStatus::Connected) {
+
+        if (_mode != SslMode::NoSSL) {
+
+            auto socket = dynamic_cast<SslSocket*>(node->sct());
+
+            if (!socket) {
+                removeNode(node);
+                return;
+            }
+
+            if (!socket->isEncrypted()) {
+                configureSslSocket(node, true);
+                return;
+            }
+        }
+
         nodeConnected(node);
     } else if (status == NodeCoonectionStatus::Confirmed) {
         nodeConfirmend(node);

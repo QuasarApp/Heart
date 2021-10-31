@@ -21,9 +21,12 @@ updateGitVars()
 
 add_definitions(-DHEART_LIBRARY)
 
+set(SLL_DEFINE "WITHOUT_SSL")
+
 if (HEART_SSL)
     list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
     find_package(OpenSSL REQUIRED)
+    set(SLL_DEFINE "USE_HEART_SSL")
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h.in ${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h @ONLY)
