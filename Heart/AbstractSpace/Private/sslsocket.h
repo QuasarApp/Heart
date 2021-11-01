@@ -31,6 +31,15 @@ public slots:
      * @brief handleDisckonnetFromHost This is slot wrapper of the disconectFromHost method of QAbstractSocket class.
      */
     void handleDisckonnetFromHost();
+
+signals:
+
+    /**
+     * @brief sslErrorsOcurred This is wrapper signal of the QSslSocket::sslErrors method.
+     * @param sender This is pointer to sender object.
+     * @param errors Thiis is list of ssl errors.
+     */
+    void sslErrorsOcurred(SslSocket* sender, const QList<QSslError> &errors);
 };
 
 #endif

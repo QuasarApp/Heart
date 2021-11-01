@@ -43,7 +43,6 @@ class BigDataManager;
 class TaskScheduler;
 class AbstractTask;
 class SslSocket;
-class SslConfiguration;
 
 namespace PKG {
 class ErrorData;
@@ -208,7 +207,7 @@ public:
      * @brief getSslConfig - This method return ssl configuration of current node (server).
      * @return current ssl configuration on this node (server).
      */
-    const SslConfiguration *getSslConfig() const;
+    QSslConfiguration getSslConfig() const;
 #endif
     /**
      * @brief getMode - This method return SSL mode of corrent node (server).
@@ -282,6 +281,16 @@ public:
      */
     int sheduledTaskCount() const;
 
+#ifdef USE_HEART_SSL
+
+    /**
+     * @brief ignoreSslErrors This method return list of ignored ssl errors
+     * @return list of ignored ssl errors.
+     * @see handleSslErrorOcurred
+     */
+    const QList<QSslError> &ignoreSslErrors() const;
+#endif
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -294,6 +303,13 @@ signals:
 protected:
 
 #ifdef USE_HEART_SSL
+
+    /**
+     * @brief setIgnoreSslErrors This list sets new ignored errors.
+     * @param newIgnoreSslErrors This is new list of ignored errors.
+     * @see handleSslErrorOcurred
+     */
+    void setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors);
 
     /**
      * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned cetificate.
@@ -490,9 +506,10 @@ protected:
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
      * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
      *  if mode will be working then this method return false.
+     *  @param config This is system ssl configuration. by default used QSslConfiguration::defaultConfiguration() method.
      * @return result of change node ssl configuration.
      */
-    bool useSystemSslConfiguration();
+    bool useSystemSslConfiguration(QSslConfiguration config = QSslConfiguration::defaultConfiguration());
 
     /**
      * @brief disableSSL This method disable ssl mode for this node.
@@ -694,15 +711,21 @@ private slots:
      */
     void handleBeginWork(QSharedPointer<QH::AbstractTask> work);
 
+#ifdef USE_HEART_SSL
+
+    /**
+     * @brief handleSslErrorOcurred This method invoked when a ssl socket receive an error mesage.
+     *  Default implementation just pront error messages
+     * @param errors This is errors list.
+     */
+    void handleSslErrorOcurred(SslSocket *sender, const QList<QSslError> & errors);
+
     /**
      * @brief handleEncrypted invoke when a ssl socket is encripted!
      */
     void handleEncrypted(AbstractNodeInfo *node);
 
-    /**
-     * @brief handleSslErrorOcurred This method invoked when a ssl socket receive an error mesage.
-     */
-    void handleSslErrorOcurred(const QList<QSslError> & errors);
+#endif
 
 private:
 
@@ -744,7 +767,8 @@ private:
     SslMode _mode = SslMode::NoSSL;
 #ifdef USE_HEART_SSL
     bool configureSslSocket(AbstractNodeInfo *node, bool fServer);
-    SslConfiguration *_ssl = nullptr;
+    QSslConfiguration _ssl;
+    QList<QSslError> _ignoreSslErrors;
 #endif
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, ReceiveData*> _receiveData;

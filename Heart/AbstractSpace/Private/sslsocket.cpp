@@ -14,6 +14,10 @@ namespace QH {
 SslSocket::SslSocket(QObject *parent):
     QSslSocket(parent) {
 
+    connect(this, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+            this, [this](const QList<QSslError> & errors){
+        emit sslErrorsOcurred(this, errors);
+    }, Qt::DirectConnection);
 }
 
 SslSocket::~SslSocket() {

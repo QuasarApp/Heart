@@ -10,10 +10,7 @@
 #include "ping.h"
 #include "workstate.h"
 #include <QHostInfo>
-#include <QSslCertificate>
-#include <QSslConfiguration>
-#include <QSslKey>
-#include <QSslSocket>
+
 #include <badrequest.h>
 #include <quasarapp.h>
 #include <QTcpServer>
@@ -26,7 +23,11 @@
 #include <openssl/bio.h>
 #include <openssl/x509.h>
 #include <sslsocket.h>
-#include <sslconfiguration.h>
+
+#include <QSslConfiguration>
+#include <QSslCertificate>
+#include <QSslKey>
+#include <QSslSocket>
 
 #endif
 
@@ -47,10 +48,6 @@ using namespace PKG;
 
 AbstractNode::AbstractNode( QObject *ptr):
     QTcpServer(ptr) {
-
-#ifdef USE_HEART_SSL
-    _ssl = new SslConfiguration;
-#endif
 
     initThreadId();
 
@@ -84,10 +81,6 @@ AbstractNode::AbstractNode( QObject *ptr):
 }
 
 AbstractNode::~AbstractNode() {
-
-#ifdef USE_HEART_SSL
-    delete _ssl;
-#endif
 
     _senderThread->quit();
     _senderThread->wait();
@@ -284,7 +277,7 @@ HostAddress AbstractNode::address() const {
 }
 
 #ifdef USE_HEART_SSL
-const SslConfiguration* AbstractNode::getSslConfig() const {
+QSslConfiguration AbstractNode::getSslConfig() const {
     return _ssl;
 }
 
@@ -442,18 +435,14 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
         return false;
     }
 
-    if (!_ssl)
-        return false;
-
-    socket->setSslConfiguration(_ssl->sslConfig());
-    socket->ignoreSslErrors(_ssl->ignoreErrors());
+    socket->setSslConfiguration(_ssl);
 
     auto address = node->networkAddress();
     connect(socket, &QSslSocket::encrypted, this ,[this, address]() {
         handleEncrypted(getInfoPtr(address));
     });
 
-    connect(socket, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
+    connect(socket, &SslSocket::sslErrorsOcurred,
             this, &AbstractNode::handleSslErrorOcurred, Qt::DirectConnection);
 
 
@@ -467,6 +456,14 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
     };
 
     return _socketWorker->run(action);
+}
+
+const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
+    return _ignoreSslErrors;
+}
+
+void AbstractNode::setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors) {
+    _ignoreSslErrors = newIgnoreSslErrors;
 };
 
 bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
@@ -475,26 +472,27 @@ bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
         return false;
     }
 
-    _ssl->setSslConfig(selfSignedSslConfiguration(crtData));
+    _ssl = selfSignedSslConfiguration(crtData);
     _mode = SslMode::InitSelfSigned;
 
-    auto cert = _ssl->sslConfig().localCertificateChain();
-    QSslError error(QSslError::SelfSignedCertificate, cert.value(0));
+    if(!_ignoreSslErrors.contains(QSslError::SelfSignedCertificate))
+        _ignoreSslErrors.append(QSslError::SelfSignedCertificate);
 
-    _ssl->setIgnoreErrors({error});
+    if(!_ignoreSslErrors.contains(QSslError::SelfSignedCertificateInChain))
+       _ignoreSslErrors.append(QSslError::SelfSignedCertificateInChain);
 
-    return !_ssl->sslConfig().isNull();
+    return !_ssl.isNull();
 }
 
-bool AbstractNode::useSystemSslConfiguration() {
+bool AbstractNode::useSystemSslConfiguration(QSslConfiguration config) {
     if (isListening()) {
         return false;
     }
 
-    _ssl->setSslConfig(QSslConfiguration::defaultConfiguration());
+    _ssl = config;
     _mode = SslMode::InitFromSystem;
 
-    return !_ssl->sslConfig().isNull();
+    return !_ssl.isNull();
 }
 
 bool AbstractNode::disableSSL() {
@@ -506,6 +504,31 @@ bool AbstractNode::disableSSL() {
 
     return true;
 }
+
+void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
+    handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
+}
+
+void AbstractNode::handleSslErrorOcurred(SslSocket * sslScocket, const QList<QSslError> &errors) {
+
+    QList<QSslError> ignore;
+    for (auto &error : errors) {
+
+        if (!_ignoreSslErrors.contains({error.error()})) {
+            QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
+        } else {
+            ignore += error;
+        }
+    }
+
+    if (ignore.isEmpty())
+        return;
+
+    if (sslScocket) {
+        sslScocket->ignoreSslErrors(ignore);
+    }
+}
+
 #endif
 
 AbstractNodeInfo *AbstractNode::createNodeInfo(QAbstractSocket *socket,
@@ -1030,16 +1053,6 @@ void AbstractNode::handleBeginWork(QSharedPointer<QH::AbstractTask> work) {
 
         connect(worker, &QFutureWatcher<bool>::finished,
                 this, &AbstractNode::handleWorkerStoped);
-    }
-}
-
-void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
-    handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
-}
-
-void AbstractNode::handleSslErrorOcurred(const QList<QSslError> &errors) {
-    for (auto &error : errors) {
-        QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
     }
 }
 
