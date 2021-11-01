@@ -43,6 +43,7 @@ class BigDataManager;
 class TaskScheduler;
 class AbstractTask;
 class SslSocket;
+class SslConfiguration;
 
 namespace PKG {
 class ErrorData;
@@ -87,7 +88,7 @@ enum class SslMode {
 struct SslSrtData {
     QString country = "BY";
     QString organization = "QuasarApp";
-    QString commonName = "Dev";
+    QString commonName = "";
     long long endTime = 31536000L; //1 year
 };
 #endif
@@ -207,7 +208,7 @@ public:
      * @brief getSslConfig - This method return ssl configuration of current node (server).
      * @return current ssl configuration on this node (server).
      */
-    QSslConfiguration getSslConfig() const;
+    const SslConfiguration *getSslConfig() const;
 #endif
     /**
      * @brief getMode - This method return SSL mode of corrent node (server).
@@ -743,7 +744,7 @@ private:
     SslMode _mode = SslMode::NoSSL;
 #ifdef USE_HEART_SSL
     bool configureSslSocket(AbstractNodeInfo *node, bool fServer);
-    QSslConfiguration _ssl;
+    SslConfiguration *_ssl = nullptr;
 #endif
     QHash<HostAddress, AbstractNodeInfo*> _connections;
     QHash<HostAddress, ReceiveData*> _receiveData;
