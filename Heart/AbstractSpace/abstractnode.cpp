@@ -1072,8 +1072,12 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 
-            if (parseResult == ParserResult::NotProcessed) {
+            if (parseResult == ParserResult::Error) {
                 changeTrust(id, REQUEST_ERROR);
+            }
+
+            if (parseResult == ParserResult::NotProcessed) {
+                changeTrust(id, NOTSUPPORT_ERROR);
             }
 
             return false;

@@ -91,9 +91,10 @@ struct SslSrtData {
 };
 #endif
 
-#define CRITICAL_ERROOR -50
-#define LOGICK_ERROOR   -20
-#define REQUEST_ERROR   -5
+#define CRITICAL_ERROOR  -50
+#define LOGICK_ERROOR    -20
+#define REQUEST_ERROR    -5
+#define NOTSUPPORT_ERROR -1
 
 #define BIG_DATA_HASH_ID 0xFFFF
 
