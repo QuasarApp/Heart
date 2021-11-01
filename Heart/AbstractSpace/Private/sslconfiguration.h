@@ -16,15 +16,36 @@
 
 namespace QH {
 
+/**
+ * @brief The SslConfiguration class This is simple class for contains ssl configurations.
+ */
 class SslConfiguration
 {
 public:
     SslConfiguration();
 
+    /**
+     * @brief sslConfig This method return current qt ssl configuration.
+     * @return  current qt ssl configuration.
+     */
     const QSslConfiguration &sslConfig() const;
+
+    /**
+     * @brief setSslConfig This method sets new ssl configuration.
+     * @param newSslConfig This is a new ssl configuration.
+     */
     void setSslConfig(const QSslConfiguration &newSslConfig);
 
+    /**
+     * @brief ignoreErrors This method return list of ignored ssl errors.
+     * @return list of ignored ssl errors.
+     */
     const QList<QSslError> &ignoreErrors() const;
+
+    /**
+     * @brief setIgnoreErrors This nethod sets new list of ignored ssl errors.
+     * @param newIgnoreErrors this is a new value for ignored ssl errors.
+     */
     void setIgnoreErrors(const QList<QSslError> &newIgnoreErrors);
 
 private:
