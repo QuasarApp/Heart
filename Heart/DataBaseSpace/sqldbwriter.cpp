@@ -145,7 +145,7 @@ bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const 
     }
 
     if (result) {
-        *result = q;
+        *result = std::move(q);
     }
 
     return true;

@@ -47,10 +47,6 @@ if (NOT DEFINED HEART_SSL)
     set(HEART_SSL ON)
 endif()
 
-if (HEART_SSL)
-    add_definitions(-DHEART_SSL)
-endif()
-
 if (HEART_DB_CACHE)
     add_definitions(-DHEART_DB_CACHE)
 endif()

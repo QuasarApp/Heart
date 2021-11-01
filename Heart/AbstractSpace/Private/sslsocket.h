@@ -41,8 +41,8 @@ signals:
      */
     void sslErrorsOcurred(SslSocket* sender, const QList<QSslError> &errors);
 };
-
+}
 #endif
 #endif // SSLSOCKET_H
 
-}
+
