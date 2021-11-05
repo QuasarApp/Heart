@@ -244,18 +244,7 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port) {
 bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
 
     if (AbstractNodeInfo *ptr = getInfoPtr(nodeAdderess)) {
-
-        if (ptr->isLocal()) {
-            ptr->removeSocket();
-            return true;
-        } else {
-            QTimer::singleShot(WAIT_CONFIRM_TIME, this,
-                               std::bind(&AbstractNode::handleForceRemoveNode,
-                                         this, nodeAdderess));
-
-            CloseConnection close;
-            return sendData(&close, nodeAdderess);
-        }
+        return removeNode(ptr);
     }
 
     return false;
@@ -265,6 +254,9 @@ bool AbstractNode::removeNode(AbstractNodeInfo *node) {
     if (!(node && node->isValid())) {
         return false;
     }
+
+    if (!node->isConnected())
+        return true;
 
     if (node->isLocal()) {
         node->removeSocket();
@@ -594,8 +586,8 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
             Qt::QueuedConnection);
 
     // check node confirmed
-    QTimer::singleShot(WAIT_TIME, this, [this, info]() {
-        checkConfirmendOfNode(info);
+    QTimer::singleShot(WAIT_TIME, this, [this, cliAddress]() {
+        checkConfirmendOfNode(getInfoPtr(cliAddress));
     });
 
     connectionRegistered(info);
@@ -1263,7 +1255,7 @@ void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
         return;
 
     if (info->status() != NodeCoonectionStatus::Confirmed) {
-        removeNode(info->networkAddress());
+        removeNode(info);
     }
 }
 
