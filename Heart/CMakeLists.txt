@@ -21,9 +21,12 @@ updateGitVars()
 
 add_definitions(-DHEART_LIBRARY)
 
+set(SLL_DEFINE "WITHOUT_SSL")
+
 if (HEART_SSL)
     list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
     find_package(OpenSSL REQUIRED)
+    set(SLL_DEFINE "USE_HEART_SSL")
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h.in ${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h @ONLY)
@@ -82,14 +85,8 @@ set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
 target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp)
 if (HEART_SSL)
-    if (ANDROID)
-        set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
-        target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/include)
+    target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
 
-        target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.a ${OPENSSL_ROOT_PATH}/lib/libssl.a)
-    else()
-        target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
-    endif()
 endif()
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 2)

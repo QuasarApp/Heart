@@ -13,6 +13,8 @@
 #include <QThread>
 #include <QDebug>
 #include <quasarapp.h>
+#include <thread>
+#include <chrono>
 
 // Private implementation of waitFor functions.
 #define waitPrivate(CONDITION, TIMEOUT) \
@@ -21,6 +23,14 @@
         QCoreApplication::processEvents(); \
     } \
     QCoreApplication::processEvents(); \
+    return CONDITION; \
+
+
+#define freazePrivate(CONDITION, TIMEOUT) \
+    auto curmsec = QDateTime::currentMSecsSinceEpoch() + TIMEOUT; \
+    while (curmsec > QDateTime::currentMSecsSinceEpoch() && !CONDITION) { \
+        std::this_thread::sleep_for(std::chrono::microseconds(1)); \
+    } \
     return CONDITION; \
 
 namespace QH {
@@ -55,14 +65,18 @@ void Async::threadAnalize(QThread *thread) {
     debug_assert((mainThread != thread) && thread, "You try create async object into main thread");
 }
 
-bool Async::waitFor(bool *condition, int timeout) const {
+bool Async::waitFor(bool *condition, int timeout, bool freaze) const {
     if (!condition)
         return false;
 
-    waitPrivate(*condition, timeout)
+    if (freaze) {
+        freazePrivate(*condition, timeout)
+    } else {
+        waitPrivate(*condition, timeout)
+    }
 }
 
-bool Async::asyncLauncher(const Async::Job &job, bool await) const {
+bool Async::asyncLauncher(const Async::Job &job, bool await, bool freaze) const {
 
     if (QThread::currentThread() == thread()) {
         return job();
@@ -96,15 +110,20 @@ bool Async::asyncLauncher(const Async::Job &job, bool await) const {
     if (!invockeResult)
         return false;
 
-    if (!waitFor(&workOfEnd)) {
+    if (!waitFor(&workOfEnd, WAIT_TIME, freaze)) {
         return false;
     }
 
     return workResult;
 }
 
-bool Async::waitFor(const std::function<bool ()> &condition, int timeout) const {
-    waitPrivate(condition(), timeout)
+bool Async::waitFor(const std::function<bool ()> &condition, int timeout, bool freaze) const {
+    if (freaze) {
+        freazePrivate(condition(), timeout)
+    } else {
+        waitPrivate(condition(), timeout)
+    }
+
 }
 
 }

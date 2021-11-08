@@ -12,6 +12,7 @@
 #include <QDataStream>
 #include <QVariantMap>
 #include "heart_global.h"
+#include <type_traits>
 
 class QDataStream;
 namespace QH {
@@ -63,6 +64,7 @@ public:
      *  Default implementation it is copy from byteArray.
      * @param right input data object.
      * @return return value link to object.
+     * @warning This method invoke the toBytes method 2 time and compare bigData arrays. So works is very slowly.
      */
     template<class T>
     T& copy(const StreamBase& right) {
@@ -71,6 +73,24 @@ public:
 
         fromBytes(right.toBytes());
         return static_cast<T&>(*this);
+    }
+
+    template<class T>
+    /**
+     * @brief compare This method compare array signatures of this and @a right objects.
+     * @param right This is comparable object.
+     * @return true if right object is some of this.
+     * @warning This method invoke the toBytes method 2 time and compare bigData arrays. So works is very slowly.
+     */
+    bool compare(const T& right) {
+        static_assert(std::is_base_of_v<StreamBase, T>,
+                "The argument of the compare method must be base type of the StreamBase class");
+
+        if (static_cast<unsigned int>(typeid (T).hash_code()) != typeId()) {
+            return false;
+        }
+
+        return toBytes() == right.toBytes();
     }
 
 protected:
@@ -109,6 +129,12 @@ protected:
      * \endcode
      */
     virtual QDataStream& toStream(QDataStream& stream) const = 0;
+
+    /**
+     * @brief typeId This method return id of type.
+     * @return integer hash of type.
+     */
+    virtual unsigned int typeId() const;
 
 };
 }

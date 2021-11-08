@@ -10,6 +10,7 @@
 
 #include <QDataStream>
 #include <QIODevice>
+#include <QSharedPointer>
 
 namespace QH {
 
@@ -32,6 +33,10 @@ QByteArray StreamBase::toBytes() const {
     QDataStream stream(&res, QIODevice::WriteOnly);
     toStream(stream);
     return res;
+}
+
+unsigned int StreamBase::typeId() const {
+    return typeid (*this).hash_code();
 }
 
 QDataStream &operator<<(QDataStream &stream, const StreamBase &obj) {

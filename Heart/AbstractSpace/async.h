@@ -38,10 +38,11 @@ public:
      * @brief asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object.
      * @param job This is function with needed job.
      * @param await This is boolean option for enable or disable wait for finish of the job function.
+     * @param freaze This option disaable process event of waiting of results.
      * @return true if the job function started correctly. If the await option is true then
      * this method return result of job function.
      */
-    bool asyncLauncher(const Job &job, bool await = false) const;
+    bool asyncLauncher(const Job &job, bool await = false, bool freaze = true) const;
 
 protected:
     /**
@@ -62,17 +63,19 @@ protected:
      * @brief waitFor This is base wait function.
      * @param condition This is pointer to awaiting boolean variable.
      * @param timeout This is maximum time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @param freaze This frease current thread for waiting results of another thread. If you set this option to false then will be invoked process event method.
      * @return true if condition is true.
      */
-    bool waitFor(bool* condition, int timeout = WAIT_TIME) const;
+    bool waitFor(bool* condition, int timeout = WAIT_TIME, bool freaze = true) const;
 
     /**
      * @brief waitFor This is base wait function.
      * @param condition This is lambda method with condition results.
      * @param timeout This is maximum time for wait. By default this value equals WAIT_TIME it is 30000 msec.
+     * @param freaze This frease current thread for waiting results of another thread. If you set this option to false then will be invoked process event method.
      * @return true if condition is true.
      */
-    bool waitFor(const Job &condition, int timeout = WAIT_TIME) const;
+    bool waitFor(const Job &condition, int timeout = WAIT_TIME,  bool freaze = true) const;
 
 private slots:
 

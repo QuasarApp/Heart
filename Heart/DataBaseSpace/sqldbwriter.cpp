@@ -24,7 +24,7 @@
 namespace QH {
 using namespace PKG;
 
-bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) {
+bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) const {
     QFile f(sqlFile);
     bool result = true;
     if (f.open(QIODevice::ReadOnly)) {
@@ -145,11 +145,20 @@ bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const 
     }
 
     if (result) {
-        *result = q;
+        *result = std::move(q);
     }
 
     return true;
 
+}
+
+bool SqlDBWriter::doSqlPrivate(const QString &sqlFile) const {
+    QSqlQuery query(*_db);
+    if (!exec(&query, sqlFile)) {
+        return false;
+    }
+
+    return true;
 }
 
 bool SqlDBWriter::enableFK() {
@@ -348,6 +357,16 @@ bool SqlDBWriter::doQuery(const QString &query,
     };
 
     return asyncLauncher(job, wait);
+}
+
+bool SqlDBWriter::doSql(const QString &sqlFile, bool wait) const {
+
+    Async::Job job = [this, sqlFile]() {
+        return doSqlPrivate(sqlFile);
+    };
+
+    return asyncLauncher(job, wait);
+
 }
 
 bool SqlDBWriter::selectQuery(const DBObject& requestObject,
