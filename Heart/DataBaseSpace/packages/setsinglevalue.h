@@ -27,6 +27,8 @@ namespace PKG {
  *      bool result = db()->updateObject(SetSingleValue(address, fieldName, newValue));
  *      ...
  *  @endcode
+ *
+ * @see GetSingleValue
  */
 class HEARTSHARED_EXPORT SetSingleValue final: public DBObject
 {
