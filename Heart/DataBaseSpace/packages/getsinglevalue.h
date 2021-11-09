@@ -19,6 +19,22 @@ namespace PKG {
 /**
  * @brief The GetSingleValue class is intended for get a single value from database.
  * The value is selected by primaryKey. By Default the primary key is 'id'
+ *
+ * **Example of use**
+ *
+ * @code{cpp}
+ *
+ *  QH::PKG::GetSingleValue request({"TableName", "PrimarykeyValue"}, "requestFieldColumName", "PrimaryKey");
+    auto result = _db->getObject(request);
+
+    if (!result) {
+        return 0;
+    }
+
+    auto resultValue = result->value();
+ * @endcode
+ *
+ * @see SetSingleValue
  */
 class HEARTSHARED_EXPORT GetSingleValue final: public DBObject
 {
