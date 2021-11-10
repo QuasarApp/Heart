@@ -31,4 +31,18 @@ SqlDB::getFromCache(const PKG::DBObject *obj) {
     Q_UNUSED(obj);
     return {};
 }
+
+void SqlDB::pushToQueue(const QSharedPointer<PKG::DBObject> &obj,
+                        CacheAction type) {
+    Q_UNUSED(obj);
+    Q_UNUSED(type);
+}
+
+void SqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
+    Q_UNUSED(currentTime);
+}
+
+void SqlDB::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
+    Q_UNUSED(mode);
+}
 }
