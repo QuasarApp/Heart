@@ -15,7 +15,7 @@ namespace QH {
  * @brief The SqlDB class This is base implementation fo datatbase.
  * The SqlDB do not use caches, all request run on the sqlwtiter class.
  */
-class HEARTSHARED_EXPORT SqlDB : public ISqlDBCache {
+class HEARTSHARED_EXPORT SqlDB final: public ISqlDBCache {
     Q_OBJECT
 public:
     SqlDB();
@@ -27,6 +27,9 @@ protected:
     bool updateCache(const QSharedPointer<PKG::DBObject> &obj) override final;
     QList<QSharedPointer<PKG::DBObject>>
     getFromCache(const PKG::DBObject *obj) override final;
+    void pushToQueue(const QSharedPointer<PKG::DBObject> &obj, CacheAction type) override final;
+    void globalUpdateDataBasePrivate(qint64 currentTime) override final;
+    void globalUpdateDataBase(SqlDBCasheWriteMode mode) override final;
 };
 }
 #endif // SQLDB_H
