@@ -13,7 +13,7 @@
 namespace QH {
 
 /**
- * @brief The Header struct 12 bytes.
+ * @brief The Header struct 14 bytes.
  */
 #pragma pack(push, 1)
 struct HEARTSHARED_EXPORT Header {
@@ -37,6 +37,11 @@ struct HEARTSHARED_EXPORT Header {
      *  The server should write to which command it responds.
      */
     unsigned int triggerHash;
+
+    /**
+     * @brief version This is version of command parser.
+     */
+    unsigned short version = 0;
 
     /**
      * @brief Header default constructor

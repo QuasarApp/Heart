@@ -146,10 +146,11 @@ public:
      * @brief toPackage This method convert this class object to the package.
      *  For more info see Package class.
      * @param package  This is return value of Package class.
+     * @param version This is number of version current node and node protockol.
      * @param triggerHash This is hash of the package the current class is responding to.
      * @return True if convert to package finished successful.
      */
-    bool toPackage(Package &package, unsigned int triggerHash = 0) const;
+    bool toPackage(Package &package, unsigned short version, unsigned int triggerHash = 0) const;
 
     /**
      * @brief isValid This method check current object to valid.

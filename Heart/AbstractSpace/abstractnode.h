@@ -43,6 +43,7 @@ class BigDataManager;
 class TaskScheduler;
 class AbstractTask;
 class SslSocket;
+class IParser;
 
 namespace PKG {
 class ErrorData;
@@ -109,8 +110,8 @@ class Abstract;
  *
  * @note For correctly working this class you should be register all you data types using the AbstractNode::registerPackageType method.
  *  @see AbstractData
- *  @see AbstractNode::registerPackageType
- *  @see AbstractNode::parsePackage
+ *  @see IWorker::registerPackageType
+ *  @see IWorker::parsePackage
  */
 class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {
@@ -292,6 +293,20 @@ public:
     const QList<QSslError> &ignoreSslErrors() const;
 #endif
 
+    /**
+     * @brief parsers This method return all available parsers.
+     * @return list of available parsers.
+     * @see AbstractNode::parsers
+     */
+    const QMap<unsigned short, QSharedPointer<IParser> > &parsers() const;
+
+    /**
+     * @brief setParsers This method sets works parsers for this node.
+     * @param newParsers This is map list of works parsers.
+     * @see AbstractNode::setParsers
+     */
+    void setParsers(const QMap<unsigned short, QSharedPointer<IParser> > &newParsers);
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -354,58 +369,6 @@ protected:
      * @return return true if the scoeket has been registered successful.
      */
     virtual bool registerSocket(QAbstractSocket *socket, const HostAddress* address = nullptr);
-
-    /**
-     * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
-     *  This method work on own thread.
-     *  If you ovveride this method you need to create this than an example:
-     * \code{cpp}
-        ParserResult DataBaseNode::parsePackage(PKG::AbstractData *pkg,
-                                                const Header& pkgHeader,
-                                                const AbstractNodeInfo* sender) {
-            auto parentResult = AbstractNode::parsePackage(pkg, sender);
-            if (parentResult != ParserResult::NotProcessed) {
-                return parentResult;
-            }
-
-            // you can use parsing without the commandHandler method
-            if (MyCommand::command() == pkg->cmd()) {
-
-                BaseId requesterId = getSender(sender, &obj);
-
-                ...
-
-                if (FailCondition) {
-                    return ParserResult::Error;
-                }
-
-                ...
-
-                return ParserResult::Processed;
-
-            }
-
-            // Or with the commandHandler method
-
-            auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
-            if (result != QH::ParserResult::NotProcessed) {
-                return result;
-            }
-
-            return ParserResult::NotProcessed;
-        }
-     * \endcode
-     * @param pkg This is package with incomming data.
-     * @param sender This is sender this pacakge.
-     * @param pkgHeader This is header of the incoming packet is used to create a response.
-     * @return item of ParserResult. For more information see The ParserResult enum.
-     * @see AbstractNode::commandHandler
-     * @see AbstractNode::sendData
-     * @see AbstractNode::badRequest
-
-     */
-    virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                                      const Header& pkgHeader, const AbstractNodeInfo* sender);
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
@@ -523,9 +486,9 @@ protected:
 
     /**
      * @brief incomingData This method invoked when node get command or ansver.
-     *  This method invoked befor parsing in the parsePackage method.
+     *  This method invoked befor parsing in the parsePackage method of the current worker modeule.
      * @note use this method for handling received data, but do not change the @a pkg object.
-     *  If You want change pkg object use the parsePackage method.
+     *  If You want change pkg object use the parsePackage method of the current worker modeule.
      * @param pkg This is received package (in this implementation it is only the Ping command)
      * @param sender This is information of sender of the package.
      * @note override this method for get a signals.
@@ -567,44 +530,8 @@ protected:
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
 
-
-    template<class T>
-    /**
-     * @brief registerPackageType This method register package type T.
-     * This is need to prepare pacakge for parsing in the parsePackage method.
-     */
-    void registerPackageType() {
-        _registeredTypes[T::command()] = [](){
-            return new T();
-        };
-    };
-
     void prepareForDelete() override;
 
-    /**
-     * @brief prepareData This is private method for preparing package from the byteArray.
-     * @param pkg This is a raw package value.
-     * @return pointer into prepared data.
-     * @warning The return value do not clear automatically.
-     */
-    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
-
-    /**
-     * @brief genPackage This is factory method that generate data pacakge objects by command.
-     *  All object should be registered before using this method.
-     * @param cmd This is command of pacakge see Header::command.
-     * @return shared pointer to new data object.
-     * @see AbstractNode::registerPackageType
-     * @see Header::command
-     */
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
-
-    /**
-     * @brief checkCommand This method check command are if registered type or not.
-     * @brief cmd This is command of a verifiable package.
-     * @return True if the package is registered in a node.
-     */
-    bool checkCommand(unsigned short cmd) const;
 
     /**
      * @brief connectionsList This method return list of all node connections
@@ -619,57 +546,6 @@ protected:
      * @warning do not use this method for validation is connected.
      */
     QList<HostAddress> activeConnectionsList() const;
-
-
-    /**
-     * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
-     * Exmaple of use :
-     * @code{cpp}
-     *      auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
-            if (result != QH::ParserResult::NotProcessed) {
-                return result;
-            }
-            ...
-     * @endcode
-     * @tparam PackageClass This is class name that you want handle.  All classes mist be inhert of the QH::PKG::AbstractData class.
-     * @tparam HandlerType This is type of the handler object that will invoke @a HandlerMethod method.
-
-     * @tparam HandlerMethod This is name of the handler method.
-     * The handler method should be support next signature:
-     *  **bool Method(const QSharedPointer<QH::PKG::PackageClass> &, const QH::Header &pkgHeader, const QH::AbstractNodeInfo *sender)**.
-     * @param handlerObject This is pointer to handler object.
-     * @param method This is handler method.
-     * @param pkg This is package data from the AbstractNode::parsePackage argumetns
-     * @param pkgHeader This is header of an incomming package.
-     * @param sender This is socket object of a sender that send this package.
-     * @return item of ParserResult. For more information see The ParserResult enum.
-     *
-     * @see AbstractNode::parsePackage
-     * @see ParserResult
-     */
-    template<class PackageClass,class HandlerType, class HandlerMethod>
-
-    inline ParserResult commandHandler(HandlerType handlerObject, HandlerMethod method,
-                                       const QSharedPointer<QH::PKG::AbstractData> &pkg,
-                                       const QH::AbstractNodeInfo *sender,
-                                       const QH::Header &pkgHeader) {
-
-        if (PackageClass::command() == pkg->cmd()) {
-            auto data = pkg.staticCast<PackageClass>();
-
-            if (!data->isValid()) {
-                return QH::ParserResult::Error;
-            }
-
-            if(!(handlerObject->*method)(data, sender, pkgHeader)) {
-                return QH::ParserResult::Error;
-            }
-
-            return QH::ParserResult::Processed;
-        }
-
-        return QH::ParserResult::NotProcessed;
-    }
 
 protected slots:
     /**
@@ -695,9 +571,6 @@ private slots:
      */
     void handleNodeStatusChanged(AbstractNodeInfo* node, NodeCoonectionStatus status);
 
-    /**
-     * @brief handleWorkerStoped
-     */
     void handleWorkerStoped();
 
     /**
@@ -736,7 +609,7 @@ private:
     bool listen(const HostAddress& address = HostAddress::Any);
 
     /**
-     * @brief newWork - this method it is wraper of the parsePackage method.
+     * @brief newWork - this method it is wraper of the parsePackage method of the current worker modeule.
      *  the newWork invoke a parsePackage in the new thread.
      * @param pkg
      * @param sender
@@ -764,6 +637,14 @@ private:
      */
     void deinitThreadPool();
 
+    /**
+     * @brief selectParser This method select parser for parsing pacakge by version.
+     * @param version This is requaried version of parser.
+     * @param strict If this argument will set to true then this method will check parsers only with @a version else any parser that maksimum near to required version of parser.
+     * @return parser for work with pacakge.
+     */
+    QSharedPointer<IParser> selectParser(unsigned short version, bool strict = false) const;
+
 
     SslMode _mode = SslMode::NoSSL;
 #ifdef USE_HEART_SSL
@@ -782,12 +663,13 @@ private:
 
     QSet<QFutureWatcher <bool>*> _workers;
 
+    QMap<unsigned short /*version*/, QSharedPointer<IParser>> _parsers;
+
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;
     mutable QMutex _threadPoolMutex;
 
     QThreadPool *_threadPool = nullptr;
-    QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
 
     friend class WebSocketController;
     friend class SocketFactory;

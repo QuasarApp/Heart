@@ -41,6 +41,7 @@
 
 #include <bigdatamanager.h>
 #include <taskscheduler.h>
+#include "iparser.h"
 
 namespace QH {
 
@@ -457,6 +458,15 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
     return _socketWorker->run(action);
 }
 
+const QMap<unsigned short, QSharedPointer<IParser> > &
+AbstractNode::parsers() const {
+    return _parsers;
+}
+
+void AbstractNode::setParsers(const QMap<unsigned short, QSharedPointer<IParser> > &newParsers) {
+    _parsers = newParsers;
+}
+
 const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
     return _ignoreSslErrors;
 }
@@ -703,9 +713,9 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     Package pkg;
     bool convert = false;
     if (req) {
-        convert = resp->toPackage(pkg, req->hash);
+        convert = resp->toPackage(pkg, req->version, req->hash);
     } else {
-        convert = resp->toPackage(pkg);
+        convert = resp->toPackage(pkg, 0);
     }
 
     if (!convert) {
@@ -1060,29 +1070,6 @@ bool AbstractNode::listen(const HostAddress &address) {
     return QTcpServer::listen(address, address.port());
 }
 
-QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const {
-
-    auto value = genPackage (pkg.hdr.command);
-    if (!value) {
-        QuasarAppUtils::Params::log("You try parse not registered package type."
-                                    " Plese use the registerPackageType method befor parsing."
-                                    " Example invoke registerPackageType<MyData>() into constructor of you client and server nodes.");
-
-        return nullptr;
-    }
-
-    value->fromPakcage(pkg);
-    return value;
-}
-
-QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd) const {
-    return QSharedPointer<AbstractData>(_registeredTypes.value(cmd, [](){return nullptr;})());
-}
-
-bool AbstractNode::checkCommand(unsigned short cmd) const {
-    return _registeredTypes.contains(cmd);
-}
-
 QList<HostAddress> AbstractNode::connectionsList() const {
     QMutexLocker locer(&_connectionsMutex);
 
@@ -1123,11 +1110,20 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
     auto executeObject = [pkg, sender, id, this]() {
 
-        auto data = prepareData(pkg);
+        auto parser = selectParser(pkg.hdr.version);
+
+        if (!parser) {
+            QuasarAppUtils::Params::log("The package version " + QString::number(pkg.hdr.version) +
+                                        " is not supported on this node.", QuasarAppUtils::Error);
+
+            return false;
+        }
+
+        auto data = parser->prepareData(pkg);
         if (!data)
             return false;
 
-        ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
+        ParserResult parseResult = parser->parsePackage(data, pkg.hdr, sender);
 
         if (parseResult != ParserResult::Processed) {
 

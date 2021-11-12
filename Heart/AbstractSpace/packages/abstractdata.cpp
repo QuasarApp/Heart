@@ -21,6 +21,7 @@ AbstractData::AbstractData() {
 }
 
 bool AbstractData::toPackage(Package &package,
+                             unsigned short version,
                              unsigned int triggerHash) const {
 
     if (!checkCmd()) {
@@ -39,6 +40,7 @@ bool AbstractData::toPackage(Package &package,
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
     package.hdr.hash = package.calcHash();
+    package.hdr.version = version;
 
     return package.isValid();
 }

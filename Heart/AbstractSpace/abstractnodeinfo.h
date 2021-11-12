@@ -256,6 +256,7 @@ private:
 
     QHostInfo *_info = nullptr;
     HostAddress _networkAddress;
+    unsigned short _parserVersion = 0;
 
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
