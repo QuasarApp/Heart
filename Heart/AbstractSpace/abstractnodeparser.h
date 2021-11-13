@@ -1,25 +1,16 @@
-/*
- * Copyright (C) 2021-2021 QuasarApp.
- * Distributed under the lgplv3 software license, see the accompanying
- * Everyone is permitted to copy and distribute verbatim copies
- * of this license document, but changing it is not allowed.
-*/
+#ifndef ABSTRACTNODEPARSER_H
+#define ABSTRACTNODEPARSER_H
 
-
-#ifndef BIGDATAMANAGER_H
-#define BIGDATAMANAGER_H
-
-#include <QSharedPointer>
-#include <bigdataheader.h>
-#include <bigdatapart.h>
-#include <bigdatarequest.h>
+#include "iparser.h"
 
 
 namespace QH {
 
-class AbstractNode;
-class AbstractNodeInfo;
-
+namespace PKG {
+    class BigDataHeader;
+    class BigDataPart;
+    class BigDataRequest;
+}
 
 struct PoolData {
     QSharedPointer<PKG::BigDataHeader> header;
@@ -28,19 +19,44 @@ struct PoolData {
 };
 
 /**
- * @brief The BigDataManager class is module for control od big data delovering.
+ * @brief The AbstractNodeParser class This implementation of the iParser interface support next packages:
+ * * Ping
+ * * BadRequest
+ * * CloseConnection
+ * * BigDataRequest
+ * * BigDataHeader
+ * * BigDataPart
+ *
+ *
+ * ### The AbstractNode prarser support all functions of big data transfer.
+ *
+ *
+ * How to work the BigData manager. the BigData manager is module for control od big data delovering.
  * **How to is work**
  * 1. All big pacakges separate to 64kb parts.
  * 2. Sender send big package header.
  * 3. receiver send request to next paart (0)
  * 4. Sender sent reqested part to receiver
- **/
-class BigDataManager
+ *
+ */
+class AbstractNodeParser: public IParser
 {
-
 public:
-    BigDataManager(AbstractNode *);
+    AbstractNodeParser(AbstractNode* node);
 
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg, const Header &pkgHeader, const AbstractNodeInfo *sender);
+
+    /**
+     * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.
+     * @param data This is package that will be sent to remote node.
+     * @param sender This is request object.
+     * @param pkgHeader requested header.
+     * @return true if package sent successful
+     */
+    bool sendBigDataPackage(const PKG::AbstractData *data,
+                            const QH::AbstractNodeInfo *sender,
+                            const Header *pkgHeader);
+protected:
     /**
      * @brief newPackage This method process first header packge of the big data.
      * @param header This is header package.
@@ -74,24 +90,17 @@ public:
                     const QH::AbstractNodeInfo *sender,
                     const QH::Header &pkgHeader);
 
-    /**
-     * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.
-     * @param data This is package that will be sent to remote node.
-     * @param sender This is request object.
-     * @param pkgHeader requested header.
-     * @return true if package sent successful
-     */
-    bool sendBigDataPackage(const PKG::AbstractData *data,
-                            const QH::AbstractNodeInfo *sender,
-                            const Header *pkgHeader);
 
 private:
-
     void insertNewBigData(const QSharedPointer<PKG::BigDataHeader> &header);
     void checkOutDatedPacakges(unsigned int currentProcessedId);
+
+
 
     AbstractNode *_node = nullptr;
     QHash<int, PoolData> _pool;
 };
+
 }
-#endif // BIGDATAMANAGER_H
+
+#endif // ABSTRACTNODEPARSER_H

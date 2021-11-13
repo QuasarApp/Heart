@@ -39,7 +39,6 @@ class DataSender;
 class ReceiveData;
 class SocketFactory;
 class AsyncLauncher;
-class BigDataManager;
 class TaskScheduler;
 class AbstractTask;
 class SslSocket;
@@ -307,6 +306,58 @@ public:
      */
     void setParsers(const QMap<unsigned short, QSharedPointer<IParser> > &newParsers);
 
+    /**
+     * @brief changeTrust This method change trust of connected node.
+     * @param id This is id of select node.
+     * @param diff This is difference of current trust (currenTrus += diff).
+     * @return true if node trust is changed successful.
+     */
+    virtual bool changeTrust(const HostAddress& id, int diff);
+
+    /**
+     * @brief sendData This method send data  object another to node
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
+                                  const Header *req = nullptr);
+
+    /**
+     * @brief sendData This method send data  object another to node
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
+                                  const Header *req = nullptr);
+
+    /**
+     * @brief badRequest This method is send data about error of request.
+     * @param address This is addrees of receiver.
+     * @param req This is header of incomming request.
+     * @param err This is message and code of error. For more information see the ErrorData struct.
+     * @param diff This is difference of current trust (currenTrus += diff).
+     * By default diff equals REQUEST_ERROR
+     */
+    virtual void badRequest(const HostAddress &address, const Header &req,
+                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
+
+
+    /**
+     * @brief incomingData This method invoked when node get command or ansver.
+     *  This method invoked befor parsing in the parsePackage method of the current worker modeule.
+     * @note use this method for handling received data, but do not change the @a pkg object.
+     *  If You want change pkg object use the parsePackage method of the current worker modeule.
+     * @param pkg This is received package (in this implementation it is only the Ping command)
+     * @param sender This is information of sender of the package.
+     * @note override this method for get a signals.
+     * @note This method will be invoked in the own thread.
+     */
+    virtual void incomingData(const PKG::AbstractData* pkg,
+                              const AbstractNodeInfo* sender);
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -382,37 +433,6 @@ protected:
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
 
     /**
-     * @brief sendData This method send data  object another to node
-     * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
-     * @param req This is header of request.
-     * @return hash of the sendet package. If function is failed then return 0.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
-                                  const Header *req = nullptr);
-
-    /**
-     * @brief sendData This method send data  object another to node
-     * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
-     * @param req This is header of request.
-     * @return hash of the sendet package. If function is failed then return 0.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                                  const Header *req = nullptr);
-
-    /**
-     * @brief badRequest This method is send data about error of request.
-     * @param address This is addrees of receiver.
-     * @param req This is header of incomming request.
-     * @param err This is message and code of error. For more information see the ErrorData struct.
-     * @param diff This is difference of current trust (currenTrus += diff).
-     * By default diff equals REQUEST_ERROR
-     */
-    virtual void badRequest(const HostAddress &address, const Header &req,
-                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
-
-    /**
      * @brief getWorkStateString This method generate string about work state of server.
      * @return string of work state.
      */
@@ -445,14 +465,6 @@ protected:
      */
     void incomingConnection(qintptr handle) override final;
 
-    /**
-     * @brief changeTrust This method change trust of connected node.
-     * @param id This is id of select node.
-     * @param diff This is difference of current trust (currenTrus += diff).
-     * @return true if node trust is changed successful.
-     */
-    virtual bool changeTrust(const HostAddress& id, int diff);
-
 
 #ifdef USE_HEART_SSL
 
@@ -483,19 +495,6 @@ protected:
      */
     bool disableSSL();
 #endif
-
-    /**
-     * @brief incomingData This method invoked when node get command or ansver.
-     *  This method invoked befor parsing in the parsePackage method of the current worker modeule.
-     * @note use this method for handling received data, but do not change the @a pkg object.
-     *  If You want change pkg object use the parsePackage method of the current worker modeule.
-     * @param pkg This is received package (in this implementation it is only the Ping command)
-     * @param sender This is information of sender of the package.
-     * @note override this method for get a signals.
-     * @note This method will be invoked in the own thread.
-     */
-    virtual void incomingData(const PKG::AbstractData* pkg,
-                              const AbstractNodeInfo* sender);
 
     /**
      * @brief connections - Return hash map of all connections of this node.
@@ -658,7 +657,6 @@ private:
     DataSender * _dataSender = nullptr;
     AsyncLauncher * _socketWorker = nullptr;
     QThread *_senderThread = nullptr;
-    BigDataManager *_bigdatamanager = nullptr;
     TaskScheduler *_tasksheduller = nullptr;
 
     QSet<QFutureWatcher <bool>*> _workers;
