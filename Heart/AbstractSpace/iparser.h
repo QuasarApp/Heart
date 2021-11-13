@@ -13,7 +13,7 @@ class IParser
 {
 public:
     IParser(AbstractNode* node);
-
+    virtual ~IParser() = default;
     /**
      * @brief prepareData This is private method for preparing package from the byteArray.
      * @param pkg This is a raw package value.

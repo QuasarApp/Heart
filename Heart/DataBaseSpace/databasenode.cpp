@@ -47,12 +47,6 @@ DataBaseNode::DataBaseNode(QObject *ptr):
     _webSocketWorker = new WebSocketController(this);
 
     qRegisterMetaType<QSharedPointer<QH::PKG::DBObject>>();
-
-    registerPackageType<WebSocket>();
-    registerPackageType<WebSocketSubscriptions>();
-    registerPackageType<DeleteObject>();
-
-
 }
 
 bool DataBaseNode::initSqlDb(QString DBparamsFile,

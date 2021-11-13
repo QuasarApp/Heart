@@ -472,7 +472,6 @@ private:
 
     ISqlDBCache *_db = nullptr;
     QString _localNodeName;
-    WebSocketController *_webSocketWorker = nullptr;
 
 
     friend class WebSocketController;
