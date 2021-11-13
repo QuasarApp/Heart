@@ -107,10 +107,13 @@ class Abstract;
  *  and work with crypto method for crease a security connections betwin nodes.
  *  AbstractNode - is thread save class.
  *
+ *  The AbstractNode use by default the AbstractNodeParser.
+ *
  * @note For correctly working this class you should be register all you data types using the AbstractNode::registerPackageType method.
  *  @see AbstractData
  *  @see IWorker::registerPackageType
  *  @see IWorker::parsePackage
+ *  @see AbstractNodeParser
  */
 class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {

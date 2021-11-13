@@ -38,6 +38,9 @@ struct PoolData {
  * 3. receiver send request to next paart (0)
  * 4. Sender sent reqested part to receiver
  *
+ * This parser used by default in AbstractNode class.
+ *
+ * @see AbstractNode
  */
 class AbstractNodeParser: public IParser
 {
