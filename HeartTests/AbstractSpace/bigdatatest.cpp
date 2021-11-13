@@ -8,6 +8,7 @@
 #include "bigdatatest.h"
 
 #include <abstractnode.h>
+#include <abstractnodeparser.h>
 
 #define LOCAL_TEST_PORT TEST_PORT + 4
 
@@ -45,7 +46,12 @@ class TestingClientBigData: public QH::AbstractNode {
 public:
     TestingClientBigData(int i) {
         Q_UNUSED(i);
-        registerPackageType<BigPackage>();
+
+        auto parser = QSharedPointer<QH::AbstractNodeParser>::create(this);
+
+        parser->registerPackageType<BigPackage>();
+        addParser(parser);
+
         data = new BigPackage();
     }
 

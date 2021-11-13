@@ -307,6 +307,15 @@ public:
     void setParsers(const QMap<unsigned short, QSharedPointer<IParser> > &newParsers);
 
     /**
+     * @brief addParser This method register new parser for node.
+     * @param parser This is added paraser.
+     * @return return true if parsers registered successful else false. This method can't add parser if version alerdy registered.
+     * @see IParser
+     * @see AbstracrNodeParser
+     */
+    void addParser(const QSharedPointer<IParser>& parser);
+
+    /**
      * @brief changeTrust This method change trust of connected node.
      * @param id This is id of select node.
      * @param diff This is difference of current trust (currenTrus += diff).

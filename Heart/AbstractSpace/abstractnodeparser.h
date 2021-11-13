@@ -44,7 +44,9 @@ class AbstractNodeParser: public IParser
 public:
     AbstractNodeParser(AbstractNode* node);
 
-    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg, const Header &pkgHeader, const AbstractNodeInfo *sender);
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header &pkgHeader,
+                              const AbstractNodeInfo *sender);
 
     /**
      * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.

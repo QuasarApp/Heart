@@ -73,6 +73,7 @@ AbstractNode::AbstractNode( QObject *ptr):
 
     initThreadPool();
 
+    addParser(QSharedPointer<AbstractNodeParser>::create(this));
 }
 
 AbstractNode::~AbstractNode() {
@@ -457,6 +458,10 @@ AbstractNode::parsers() const {
 
 void AbstractNode::setParsers(const QMap<unsigned short, QSharedPointer<IParser> > &newParsers) {
     _parsers = newParsers;
+}
+
+void AbstractNode::addParser(const QSharedPointer<IParser> &parser) {
+    _parsers[parser->version()] = parser;
 }
 
 const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
@@ -1213,6 +1218,22 @@ void AbstractNode::deinitThreadPool() {
     _threadPool->waitForDone(WAIT_TIME);
     delete _threadPool;
     _threadPool = nullptr;
+}
+
+QSharedPointer<IParser> AbstractNode::selectParser(unsigned short version,
+                                                   bool strict) const {
+
+    if (strict) {
+        return _parsers.value(version, nullptr);
+    }
+
+    for (auto it = _parsers.begin(); it != _parsers.end(); ++it) {
+        if (it.key() >= version) {
+            return it.value();
+        }
+    };
+
+    return nullptr;
 }
 
 QThread *AbstractNode::mainThreadID() {

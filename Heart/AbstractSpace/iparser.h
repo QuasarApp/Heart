@@ -56,6 +56,32 @@ public:
      */
     virtual unsigned short version() const;
 
+    template<class T>
+    /**
+     * @brief registerPackageType This method register package type T.
+     * This is need to prepare pacakge for parsing in the parsePackage method of the current worker modeule.
+     *
+     *
+     * **Example of use**:
+     *
+     * @code{cpp}
+     *
+     * // this is constructor of the node:
+     *  // create new parser object
+     *
+     *  auto parser = QSharedPointer<QH::AbstractNodeParser>::create(this);
+
+        // register new package for parser. Note this package can't parse but the node emit incomePacakge siganl with received data.
+        parser->registerPackageType<BigPackage>();
+        // register your parser for node.
+        addParser(parser);
+     * @endcode
+     */
+    void registerPackageType() {
+        _registeredTypes[T::command()] = [](){
+            return new T();
+        };
+    };
 
     /**
      * @brief parsePackage This is main method of all childs classes of an AbstractNode and IWorker classes.
@@ -108,7 +134,7 @@ public:
 
      */
     virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                                      const Header& pkgHeader, const AbstractNodeInfo* sender);
+                                      const Header& pkgHeader, const AbstractNodeInfo* sender) = 0;
 
 
 
@@ -176,17 +202,6 @@ protected:
 
         return QH::ParserResult::NotProcessed;
     }
-
-    template<class T>
-    /**
-     * @brief registerPackageType This method register package type T.
-     * This is need to prepare pacakge for parsing in the parsePackage method of the current worker modeule.
-     */
-    void registerPackageType() {
-        _registeredTypes[T::command()] = [](){
-            return new T();
-        };
-    };
 
 private:
     AbstractNode* _node = nullptr;
