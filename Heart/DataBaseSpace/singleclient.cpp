@@ -327,10 +327,30 @@ void QH::SingleClient::nodeDisconnected(AbstractNodeInfo *node) {
     setStatus(ClientStatus::Dissconnected);
 }
 
-unsigned int SingleClient::sendData(PKG::AbstractData *resp,
+unsigned int SingleClient::sendData(const PKG::AbstractData *resp,
                                     const HostAddress &address,
                                     const Header *req) {
 
+    return DataBaseNode::sendData(resp, address, req);
+}
+
+unsigned int SingleClient::sendData(const PKG::AbstractData *resp,
+                                    const AbstractNodeInfo *node,
+                                    const Header *req) {
+
+    return DataBaseNode::sendData(resp, node, req);
+}
+
+unsigned int SingleClient::sendData(const PKG::AbstractData *resp,
+                                    const QVariant &nodeId,
+                                    const Header *req) {
+
+    return DataBaseNode::sendData(resp, nodeId, req);
+}
+
+unsigned int SingleClient::sendData(PKG::AbstractData *resp,
+                                    const HostAddress &address,
+                                    const Header *req) {
     if (!signPackageWithToken(resp)) {
         return 0;
     }
@@ -339,7 +359,7 @@ unsigned int SingleClient::sendData(PKG::AbstractData *resp,
 }
 
 unsigned int SingleClient::sendData(PKG::AbstractData *resp,
-                                    const AbstractNode *node,
+                                    const AbstractNodeInfo *node,
                                     const Header *req) {
     if (!signPackageWithToken(resp)) {
         return 0;
@@ -351,7 +371,6 @@ unsigned int SingleClient::sendData(PKG::AbstractData *resp,
 unsigned int SingleClient::sendData(PKG::AbstractData *resp,
                                     const QVariant &nodeId,
                                     const Header *req) {
-
     if (!signPackageWithToken(resp)) {
         return 0;
     }
