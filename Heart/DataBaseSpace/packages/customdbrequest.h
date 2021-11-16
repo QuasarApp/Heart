@@ -24,6 +24,10 @@ template <class BASE>
  * Example:
  * @code{cpp}
  *
+ * QH::PKG::CustomDBRequest<User> request("SELECT * FROM Users");
+   QList<QSharedPointer<QH::PKG::DBObject>> result;
+   if (!db->getAllObjects(request, result))
+       return false;
  * @endcode
  */
 class HEARTSHARED_EXPORT CustomDBRequest: public BASE
@@ -33,7 +37,9 @@ public:
      * @brief CustomDBRequest
      * @param selectRequest This is request for database.
      */
-    CustomDBRequest(const QString& selectRequest);
+    CustomDBRequest(const QString& selectRequest) {
+        _request = selectRequest;
+    }
 
     bool isCached() const override {
         return false;

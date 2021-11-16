@@ -413,6 +413,8 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
                 }
                 result.push_back(newObject);
             }
+
+            return true;
         }
 
         return result.size();
