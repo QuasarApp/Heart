@@ -136,10 +136,14 @@ void AbstractNode::stop() {
     }
     _connectionsMutex.unlock();
 
+    _workersMutex.lock();
     for (auto it: qAsConst(_workers)) {
-        if (!it->isFinished())
+        if (!it->isFinished()) {
             it->cancel();
+            it->waitForFinished();
+        }
     }
+    _workersMutex.unlock();
 
     deinitThreadPool();
 }
@@ -1015,7 +1019,10 @@ void AbstractNode::handleWorkerStoped() {
 
     if (senderObject) {
 
+        _workersMutex.lock();
         _workers.remove(senderObject);
+        _workersMutex.unlock();
+
         delete senderObject;
     }
 }
@@ -1041,7 +1048,11 @@ void AbstractNode::handleBeginWork(QSharedPointer<QH::AbstractTask> work) {
     if (_threadPool) {
         auto worker = new QFutureWatcher <bool>();
         worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
+
+        _workersMutex.lock();
         _workers.insert(worker);
+        _workersMutex.unlock();
+
 
         connect(worker, &QFutureWatcher<bool>::finished,
                 this, &AbstractNode::handleWorkerStoped);
@@ -1153,7 +1164,10 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
     if (_threadPool) {
         auto worker = new QFutureWatcher <bool>();
         worker->setFuture(QtConcurrent::run(_threadPool, executeObject));
+
+        _workersMutex.lock();
         _workers.insert(worker);
+        _workersMutex.unlock();
 
         connect(worker, &QFutureWatcher<bool>::finished,
                 this, &AbstractNode::handleWorkerStoped);

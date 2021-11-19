@@ -717,6 +717,7 @@ private:
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;
     mutable QMutex _threadPoolMutex;
+    mutable QMutex _workersMutex;
 
     QThreadPool *_threadPool = nullptr;
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
