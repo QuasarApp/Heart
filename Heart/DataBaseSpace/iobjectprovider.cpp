@@ -22,6 +22,9 @@ QSharedPointer<DBObject> iObjectProvider::getObjectRaw(
         return nullptr;
     }
 
+    if (!list.size())
+        return nullptr;
+
     if (list.size() > 1) {
         QuasarAppUtils::Params::log("getObject method returned more than one object,"
                                     " the first object was selected as the result, all the rest were lost.",

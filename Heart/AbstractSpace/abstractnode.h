@@ -32,6 +32,7 @@
 #include "heart_global.h"
 #include "packagemanager.h"
 #include "abstracterrorcodes.h"
+#include <iparser.h>
 
 namespace QH {
 
@@ -47,21 +48,6 @@ class SslSocket;
 namespace PKG {
 class ErrorData;
 }
-
-/**
- * @brief The ParserResult enum.
- * Error - parser detect a errorob package.
- * NotProcessed - the parser does not know what to do with the package or has not finished processing it.
- * Processed - the parser finished processing correctly.
- */
-enum class ParserResult {
-    /// parser detect a errorob package.
-    Error = 0,
-    /// the parser does not know what to do with the package or has not finished processing it.
-    NotProcessed = 1,
-    /// the parser finished processing correctly.
-    Processed = 2
-};
 
 /**
  * @brief The SslMode enum  This enum contatins options for set ssl mode of node (server).
@@ -112,7 +98,7 @@ class Abstract;
  *  @see AbstractNode::registerPackageType
  *  @see AbstractNode::parsePackage
  */
-class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
+class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete, public iParser
 {
     Q_OBJECT
 
@@ -125,6 +111,8 @@ public:
      */
     AbstractNode(QObject * ptr = nullptr);
     ~AbstractNode() override;
+
+    int version() const override;
 
     /**
      * @brief run This method implement deployment a network node (server) on selected address.
@@ -166,6 +154,26 @@ public:
      * @param target - It is network address of target connection.
      */
     virtual void unBan(const HostAddress& target);
+
+    /**
+     * @brief sendData This method send data  object another to node
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
+                                  const Header *req = nullptr);
+
+    /**
+     * @brief sendData This method send data  object another to node
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
+                                  const Header *req = nullptr);
 
     /**
      * @brief addNode - Connect to node (server) with address.
@@ -222,12 +230,6 @@ public:
      * @return state value for more information see WorkState class.
      */
     virtual WorkState getWorkState() const;
-
-    /**
-     * @brief pareseResultToString This method convert ParserResult value to string.
-     * @return The String value of pareseresult.
-     */
-    QString pareseResultToString(const ParserResult& parseResult) const;
 
     /**
      * @brief connectionsCount - Return count fo connections (connections with status connected)
@@ -404,8 +406,8 @@ protected:
      * @see AbstractNode::badRequest
 
      */
-    virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                                      const Header& pkgHeader, const AbstractNodeInfo* sender);
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header& pkgHeader, const AbstractNodeInfo* sender) override;
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
@@ -417,26 +419,6 @@ protected:
      *  This is done that allthe data that is sent when node are dissconected come without fail.
      */
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
-
-    /**
-     * @brief sendData This method send data  object another to node
-     * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
-     * @param req This is header of request.
-     * @return hash of the sendet package. If function is failed then return 0.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
-                                  const Header *req = nullptr);
-
-    /**
-     * @brief sendData This method send data  object another to node
-     * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
-     * @param req This is header of request.
-     * @return hash of the sendet package. If function is failed then return 0.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                                  const Header *req = nullptr);
 
     /**
      * @brief badRequest This method is send data about error of request.
@@ -621,56 +603,6 @@ protected:
     QList<HostAddress> activeConnectionsList() const;
 
 
-    /**
-     * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
-     * Exmaple of use :
-     * @code{cpp}
-     *      auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
-            if (result != QH::ParserResult::NotProcessed) {
-                return result;
-            }
-            ...
-     * @endcode
-     * @tparam PackageClass This is class name that you want handle.  All classes mist be inhert of the QH::PKG::AbstractData class.
-     * @tparam HandlerType This is type of the handler object that will invoke @a HandlerMethod method.
-
-     * @tparam HandlerMethod This is name of the handler method.
-     * The handler method should be support next signature:
-     *  **bool Method(const QSharedPointer<QH::PKG::PackageClass> &, const QH::Header &pkgHeader, const QH::AbstractNodeInfo *sender)**.
-     * @param handlerObject This is pointer to handler object.
-     * @param method This is handler method.
-     * @param pkg This is package data from the AbstractNode::parsePackage argumetns
-     * @param pkgHeader This is header of an incomming package.
-     * @param sender This is socket object of a sender that send this package.
-     * @return item of ParserResult. For more information see The ParserResult enum.
-     *
-     * @see AbstractNode::parsePackage
-     * @see ParserResult
-     */
-    template<class PackageClass,class HandlerType, class HandlerMethod>
-
-    inline ParserResult commandHandler(HandlerType handlerObject, HandlerMethod method,
-                                       const QSharedPointer<QH::PKG::AbstractData> &pkg,
-                                       const QH::AbstractNodeInfo *sender,
-                                       const QH::Header &pkgHeader) {
-
-        if (PackageClass::command() == pkg->cmd()) {
-            auto data = pkg.staticCast<PackageClass>();
-
-            if (!data->isValid()) {
-                return QH::ParserResult::Error;
-            }
-
-            if(!(handlerObject->*method)(data, sender, pkgHeader)) {
-                return QH::ParserResult::Error;
-            }
-
-            return QH::ParserResult::Processed;
-        }
-
-        return QH::ParserResult::NotProcessed;
-    }
-
 protected slots:
     /**
      * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
@@ -792,6 +724,7 @@ private:
     friend class WebSocketController;
     friend class SocketFactory;
     friend class BigDataManager;
+
 
 };
 

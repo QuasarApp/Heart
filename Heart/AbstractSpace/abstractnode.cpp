@@ -99,6 +99,10 @@ AbstractNode::~AbstractNode() {
     delete _tasksheduller;
 }
 
+int AbstractNode::version() const {
+    return 0;
+}
+
 bool AbstractNode::run(const QString &addres, unsigned short port) {
 
     if (!port)
@@ -775,18 +779,6 @@ WorkState AbstractNode::getWorkState() const {
 
     return state;
 
-}
-
-QString AbstractNode::pareseResultToString(const ParserResult &parseResult) const {
-    switch (parseResult)
-    {
-    case ParserResult::Processed:
-        return "Processed";
-    case ParserResult::NotProcessed:
-        return "NotProcessed";
-
-    default: return "Error";
-    }
 }
 
 QString AbstractNode::getWorkStateString() const {

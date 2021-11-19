@@ -102,6 +102,23 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
     /**
+     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
+     *  This implementation do not prepare object to sending.
+     * @param resp This is sending object to the nodeId.
+     * @param nodeId This is id of target node.
+     * @param req This is header of request.
+     * @return true if a data send successful.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
+                          const Header *req = nullptr);
+
+    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
+                  const Header *req = nullptr) override;
+
+    unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
+                  const Header *req = nullptr) override;
+
+    /**
      * @brief deleteObject This method delete object by database address.
      *  @note If you want to delete any object use only this method because this method check permission of requester to execute this action.
      * @param requester This is pointer to network member that send this request.
@@ -224,23 +241,6 @@ protected:
      * @return true if trust of user changed successful.
      */
     virtual bool changeTrust(const QVariant &id, int diff);
-
-    /**
-     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
-     *  This implementation do not prepare object to sending.
-     * @param resp This is sending object to the nodeId.
-     * @param nodeId This is id of target node.
-     * @param req This is header of request.
-     * @return true if a data send successful.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr);
-
-    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
-
-    unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                  const Header *req = nullptr) override;
 
     /**
      * @brief hashgenerator This method generate a hash from any value.
