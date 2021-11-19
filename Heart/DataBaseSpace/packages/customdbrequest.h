@@ -30,7 +30,7 @@ template <class BASE>
        return false;
  * @endcode
  */
-class HEARTSHARED_EXPORT CustomDBRequest: public BASE
+class CustomDBRequest: public BASE
 {
 public:
     /**
