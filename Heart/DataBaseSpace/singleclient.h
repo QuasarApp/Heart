@@ -133,6 +133,12 @@ public:
     ErrorCodes::Code getLastError() const;
 
     /**
+     * @brief takeLastError This method take last erro code. after call this object sets no error to last error.
+     * @return LastError code.
+     */
+    ErrorCodes::Code takeLastError();
+
+    /**
      * @brief getLastErrorString This method return the string implementation of a last code error.
      * @return string value of the last error.
      */

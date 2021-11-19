@@ -205,7 +205,15 @@ public:
                                     const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
 
+
 protected:
+
+    /**
+     * @brief localNodeName This method return local node name.
+     *
+     * @return local node name
+     */
+    const QString &localNodeName() const;
 
     /**
      * @brief setLocalNodeName This method sets new local name of database file.

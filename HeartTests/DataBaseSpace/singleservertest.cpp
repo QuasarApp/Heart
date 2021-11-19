@@ -85,19 +85,19 @@ void SingleServerTest::loginTest() {
     };
 
     auto checkLoginNonExitsUser = [client](){
-        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserNotExits);
+        return client->takeLastError() == static_cast<int>(QH::ErrorCodes::UserNotExits);
     };
 
     auto checksigupExitsUser = [client](){
-        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserExits);
+        return client->takeLastError() == static_cast<int>(QH::ErrorCodes::UserExits);
     };
 
     auto checkLoginInvalidPassword = [client](){
-        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserInvalidPasswoed);
+        return client->takeLastError() == static_cast<int>(QH::ErrorCodes::UserInvalidPasswoed);
     };
 
     auto checkRemoveNotLoginningClient = [client](){
-        return client->getLastError() == static_cast<int>(QH::ErrorCodes::UserNotLogged);
+        return client->takeLastError() == static_cast<int>(QH::ErrorCodes::UserNotLogged);
     };
 
     QVERIFY(client && server);

@@ -393,6 +393,13 @@ ErrorCodes::Code SingleClient::getLastError() const {
     return _lastError;
 }
 
+ErrorCodes::Code SingleClient::takeLastError() {
+    auto result = _lastError;
+    setLastError(ErrorCodes::NoError);
+
+    return result;
+}
+
 QString SingleClient::getLastErrorString() const {
     return ErrorCodes::DBErrorCodesHelper::toString(_lastError);
 }

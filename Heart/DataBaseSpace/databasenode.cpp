@@ -107,7 +107,7 @@ bool DataBaseNode::run(const QString &addres,
     if (localNodeName.isEmpty())
         return false;
 
-    _localNodeName = localNodeName;
+    setLocalNodeName(localNodeName);
 
     if (!isSqlInited() && !initSqlDb()) {
         return false;
@@ -450,6 +450,10 @@ bool DataBaseNode::upgradeDataBase() {
     return true;
 }
 
+const QString &DataBaseNode::localNodeName() const {
+    return _localNodeName;
+}
+
 void DataBaseNode::setLocalNodeName(const QString &newLocalNodeName) {
     _localNodeName = newLocalNodeName;
 }
@@ -458,7 +462,7 @@ QVariantMap DataBaseNode::defaultDbParams() const {
 
     return {
         {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH + "/" + _localNodeName + "/" + _localNodeName + "_" + DEFAULT_DB_NAME},
+        {"DBFilePath", DEFAULT_DB_PATH + "/" + localNodeName() + "/" + localNodeName() + "_" + DEFAULT_DB_NAME},
     };
 }
 
