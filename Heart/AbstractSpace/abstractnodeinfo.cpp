@@ -24,7 +24,7 @@ AbstractNodeInfo::AbstractNodeInfo(QAbstractSocket *sct,
 }
 
 AbstractNodeInfo::~AbstractNodeInfo() {
-    removeSocket();
+    AbstractNodeInfo::removeSocket();
 }
 
 QAbstractSocket *AbstractNodeInfo::sct() const {

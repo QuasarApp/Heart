@@ -195,8 +195,10 @@ public:
 public slots:
     /**
      * @brief removeSocket This method use for remove socket.
+     * You can override this method for handle this event.
+     * @note This method woll be ignored when object distroed
      */
-    void removeSocket();
+    virtual void removeSocket();
 
 signals:
 
