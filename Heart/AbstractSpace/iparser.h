@@ -34,7 +34,7 @@ enum class ParserResult {
  * @see AbstractNode::parsePackage
  * @see AbstractNode
  */
-class iParser
+class HEARTSHARED_EXPORT iParser
 {
 public:
     iParser();
