@@ -183,6 +183,21 @@ public:
     bool addNode(const HostAddress &address);
 
     /**
+     * @brief addNode This method add new peer connection to this node and
+     *  execute the @a action when node status will be changed to the @a status.
+     * @param address This is address of peer node.
+     * @param action This is action that will be executed when status will changed to required status.
+     * @param status This is required status.
+     * @return true if node added successful.
+     *
+     * @note The Action do not executed when node alredy connected.
+     * @note If you override the nodeConfirmend or the nodeConnected method then you must be invoke parent implementation else @a action do not executed.
+     */
+    bool addNode(const HostAddress &address,
+                 const std::function<void(QH::AbstractNodeInfo *)>& action,
+                 NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
+
+    /**
      * @brief addNode - Connect to node (server) with domain, bud this method find ip address of domain befor connecting.
      * @param domain - This is domain address of node (server).
      * @param port - This is target port of node (server).
@@ -602,7 +617,6 @@ protected:
      */
     QList<HostAddress> activeConnectionsList() const;
 
-
 protected slots:
     /**
      * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
@@ -711,6 +725,8 @@ private:
     QThread *_senderThread = nullptr;
     BigDataManager *_bigdatamanager = nullptr;
     TaskScheduler *_tasksheduller = nullptr;
+
+    QHash<NodeCoonectionStatus, QHash<HostAddress, std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 
     QSet<QFutureWatcher <bool>*> _workers;
 

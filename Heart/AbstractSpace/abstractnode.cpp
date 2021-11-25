@@ -215,6 +215,20 @@ bool AbstractNode::addNode(const HostAddress &address) {
     return _socketWorker->run(action);
 }
 
+bool AbstractNode::addNode(const HostAddress &address,
+                           const std::function<void (QH::AbstractNodeInfo *)> &action,
+                           NodeCoonectionStatus status) {
+
+    auto peer = getInfoPtr(address);
+
+    if (peer->status() < status) {
+        auto &actionsList = _connectActions[status];
+        actionsList[address] = action;
+    }
+
+    return addNode(address);
+}
+
 bool AbstractNode::addNode(const QString &domain, unsigned short port) {
     HostAddress address{domain, port};
     if (address.isNull()) {
@@ -1233,11 +1247,15 @@ void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectio
 }
 
 void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
-    Q_UNUSED(node)
+    auto &actions = _connectActions[NodeCoonectionStatus::Confirmed];
+    auto action = actions.take(node->networkAddress());
+    action(node);
 }
 
 void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
-    Q_UNUSED(node)
+    auto &actions = _connectActions[NodeCoonectionStatus::Connected];
+    auto action = actions.take(node->networkAddress());
+    action(node);
 }
 
 void AbstractNode::nodeDisconnected(AbstractNodeInfo *node) {
@@ -1253,6 +1271,9 @@ void AbstractNode::nodeErrorOccured(AbstractNodeInfo *nodeInfo,
     QuasarAppUtils::Params::log(
                 message.arg(nodeInfo->networkAddress().toString(), errorString),
                 QuasarAppUtils::Error);
+
+    auto &actions = _connectActions[NodeCoonectionStatus::Connected];
+    actions.remove(nodeInfo->networkAddress());
 }
 
 void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
