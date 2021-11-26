@@ -221,7 +221,7 @@ bool AbstractNode::addNode(const HostAddress &address,
 
     auto peer = getInfoPtr(address);
 
-    if (peer->status() < status) {
+    if (!peer || peer->status() < status) {
         auto &actionsList = _connectActions[status];
         actionsList[address] = action;
     }
