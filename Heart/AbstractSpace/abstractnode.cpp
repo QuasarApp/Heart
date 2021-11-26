@@ -229,11 +229,14 @@ bool AbstractNode::addNode(const HostAddress &address,
     return addNode(address);
 }
 
-bool AbstractNode::addNode(const QString &domain, unsigned short port) {
+bool AbstractNode::addNode(const QString &domain, unsigned short port,
+                           const std::function<void (QH::AbstractNodeInfo *)> &action,
+                           NodeCoonectionStatus status) {
+
     HostAddress address{domain, port};
     if (address.isNull()) {
 
-        QHostInfo::lookupHost(domain, [this, port, domain](QHostInfo info) {
+        QHostInfo::lookupHost(domain, [this, port, domain, action, status](QHostInfo info) {
 
             if (info.error() != QHostInfo::NoError) {
                 QuasarAppUtils::Params::log("The domain name :" + domain +
@@ -250,8 +253,12 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port) {
                                             QuasarAppUtils::Warning);
             }
 
+            if (action) {
+                addNode(HostAddress{addresses.first(), port}, action, status);
+            } else {
+                addNode(HostAddress{addresses.first(), port});
+            }
 
-            addNode(HostAddress{addresses.first(), port});
         });
 
 
@@ -260,7 +267,6 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port) {
 
 
     return addNode(address);
-
 }
 
 bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
@@ -1249,13 +1255,15 @@ void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectio
 void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
     auto &actions = _connectActions[NodeCoonectionStatus::Confirmed];
     auto action = actions.take(node->networkAddress());
-    action(node);
+    if (action)
+        action(node);
 }
 
 void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
     auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     auto action = actions.take(node->networkAddress());
-    action(node);
+    if (action)
+        action(node);
 }
 
 void AbstractNode::nodeDisconnected(AbstractNodeInfo *node) {

@@ -198,12 +198,28 @@ public:
                  NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
 
     /**
-     * @brief addNode - Connect to node (server) with domain, bud this method find ip address of domain befor connecting.
+     * @brief addNode This method add new peer connection to this node and
+     *  execute the @a action when node status will be changed to the @a status.
      * @param domain - This is domain address of node (server).
      * @param port - This is target port of node (server).
-     * @return true if the node aaded successful
+     * @param action This is action that will be executed when status will changed to required status.
+     *  You can ignore this argument for disable actions after connect.
+     * @param status This is required status.
+     *  You can ignore this argument. By default it is Connected state
+     * @return true if node added successful.
+     *
+     *
+     *  **Example of use:**
+     * @code{cpp}
+     *
+     * @endcode
+     *
+     * @note The Action do not executed when node alredy connected.
+     * @note If you override the nodeConfirmend or the nodeConnected method then you must be invoke parent implementation else @a action do not executed.
      */
-    bool addNode(const QString &domain, unsigned short port);
+    bool addNode(const QString &domain, unsigned short port,
+                 const std::function<void(QH::AbstractNodeInfo *)>& action = nullptr,
+                 NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
 
     /**
      * @brief removeNode - Remove node and disconnected forom node (server).
