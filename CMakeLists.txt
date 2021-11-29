@@ -43,9 +43,9 @@ if (NOT DEFINED HEART_DB_CACHE)
     endif()
 endif()
 
-if (NOT DEFINED HEART_SSL)
-    set(HEART_SSL ON)
-endif()
+# Use only for android debug builds with debugging from usb.
+option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraryes" OFF)
+option(HEART_SSL "This option enable or disabled ssl functions of nodes" ON)
 
 if (HEART_DB_CACHE)
     add_definitions(-DHEART_DB_CACHE)
