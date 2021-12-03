@@ -470,7 +470,7 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
     });
 
     connect(socket, &SslSocket::sslErrorsOcurred,
-            this, &AbstractNode::handleSslErrorOcurred, Qt::DirectConnection);
+            this, &AbstractNode::handleSslErrorOcurredPrivate, Qt::DirectConnection);
 
 
     AsyncLauncher::Job action = [socket, fServer]() -> bool {
@@ -536,13 +536,13 @@ void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
     handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
 }
 
-void AbstractNode::handleSslErrorOcurred(SslSocket * sslScocket, const QList<QSslError> &errors) {
+void AbstractNode::handleSslErrorOcurredPrivate(SslSocket * sslScocket, const QList<QSslError> &errors) {
 
     QList<QSslError> ignore;
     for (auto &error : errors) {
 
         if (!_ignoreSslErrors.contains(QSslError{error.error()})) {
-            QuasarAppUtils::Params::log(error.errorString(), QuasarAppUtils::Error);
+            handleSslErrorOcurred(sslScocket, error);
         } else {
             ignore += error;
         }
@@ -554,6 +554,13 @@ void AbstractNode::handleSslErrorOcurred(SslSocket * sslScocket, const QList<QSs
     if (sslScocket) {
         sslScocket->ignoreSslErrors(ignore);
     }
+}
+
+
+void AbstractNode::handleSslErrorOcurred(SslSocket *scket,
+                                         const QSslError &error) {
+    QuasarAppUtils::Params::log(scket->peerAddress().toString() + " : " + error.errorString(),
+                                QuasarAppUtils::Error);
 }
 
 #endif

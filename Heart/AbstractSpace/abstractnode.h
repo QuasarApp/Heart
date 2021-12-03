@@ -645,6 +645,17 @@ protected slots:
                                   QAbstractSocket::SocketError errorCode,
                                   QString errorString);
 
+#ifdef USE_HEART_SSL
+
+    /**
+     * @brief handleSslErrorOcurred This method invoked when a ssl socket receive an error mesage.
+     *  Default implementation just pront error messages
+     *  Overrid this method for handle ssl errors on this node or server.
+     * @param error This is error that occured..
+     */
+    virtual void handleSslErrorOcurred(SslSocket *scket, const QSslError& error);
+#endif
+
 private slots:
 
     void avelableBytes(AbstractNodeInfo* sender);
@@ -677,11 +688,11 @@ private slots:
 #ifdef USE_HEART_SSL
 
     /**
-     * @brief handleSslErrorOcurred This method invoked when a ssl socket receive an error mesage.
+     * @brief handleSslErrorOcurredPrivate This method invoked when a ssl socket receive an error mesage.
      *  Default implementation just pront error messages
      * @param errors This is errors list.
      */
-    void handleSslErrorOcurred(SslSocket *sender, const QList<QSslError> & errors);
+    void handleSslErrorOcurredPrivate(SslSocket *sender, const QList<QSslError> & errors);
 
     /**
      * @brief handleEncrypted invoke when a ssl socket is encripted!
