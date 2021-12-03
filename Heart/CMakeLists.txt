@@ -24,6 +24,7 @@ add_definitions(-DHEART_LIBRARY)
 set(SLL_DEFINE "WITHOUT_SSL")
 
 if (HEART_SSL)
+
     list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
     find_package(OpenSSL REQUIRED)
     set(SLL_DEFINE "USE_HEART_SSL")
@@ -85,12 +86,34 @@ set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
 target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp)
 if (HEART_SSL)
+
     if (HEART_STATIC_SSL)
         set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
-        target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/include)
-        target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.a ${OPENSSL_ROOT_PATH}/lib/libssl.a)
+
+        if (EXISTS ${OPENSSL_ROOT_PATH})
+            message("Use static ssl from ${OPENSSL_ROOT_PATH}")
+
+            target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/include)
+            target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.a ${OPENSSL_ROOT_PATH}/lib/libssl.a)
+
+        else()
+            message("Use static ssl from system")
+            target_link_libraries(${PROJECT_NAME} PUBLIC libcrypto.a libssl.a)
+        endif()
+
     else()
-        target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
+
+        if (EXISTS ${OPENSSL_ROOT_PATH})
+            message("Use shared ssl from ${OPENSSL_ROOT_PATH}")
+
+            target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/include)
+            target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.so ${OPENSSL_ROOT_PATH}/lib/libssl.so)
+
+        else()
+            message("Use shared ssl from system")
+            target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
+        endif()
+
     endif()
 endif()
 
