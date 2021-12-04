@@ -88,32 +88,26 @@ target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Co
 if (HEART_SSL)
 
     if (HEART_STATIC_SSL)
-        set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
 
-        if (EXISTS ${OPENSSL_ROOT_PATH})
-            message("Use static ssl from ${OPENSSL_ROOT_PATH}")
-
-            target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/include)
-            target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.a ${OPENSSL_ROOT_PATH}/lib/libssl.a)
-
-        else()
-            message("Use static ssl from system")
-            target_link_libraries(${PROJECT_NAME} PUBLIC libcrypto.a libssl.a)
-        endif()
+        message("Use static ssl")
+        target_link_libraries(${PROJECT_NAME} PUBLIC libcrypto.a libssl.a)
 
     else()
 
-        if (EXISTS ${OPENSSL_ROOT_PATH})
-            message("Use shared ssl from ${OPENSSL_ROOT_PATH}")
+        message("Use shared ssl ")
+        target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
 
-            target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/include)
-            target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENSSL_ROOT_PATH}/lib/libcrypto.so ${OPENSSL_ROOT_PATH}/lib/libssl.so)
 
-        else()
-            message("Use shared ssl from system")
-            target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
+        if (ANDROID)
+            set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
+
+            set(ANDROID_EXTRA_LIBS
+                ${OPENSSL_ROOT_PATH}/lib/libcrypto_1_1.so
+                ${OPENSSL_ROOT_PATH}/lib/libssl_1_1.so
+            CACHE INTERNAL "")
+
+            message(ANDROID_EXTRA_LIBS = ${ANDROID_EXTRA_LIBS})
         endif()
-
     endif()
 endif()
 
