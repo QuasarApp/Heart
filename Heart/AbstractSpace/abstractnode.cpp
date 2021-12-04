@@ -221,7 +221,7 @@ bool AbstractNode::addNode(const HostAddress &address,
 
     auto peer = getInfoPtr(address);
 
-    if (!peer || peer->status() < status) {
+    if (action && (!peer || peer->status() < status)) {
         auto &actionsList = _connectActions[status];
         actionsList[address] = action;
     }
@@ -266,7 +266,7 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port,
     }
 
 
-    return addNode(address);
+    return addNode(address, action);
 }
 
 bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
@@ -1260,6 +1260,7 @@ void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectio
 }
 
 void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
+
     auto &actions = _connectActions[NodeCoonectionStatus::Confirmed];
     auto action = actions.take(node->networkAddress());
     if (action)
