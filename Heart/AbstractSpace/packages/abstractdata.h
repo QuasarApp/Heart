@@ -27,6 +27,9 @@
     \
    private:
 
+
+#define QH_PACKAGE_AUTO(X) QH_PACKAGE(X,#X)
+
 namespace QH {
 namespace PKG {
 
