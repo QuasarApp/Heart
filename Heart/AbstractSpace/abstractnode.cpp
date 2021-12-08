@@ -279,7 +279,7 @@ bool AbstractNode::removeNode(const HostAddress &nodeAdderess) {
 }
 
 bool AbstractNode::removeNode(AbstractNodeInfo *node) {
-    if (!(node && node->isValid())) {
+    if (!(node)) {
         return false;
     }
 
