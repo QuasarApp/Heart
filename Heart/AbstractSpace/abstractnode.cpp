@@ -594,7 +594,12 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
 
         _connectionsMutex.unlock();
 
-        return info->isValid();
+        if (!info->isValid()) {
+            return false;
+        }
+
+        nodeAddedSucessful(info);
+        return true;
     }
 
     auto info = createNodeInfo(socket, &cliAddress);
@@ -627,7 +632,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
         checkConfirmendOfNode(getInfoPtr(cliAddress));
     });
 
-    connectionRegistered(info);
+    nodeAddedSucessful(info);
 
     return true;
 }
@@ -1243,10 +1248,6 @@ void AbstractNode::incomingData(const AbstractData *pkg, const AbstractNodeInfo 
 
 QHash<HostAddress, AbstractNodeInfo *> AbstractNode::connections() const {
     return _connections;
-}
-
-void AbstractNode::connectionRegistered(const AbstractNodeInfo *info) {
-    Q_UNUSED(info)
 }
 
 void AbstractNode::prepareForDelete() {

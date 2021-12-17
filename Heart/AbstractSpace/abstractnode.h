@@ -575,12 +575,6 @@ protected:
     QHash<HostAddress, AbstractNodeInfo *> connections() const;
 
     /**
-     * @brief connectionRegistered Override this method for get registered incoming connections.
-     * @param info - Connection information.
-     */
-    virtual void connectionRegistered(const AbstractNodeInfo *info);
-
-    /**
      * @brief nodeConfirmend This method invocked when the node status changed to "confirmend"
      *  default implementatio do nothing.
      * @param node This is address of changed node.
