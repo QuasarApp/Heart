@@ -203,6 +203,7 @@ bool AbstractNode::addNode(const HostAddress &address) {
 #endif
 
         if (!registerSocket(socket, &address)) {
+            addNodeFailed(AddNodeError::RegisterSocketFailed);
             delete socket;
             return false;
         }
@@ -242,6 +243,7 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port,
                 QuasarAppUtils::Params::log("The domain name :" + domain +
                                             " has error: " + info.errorString(),
                                             QuasarAppUtils::Error);
+                addNodeFailed(AddNodeError::HostNotFound);
                 return;
             }
 
@@ -1131,6 +1133,34 @@ QList<HostAddress> AbstractNode::activeConnectionsList() const {
     }
 
     return result;
+}
+
+void AbstractNode::addNodeFailed(AddNodeError error) {
+
+    switch (error) {
+    case AddNodeError::HostNotFound: {
+        QuasarAppUtils::Params::log("The remote host not found or dns server not responce.",
+                                    QuasarAppUtils::Error);
+        break;
+
+    }
+
+    case AddNodeError::RegisterSocketFailed: {
+        QuasarAppUtils::Params::log("The remote node is banned or serve is overload.",
+                                    QuasarAppUtils::Error);
+        break;
+
+    }
+    default: {
+        QuasarAppUtils::Params::log("The unknown error ocurred.",
+                                    QuasarAppUtils::Error);
+    }
+    }
+
+}
+
+void AbstractNode::nodeAddedSucessful(AbstractNodeInfo *) {
+
 }
 
 bool AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {

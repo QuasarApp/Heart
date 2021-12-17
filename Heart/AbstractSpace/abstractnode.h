@@ -65,6 +65,21 @@ enum class SslMode {
 #endif
 };
 
+/**
+ * @brief The AddNodeError enum contains error code that can be occured after invoke the AbstractNode::addNode mehod
+ * @see AbstractNode::addNode
+ * @see AbstractNode::addNodeFailed
+ * @see AbstractNode::nodeAddedSucessful
+ */
+enum class AddNodeError {
+    /// unknown error
+    UnknownError,
+    /// This error ocurred when DNS server not responce to node or node can't find the server ip address by host.
+    HostNotFound,
+    /// This error ocurred when you try add baned node or server is overrload.
+    RegisterSocketFailed
+};
+
 #ifdef USE_HEART_SSL
 /**
  * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certefication.
@@ -179,6 +194,8 @@ public:
      * @brief addNode - Connect to node (server) with address.
      * @param address - This is Network address of node (server).
      * @return true if the node aaded successful
+     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::addNodeFailed
      */
     bool addNode(const HostAddress &address);
 
@@ -192,6 +209,8 @@ public:
      *
      * @note The Action do not executed when node alredy connected.
      * @note If you override the nodeConfirmend or the nodeConnected method then you must be invoke parent implementation else @a action do not executed.
+     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::addNodeFailed
      */
     bool addNode(const HostAddress &address,
                  const std::function<void(QH::AbstractNodeInfo *)>& action,
@@ -216,6 +235,8 @@ public:
      *
      * @note The Action do not executed when node alredy connected.
      * @note If you override the nodeConfirmend or the nodeConnected method then you must be invoke parent implementation else @a action do not executed.
+     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::addNodeFailed
      */
     bool addNode(const QString &domain, unsigned short port,
                  const std::function<void(QH::AbstractNodeInfo *)>& action = nullptr,
@@ -632,6 +653,24 @@ protected:
      * @warning do not use this method for validation is connected.
      */
     QList<HostAddress> activeConnectionsList() const;
+
+    /**
+     * @brief addNodeFailed This method will be invoked when trying to add new node are failed.
+     *  So override this method for handle this event.
+     * @param error This is error code that occured after invoke of the AbstractNode::addNode method
+     * @see AbstractNode::addNode
+     * @see AbstractNode::nodeAddedSucessful
+     */
+    virtual void addNodeFailed(AddNodeError error);
+
+    /**
+     * @brief nodeAddedSucessful This method will be invoked when new node added successful.
+     * @param node This is pointer to added node.
+     * @note do not try remove the @a node pointer. This pointer will be removed automaticaly.
+     * @see AbstractNode::addNode
+     * @see AbstractNode::addNodeFailed
+     */
+    virtual void nodeAddedSucessful(AbstractNodeInfo* node);
 
 protected slots:
     /**
