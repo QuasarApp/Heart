@@ -563,6 +563,9 @@ void AbstractNode::handleSslErrorOcurred(SslSocket *scket,
                                          const QSslError &error) {
     QuasarAppUtils::Params::log(scket->peerAddress().toString() + " : " + error.errorString(),
                                 QuasarAppUtils::Error);
+
+    QuasarAppUtils::Params::log("Error code: " + QString::number(error.error()),
+                                QuasarAppUtils::Error);
 }
 
 #endif
