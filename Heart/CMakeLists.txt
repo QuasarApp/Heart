@@ -109,6 +109,8 @@ if (HEART_SSL)
             message(ANDROID_EXTRA_LIBS = ${ANDROID_EXTRA_LIBS})
         endif()
     endif()
+    message("Use the OpenSSL libraries: ${OPENSSL_LIBRARIES}")
+
 endif()
 
 if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
