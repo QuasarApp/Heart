@@ -30,7 +30,7 @@ endif()
 if (NOT DEFINED HEART_TESTS)
     set(HEART_TESTS ON)
 
-    if (ANDROID)
+    if (ANDROID OR IOS)
         set(HEART_TESTS OFF)
     endif()
 endif()
