@@ -85,6 +85,9 @@ bool DataBaseNode::initSqlDb(QString DBparamsFile,
         return false;
     }
 
+    QuasarAppUtils::Params::log(QString("Database loaded from: %0").arg(dbLocation()),
+                                QuasarAppUtils::Debug);
+
     return true;
 }
 
