@@ -23,8 +23,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
-        "*.cpp" "*.qrc"
-        "AbstractSpace/*.cpp" "AbstractSpace/*.qrc"
+        "*.cpp" "*.h" "*.qrc"
+        "AbstractSpace/*.cpp" "AbstractSpace/*.h" "AbstractSpace/*.qrc"
     )
     set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
     set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace")
@@ -33,7 +33,12 @@ endif()
 if (${HEART_BUILD_LVL} GREATER_EQUAL 1)
     message("BUILD LVL >= 1")
     file(GLOB SOURCE_CPP_LVL_1
-        "DataBaseSpace/*.cpp" "DataBaseSpace/private/*.cpp" "DataBaseSpace/*.qrc"
+        "DataBaseSpace/*.cpp"
+        "DataBaseSpace/private/*.cpp"
+        "DataBaseSpace/*.h"
+        "DataBaseSpace/private/*.h"
+
+        "DataBaseSpace/*.qrc"
     )
     set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace")
 
@@ -42,7 +47,7 @@ endif()
 if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
     message("BUILD LVL >= 2")
     file(GLOB SOURCE_CPP_LVL_2
-        "NetworkSpace/*.cpp" "NetworkSpace/*.qrc"
+        "NetworkSpace/*.cpp" "NetworkSpace/*.h" "NetworkSpace/*.qrc"
     )
     set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/NetworkSpace")
 

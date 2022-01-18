@@ -35,10 +35,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/heart_global.h.in ${CMAKE_CURRENT_SOU
 if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
     message("BUILD LVL >= 0")
     file(GLOB SOURCE_CPP_LVL_0
-        "*.cpp" "*.qrc"
-        "AbstractSpace/*.cpp" "AbstractSpace/*.qrc"
-        "AbstractSpace/packages/*.cpp" "AbstractSpace/packages/*.qrc"
-        "AbstractSpace/Private/*.cpp" "AbstractSpace/Private/*.qrc"
+        "*.cpp" "*.h" "*.qrc"
+        "AbstractSpace/*.cpp" "AbstractSpace/*.h" "AbstractSpace/*.qrc"
+        "AbstractSpace/packages/*.cpp" "AbstractSpace/packages/*.h" "AbstractSpace/packages/*.qrc"
+        "AbstractSpace/Private/*.cpp" "AbstractSpace/Private/*.h" "AbstractSpace/Private/*.qrc"
 
     )
 
@@ -52,9 +52,9 @@ endif()
 if (${HEART_BUILD_LVL} GREATER_EQUAL 1)
     message("BUILD LVL >= 1")
     file(GLOB SOURCE_CPP_LVL_1
-        "DataBaseSpace/*.cpp" "DataBaseSpace/*.qrc"
-        "DataBaseSpace/packages/*.cpp" "DataBaseSpace/packages/*.qrc"
-        "DataBaseSpace/Private/*.cpp" "DataBaseSpace/Private/*.qrc"
+        "DataBaseSpace/*.cpp" "DataBaseSpace/*.h" "DataBaseSpace/*.qrc"
+        "DataBaseSpace/packages/*.cpp" "DataBaseSpace/packages/*.h" "DataBaseSpace/packages/*.qrc"
+        "DataBaseSpace/Private/*.cpp" "DataBaseSpace/Private/*.h" "DataBaseSpace/Private/*.qrc"
     )
 
     set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace")
@@ -67,9 +67,9 @@ endif()
 if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
     message("BUILD LVL >= 2")
     file(GLOB SOURCE_CPP_LVL_2
-        "NetworkSpace/*.cpp" "NetworkSpace/*.qrc"
-        "NetworkSpace/packages/*.cpp" "NetworkSpace/packages/*.qrc"
-        "NetworkSpace/Private/*.cpp" "NetworkSpace/Private/*.qrc"
+        "NetworkSpace/*.cpp" "NetworkSpace/*.h" "NetworkSpace/*.qrc"
+        "NetworkSpace/packages/*.cpp" "NetworkSpace/packages/*.h" "NetworkSpace/packages/*.qrc"
+        "NetworkSpace/Private/*.cpp" "NetworkSpace/Private/*.h" "NetworkSpace/Private/*.qrc"
     )
 
 
