@@ -16,7 +16,7 @@
 
 #include <QDateTime>
 #include <QtConcurrent/QtConcurrent>
-
+#include <qaglobalutils.h>
 
 namespace QH {
 

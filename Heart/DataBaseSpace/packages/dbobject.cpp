@@ -16,6 +16,7 @@
 #include <QVariantMap>
 #include <QSharedPointer>
 #include <quasarapp.h>
+#include <qaglobalutils.h>
 
 namespace QH {
 namespace PKG {

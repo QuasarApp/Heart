@@ -15,6 +15,7 @@
 #include <quasarapp.h>
 #include <thread>
 #include <chrono>
+#include <qaglobalutils.h>
 
 // Private implementation of waitFor functions.
 #define waitPrivate(CONDITION, TIMEOUT) \

@@ -13,6 +13,7 @@
 #include <deleteobject.h>
 #include <websocket.h>
 #include <websocketsubscriptions.h>
+#include <qaglobalutils.h>
 
 namespace QH {
 

@@ -13,6 +13,7 @@
 #include <bigdatapart.h>
 #include <bigdatarequest.h>
 #include <cmath>
+#include <qaglobalutils.h>
 
 #define TIMEOUT_INTERVAL 30000
 

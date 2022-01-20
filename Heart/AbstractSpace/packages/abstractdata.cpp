@@ -13,6 +13,7 @@
 #include <limits>
 #include <quasarapp.h>
 #include <QCryptographicHash>
+#include <qaglobalutils.h>
 
 namespace QH {
 namespace PKG {

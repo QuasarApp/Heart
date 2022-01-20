@@ -9,7 +9,6 @@
 #define ABSTRACTDATA_H
 #include "package.h"
 #include <streambase.h>
-#include <global.h>
 
 
 /**
