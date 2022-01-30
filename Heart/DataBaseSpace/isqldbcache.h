@@ -260,7 +260,7 @@ signals:
      *  So if you override the deleteObject method do not forget add emit of the sigItemChanged signal.
      * @param obj This is address of the removed object.
      */
-    void sigItemDeleted(const DbAddress& obj);
+    void sigItemDeleted(const QH::DbAddress& obj);
 
 };
 

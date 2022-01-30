@@ -36,6 +36,7 @@
 #include <QCryptographicHash>
 #include "getsinglevalue.h"
 #include "setsinglevalue.h"
+#include "database.h"
 
 #define THIS_NODE "this_node_key"
 namespace QH {
@@ -52,130 +53,81 @@ DataBaseNode::DataBaseNode(QObject *ptr):
     registerPackageType<WebSocketSubscriptions>();
     registerPackageType<DeleteObject>();
 
-
 }
 
-bool DataBaseNode::initSqlDb(QString DBparamsFile,
-                             ISqlDBCache *cache,
-                             SqlDBWriter *writer) {
-
-    initDefaultDbObjects(cache, writer);
-
-    QVariantMap params;
-    _db->setSQLSources(SQLSources());
-
-    if (DBparamsFile.isEmpty()) {
-        params = defaultDbParams();
-
-        if (!_db->init(params)) {
-            return false;
-        }
-
-    } else {
-
-        if (!_db->init(DBparamsFile)) {
-            return false;
-        }
-
-    }
-
-    if (!upgradeDataBase()) {
-        QuasarAppUtils::Params::log("Failed to upgrade database",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    QuasarAppUtils::Params::log(QString("Database loaded from: %0").arg(dbLocation()),
-                                QuasarAppUtils::Debug);
-
+bool DataBaseNode::initDatabase() {
+    setDb(new DataBase());
     return true;
 }
 
+void DataBaseNode::setDb(DataBase *newDb) {
+    if (_db) {
+        disconnect(_db, &DataBase::sigObjectChanged,
+                   this, &DataBaseNode::handleObjectChanged);
+
+        disconnect(_db, &DataBase::sigObjectDeleted,
+                   this, &DataBaseNode::handleObjectDeleted);
+
+        delete _db;
+    }
+
+    _db = newDb;
+
+    if (_db) {
+        connect(_db, &DataBase::sigObjectChanged,
+                this, &DataBaseNode::handleObjectChanged,
+                Qt::DirectConnection);
+
+        connect(_db, &DataBase::sigObjectDeleted,
+                this, &DataBaseNode::handleObjectDeleted,
+                Qt::DirectConnection);
+    }
+}
+
+
 bool DataBaseNode::isSqlInited() const {
-    return _db;
+    return _db && _db->isSqlInited();
+}
+
+DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
+                                                const DbAddress &objectAddress,
+                                                const Permission &requarimentPermision) const {
+    if (!_db) {
+        return DBOperationResult::Unknown;
+    }
+
+    return _db->checkPermission(requester, objectAddress, requarimentPermision);
 }
 
 bool DataBaseNode::run(const QString &addres, unsigned short port) {
-    if (!isSqlInited() && !initSqlDb()) {
-        return false;
-    }
-
-    return AbstractNode::run(addres, port);
+    return initDatabase() && _db->run() &&AbstractNode::run(addres, port);
 }
 
 bool DataBaseNode::run(const QString &addres,
                        unsigned short port,
                        const QString &localNodeName) {
-
-    if (localNodeName.isEmpty())
-        return false;
-
-    setLocalNodeName(localNodeName);
-
-    if (!isSqlInited() && !initSqlDb()) {
-        return false;
-    }
-
-    return AbstractNode::run(addres, port);
+    return initDatabase() && _db->run(localNodeName) && AbstractNode::run(addres, port);
 }
 
 void DataBaseNode::stop() {
 
     AbstractNode::stop();
 
-    if (db()) {
-        auto writer = _db->writer();
-        _db->softDelete();
-        _db = nullptr;
-        delete writer;
-    }
+    if (_db)
+        _db->stop();
 }
 
 DataBaseNode::~DataBaseNode() {
+    if (_db)
+        delete _db;
 }
-
-void DataBaseNode::initDefaultDbObjects(ISqlDBCache *cache,
-                                        SqlDBWriter *writer) {
-    if (!writer) {
-        writer = new AsyncSqlDBWriter();
-    }
-
-    if (!cache) {
-        cache = new SqlDB();
-    }
-
-    cache->setWriter(writer);
-    _db = cache;
-
-    connect(_db, &ISqlDBCache::sigItemChanged,
-            this, &DataBaseNode::handleObjectChanged,
-            Qt::DirectConnection);
-
-    connect(_db, &ISqlDBCache::sigItemDeleted,
-            this, &DataBaseNode::handleObjectDeleted,
-            Qt::DirectConnection);
-}
-
 
 bool DataBaseNode::welcomeAddress(AbstractNodeInfo *) {
     return true;
 }
 
 bool DataBaseNode::isBanned(const QVariant &node) const {
-    NetworkMember member(node);
-    auto objectFromDataBase = db()->getObject<AbstractNetworkMember>(member);
-
-    return objectFromDataBase->trust() <= 0;
-}
-
-QStringList DataBaseNode::SQLSources() const{
-    return {
-        DEFAULT_DB_INIT_FILE_PATH
-    };
-}
-
-QSet<QString> DataBaseNode::systemTables() const {
-    return {"NetworkMembers", "MemberPermisions"};
+    return db()->isBanned(node);
 }
 
 bool DataBaseNode::notifyObjectChanged(const QSharedPointer<PKG::ISubscribableData> &item) {
@@ -195,10 +147,6 @@ void DataBaseNode::objectRemoved(const DbAddress &) {
 
 void DataBaseNode::objectChanged(const QSharedPointer<DBObject> &) {
 
-}
-
-DBPatchMap DataBaseNode::dbPatches() const {
-    return {};
 }
 
 void DataBaseNode::handleObjectChanged(const QSharedPointer<DBObject> &item) {
@@ -235,11 +183,11 @@ void DataBaseNode::memberUnsubsribed(const QVariant &, unsigned int ) {
 }
 
 QString DataBaseNode::dbLocation() const {
-    if (db() && db()->writer()) {
-        return db()->writer()->databaseLocation();
+    if (!db()) {
+        return "";
     }
 
-    return "";
+    return db()->dbLocation();
 }
 
 AbstractNodeInfo *DataBaseNode::createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const {
@@ -260,24 +208,12 @@ bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
 bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
     if (!_db)
         return false;
-
-    auto action = [diff](const QSharedPointer<DBObject> &object) {
-        auto obj = object.dynamicCast<AbstractNetworkMember>();
-        if (!obj) {
-            return false;
-        }
-
-        obj->changeTrust(diff);
-
-        return true;
-    };
-
-    return _db->changeObjects(NetworkMember{id}, action);
+    return _db->changeTrust(id, diff);
 }
 
 unsigned int DataBaseNode::sendData(const AbstractData *resp,
-                            const QVariant &nodeId,
-                            const Header *req) {
+                                    const QVariant &nodeId,
+                                    const Header *req) {
 
     auto nodes = connections();
 
@@ -292,7 +228,7 @@ unsigned int DataBaseNode::sendData(const AbstractData *resp,
 }
 
 unsigned int DataBaseNode::sendData(const AbstractData *resp, const HostAddress &nodeId,
-                            const Header *req) {
+                                    const Header *req) {
     return AbstractNode::sendData(resp, nodeId, req);
 
 }
@@ -348,7 +284,7 @@ QByteArray DataBaseNode::hashgenerator(const QByteArray &pass) const {
                 QCryptographicHash::Sha256);
 }
 
-ISqlDBCache *DataBaseNode::db() const {
+DataBase *DataBaseNode::db() const {
     return _db;
 }
 
@@ -388,135 +324,26 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
     return false;
 }
 
-bool DataBaseNode::isForbidenTable(const QString &table) {
-    return systemTables().contains(table);
-}
-
-bool DataBaseNode::upgradeDataBase() {
-    auto patches = dbPatches();
-    int actyalyVersion = patches.size();
-    int currentVersion = 0;
-
-    if (!db())
-        return false;
-
-    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", true);
-
-    if (!fsupportUpgrade) {
-
-        QuasarAppUtils::Params::log("The data base of application do not support soft upgrade. "
-                                    "Please remove database monyaly and restart application.",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    PKG::GetSingleValue request({"DataBaseAttributes", "version"}, "value", "name");
-
-    if (auto responce = _db->getObject(request)) {
-        currentVersion = responce->value().toInt();
-    }
-
-    bool fUpdated = false;
-    while (currentVersion < actyalyVersion) {
-
-        auto patch = patches.value(currentVersion, {});
-
-        QString message;
-        message = "Upgrade data base!. to %0 versions";
-        message = message.arg(currentVersion);
-
-        QuasarAppUtils::Params::log(message,
-                                    QuasarAppUtils::Info);
-
-        if (patch && !patch(db())) {
-            QuasarAppUtils::Params::log("Failed to " + message,
-                                        QuasarAppUtils::Error);
-            return false;
-        }
-
-        currentVersion++;
-        fUpdated = true;
-    }
-
-    if (fUpdated) {
-        auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
-                    DbAddress{"DataBaseAttributes", "version"},
-                    "value", currentVersion, "name");
-
-        if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
-            QuasarAppUtils::Params::log("Failed to update version attribute",
-                                        QuasarAppUtils::Error);
-            return false;
-        }
-    }
-
-    return true;
-}
-
-const QString &DataBaseNode::localNodeName() const {
-    return _localNodeName;
-}
-
-void DataBaseNode::setLocalNodeName(const QString &newLocalNodeName) {
-    _localNodeName = newLocalNodeName;
-}
-
-QVariantMap DataBaseNode::defaultDbParams() const {
-
-    return {
-        {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH + "/" + localNodeName() + "/" + localNodeName() + "_" + DEFAULT_DB_NAME},
-    };
-}
-
 DBOperationResult
 QH::DataBaseNode::getObject(const QVariant &requester,
                             const QH::DBObject &templateObj,
                             QSharedPointer<QH::PKG::DBObject> &result) const {
 
-    if (!_db && !result) {
+    if (!_db) {
         return DBOperationResult::Unknown;
     }
-
-    DBOperationResult permisionResult = checkPermission(requester, templateObj.dbAddress(),
-                                                        Permission::Read);
-    if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
-    }
-
-    auto obj = _db->getObject(templateObj);
-    if (!obj || (obj->dbAddress() != templateObj.dbAddress())) {
-        return DBOperationResult::Unknown;
-    }
-
-    result = obj;
-    return DBOperationResult::Allowed;
+    return _db->getObject(requester, templateObj, result);
 }
 
 DBOperationResult
 DataBaseNode::getObjects(const QVariant &requester,
                          const DBObject &templateObj,
                          QList<QSharedPointer<DBObject>> &result) const {
+
     if (!_db) {
         return DBOperationResult::Unknown;
     }
-
-    if (!_db->getAllObjects(templateObj, result)) {
-        return DBOperationResult::Unknown;
-    }
-
-    for (const auto& obj: qAsConst(result)) {
-        if (!obj)
-            return DBOperationResult::Unknown;
-
-        auto permisionResult = checkPermission(requester, obj->dbAddress(),
-                                               Permission::Read);
-        if (permisionResult != DBOperationResult::Allowed) {
-            return permisionResult;
-        }
-    }
-
-    return DBOperationResult::Allowed;
+    return _db->getObjects(requester, templateObj, result);
 }
 
 DBOperationResult
@@ -526,19 +353,7 @@ DataBaseNode::updateObject(const QVariant &requester,
     if (!_db) {
         return DBOperationResult::Unknown;
     }
-
-    auto permisionResult = checkPermission(requester,
-                                           saveObject->dbAddress(),
-                                           Permission::Write);
-    if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
-    }
-
-    if (!_db->updateObject(saveObject)) {
-        return DBOperationResult::Unknown;
-    }
-
-    return DBOperationResult::Allowed;
+    return _db->updateObject(requester, saveObject);
 }
 
 DBOperationResult
@@ -548,36 +363,17 @@ DataBaseNode::createObject(const QVariant &requester,
     if (!_db) {
         return DBOperationResult::Unknown;
     }
-
-    if (isForbidenTable(obj->tableName())) {
-        return DBOperationResult::Forbidden;
-    }
-
-    if (!_db->insertObject(obj)) {
-        return DBOperationResult::Unknown;
-    }
-
-    if (!addUpdatePermission(requester, obj->dbAddress(), Permission::Write)) {
-
-        _db->deleteObject(obj);
-
-        return DBOperationResult::Forbidden;
-    }
-
-    return DBOperationResult::Allowed;
-
+    return _db->createObject(requester, obj);
 }
 
 DBOperationResult
 DataBaseNode::updateIfNotExistsCreateObject(const QVariant &requester,
                                             const QSharedPointer<DBObject> &obj) {
 
-    auto opResult = updateObject(requester, obj);
-    if (opResult != QH::DBOperationResult::Unknown) {
-        return opResult;
+    if (!_db) {
+        return DBOperationResult::Unknown;
     }
-
-    return createObject(requester, obj);
+    return _db->updateIfNotExistsCreateObject(requester, obj);
 }
 
 DBOperationResult
@@ -585,32 +381,14 @@ DataBaseNode::changeObjects(const QVariant &requester,
                             const DBObject &templateObj,
                             const std::function<bool (const QSharedPointer<DBObject> &)> &changeAction) {
 
-    DBOperationResult result = DBOperationResult::Unknown;
-
     if (!_db) {
-        return result;
+        return DBOperationResult::Unknown;
     }
-
-    auto execWithCheck = [this, requester, &result, &changeAction]
-            (const QSharedPointer<DBObject> & obj) {
-
-        result = checkPermission(requester, obj->dbAddress(), Permission::Update);
-        if (result != DBOperationResult::Allowed) {
-            return false;
-        }
-
-        return changeAction(obj);
-    };
-
-    if (!db()->changeObjects(templateObj, execWithCheck)) {
-        return result;
-    }
-
-    return result;
+    return _db->changeObjects(requester, templateObj, changeAction);
 }
 
 QVariant DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
-                                        const AbstractData *) const {
+                                 const AbstractData *) const {
 
     auto info = dynamic_cast<const BaseNodeInfo*>(connectInfo);
     if (!info)
@@ -620,106 +398,13 @@ QVariant DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
 }
 
 DBOperationResult
-DataBaseNode::checkPermission(const QVariant &requester,
-                              const DbAddress &objectAddress,
-                              const Permission& requarimentPermision) const {
-
-    if (!requester.isValid())
-        return DBOperationResult::Unknown;
-
-    if (!_db) {
-        return DBOperationResult::Unknown;
-    }
-
-    auto member = _db->getObjectRaw(NetworkMember{requester});
-    if (!member) {
-        return DBOperationResult::Unknown;
-    }
-
-    auto permision =
-            _db->getObject(MemberPermisionObject({requester, objectAddress}));
-
-    if (!permision) {
-
-        permision = _db->getObject(DefaultPermision({requester, objectAddress}));
-        if (!permision)
-            return DBOperationResult::Unknown;
-    }
-
-    if (permision->permisions() < requarimentPermision) {
-        return DBOperationResult::Forbidden;
-    }
-
-    return DBOperationResult::Allowed;
-}
-
-bool DataBaseNode::addUpdatePermission(const QVariant &member,
-                                       const DbAddress &objectAddress,
-                                       const Permission &permision,
-                                       const Permission &defaultPermision) const {
-
-    if (!_db) {
-        return false;
-    }
-
-    auto object = QSharedPointer<MemberPermisionObject>::create();
-    object->setKey(PermisionData(member, objectAddress));
-    object->setPermisions(permision);
-
-    if (!_db->insertObject(object) && !_db->updateObject(object)) {
-        return false;
-    }
-
-    auto defaultPermisionObject = QSharedPointer<DefaultPermision>::create();
-    defaultPermisionObject->setKey(PermisionData({}, objectAddress));
-    defaultPermisionObject->setPermisions(defaultPermision);
-
-    if (!_db->insertObject(defaultPermisionObject) &&
-            !_db->updateObject(defaultPermisionObject)) {
-        return false;
-    }
-
-    return true;
-}
-
-bool DataBaseNode::removePermission(const QVariant &member,
-                                    const DbAddress &objectAddress) const {
-
-    if (!_db) {
-        return false;
-    }
-
-    auto object = QSharedPointer<MemberPermisionObject>::create();
-    object->setKey(PermisionData(member, objectAddress));
-
-    if (!_db->deleteObject(object)) {
-        return false;
-    }
-
-    return true;
-}
-
-DBOperationResult
 DataBaseNode::deleteObject(const QVariant &requester,
                            const QSharedPointer<DBObject> &dbObject) {
 
     if (!_db) {
         return DBOperationResult::Unknown;
     }
-
-    auto permisionResult = checkPermission(requester,
-                                           dbObject->dbAddress(),
-                                           Permission::Write);
-    if (permisionResult != DBOperationResult::Allowed) {
-        return permisionResult;
-    }
-
-    auto address = dbObject->dbAddress();
-    if (!_db->deleteObject(dbObject)) {
-        return DBOperationResult::Unknown;
-    }
-
-    return DBOperationResult::Allowed;
+    return _db->deleteObject(requester, dbObject);
 }
 
 }

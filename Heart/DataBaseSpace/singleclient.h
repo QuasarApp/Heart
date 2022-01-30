@@ -355,7 +355,7 @@ protected:
     const HostAddress& realServerAddress() const;
 
 protected slots:
-    void nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+    void nodeErrorOccured(QH::AbstractNodeInfo *nodeInfo,
                           QAbstractSocket::SocketError errorCode,
                           QString errorString) override;
 
