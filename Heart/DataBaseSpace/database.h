@@ -24,7 +24,6 @@ class ISubscribableData;
 
 class ISqlDBCache;
 class SqlDBWriter;
-class WebSocketController;
 class DbAddress;
 class NodeId;
 class iObjectProvider;
@@ -50,11 +49,12 @@ typedef QList<DBPatch> DBPatchMap;
  * @see DBObject
  * @see DataBaseNode
  */
-class HEARTSHARED_EXPORT DataBase
+class HEARTSHARED_EXPORT DataBase: public QObject
 {
+    Q_OBJECT
 public:
 
-    DataBase();
+    DataBase(QObject * ptr = nullptr);
     ~DataBase();
 
     /**
@@ -90,6 +90,9 @@ public:
      */
     virtual bool run(const QString &localNodeName);
 
+    /**
+     * @brief stop This method stop and diskonnect the database.
+     */
     void stop();
 
     /**
@@ -186,13 +189,52 @@ public:
                                     const PKG::DBObject &templateObj,
                                     const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
+    /**
+     * @brief isBanned This method check trust of node, if node trust is lover of 0 return true.
+     * @param member This is member of network (node, client or server).
+     * @return true if node is banned.
+     */
+    bool isBanned(const QVariant &member) const;
 
+    /**
+     * @brief dbLocation This method return location of nodes or clients database.
+     * @return path to the location of database.
+     */
+    QString dbLocation() const;
+
+    /**
+     * @brief changeTrust This implementation of change trust is change trust node or user by self id.
+     * All changes of trust saving into local database.
+     * @param id This is id of user of other network member object.
+     * @param diff This is difference of trust.
+     * @return true if trust of user changed successful.
+     */
+    bool changeTrust(const QVariant &id, int diff);
+
+signals:
+
+    /**
+     * @brief sigItemChanged This signal emitted when database object is changed.
+     * @note emit implemented in updateObject and insertObject methods.
+     *  So If you override then methods do not forget add emit of the sigItemChanged signal.
+     * @param obj This is changed object.
+     * @note This is wrapper of the ISqlDBCache::sigItemChanged
+     */
+    void sigObjectChanged(const QSharedPointer<QH::PKG::DBObject> &obj);
+
+    /**
+     * @brief sigItemDeleted This signal emitted when database object is deleted.
+     * @note emit implemented in the deleteObject method.
+     *  So if you override the deleteObject method do not forget add emit of the sigItemChanged signal.
+     * @param obj This is address of the removed object.
+     * @note This is wrapper of the ISqlDBCache::sigItemDeleted
+     */
+    void sigObjectDeleted(const QH::DbAddress& obj);
 
 protected:
 
     /**
      * @brief localNodeName This method return local node name.
-     *
      * @return local node name
      */
     const QString &localNodeName() const;
@@ -214,15 +256,6 @@ protected:
      * @param writer This is Database writerObject.
      */
     virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
-
-    /**
-     * @brief changeTrust This implementation of change trust is change trust node or user by self id.
-     * All changes of trust saving into local database.
-     * @param id This is id of user of other network member object.
-     * @param diff This is difference of trust.
-     * @return true if trust of user changed successful.
-     */
-    virtual bool changeTrust(const QVariant &id, int diff);
 
     /**
      * @brief memberSubsribed This method invoked when client with @a clientId subscribed on object with  @a subscribeId.
@@ -293,25 +326,12 @@ protected:
                                   const DbAddress& objectAddress) const;
 
     /**
-     * @brief dbLocation This method return location of nodes or clients database.
-     * @return path to the location of database.
-     */
-    QString dbLocation() const;
-
-    /**
      * @brief welcomeAddress This method send to the node information about self.
      * Override this method if you want send custom data to incoming connection.
      * @param node This is info object of the peer node.
      * @return true if all information sender successful.
      */
     virtual bool welcomeAddress(AbstractNodeInfo *node);
-
-    /**
-     * @brief isBanned This method check trust of node, if node trust is lover of 0 return true.
-     * @param member This is member of network (node, client or server).
-     * @return true if node is banned.
-     */
-    bool isBanned(const QVariant &member) const;
 
     /**
      * @brief SQLSources This method contains list of sqldatabase sources.
@@ -358,13 +378,6 @@ protected:
      * @return set of tables names.
      */
     virtual QSet<QString> systemTables() const;
-
-    /**
-     * @brief notifyObjectChanged This method send all subscriptions message with this object.
-     * @param item changed object.
-     * @return true if an item object sendible.
-     */
-    bool notifyObjectChanged(const QSharedPointer<PKG::ISubscribableData> &item);
 
     /**
      * @brief objectRemoved This method invoked when object with @a address removed from database.
@@ -439,10 +452,7 @@ private:
 
     ISqlDBCache *_db = nullptr;
     QString _localNodeName;
-    WebSocketController *_webSocketWorker = nullptr;
-
-
-    friend class WebSocketController;
+    friend class DataBaseNode;
 
 };
 

@@ -99,7 +99,8 @@ protected:
                               const Header& pkgHeader,
                               const AbstractNodeInfo* sender) override;
     QByteArray hashgenerator(const QByteArray &data) const override;
-    QStringList SQLSources() const override;
+
+    bool initDatabase() override;
 
 
 private:
@@ -112,6 +113,10 @@ private:
                                   const Header& lastHeader,
                                   unsigned char error,
                                   int punishment);
+
+
+
+
 
 };
 

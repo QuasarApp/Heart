@@ -28,20 +28,8 @@ class WebSocketController;
 class DbAddress;
 class NodeId;
 class iObjectProvider;
+class DataBase;
 
-
-/**
- * @brief DBPatch This is function that should be upgrade database.
- * @see DBPatchMap
- * @see DataBaseNode::dbPatch
- */
-typedef std::function<bool (const QH::iObjectProvider *)> DBPatch;
-/**
- * @brief DBPatchMap This is list when index of list is version of database and value if function that should be upgrade database.
- * @see DataBaseNode::dbPatch
- * @see DBPatchMap
- */
-typedef QList<DBPatch> DBPatchMap;
 
 /**
  * @brief The BaseNode class is database base implementation of nodes or servers.
@@ -56,26 +44,6 @@ public:
 
     DataBaseNode(QObject * ptr = nullptr);
     ~DataBaseNode() override;
-
-    /**
-     * @brief intSqlDb This method initalize database of this node or server.
-     * @param DBparamsFile This is path to json file with all params of database.
-     * For more information of available parameters see the SqlDBWriter::defaultInitPararm method.
-     * @param cache This is pointer to the custom child of SqlDBCache class.
-     * IF you set nullptr value of this parameter then  well be created a default SqlDBCache object.
-     * @param writer This is pointer tot the custom child of SqlDBWriter class.
-     * If you set nullptr value of this parameter then well be created a default AsyncSqlDbWriter object.
-     * @return True if the database initialized successful.
-     */
-    virtual bool initSqlDb( QString DBparamsFile = "",
-                            ISqlDBCache * cache = nullptr,
-                            SqlDBWriter* writer = nullptr);
-
-    /**
-     * @brief isSqlInited This method return true if database initialized successful.
-     * @return True if database initialized successful.
-     */
-    bool isSqlInited() const;
 
     bool run(const QString &addres, unsigned short port) override;
 
@@ -94,14 +62,6 @@ public:
     void stop() override;
 
     /**
-     * @brief defaultDbParams This method return default database parameters for this node.
-     * Override this method for set new default parameters. Or use json database parameters file in DataBaseNode::run.
-     * @return Map with all database parameters.
-     *  For more information of available parameters see the SqlDBWriter::defaultInitPararm method.
-     */
-    virtual QVariantMap defaultDbParams() const;
-
-    /**
      * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
      *  This implementation do not prepare object to sending.
      * @param resp This is sending object to the nodeId.
@@ -110,13 +70,13 @@ public:
      * @return true if a data send successful.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr);
+                                  const Header *req = nullptr);
 
     unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
+                          const Header *req = nullptr) override;
 
     unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                  const Header *req = nullptr) override;
+                          const Header *req = nullptr) override;
 
     /**
      * @brief deleteObject This method delete object by database address.
@@ -204,34 +164,34 @@ public:
                                     const PKG::DBObject &templateObj,
                                     const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
+    /**
+     * @brief isSqlInited This method return true if database initialized successful.
+     * @return True if database initialized successful.
+     */
+    bool isSqlInited() const;
+
+    /**
+     * @brief checkPermision This method check a permision of requester, to database object with objectAddress.
+     *  Override this method if you have a custom database structure.
+     * @param requester This is  user, node or another object of network
+     * @param objectAddress This is address to database object
+     * @param requarimentPermision This is needed permission for requester
+     * @return DBOperationResult::Alowed if permission granted.
+     *  For more information about result see the DBOperationResult enum.
+     */
+    DBOperationResult checkPermission(const QVariant &requester,
+                                      const DbAddress& objectAddress,
+                                      const Permission& requarimentPermision) const;
 
 
 protected:
 
     /**
-     * @brief localNodeName This method return local node name.
-     *
-     * @return local node name
+     * @brief setDb This method sets new object of the database.
+     * @param newDb this is new object of the database
+     * @note use in the initDatabase method.
      */
-    const QString &localNodeName() const;
-
-    /**
-     * @brief setLocalNodeName This method sets new local name of database file.
-     * @note This method must be invoked before the DataBaseNode::initsqlDb and the DataBaseNode::run methods.
-     * @param newLocalNodeName This is new name of node object and node databae file.
-     *
-     */
-    void setLocalNodeName(const QString &newLocalNodeName);
-
-    /**
-     * @brief initDefaultDbObjects This method create a default cache and database writer objects if the input pointers is null
-     *  Override this method for create a custom database objects for your node class.
-     * @note If you override this object then you no longer need to overload the run method to set your own controls.
-     * This method invoked automatically when you call the DataBaseNode::run method.
-     * @param cache This is Cache database object.
-     * @param writer This is Database writerObject.
-     */
-    virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
+    void setDb(DataBase *newDb);
 
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                               const Header& pkgHeader,
@@ -279,7 +239,7 @@ protected:
      * @brief db This node return pointer to database object.
      * @return The pointer to data base.
      */
-    ISqlDBCache* db() const;
+    DataBase* db() const;
 
     /**
      * @brief getSender This method return id of requester.
@@ -290,44 +250,6 @@ protected:
      * @return id of requester member.
      */
     virtual QVariant getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
-
-    /**
-     * @brief checkPermision This method check a permision of requester, to database object with objectAddress.
-     *  Override this method if you have a custom database structure.
-     * @param requester This is  user, node or another object of network
-     * @param objectAddress This is address to database object
-     * @param requarimentPermision This is needed permission for requester
-     * @return DBOperationResult::Alowed if permission granted.
-     *  For more information about result see the DBOperationResult enum.
-     */
-    virtual DBOperationResult checkPermission(const QVariant &requester,
-                                              const DbAddress& objectAddress,
-                                              const Permission& requarimentPermision) const;
-
-
-    /**
-     * @brief addUpdatePermission This method added or update permission for member.
-     * @warning This method do not have a validation. It is just change a NetworkMembers table, so use this carefully.
-     * @param member This is member id (user of node).
-     * @param objectAddress This is database  object for which the permissions will be set.
-     * @param permision This is permission level.
-     * @param defaultPermision This is default permision for all of rest objects. By default This is Permission::Read
-     * @return true if method finished successful.
-     */
-    virtual bool addUpdatePermission(const QVariant &member,
-                                     const DbAddress& objectAddress,
-                                     const Permission& permision,
-                                     const Permission& defaultPermision = Permission::Read) const;
-
-    /**
-     * @brief removePermission This method use to removed permission for member.
-     * @warning This method do not have a validation. It is just change a NetworkMembers table, so use this carefully.
-     * @param member This is member id (user of node)
-     * @param objectAddress This is database object for which the permissions will be removed
-     * @return true if method finished successful.
-     */
-    virtual bool removePermission(const QVariant &member,
-                                  const DbAddress& objectAddress) const;
 
     /**
      * @brief dbLocation This method return location of nodes or clients database.
@@ -351,52 +273,6 @@ protected:
     bool isBanned(const QVariant &member) const;
 
     /**
-     * @brief SQLSources This method contains list of sqldatabase sources.
-     * This method will be invoked into initialize sql method and deploy sql database.
-     *
-     * All sql files will be deployed in QList order.
-     *
-     *  By Default This method deploy next sql code:
-     * \code{sql}
-     *  CREATE TABLE IF NOT EXISTS NetworkMembers (
-            id VARCHAR(64) PRIMARY KEY NOT NULL,
-            authenticationData BLOB default NULL,
-            trust INTEGER default 0
-        );
-
-        CREATE TABLE IF NOT EXISTS MemberPermisions (
-            memberId VARCHAR(64) NOT NULL,
-            objectTable VARCHAR(100) NOT NULL,
-            objectId VARCHAR(64) NOT NULL,
-            lvl INTEGER NOT NULL,
-
-            FOREIGN KEY(memberId) REFERENCES NetworkMembers(id)
-                    ON UPDATE CASCADE
-                    ON DELETE CASCADE
-
-        );
-        CREATE UNIQUE INDEX IF NOT EXISTS MemberPermisionsIndex ON MemberPermisions(memberId, objectTable, objectId);
-
-     * \endcode
-     * For add own sql code just override this method, but do not forget invoke a base method of a parent class.
-     *
-     * Example:
-     * \code{cpp}
-     *    return DataBaseNode::SQLSources() << "path/to/mySqlFile.sql";
-     * \endcode
-     *
-     * @return the list to deploy sql files.
-     */
-    virtual QStringList SQLSources() const;
-
-    /**
-     * @brief systemTables This method return the set of tables that forbidden for users.
-     * By default is NetworkMembers and MemberPermisions tables.
-     * @return set of tables names.
-     */
-    virtual QSet<QString> systemTables() const;
-
-    /**
      * @brief notifyObjectChanged This method send all subscriptions message with this object.
      * @param item changed object.
      * @return true if an item object sendible.
@@ -418,40 +294,11 @@ protected:
     virtual void objectChanged(const QSharedPointer<PKG::DBObject>& obj);
 
     /**
-     * @brief dbPatches This method should be return map with functions that upgrade production data base.
-     *  Eeach function shoul be can upgrade databae from preview version to own version.
-     *  **Example**:
-     *
-     *  We have 4 version of data base {0, 1, 2, 3} each version should be contains own function for upgrade data base.
-     *  Where the 0 version is first version of database. (genesis)
-     *
-     *  @code{cpp}
-     *    QH::DBPatchMap dbPatches() const {
-              QH::DBPatchMap result;
-
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 0 to 1
-              };
-
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 1 to 2
-              };
-
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 2 to 3
-              };
-
-              return result;
-          }
-     *  @endcode
-     *
-     * @return Map of database pactches.
-     *
-     * @see DBPatchMap
-     * @see DBPatch
+     * @brief initDatabase This method initialize the default DataBase object.
+     * @return true if database initialized succesful else false.
+     * @see DataBase;
      */
-    virtual DBPatchMap dbPatches() const;
-
+    virtual bool initDatabase();
 private slots:
     void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
     void handleObjectDeleted(const QH::DbAddress &item);
@@ -469,17 +316,7 @@ private:
                            const AbstractNodeInfo *sender);
 
 
-    bool isForbidenTable(const QString& table);
-
-    /**
-     * @brief upgradeDataBase This method upgrade data base to actyaly database version.
-     * @note The last version of dbPatches is actyaly version.
-     * @return true if operation finished successful
-     */
-    bool upgradeDataBase();
-
-    ISqlDBCache *_db = nullptr;
-    QString _localNodeName;
+    DataBase *_db = nullptr;
     WebSocketController *_webSocketWorker = nullptr;
 
 
@@ -490,5 +327,4 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(QSharedPointer<QH::PKG::DBObject>)
 #endif // DATABASENODE_H

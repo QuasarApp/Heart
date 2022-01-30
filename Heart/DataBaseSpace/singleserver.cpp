@@ -13,6 +13,7 @@
 #include <basenodeinfo.h>
 #include <badrequest.h>
 #include <getmaxintegerid.h>
+#include <singleserverdb.h>
 #include "deleteobject.h"
 #include "getsinglevalue.h"
 #include "isqldbcache.h"
@@ -27,11 +28,18 @@ SingleServer::SingleServer()
 
 ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
                                                const AbstractNodeInfo *info) {
-    if (!db()) {
+    auto sdb = dynamic_cast<SingleServerDB*>(db());
+
+    if (!sdb) {
         return ErrorCodes::InternalError;
     }
 
-    auto localObject = db()->getObject(user);
+    auto rawDb = sdb->rawDb();
+    if (!rawDb) {
+        return ErrorCodes::InternalError;
+    }
+
+    auto localObject = rawDb->getObject(user);
 
     if (localObject) {
         return ErrorCodes::UserExits;
@@ -40,14 +48,14 @@ ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
     auto rawPassword = user.authenticationData();
     user.setAuthenticationData(hashgenerator(rawPassword));
 
-    if (!db()->insertObject(QSharedPointer<decltype(user)>::create(user), true)) {
+    if (!rawDb->insertObject(QSharedPointer<decltype(user)>::create(user), true)) {
         return ErrorCodes::InternalError;
     };
 
     user.setAuthenticationData(rawPassword);
 
     // get id of the user
-    addUpdatePermission(user.getId(), user.dbAddress(), Permission::Write);
+    sdb->addUpdatePermission(user.getId(), user.dbAddress(), Permission::Write);
 
     return loginUser(user, info);
 }
@@ -56,11 +64,18 @@ ErrorCodes::Code SingleServer::registerNewUser(PKG::UserMember user,
 ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
                                          const AbstractNodeInfo *info) {
 
-    if (!db()) {
+    auto sdb = dynamic_cast<SingleServerDB*>(db());
+
+    if (!sdb) {
         return ErrorCodes::InternalError;
     }
 
-    QSharedPointer<PKG::UserMember> localObject = db()->getObject<PKG::UserMember>(user);
+    auto rawDb = sdb->rawDb();
+    if (!rawDb) {
+        return ErrorCodes::InternalError;
+    }
+
+    QSharedPointer<PKG::UserMember> localObject = rawDb->getObject<PKG::UserMember>(user);
 
     if (!localObject) {
         return ErrorCodes::UserNotExits;
@@ -82,7 +97,7 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
 
     if (!localObject->getSignToken().isValid()) {
         localObject->setSignToken(generateToken(AccessToken::Year));
-        if (!db()->updateObject(localObject, true)) {
+        if (!rawDb->updateObject(localObject, true)) {
             return ErrorCodes::InternalError;
         }
     }
@@ -101,11 +116,18 @@ ErrorCodes::Code SingleServer::loginUser(const PKG::UserMember &user,
 ErrorCodes::Code SingleServer::logOutUser(const PKG::UserMember &user,
                                           const AbstractNodeInfo *info) {
 
-    if (!db()) {
+    auto sdb = dynamic_cast<SingleServerDB*>(db());
+
+    if (!sdb) {
         return ErrorCodes::InternalError;
     }
 
-    auto localObject = db()->getObject(user);
+    auto rawDb = sdb->rawDb();
+    if (!rawDb) {
+        return ErrorCodes::InternalError;
+    }
+
+    auto localObject = rawDb->getObject(user);
 
     if (!localObject) {
         return ErrorCodes::UserNotExits;
@@ -268,8 +290,9 @@ void SingleServer::prepareAndSendBadRequest(const HostAddress& address,
 
 }
 
-QStringList SingleServer::SQLSources() const {
-    return {":/sql/DataBaseSpace/Res/UserDB.sql"};
+bool SingleServer::initDatabase() {
+    setDb(new SingleServerDB);
+    return true;
 }
 
 }
