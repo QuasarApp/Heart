@@ -5,8 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef DATABASENODE_H
-#define DATABASENODE_H
+#ifndef QH_DATABASE_H
+#define QH_DATABASE_H
 
 #include "abstractnode.h"
 #include <dbobject.h>
@@ -44,18 +44,18 @@ typedef std::function<bool (const QH::iObjectProvider *)> DBPatch;
 typedef QList<DBPatch> DBPatchMap;
 
 /**
- * @brief The BaseNode class is database base implementation of nodes or servers.
+ * @brief The DataBase class is DataBase base implementation.
  *  This implementation contains methods for work with database.
  *  DataBaseNode is thread save class.
  * @see DBObject
+ * @see DataBaseNode
  */
-class HEARTSHARED_EXPORT DataBaseNode : public AbstractNode
+class HEARTSHARED_EXPORT DataBase
 {
-    Q_OBJECT
 public:
 
-    DataBaseNode(QObject * ptr = nullptr);
-    ~DataBaseNode() override;
+    DataBase();
+    ~DataBase();
 
     /**
      * @brief intSqlDb This method initalize database of this node or server.
@@ -77,21 +77,20 @@ public:
      */
     bool isSqlInited() const;
 
-    bool run(const QString &addres, unsigned short port) override;
+    /**
+     * @brief run This method start and initialize the data base connection.
+     * @return true if finished successful else false.
+     */
+    bool run();
 
     /**
      * @brief run This method is some as AbstractNode::run but set for node custom work folder.
      * This maybe use for multiple deployment nodes on one host.
-     * @param addres This is network address of work node or server.
-     *  If address is empty then server will be listen all addresses of all interfaces else listen only selected address.
-     * @param port This is port of deployment node (server).
-     * @return Result of deployment node (sever). (True if deploy finished successful else false).
      * @param localNodeName This is name of node and  work folder of node.
      */
-    virtual bool run(const QString &addres, unsigned short port,
-                     const QString &localNodeName);
+    virtual bool run(const QString &localNodeName);
 
-    void stop() override;
+    void stop();
 
     /**
      * @brief defaultDbParams This method return default database parameters for this node.
@@ -100,23 +99,6 @@ public:
      *  For more information of available parameters see the SqlDBWriter::defaultInitPararm method.
      */
     virtual QVariantMap defaultDbParams() const;
-
-    /**
-     * @brief sendData This method is some as AbstractNode::sendData but it try send data to the id.
-     *  This implementation do not prepare object to sending.
-     * @param resp This is sending object to the nodeId.
-     * @param nodeId This is id of target node.
-     * @param req This is header of request.
-     * @return true if a data send successful.
-     */
-    virtual unsigned int sendData(const PKG::AbstractData *resp, const QVariant &nodeId,
-                          const Header *req = nullptr);
-
-    unsigned int sendData(const PKG::AbstractData *resp, const HostAddress &nodeId,
-                  const Header *req = nullptr) override;
-
-    unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                  const Header *req = nullptr) override;
 
     /**
      * @brief deleteObject This method delete object by database address.
@@ -233,14 +215,6 @@ protected:
      */
     virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
 
-    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                              const Header& pkgHeader,
-                              const AbstractNodeInfo* sender) override;
-
-    AbstractNodeInfo *createNodeInfo(QAbstractSocket *socket, const HostAddress *clientAddress) const override;
-
-    bool changeTrust(const HostAddress &id, int diff) override;
-
     /**
      * @brief changeTrust This implementation of change trust is change trust node or user by self id.
      * All changes of trust saving into local database.
@@ -249,17 +223,6 @@ protected:
      * @return true if trust of user changed successful.
      */
     virtual bool changeTrust(const QVariant &id, int diff);
-
-    /**
-     * @brief hashgenerator This method generate a hash from any value.
-     * Override this method for set your custom salt.
-     * @param data This input byte array.
-     */
-    virtual QByteArray hashgenerator(const QByteArray &data) const;
-
-    void nodeConnected(AbstractNodeInfo *node) override;
-    void nodeDisconnected(AbstractNodeInfo *node) override;
-
 
     /**
      * @brief memberSubsribed This method invoked when client with @a clientId subscribed on object with  @a subscribeId.
@@ -452,10 +415,6 @@ protected:
      */
     virtual DBPatchMap dbPatches() const;
 
-private slots:
-    void handleObjectChanged(const QSharedPointer<PKG::DBObject> &item);
-    void handleObjectDeleted(const QH::DbAddress &item);
-
 
 private:
     /**
@@ -491,4 +450,4 @@ private:
 }
 
 Q_DECLARE_METATYPE(QSharedPointer<QH::PKG::DBObject>)
-#endif // DATABASENODE_H
+#endif // QH_DATABASE_H
