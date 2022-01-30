@@ -6,9 +6,10 @@
 #include <iobjectprovider.h>
 #include <QtTest>
 #include <isqldbcache.h>
+#include <database.h>
 #define LOCAL_TEST_PORT TEST_PORT + 5
 
-class UpgradableDatabase: public QH::DataBaseNode {
+class UpgradableDatabase: public QH::DataBase {
 
 
     // DataBaseNode interface
@@ -73,11 +74,11 @@ void UpgradeDataBaseTest::test() {
 
     UpgradableDatabase *db = new UpgradableDatabase();
 
-    QVERIFY(db->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "UpgradeDBTest"));
+    QVERIFY(db->run("UpgradeDBTest"));
 
     QVERIFY(db->checkVersion(3));
 
     db->stop();
-    QVERIFY(db->run(TEST_LOCAL_HOST, LOCAL_TEST_PORT, "UpgradeDBTest"));
-    db->softDelete();
+    QVERIFY(db->run("UpgradeDBTest"));
+    delete db;
 }

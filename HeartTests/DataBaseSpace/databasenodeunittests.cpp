@@ -12,6 +12,7 @@
 #include <sqlitedbcache.h>
 #include "sqldb.h"
 #include <networkmember.h>
+#include <database.h>
 
 // This define create a simple class based on the BASE class and use the CHECHE and WRITER like a default cache and default writer objects.
 #define TEST_CASE(NAME, BASE, MEMBER, CACHE, WRITER) \
@@ -20,10 +21,10 @@
     };
 
 #ifdef HEART_DB_CACHE
-TEST_CASE(Case0, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDBCache, QH::AsyncSqlDBWriter)
-TEST_CASE(Case1, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SQLiteDBCache, QH::AsyncSqlDBWriter)
+TEST_CASE(Case0, QH::DataBase, QH::PKG::NetworkMember, QH::SqlDBCache, QH::AsyncSqlDBWriter)
+TEST_CASE(Case1, QH::DataBase, QH::PKG::NetworkMember, QH::SQLiteDBCache, QH::AsyncSqlDBWriter)
 #endif
-TEST_CASE(Case2, QH::DataBaseNode, QH::PKG::NetworkMember, QH::SqlDB, QH::AsyncSqlDBWriter)
+TEST_CASE(Case2, QH::DataBase, QH::PKG::NetworkMember, QH::SqlDB, QH::AsyncSqlDBWriter)
 
 
 template <class T>
@@ -35,7 +36,6 @@ void testCase(const T& t) {
     { \
     TYPE *tst = new TYPE(); \
     testCase(*tst); \
-    tst->softDelete(); \
     }
 
 void DataBaseNodeUnitTests::test() {

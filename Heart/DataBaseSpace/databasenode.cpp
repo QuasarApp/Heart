@@ -112,11 +112,14 @@ bool DataBaseNode::run(const QString &addres,
 void DataBaseNode::stop() {
 
     AbstractNode::stop();
-    _db->stop();
+
+    if (_db)
+        _db->stop();
 }
 
 DataBaseNode::~DataBaseNode() {
-    delete _db;
+    if (_db)
+        delete _db;
 }
 
 bool DataBaseNode::welcomeAddress(AbstractNodeInfo *) {
