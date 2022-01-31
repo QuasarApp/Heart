@@ -103,36 +103,6 @@ public:
 
 protected:
 
-    QDataStream &fromStream(QDataStream &stream) override {
-        DBObjectSet::fromStream(stream);
-
-        clear();
-        int size = 0;
-        stream >> size;
-
-        for (int i = 0; i < size; ++i) {
-            auto ptr = QSharedPointer<T>::create();
-
-            stream >> *ptr;
-
-            _data.push_back(ptr);
-        }
-
-        return stream;
-    };
-
-    QDataStream &toStream(QDataStream &stream) const override {
-        DBObjectSet::toStream(stream);
-
-        stream << static_cast<int>(_data.size());
-
-        for (auto object: _data) {
-            stream << *object;
-        }
-
-        return stream;
-    };
-
     QString condition() const override {
         return _conditions;
     }
@@ -141,9 +111,11 @@ protected:
         return create<DBObjectsRequest<T>>(tableName(), _conditions);
     };
 
+    QList<QSharedPointer<T>> _data;
+
 private:
     QString _conditions;
-    QList<QSharedPointer<T>> _data;
+
 
 };
 

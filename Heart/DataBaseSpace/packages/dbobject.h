@@ -22,6 +22,12 @@ namespace QH {
 namespace PKG {
 
 /**
+ *  The ONLY_DATABASE_PACKAGE macross is base macros for all database objects that do not use stream and network functions.
+*/
+#define ONLY_DATABASE_PACKAGE QH_PACKAGE(DBObject, "DBObject")
+
+
+/**
  * @brief The PrepareResult enum is result of work prepare sql query of dbobjects.
  */
 enum class PrepareResult {
