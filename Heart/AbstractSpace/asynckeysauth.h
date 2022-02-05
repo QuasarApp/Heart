@@ -10,7 +10,7 @@
 
 #include <QByteArray>
 
-
+#include "heart_global.h"
 
 namespace QH {
 
@@ -49,7 +49,7 @@ namespace QH {
  *
  *
  */
-class AsyncKeysAuth
+class HEARTSHARED_EXPORT AsyncKeysAuth
 {
 public:
     AsyncKeysAuth();
