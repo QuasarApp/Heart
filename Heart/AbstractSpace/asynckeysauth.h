@@ -28,7 +28,7 @@ namespace QH {
  * * Client make a data for signing = S
  *      S = SHA256{U + PUB}
  * * Client make a signature SIG
- *      SIG = PRIV.encript(S)
+ *      SIG = PRIV.signMessage(S)
  * * Client prepare a auth request for server = R:
  *      R = {U,SIG,PUB}
  * * Cleint send R to server
@@ -41,9 +41,8 @@ namespace QH {
  * * Server compare U time with current unix time.
  * * If the diferrence more then allowed value then server reject an auth
  * * Server make S value as a client
- * * Server decript SIG value and comapre it with S value
- * * If decripted value is deferrend of the S then server reject an auth.
- * * If decripted value equals with S value then server accept an auth.
+ * * Server check SIG value and comapre it with S value
+ * * If message sign is valid then server accept an auth else reject.
  * * After accept server create new user with ID = sha256(PUB) or
  * if user alredy exits make them as a logined user.
  *
@@ -111,22 +110,23 @@ public:
 protected:
 
     /**
-     * @brief encrypt This method should be encript the @a inputData using the @a key.
-     * @param inputData This is input data that should be encripted.
-     * @param key This is a privete key for encription the @a inpputData.
-     * @return encripted data array.
+     * @brief signMessage This method should be sign the @a message using the @a key.
+     * @param message This is input data that should be signed.
+     * @param key This is a privete key for encription the @a message.
+     * @return signature data array.
      * @see AsyncKeysAuth::descrupt
      */
-    virtual QByteArray encrypt(const QByteArray& inputData, const QByteArray& key) const = 0;
+    virtual QByteArray &signMessage(const QByteArray& message, const QByteArray& key) const = 0;
 
     /**
-     * @brief decrypt This method should be decrypt the @a inputData using the @a key.
-     * @param inputData This is input data that should be decripted.
+     * @brief checkSign This method should be check signature of the @a message using the @a key.
+     * @param message This is input data that should be decripted.
+     * @param signature This is signature that will be checked for the @a message.
      * @param key This is a public key for encription the @a inpputData.
      * @return decripted data array.
      * @see AsyncKeysAuth::encrypt
      */
-    virtual QByteArray decrypt(const QByteArray& inputData, const QByteArray& key) const = 0;
+    virtual bool checkSign(const QByteArray& message, const QByteArray& signature, const QByteArray& key) const = 0;
 
     /**
      * @brief getPrivateKey This method should be return private key for the public key that saved in this object.
@@ -141,7 +141,6 @@ protected:
      */
     void setSignature(const QByteArray &newSignature);
 
-private:
     unsigned int _unixTime = 0;
     QByteArray _signature;
     QByteArray _publicKey;

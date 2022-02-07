@@ -28,7 +28,7 @@ bool AsyncKeysAuth::auth(int allowedTimeRangeSec) const {
     auto signData = QCryptographicHash::hash(data,
                              QCryptographicHash::Sha256);
 
-    return decrypt(signData, _publicKey) == signData;
+    return checkSign(signData, signData, _publicKey);
 }
 
 bool AsyncKeysAuth::prepare() {
@@ -41,7 +41,7 @@ bool AsyncKeysAuth::prepare() {
     auto signData = QCryptographicHash::hash(data,
                              QCryptographicHash::Sha256);
 
-    setSignature(encrypt(signData, getPrivateKey()));
+    setSignature(signMessage(signData, getPrivateKey()));
 
     return isValid();
 }
