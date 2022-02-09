@@ -116,7 +116,7 @@ protected:
      * @return signature data array.
      * @see AsyncKeysAuth::descrupt
      */
-    virtual QByteArray &signMessage(const QByteArray& message, const QByteArray& key) const = 0;
+    virtual QByteArray signMessage(const QByteArray& message, const QByteArray& key) const = 0;
 
     /**
      * @brief checkSign This method should be check signature of the @a message using the @a key.
