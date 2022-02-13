@@ -19,7 +19,7 @@ namespace QH {
 /**
  * @brief The AuthECDSA class is ecdsa implementation of the Async authentication. This implementation based on Openssl library.
  */
-class AuthECDSA: public QH::AsyncKeysAuth
+class HEARTSHARED_EXPORT AuthECDSA: public QH::AsyncKeysAuth
 {
 
 public:
