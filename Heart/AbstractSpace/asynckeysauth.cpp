@@ -7,7 +7,7 @@
 
 #include "asynckeysauth.h"
 #include "QCryptographicHash"
-
+#include <time.h>
 
 namespace QH {
 
