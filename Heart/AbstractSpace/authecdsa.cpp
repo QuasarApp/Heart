@@ -8,19 +8,28 @@
 
 #include "authecdsa.h"
 
-#include <openssl/ec.h>      // for EC_GROUP_new_by_curve_name, EC_GROUP_free, EC_KEY_new, EC_KEY_set_group, EC_KEY_generate_key, EC_KEY_free
 #include <openssl/ecdsa.h>   // for ECDSA_do_sign, ECDSA_do_verify
 #include <openssl/obj_mac.h> // for NID_secp192k1
 #include <openssl/evp.h>
+#include <openssl/err.h>
 
 #include <QCryptographicHash>
 #include <QIODevice>
 #include <QVector>
+#include <quasarapp.h>
 
 namespace QH {
 
 AuthECDSA::AuthECDSA() {
 
+}
+
+void printlastOpenSSlError() {
+    int error = ERR_get_error();
+    char buffer[256];
+    ERR_error_string(error, buffer);
+    QuasarAppUtils::Params::log(QString("openssl: %0").arg(buffer),
+                                QuasarAppUtils::Error);
 }
 
 QByteArray bignumToArray(const BIGNUM* num) {
@@ -33,18 +42,19 @@ QByteArray bignumToArray(const BIGNUM* num) {
 }
 
 BIGNUM* bignumFromArray(const QByteArray& array) {
-    return BN_mpi2bn(reinterpret_cast<const unsigned char*>(array.data()), array.length(), nullptr);
+    auto d = reinterpret_cast<const unsigned char*>(array.data());
+    BIGNUM* result = BN_mpi2bn(d,
+                               array.length(), nullptr);
+    if (!result) {
+        printlastOpenSSlError();
+    }
+
+    return result;
 }
 
 QByteArray extractPrivateKey(EC_KEY* ec_key) {
     const BIGNUM* ec_priv = EC_KEY_get0_private_key(ec_key);
-    int length = BN_bn2mpi(ec_priv, nullptr);
-    QVector<unsigned char> data(length);
-    data.insert(0,  length);
-    BN_bn2mpi(ec_priv, data.data());
-    QByteArray result;
-    result.insert(0, reinterpret_cast<char*>(data.data()), data.length());
-    return result;
+    return bignumToArray(ec_priv);
 }
 
 QByteArray extractPublicKey(EC_KEY* key, EC_GROUP* group) {
@@ -56,6 +66,7 @@ QByteArray extractPublicKey(EC_KEY* key, EC_GROUP* group) {
     size_t length = EC_KEY_key2buf(key, form, &pub_key_buffer, nullptr);
 
     if (length <= 0) {
+        printlastOpenSSlError();
         return {};
     }
 
@@ -71,34 +82,14 @@ bool AuthECDSA::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
     EC_KEY *eckey= nullptr;
     EC_GROUP *ecgroup = nullptr;
 
-
-    auto free = [&eckey, &ecgroup] () {
-        if (ecgroup)
-            EC_GROUP_free(ecgroup);
-
-        if (eckey)
-            EC_KEY_free(eckey);
-    };
-
-    eckey = EC_KEY_new();
-    if (!eckey)
-        return false;
-
-    ecgroup = EC_GROUP_new_by_curve_name(NID_secp256k1);
-
-    if (!ecgroup) {
-        free();
+    if (!prepareKeyAdnGroupObjects(&eckey, &ecgroup)) {
         return false;
     }
 
-    const int success = 1;
-    if ( success != EC_KEY_set_group(eckey, ecgroup)) {
-        free();
-        return false;
-    }
-
-    if ( success != EC_KEY_generate_key(eckey)) {
-        free();
+    if (!EC_KEY_generate_key(eckey)) {
+        printlastOpenSSlError();
+        EC_GROUP_free(ecgroup);
+        EC_KEY_free(eckey);
         return false;
     }
 
@@ -111,18 +102,34 @@ bool AuthECDSA::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
 QByteArray AuthECDSA::signMessage(const QByteArray &inputData,
                                   const QByteArray &key) const {
 
-    auto hash = QCryptographicHash::hash(inputData, QCryptographicHash::Sha256);
+    EC_KEY *eckey= nullptr;
+    EC_GROUP *ecgroup = nullptr;
 
-    EC_KEY *eckey = EC_KEY_new_by_curve_name(NID_secp256k1);
+    if (!prepareKeyAdnGroupObjects(&eckey, &ecgroup)) {
+        return {};
+    }
 
-    BIGNUM* priv = BN_mpi2bn(reinterpret_cast<const unsigned char*>(key.data()),
-                             key.length(), nullptr);
-    EC_KEY_set_private_key(eckey, priv);
-    BN_free(priv);
+    auto hash = QCryptographicHash::hash(inputData,
+                                         QCryptographicHash::Sha256);
+
+    BIGNUM* priv = bignumFromArray(key);
+    if (!EC_KEY_set_private_key(eckey, priv)) {
+        printlastOpenSSlError();
+        EC_GROUP_free(ecgroup);
+        EC_KEY_free(eckey);
+        return {};
+    };
 
     ECDSA_SIG *signature = ECDSA_do_sign(reinterpret_cast<const unsigned char*>(hash.data()),
                                          hash.length(), eckey);
+    BN_free(priv);
     EC_KEY_free(eckey);
+    EC_GROUP_free(ecgroup);
+
+    if (!signature) {
+        printlastOpenSSlError();
+        return {};
+    }
 
     const BIGNUM * R, *S;
     ECDSA_SIG_get0(signature, &R, &S);
@@ -142,15 +149,6 @@ bool AuthECDSA::checkSign(const QByteArray &inputData,
                           const QByteArray &signature,
                           const QByteArray &key) const {
 
-    // extract key from raw array;
-    EC_KEY *eckey = EC_KEY_new_by_curve_name(NID_secp256k1);
-    const EC_GROUP* ec_group = EC_KEY_get0_group(eckey);
-    EC_POINT* ec_point = EC_POINT_new(ec_group);
-    EC_POINT_oct2point(ec_group, ec_point,
-                       reinterpret_cast<const unsigned char*>(key.data()),
-                       key.length(), nullptr);
-    EC_KEY_set_public_key(eckey, ec_point);
-    EC_POINT_free(ec_point);
 
     // extract signature from raw array
 
@@ -166,15 +164,78 @@ bool AuthECDSA::checkSign(const QByteArray &inputData,
     ECDSA_SIG *sig = ECDSA_SIG_new();
     ECDSA_SIG_set0(sig, R, S);
 
-    auto hash = QCryptographicHash::hash(inputData, QCryptographicHash::Sha256);
+    auto hash = QCryptographicHash::hash(inputData,
+                                         QCryptographicHash::Sha256);
+
+
+    EC_KEY *eckey= nullptr;
+    EC_GROUP *ecgroup = nullptr;
+
+    if (!prepareKeyAdnGroupObjects(&eckey, &ecgroup)) {
+        ECDSA_SIG_free(sig);
+        return {};
+    }
+
+
+    // extract key from raw array;
+    EC_POINT* ec_point = EC_POINT_new(ecgroup);
+    EC_POINT_oct2point(ecgroup, ec_point,
+                       reinterpret_cast<const unsigned char*>(key.data()),
+                       key.length(), nullptr);
+
+    EC_KEY_set_public_key(eckey, ec_point);
+
 
     int verify_status = ECDSA_do_verify(reinterpret_cast<const unsigned char*>(hash.data()),
                                         hash.length(), sig, eckey);
 
     ECDSA_SIG_free(sig);
+    EC_POINT_free(ec_point);
 
     return verify_status == 1;
 
+}
+
+bool AuthECDSA::prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup) {
+
+    // input data should be valid pointers to pointers of key and group objects.
+    if (!(eckey && ecgroup))
+        return false;
+
+    // input pointers should be nullptr;
+    if ((*eckey) || (*ecgroup))
+        return false;
+
+    auto free = [eckey, ecgroup] () {
+        if (*ecgroup)
+            EC_GROUP_free(*ecgroup);
+
+        if (*eckey)
+            EC_KEY_free(*eckey);
+    };
+
+    *eckey = EC_KEY_new();
+    if (!*eckey) {
+        printlastOpenSSlError();
+        free();
+        return false;
+    }
+
+    *ecgroup = EC_GROUP_new_by_curve_name(NID_secp256k1);
+
+    if (!*ecgroup) {
+        printlastOpenSSlError();
+        free();
+        return false;
+    }
+
+    if (!EC_KEY_set_group(*eckey, *ecgroup)) {
+        printlastOpenSSlError();
+        free();
+        return false;
+    }
+
+    return true;
 }
 
 }

@@ -11,6 +11,8 @@
 
 #include "abstractdata.h"
 #include <asynckeysauth.h>
+#include <openssl/ec.h>      // for EC_GROUP_new_by_curve_name, EC_GROUP_free, EC_KEY_new, EC_KEY_set_group, EC_KEY_generate_key, EC_KEY_free
+
 
 namespace QH {
 
@@ -35,6 +37,9 @@ public:
 protected:
     QByteArray signMessage(const QByteArray &inputData, const QByteArray &key) const override;
     bool checkSign(const QByteArray &inputData, const QByteArray &signature, const QByteArray &key) const override;
+
+private:
+    static bool prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup);
 
 };
 

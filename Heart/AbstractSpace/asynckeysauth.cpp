@@ -17,7 +17,7 @@ AsyncKeysAuth::AsyncKeysAuth() {
 
 bool AsyncKeysAuth::auth(int allowedTimeRangeSec) const {
 
-    if (std::abs(time(0) - _unixTime) > allowedTimeRangeSec) {
+    if (std::abs(time(0) - _unixTime) >= allowedTimeRangeSec) {
         return false;
     }
 
@@ -25,10 +25,7 @@ bool AsyncKeysAuth::auth(int allowedTimeRangeSec) const {
     data.insert(0, reinterpret_cast<const char*>(&_unixTime),
                 sizeof(_unixTime));
 
-    auto signData = QCryptographicHash::hash(data,
-                             QCryptographicHash::Sha256);
-
-    return checkSign(signData, signData, _publicKey);
+    return checkSign(data, _signature, _publicKey);
 }
 
 bool AsyncKeysAuth::prepare() {
@@ -38,10 +35,7 @@ bool AsyncKeysAuth::prepare() {
     data.insert(0, reinterpret_cast<const char*>(&_unixTime),
                 sizeof(_unixTime));
 
-    auto signData = QCryptographicHash::hash(data,
-                             QCryptographicHash::Sha256);
-
-    setSignature(signMessage(signData, getPrivateKey()));
+    setSignature(signMessage(data, getPrivateKey()));
 
     return isValid();
 }

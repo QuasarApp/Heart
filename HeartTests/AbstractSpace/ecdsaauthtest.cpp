@@ -50,12 +50,12 @@ void ECDSAAuthTest::test() {
 
     QVERIFY(!edsa.isValid());
 
-    QVERIFY(!edsa.auth(60));
+    QVERIFY(!edsa.auth(600));
 
     QVERIFY(edsa.prepare());
     QVERIFY(edsa.isValid());
 
-    QVERIFY(edsa.auth(60));
+    QVERIFY(edsa.auth(600));
     QVERIFY(!edsa.auth(0));
 
 
