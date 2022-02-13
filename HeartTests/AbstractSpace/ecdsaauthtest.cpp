@@ -40,23 +40,35 @@ ECDSAAuthTest::~ECDSAAuthTest() {
 }
 
 void ECDSAAuthTest::test() {
+    // create a publick and private keys array.
     QByteArray pub, priv;
 
+    // make public and private keys.
     QVERIFY(QH::AuthECDSA::makeKeys(pub, priv));
 
+    // check createed keys. should be larget then 0.
     QVERIFY(pub.length() && priv.length());
 
+    // create test auth object using ecdsa algorithm
     ECDSA edsa(pub, priv);
 
+    // The terst object should be invalid because it is not prepared.
     QVERIFY(!edsa.isValid());
 
+    // the authetication should be failed bacause ecdsa class is invalid.
     QVERIFY(!edsa.auth(600));
 
+    // prepare an authentication object.
     QVERIFY(edsa.prepare());
+    // the prepared object should be valid.
     QVERIFY(edsa.isValid());
 
+    // authentication should be finished successful because auth object contains prepared valid signature.
     QVERIFY(edsa.auth(600));
+    // authentication should be failed because the time range is depricated.
     QVERIFY(!edsa.auth(0));
+
+
 
 
 }

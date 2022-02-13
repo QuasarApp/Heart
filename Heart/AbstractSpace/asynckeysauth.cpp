@@ -17,7 +17,13 @@ AsyncKeysAuth::AsyncKeysAuth() {
 
 bool AsyncKeysAuth::auth(int allowedTimeRangeSec) const {
 
-    if (std::abs(time(0) - _unixTime) >= allowedTimeRangeSec) {
+    int diff = time(0) - _unixTime;
+
+    if (diff < 0) {
+        return false;
+    }
+
+    if (diff >= allowedTimeRangeSec) {
         return false;
     }
 
