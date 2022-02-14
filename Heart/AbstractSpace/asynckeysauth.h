@@ -55,9 +55,10 @@ public:
 
     /**
      * @brief auth This method make authentication and return true if the authentication finished successful else false.
+     * @brief retLoginedUserId This is logined user id in hex
      * @return true if the authentication finished successful else false.
      */
-    bool auth(int allowedTimeRangeSec) const;
+    bool auth(int allowedTimeRangeSec, QString* retLoginedUserId) const;
 
     /**
      * @brief prepare This method will generate signature for autentication of client. Please inboke this method before send request to server.

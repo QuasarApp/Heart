@@ -7,6 +7,7 @@
 
 #include "asynckeysauth.h"
 #include "QCryptographicHash"
+#include <QString>
 #include <time.h>
 
 namespace QH {
@@ -15,7 +16,7 @@ AsyncKeysAuth::AsyncKeysAuth() {
 
 }
 
-bool AsyncKeysAuth::auth(int allowedTimeRangeSec) const {
+bool AsyncKeysAuth::auth(int allowedTimeRangeSec, QString* userId) const {
 
     int diff = time(0) - _unixTime;
 
@@ -31,7 +32,14 @@ bool AsyncKeysAuth::auth(int allowedTimeRangeSec) const {
     data.insert(0, reinterpret_cast<const char*>(&_unixTime),
                 sizeof(_unixTime));
 
-    return checkSign(data, _signature, _publicKey);
+    bool result = checkSign(data, _signature, _publicKey);
+
+    if (result && userId) {
+        *userId = QCryptographicHash::hash(_publicKey,
+                                          QCryptographicHash::Sha256).toHex();
+    }
+
+    return result;
 }
 
 bool AsyncKeysAuth::prepare() {
