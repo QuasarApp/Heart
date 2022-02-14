@@ -7,9 +7,6 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
-    add_subdirectory(Qt-Secret)
-endif()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 17)

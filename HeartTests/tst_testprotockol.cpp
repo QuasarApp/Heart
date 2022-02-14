@@ -12,6 +12,7 @@
 #include "abstractnodetest.h"
 #include <shedullertest.h>
 #include <bigdatatest.h>
+#include <ecdsaauthtest.h>
 #endif
 #if HEART_BUILD_LVL >= 1
 #include <basenodetest.h>
@@ -42,6 +43,7 @@ private slots:
     TestCase(abstractNodeTest, AbstractNodeTest)
     TestCase(bigDataTest, BigDataTest);
     TestCase(shedullerTest, ShedullerTest);
+    TestCase(ecdsaAuthTest, ECDSAAuthTest);
 #endif
 #if HEART_BUILD_LVL >= 1
     TestCase(baseNodeTest, BaseNodeTest)

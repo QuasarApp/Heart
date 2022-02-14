@@ -2,6 +2,3 @@
 	path = QuasarAppLib
 	url = https://github.com/QuasarApp/QuasarAppLib.git
 
-[submodule "Heart/Qt-Secret"]
-	path = Heart/Qt-Secret
-	url = https://github.com/QuasarApp/Qt-Secret.git
