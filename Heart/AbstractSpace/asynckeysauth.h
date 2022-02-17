@@ -55,7 +55,7 @@ public:
 
     /**
      * @brief auth This method make authentication and return true if the authentication finished successful else false.
-     * @brief retLoginedUserId This is logined user id in hex
+     * @brief retLoginedUserId This is logined user id in Base64UrlEncoding
      * @return true if the authentication finished successful else false.
      */
     bool auth(int allowedTimeRangeSec, QString* retLoginedUserId) const;

@@ -36,7 +36,8 @@ bool AsyncKeysAuth::auth(int allowedTimeRangeSec, QString* userId) const {
 
     if (result && userId) {
         *userId = QCryptographicHash::hash(_publicKey,
-                                          QCryptographicHash::Sha256).toHex();
+                                          QCryptographicHash::Sha256).
+                toBase64(QByteArray::Base64UrlEncoding);
     }
 
     return result;

@@ -50,7 +50,7 @@ void ECDSAAuthTest::test() {
     // make user id
     QString userIDOfPubKey = QCryptographicHash::hash(pub,
                                                        QCryptographicHash::Sha256).
-            toHex();
+            toBase64(QByteArray::Base64UrlEncoding);
 
     // check createed keys. should be larget then 0.
     QVERIFY(pub.length() && priv.length());
