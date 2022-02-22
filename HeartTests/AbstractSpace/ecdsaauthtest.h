@@ -11,6 +11,8 @@
 #include "test.h"
 #include "testutils.h"
 
+#ifdef USE_HEART_SSL
+
 class ECDSAAuthTest:  public Test, protected TestUtils
 {
 public:
@@ -20,5 +22,6 @@ public:
     void test();
 
 };
+#endif
 
 #endif // ECDSAAUTHTEST_H

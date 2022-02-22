@@ -428,7 +428,13 @@ protected:
      */
     virtual DBPatchMap dbPatches() const;
 
-
+    /**
+     * @brief upgradeDataBase This method upgrade data base to actyaly database version.
+     * @note The last version of dbPatches is actyaly version.
+     * @return true if operation finished successful
+     * @note if you want to disable this feature then override this method and return true.
+     */
+    virtual bool upgradeDataBase();
 private:
     /**
          * @brief workWithSubscribe This method work with subscribe commnads.
@@ -442,13 +448,6 @@ private:
 
 
     bool isForbidenTable(const QString& table);
-
-    /**
-     * @brief upgradeDataBase This method upgrade data base to actyaly database version.
-     * @note The last version of dbPatches is actyaly version.
-     * @return true if operation finished successful
-     */
-    bool upgradeDataBase();
 
     ISqlDBCache *_db = nullptr;
     QString _localNodeName;

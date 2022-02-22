@@ -9,6 +9,9 @@
 #include "authecdsa.h"
 #include <QtTest>
 #include "thread"
+
+#ifdef USE_HEART_SSL
+
 /*
  * test class
  */
@@ -94,3 +97,4 @@ void ECDSAAuthTest::test() {
 
 
 }
+#endif

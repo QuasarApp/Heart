@@ -8,6 +8,8 @@
 
 #include "authecdsa.h"
 
+#ifdef USE_HEART_SSL
+
 #include <openssl/ecdsa.h>   // for ECDSA_do_sign, ECDSA_do_verify
 #include <openssl/obj_mac.h> // for NID_secp192k1
 #include <openssl/evp.h>
@@ -239,3 +241,4 @@ bool AuthECDSA::prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup) {
 }
 
 }
+#endif
