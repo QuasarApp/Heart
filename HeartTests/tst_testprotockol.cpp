@@ -43,7 +43,11 @@ private slots:
     TestCase(abstractNodeTest, AbstractNodeTest)
     TestCase(bigDataTest, BigDataTest);
     TestCase(shedullerTest, ShedullerTest);
+
+#ifdef USE_HEART_SSL
     TestCase(ecdsaAuthTest, ECDSAAuthTest);
+#endif
+
 #endif
 #if HEART_BUILD_LVL >= 1
     TestCase(baseNodeTest, BaseNodeTest)

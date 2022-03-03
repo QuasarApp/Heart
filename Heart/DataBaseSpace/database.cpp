@@ -222,7 +222,8 @@ bool DataBase::upgradeDataBase() {
     if (!fsupportUpgrade) {
 
         QuasarAppUtils::Params::log("The data base of application do not support soft upgrade. "
-                                    "Please remove database monyaly and restart application.",
+                                    "Please remove database monyaly and restart application."
+                                    "You can disable upgrade functions for this override the upgradeDataBase method. ",
                                     QuasarAppUtils::Error);
         return false;
     }
