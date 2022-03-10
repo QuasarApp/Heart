@@ -108,6 +108,13 @@ public:
      */
     bool isValid() const;
 
+    /**
+     * @brief getUserId This method return user id that generated from the public key.
+     * @note This function works slow, because this object does not contain ID of user. The user ID will be generated every invoke of this function
+     * @return user ID.
+     */
+    QString getUserId() const;
+
 protected:
 
     /**

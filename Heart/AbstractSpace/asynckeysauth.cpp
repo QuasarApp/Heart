@@ -35,9 +35,7 @@ bool AsyncKeysAuth::auth(int allowedTimeRangeSec, QString* userId) const {
     bool result = checkSign(data, _signature, _publicKey);
 
     if (result && userId) {
-        *userId = QCryptographicHash::hash(_publicKey,
-                                          QCryptographicHash::Sha256).
-                toBase64(QByteArray::Base64UrlEncoding);
+        *userId = getUserId();
     }
 
     return result;
@@ -77,6 +75,12 @@ void AsyncKeysAuth::setPublicKey(const QByteArray &newPublicKey) {
 
 bool AsyncKeysAuth::isValid() const {
     return _publicKey.size() && _signature.size() && _unixTime;
+}
+
+QString AsyncKeysAuth::getUserId() const {
+    return QCryptographicHash::hash(_publicKey,
+                                    QCryptographicHash::Sha256).
+            toBase64(QByteArray::Base64UrlEncoding);
 }
 
 void AsyncKeysAuth::setSignature(const QByteArray &newSignature) {
