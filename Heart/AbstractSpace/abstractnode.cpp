@@ -884,9 +884,7 @@ bool AbstractNode::ping(const HostAddress &address) {
 
 }
 
-bool AbstractNode::isBanned(QAbstractSocket *socket) const {
-    auto info = getInfoPtr(HostAddress{socket->peerAddress(), socket->peerPort()});
-
+bool AbstractNode::isBanned(const AbstractNodeInfo *info) const {
     if (!(info && info->isValid())) {
         return false;
     }
@@ -911,7 +909,7 @@ void AbstractNode::incomingConnection(qintptr handle) {
 
         socket->setSocketDescriptor(handle);
 
-        if (isBanned(socket)) {
+        if (isBanned(getInfoPtr(HostAddress{socket->peerAddress(), socket->peerPort()}))) {
             QuasarAppUtils::Params::log("Income connection from banned address",
                                         QuasarAppUtils::Error);
 

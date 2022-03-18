@@ -66,8 +66,22 @@ public:
      */
     QString toString() const;
 
+    /**
+     * @brief toBytes This method convert a network address to a byte array.
+     * @return byte array implementation of this object.
+     */
+    QByteArray toBytes() const;
+
+    /**
+     * @brief fromBytes This method applay @a array obejct. (conver a byte array to a newtwork address object)
+     * @param array this is input array.
+     * @return true if array applayed successfull
+     */
+    bool fromBytes(const QByteArray& array);
+
 private:
     unsigned short _port = 0;
+
 };
 
 uint qHash(const HostAddress& address);

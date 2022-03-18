@@ -107,7 +107,6 @@ public:
      * @param tableName This is table name.
      */
     DBObject(const QString& tableName);
-    DBObject(const DbAddress& address);
 
     ~DBObject() override;
 
@@ -130,20 +129,9 @@ public:
     bool isHaveAPrimaryKey() const;
 
     /**
-     * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
-     * @return The id of database object.
-     */
-    const QVariant &getId() const;
-
-    /**
-     * @brief setId This method set new id for current database object.
-     * @param id This is new value of id.
-     */
-    void setId(const QVariant& id);
-
-    /**
      * @brief clear This method clear all data of database object.
      *  Override This method for remove or reset your own members of class.
+     *  @note The Default implementation do nothing
      */
     virtual void clear();
 
@@ -190,16 +178,14 @@ public:
      * Exampel of override fromSqlRecord method:
      * \code{cpp}
      *  bool ExampleObject::fromSqlRecord(const QSqlRecord &q) {
-            if (!DBObject::fromSqlRecord(q)) {
-                return false;
-            }
 
+            id = q.value("id").toInt();
             exampleMember = q.value("exampleMember").toInt();
             return isValid();
         }
      * \endcode
      */
-    virtual bool fromSqlRecord(const QSqlRecord& q);
+    virtual bool fromSqlRecord(const QSqlRecord& q) = 0;
 
     /**
      * @brief prepareInsertQuery This method should be prepare a query for insert object into database.
@@ -368,7 +354,7 @@ public:
      * IF the object is not valid then this method return an invalid database address.
      * @return The database address of current object.
      */
-    const DbAddress& dbAddress() const;
+    DbAddress dbAddress() const;
 
     /**
      * @brief clone This method create a new object. The new Object is clone of current object.
@@ -474,15 +460,10 @@ protected:
     /**
      * @brief primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then return invalid value.
      * @return Value of primaryKey ( database id ).
+     * @note If you alredy override the condition method then You can return empty string because this method using in generate default condition only.
+     * @see DBObject::condition.
      */
-    const QVariant& primaryValue() const;
-
-
-    /**
-     * @brief setDbAddress This method set the new database address.
-     * @param address This is a new value of database address.
-     */
-    void setDbAddress(const DbAddress &address);
+    virtual QString primaryValue() const = 0;
 
     /**
      * @brief isInsertPrimaryKey This method check primaryKeys type.
@@ -494,8 +475,7 @@ protected:
 private:
     QString getWhereBlock() const;
     bool _printError = true;
-    DbAddress _dbId;
-
+    QString _table;
 };
 }
 }

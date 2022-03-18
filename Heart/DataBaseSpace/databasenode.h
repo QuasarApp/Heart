@@ -272,6 +272,8 @@ protected:
      */
     bool isBanned(const QVariant &member) const;
 
+    bool isBanned(const AbstractNodeInfo *member) const override;
+
     /**
      * @brief notifyObjectChanged This method send all subscriptions message with this object.
      * @param item changed object.

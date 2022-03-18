@@ -130,6 +130,10 @@ bool DataBaseNode::isBanned(const QVariant &node) const {
     return db()->isBanned(node);
 }
 
+bool DataBaseNode::isBanned(const AbstractNodeInfo *node) const {
+    return AbstractNode::isBanned(node);
+}
+
 bool DataBaseNode::notifyObjectChanged(const QSharedPointer<PKG::ISubscribableData> &item) {
 
     if (!item.dynamicCast<PKG::AbstractData>()) {

@@ -229,9 +229,6 @@ protected:
      */
     virtual unsigned int localCode() const = 0;
 
-    QDataStream& fromStream(QDataStream& stream) override;
-    QDataStream& toStream(QDataStream& stream) const override;
-
 private:
     /**
      * @brief checkCmd This method check QH_PACKAGE macross.

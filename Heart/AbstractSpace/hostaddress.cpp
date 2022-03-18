@@ -56,6 +56,7 @@ QString HostAddress::toString() const {
     return QHostAddress::toString() + ":" + QString::number(port());
 }
 
+
 QDataStream &operator >>(QDataStream &stream, HostAddress &address) {
     stream >> static_cast<QHostAddress&>(address);
     stream >> address._port;

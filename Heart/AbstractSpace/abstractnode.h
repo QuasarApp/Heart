@@ -508,7 +508,7 @@ protected:
      * @param socket This is node info object for validation.
      * @return true if node is banned.
      */
-    bool isBanned(QAbstractSocket* socket) const;
+    virtual bool isBanned(const AbstractNodeInfo *socket) const;
 
     /**
      * @brief incomingConnection This is ovverided method of QTCPServer.
