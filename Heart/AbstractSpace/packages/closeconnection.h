@@ -31,6 +31,11 @@ class HEARTSHARED_EXPORT CloseConnection: public AbstractData
 
 public:
     CloseConnection();
+
+    // StreamBase interface
+protected:
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
 };
 }
 }

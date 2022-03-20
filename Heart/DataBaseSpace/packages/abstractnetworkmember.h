@@ -26,7 +26,7 @@ class HEARTSHARED_EXPORT AbstractNetworkMember: public DBObject
 public:
     AbstractNetworkMember();
     AbstractNetworkMember(const Package& pkg);
-    AbstractNetworkMember(const QVariant &id);
+    AbstractNetworkMember(const QString &id);
 
     // DBObject interface
     bool fromSqlRecord(const QSqlRecord &q) override;
@@ -67,6 +67,17 @@ public:
      */
     void setTrust(int trust);
 
+    /**
+     * @brief getId This method return id of this object in database.
+     * @return id of this object in database.
+     */
+    const QString &getId() const;
+
+    /**
+     * @brief setId This method sets new id of this object.
+     * @param newId This is new value of @a id of this object.
+     */
+    void setId(const QString &newId);
 
 protected:
 
@@ -74,8 +85,10 @@ protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
     QString primaryKey() const override;
+    QString primaryValue() const override;
 
 private:
+    QString _id;
     QByteArray _authenticationData;
     int _trust;
 

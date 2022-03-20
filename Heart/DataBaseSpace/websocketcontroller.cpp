@@ -21,7 +21,7 @@ WebSocketController::WebSocketController(DataBaseNode *node) {
 
 }
 
-void WebSocketController::subscribe(const QVariant &subscriber,
+void WebSocketController::subscribe(const QString &subscriber,
                                     unsigned int item) {
 
     _subscribsMutex.lock();
@@ -33,7 +33,7 @@ void WebSocketController::subscribe(const QVariant &subscriber,
     _subscribsMutex.unlock();
 }
 
-void WebSocketController::unsubscribe(const QVariant &subscriber,
+void WebSocketController::unsubscribe(const QString &subscriber,
                                       unsigned int item) {
     _subscribsMutex.lock();
     _itemsMutex.lock();
@@ -44,7 +44,7 @@ void WebSocketController::unsubscribe(const QVariant &subscriber,
     _subscribsMutex.unlock();
 }
 
-QSet<unsigned int> WebSocketController::list(const QVariant &subscriber) {
+QSet<unsigned int> WebSocketController::list(const QString &subscriber) {
     QMutexLocker locker(&_itemsMutex);
     return _items[subscriber];
 }
@@ -56,14 +56,14 @@ void WebSocketController::handleItemChanged(const QSharedPointer<ISubscribableDa
 }
 
 void WebSocketController::foreachSubscribers(const QSharedPointer<ISubscribableData> &item,
-                                             const QSet<QVariant> &subscribersList) {
+                                             const QSet<QString> &subscribersList) {
 
     for (const auto &subscriber : subscribersList) {
 
         auto abstractItem = item.dynamicCast<AbstractData>();
 
         if (!abstractItem) {
-            QuasarAppUtils::Params::log("All Subsribable objects must be child classes of the AbstractData." + subscriber.toString(),
+            QuasarAppUtils::Params::log("All Subsribable objects must be child classes of the AbstractData." + subscriber,
                                                QuasarAppUtils::Error);
             unsubscribePrivate(subscriber, item->subscribeId());
 
@@ -78,7 +78,7 @@ void WebSocketController::foreachSubscribers(const QSharedPointer<ISubscribableD
         }
 
         if (fAllowed && !_node->sendData(abstractItem.data(), subscriber)) {
-            QuasarAppUtils::Params::log("Send update failed for " + subscriber.toString(),
+            QuasarAppUtils::Params::log("Send update failed for " + subscriber,
                                                QuasarAppUtils::Warning);
 
             unsubscribePrivate(subscriber, item->subscribeId());
@@ -86,20 +86,20 @@ void WebSocketController::foreachSubscribers(const QSharedPointer<ISubscribableD
 
         if (!fAllowed) {
             QuasarAppUtils::Params::log(QString("Internal Error. Member:%0  not have permission to object %1").
-                                        arg(subscriber.toString(), abstractItem->toString()),
+                                        arg(subscriber, abstractItem->toString()),
                                             QuasarAppUtils::Error);
             unsubscribePrivate(subscriber, item->subscribeId());
         }
     }
 }
 
-void WebSocketController::unsubscribePrivate(const QVariant &subscriber,
+void WebSocketController::unsubscribePrivate(const QString &subscriber,
                                              unsigned int item) {
     _subscribs[item].remove(subscriber);
     _items[subscriber].remove(item);
 }
 
-void WebSocketController::subscribePrivate(const QVariant &subscriber,
+void WebSocketController::subscribePrivate(const QString &subscriber,
                                            unsigned int item) {
 
     _subscribs[item].insert(subscriber);

@@ -117,13 +117,16 @@ QString MemberPermisionObject::primaryKey() const {
     return "";
 }
 
+QString MemberPermisionObject::primaryValue() const {
+    return "";
+}
+
 PermisionData MemberPermisionObject::key() const {
     return _key;
 }
 
 void MemberPermisionObject::setKey(const PermisionData &key) {
     _key = key;
-    setId(_key.hash());
 }
 
 Permission MemberPermisionObject::permisions() const {

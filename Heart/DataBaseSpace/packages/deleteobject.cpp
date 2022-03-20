@@ -32,21 +32,21 @@ void DeleteObject::setSignToken(const AccessToken &token) {
     _token = token;
 }
 
-QString DeleteObject::primaryKey() const {
-    return "id";
+bool DeleteObject::fromSqlRecord(const QSqlRecord &q) {
+    Q_UNUSED(q);
+    return true;
 }
 
 QDataStream &DeleteObject::fromStream(QDataStream &stream) {
-    DBObject::fromStream(stream);
 
+    stream >> _address;
     stream >> _token;
 
     return stream;
 }
 
 QDataStream &DeleteObject::toStream(QDataStream &stream) const {
-    DBObject::toStream(stream);
-
+    stream << _address;
     stream << _token;
 
     return stream;
@@ -55,5 +55,22 @@ QDataStream &DeleteObject::toStream(QDataStream &stream) const {
 bool DeleteObject::isCached() const {
     return false;
 }
+
+const DbAddress &DeleteObject::address() const {
+    return _address;
+}
+
+void DeleteObject::setAddress(const DbAddress &newAddress) {
+    _address = newAddress;
+}
+
+QString DeleteObject::primaryKey() const {
+    return "id";
+}
+
+QString DeleteObject::primaryValue() const {
+    return _address.id().toString();
+}
+
 }
 }

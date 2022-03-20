@@ -38,7 +38,7 @@ public:
      * @param item This is a subscribable object id.
      * @return true if method finished successful.
      */
-    void subscribe(const QVariant &subscriber,
+    void subscribe(const QString &subscriber,
                    unsigned int item);
 
     /**
@@ -47,7 +47,7 @@ public:
      * @param item This is a subscribable object id.
      * @return true if method finished successful.
      */
-    void unsubscribe(const QVariant &subscriber,
+    void unsubscribe(const QString &subscriber,
                      unsigned int item);
 
     /**
@@ -55,7 +55,7 @@ public:
      * @param subscriber This is network member that want get a list of own subscription.
      * @return true if method finished successful.
      */
-    QSet<unsigned int> list(const QVariant& subscriber);
+    QSet<unsigned int> list(const QString& subscriber);
 
     /**
      * @brief handleItemChanged This method invoked when item on database changed.
@@ -65,17 +65,17 @@ public:
 
 private:
     void foreachSubscribers(const QSharedPointer<PKG::ISubscribableData> &item,
-                            const QSet<QVariant> &subscribersList);
+                            const QSet<QString> &subscribersList);
 
-    void unsubscribePrivate(const QVariant &subscriber,
+    void unsubscribePrivate(const QString &subscriber,
                             unsigned int item);
 
-    void subscribePrivate(const QVariant &subscriber,
+    void subscribePrivate(const QString &subscriber,
                           unsigned int item);
 
     /// subscribers it is nodes or clients
-    QHash<unsigned int, QSet<QVariant>> _subscribs;
-    QHash<QVariant, QSet<unsigned int>> _items;
+    QHash<unsigned int, QSet<QString>> _subscribs;
+    QHash<QString, QSet<unsigned int>> _items;
 
     QMutex _subscribsMutex;
     QMutex _itemsMutex;

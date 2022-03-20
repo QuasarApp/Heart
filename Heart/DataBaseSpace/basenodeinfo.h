@@ -56,17 +56,17 @@ public:
      * @brief id This method return id of the connected user.
      * @return User id.
      */
-    const QVariant &id() const;
+    const QString &id() const;
 
     /**
      * @brief setId This method set userId for connected object.
      * @param id This is new value of user id.
      */
-    void setId(const QVariant &id);
+    void setId(const QString &id);
 
 protected:
     AccessToken _token;
-    QVariant _id;
+    QString _id;
 
 };
 

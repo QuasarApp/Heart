@@ -111,7 +111,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult deleteObject(const QVariant &requester,
+    DBOperationResult deleteObject(const QString &requester,
                                    const QSharedPointer<PKG::DBObject> &dbObject);
 
     /**
@@ -123,7 +123,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult getObject(const QVariant &requester,
+    DBOperationResult getObject(const QString &requester,
                                 const PKG::DBObject &templateObj,
                                 QSharedPointer<PKG::DBObject> &result) const;
 
@@ -136,7 +136,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult getObjects(const QVariant &requester,
+    DBOperationResult getObjects(const QString &requester,
                                  const PKG::DBObject &templateObj,
                                  QList<QSharedPointer<PKG::DBObject>> &result) const;
 
@@ -148,7 +148,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult updateObject(const QVariant &requester,
+    DBOperationResult updateObject(const QString &requester,
                                    const QSharedPointer<PKG::DBObject> &saveObject);
 
     /**
@@ -159,7 +159,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult createObject(const QVariant &requester,
+    DBOperationResult createObject(const QString &requester,
                                    const QSharedPointer<PKG::DBObject> &obj);
 
     /**
@@ -172,7 +172,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult updateIfNotExistsCreateObject(const QVariant &requester,
+    DBOperationResult updateIfNotExistsCreateObject(const QString &requester,
                                                     const QSharedPointer<PKG::DBObject> &obj);
 
     /**
@@ -185,7 +185,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult changeObjects(const QVariant &requester,
+    DBOperationResult changeObjects(const QString &requester,
                                     const PKG::DBObject &templateObj,
                                     const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
@@ -194,7 +194,7 @@ public:
      * @param member This is member of network (node, client or server).
      * @return true if node is banned.
      */
-    bool isBanned(const QVariant &member) const;
+    bool isBanned(const QString &member) const;
 
     /**
      * @brief dbLocation This method return location of nodes or clients database.
@@ -209,7 +209,7 @@ public:
      * @param diff This is difference of trust.
      * @return true if trust of user changed successful.
      */
-    bool changeTrust(const QVariant &id, int diff);
+    bool changeTrust(const QString &id, int diff);
 
 signals:
 
@@ -296,7 +296,7 @@ protected:
      * @return DBOperationResult::Alowed if permission granted.
      *  For more information about result see the DBOperationResult enum.
      */
-    virtual DBOperationResult checkPermission(const QVariant &requester,
+    virtual DBOperationResult checkPermission(const QString &requester,
                                               const DbAddress& objectAddress,
                                               const Permission& requarimentPermision) const;
 

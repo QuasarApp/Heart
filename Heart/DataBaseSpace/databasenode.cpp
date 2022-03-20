@@ -89,7 +89,7 @@ bool DataBaseNode::isSqlInited() const {
     return _db && _db->isSqlInited();
 }
 
-DBOperationResult DataBaseNode::checkPermission(const QVariant &requester,
+DBOperationResult DataBaseNode::checkPermission(const QString &requester,
                                                 const DbAddress &objectAddress,
                                                 const Permission &requarimentPermision) const {
     if (!_db) {
@@ -126,7 +126,7 @@ bool DataBaseNode::welcomeAddress(AbstractNodeInfo *) {
     return true;
 }
 
-bool DataBaseNode::isBanned(const QVariant &node) const {
+bool DataBaseNode::isBanned(const QString &node) const {
     return db()->isBanned(node);
 }
 
@@ -203,13 +203,13 @@ bool DataBaseNode::changeTrust(const HostAddress &id, int diff) {
     if (!info)
         return false;
 
-    if (info->id().isValid())
+    if (info->id().size())
         return changeTrust(info->id(), diff);
 
     return AbstractNode::changeTrust(id, diff);
 }
 
-bool DataBaseNode::changeTrust(const QVariant &id, int diff) {
+bool DataBaseNode::changeTrust(const QString &id, int diff) {
     if (!_db)
         return false;
     return _db->changeTrust(id, diff);
@@ -254,7 +254,7 @@ ParserResult DataBaseNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
     if (WebSocket::command() == pkg->cmd()) {
         WebSocket *obj = static_cast<WebSocket*>(pkg.data());
 
-        QVariant requesterId = getSender(sender, obj);
+        auto requesterId = getSender(sender, obj);
         if (!obj->isValid()) {
             badRequest(sender->networkAddress(), pkgHeader,
                        {
@@ -293,7 +293,7 @@ DataBase *DataBaseNode::db() const {
 }
 
 bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
-                                     const QVariant &clientOrNodeid,
+                                     const QString &clientOrNodeid,
                                      const AbstractNodeInfo * sender) {
 
     auto _db = db();
@@ -329,7 +329,7 @@ bool DataBaseNode::workWithSubscribe(const WebSocket &rec,
 }
 
 DBOperationResult
-QH::DataBaseNode::getObject(const QVariant &requester,
+QH::DataBaseNode::getObject(const QString &requester,
                             const QH::DBObject &templateObj,
                             QSharedPointer<QH::PKG::DBObject> &result) const {
 
@@ -340,7 +340,7 @@ QH::DataBaseNode::getObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBaseNode::getObjects(const QVariant &requester,
+DataBaseNode::getObjects(const QString &requester,
                          const DBObject &templateObj,
                          QList<QSharedPointer<DBObject>> &result) const {
 
@@ -351,7 +351,7 @@ DataBaseNode::getObjects(const QVariant &requester,
 }
 
 DBOperationResult
-DataBaseNode::updateObject(const QVariant &requester,
+DataBaseNode::updateObject(const QString &requester,
                            const QSharedPointer<DBObject> &saveObject) {
 
     if (!_db) {
@@ -361,7 +361,7 @@ DataBaseNode::updateObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBaseNode::createObject(const QVariant &requester,
+DataBaseNode::createObject(const QString &requester,
                            const QSharedPointer<DBObject> &obj) {
 
     if (!_db) {
@@ -371,7 +371,7 @@ DataBaseNode::createObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBaseNode::updateIfNotExistsCreateObject(const QVariant &requester,
+DataBaseNode::updateIfNotExistsCreateObject(const QString &requester,
                                             const QSharedPointer<DBObject> &obj) {
 
     if (!_db) {
@@ -381,7 +381,7 @@ DataBaseNode::updateIfNotExistsCreateObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBaseNode::changeObjects(const QVariant &requester,
+DataBaseNode::changeObjects(const QString &requester,
                             const DBObject &templateObj,
                             const std::function<bool (const QSharedPointer<DBObject> &)> &changeAction) {
 
@@ -391,7 +391,7 @@ DataBaseNode::changeObjects(const QVariant &requester,
     return _db->changeObjects(requester, templateObj, changeAction);
 }
 
-QVariant DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
+QString DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
                                  const AbstractData *) const {
 
     auto info = dynamic_cast<const BaseNodeInfo*>(connectInfo);
@@ -402,7 +402,7 @@ QVariant DataBaseNode::getSender(const AbstractNodeInfo *connectInfo,
 }
 
 DBOperationResult
-DataBaseNode::deleteObject(const QVariant &requester,
+DataBaseNode::deleteObject(const QString &requester,
                            const QSharedPointer<DBObject> &dbObject) {
 
     if (!_db) {

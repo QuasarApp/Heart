@@ -40,12 +40,11 @@ bool BaseNodeInfo::confirmData() const {
     return AbstractNodeInfo::confirmData();
 }
 
-const QVariant& BaseNodeInfo::id() const {
+const QString& BaseNodeInfo::id() const {
     return _id;
 }
 
-void BaseNodeInfo::setId(const QVariant &id)
-{
+void BaseNodeInfo::setId(const QString &id) {
     _id = id;
 }
 

@@ -77,6 +77,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
     QString condition() const override;
     QString primaryKey() const override;
+    QString primaryValue() const override;
 
 private:
     Permission _permision;

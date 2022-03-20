@@ -135,7 +135,7 @@ bool DataBase::welcomeAddress(AbstractNodeInfo *) {
     return true;
 }
 
-bool DataBase::isBanned(const QVariant &node) const {
+bool DataBase::isBanned(const QString &node) const {
     NetworkMember member(node);
     auto objectFromDataBase = db()->getObject<AbstractNetworkMember>(member);
 
@@ -183,7 +183,7 @@ QString DataBase::dbLocation() const {
     return "";
 }
 
-bool DataBase::changeTrust(const QVariant &id, int diff) {
+bool DataBase::changeTrust(const QString &id, int diff) {
     if (!_db)
         return false;
 
@@ -288,7 +288,7 @@ QVariantMap DataBase::defaultDbParams() const {
 }
 
 DBOperationResult
-QH::DataBase::getObject(const QVariant &requester,
+QH::DataBase::getObject(const QString &requester,
                         const QH::DBObject &templateObj,
                         QSharedPointer<QH::PKG::DBObject> &result) const {
 
@@ -312,7 +312,7 @@ QH::DataBase::getObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBase::getObjects(const QVariant &requester,
+DataBase::getObjects(const QString &requester,
                      const DBObject &templateObj,
                      QList<QSharedPointer<DBObject>> &result) const {
     if (!_db) {
@@ -338,7 +338,7 @@ DataBase::getObjects(const QVariant &requester,
 }
 
 DBOperationResult
-DataBase::updateObject(const QVariant &requester,
+DataBase::updateObject(const QString &requester,
                        const QSharedPointer<DBObject> &saveObject) {
 
     if (!_db) {
@@ -360,7 +360,7 @@ DataBase::updateObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBase::createObject(const QVariant &requester,
+DataBase::createObject(const QString &requester,
                        const QSharedPointer<DBObject> &obj) {
 
     if (!_db) {
@@ -387,7 +387,7 @@ DataBase::createObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBase::updateIfNotExistsCreateObject(const QVariant &requester,
+DataBase::updateIfNotExistsCreateObject(const QString &requester,
                                         const QSharedPointer<DBObject> &obj) {
 
     auto opResult = updateObject(requester, obj);
@@ -399,7 +399,7 @@ DataBase::updateIfNotExistsCreateObject(const QVariant &requester,
 }
 
 DBOperationResult
-DataBase::changeObjects(const QVariant &requester,
+DataBase::changeObjects(const QString &requester,
                         const DBObject &templateObj,
                         const std::function<bool (const QSharedPointer<DBObject> &)> &changeAction) {
 
@@ -438,11 +438,11 @@ QVariant DataBase::getSender(const AbstractNodeInfo *connectInfo,
 }
 
 DBOperationResult
-DataBase::checkPermission(const QVariant &requester,
+DataBase::checkPermission(const QString &requester,
                           const DbAddress &objectAddress,
                           const Permission& requarimentPermision) const {
 
-    if (!requester.isValid())
+    if (!requester.isEmpty())
         return DBOperationResult::Unknown;
 
     if (!_db) {
@@ -518,7 +518,7 @@ bool DataBase::removePermission(const QVariant &member,
 }
 
 DBOperationResult
-DataBase::deleteObject(const QVariant &requester,
+DataBase::deleteObject(const QString &requester,
                        const QSharedPointer<DBObject> &dbObject) {
 
     if (!_db) {

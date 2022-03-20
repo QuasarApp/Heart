@@ -43,6 +43,7 @@ public:
 
 protected:
     QString primaryKey() const override;
+    QString primaryValue() const override;
 
 private:
     QString _field;

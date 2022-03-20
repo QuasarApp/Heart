@@ -63,8 +63,9 @@ public:
 
 protected:
     QString primaryKey() const override;
-
+    QString primaryValue() const override;
 private:
+    QString _id;
     QString _field;
     QVariant _value;
     QString _key;

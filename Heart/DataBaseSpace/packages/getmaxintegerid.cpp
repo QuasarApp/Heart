@@ -48,5 +48,9 @@ QString GetMaxIntegerId::primaryKey() const {
     return "";
 }
 
+QString GetMaxIntegerId::primaryValue() const {
+    return "";
+}
+
 }
 }
