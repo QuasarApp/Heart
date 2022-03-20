@@ -56,6 +56,14 @@ public:
         _conditions = conditions;
     };
 
+    QString primaryValue() const override {
+        return "";
+    }
+
+    QString primaryKey() const override {
+        return "";
+    }
+
     void clear() override {
         _data.clear();
     };
