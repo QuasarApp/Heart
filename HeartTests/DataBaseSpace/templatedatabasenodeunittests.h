@@ -181,7 +181,7 @@ protected:
 
         QVERIFY(BASE::run( _dbNodeName));
 
-        QVERIFY(!BASE::changeTrust(QVariant{}, -10));
+        QVERIFY(!BASE::changeTrust("", -10));
 
         QVERIFY(BASE::changeTrust(testObjec->getId(), -10));
 
