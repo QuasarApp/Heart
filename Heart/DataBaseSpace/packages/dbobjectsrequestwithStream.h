@@ -49,7 +49,6 @@ protected:
     QDataStream &fromStream(QDataStream &stream) override {
         DBObjectSet::fromStream(stream);
 
-        clear();
         int size = 0;
         stream >> size;
 

@@ -81,6 +81,14 @@ public:
         return true;
     };
 
+    QDataStream &fromStream(QDataStream &stream) override {
+        return stream;
+    };
+
+    QDataStream &toStream(QDataStream &stream) const override {
+        return stream;
+    };
+
     bool isValid() const override {
         return true;
     };
