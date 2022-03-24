@@ -31,9 +31,6 @@ AbstractNetworkMember::AbstractNetworkMember(const QString& id):
 }
 
 bool AbstractNetworkMember::fromSqlRecord(const QSqlRecord &q) {
-    if (!DBObject::fromSqlRecord(q)) {
-        return false;
-    }
 
     setAuthenticationData(q.value("authenticationData").toByteArray());
     setTrust(q.value("trust").toInt());

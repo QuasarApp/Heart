@@ -77,7 +77,6 @@ public:
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override {
-        AbstractData::fromStream(stream);
 
         int size = 0;
         stream >> size;
@@ -95,7 +94,6 @@ protected:
     };
 
     QDataStream &toStream(QDataStream &stream) const override {
-        AbstractData::toStream(stream);
         stream << static_cast<int>(_packData.size());
 
         for (const auto &ptr: qAsConst(_packData)) {
