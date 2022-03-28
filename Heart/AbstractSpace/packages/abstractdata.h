@@ -49,12 +49,10 @@ public:
 protected:
     // StreamBase interface override this methods for serialization your package
     QDataStream &fromStream(QDataStream &stream) {
-        AbstractData::fromStream(stream);
         stream >> _data;
         return stream;
     }
     QDataStream &toStream(QDataStream &stream) const {
-        AbstractData::toStream(stream);
         stream << _data;
         return stream;
     }
