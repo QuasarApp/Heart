@@ -47,6 +47,7 @@ public:
     friend bool& operator == (QDataStream& stream, HostAddress& address);
     friend bool& operator != (QDataStream& stream, HostAddress& address);
 
+    HostAddress& operator = (const HostAddress& right);;
     /**
      * @brief isIP This method return true if the @a address is valid.
      * @brief address This is tring value of the network ip address.
