@@ -8,14 +8,29 @@
 #ifndef ASYNCKEYSAUTH_H
 #define ASYNCKEYSAUTH_H
 
-#include <QByteArray>
+#include <QCryptographicHash>
+#include <time.h>
+#include <QString>
 
 #include "heart_global.h"
+#include "hcrypto/icrypto.h"
 
 namespace QH {
 
 /**
- * @brief The AsyncKeysAuth class is base class for works with authorization of a pair of asynchronous keys
+ * @brief The AsyncKeysAuth class is temaplate class for works with authorization of a pair of asynchronous keys
+ *  This class contains base implementation for the authentication using async encription. The base encription alhorithm defined on the template argument **CryptoImplementation**.
+ *  You can use any crypto alhorithm.
+ *
+ *  ## Exampel of use:
+ *
+ *  @code{cpp}
+ *  #include <hcrypto.h>
+ *
+ *  using ECDSAAuth = AsyncKeysAuth<ECDSA>;
+ *
+ *  @endcode
+ *
  *
  * ### How to it works:
  *
@@ -46,45 +61,115 @@ namespace QH {
  * * After accept server create new user with ID = sha256(PUB) or
  * if user alredy exits make them as a logined user.
  *
+ * @tparam CryptoImplementation This is internal implementaion of base encription functions.
+ * @see iCrypto class.
  *
  */
-class HEARTSHARED_EXPORT AsyncKeysAuth
+
+template<class CryptoImplementation>
+class HEARTSHARED_EXPORT AsyncKeysAuth: public CryptoImplementation
 {
 public:
-    AsyncKeysAuth();
+    AsyncKeysAuth() {
+
+    }
+
+    ~AsyncKeysAuth() {
+
+    }
 
     /**
      * @brief auth This method make authentication and return true if the authentication finished successful else false.
      * @brief retLoginedUserId This is logined user id in Base64UrlEncoding
      * @return true if the authentication finished successful else false.
      */
-    bool auth(int allowedTimeRangeSec, QString* retLoginedUserId) const;
+    bool auth(int allowedTimeRangeSec, QString* retLoginedUserId) const {
+
+        int diff = time(0) - _unixTime;
+
+        if (diff < 0) {
+            return false;
+        }
+
+        if (diff >= allowedTimeRangeSec) {
+            return false;
+        }
+
+        QByteArray data = _publicKey;
+        data.insert(0, reinterpret_cast<const char*>(&_unixTime),
+                    sizeof(_unixTime));
+
+        bool result = checkSign(data, _signature, _publicKey);
+
+        if (result && retLoginedUserId) {
+            *retLoginedUserId = getUserId();
+        }
+
+        return result;
+    }
 
     /**
      * @brief prepare This method will generate signature for autentication of client. Please inboke this method before send request to server.
      * @return true if signature generated sucessuful.
      */
-    bool prepare();
+    bool prepare() {
+        _unixTime = time(0);
+
+        QByteArray data = _publicKey;
+        data.insert(0, reinterpret_cast<const char*>(&_unixTime),
+                    sizeof(_unixTime));
+
+        setSignature(signMessage(data, getPrivateKey()));
+
+        return isValid();
+    }
 
     /**
      * @brief unixTime This method return unix time that client added for authentication.
      * @return unix time that client added for authentication.
      * @see AsyncKeysAuth::setUnixTime
      */
-    unsigned int unixTime() const;
+    unsigned int unixTime() const {
+        return _unixTime;
+    }
 
     /**
      * @brief setUnixTime This method sets new value of the unixTime propertye.
      * @param newUnixTime This is new unix time value. Unix time sets in secunds from 1970 year
      */
-    void setUnixTime(unsigned int newUnixTime);
+    void setUnixTime(unsigned int newUnixTime) {
+        _unixTime = newUnixTime;
+    }
 
     /**
      * @brief signature This method return signature array.
      * @return signature array.
      * @see AsyncKeysAuth::setSignature
      */
-    const QByteArray &signature() const;
+    const QByteArray &signature() const {
+        return _signature;
+    }
+
+    /**
+     * @brief isValid this method check this ibject to valid.
+     * @return return true if object contains valid signature else false.
+     * @note Invoke the AsyncKeysAuth::prepare method before check valid of object. All object that not be preparred is invalid.
+     */
+    bool isValid() const {
+        return _publicKey.size() && _signature.size() && _unixTime;
+    }
+
+    /**
+     * @brief getUserId This method return user id that generated from the public key.
+     * @note This function works slow, because this object does not contain ID of user. The user ID will be generated every invoke of this function
+     * @return user ID.
+     */
+    QString getUserId() const {
+        return QCryptographicHash::hash(_publicKey,
+                                        QCryptographicHash::Sha256).
+                toBase64(QByteArray::Base64UrlEncoding);
+    }
+
 
     /**
      * @brief publicKey This method return public key that client added for authentication.
@@ -92,49 +177,36 @@ public:
      * @return public key that client added for authentication.
      * @see AsyncKeysAuth::setPublicKey
      */
-    const QByteArray &publicKey() const;
+    const QByteArray &publicKey() const {
+        return _publicKey;
+    }
 
     /**
      * @brief setPublicKey This method sets new public key for authentication.
      * @param newPublicKey Thiy is new key.
      * @see AsyncKeysAuth::publicKey
      */
-    void setPublicKey(const QByteArray &newPublicKey);
-
-    /**
-     * @brief isValid this method check this ibject to valid.
-     * @return return true if object contains valid signature else false.
-     * @note Invoke the AsyncKeysAuth::prepare method before check valid of object. All object that not be preparred is invalid.
-     */
-    bool isValid() const;
-
-    /**
-     * @brief getUserId This method return user id that generated from the public key.
-     * @note This function works slow, because this object does not contain ID of user. The user ID will be generated every invoke of this function
-     * @return user ID.
-     */
-    QString getUserId() const;
+    void setPublicKey(const QByteArray &newPublicKey) {
+        _publicKey = newPublicKey;
+    }
 
 protected:
 
-    /**
-     * @brief signMessage This method should be sign the @a message using the @a key.
-     * @param message This is input data that should be signed.
-     * @param key This is a privete key for encription the @a message.
-     * @return signature data array.
-     * @see AsyncKeysAuth::descrupt
-     */
-    virtual QByteArray signMessage(const QByteArray& message, const QByteArray& key) const = 0;
+    QByteArray decript(const QByteArray &message, const QByteArray &key) override {
+        return CryptoImplementation::decript(message, key);
+    };
 
-    /**
-     * @brief checkSign This method should be check signature of the @a message using the @a key.
-     * @param message This is input data that should be decripted.
-     * @param signature This is signature that will be checked for the @a message.
-     * @param key This is a public key for encription the @a inpputData.
-     * @return decripted data array.
-     * @see AsyncKeysAuth::encrypt
-     */
-    virtual bool checkSign(const QByteArray& message, const QByteArray& signature, const QByteArray& key) const = 0;
+    QByteArray encript(const QByteArray &message, const QByteArray &key) override {
+        return CryptoImplementation::encript(message, key);
+    };
+
+    QByteArray signMessage(const QByteArray &message, const QByteArray &key) const override {
+        return CryptoImplementation::signMessage(message, key);
+    };
+
+    bool checkSign(const QByteArray &message, const QByteArray &signature, const QByteArray &key) const override {
+        return CryptoImplementation::checkSign(message, signature, key);
+    };
 
     /**
      * @brief getPrivateKey This method should be return private key for the public key that saved in this object.
@@ -147,7 +219,9 @@ protected:
      * @param newSignature new signature value.
      * @note used in the
      */
-    void setSignature(const QByteArray &newSignature);
+    void setSignature(const QByteArray &newSignature) {
+        _signature = newSignature;
+    }
 
     unsigned int _unixTime = 0;
     QByteArray _signature;

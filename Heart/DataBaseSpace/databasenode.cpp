@@ -20,7 +20,6 @@
 #include <websocketcontroller.h>
 #include <QCoreApplication>
 #include <ping.h>
-#include <keystorage.h>
 #include <basenodeinfo.h>
 #include <abstractnetworkmember.h>
 #include <memberpermisionobject.h>

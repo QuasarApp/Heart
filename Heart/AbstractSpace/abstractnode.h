@@ -27,8 +27,6 @@
 #include "abstractdata.h"
 #include "workstate.h"
 #include "package.h"
-#include "cryptopairkeys.h"
-#include "icrypto.h"
 #include "heart_global.h"
 #include "packagemanager.h"
 #include "abstracterrorcodes.h"

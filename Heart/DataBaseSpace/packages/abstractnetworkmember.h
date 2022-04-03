@@ -79,6 +79,7 @@ public:
      */
     void setId(const QString &newId);
 
+    QString table() const override;
 protected:
 
     // StreamBase interface

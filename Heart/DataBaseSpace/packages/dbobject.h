@@ -102,11 +102,7 @@ class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableDat
 
 public:
 
-    /**
-     * @brief DBObject This is default constructor.Before using this class you need set the table name and primary key of this object.
-     * @param tableName This is table name.
-     */
-    DBObject(const QString& tableName);
+    DBObject();
 
     ~DBObject() override;
 
@@ -134,12 +130,6 @@ public:
      *  @note The Default implementation do nothing
      */
     virtual void clear();
-
-    /**
-     * @brief tableName This method return a table name of the database object.
-     * @return string value if the table name.
-     */
-    QString tableName() const;
 
     /**
      * @brief createDBObject This method should be create a object with the some type as the object called this method.
@@ -213,7 +203,7 @@ public:
             QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
 
 
-            queryString = queryString.arg(tableName());
+            queryString = queryString.arg(table());
             QString tableInsertHeader = "";
             QString tableInsertValues = "";
 
@@ -267,7 +257,7 @@ public:
 
             QString queryString = "UPDATE %0 SET %1 WHERE %2";
 
-            queryString = queryString.arg(tableName());
+            queryString = queryString.arg(table());
             QString tableUpdateValues = "";
             QString tableUpdateRules = QString("%0 = :%0").
                     arg(primaryKey());
@@ -466,6 +456,12 @@ protected:
     virtual QString primaryValue() const = 0;
 
     /**
+     * @brief table This method should be return name of the database table that should be contains objects with this type.
+     * @return table name that contains object with this type.
+     */
+    virtual QString table() const = 0;
+
+    /**
      * @brief isInsertPrimaryKey This method check primaryKeys type.
      *  If the primary key have a type MemberType::Insert then return true.
      * @return true if the primary key have the MemberType::Insert type.
@@ -475,7 +471,6 @@ protected:
 private:
     QString getWhereBlock() const;
     bool _printError = true;
-    QString _table;
 };
 }
 }

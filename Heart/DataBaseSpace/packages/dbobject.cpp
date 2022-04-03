@@ -21,17 +21,12 @@
 namespace QH {
 namespace PKG {
 
-DBObject::DBObject(const QString &tableName) {
+DBObject::DBObject() {
     DBObject::clear();
-    _table = tableName;
 }
 
 DBObject::~DBObject() {
 
-}
-
-QString DBObject::tableName() const {
-    return _table;
 }
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
@@ -244,7 +239,7 @@ bool DBObject::isInsertPrimaryKey() const {
 }
 
 DbAddress DBObject::dbAddress() const {
-    return {_table, primaryValue()};
+    return {table(), primaryValue()};
 }
 
 DBObject *DBObject::cloneRaw() const {

@@ -96,7 +96,7 @@ protected:
 
         // create request for get all objects from database.
         QH::PKG::DBObjectsRequest<WorkType> setRequest(
-                    testObjec->tableName(), "");
+                    testObjec->table(), "");
 
         auto list = BASE::db()->getObject(setRequest);
         QVERIFY(list);

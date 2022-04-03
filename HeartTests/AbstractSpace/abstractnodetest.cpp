@@ -10,7 +10,6 @@
 #include "testutils.h"
 
 #include <abstractnode.h>
-#include <keystorage.h>
 #include <ping.h>
 
 #define LOCAL_TEST_PORT TEST_PORT + 1

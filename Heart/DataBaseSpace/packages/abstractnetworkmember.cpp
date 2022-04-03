@@ -16,7 +16,7 @@
 namespace QH {
 namespace PKG {
 
-AbstractNetworkMember::AbstractNetworkMember():DBObject("NetworkMembers") {
+AbstractNetworkMember::AbstractNetworkMember(): {
     
 }
 
@@ -32,6 +32,7 @@ AbstractNetworkMember::AbstractNetworkMember(const QString& id):
 
 bool AbstractNetworkMember::fromSqlRecord(const QSqlRecord &q) {
 
+    setId(q.value("id").toString());
     setAuthenticationData(q.value("authenticationData").toByteArray());
     setTrust(q.value("trust").toInt());
 
@@ -86,6 +87,10 @@ const QString &AbstractNetworkMember::getId() const {
 
 void AbstractNetworkMember::setId(const QString &newId) {
     _id = newId;
+}
+
+QString AbstractNetworkMember::table() const {
+    return "NetworkMembers";
 }
 
 int AbstractNetworkMember::trust() const {

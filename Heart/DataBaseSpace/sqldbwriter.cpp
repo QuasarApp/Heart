@@ -391,7 +391,9 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
 
             while (q.next()) {
                 if (!newObject->fromSqlRecord(q.record())) {
-                    QuasarAppUtils::Params::log("Init sql object error.",
+                    QuasarAppUtils::Params::log("Select query finished successful but, "
+                                                "the fromSqlRecord method return false." +
+                                                newObject->toString(),
                                                 QuasarAppUtils::Error);
                     return false;
                 }

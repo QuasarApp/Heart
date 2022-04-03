@@ -12,7 +12,6 @@
 
 #include <databasenode.h>
 #include <hostaddress.h>
-#include <keystorage.h>
 #include <ping.h>
 
 #define LOCAL_TEST_PORT TEST_PORT + 2
