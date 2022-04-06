@@ -67,7 +67,7 @@ namespace QH {
  */
 
 template<class CryptoImplementation>
-class HEARTSHARED_EXPORT AsyncKeysAuth: public CryptoImplementation
+class AsyncKeysAuth: public CryptoImplementation
 {
 public:
     AsyncKeysAuth() {
