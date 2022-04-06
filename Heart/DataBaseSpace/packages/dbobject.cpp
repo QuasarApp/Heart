@@ -35,7 +35,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
     QString queryString = "SELECT " + map.join(",") + " FROM %0 " + getWhereBlock();
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
@@ -58,7 +58,7 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
 
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
     QString tableInsertHeader = "";
     QString tableInsertValues = "";
 
@@ -109,7 +109,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
 
     QString queryString = "UPDATE %0 SET %1 WHERE " + condition();
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
     QString tableUpdateValues = "";
 
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -295,7 +295,7 @@ PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
 
     QString queryString = "DELETE FROM %0 " + getWhereBlock();
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
@@ -320,7 +320,7 @@ bool DBObject::isValid() const {
         return primaryValue().size();
     }
 
-    return _table.size();
+    return table().size();
 }
 
 bool DBObject::copyFrom(const AbstractData * other) {

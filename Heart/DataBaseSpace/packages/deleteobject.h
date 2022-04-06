@@ -34,6 +34,8 @@ public:
 
     bool isCached() const override;
 
+    QString table() const override;
+
     /**
      * @brief address This method return address of the object that will be deleted.
      * @return database address of the object that will be deleted.

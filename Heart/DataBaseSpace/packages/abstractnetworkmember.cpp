@@ -16,7 +16,7 @@
 namespace QH {
 namespace PKG {
 
-AbstractNetworkMember::AbstractNetworkMember(): {
+AbstractNetworkMember::AbstractNetworkMember() {
     
 }
 

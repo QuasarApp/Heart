@@ -54,6 +54,8 @@ public:
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;
 
+    QString table() const override;
+
 
 protected:
     QString primaryKey() const override;
@@ -61,6 +63,7 @@ protected:
 
 private:
     QString _id;
+    QString _table;
     QString _field;
     QString _primaryKey;
     QVariant _value;

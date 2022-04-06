@@ -367,7 +367,7 @@ DataBase::createObject(const QString &requester,
         return DBOperationResult::Unknown;
     }
 
-    if (isForbidenTable(obj->tableName())) {
+    if (isForbidenTable(obj->table())) {
         return DBOperationResult::Forbidden;
     }
 

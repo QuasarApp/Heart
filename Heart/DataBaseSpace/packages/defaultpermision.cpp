@@ -10,7 +10,7 @@ namespace QH {
 namespace PKG {
 
 DefaultPermision::DefaultPermision():
-    MemberPermisionObject("DefaultPermissions") {
+    MemberPermisionObject() {
 
 }
 
@@ -46,6 +46,10 @@ QString DefaultPermision::condition() const {
 
     result += "dbAddress='" + key().addressHash() + "'";
     return result;
+}
+
+QString DefaultPermision::table() const {
+    return "DefaultPermissions";
 }
 
 }

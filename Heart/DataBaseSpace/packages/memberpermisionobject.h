@@ -40,6 +40,8 @@ public:
     bool isCached() const override;
     DBVariantMap variantMap() const override;
 
+    QString table() const override;
+
     /**
      * @brief permisions This method return value permission of object.
      * For select object set it id using a MemberPermisionObject::setKey method.
@@ -66,11 +68,6 @@ public:
     void setKey(const PermisionData &key);
 
 protected:
-    /**
-     * @brief MemberPermisionObject This is protected constructor for support inheritance functions.
-     */
-    MemberPermisionObject(const QString& tableName);
-
 
     // StreamBase interface
     QDataStream &fromStream(QDataStream &stream) override;

@@ -19,10 +19,9 @@ namespace PKG {
 SetSingleValue::SetSingleValue(const DbAddress& address,
                                const QString& field,
                                const QVariant& value,
-                               const QString &primaryKey):
-    DBObject(address.table())
-{
+                               const QString &primaryKey) {
     _id = address.id().toString();
+    _table = address.table();
     _field = field;
     _value = value;
     _primaryKey = primaryKey;
@@ -35,7 +34,7 @@ DBObject *SetSingleValue::createDBObject() const {
 PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
     QString queryString = "UPDATE %0 SET %1=:%1 WHERE %2='%3'";
 
-    queryString = queryString.arg(tableName(), _field, primaryKey(), _id);
+    queryString = queryString.arg(table(), _field, primaryKey(), _id);
 
     if (!q.prepare(queryString)) {
 
@@ -52,7 +51,7 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
 PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0 (%1, %2) VALUES (:%1, :%2)";
 
-    queryString = queryString.arg(tableName(), primaryKey(), _field);
+    queryString = queryString.arg(table(), primaryKey(), _field);
 
     if (!q.prepare(queryString)) {
 
@@ -73,6 +72,10 @@ bool SetSingleValue::fromSqlRecord(const QSqlRecord &) {
 
 bool SetSingleValue::isCached() const {
     return false;
+}
+
+QString SetSingleValue::table() const {
+    return _table;
 }
 
 QString SetSingleValue::primaryKey() const {

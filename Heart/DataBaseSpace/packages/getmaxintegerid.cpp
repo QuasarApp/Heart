@@ -8,9 +8,9 @@ namespace QH {
 namespace PKG {
 
 
-GetMaxIntegerId::GetMaxIntegerId(const QString& table, const QString& field):
-    DBObject(table) {
+GetMaxIntegerId::GetMaxIntegerId(const QString& table, const QString& field) {
 
+    _table = table;
     _field = field;
 }
 
@@ -19,13 +19,13 @@ int GetMaxIntegerId::value() const {
 }
 
 DBObject *GetMaxIntegerId::createDBObject() const {
-    return create<GetMaxIntegerId>(tableName(), _field);
+    return create<GetMaxIntegerId>(table(), _field);
 }
 
 PrepareResult GetMaxIntegerId::prepareSelectQuery(QSqlQuery &q) const {
     QString queryString = "SELECT max(%0) FROM %1";
 
-    queryString = queryString.arg(_field, tableName());
+    queryString = queryString.arg(_field, table());
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
@@ -42,6 +42,10 @@ bool GetMaxIntegerId::fromSqlRecord(const QSqlRecord &q) {
 
 bool GetMaxIntegerId::isCached() const {
     return false;
+}
+
+QString GetMaxIntegerId::table() const {
+    return _table;
 }
 
 QString GetMaxIntegerId::primaryKey() const {

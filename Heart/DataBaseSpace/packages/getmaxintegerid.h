@@ -39,13 +39,14 @@ public:
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override;
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;
-
+    QString table() const override;
 
 protected:
     QString primaryKey() const override;
     QString primaryValue() const override;
 
 private:
+    QString _table;
     QString _field;
     int _value;
 };

@@ -403,6 +403,12 @@ public:
     virtual DBVariantMap variantMap() const;
 
     /**
+     * @brief table This method should be return name of the database table that should be contains objects with this type.
+     * @return table name that contains object with this type.
+     */
+    virtual QString table() const = 0;
+
+    /**
      * @brief printError This method return status of printing error messages for sql quries. by default this propertye is enabled.
      * @return true if printing error messages is enabled else false.
      * @see DBObject::setPrintError
@@ -454,12 +460,6 @@ protected:
      * @see DBObject::condition.
      */
     virtual QString primaryValue() const = 0;
-
-    /**
-     * @brief table This method should be return name of the database table that should be contains objects with this type.
-     * @return table name that contains object with this type.
-     */
-    virtual QString table() const = 0;
 
     /**
      * @brief isInsertPrimaryKey This method check primaryKeys type.

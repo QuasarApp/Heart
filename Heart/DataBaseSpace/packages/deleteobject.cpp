@@ -8,7 +8,7 @@
 #include "deleteobject.h"
 namespace QH {
 namespace PKG {
-DeleteObject::DeleteObject(): DBObject("")  {
+DeleteObject::DeleteObject() {
 
 }
 
@@ -54,6 +54,10 @@ QDataStream &DeleteObject::toStream(QDataStream &stream) const {
 
 bool DeleteObject::isCached() const {
     return false;
+}
+
+QString DeleteObject::table() const {
+    return _address.table();
 }
 
 const DbAddress &DeleteObject::address() const {

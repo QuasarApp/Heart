@@ -27,8 +27,6 @@ class HEARTSHARED_EXPORT DBObjectSet: public DBObject
 public:
     DBObjectSet(const QString table);
 
-    // DBObject interface
-public:
     PrepareResult prepareInsertQuery(QSqlQuery &) const override final;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override final;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override final;
@@ -37,6 +35,10 @@ public:
     bool isCached() const override final;
     bool isBundle() const override final;
     QString primaryKey() const override;
+    QString table() const override;
+
+private:
+    QString _table;
 
 };
 }

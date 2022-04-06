@@ -124,7 +124,7 @@ protected:
     }
 
     DBObject *createDBObject() const override {
-        return create<DBObjectsRequest<T>>(tableName(), _conditions);
+        return create<DBObjectsRequest<T>>(table(), _conditions);
     };
 
     QList<QSharedPointer<T>> _data;
