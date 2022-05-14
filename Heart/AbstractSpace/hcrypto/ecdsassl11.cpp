@@ -6,7 +6,7 @@
 //#
 
 
-#include "ecdsa.h"
+#include "ecdsassl11.h"
 
 #ifdef USE_HEART_SSL
 
@@ -22,7 +22,7 @@
 
 namespace QH {
 
-ECDSA::ECDSA() {
+ECDSASSL11::ECDSASSL11() {
 
 }
 
@@ -79,7 +79,7 @@ QByteArray extractPublicKey(EC_KEY* key, EC_GROUP* group) {
     return data;
 }
 
-bool ECDSA::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
+bool ECDSASSL11::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
 
     EC_KEY *eckey= nullptr;
     EC_GROUP *ecgroup = nullptr;
@@ -101,7 +101,7 @@ bool ECDSA::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
     return pubKey.length() && privKey.length();
 }
 
-QByteArray ECDSA::signMessage(const QByteArray &inputData,
+QByteArray ECDSASSL11::signMessage(const QByteArray &inputData,
                                   const QByteArray &key) const {
 
     EC_KEY *eckey= nullptr;
@@ -147,7 +147,7 @@ QByteArray ECDSA::signMessage(const QByteArray &inputData,
     return result;
 }
 
-bool ECDSA::checkSign(const QByteArray &inputData,
+bool ECDSASSL11::checkSign(const QByteArray &inputData,
                           const QByteArray &signature,
                           const QByteArray &key) const {
 
@@ -198,17 +198,17 @@ bool ECDSA::checkSign(const QByteArray &inputData,
 
 }
 
-QByteArray ECDSA::decript(const QByteArray &message, const QByteArray &key) {
+QByteArray ECDSASSL11::decript(const QByteArray &message, const QByteArray &key) {
     QuasarAppUtils::Params::log("");
 
     return {};
 }
 
-QByteArray ECDSA::encript(const QByteArray &message, const QByteArray &key) {
+QByteArray ECDSASSL11::encript(const QByteArray &message, const QByteArray &key) {
     return {};
 }
 
-bool ECDSA::prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup) {
+bool ECDSASSL11::prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup) {
 
     // input data should be valid pointers to pointers of key and group objects.
     if (!(eckey && ecgroup))
