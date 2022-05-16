@@ -61,6 +61,21 @@ QString HostAddress::toString() const {
     return QHostAddress::toString() + ":" + QString::number(port());
 }
 
+QByteArray HostAddress::toBytes() const {
+    QByteArray res;
+    QDataStream stream(&res, QIODevice::WriteOnly);
+    operator <<(stream, *this);
+    return res;
+}
+
+bool HostAddress::fromBytes(const QByteArray &array) {
+    if (array.isEmpty())
+        return false;
+
+    QDataStream stream(array);
+    operator >>(stream, *this);
+    return true;
+}
 
 QDataStream &operator >>(QDataStream &stream, HostAddress &address) {
     stream >> static_cast<QHostAddress&>(address);
