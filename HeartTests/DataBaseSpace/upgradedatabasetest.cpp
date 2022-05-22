@@ -7,6 +7,8 @@
 #include <QtTest>
 #include <isqldbcache.h>
 #include <database.h>
+#include <qaglobalutils.h>
+
 #define LOCAL_TEST_PORT TEST_PORT + 5
 
 class UpgradableDatabase: public QH::DataBase {
@@ -14,6 +16,10 @@ class UpgradableDatabase: public QH::DataBase {
 
     // DataBaseNode interface
 public:
+
+    UpgradableDatabase() {
+        initDBPatches();
+    }
 
     bool checkVersion(int version) {
         QSqlQuery query;
@@ -31,38 +37,43 @@ public:
 
 protected:
 
+    void initDBPatches() {
 
-    QH::DBPatchMap dbPatches() const {
-        QH::DBPatchMap result;
+        addDBPatch({
+                       0, // version
+                       [](const QH::iObjectProvider* database) -> bool {
+                           QSqlQuery query;
+                           if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
+                               return false;
+                           };
 
-        result += [](const QH::iObjectProvider* database) -> bool {
-            QSqlQuery query;
-            if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
-                return false;
-            };
+                           return true;
+                       } // action of patch
+                   });
 
-            return true;
-        };
+        addDBPatch({
+                       1, // version
+                       [](const QH::iObjectProvider* database) -> bool {
+                           QSqlQuery query;
+                           if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
+                               return false;
+                           };
 
-        result += [](const QH::iObjectProvider* database) -> bool {
-            QSqlQuery query;
-            if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
-                return false;
-            };
+                           return true;
+                       }
+                   });
 
-            return true;
-        };
+        addDBPatch({
+                       2, // version
+                       [](const QH::iObjectProvider* database) -> bool {
+                           QSqlQuery query;
+                           if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
+                               return false;
+                           };
 
-        result += [](const QH::iObjectProvider* database) -> bool {
-            QSqlQuery query;
-            if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
-                return false;
-            };
-
-            return true;
-        };
-
-        return result;
+                           return true;
+                       }
+                   });
     }
 };
 
