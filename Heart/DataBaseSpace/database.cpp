@@ -164,7 +164,7 @@ void DataBase::objectChanged(const QSharedPointer<DBObject> &) {
 
 }
 
-const DBPatchMap &DataBase::dbPatches() const {
+const DBPatchMap DataBase::dbPatches() const {
     return _dbPatches;
 }
 

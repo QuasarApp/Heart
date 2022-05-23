@@ -417,7 +417,7 @@ protected:
      * @see DBPatch
      * @see DataBase::addDBPatch
      */
-    const DBPatchMap& dbPatches() const;
+    virtual const DBPatchMap dbPatches() const;
 
     /**
      * @brief addDBPatch This method add database patch to the data base object.
