@@ -170,7 +170,7 @@ const DBPatchMap &DataBase::dbPatches() const {
 
 void DataBase::addDBPatch(const DBPatch &patch) {
 
-    debug_assert(_dbPatches.contains(patch.version),
+    debug_assert(!_dbPatches.contains(patch.version),
                  "Failed to initialise a Data base patch!");
 
     _dbPatches[patch.version] = patch;
