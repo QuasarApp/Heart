@@ -269,11 +269,11 @@ bool DataBase::upgradeDataBase() {
         auto patch = patches.last();
         message = message.arg(patch.versionTo);
 
-        QuasarAppUtils::Params::log(message,
+        QuasarAppUtils::Params::log(message.arg("(Begin)"),
                                     QuasarAppUtils::Info);
 
         if (!patch.action(db())) {
-            QuasarAppUtils::Params::log("Failed to " + message.arg("Patch finished with error!"),
+            QuasarAppUtils::Params::log("Failed to " + message.arg("Patch finished with error code!"),
                                         QuasarAppUtils::Error);
             return false;
         }

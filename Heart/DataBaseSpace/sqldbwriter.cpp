@@ -51,8 +51,8 @@ bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) const {
                 temp = temp.remove(0, delimiterIndex + 1);
 
                 if (!result) {
-                    QuasarAppUtils::Params::log(QString("exec database error. line:%0: %1").
-                                                arg(lineNumber).arg(sq->lastError().text()),
+                    QuasarAppUtils::Params::log(QString("Exec database error. File: %0. Line:%1: %2").
+                                                arg(sqlFile).arg(lineNumber).arg(sq->lastError().text()),
                                                 QuasarAppUtils::Error);
                     f.close();
                     return false;
