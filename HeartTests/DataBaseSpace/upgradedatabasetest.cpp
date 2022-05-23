@@ -40,7 +40,9 @@ protected:
     void initDBPatches() {
 
         addDBPatch({
-                       0, // version
+                       0, // from version
+                       1, // to version
+
                        [](const QH::iObjectProvider* database) -> bool {
                            QSqlQuery query;
                            if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
@@ -52,7 +54,8 @@ protected:
                    });
 
         addDBPatch({
-                       1, // version
+                       1, // from version
+                       2, // to version
                        [](const QH::iObjectProvider* database) -> bool {
                            QSqlQuery query;
                            if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
@@ -64,7 +67,8 @@ protected:
                    });
 
         addDBPatch({
-                       2, // version
+                       2, // from version
+                       3, // to version
                        [](const QH::iObjectProvider* database) -> bool {
                            QSqlQuery query;
                            if (!database->doQuery("select * from DataBaseAttributes", true, &query)){

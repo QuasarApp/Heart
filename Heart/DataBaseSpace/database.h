@@ -449,6 +449,7 @@ private:
     bool isForbidenTable(const QString& table);
 
     ISqlDBCache *_db = nullptr;
+    unsigned short _targetDBVersion = 0;
     DBPatchMap _dbPatches;
     QString _localNodeName;
     friend class DataBaseNode;

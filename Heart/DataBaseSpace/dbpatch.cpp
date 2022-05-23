@@ -9,4 +9,8 @@
 #include "dbpatch.h"
 namespace QH {
 
+bool DBPatch::isValid() const {
+    return versionFrom < versionTo && action;
+}
+
 }
