@@ -140,7 +140,8 @@ bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const 
     QSqlQuery q(query, *db());
 
     if (!q.exec()) {
-        QuasarAppUtils::Params::log("request error : " + q.lastError().text());
+        QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
         return false;
     }
 
