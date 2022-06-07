@@ -468,11 +468,12 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
         if (!printErrors)
             return ;
 
+        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
+                                    QuasarAppUtils::Debug);
+
         QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
                                     QuasarAppUtils::Error);
 
-        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
-                                    QuasarAppUtils::Error);
     };
 
 
