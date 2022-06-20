@@ -46,7 +46,7 @@ bool AbstractData::toPackage(Package &package,
 
 bool AbstractData::checkCmd() const {
     unsigned int code = typeid (*this).hash_code();
-    return code == localCode(); \
+    return code == localCode();
 }
 
 bool AbstractData::isValid() const {
