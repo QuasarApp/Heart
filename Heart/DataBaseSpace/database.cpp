@@ -25,6 +25,7 @@
 #include <sqldb.h>
 #include "getsinglevalue.h"
 #include "setsinglevalue.h"
+#include <qaglobalutils.h>
 
 namespace QH {
 using namespace PKG;
@@ -163,8 +164,22 @@ void DataBase::objectChanged(const QSharedPointer<DBObject> &) {
 
 }
 
-DBPatchMap DataBase::dbPatches() const {
-    return {};
+const DBPatchMap DataBase::dbPatches() const {
+    return _dbPatches;
+}
+
+void DataBase::addDBPatch(const DBPatch &patch) {
+    debug_assert(patch.isValid(),
+                 "Failed to initialise a Data base patch!"
+                 " Patch object is invalid");
+
+
+    debug_assert(!_dbPatches[patch.versionFrom].contains(patch.versionTo),
+                 "Failed to initialise a Data base patch!");
+
+    _dbPatches[patch.versionFrom][patch.versionTo] = patch;
+
+    _targetDBVersion = std::max(_targetDBVersion, patch.versionTo);
 }
 
 void DataBase::memberSubsribed(const QVariant &, unsigned int ) {
@@ -210,12 +225,15 @@ bool DataBase::isForbidenTable(const QString &table) {
 }
 
 bool DataBase::upgradeDataBase() {
-    auto patches = dbPatches();
-    int actyalyVersion = patches.size();
-    int currentVersion = 0;
-
     if (!db())
         return false;
+
+    DBPatchMap patchesPack = dbPatches();
+    if (!patchesPack.size()) {
+        return true;
+    }
+
+    int currentVersion = 0;
 
     bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", true);
 
@@ -232,31 +250,36 @@ bool DataBase::upgradeDataBase() {
 
     if (auto responce = _db->getObject(request)) {
         currentVersion = responce->value().toInt();
-    }
+    }    
 
-    bool fUpdated = false;
-    while (currentVersion < actyalyVersion) {
-
-        auto patch = patches.value(currentVersion, {});
+    while (currentVersion < _targetDBVersion) {
 
         QString message;
-        message = "Upgrade data base!. to %0 versions";
+        message = "Upgrade data base from %0 to %1 versions. %2";
         message = message.arg(currentVersion);
 
-        QuasarAppUtils::Params::log(message,
-                                    QuasarAppUtils::Info);
+        auto patches = patchesPack.value(currentVersion, {});
 
-        if (patch && !patch(db())) {
-            QuasarAppUtils::Params::log("Failed to " + message,
+        if (!patches.size()) {
+            QuasarAppUtils::Params::log("Failed to " + message.arg("Unknown", "Required patch not found!"),
                                         QuasarAppUtils::Error);
             return false;
         }
 
-        currentVersion++;
-        fUpdated = true;
-    }
+        auto patch = patches.last();
+        message = message.arg(patch.versionTo);
 
-    if (fUpdated) {
+        QuasarAppUtils::Params::log(message.arg("(Begin)"),
+                                    QuasarAppUtils::Info);
+
+        if (!patch.action(db())) {
+            QuasarAppUtils::Params::log("Failed to " + message.arg("Patch finished with error code!"),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+
+        currentVersion = patch.versionTo;
+
         auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
                     DbAddress{"DataBaseAttributes", "version"},
                     "value", currentVersion, "name");

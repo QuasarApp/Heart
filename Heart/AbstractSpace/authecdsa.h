@@ -14,7 +14,7 @@
 
 
 #include "abstractdata.h"
-#include "hcrypto/ecdsa.h"
+#include "hcrypto/ecdsassl11.h"
 
 #include <asynckeysauth.h>
 
@@ -24,7 +24,7 @@ namespace QH {
 /**
  * @brief The AuthECDSA class is ecdsa implementation of the Async authentication. This implementation based on Openssl library.
  */
-typedef AsyncKeysAuth<ECDSA> AuthECDSA;
+typedef AsyncKeysAuth<ECDSASSL11> AuthECDSA;
 
 }
 #endif

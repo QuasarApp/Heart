@@ -6,8 +6,8 @@
 //#
 
 
-#ifndef QH_ECDSA_H
-#define QH_ECDSA_H
+#ifndef QH_ECDSA_SSL_1_1_H
+#define QH_ECDSA_SSL_1_1_H
 #include "heart_global.h"
 
 #ifdef USE_HEART_SSL
@@ -21,13 +21,14 @@
 namespace QH {
 
 /**
- * @brief The ECDSA class is ecdsa implementation of the Async authentication. This implementation based on Openssl library.
+ * @brief The ECDSASSL11 class is ecdsa implementation of the Async authentication. This implementation based on Openssl library.
+ * @note This class compatibility only with ssl 1.1 and ssl 3.0 (depricated fundtions).
  */
-class HEARTSHARED_EXPORT ECDSA: public QH::ICrypto
+class HEARTSHARED_EXPORT ECDSASSL11: public QH::ICrypto
 {
 
 public:
-    ECDSA();
+    ECDSASSL11();
 
     /**
      * @brief makeKeys This static method generate the public and private keys of the ECDSA.
@@ -62,4 +63,4 @@ private:
 
 #endif
 
-#endif // QH_ECDSA_H
+#endif // QH_ECDSA_SSL_1_1_H

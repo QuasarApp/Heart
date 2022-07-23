@@ -51,8 +51,8 @@ bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) const {
                 temp = temp.remove(0, delimiterIndex + 1);
 
                 if (!result) {
-                    QuasarAppUtils::Params::log(QString("exec database error. line:%0: %1").
-                                                arg(lineNumber).arg(sq->lastError().text()),
+                    QuasarAppUtils::Params::log(QString("Exec database error. File: %0. Line:%1: %2").
+                                                arg(sqlFile).arg(lineNumber).arg(sq->lastError().text()),
                                                 QuasarAppUtils::Error);
                     f.close();
                     return false;
@@ -137,10 +137,10 @@ bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const 
         return false;
     }
 
-    QSqlQuery q(query, *db());
-
-    if (!q.exec()) {
-        QuasarAppUtils::Params::log("request error : " + q.lastError().text());
+    QSqlQuery q(*db());
+    if (!q.exec(query)) {
+        QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                    QuasarAppUtils::Error);
         return false;
     }
 
@@ -468,11 +468,12 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
         if (!printErrors)
             return ;
 
+        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
+                                    QuasarAppUtils::Debug);
+
         QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
                                     QuasarAppUtils::Error);
 
-        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
-                                    QuasarAppUtils::Error);
     };
 
 

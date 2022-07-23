@@ -9,6 +9,7 @@
 #define QH_DATABASE_H
 
 #include "abstractnode.h"
+#include "dbpatch.h"
 #include <dbobject.h>
 #include <hostaddress.h>
 #include <permission.h>
@@ -27,20 +28,6 @@ class SqlDBWriter;
 class DbAddress;
 class NodeId;
 class iObjectProvider;
-
-
-/**
- * @brief DBPatch This is function that should be upgrade database.
- * @see DBPatchMap
- * @see DataBaseNode::dbPatch
- */
-typedef std::function<bool (const QH::iObjectProvider *)> DBPatch;
-/**
- * @brief DBPatchMap This is list when index of list is version of database and value if function that should be upgrade database.
- * @see DataBaseNode::dbPatch
- * @see DBPatchMap
- */
-typedef QList<DBPatch> DBPatchMap;
 
 /**
  * @brief The DataBase class is DataBase base implementation.
@@ -402,31 +389,43 @@ protected:
      *  Where the 0 version is first version of database. (genesis)
      *
      *  @code{cpp}
-     *    QH::DBPatchMap dbPatches() const {
-              QH::DBPatchMap result;
+        addDBPatch({
+                       0, // version
+                       [](const QH::iObjectProvider* database) -> bool {
+                            // Some code for update from 0 to 1
+                       } // action of patch
+                   });
 
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 0 to 1
-              };
+        addDBPatch({
+                       1, // version
+                       [](const QH::iObjectProvider* database) -> bool {
+                            // Some code for update from 1 to 2
+                       } // action of patch
+                   });
 
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 1 to 2
-              };
-
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 2 to 3
-              };
-
-              return result;
-          }
+        addDBPatch({
+                       2, // version
+                       [](const QH::iObjectProvider* database) -> bool {
+                            // Some code for update from 2 to 3
+                       } // action of patch
+                   });
      *  @endcode
      *
      * @return Map of database pactches.
      *
      * @see DBPatchMap
      * @see DBPatch
+     * @see DataBase::addDBPatch
      */
-    virtual DBPatchMap dbPatches() const;
+    virtual const DBPatchMap dbPatches() const;
+
+    /**
+     * @brief addDBPatch This method add database patch to the data base object.
+     * @param patch This is object of the database patch
+     * @note This method will be crashed if patch is invalid.
+     * @see DataBase::dbPatches
+     */
+    void addDBPatch(const DBPatch& patch);
 
     /**
      * @brief upgradeDataBase This method upgrade data base to actyaly database version.
@@ -450,6 +449,8 @@ private:
     bool isForbidenTable(const QString& table);
 
     ISqlDBCache *_db = nullptr;
+    unsigned short _targetDBVersion = 0;
+    DBPatchMap _dbPatches;
     QString _localNodeName;
     friend class DataBaseNode;
 

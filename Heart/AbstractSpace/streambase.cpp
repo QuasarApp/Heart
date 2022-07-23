@@ -35,6 +35,18 @@ QByteArray StreamBase::toBytes() const {
     return res;
 }
 
+bool StreamBase::fromBase64(const QString &data) {
+    return fromBase64(data.toLatin1());
+}
+
+bool StreamBase::fromBase64(const QByteArray &data) {
+    return fromBytes(QByteArray::fromBase64(data, QByteArray::Base64UrlEncoding));
+}
+
+QByteArray StreamBase::toBase64() const {
+    return toBytes().toBase64(QByteArray::Base64UrlEncoding);
+}
+
 unsigned int StreamBase::typeId() const {
     return typeid (*this).hash_code();
 }

@@ -124,7 +124,7 @@ class HEARTSHARED_EXPORT AbstractData : public StreamBase
 {
 public:
 
-    virtual ~AbstractData() override;
+    ~AbstractData() override;
 
     /**
      * @brief cmd - This is command of this object, (for generate cmd use macross QH_PACKAGE)

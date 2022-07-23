@@ -672,7 +672,7 @@ protected slots:
      * @param errorString This is string value of the error.
      * @note default implementation do nothing. Override this method if you want to handle nodes network errors.
      */
-    virtual void nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+    virtual void nodeErrorOccured(QH::AbstractNodeInfo *nodeInfo,
                                   QAbstractSocket::SocketError errorCode,
                                   QString errorString);
 
@@ -684,12 +684,12 @@ protected slots:
      *  Overrid this method for handle ssl errors on this node or server.
      * @param error This is error that occured..
      */
-    virtual void handleSslErrorOcurred(SslSocket *scket, const QSslError& error);
+    virtual void handleSslErrorOcurred(QH::SslSocket *scket, const QSslError& error);
 #endif
 
 private slots:
 
-    void avelableBytes(AbstractNodeInfo* sender);
+    void avelableBytes(QH::AbstractNodeInfo* sender);
 
     /**
      * @brief handleNodeStatusChanged This method invoked when status of peer node chganged.
@@ -697,7 +697,7 @@ private slots:
      * @param status This is new status of node.
      *
      */
-    void handleNodeStatusChanged(AbstractNodeInfo* node, NodeCoonectionStatus status);
+    void handleNodeStatusChanged(QH::AbstractNodeInfo* node, QH::NodeCoonectionStatus status);
 
     /**
      * @brief handleWorkerStoped
@@ -708,7 +708,7 @@ private slots:
      * @brief handleForceRemoveNode - force remove connection.
      * @param node
      */
-    void handleForceRemoveNode(HostAddress node);
+    void handleForceRemoveNode(QH::HostAddress node);
 
     /**
      * @brief handleBeginWork This method run task on new thread.
@@ -723,12 +723,12 @@ private slots:
      *  Default implementation just pront error messages
      * @param errors This is errors list.
      */
-    void handleSslErrorOcurredPrivate(SslSocket *sender, const QList<QSslError> & errors);
+    void handleSslErrorOcurredPrivate(QH::SslSocket *sender, const QList<QSslError> & errors);
 
     /**
      * @brief handleEncrypted invoke when a ssl socket is encripted!
      */
-    void handleEncrypted(AbstractNodeInfo *node);
+    void handleEncrypted(QH::AbstractNodeInfo *node);
 
 #endif
 
