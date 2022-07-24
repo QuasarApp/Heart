@@ -7,6 +7,7 @@
 
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
+#include "humanreadableobject.h"
 #include "package.h"
 #include <streambase.h>
 
@@ -120,7 +121,7 @@ protected:
  * If the implementation of this method differs from the example, the data will not be copied correctly.
  * @see AbstractNode
  */
-class HEARTSHARED_EXPORT AbstractData : public StreamBase
+class HEARTSHARED_EXPORT AbstractData : public StreamBase, public QuasarAppUtils::HRO
 {
 public:
 
@@ -182,7 +183,7 @@ public:
      * @brief toString - Return a string implementation for this object.
      * @return String of object.
      */
-    virtual QString toString() const;
+    QString toString() const override;
 
     /**
      * @brief create - This is factory method for create a new object.

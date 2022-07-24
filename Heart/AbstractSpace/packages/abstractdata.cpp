@@ -9,7 +9,6 @@
 #include <QDataStream>
 #include <QMap>
 #include <typeinfo>
-#include "heart.h"
 #include <limits>
 #include <quasarapp.h>
 #include <QCryptographicHash>
