@@ -8,7 +8,6 @@
 #ifndef QH_DATABASE_H
 #define QH_DATABASE_H
 
-#include "abstractnode.h"
 #include "dbpatch.h"
 #include <dbobject.h>
 #include <hostaddress.h>
@@ -28,6 +27,7 @@ class SqlDBWriter;
 class DbAddress;
 class NodeId;
 class iObjectProvider;
+class AbstractNodeInfo;
 
 /**
  * @brief The DataBase class is DataBase base implementation.
@@ -390,21 +390,24 @@ protected:
      *
      *  @code{cpp}
         addDBPatch({
-                       0, // version
+                       0, // fromVersion
+                       1, // toVersion
                        [](const QH::iObjectProvider* database) -> bool {
                             // Some code for update from 0 to 1
                        } // action of patch
                    });
 
         addDBPatch({
-                       1, // version
+                       1, // fromVersion
+                       2, // toVersion
                        [](const QH::iObjectProvider* database) -> bool {
                             // Some code for update from 1 to 2
                        } // action of patch
                    });
 
         addDBPatch({
-                       2, // version
+                       2, // fromVersion
+                       3, // toVersion
                        [](const QH::iObjectProvider* database) -> bool {
                             // Some code for update from 2 to 3
                        } // action of patch
@@ -416,6 +419,7 @@ protected:
      * @see DBPatchMap
      * @see DBPatch
      * @see DataBase::addDBPatch
+     * @see DataBase::onBeforeDBUpgrade
      */
     virtual const DBPatchMap dbPatches() const;
 
@@ -424,6 +428,7 @@ protected:
      * @param patch This is object of the database patch
      * @note This method will be crashed if patch is invalid.
      * @see DataBase::dbPatches
+     * @see DataBase::onBeforeDBUpgrade
      */
     void addDBPatch(const DBPatch& patch);
 
@@ -434,6 +439,15 @@ protected:
      * @note if you want to disable this feature then override this method and return true.
      */
     virtual bool upgradeDataBase();
+
+    /**
+     * @brief onBeforeDBUpgrade This method will be invoked before upgrade database.
+     * @param currentVerion This is current database version
+     * @param tergetVersion This is target database version.
+     * @see DataBase::dbPatches
+     * @see DataBase::addDBPatch
+     */
+    virtual void onBeforeDBUpgrade(int currentVerion, int tergetVersion) const;
 private:
     /**
          * @brief workWithSubscribe This method work with subscribe commnads.

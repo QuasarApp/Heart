@@ -252,6 +252,9 @@ bool DataBase::upgradeDataBase() {
         currentVersion = responce->value().toInt();
     }    
 
+    if (currentVersion < _targetDBVersion)
+        onBeforeDBUpgrade(currentVersion, _targetDBVersion);
+
     while (currentVersion < _targetDBVersion) {
 
         QString message;
@@ -293,6 +296,8 @@ bool DataBase::upgradeDataBase() {
 
     return true;
 }
+
+void DataBase::onBeforeDBUpgrade(int , int ) const { }
 
 const QString &DataBase::localNodeName() const {
     return _localNodeName;
