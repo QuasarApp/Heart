@@ -16,6 +16,7 @@
 #include <openssl/err.h>
 
 #include <QCryptographicHash>
+#include <QDataStream>
 #include <QIODevice>
 #include <QVector>
 #include <quasarapp.h>
@@ -199,8 +200,6 @@ bool ECDSASSL11::checkSign(const QByteArray &inputData,
 }
 
 QByteArray ECDSASSL11::decript(const QByteArray &message, const QByteArray &key) {
-    QuasarAppUtils::Params::log("");
-
     return {};
 }
 

@@ -12,8 +12,6 @@
 
 #ifdef USE_HEART_SSL
 
-
-#include "abstractdata.h"
 #include "icrypto.h"
 
 #include <openssl/ec.h>      // for EC_GROUP_new_by_curve_name, EC_GROUP_free, EC_KEY_new, EC_KEY_set_group, EC_KEY_generate_key,EC_KEY_free

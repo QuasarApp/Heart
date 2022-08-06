@@ -12,8 +12,6 @@
 #include <time.h>
 #include <QString>
 
-#include "heart_global.h"
-#include "hcrypto/icrypto.h"
 
 namespace QH {
 

@@ -37,6 +37,7 @@ if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
         "AbstractSpace/packages/*.cpp" "AbstractSpace/packages/*.h" "AbstractSpace/packages/*.qrc"
         "AbstractSpace/Private/*.cpp" "AbstractSpace/Private/*.h" "AbstractSpace/Private/*.qrc"
         "AbstractSpace/hcrypto/*.cpp" "AbstractSpace/hcrypto/*.h" "AbstractSpace/hcrypto/*.qrc"
+        "AbstractSpace/hcryptoFeatures/*.cpp" "AbstractSpace/hcryptoFeatures/*.h" "AbstractSpace/hcryptoFeatures/*.qrc"
 
     )
 

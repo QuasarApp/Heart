@@ -6,9 +6,9 @@
 */
 
 #include "ecdsaauthtest.h"
-#include "authecdsa.h"
 #include <QtTest>
-#include "thread"
+#include <hcryptoFeatures/authecdsa.h>
+#include <thread>
 
 #ifdef USE_HEART_SSL
 

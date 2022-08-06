@@ -13,10 +13,9 @@
 #ifdef USE_HEART_SSL
 
 
-#include "abstractdata.h"
 #include "hcrypto/ecdsassl11.h"
 
-#include <asynckeysauth.h>
+#include "asynckeysauth.h"
 
 
 namespace QH {

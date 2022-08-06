@@ -121,7 +121,7 @@ protected:
  * If the implementation of this method differs from the example, the data will not be copied correctly.
  * @see AbstractNode
  */
-class HEARTSHARED_EXPORT AbstractData : public StreamBase, public QuasarAppUtils::HRO
+class HEARTSHARED_EXPORT AbstractData : public StreamBase, public QuasarAppUtils::iHRO
 {
 public:
 
