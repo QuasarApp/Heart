@@ -11,88 +11,80 @@
 
 #include <QByteArray>
 #include <QCryptographicHash>
+#include <QSharedPointer>
+#include "isignerdelegate.h"
+#include "qaservice.h"
 
 namespace QH {
 
 /**
- * @brief The Signer class is base wraper class for sining objects
- * This class implement simple verification of the object with public and private keys and do not use any certificates.
+ * @brief The Signer class can sign and check the signature of the any childs classes of the ISignerDelegate class.
+ *
+ * **Exmaple of use**
+ *
+ * @code{cpp}
+ * #include <hcriptoFeatures/isignerdelegate.h>
+ * #include <hcriptoFeatures/ecdsasigner.h>
+ *
+ * class MyDelegate: public ISignerDelegate {
+ *  // override all methods
+ * };
+ *
+ * int main () {
+ *     MyDelegate delegate;
+ *
+ *     // sign your object
+ *     QH::ECDSASigner::sign(&delegate);
+ *
+ *     // check signature of the object
+ *     QH::ECDSASigner::check(&delegate);
+ * }
+ *
+ *
+ * @endcode
+ *
+ * @note the MyDelegate class should be contains a public for check signature and a private for sign object keys
  * @tparam CryptoImplementation This is internal implementaion of base encription functions.
  * @see iCrypto class.
  */
 template<class CryptoImplementation>
-class Signer: protected CryptoImplementation
+class Signer: protected QuasarAppUtils::Service<Signer<CryptoImplementation>>,
+              protected CryptoImplementation
 {
 public:
     Signer() {};
     ~Signer() {};
 
     /**
-     * @brief signature This method should be return constant reference to the signature array.
-     * @return constant reference to the signature array.
-     */
-    virtual const QByteArray &signature() const = 0;
-
-    /**
-     * @brief setSignature This method should be set the new signature of this object.
-     * @param newSignature new signature value.
-     */
-    virtual void setSignature(const QByteArray &newSignature) = 0;
-
-    /**
-     * @brief signMessage This is main method for signing of this object.
+     * @brief sign This is main method for signing of this object.
      * @return true if the object signed sucessful
      */
-    bool signMessage() const {
-        auto sign = signMessage(getMessage(), getPrivateKey());
+    static bool sign(ISignerDelegate* obj) {
 
-        if (sign.size()) {
-            setSignature(sign);
-            return true;
+        if (auto signer = Signer<CryptoImplementation>::autoInstance()) {
+            auto sign = signer->signMessage(obj->getMessage(), obj->getPrivateKey());
+
+            if (sign.size()) {
+                obj->setSignature(sign);
+                return true;
+            }
+
         }
 
         return false;
     };
 
     /**
-     * @brief checkMessageSign This method check signatyre of this object.
+     * @brief check This method check signature of this object.
      * @return true if the objec signed
      */
-    bool checkSign() const {
-        return checkSign(getMessage(), signature(), getPublicKey());
+    static bool check(const ISignerDelegate* obj) {
+        if (auto signer = Signer<CryptoImplementation>::autoInstance()) {
+            return signer->checkSign(obj->getMessage(), obj->signature(), obj->getPublicKey());
+        }
+
+        return false;
     };
-
-
-protected:
-
-    QByteArray signMessage(const QByteArray &inputData,
-                     const QByteArray &key) const override {
-        return CryptoImplementation::setSignature(inputData, key);
-    };
-
-    bool checkSign(const QByteArray &inputData,
-                   const QByteArray &signature,
-                   const QByteArray &key) const override {
-        return CryptoImplementation::checkSign(inputData, signature, key);
-    };
-
-    /**
-     * @brief getPrivateKey This method should be return private key for the public key that saved in this object.
-     * @return private key for the public key that saved in this object.
-     */
-    virtual const QByteArray& getPrivateKey() const = 0;
-
-    /**
-     * @brief getPublicKey This method should be return public key for the private key that encrypted this object.
-     * @return public key for the private key that ecrypt this object.
-     */
-    virtual const QByteArray& getPublicKey() const = 0;
-
-    /**
-     * @brief getMessage This method should be return message that you want to sign.
-     * @return message that you want to sign.
-     */
-    virtual const QByteArray getMessage() const = 0;
 
 };
 }
