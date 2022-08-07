@@ -21,7 +21,7 @@ namespace QH {
  * @see iCrypto class.
  */
 template<class CryptoImplementation>
-class Signer: public CryptoImplementation
+class Signer: protected CryptoImplementation
 {
 public:
     Signer() {};
@@ -43,8 +43,8 @@ public:
      * @brief signMessage This is main method for signing of this object.
      * @return true if the object signed sucessful
      */
-    bool signMessage() const override {
-        auto sign = CryptoImplementation::signMessage(getMessage(), getPrivateKey());
+    bool signMessage() const {
+        auto sign = signMessage(getMessage(), getPrivateKey());
 
         if (sign.size()) {
             setSignature(sign);
@@ -55,15 +55,26 @@ public:
     };
 
     /**
-     * @brief checkSign This method check signatyre of this object.
+     * @brief checkMessageSign This method check signatyre of this object.
      * @return true if the objec signed
      */
-    bool checkSign() const override {
-        return CryptoImplementation::checkSign(getMessage(), signature(), getPublicKey());
+    bool checkSign() const {
+        return checkSign(getMessage(), signature(), getPublicKey());
     };
 
 
 protected:
+
+    QByteArray signMessage(const QByteArray &inputData,
+                     const QByteArray &key) const override {
+        return CryptoImplementation::setSignature(inputData, key);
+    };
+
+    bool checkSign(const QByteArray &inputData,
+                   const QByteArray &signature,
+                   const QByteArray &key) const override {
+        return CryptoImplementation::checkSign(inputData, signature, key);
+    };
 
     /**
      * @brief getPrivateKey This method should be return private key for the public key that saved in this object.
@@ -81,7 +92,7 @@ protected:
      * @brief getMessage This method should be return message that you want to sign.
      * @return message that you want to sign.
      */
-    virtual const QByteArray& getMessage() const = 0;
+    virtual const QByteArray getMessage() const = 0;
 
 };
 }
