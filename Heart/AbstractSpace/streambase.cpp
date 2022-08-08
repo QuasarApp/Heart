@@ -5,7 +5,6 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "package.h"
 #include "streambase.h"
 
 #include <QDataStream>

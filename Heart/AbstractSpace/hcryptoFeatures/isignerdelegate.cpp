@@ -12,4 +12,36 @@ namespace QH {
 ISignerDelegate::ISignerDelegate() {
 
 }
+
+const QByteArray &ISignerDelegate::getSignature() const {
+    return sign;
+}
+
+void ISignerDelegate::setSignature(const QByteArray &newSignature) {
+    sign = newSignature;
+}
+
+const QByteArray &ISignerDelegate::getHash() const {
+    return hash;
+
+}
+
+void ISignerDelegate::setHash(const QByteArray &newHash) {
+    hash = newHash;
+
+}
+
+QDataStream &ISignerDelegate::fromStream(QDataStream &stream) {
+    stream >> hash;
+    stream >> sign;
+
+    return stream;
+}
+
+QDataStream &ISignerDelegate::toStream(QDataStream &stream) const {
+    stream << hash;
+    stream << sign;
+
+    return stream;
+}
 }

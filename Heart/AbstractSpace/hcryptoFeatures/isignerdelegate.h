@@ -9,32 +9,46 @@
 #ifndef ISIGNERDELEGATE_H
 #define ISIGNERDELEGATE_H
 
-#include <QByteArray>
+#include <streambase.h>
 
 
 namespace QH {
 
 /**
- * @brief The ISignerDelegate class This is base interface of signer delegate.
- *  THe sisgner class will be invoke all dlegate mthods for control the input object that need to sign.
+ * @brief The ISignerDelegate class This is base class of signer delegate.
+ *  The sisgner class will be invoke all delegate methods for control the input object that need to sign.
+ *  @note This class contasin sign and hash fild and override the >> and << operators for QDataStream,
+ *  so if you want to convert your object to bytes array don not forget invoke the ISignerDelegate::fromStream and ISignerDelegate::toStream methods.
  * @see Signer
  */
-class ISignerDelegate
+class ISignerDelegate: public StreamBase
 {
 public:
     ISignerDelegate();
 
     /**
-     * @brief signature This method should be return constant reference to the signature array.
+     * @brief getSignature This method return constant reference to the signature array.
      * @return constant reference to the signature array.
      */
-    virtual const QByteArray &signature() const = 0;
+    virtual const QByteArray &getSignature() const;
 
     /**
-     * @brief setSignature This method should be set the new signature of this object.
+     * @brief setSignature This method sets the new signature of this object.
      * @param newSignature new signature value.
      */
-    virtual void setSignature(const QByteArray &newSignature) = 0;
+    virtual void setSignature(const QByteArray &newSignature);
+
+    /**
+     * @brief getHash This method return constant reference to the hash array.
+     * @return constant reference to the signature array.
+     */
+    virtual const QByteArray &getHash() const;
+
+    /**
+     * @brief setHash This method sets the new hash sum of this object.
+     * @param newSignature new signature value.
+     */
+    virtual void setHash(const QByteArray &newHash);
 
     /**
      * @brief getPrivateKey This method should be return private key for the public key that saved in this object.
@@ -53,6 +67,16 @@ public:
      * @return message that you want to sign.
      */
     virtual const QByteArray getMessage() const = 0;
+
+    // StreamBase interface
+protected:
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
+
+private:
+    QByteArray hash;
+    QByteArray sign;
+
 };
 
 }
