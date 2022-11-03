@@ -45,6 +45,8 @@ endif()
 
 # Use only for android debug builds with debugging from usb.
 option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraryes" OFF)
+option(CMAKE_SHARE "This option enable or disabled ssl functions of nodes" OFF)
+option(BUILD_SHARED_LIBS "Enable or disable shared libraryes" OFF)
 
 if (WIN32)
     option(HEART_SSL "This option enable or disabled ssl functions of nodes" OFF)
