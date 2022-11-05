@@ -1136,14 +1136,6 @@ QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const
     return value;
 }
 
-QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd) const {
-    return QSharedPointer<AbstractData>(_registeredTypes.value(cmd, [](){return nullptr;})());
-}
-
-bool AbstractNode::checkCommand(unsigned short cmd) const {
-    return _registeredTypes.contains(cmd);
-}
-
 QList<HostAddress> AbstractNode::connectionsList() const {
     QMutexLocker locer(&_connectionsMutex);
 

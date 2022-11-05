@@ -593,18 +593,6 @@ protected:
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
 
-
-    template<class T>
-    /**
-     * @brief registerPackageType This method register package type T.
-     * This is need to prepare pacakge for parsing in the parsePackage method.
-     */
-    void registerPackageType() {
-        _registeredTypes[T::command()] = [](){
-            return new T();
-        };
-    };
-
     void prepareForDelete() override;
 
     /**
@@ -614,23 +602,6 @@ protected:
      * @warning The return value do not clear automatically.
      */
     QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
-
-    /**
-     * @brief genPackage This is factory method that generate data pacakge objects by command.
-     *  All object should be registered before using this method.
-     * @param cmd This is command of pacakge see Header::command.
-     * @return shared pointer to new data object.
-     * @see AbstractNode::registerPackageType
-     * @see Header::command
-     */
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
-
-    /**
-     * @brief checkCommand This method check command are if registered type or not.
-     * @brief cmd This is command of a verifiable package.
-     * @return True if the package is registered in a node.
-     */
-    bool checkCommand(unsigned short cmd) const;
 
     /**
      * @brief connectionsList This method return list of all node connections
@@ -794,7 +765,6 @@ private:
     mutable QMutex _workersMutex;
 
     QThreadPool *_threadPool = nullptr;
-    QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
 
     friend class WebSocketController;
     friend class SocketFactory;

@@ -39,6 +39,17 @@ class HEARTSHARED_EXPORT iParser
 public:
     iParser();
 
+    template<class T>
+    /**
+     * @brief registerPackageType This method register package type T.
+     * This is need to prepare pacakge for parsing in the parsePackage method.
+     */
+    void registerPackageType() {
+        _registeredTypes[T::command()] = [](){
+            return new T();
+        };
+    };
+
     /**
      * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
      *  This method work on own thread.
@@ -152,6 +163,34 @@ public:
 
         return QH::ParserResult::NotProcessed;
     }
+
+    /**
+     * @brief registeredTypes This method return list of registered command.
+     * @return list of registered command.
+     * @see iParser::registerPackageType
+     */
+    const QHash<unsigned short, std::function<PKG::AbstractData *()> > &registeredTypes() const;
+
+    /**
+     * @brief genPackage This is factory method that generate data pacakge objects by command.
+     *  All object should be registered before using this method.
+     * @param cmd This is command of pacakge see Header::command.
+     * @return shared pointer to new data object.
+     * @see AbstractNode::registerPackageType
+     * @see Header::command
+     */
+    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
+
+    /**
+     * @brief checkCommand This method check command are if registered type or not.
+     * @brief cmd This is command of a verifiable package.
+     * @return True if the package is registered in a node.
+     */
+    bool checkCommand(unsigned short cmd) const;
+
+private:
+    QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
+
 
 };
 
