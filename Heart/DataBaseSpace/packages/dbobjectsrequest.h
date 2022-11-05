@@ -56,6 +56,14 @@ public:
         _conditions = conditions;
     };
 
+    QString primaryValue() const override {
+        return "";
+    }
+
+    QString primaryKey() const override {
+        return "";
+    }
+
     void clear() override {
         _data.clear();
     };
@@ -71,6 +79,14 @@ public:
         _data.push_back(ptr);
 
         return true;
+    };
+
+    QDataStream &fromStream(QDataStream &stream) override {
+        return stream;
+    };
+
+    QDataStream &toStream(QDataStream &stream) const override {
+        return stream;
     };
 
     bool isValid() const override {
@@ -108,7 +124,7 @@ protected:
     }
 
     DBObject *createDBObject() const override {
-        return create<DBObjectsRequest<T>>(tableName(), _conditions);
+        return create<DBObjectsRequest<T>>(table(), _conditions);
     };
 
     QList<QSharedPointer<T>> _data;

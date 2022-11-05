@@ -53,8 +53,23 @@ public:
         _packData.push_back(data);
     };
 
+    /**
+     * @brief isValid This implementation check all items of the pack to valid and packa size. The pack size should be more then 0.
+     * @return true if the pack of items is valid else flase..
+     */
     bool isValid() const override {
-        return AbstractData::isValid() && _packData.size();
+
+        if (!_packData.size()) {
+            return false;
+        }
+
+        for (const auto& it: _packData) {
+            if (!it->isValid()) {
+                return false;
+            }
+        }
+
+        return AbstractData::isValid();
     };
 
     /**
@@ -77,7 +92,6 @@ public:
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override {
-        AbstractData::fromStream(stream);
 
         int size = 0;
         stream >> size;
@@ -95,7 +109,6 @@ protected:
     };
 
     QDataStream &toStream(QDataStream &stream) const override {
-        AbstractData::toStream(stream);
         stream << static_cast<int>(_packData.size());
 
         for (const auto &ptr: qAsConst(_packData)) {

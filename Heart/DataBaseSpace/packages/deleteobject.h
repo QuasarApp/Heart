@@ -30,16 +30,34 @@ public:
     const AccessToken &getSignToken() const override;
     void setSignToken(const AccessToken &token) override;
 
+    bool fromSqlRecord(const QSqlRecord &q) override;
+
+    bool isCached() const override;
+
+    QString table() const override;
+
+    /**
+     * @brief address This method return address of the object that will be deleted.
+     * @return database address of the object that will be deleted.
+     */
+    const DbAddress &address() const;
+
+    /**
+     * @brief setAddress This method sets new address for object that will be deleted from database.
+     * @param newAddress This is new value of the database adderess.
+     */
+    void setAddress(const DbAddress &newAddress);
+
 protected:
     QString primaryKey() const override;
+    QString primaryValue() const override;
 
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
-    // DBObject interface
-public:
-    bool isCached() const override;
+private:
 
+    DbAddress _address;
     AccessToken _token;
 
 };

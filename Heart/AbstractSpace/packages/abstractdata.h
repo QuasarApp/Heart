@@ -7,6 +7,7 @@
 
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
+#include "humanreadableobject.h"
 #include "package.h"
 #include <streambase.h>
 
@@ -49,12 +50,10 @@ public:
 protected:
     // StreamBase interface override this methods for serialization your package
     QDataStream &fromStream(QDataStream &stream) {
-        AbstractData::fromStream(stream);
         stream >> _data;
         return stream;
     }
     QDataStream &toStream(QDataStream &stream) const {
-        AbstractData::toStream(stream);
         stream << _data;
         return stream;
     }
@@ -122,11 +121,11 @@ protected:
  * If the implementation of this method differs from the example, the data will not be copied correctly.
  * @see AbstractNode
  */
-class HEARTSHARED_EXPORT AbstractData : public StreamBase
+class HEARTSHARED_EXPORT AbstractData : public StreamBase, public QuasarAppUtils::iHRO
 {
 public:
 
-    virtual ~AbstractData() override;
+    ~AbstractData() override;
 
     /**
      * @brief cmd - This is command of this object, (for generate cmd use macross QH_PACKAGE)
@@ -184,7 +183,7 @@ public:
      * @brief toString - Return a string implementation for this object.
      * @return String of object.
      */
-    virtual QString toString() const;
+    QString toString() const override;
 
     /**
      * @brief create - This is factory method for create a new object.
@@ -228,9 +227,6 @@ protected:
      * @return local command of this class. used for check QH_PACKAGE macro before send pacakge.
      */
     virtual unsigned int localCode() const = 0;
-
-    QDataStream& fromStream(QDataStream& stream) override;
-    QDataStream& toStream(QDataStream& stream) const override;
 
 private:
     /**

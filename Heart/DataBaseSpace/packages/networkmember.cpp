@@ -14,7 +14,7 @@ NetworkMember::NetworkMember() {
 
 }
 
-NetworkMember::NetworkMember(const QVariant &id): AbstractNetworkMember(id) {
+NetworkMember::NetworkMember(const QString &id): AbstractNetworkMember(id) {
 
 }
 

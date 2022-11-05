@@ -21,21 +21,12 @@
 namespace QH {
 namespace PKG {
 
-DBObject::DBObject(const QString &tableName) {
+DBObject::DBObject() {
     DBObject::clear();
-    _dbId.setTable(tableName);
-}
-
-DBObject::DBObject(const DbAddress &address) {
-    _dbId = address;
 }
 
 DBObject::~DBObject() {
 
-}
-
-QString DBObject::tableName() const {
-    return _dbId.table();
 }
 
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
@@ -44,24 +35,13 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
     QString queryString = "SELECT " + map.join(",") + " FROM %0 " + getWhereBlock();
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
     }
 
     return PrepareResult::Success;
-}
-
-bool DBObject::fromSqlRecord(const QSqlRecord &q) {
-
-    QString key = primaryKey();
-    if (key.size() && q.contains(key)) {
-        setId(q.value(key));
-        return true;
-    }
-
-    return false;
 }
 
 PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
@@ -78,7 +58,7 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
     QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
 
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
     QString tableInsertHeader = "";
     QString tableInsertValues = "";
 
@@ -129,7 +109,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
 
     QString queryString = "UPDATE %0 SET %1 WHERE " + condition();
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
     QString tableUpdateValues = "";
 
     for (auto it = map.begin(); it != map.end(); ++it) {
@@ -183,7 +163,7 @@ bool DBObject::isBundle() const {
 }
 
 uint DBObject::dbKey() const {
-    return HASH_KEY(DbAddressKey(_dbId));
+    return HASH_KEY(DbAddressKey(dbAddress()));
 }
 
 QString DBObject::condition() const {
@@ -204,21 +184,9 @@ QString DBObject::condition() const {
     QString errorString = "WRONG OBJECT";
 
     // if object have a primaryKey then return primary key
-    auto primaryVal = getId();
-    if (primaryVal.isValid()) {
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-        bool fWarning = primaryVal.type() == QVariant::ByteArray;
-
-#else
-        bool fWarning = primaryVal.metaType().id() == QMetaType::QByteArray;
-#endif
-        if (fWarning) {
-            byteArrayWarning();
-            return errorString;
-        }
-
-        return prepareCondition(primaryKey(), primaryVal.toString());
+    auto primaryVal = primaryValue();
+    if (primaryVal.size()) {
+        return prepareCondition(primaryKey(), primaryVal);
     }
 
     auto map = variantMap();
@@ -266,20 +234,12 @@ QString DBObject::condition() const {
     return errorString;
 }
 
-const QVariant &DBObject::primaryValue() const {
-    return _dbId.id();
-}
-
-void DBObject::setDbAddress(const DbAddress &address) {
-    _dbId = address;
-}
-
 bool DBObject::isInsertPrimaryKey() const {
     return bool(variantMap().value(primaryKey()).type & MemberType::Insert);
 }
 
-const DbAddress &DBObject::dbAddress() const {
-    return _dbId;
+DbAddress DBObject::dbAddress() const {
+    return {table(), primaryValue()};
 }
 
 DBObject *DBObject::cloneRaw() const {
@@ -293,7 +253,7 @@ DBObject *DBObject::cloneRaw() const {
 
 QString DBObject::toString() const {
     return AbstractData::toString() +
-            QString(" %0").arg(_dbId.toString());
+            QString(" %0").arg(dbAddress().toString());
 }
 
 QString DBObject::getWhereBlock() const {
@@ -315,11 +275,27 @@ void DBObject::setPrintError(bool newPrintError) {
     _printError = newPrintError;
 }
 
+QDataStream &DBObject::fromStream(QDataStream &stream) {
+    QuasarAppUtils::Params::log("This object not support stream operator."
+                                " Please Override the fromStream method for this object. " + toString(),
+                                QuasarAppUtils::Warning);
+
+    return stream;
+}
+
+QDataStream &DBObject::toStream(QDataStream &stream) const {
+
+    QuasarAppUtils::Params::log("This object not support stream operator."
+                                " Please Override the toStream method for this object. " + toString(),
+                                QuasarAppUtils::Warning);
+    return stream;
+}
+
 PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
 
     QString queryString = "DELETE FROM %0 " + getWhereBlock();
 
-    queryString = queryString.arg(tableName());
+    queryString = queryString.arg(table());
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
@@ -328,25 +304,9 @@ PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
     return PrepareResult::Success;
 }
 
-QDataStream &DBObject::fromStream(QDataStream &stream) {
-    AbstractData::fromStream(stream);
-
-    stream >> _dbId;
-
-    return stream;
-}
-
-QDataStream &DBObject::toStream(QDataStream &stream) const {
-    AbstractData::toStream(stream);
-
-    stream << _dbId;
-
-    return stream;
-}
-
 DBVariantMap DBObject::variantMap() const {
     if (isHaveAPrimaryKey()) {
-        return {{primaryKey(), {_dbId.id(), MemberType::PrimaryKey}}};
+        return {{primaryKey(), {primaryValue(), MemberType::PrimaryKey}}};
     }
 
     return {};
@@ -357,23 +317,14 @@ bool DBObject::isValid() const {
         return false;
 
     if (isInsertPrimaryKey()) {
-        return _dbId.isValid();
+        return primaryValue().size();
     }
 
-    return _dbId.table().size();
+    return table().size();
 }
 
 bool DBObject::copyFrom(const AbstractData * other) {
-    if (!AbstractData::copyFrom(other))
-        return false;
-
-    auto otherObject = dynamic_cast<const DBObject*>(other);
-    if (!otherObject)
-        return false;
-
-    this->_dbId = otherObject->_dbId;
-
-    return true;
+    return AbstractData::copyFrom(other);
 }
 
 unsigned int DBObject::subscribeId() const {
@@ -388,17 +339,7 @@ bool DBObject::isHaveAPrimaryKey() const {
     return primaryKey().size();
 }
 
-const QVariant& DBObject::getId() const {
-    return dbAddress().id();
-}
-
-void DBObject::setId(const QVariant& id) {
-    _dbId.setId(id);
-}
-
-void DBObject::clear() {
-    setId({});
-}
+void DBObject::clear() {}
 
 DBVariant::DBVariant() {
 

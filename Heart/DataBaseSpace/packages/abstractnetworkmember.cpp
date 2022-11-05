@@ -16,7 +16,7 @@
 namespace QH {
 namespace PKG {
 
-AbstractNetworkMember::AbstractNetworkMember():DBObject("NetworkMembers") {
+AbstractNetworkMember::AbstractNetworkMember() {
     
 }
 
@@ -25,16 +25,14 @@ AbstractNetworkMember::AbstractNetworkMember(const Package &pkg):
     fromBytes(pkg.data);
 }
 
-AbstractNetworkMember::AbstractNetworkMember(const QVariant &id):
+AbstractNetworkMember::AbstractNetworkMember(const QString& id):
     AbstractNetworkMember() {
     setId(id);
 }
 
 bool AbstractNetworkMember::fromSqlRecord(const QSqlRecord &q) {
-    if (!DBObject::fromSqlRecord(q)) {
-        return false;
-    }
 
+    setId(q.value("id").toString());
     setAuthenticationData(q.value("authenticationData").toByteArray());
     setTrust(q.value("trust").toInt());
 
@@ -52,6 +50,7 @@ void AbstractNetworkMember::setAuthenticationData(const QByteArray &publickKey) 
 QDataStream &AbstractNetworkMember::fromStream(QDataStream &stream) {
     DBObject::fromStream(stream);
 
+    stream >> _id;
     stream >> _authenticationData;
     stream >> _trust;
 
@@ -59,8 +58,7 @@ QDataStream &AbstractNetworkMember::fromStream(QDataStream &stream) {
 }
 
 QDataStream &AbstractNetworkMember::toStream(QDataStream &stream) const {
-    DBObject::toStream(stream);
-
+    stream << _id;
     stream << _authenticationData;
     stream << _trust;
     return stream;
@@ -68,15 +66,31 @@ QDataStream &AbstractNetworkMember::toStream(QDataStream &stream) const {
 
 DBVariantMap AbstractNetworkMember::variantMap() const {
 
-    auto map = DBObject::variantMap();
-    map["authenticationData"] =     {_authenticationData,   MemberType::InsertUpdate};
-    map["trust"] =                  {_trust,                MemberType::InsertUpdate};
+    return {{"id",                  {_id,                 QH::PKG::MemberType::PrimaryKey}},
+            {"authenticationData",  {_authenticationData, QH::PKG::MemberType::InsertUpdate}},
+            {"trust",               {_trust,              QH::PKG::MemberType::InsertUpdate}},
 
-    return  map;
+    };
 }
 
 QString AbstractNetworkMember::primaryKey() const {
     return "id";
+}
+
+QString AbstractNetworkMember::primaryValue() const {
+    return _id;
+}
+
+const QString &AbstractNetworkMember::getId() const {
+    return _id;
+}
+
+void AbstractNetworkMember::setId(const QString &newId) {
+    _id = newId;
+}
+
+QString AbstractNetworkMember::table() const {
+    return "NetworkMembers";
 }
 
 int AbstractNetworkMember::trust() const {
@@ -103,6 +117,7 @@ bool AbstractNetworkMember::copyFrom(const AbstractData * other) {
     if (!otherObject)
         return false;
 
+    this->_id = otherObject->_id;
     this->_authenticationData = otherObject->_authenticationData;
     this->_trust = otherObject->_trust;
 

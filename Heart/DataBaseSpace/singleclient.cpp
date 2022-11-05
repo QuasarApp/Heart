@@ -155,7 +155,8 @@ bool SingleClient::removeUser() {
 
 
     QH::PKG::DeleteObject request;
-    request.copyFrom(&getMember());
+    request.setAddress(getMember().dbAddress());
+
     if (!sendData(&request, realServerAddress())) {
         return false;
     };

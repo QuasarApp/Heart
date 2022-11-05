@@ -14,5 +14,13 @@ namespace PKG {
 CloseConnection::CloseConnection() {
 
 }
+
+QDataStream &CloseConnection::fromStream(QDataStream &stream) {
+    return stream;
+}
+
+QDataStream &CloseConnection::toStream(QDataStream &stream) const {
+    return stream;
+}
 }
 }

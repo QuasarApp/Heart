@@ -8,9 +8,8 @@
 #include "dbobjectset.h"
 namespace QH {
 namespace PKG {
-DBObjectSet::DBObjectSet(const QString table):
-    DBObject(table) {
-
+DBObjectSet::DBObjectSet(const QString table) {
+    _table = table;
 }
 
 PrepareResult DBObjectSet::prepareInsertQuery(QSqlQuery &) const {
@@ -39,6 +38,10 @@ bool DBObjectSet::isBundle() const {
 
 QString DBObjectSet::primaryKey() const {
     return "";
+}
+
+QString DBObjectSet::table() const {
+    return _table;
 }
 
 

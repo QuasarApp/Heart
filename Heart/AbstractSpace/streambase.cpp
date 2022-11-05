@@ -5,7 +5,6 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "package.h"
 #include "streambase.h"
 
 #include <QDataStream>
@@ -33,6 +32,18 @@ QByteArray StreamBase::toBytes() const {
     QDataStream stream(&res, QIODevice::WriteOnly);
     toStream(stream);
     return res;
+}
+
+bool StreamBase::fromBase64(const QString &data) {
+    return fromBase64(data.toLatin1());
+}
+
+bool StreamBase::fromBase64(const QByteArray &data) {
+    return fromBytes(QByteArray::fromBase64(data, QByteArray::Base64UrlEncoding));
+}
+
+QByteArray StreamBase::toBase64() const {
+    return toBytes().toBase64(QByteArray::Base64UrlEncoding);
 }
 
 unsigned int StreamBase::typeId() const {

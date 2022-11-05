@@ -26,13 +26,11 @@ WebSocketSubscriptions::WebSocketSubscriptions(const QH::Package &package):
 }
 
 QDataStream &WebSocketSubscriptions::fromStream(QDataStream &stream) {
-    AbstractData::fromStream(stream);
 
     return stream >> _subscribeIds;
 }
 
 QDataStream &WebSocketSubscriptions::toStream(QDataStream &stream) const {
-    AbstractData::toStream(stream);
 
     return stream << _subscribeIds;
 }

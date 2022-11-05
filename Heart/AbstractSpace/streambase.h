@@ -42,6 +42,26 @@ public:
      */
     QByteArray toBytes() const;
 
+    /**
+     * @brief fromBase64 This method provide initialization of object from the base64 string.
+     * @param data This is input base64 data.
+     * @note converting from the QString is slowly instand of QByteArray, so use the StreamBase::fromBase64(const QByteArray &data) method.
+     * @return true if all good else false.
+     */
+    bool fromBase64(const QString &data);
+
+    /**
+     * @brief fromBase64 This method provide initialization of object from the base64 string.
+     * @param data This is input base64 data.
+     * @return true if all good else false.
+     */
+    bool fromBase64(const QByteArray &data);
+
+    /**
+     * @brief toBase64 This method convert a current object to the base64 string.
+     * @return base64 string of this object.
+     */
+    QByteArray toBase64() const;
 
     /**
      * @brief This is wrapper over toStream.

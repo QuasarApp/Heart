@@ -27,8 +27,6 @@
 #include "abstractdata.h"
 #include "workstate.h"
 #include "package.h"
-#include "cryptopairkeys.h"
-#include "icrypto.h"
 #include "heart_global.h"
 #include "packagemanager.h"
 #include "abstracterrorcodes.h"
@@ -508,7 +506,7 @@ protected:
      * @param socket This is node info object for validation.
      * @return true if node is banned.
      */
-    bool isBanned(QAbstractSocket* socket) const;
+    virtual bool isBanned(const AbstractNodeInfo *socket) const;
 
     /**
      * @brief incomingConnection This is ovverided method of QTCPServer.
@@ -595,18 +593,6 @@ protected:
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
 
-
-    template<class T>
-    /**
-     * @brief registerPackageType This method register package type T.
-     * This is need to prepare pacakge for parsing in the parsePackage method.
-     */
-    void registerPackageType() {
-        _registeredTypes[T::command()] = [](){
-            return new T();
-        };
-    };
-
     void prepareForDelete() override;
 
     /**
@@ -616,23 +602,6 @@ protected:
      * @warning The return value do not clear automatically.
      */
     QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
-
-    /**
-     * @brief genPackage This is factory method that generate data pacakge objects by command.
-     *  All object should be registered before using this method.
-     * @param cmd This is command of pacakge see Header::command.
-     * @return shared pointer to new data object.
-     * @see AbstractNode::registerPackageType
-     * @see Header::command
-     */
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
-
-    /**
-     * @brief checkCommand This method check command are if registered type or not.
-     * @brief cmd This is command of a verifiable package.
-     * @return True if the package is registered in a node.
-     */
-    bool checkCommand(unsigned short cmd) const;
 
     /**
      * @brief connectionsList This method return list of all node connections
@@ -674,7 +643,7 @@ protected slots:
      * @param errorString This is string value of the error.
      * @note default implementation do nothing. Override this method if you want to handle nodes network errors.
      */
-    virtual void nodeErrorOccured(AbstractNodeInfo *nodeInfo,
+    virtual void nodeErrorOccured(QH::AbstractNodeInfo *nodeInfo,
                                   QAbstractSocket::SocketError errorCode,
                                   QString errorString);
 
@@ -686,12 +655,12 @@ protected slots:
      *  Overrid this method for handle ssl errors on this node or server.
      * @param error This is error that occured..
      */
-    virtual void handleSslErrorOcurred(SslSocket *scket, const QSslError& error);
+    virtual void handleSslErrorOcurred(QH::SslSocket *scket, const QSslError& error);
 #endif
 
 private slots:
 
-    void avelableBytes(AbstractNodeInfo* sender);
+    void avelableBytes(QH::AbstractNodeInfo* sender);
 
     /**
      * @brief handleNodeStatusChanged This method invoked when status of peer node chganged.
@@ -699,7 +668,7 @@ private slots:
      * @param status This is new status of node.
      *
      */
-    void handleNodeStatusChanged(AbstractNodeInfo* node, NodeCoonectionStatus status);
+    void handleNodeStatusChanged(QH::AbstractNodeInfo* node, QH::NodeCoonectionStatus status);
 
     /**
      * @brief handleWorkerStoped
@@ -710,7 +679,7 @@ private slots:
      * @brief handleForceRemoveNode - force remove connection.
      * @param node
      */
-    void handleForceRemoveNode(HostAddress node);
+    void handleForceRemoveNode(QH::HostAddress node);
 
     /**
      * @brief handleBeginWork This method run task on new thread.
@@ -725,12 +694,12 @@ private slots:
      *  Default implementation just pront error messages
      * @param errors This is errors list.
      */
-    void handleSslErrorOcurredPrivate(SslSocket *sender, const QList<QSslError> & errors);
+    void handleSslErrorOcurredPrivate(QH::SslSocket *sender, const QList<QSslError> & errors);
 
     /**
      * @brief handleEncrypted invoke when a ssl socket is encripted!
      */
-    void handleEncrypted(AbstractNodeInfo *node);
+    void handleEncrypted(QH::AbstractNodeInfo *node);
 
 #endif
 
@@ -796,7 +765,6 @@ private:
     mutable QMutex _workersMutex;
 
     QThreadPool *_threadPool = nullptr;
-    QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
 
     friend class WebSocketController;
     friend class SocketFactory;

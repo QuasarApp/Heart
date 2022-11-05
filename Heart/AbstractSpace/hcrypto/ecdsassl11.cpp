@@ -6,7 +6,7 @@
 //#
 
 
-#include "authecdsa.h"
+#include "ecdsassl11.h"
 
 #ifdef USE_HEART_SSL
 
@@ -16,13 +16,14 @@
 #include <openssl/err.h>
 
 #include <QCryptographicHash>
+#include <QDataStream>
 #include <QIODevice>
 #include <QVector>
 #include <quasarapp.h>
 
 namespace QH {
 
-AuthECDSA::AuthECDSA() {
+ECDSASSL11::ECDSASSL11() {
 
 }
 
@@ -79,7 +80,7 @@ QByteArray extractPublicKey(EC_KEY* key, EC_GROUP* group) {
     return data;
 }
 
-bool AuthECDSA::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
+bool ECDSASSL11::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
 
     EC_KEY *eckey= nullptr;
     EC_GROUP *ecgroup = nullptr;
@@ -101,7 +102,7 @@ bool AuthECDSA::makeKeys(QByteArray &pubKey, QByteArray &privKey) {
     return pubKey.length() && privKey.length();
 }
 
-QByteArray AuthECDSA::signMessage(const QByteArray &inputData,
+QByteArray ECDSASSL11::signMessage(const QByteArray &inputData,
                                   const QByteArray &key) const {
 
     EC_KEY *eckey= nullptr;
@@ -147,7 +148,7 @@ QByteArray AuthECDSA::signMessage(const QByteArray &inputData,
     return result;
 }
 
-bool AuthECDSA::checkSign(const QByteArray &inputData,
+bool ECDSASSL11::checkSign(const QByteArray &inputData,
                           const QByteArray &signature,
                           const QByteArray &key) const {
 
@@ -198,7 +199,15 @@ bool AuthECDSA::checkSign(const QByteArray &inputData,
 
 }
 
-bool AuthECDSA::prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup) {
+QByteArray ECDSASSL11::decript(const QByteArray &message, const QByteArray &key) {
+    return {};
+}
+
+QByteArray ECDSASSL11::encript(const QByteArray &message, const QByteArray &key) {
+    return {};
+}
+
+bool ECDSASSL11::prepareKeyAdnGroupObjects(EC_KEY **eckey, EC_GROUP **ecgroup) {
 
     // input data should be valid pointers to pointers of key and group objects.
     if (!(eckey && ecgroup))

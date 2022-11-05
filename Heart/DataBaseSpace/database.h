@@ -8,7 +8,7 @@
 #ifndef QH_DATABASE_H
 #define QH_DATABASE_H
 
-#include "abstractnode.h"
+#include "dbpatch.h"
 #include <dbobject.h>
 #include <hostaddress.h>
 #include <permission.h>
@@ -27,20 +27,7 @@ class SqlDBWriter;
 class DbAddress;
 class NodeId;
 class iObjectProvider;
-
-
-/**
- * @brief DBPatch This is function that should be upgrade database.
- * @see DBPatchMap
- * @see DataBaseNode::dbPatch
- */
-typedef std::function<bool (const QH::iObjectProvider *)> DBPatch;
-/**
- * @brief DBPatchMap This is list when index of list is version of database and value if function that should be upgrade database.
- * @see DataBaseNode::dbPatch
- * @see DBPatchMap
- */
-typedef QList<DBPatch> DBPatchMap;
+class AbstractNodeInfo;
 
 /**
  * @brief The DataBase class is DataBase base implementation.
@@ -111,7 +98,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult deleteObject(const QVariant &requester,
+    DBOperationResult deleteObject(const QString &requester,
                                    const QSharedPointer<PKG::DBObject> &dbObject);
 
     /**
@@ -123,7 +110,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult getObject(const QVariant &requester,
+    DBOperationResult getObject(const QString &requester,
                                 const PKG::DBObject &templateObj,
                                 QSharedPointer<PKG::DBObject> &result) const;
 
@@ -136,7 +123,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult getObjects(const QVariant &requester,
+    DBOperationResult getObjects(const QString &requester,
                                  const PKG::DBObject &templateObj,
                                  QList<QSharedPointer<PKG::DBObject>> &result) const;
 
@@ -148,7 +135,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult updateObject(const QVariant &requester,
+    DBOperationResult updateObject(const QString &requester,
                                    const QSharedPointer<PKG::DBObject> &saveObject);
 
     /**
@@ -159,7 +146,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult createObject(const QVariant &requester,
+    DBOperationResult createObject(const QString &requester,
                                    const QSharedPointer<PKG::DBObject> &obj);
 
     /**
@@ -172,7 +159,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult updateIfNotExistsCreateObject(const QVariant &requester,
+    DBOperationResult updateIfNotExistsCreateObject(const QString &requester,
                                                     const QSharedPointer<PKG::DBObject> &obj);
 
     /**
@@ -185,7 +172,7 @@ public:
      * @return result of operation (allow, forbidden, unknown).
      *  For more information about results see the DBOperationResult enum.
      */
-    DBOperationResult changeObjects(const QVariant &requester,
+    DBOperationResult changeObjects(const QString &requester,
                                     const PKG::DBObject &templateObj,
                                     const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
@@ -194,7 +181,7 @@ public:
      * @param member This is member of network (node, client or server).
      * @return true if node is banned.
      */
-    bool isBanned(const QVariant &member) const;
+    bool isBanned(const QString &member) const;
 
     /**
      * @brief dbLocation This method return location of nodes or clients database.
@@ -209,7 +196,7 @@ public:
      * @param diff This is difference of trust.
      * @return true if trust of user changed successful.
      */
-    bool changeTrust(const QVariant &id, int diff);
+    bool changeTrust(const QString &id, int diff);
 
 signals:
 
@@ -296,7 +283,7 @@ protected:
      * @return DBOperationResult::Alowed if permission granted.
      *  For more information about result see the DBOperationResult enum.
      */
-    virtual DBOperationResult checkPermission(const QVariant &requester,
+    virtual DBOperationResult checkPermission(const QString &requester,
                                               const DbAddress& objectAddress,
                                               const Permission& requarimentPermision) const;
 
@@ -402,31 +389,48 @@ protected:
      *  Where the 0 version is first version of database. (genesis)
      *
      *  @code{cpp}
-     *    QH::DBPatchMap dbPatches() const {
-              QH::DBPatchMap result;
+        addDBPatch({
+                       0, // fromVersion
+                       1, // toVersion
+                       [](const QH::iObjectProvider* database) -> bool {
+                            // Some code for update from 0 to 1
+                       } // action of patch
+                   });
 
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 0 to 1
-              };
+        addDBPatch({
+                       1, // fromVersion
+                       2, // toVersion
+                       [](const QH::iObjectProvider* database) -> bool {
+                            // Some code for update from 1 to 2
+                       } // action of patch
+                   });
 
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 1 to 2
-              };
-
-              result += [](const QH::iObjectProvider* database) -> bool {
-                  // Some code for update from 2 to 3
-              };
-
-              return result;
-          }
+        addDBPatch({
+                       2, // fromVersion
+                       3, // toVersion
+                       [](const QH::iObjectProvider* database) -> bool {
+                            // Some code for update from 2 to 3
+                       } // action of patch
+                   });
      *  @endcode
      *
      * @return Map of database pactches.
      *
      * @see DBPatchMap
      * @see DBPatch
+     * @see DataBase::addDBPatch
+     * @see DataBase::onBeforeDBUpgrade
      */
-    virtual DBPatchMap dbPatches() const;
+    virtual const DBPatchMap dbPatches() const;
+
+    /**
+     * @brief addDBPatch This method add database patch to the data base object.
+     * @param patch This is object of the database patch
+     * @note This method will be crashed if patch is invalid.
+     * @see DataBase::dbPatches
+     * @see DataBase::onBeforeDBUpgrade
+     */
+    void addDBPatch(const DBPatch& patch);
 
     /**
      * @brief upgradeDataBase This method upgrade data base to actyaly database version.
@@ -435,6 +439,15 @@ protected:
      * @note if you want to disable this feature then override this method and return true.
      */
     virtual bool upgradeDataBase();
+
+    /**
+     * @brief onBeforeDBUpgrade This method will be invoked before upgrade database.
+     * @param currentVerion This is current database version
+     * @param tergetVersion This is target database version.
+     * @see DataBase::dbPatches
+     * @see DataBase::addDBPatch
+     */
+    virtual void onBeforeDBUpgrade(int currentVerion, int tergetVersion) const;
 private:
     /**
          * @brief workWithSubscribe This method work with subscribe commnads.
@@ -450,6 +463,8 @@ private:
     bool isForbidenTable(const QString& table);
 
     ISqlDBCache *_db = nullptr;
+    unsigned short _targetDBVersion = 0;
+    DBPatchMap _dbPatches;
     QString _localNodeName;
     friend class DataBaseNode;
 

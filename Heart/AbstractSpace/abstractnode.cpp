@@ -316,6 +316,29 @@ bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
         return false;
     }
 
+//#if OPENSSL_VERSION_MAJOR >= 3
+
+//    EVP_PKEY_CTX *pctx =
+//        EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
+
+//    unsigned int primes = 3;
+//    unsigned int bits = 4096;
+//    OSSL_PARAM params[3];
+
+//    pkey = EVP_RSA_gen(4096);
+
+//    EVP_PKEY_keygen_init(pctx);
+
+//    params[0] = OSSL_PARAM_construct_uint("bits", &bits);
+//    params[1] = OSSL_PARAM_construct_uint("primes", &primes);
+//    params[2] = OSSL_PARAM_construct_end();
+//    EVP_PKEY_CTX_set_params(pctx, params);
+
+
+//    EVP_PKEY_generate(pctx, &pkey);
+//    EVP_PKEY_CTX_free(pctx);
+
+//#else
     BIGNUM * bn = BN_new();
 
     int rc = BN_set_word(bn, RSA_F4);
@@ -334,7 +357,7 @@ bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
     q_check_ptr(rsa);
     if (EVP_PKEY_assign_RSA(pkey, rsa) <= 0)
         return false;
-
+//#endif
     return true;
 }
 
@@ -884,9 +907,7 @@ bool AbstractNode::ping(const HostAddress &address) {
 
 }
 
-bool AbstractNode::isBanned(QAbstractSocket *socket) const {
-    auto info = getInfoPtr(HostAddress{socket->peerAddress(), socket->peerPort()});
-
+bool AbstractNode::isBanned(const AbstractNodeInfo *info) const {
     if (!(info && info->isValid())) {
         return false;
     }
@@ -911,7 +932,7 @@ void AbstractNode::incomingConnection(qintptr handle) {
 
         socket->setSocketDescriptor(handle);
 
-        if (isBanned(socket)) {
+        if (isBanned(getInfoPtr(HostAddress{socket->peerAddress(), socket->peerPort()}))) {
             QuasarAppUtils::Params::log("Income connection from banned address",
                                         QuasarAppUtils::Error);
 
@@ -1113,14 +1134,6 @@ QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const
 
     value->fromPakcage(pkg);
     return value;
-}
-
-QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd) const {
-    return QSharedPointer<AbstractData>(_registeredTypes.value(cmd, [](){return nullptr;})());
-}
-
-bool AbstractNode::checkCommand(unsigned short cmd) const {
-    return _registeredTypes.contains(cmd);
 }
 
 QList<HostAddress> AbstractNode::connectionsList() const {

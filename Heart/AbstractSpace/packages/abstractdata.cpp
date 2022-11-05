@@ -9,7 +9,6 @@
 #include <QDataStream>
 #include <QMap>
 #include <typeinfo>
-#include "heart.h"
 #include <limits>
 #include <quasarapp.h>
 #include <QCryptographicHash>
@@ -44,17 +43,9 @@ bool AbstractData::toPackage(Package &package,
     return package.isValid();
 }
 
-QDataStream &AbstractData::fromStream(QDataStream &stream) {
-    return stream;
-}
-
-QDataStream &AbstractData::toStream(QDataStream &stream) const {
-    return stream;
-}
-
 bool AbstractData::checkCmd() const {
     unsigned int code = typeid (*this).hash_code();
-    return code == localCode(); \
+    return code == localCode();
 }
 
 bool AbstractData::isValid() const {

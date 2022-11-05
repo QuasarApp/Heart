@@ -26,7 +26,7 @@ class HEARTSHARED_EXPORT UserMember: public AbstractNetworkMember
 public:
     UserMember();
     UserMember(const Package &pkg);
-    UserMember(const QVariant &id);
+    UserMember(const QString &id);
 
     bool copyFrom(const AbstractData *other) override;
     bool fromSqlRecord(const QSqlRecord &q) override;

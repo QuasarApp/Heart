@@ -102,12 +102,7 @@ class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableDat
 
 public:
 
-    /**
-     * @brief DBObject This is default constructor.Before using this class you need set the table name and primary key of this object.
-     * @param tableName This is table name.
-     */
-    DBObject(const QString& tableName);
-    DBObject(const DbAddress& address);
+    DBObject();
 
     ~DBObject() override;
 
@@ -130,28 +125,11 @@ public:
     bool isHaveAPrimaryKey() const;
 
     /**
-     * @brief getId This method return id of database object. The database id it is pair of an id member of table and a table name.
-     * @return The id of database object.
-     */
-    const QVariant &getId() const;
-
-    /**
-     * @brief setId This method set new id for current database object.
-     * @param id This is new value of id.
-     */
-    void setId(const QVariant& id);
-
-    /**
      * @brief clear This method clear all data of database object.
      *  Override This method for remove or reset your own members of class.
+     *  @note The Default implementation do nothing
      */
     virtual void clear();
-
-    /**
-     * @brief tableName This method return a table name of the database object.
-     * @return string value if the table name.
-     */
-    QString tableName() const;
 
     /**
      * @brief createDBObject This method should be create a object with the some type as the object called this method.
@@ -190,16 +168,14 @@ public:
      * Exampel of override fromSqlRecord method:
      * \code{cpp}
      *  bool ExampleObject::fromSqlRecord(const QSqlRecord &q) {
-            if (!DBObject::fromSqlRecord(q)) {
-                return false;
-            }
 
+            id = q.value("id").toInt();
             exampleMember = q.value("exampleMember").toInt();
             return isValid();
         }
      * \endcode
      */
-    virtual bool fromSqlRecord(const QSqlRecord& q);
+    virtual bool fromSqlRecord(const QSqlRecord& q) = 0;
 
     /**
      * @brief prepareInsertQuery This method should be prepare a query for insert object into database.
@@ -227,7 +203,7 @@ public:
             QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
 
 
-            queryString = queryString.arg(tableName());
+            queryString = queryString.arg(table());
             QString tableInsertHeader = "";
             QString tableInsertValues = "";
 
@@ -281,7 +257,7 @@ public:
 
             QString queryString = "UPDATE %0 SET %1 WHERE %2";
 
-            queryString = queryString.arg(tableName());
+            queryString = queryString.arg(table());
             QString tableUpdateValues = "";
             QString tableUpdateRules = QString("%0 = :%0").
                     arg(primaryKey());
@@ -368,7 +344,7 @@ public:
      * IF the object is not valid then this method return an invalid database address.
      * @return The database address of current object.
      */
-    const DbAddress& dbAddress() const;
+    DbAddress dbAddress() const;
 
     /**
      * @brief clone This method create a new object. The new Object is clone of current object.
@@ -427,6 +403,12 @@ public:
     virtual DBVariantMap variantMap() const;
 
     /**
+     * @brief table This method should be return name of the database table that should be contains objects with this type.
+     * @return table name that contains object with this type.
+     */
+    virtual QString table() const = 0;
+
+    /**
      * @brief printError This method return status of printing error messages for sql quries. by default this propertye is enabled.
      * @return true if printing error messages is enabled else false.
      * @see DBObject::setPrintError
@@ -474,15 +456,10 @@ protected:
     /**
      * @brief primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then return invalid value.
      * @return Value of primaryKey ( database id ).
+     * @note If you alredy override the condition method then You can return empty string because this method using in generate default condition only.
+     * @see DBObject::condition.
      */
-    const QVariant& primaryValue() const;
-
-
-    /**
-     * @brief setDbAddress This method set the new database address.
-     * @param address This is a new value of database address.
-     */
-    void setDbAddress(const DbAddress &address);
+    virtual QString primaryValue() const = 0;
 
     /**
      * @brief isInsertPrimaryKey This method check primaryKeys type.
@@ -494,8 +471,6 @@ protected:
 private:
     QString getWhereBlock() const;
     bool _printError = true;
-    DbAddress _dbId;
-
 };
 }
 }

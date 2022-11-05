@@ -24,7 +24,7 @@ class HEARTSHARED_EXPORT NetworkMember: public AbstractNetworkMember
 
 public:
     NetworkMember();
-    NetworkMember(const QVariant& id);
+    NetworkMember(const QString& id);
 
 public:
     DBObject *createDBObject() const override;

@@ -6,13 +6,11 @@
 */
 
 
-#include "icrypto.h"
-
-
+#include "dbpatch.h"
 namespace QH {
 
-ICrypto::ICrypto() = default;
-
-ICrypto::~ICrypto() = default;
+bool DBPatch::isValid() const {
+    return versionFrom < versionTo && action;
+}
 
 }

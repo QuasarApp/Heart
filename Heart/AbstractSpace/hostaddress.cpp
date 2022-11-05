@@ -30,10 +30,8 @@ HostAddress::HostAddress(const SpecialAddress &other, int port):
     setPort(port);
 }
 
-HostAddress::HostAddress(const HostAddress &other):
-    QHostAddress(*static_cast<const HostAddress*>(&other)) {
-
-    setPort(other.port());
+HostAddress::HostAddress(const HostAddress &other) {
+    operator=(other);
 }
 
 unsigned short HostAddress::port() const {
@@ -42,6 +40,13 @@ unsigned short HostAddress::port() const {
 
 void HostAddress::setPort(unsigned short port) {
     _port = port;
+}
+
+HostAddress &HostAddress::operator =(const HostAddress &right) {
+    QHostAddress::operator=(*static_cast<const QHostAddress*>(&right));
+    setPort(right.port());
+
+    return *this;
 }
 
 bool HostAddress::isIP(const QString &address) {
@@ -54,6 +59,22 @@ bool HostAddress::isValid() const {
 
 QString HostAddress::toString() const {
     return QHostAddress::toString() + ":" + QString::number(port());
+}
+
+QByteArray HostAddress::toBytes() const {
+    QByteArray res;
+    QDataStream stream(&res, QIODevice::WriteOnly);
+    operator <<(stream, *this);
+    return res;
+}
+
+bool HostAddress::fromBytes(const QByteArray &array) {
+    if (array.isEmpty())
+        return false;
+
+    QDataStream stream(array);
+    operator >>(stream, *this);
+    return true;
 }
 
 QDataStream &operator >>(QDataStream &stream, HostAddress &address) {

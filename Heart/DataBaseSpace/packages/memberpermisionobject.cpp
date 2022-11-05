@@ -14,8 +14,7 @@
 namespace QH {
 namespace PKG {
 
-MemberPermisionObject::MemberPermisionObject():
-    MemberPermisionObject("MemberPermisions") {
+MemberPermisionObject::MemberPermisionObject() {
     
 }
 
@@ -28,11 +27,6 @@ MemberPermisionObject::MemberPermisionObject(const Package &pkg):
 MemberPermisionObject::MemberPermisionObject(const PermisionData &id):
     MemberPermisionObject()  {
     setKey(id);
-}
-
-MemberPermisionObject::MemberPermisionObject(const QString &tableName):
-   DBObject(tableName) {
-
 }
 
 bool MemberPermisionObject::isValid() const {
@@ -92,9 +86,13 @@ QDataStream &MemberPermisionObject::toStream(QDataStream &stream) const {
 }
 
 DBVariantMap MemberPermisionObject::variantMap() const {
-    return {{"memberId",               {_key.id(),                  MemberType::InsertUpdate}},
-            {"dbAddress",              {_key.addressHash(),         MemberType::InsertUpdate}},
-            {"lvl",                    {static_cast<unsigned char>(_permision), MemberType::InsertUpdate}}};
+    return {{"memberId",  {_key.id(),                  MemberType::InsertUpdate}},
+            {"dbAddress", {_key.addressHash(),         MemberType::InsertUpdate}},
+            {"lvl",       {static_cast<unsigned char>(_permision), MemberType::InsertUpdate}}};
+}
+
+QString MemberPermisionObject::table() const {
+    return "MemberPermisions";
 }
 
 QString MemberPermisionObject::condition() const {
@@ -117,13 +115,16 @@ QString MemberPermisionObject::primaryKey() const {
     return "";
 }
 
+QString MemberPermisionObject::primaryValue() const {
+    return "";
+}
+
 PermisionData MemberPermisionObject::key() const {
     return _key;
 }
 
 void MemberPermisionObject::setKey(const PermisionData &key) {
     _key = key;
-    setId(_key.hash());
 }
 
 Permission MemberPermisionObject::permisions() const {
