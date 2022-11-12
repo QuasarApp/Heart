@@ -73,7 +73,6 @@ public:
      */
     AbstractNodeInfo(QAbstractSocket *sct = nullptr,
                      const HostAddress* address = nullptr);
-
     /**
      * @brief ~AbstractNodeInfo
      */
@@ -206,19 +205,19 @@ signals:
      * @brief sigConnected This is wrapper signal for the QAbstractSocket::connetced signal.
      * @param thisNode This is pointer to current object.
      */
-    void sigConnected(AbstractNodeInfo* thisNode);
+    void sigConnected(QH::AbstractNodeInfo* thisNode);
 
     /**
      * @brief sigDisconnected This is wrapper signal for the QAbstractSocket::disconnected signal.
      * @param thisNode This is pointer to current object.
      */
-    void sigDisconnected(AbstractNodeInfo* thisNode);
+    void sigDisconnected(QH::AbstractNodeInfo* thisNode);
 
     /**
      * @brief sigReadyRead This is wrapper signal for the QAbstractSocket::readyRead signal.
      * @param thisNode This is pointer to current object.
      */
-    void sigReadyRead(AbstractNodeInfo* thisNode);
+    void sigReadyRead(QH::AbstractNodeInfo* thisNode);
 
     /**
      * @brief sigErrorOccurred This is wrapper signal for the QAbstractSocket::errorOccurred signal.
@@ -227,7 +226,7 @@ signals:
      * @param message This is a error string message.
      * For more information see the QAbstractSocket::SocketError enum class.
      */
-    void sigErrorOccurred(AbstractNodeInfo* thisNode,
+    void sigErrorOccurred(QH::AbstractNodeInfo* thisNode,
                           QAbstractSocket::SocketError socketError,
                           QString message);
 
@@ -235,14 +234,14 @@ signals:
      * @brief sigConfirmed This signal emitted when node is confirmnd. The confirm status sets in the confirmData method.
      * @param thisNode This is pointer to current object.
      */
-    void sigConfirmed(AbstractNodeInfo* thisNode);
+    void sigConfirmed(QH::AbstractNodeInfo* thisNode);
 
     /**
      * @brief statusChaned This signal emitted when nodes status is changed.
      * @param thisNode This is pointer to current object.
      * @param status This is status of node. For more information see the NodeCoonectionStatus enum.
      */
-    void statusChaned(AbstractNodeInfo* thisNode, NodeCoonectionStatus status);
+    void statusChaned(QH::AbstractNodeInfo* thisNode, QH::NodeCoonectionStatus status);
 
 protected:
 

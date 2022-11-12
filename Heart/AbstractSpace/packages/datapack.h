@@ -54,6 +54,14 @@ public:
     };
 
     /**
+     * @brief push This method append @a data to end of list.
+     * @param data This is new data pacakge that will be added into back of this list.
+     */
+    void push(const Package& data) {
+        _packData.push_back(QSharedPointer<Package>::create(data));
+    };
+
+    /**
      * @brief isValid This implementation check all items of the pack to valid and packa size. The pack size should be more then 0.
      * @return true if the pack of items is valid else flase..
      */
