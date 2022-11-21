@@ -111,7 +111,7 @@ class Abstract;
  *  @see AbstractNode::registerPackageType
  *  @see AbstractNode::parsePackage
  */
-class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete, public iParser
+class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {
     Q_OBJECT
 

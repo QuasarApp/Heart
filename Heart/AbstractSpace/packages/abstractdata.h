@@ -13,6 +13,11 @@
 
 
 /**
+ * @brief PROTOCKOL_VERSION_COMMAND is command for exchange versions number betwin nodes.
+ */
+#define PROTOCKOL_VERSION_COMMAND 0xFFFF
+
+/**
  * @brief QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
 */

@@ -83,7 +83,7 @@ set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
 
 
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crc)
 if (HEART_SSL)
 
     if (HEART_STATIC_SSL)

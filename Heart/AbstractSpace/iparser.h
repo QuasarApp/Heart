@@ -188,6 +188,12 @@ public:
      */
     bool checkCommand(unsigned short cmd) const;
 
+    /**
+     * @brief parserId This is id of the parsers. All parser will be synced betwin nodes by ids.
+     * @return parser id.
+     */
+    virtual QString parserId() const = 0;
+
 private:
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
 
