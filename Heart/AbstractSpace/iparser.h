@@ -100,7 +100,7 @@ public:
 
      */
     virtual ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                                      const Header& pkgHeader, const AbstractNodeInfo* sender) = 0;
+                                      const Header& pkgHeader, AbstractNodeInfo* sender) = 0;
 
     /**
      * @brief pareseResultToString This method convert ParserResult value to string.

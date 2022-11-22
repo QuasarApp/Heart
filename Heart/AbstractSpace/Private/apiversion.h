@@ -9,9 +9,10 @@
 #define APPVERSION_H
 
 #include <abstractdata.h>
+#include "abstractnodeinfo.h"
 
 
-namespace RC {
+namespace QH {
 
 /**
  * @brief The APIVersion class This is base pacakge class that send information about supported api version on the paired node
@@ -22,41 +23,13 @@ class APIVersion: public QH::PKG::AbstractData
 public:
     APIVersion();
 
-    /**
-     * @brief minimum This is minimum supported api version
-     * @return minimum supported api version
-     */
-    unsigned short minimum() const;
-
-    /**
-     * @brief setMinimum This mehod sets new value for the minimum supported api version.
-     * @param newMinimum This is new value of the minimum supported api version.
-     */
-    void setMinimum(unsigned short newMinimum);
-
-    /**
-     * @brief maximum This is maximum supported api version
-     * @return maximum supported api version
-     */
-    unsigned short maximum() const;
-
-    /**
-     * @brief setMaximum This mehod sets new value for the maximum supported api version.
-     * @param newMaximum This is new value of the maximum supported api version.
-     */
-    void setMaximum(unsigned short newMaximum);
-
-    /**
-     * @brief APINameKey This is api
-     * @return
-     */
-    unsigned int APINameKey() const;
-    void setAPINameKey(unsigned int newAPINameKey);
-
     static unsigned short command(){return PROTOCKOL_VERSION_COMMAND;}
     static QString commandText(){return "PROTOCKOL_VERSION_COMMAND";}
     unsigned short cmd() const override {return APIVersion::command();}
     QString cmdString() const override {return APIVersion::commandText();}
+
+    const VersionData &version() const;
+    void setVersion(const VersionData &newVersion);
 
 protected:
     unsigned int localCode() const override {return typeid(APIVersion).hash_code();}
@@ -64,9 +37,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    unsigned int _APINameKey = 0;
-    unsigned short _minimum = 0;
-    unsigned short _maximum = 0;
+    VersionData _version;
 
 };
 

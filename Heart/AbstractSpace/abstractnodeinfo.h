@@ -7,9 +7,9 @@
 
 #ifndef ABSTRACTNODEINFO_H
 #define ABSTRACTNODEINFO_H
+
 #include "hostaddress.h"
 #include "heart_global.h"
-
 #include <hostaddress.h>
 
 
@@ -17,6 +17,23 @@ class QAbstractSocket;
 class QHostInfo;
 
 namespace QH {
+
+/**
+ * @brief The DistVersion class This is infirmation of supported versions of the distanation api.
+ */
+struct DistVersion {
+
+    /// This is monimum supported version.
+    unsigned short min = 0;
+
+    /// This is maximum supported version.
+    unsigned short max = 0;
+};
+
+/**
+ * @brief VersionData This is array of all avalable apis and supported its versions.
+ */
+typedef QHash<QString, DistVersion> VersionData;
 
 /**
  * @brief The TrustNode enum contains cases for trust of the client or nodes.
@@ -191,6 +208,42 @@ public:
      */
     void setSct(QAbstractSocket *sct);
 
+    /**
+     * @brief version This method return version data structure;
+     * @return  version data structure;
+     */
+    const VersionData &version() const;
+
+    /**
+     * @brief setVersion This method sets new version data structure.
+     * @param newVersion This is new values of the version.
+     */
+    void setVersion(const VersionData &newVersion);
+
+    /**
+     * @brief fVersionReceived This method return true if this node receive version information.
+     * @return  true if this node receive version information.
+     */
+    bool fVersionReceived() const;
+
+    /**
+     * @brief setFVersionReceived This method change the fVersionReceived flag.
+     * @param newFVersionReceived this is new value of the fVersionReceived flag.
+     */
+    void setFVersionReceived(bool newFVersionReceived);
+
+    /**
+     * @brief fVersionDelivered This method return true if this node delivere own version to the distanation node.
+     * @return true if this node delivere own version to the distanation node.
+     */
+    bool fVersionDelivered() const;
+
+    /**
+     * @brief setFVersionDelivered This method change the fVersionDelivered flag.
+     * @param newFVersionDelivered this is new value of the fVersionDelivered flag.
+     */
+    void setFVersionDelivered(bool newFVersionDelivered);
+
 public slots:
     /**
      * @brief removeSocket This method use for remove socket.
@@ -262,6 +315,10 @@ private:
     int _trust = static_cast<int>(TrustNode::Default);
     NodeCoonectionStatus _status = NodeCoonectionStatus::NotConnected;
     bool _isLocal = false;
+
+    VersionData _version;
+    bool _fVersionReceived = false;
+    bool _fVersionDelivered = false;
 
 };
 

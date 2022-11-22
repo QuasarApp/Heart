@@ -127,7 +127,31 @@ void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
 }
 
 bool AbstractNodeInfo::confirmData() const {
-    return _status != NodeCoonectionStatus::NotConnected;
+    return _status != NodeCoonectionStatus::NotConnected && fVersionDelivered() && fVersionReceived();
+}
+
+bool AbstractNodeInfo::fVersionDelivered() const {
+    return _fVersionDelivered;
+}
+
+void AbstractNodeInfo::setFVersionDelivered(bool newFVersionDelivered) {
+    _fVersionDelivered = newFVersionDelivered;
+}
+
+bool AbstractNodeInfo::fVersionReceived() const {
+    return _fVersionReceived;
+}
+
+void AbstractNodeInfo::setFVersionReceived(bool newFVersionReceived) {
+    _fVersionReceived = newFVersionReceived;
+}
+
+const VersionData &AbstractNodeInfo::version() const {
+    return _version;
+}
+
+void AbstractNodeInfo::setVersion(const VersionData &newVersion) {
+    _version = newVersion;
 }
 
 void AbstractNodeInfo::updateConfirmStatus() {

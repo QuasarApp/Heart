@@ -7,7 +7,7 @@
 
 #include "apiversion.h"
 
-namespace RC {
+namespace QH {
 
 APIVersion::APIVersion() {
 
@@ -15,43 +15,21 @@ APIVersion::APIVersion() {
 
 QDataStream &APIVersion::fromStream(QDataStream &stream) {
 
-    stream >> _minimum;
-    stream >> _maximum;
-    stream >> _APINameKey;
-
+    stream >> _version;
     return stream;
 }
 
 QDataStream &APIVersion::toStream(QDataStream &stream) const {
-    stream << _minimum;
-    stream << _maximum;
-    stream << _APINameKey;
-
+    stream << _version;
     return stream;
 }
 
-unsigned int APIVersion::APINameKey() const {
-    return _APINameKey;
+const VersionData &APIVersion::version() const {
+    return _version;
 }
 
-void APIVersion::setAPINameKey(unsigned int newAPINameKey) {
-    _APINameKey = newAPINameKey;
-}
-
-unsigned short APIVersion::maximum() const {
-    return _maximum;
-}
-
-void APIVersion::setMaximum(unsigned short newMaximum) {
-    _maximum = newMaximum;
-}
-
-unsigned short APIVersion::minimum() const {
-    return _minimum;
-}
-
-void APIVersion::setMinimum(unsigned short newMinimum) {
-    _minimum = newMinimum;
+void APIVersion::setVersion(const VersionData &newVersion) {
+    _version = newVersion;
 }
 
 }
