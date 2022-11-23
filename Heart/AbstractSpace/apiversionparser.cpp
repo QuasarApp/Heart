@@ -12,10 +12,11 @@
 #include <versionisreceived.h>
 #include <quasarapp.h>
 #include <versionisreceived.h>
+#include <abstractnode.h>
 
 namespace QH {
 
-APIVersionParser::APIVersionParser() {
+APIVersionParser::APIVersionParser(AbstractNode *node): iParser(node) {
 
 }
 
@@ -70,6 +71,29 @@ int APIVersionParser::version() const {
 
 QString APIVersionParser::parserId() const {
     return "APIVersionParser";
+}
+
+I shold be create method that can create package by commnad with needed version.
+QSharedPointer<PKG::AbstractData> APIVersionParser::genPackage(unsigned short cmd) const {
+    auto distVersion = sender->version();
+    const auto parsers = selectParser(distVersion);
+
+    if (parsers.isEmpty()) {
+        return nullptr;
+    }
+
+    for (const auto& parser: parsers) {
+        if (!parser) {
+            QuasarAppUtils::Params::log(QString("Internal Error with selection parasers."),
+                                        QuasarAppUtils::Error);
+            continue;
+        }
+
+        auto perserResult = parser->parsePackage(pkg, pkgHeader, sender);
+        if (perserResult != QH::ParserResult::NotProcessed) {
+            return perserResult;
+        }
+    }
 }
 
 QSharedPointer<iParser>
@@ -145,7 +169,7 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<APIVersion> &messa
     }
 
     VersionIsReceived result;
-    return node().send(&result, sender);
+    return node()->sendData(&result, sender);
 }
 
 bool APIVersionParser::versionDeliveredSuccessful(const QSharedPointer<VersionIsReceived> &,

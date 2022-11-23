@@ -1,13 +1,21 @@
+/*
+ * Copyright (C) 2022-2022 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
+
 #include "iparser.h"
 
 #include <abstractdata.h>
-
+#include <qaglobalutils.h>
 namespace QH {
 
-iParser::iParser() {
-
+iParser::iParser(AbstractNode *parentNode) {
+    _node = parentNode;
+    debug_assert(_node, "All parsers shold be initialized with parent node");
 }
-
 
 QString iParser::pareseResultToString(const ParserResult &parseResult) const {
     switch (parseResult)
@@ -33,4 +41,9 @@ QSharedPointer<PKG::AbstractData> iParser::genPackage(unsigned short cmd) const 
 bool iParser::checkCommand(unsigned short cmd) const {
     return _registeredTypes.contains(cmd);
 }
+
+AbstractNode *iParser::node() const {
+    return _node;
+}
+
 }

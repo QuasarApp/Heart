@@ -25,13 +25,14 @@ class APIVersionParser: public QObject, public iParser
 {
     Q_OBJECT
 public:
-    APIVersionParser();
+    APIVersionParser(AbstractNode* node);
 
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                               const Header &pkgHeader,
                               AbstractNodeInfo *sender) override;
     int version() const override;
     QString parserId() const override;
+    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const override;
 
     /**
      * @brief getSelectedApiParser This method return apiParser for selected node
@@ -97,6 +98,7 @@ private:
                                     const QH::Header &);
 
     QHash<QString, QMap<int, QSharedPointer<QH::iParser>>> _apiParsers;
+
 };
 }
 #endif // APIVERSIONPARSER_H

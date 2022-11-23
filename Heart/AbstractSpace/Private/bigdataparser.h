@@ -6,20 +6,22 @@
 */
 
 
-#ifndef BIGDATAMANAGER_H
-#define BIGDATAMANAGER_H
+#ifndef BIGDATAPARSER_H
+#define BIGDATAPARSER_H
 
-#include <QSharedPointer>
-#include <bigdataheader.h>
-#include <bigdatapart.h>
-#include <bigdatarequest.h>
+#include <iparser.h>
 
 
 namespace QH {
 
+namespace PKG {
+class BigDataHeader;
+class BigDataPart;
+class BigDataRequest;
+}
+
 class AbstractNode;
 class AbstractNodeInfo;
-
 
 struct PoolData {
     QSharedPointer<PKG::BigDataHeader> header;
@@ -28,18 +30,20 @@ struct PoolData {
 };
 
 /**
- * @brief The BigDataManager class is module for control od big data delovering.
- * **How to is work**
- * 1. All big pacakges separate to 64kb parts.
- * 2. Sender send big package header.
- * 3. receiver send request to next paart (0)
- * 4. Sender sent reqested part to receiver
- **/
-class BigDataManager
+ * @brief The BigDataParser class is main manager for control big data packages.
+ */
+class BigDataParser: public iParser
 {
-
 public:
-    BigDataManager(AbstractNode *);
+    BigDataParser(AbstractNode* parentNode);
+
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header &pkgHeader,
+                              AbstractNodeInfo *sender) override;
+    int version() const override;
+    QString parserId() const override;
+
+protected:
 
     /**
      * @brief newPackage This method process first header packge of the big data.
@@ -49,7 +53,7 @@ public:
      * @return true if packge processed successful else false
      */
     bool newPackage(const QSharedPointer<PKG::BigDataHeader> &header,
-                    const AbstractNodeInfo * sender,
+                    AbstractNodeInfo * sender,
                     const Header & pkgHeader);
 
     /**
@@ -60,7 +64,7 @@ public:
      * @return true if packge processed successful else false
      */
     bool processPart(const QSharedPointer<PKG::BigDataPart>& part,
-                     const QH::AbstractNodeInfo *sender,
+                     AbstractNodeInfo *sender,
                      const QH::Header &pkgHeader);
 
     /**
@@ -71,8 +75,8 @@ public:
      * @return true if pacakge parsed successful else false.
      */
     bool processRequest(const QSharedPointer<PKG::BigDataRequest>& request,
-                    const QH::AbstractNodeInfo *sender,
-                    const QH::Header &pkgHeader);
+                        QH::AbstractNodeInfo *sender,
+                        const QH::Header &pkgHeader);
 
     /**
      * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.
@@ -85,13 +89,14 @@ public:
                             const QH::AbstractNodeInfo *sender,
                             const Header *pkgHeader);
 
+
 private:
 
     void insertNewBigData(const QSharedPointer<PKG::BigDataHeader> &header);
     void checkOutDatedPacakges(unsigned int currentProcessedId);
 
-    AbstractNode *_node = nullptr;
     QHash<int, PoolData> _pool;
+
 };
 }
-#endif // BIGDATAMANAGER_H
+#endif // BIGDATAPARSER_H

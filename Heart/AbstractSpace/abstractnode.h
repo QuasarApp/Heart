@@ -38,10 +38,10 @@ class DataSender;
 class ReceiveData;
 class SocketFactory;
 class AsyncLauncher;
-class BigDataManager;
 class TaskScheduler;
 class AbstractTask;
 class SslSocket;
+class APIVersionParser;
 
 namespace PKG {
 class ErrorData;
@@ -111,7 +111,7 @@ class Abstract;
  *  @see AbstractNode::registerPackageType
  *  @see AbstractNode::parsePackage
  */
-class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
+class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete, private iParser
 {
     Q_OBJECT
 
@@ -124,8 +124,6 @@ public:
      */
     AbstractNode(QObject * ptr = nullptr);
     ~AbstractNode() override;
-
-    int version() const override;
 
     /**
      * @brief run This method implement deployment a network node (server) on selected address.
@@ -408,58 +406,6 @@ protected:
     virtual bool registerSocket(QAbstractSocket *socket, const HostAddress* address = nullptr);
 
     /**
-     * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
-     *  This method work on own thread.
-     *  If you ovveride this method you need to create this than an example:
-     * \code{cpp}
-        ParserResult DataBaseNode::parsePackage(PKG::AbstractData *pkg,
-                                                const Header& pkgHeader,
-                                                const AbstractNodeInfo* sender) {
-            auto parentResult = AbstractNode::parsePackage(pkg, sender);
-            if (parentResult != ParserResult::NotProcessed) {
-                return parentResult;
-            }
-
-            // you can use parsing without the commandHandler method
-            if (MyCommand::command() == pkg->cmd()) {
-
-                BaseId requesterId = getSender(sender, &obj);
-
-                ...
-
-                if (FailCondition) {
-                    return ParserResult::Error;
-                }
-
-                ...
-
-                return ParserResult::Processed;
-
-            }
-
-            // Or with the commandHandler method
-
-            auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
-            if (result != QH::ParserResult::NotProcessed) {
-                return result;
-            }
-
-            return ParserResult::NotProcessed;
-        }
-     * \endcode
-     * @param pkg This is package with incomming data.
-     * @param sender This is sender this pacakge.
-     * @param pkgHeader This is header of the incoming packet is used to create a response.
-     * @return item of ParserResult. For more information see The ParserResult enum.
-     * @see AbstractNode::commandHandler
-     * @see AbstractNode::sendData
-     * @see AbstractNode::badRequest
-
-     */
-    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
-                              const Header& pkgHeader, const AbstractNodeInfo* sender) override;
-
-    /**
      * @brief sendPackage This method prepare and send to target address a package.
      * @param pkg This is sendet pakcage to target node.
      * @param target This is target node.
@@ -705,6 +651,17 @@ private slots:
 
 private:
 
+    // iParser interface
+    ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+                              const Header &pkgHeader,
+                              AbstractNodeInfo *sender) override;
+
+    QSharedPointer<PKG::AbstractData>
+    genPackage(unsigned short cmd) const override;
+
+    int version() const override;
+    QString parserId() const override;
+
     /**
       @note just disaable listen method in the node objects.
      */
@@ -752,8 +709,8 @@ private:
     DataSender * _dataSender = nullptr;
     AsyncLauncher * _socketWorker = nullptr;
     QThread *_senderThread = nullptr;
-    BigDataManager *_bigdatamanager = nullptr;
     TaskScheduler *_tasksheduller = nullptr;
+    APIVersionParser *_apiVersionParser = nullptr;
 
     QHash<NodeCoonectionStatus, QHash<HostAddress, std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 
@@ -768,7 +725,8 @@ private:
 
     friend class WebSocketController;
     friend class SocketFactory;
-    friend class BigDataManager;
+    friend class BigDataParser;
+    friend class AbstractNodeParser;
 
 
 };

@@ -28,6 +28,7 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslSocket>
+#include <apiversionparser.h>
 
 #endif
 
@@ -39,7 +40,8 @@
 #include "receivedata.h"
 #include "abstracttask.h"
 
-#include <bigdatamanager.h>
+#include <apiversion.h>
+#include <versionisreceived.h>
 #include <taskscheduler.h>
 
 namespace QH {
@@ -59,8 +61,8 @@ AbstractNode::AbstractNode( QObject *ptr):
     // This object moving to _senderThread.
     _dataSender = new DataSender(_senderThread);
     _socketWorker = new AsyncLauncher(_senderThread);
-    _bigdatamanager = new BigDataManager(this);
     _tasksheduller = new TaskScheduler();
+    _apiVersionParser = new APIVersionParser(this);
 
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL
@@ -70,13 +72,6 @@ AbstractNode::AbstractNode( QObject *ptr):
     connect(_tasksheduller, &TaskScheduler::sigPushWork,
             this, &AbstractNode::handleBeginWork);
 
-    registerPackageType<Ping>();
-    registerPackageType<BadRequest>();
-    registerPackageType<CloseConnection>();
-
-    registerPackageType<BigDataRequest>();
-    registerPackageType<BigDataHeader>();
-    registerPackageType<BigDataPart>();
 
     initThreadPool();
 
@@ -97,10 +92,15 @@ AbstractNode::~AbstractNode() {
     delete _senderThread;
     delete _socketWorker;
     delete _tasksheduller;
+    delete _apiVersionParser;
 }
 
 int AbstractNode::version() const {
     return 0;
+}
+
+QString AbstractNode::parserId() const {
+    return "";
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -665,68 +665,13 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
 
 ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
                                         const Header &pkgHeader,
-                                        const AbstractNodeInfo *sender) {
+                                        AbstractNodeInfo *sender) {
+    return _apiVersionParser->parsePackage(pkg, pkgHeader, sender);
+}
 
-    if (!(sender)) {
-        QuasarAppUtils::Params::log("sender socket is not valid!",
-                                    QuasarAppUtils::Error);
-        return ParserResult::Error;
-    }
+QSharedPointer<AbstractData>
+AbstractNode::genPackage(unsigned short cmd) const {
 
-    if (!pkg->isValid()) {
-        QuasarAppUtils::Params::log("incomming package is not valid!",
-                                    QuasarAppUtils::Error);
-        changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
-        return ParserResult::Error;
-    }
-
-    incomingData(pkg.data(), sender);
-
-    if (Ping::command() == pkg->cmd()) {
-        auto cmd = static_cast<Ping *>(pkg.data());
-        if (!cmd->ansver()) {
-            cmd->setAnsver(true);
-            sendData(cmd, sender, &pkgHeader);
-        }
-
-        return ParserResult::Processed;
-    } else if (BadRequest::command() == pkg->cmd()) {
-        auto cmd = static_cast<BadRequest *>(pkg.data());
-
-        emit requestError(cmd->errCode(), cmd->err());
-
-        return ParserResult::Processed;
-
-    } else if (CloseConnection::command() == pkg->cmd()) {
-
-        if (sender->isLocal()) {
-            removeNode(sender->networkAddress());
-        }
-        return ParserResult::Processed;
-    }
-
-    auto result = commandHandler<BigDataRequest>(_bigdatamanager,
-                                                 &BigDataManager::processRequest,
-                                                 pkg, sender, pkgHeader);
-    if (result != QH::ParserResult::NotProcessed) {
-        return result;
-    }
-
-    result = commandHandler<BigDataHeader>(_bigdatamanager,
-                                           &BigDataManager::newPackage,
-                                           pkg, sender, pkgHeader);
-    if (result != QH::ParserResult::NotProcessed) {
-        return result;
-    }
-
-    result = commandHandler<BigDataPart>(_bigdatamanager,
-                                         &BigDataManager::processPart,
-                                         pkg, sender, pkgHeader);
-    if (result != QH::ParserResult::NotProcessed) {
-        return result;
-    }
-
-    return ParserResult::NotProcessed;
 }
 
 bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) const {

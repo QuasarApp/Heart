@@ -1,3 +1,11 @@
+/*
+ * Copyright (C) 2022-2022 QuasarApp.
+ * Distributed under the lgplv3 software license, see the accompanying
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+*/
+
+
 #ifndef IPARSER_H
 #define IPARSER_H
 
@@ -7,6 +15,7 @@
 namespace QH {
 
 class AbstractNodeInfo;
+class AbstractNode;
 
 namespace PKG {
 class AbstractData;
@@ -37,8 +46,8 @@ enum class ParserResult {
 class HEARTSHARED_EXPORT iParser
 {
 public:
-    iParser();
-
+    iParser(AbstractNode* parentNode);
+    virtual ~iParser() = default;
     template<class T>
     /**
      * @brief registerPackageType This method register package type T.
@@ -179,7 +188,7 @@ public:
      * @see AbstractNode::registerPackageType
      * @see Header::command
      */
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
+    virtual QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
 
     /**
      * @brief checkCommand This method check command are if registered type or not.
@@ -194,9 +203,12 @@ public:
      */
     virtual QString parserId() const = 0;
 
+protected:
+    AbstractNode *node() const;
+
 private:
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
-
+    AbstractNode *_node;
 
 };
 
