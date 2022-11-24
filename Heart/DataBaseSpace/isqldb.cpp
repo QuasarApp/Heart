@@ -5,7 +5,7 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "isqldbcache.h"
+#include "isqldb.h"
 #include "quasarapp.h"
 #include "sqldbwriter.h"
 #include "dbaddresskey.h"
@@ -22,7 +22,7 @@ namespace QH {
 
 using namespace PKG;
 
-void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
+void ISqlDB::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
 
     if (currentTime - lastUpdateTime > updateInterval ||
@@ -50,7 +50,7 @@ void ISqlDBCache::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     }
 }
 
-bool ISqlDBCache::updateObjectP(const QSharedPointer<DBObject> &saveObject,
+bool ISqlDB::updateObjectP(const QSharedPointer<DBObject> &saveObject,
                                 bool wait) {
 
     if (updateCache(saveObject)) {
@@ -70,7 +70,7 @@ bool ISqlDBCache::updateObjectP(const QSharedPointer<DBObject> &saveObject,
             _writer->updateObject(saveObject, wait);
 }
 
-bool ISqlDBCache::deleteObjectP(const QSharedPointer<DBObject> &delObj,
+bool ISqlDB::deleteObjectP(const QSharedPointer<DBObject> &delObj,
                                 bool wait) {
 
     deleteFromCache(delObj);
@@ -83,7 +83,7 @@ bool ISqlDBCache::deleteObjectP(const QSharedPointer<DBObject> &delObj,
     return false;
 }
 
-bool ISqlDBCache::insertObjectP(const QSharedPointer<DBObject> &saveObject,
+bool ISqlDB::insertObjectP(const QSharedPointer<DBObject> &saveObject,
                                 bool wait) {
 
     if (insertToCache(saveObject)) {
@@ -104,41 +104,41 @@ bool ISqlDBCache::insertObjectP(const QSharedPointer<DBObject> &saveObject,
             _writer->insertObject(saveObject, wait);
 }
 
-qint64 ISqlDBCache::getLastUpdateTime() const {
+qint64 ISqlDB::getLastUpdateTime() const {
     return lastUpdateTime;
 }
 
-void ISqlDBCache::setLastUpdateTime(const qint64 &value) {
+void ISqlDB::setLastUpdateTime(const qint64 &value) {
     lastUpdateTime = value;
 }
 
-void ISqlDBCache::pushToQueue(const QSharedPointer<DBObject> &obj,
+void ISqlDB::pushToQueue(const QSharedPointer<DBObject> &obj,
                               CacheAction type) {
     _saveLaterMutex.lock();
     _changes.insert(type, obj);
     _saveLaterMutex.unlock();
 }
 
-ISqlDBCache::ISqlDBCache(qint64 updateInterval, SqlDBCasheWriteMode mode) {
+ISqlDB::ISqlDB(qint64 updateInterval, SqlDBCasheWriteMode mode) {
     lastUpdateTime = QDateTime::currentMSecsSinceEpoch();
     this->updateInterval = updateInterval;
     setMode(mode);
 
 }
 
-ISqlDBCache::~ISqlDBCache() {
+ISqlDB::~ISqlDB() {
 
 }
 
-SqlDBWriter *ISqlDBCache::writer() const {
+SqlDBWriter *ISqlDB::writer() const {
     return _writer;
 }
 
-void ISqlDBCache::setWriter(SqlDBWriter *writer) {
+void ISqlDB::setWriter(SqlDBWriter *writer) {
     _writer = writer;
 }
 
-bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
+bool ISqlDB::getAllObjects(const DBObject &templateObject,
                                 QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     result = getFromCache(&templateObject);
@@ -165,7 +165,7 @@ bool ISqlDBCache::getAllObjects(const DBObject &templateObject,
     return false;
 }
 
-bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj,
+bool ISqlDB::deleteObject(const QSharedPointer<DBObject> &delObj,
                                bool wait) {
 
     if (!delObj)
@@ -184,7 +184,7 @@ bool ISqlDBCache::deleteObject(const QSharedPointer<DBObject> &delObj,
 
 }
 
-bool ISqlDBCache::updateObject(const QSharedPointer<DBObject> &saveObject,
+bool ISqlDB::updateObject(const QSharedPointer<DBObject> &saveObject,
                                bool wait) {
 
     if (!saveObject || !saveObject->isValid()) {
@@ -200,7 +200,7 @@ bool ISqlDBCache::updateObject(const QSharedPointer<DBObject> &saveObject,
     return true;
 }
 
-bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
+bool ISqlDB::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
@@ -214,7 +214,7 @@ bool ISqlDBCache::insertObject(const QSharedPointer<DBObject> &saveObject, bool 
     return true;
 }
 
-bool ISqlDBCache::doQuery(const QString &query, bool wait,
+bool ISqlDB::doQuery(const QString &query, bool wait,
                           QSqlQuery *result) const {
 
     if (!_writer) {
@@ -224,7 +224,7 @@ bool ISqlDBCache::doQuery(const QString &query, bool wait,
     return _writer->doQuery(query, wait, result);
 }
 
-bool ISqlDBCache::doSql(const QString &sqlFile, bool wait) const {
+bool ISqlDB::doSql(const QString &sqlFile, bool wait) const {
     if (!_writer) {
         return false;
     }
@@ -232,7 +232,7 @@ bool ISqlDBCache::doSql(const QString &sqlFile, bool wait) const {
     return _writer->doSql(sqlFile, wait);
 }
 
-bool ISqlDBCache::init(const QString &initDbParams) {
+bool ISqlDB::init(const QString &initDbParams) {
 
     if (!_writer) {
         return false;
@@ -241,7 +241,7 @@ bool ISqlDBCache::init(const QString &initDbParams) {
     return _writer->initDb(initDbParams);
 }
 
-bool ISqlDBCache::init(const QVariantMap &params) {
+bool ISqlDB::init(const QVariantMap &params) {
 
     if (!_writer) {
         return false;
@@ -250,17 +250,17 @@ bool ISqlDBCache::init(const QVariantMap &params) {
     return _writer->initDb(params);
 }
 
-void ISqlDBCache::setSQLSources(const QStringList &list) {
+void ISqlDB::setSQLSources(const QStringList &list) {
     auto db = writer();
     if (db)
         db->setSQLSources(list);
 }
 
-void ISqlDBCache::prepareForDelete() {
+void ISqlDB::prepareForDelete() {
     globalUpdateDataBase(SqlDBCasheWriteMode::Force);
 }
 
-bool ISqlDBCache::changeObjects(const DBObject &templateObject,
+bool ISqlDB::changeObjects(const DBObject &templateObject,
                                 const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction) {
 
     QList<QSharedPointer<DBObject>> list;
@@ -285,15 +285,15 @@ bool ISqlDBCache::changeObjects(const DBObject &templateObject,
     return true;
 }
 
-SqlDBCasheWriteMode ISqlDBCache::getMode() const {
+SqlDBCasheWriteMode ISqlDB::getMode() const {
     return _mode;
 }
 
-void ISqlDBCache::setMode(const SqlDBCasheWriteMode &mode) {
+void ISqlDB::setMode(const SqlDBCasheWriteMode &mode) {
     _mode = mode;
 }
 
-void ISqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
+void ISqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
     QMutexLocker lock(&_saveLaterMutex);
 
     for (auto it = _changes.begin(); it != _changes.end(); ++it) {
@@ -355,11 +355,11 @@ void ISqlDBCache::globalUpdateDataBasePrivate(qint64 currentTime) {
     setLastUpdateTime(currentTime);
 }
 
-qint64 ISqlDBCache::getUpdateInterval() const {
+qint64 ISqlDB::getUpdateInterval() const {
     return updateInterval;
 }
 
-void ISqlDBCache::setUpdateInterval(const qint64 &value) {
+void ISqlDB::setUpdateInterval(const qint64 &value) {
     updateInterval = value;
 }
 

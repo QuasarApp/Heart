@@ -6,7 +6,6 @@
 */
 
 #include "dbaddresskey.h"
-#include "dbcachekey.h"
 #include "dbobject.h"
 #include <QDataStream>
 #include <QDateTime>
@@ -325,14 +324,6 @@ bool DBObject::isValid() const {
 
 bool DBObject::copyFrom(const AbstractData * other) {
     return AbstractData::copyFrom(other);
-}
-
-unsigned int DBObject::subscribeId() const {
-    return dbKey();
-}
-
-unsigned int DBObject::subscribeId(const DbAddress &address) {
-    return HASH_KEY(DbAddressKey(address));
 }
 
 bool DBObject::isHaveAPrimaryKey() const {

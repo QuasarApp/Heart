@@ -4,7 +4,7 @@
 #include <QString>
 
 namespace QH {
-class ISqlDBCache;
+class ISqlDB;
 class SqlDBWriter;
 }
 
@@ -12,7 +12,7 @@ template <class BASE, class CACHE, class WRITER>
 class DataBaseTestNode: public BASE {
 
 protected:
-    void initDefaultDbObjects(QH::ISqlDBCache *cache,
+    void initDefaultDbObjects(QH::ISqlDB *cache,
                               QH::SqlDBWriter *writer) override {
         if (!writer) {
             writer = new WRITER();

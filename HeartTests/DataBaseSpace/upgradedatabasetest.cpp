@@ -5,7 +5,7 @@
 #include <QSqlResult>
 #include <iobjectprovider.h>
 #include <QtTest>
-#include <isqldbcache.h>
+#include <isqldb.h>
 #include <database.h>
 #include <qaglobalutils.h>
 

@@ -9,7 +9,7 @@
 namespace QH {
 
 SqlDB::SqlDB():
-    ISqlDBCache(0, SqlDBCasheWriteMode::Force) {
+    ISqlDB(0, SqlDBCasheWriteMode::Force) {
 }
 
 void SqlDB::deleteFromCache(const QSharedPointer<PKG::DBObject> &delObj) {

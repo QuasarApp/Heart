@@ -5,10 +5,9 @@
  * of this license document, but changing it is not allowed.
 */
 
-#ifndef ISQLDBCACHE_H
-#define ISQLDBCACHE_H
+#ifndef ISQLDB_H
+#define ISQLDB_H
 
-#include "dbcachekey.h"
 #include "iobjectprovider.h"
 
 #include <QMap>
@@ -17,7 +16,6 @@
 #include <QVariantMap>
 #include <QMutex>
 #include <AbstractSpace/config.h>
-#include "basedefines.h"
 #include "softdelete.h"
 
 namespace QH {
@@ -55,7 +53,7 @@ enum class CacheAction: int {
 };
 
 /**
- * @brief The ISqlDBCache class it is db cache and bridge for DbWriters.
+ * @brief The ISqlDB class it is db cache and bridge for DbWriters.
  * Work Scheme of the database cache:
  *
  * \image html DatabseCache.svg width=800px
@@ -71,19 +69,19 @@ enum class CacheAction: int {
  * If you try delete this object without using softDelete method then destructor of this object emit runtime error exception (on the debug mode only).
  *
  */
-class HEARTSHARED_EXPORT ISqlDBCache: public QObject, public iObjectProvider, public SoftDelete
+class HEARTSHARED_EXPORT ISqlDB: public QObject, public iObjectProvider, public SoftDelete
 {
     Q_OBJECT
 
 public:
     /**
-     * @brief SqlDBCache This is default constructor of dbcache.
+     * @brief ISqlDB This is default constructor of dbcache.
      * @param updateInterval See the SqlDBCache::setUpdateInterval for more information.
      * @param mode See the SqlDBCache::setMode method  for more information.
      */
-    ISqlDBCache(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL,
+    ISqlDB(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL,
                SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
-    ~ISqlDBCache() override;
+    ~ISqlDB() override;
 
     /**
      * @brief writer This method return is database writer object. For more inforamation about writer see the SqlDBWriter class.
@@ -275,4 +273,4 @@ constexpr inline uint qHash(CacheAction action) {
 
 }
 
-#endif // ISQLDBCACHE_H
+#endif // ISQLDB_H

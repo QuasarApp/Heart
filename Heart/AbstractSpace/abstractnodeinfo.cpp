@@ -220,7 +220,17 @@ void AbstractNodeInfo::reset() {
     setTrust(static_cast<int>(TrustNode::Default));
     setStatus(NodeCoonectionStatus::NotConnected);
     setIsLocal(false);
+    _parsersMap.clear();
 
+}
+
+QSharedPointer<QH::iParser> AbstractNodeInfo::getParser(unsigned short cmd) {
+    return _parsersMap.value(cmd, nullptr);
+}
+
+void QH::AbstractNodeInfo::addParser(unsigned short cmd,
+                                     QSharedPointer<QH::iParser> parser) {
+    _parsersMap[cmd] = parser;
 }
 
 uint qHash(NodeCoonectionStatus status) {

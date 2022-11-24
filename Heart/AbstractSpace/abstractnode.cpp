@@ -43,13 +43,18 @@
 #include <apiversion.h>
 #include <versionisreceived.h>
 #include <taskscheduler.h>
+#include <qaglobalutils.h>
+#include <bigdatawraper.h>
+#include <bigdataparser.h>
+#include <abstractnodeparser.h>
 
 namespace QH {
 
 using namespace PKG;
 
 AbstractNode::AbstractNode( QObject *ptr):
-    QTcpServer(ptr) {
+    QTcpServer(ptr),
+    iParser(this) {
 
     initThreadId();
 
@@ -63,6 +68,9 @@ AbstractNode::AbstractNode( QObject *ptr):
     _socketWorker = new AsyncLauncher(_senderThread);
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
+
+    _apiVersionParser->addApiParser<BigDataParser>();
+    _apiVersionParser->addApiParser<AbstractNodeParser>();
 
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL
@@ -241,7 +249,7 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port,
 
             if (info.error() != QHostInfo::NoError) {
                 QuasarAppUtils::Params::log("The domain name :" + domain +
-                                            " has error: " + info.errorString(),
+                                                " has error: " + info.errorString(),
                                             QuasarAppUtils::Error);
                 addNodeFailed(AddNodeError::HostNotFound);
                 return;
@@ -251,7 +259,7 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port,
 
             if (addresses.size() > 1) {
                 QuasarAppUtils::Params::log("The domain name :" + domain +
-                                            " has more 1 ip addresses.",
+                                                " has more 1 ip addresses.",
                                             QuasarAppUtils::Warning);
             }
 
@@ -316,29 +324,29 @@ bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
         return false;
     }
 
-//#if OPENSSL_VERSION_MAJOR >= 3
+    //#if OPENSSL_VERSION_MAJOR >= 3
 
-//    EVP_PKEY_CTX *pctx =
-//        EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
+    //    EVP_PKEY_CTX *pctx =
+    //        EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
 
-//    unsigned int primes = 3;
-//    unsigned int bits = 4096;
-//    OSSL_PARAM params[3];
+    //    unsigned int primes = 3;
+    //    unsigned int bits = 4096;
+    //    OSSL_PARAM params[3];
 
-//    pkey = EVP_RSA_gen(4096);
+    //    pkey = EVP_RSA_gen(4096);
 
-//    EVP_PKEY_keygen_init(pctx);
+    //    EVP_PKEY_keygen_init(pctx);
 
-//    params[0] = OSSL_PARAM_construct_uint("bits", &bits);
-//    params[1] = OSSL_PARAM_construct_uint("primes", &primes);
-//    params[2] = OSSL_PARAM_construct_end();
-//    EVP_PKEY_CTX_set_params(pctx, params);
+    //    params[0] = OSSL_PARAM_construct_uint("bits", &bits);
+    //    params[1] = OSSL_PARAM_construct_uint("primes", &primes);
+    //    params[2] = OSSL_PARAM_construct_end();
+    //    EVP_PKEY_CTX_set_params(pctx, params);
 
 
-//    EVP_PKEY_generate(pctx, &pkey);
-//    EVP_PKEY_CTX_free(pctx);
+    //    EVP_PKEY_generate(pctx, &pkey);
+    //    EVP_PKEY_CTX_free(pctx);
 
-//#else
+    //#else
     BIGNUM * bn = BN_new();
 
     int rc = BN_set_word(bn, RSA_F4);
@@ -357,7 +365,7 @@ bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
     q_check_ptr(rsa);
     if (EVP_PKEY_assign_RSA(pkey, rsa) <= 0)
         return false;
-//#endif
+    //#endif
     return true;
 }
 
@@ -531,7 +539,7 @@ bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
         _ignoreSslErrors.push_back(QSslError{QSslError::SelfSignedCertificate});
 
     if(!_ignoreSslErrors.contains(QSslError{QSslError::SelfSignedCertificateInChain}))
-       _ignoreSslErrors.push_back(QSslError{QSslError::SelfSignedCertificateInChain});
+        _ignoreSslErrors.push_back(QSslError{QSslError::SelfSignedCertificateInChain});
 
     return !_ssl.isNull();
 }
@@ -669,9 +677,9 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
     return _apiVersionParser->parsePackage(pkg, pkgHeader, sender);
 }
 
-QSharedPointer<AbstractData>
-AbstractNode::genPackage(unsigned short cmd) const {
-
+QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short ) const {
+    debug_assert(false, "the AbstractNode::genPackage is disabled. use the searchPackage");
+    return nullptr;
 }
 
 bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) const {
@@ -715,7 +723,7 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
 
     Package pkg;
     bool convert = false;
-    if (req) {
+    if (req && req->isValid()) {
         convert = resp->toPackage(pkg, req->hash);
     } else {
         convert = resp->toPackage(pkg);
@@ -726,9 +734,9 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
         if (static_cast<unsigned int>(pkg.data.size()) > Package::maximumSize()) {
             // big data
 
-            if (!_bigdatamanager->sendBigDataPackage(resp,
-                                                     node,
-                                                     req)) {
+            auto wrap = QSharedPointer<BigDataWraper>::create();
+            wrap->setData(resp);
+            if ( parsePackage(wrap, {}, getInfoPtr(node->networkAddress())) != ParserResult::Processed) {
                 return 0;
             }
 
@@ -759,7 +767,7 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
                                     QuasarAppUtils::Error);
 
         QuasarAppUtils::Params::log("SECURITY LOG: Force block the " + address.toString() +
-                                    " because trust defined",
+                                        " because trust defined",
                                     QuasarAppUtils::Error);
 
         ban(address);
@@ -773,7 +781,7 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
     }
 
     QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                address.toString(),
+                                    address.toString(),
                                 QuasarAppUtils::Info);
 }
 
@@ -1066,9 +1074,11 @@ bool AbstractNode::listen(const HostAddress &address) {
     return QTcpServer::listen(address, address.port());
 }
 
-QSharedPointer<AbstractData> AbstractNode::prepareData(const Package &pkg) const {
+QSharedPointer<AbstractData>
+AbstractNode::prepareData(const Package &pkg,
+                          AbstractNodeInfo *sender) const {
 
-    auto value = genPackage (pkg.hdr.command);
+    auto value = _apiVersionParser->searchPackage(pkg.hdr.command, sender);
     if (!value) {
         QuasarAppUtils::Params::log("You try parse not registered package type."
                                     " Plese use the registerPackageType method befor parsing."
@@ -1149,7 +1159,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
     auto executeObject = [pkg, sender, id, this]() {
 
-        auto data = prepareData(pkg);
+        auto data = prepareData(pkg, sender);
         if (!data)
             return false;
 
@@ -1158,7 +1168,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
         if (parseResult != ParserResult::Processed) {
 
             auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").
-                    arg(pkg.toString(), pareseResultToString(parseResult), data->toString());
+                           arg(pkg.toString(), pareseResultToString(parseResult), data->toString());
 
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 
@@ -1277,8 +1287,8 @@ void AbstractNode::nodeErrorOccured(AbstractNodeInfo *nodeInfo,
 
     QString message("Network error occured on the %0 node. Message: %1");
     QuasarAppUtils::Params::log(
-                message.arg(nodeInfo->networkAddress().toString(), errorString),
-                QuasarAppUtils::Error);
+        message.arg(nodeInfo->networkAddress().toString(), errorString),
+        QuasarAppUtils::Error);
 
     auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     actions.remove(nodeInfo->networkAddress());

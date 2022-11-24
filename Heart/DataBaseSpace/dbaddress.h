@@ -9,7 +9,6 @@
 #define DBADDRESS_H
 
 #include "streambase.h"
-#include "basedefines.h"
 
 namespace QH {
 

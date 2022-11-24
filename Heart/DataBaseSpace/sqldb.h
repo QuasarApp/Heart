@@ -7,7 +7,7 @@
 
 #ifndef SQLDB_H
 #define SQLDB_H
-#include "isqldbcache.h"
+#include "isqldb.h"
 
 namespace QH {
 
@@ -15,7 +15,7 @@ namespace QH {
  * @brief The SqlDB class This is base implementation fo datatbase.
  * The SqlDB do not use caches, all request run on the sqlwtiter class.
  */
-class HEARTSHARED_EXPORT SqlDB final: public ISqlDBCache {
+class HEARTSHARED_EXPORT SqlDB final: public ISqlDB {
     Q_OBJECT
 public:
     SqlDB();

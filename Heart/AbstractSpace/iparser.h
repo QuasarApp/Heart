@@ -153,7 +153,7 @@ public:
 
     inline ParserResult commandHandler(HandlerType handlerObject, HandlerMethod method,
                                        const QSharedPointer<QH::PKG::AbstractData> &pkg,
-                                       const QH::AbstractNodeInfo *sender,
+                                       QH::AbstractNodeInfo *sender,
                                        const QH::Header &pkgHeader) {
 
         if (PackageClass::command() == pkg->cmd()) {

@@ -13,6 +13,7 @@
 #include <abstractnode.h>
 #include <cmath>
 #include <params.h>
+#include <bigdatawraper.h>
 
 #define TIMEOUT_INTERVAL 30000
 
@@ -20,9 +21,11 @@ namespace QH {
 
 BigDataParser::BigDataParser(AbstractNode* parentNode): iParser(parentNode) {
 
+    registerPackageType<PKG::BigDataWraper>();
     registerPackageType<PKG::BigDataRequest>();
     registerPackageType<PKG::BigDataHeader>();
     registerPackageType<PKG::BigDataPart>();
+
 }
 
 ParserResult BigDataParser::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
@@ -33,6 +36,13 @@ ParserResult BigDataParser::parsePackage(const QSharedPointer<PKG::AbstractData>
     auto result = commandHandler<PKG::BigDataRequest>(this,
                                                       &BigDataParser::processRequest,
                                                       pkg, sender, pkgHeader);
+    if (result != QH::ParserResult::NotProcessed) {
+        return result;
+    }
+
+    result = commandHandler<PKG::BigDataWraper>(this,
+                                                &BigDataParser::processBigDataWraper,
+                                                pkg, sender, pkgHeader);
     if (result != QH::ParserResult::NotProcessed) {
         return result;
     }
@@ -172,6 +182,12 @@ bool BigDataParser::processRequest(const QSharedPointer<PKG::BigDataRequest> &re
     }
 
     return true;
+}
+
+bool BigDataParser::processBigDataWraper(const QSharedPointer<PKG::BigDataWraper> &request,
+                                         AbstractNodeInfo *sender,
+                                         const Header &pkgHeader) {
+    return sendBigDataPackage(request->data(), sender, &pkgHeader);
 }
 
 bool BigDataParser::sendBigDataPackage(const PKG::AbstractData *data,

@@ -32,7 +32,16 @@ public:
                               AbstractNodeInfo *sender) override;
     int version() const override;
     QString parserId() const override;
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const override;
+
+    /**
+     * @brief searchPackage This method search package recursive in all registered pararsers. Searching will be in compatibility versions.
+     * Before search methd choose compatibly verson.
+     * @param cmd This is command for that shold be create pacakge object.
+     * @param sender This is node that sent @a the cmd.
+     * @return Package generated from cmd.
+     */
+    QSharedPointer<PKG::AbstractData>
+    searchPackage(unsigned short cmd, AbstractNodeInfo *sender) const;
 
     /**
      * @brief getSelectedApiParser This method return apiParser for selected node
@@ -67,6 +76,15 @@ public:
     selectParser(const VersionData& distVersion) const;
 
     /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param cmd this is command that need to parse.
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser>
+    selectParser(unsigned short cmd, AbstractNodeInfo *sender);
+
+    /**
      * @brief maximumApiVersion This method return maximum supported api version of this node.
      * @param apiKey This is api key.
      * @return  maximum supported api version of this node.
@@ -90,6 +108,10 @@ signals:
     void sigNoLongerSupport(const QString& ApiKey, unsigned short version);
 
 private:
+
+    QSharedPointer<QH::iParser>
+    selectParserImpl(unsigned short cmd, AbstractNodeInfo *sender);
+
     bool processAppVersion(const QSharedPointer<APIVersion> &message,
                            AbstractNodeInfo *sender,
                            const QH::Header &);

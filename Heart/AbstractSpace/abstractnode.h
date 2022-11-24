@@ -28,8 +28,6 @@
 #include "workstate.h"
 #include "package.h"
 #include "heart_global.h"
-#include "packagemanager.h"
-#include "abstracterrorcodes.h"
 #include <iparser.h>
 
 namespace QH {
@@ -544,10 +542,11 @@ protected:
     /**
      * @brief prepareData This is private method for preparing package from the byteArray.
      * @param pkg This is a raw package value.
+     * @param sender This is sender of the @a pkg.
      * @return pointer into prepared data.
      * @warning The return value do not clear automatically.
      */
-    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg) const;
+    QSharedPointer<PKG::AbstractData> prepareData(const Package& pkg, AbstractNodeInfo *sender) const;
 
     /**
      * @brief connectionsList This method return list of all node connections
@@ -657,7 +656,7 @@ private:
                               AbstractNodeInfo *sender) override;
 
     QSharedPointer<PKG::AbstractData>
-    genPackage(unsigned short cmd) const override;
+    genPackage(unsigned short cmd) const override final;
 
     int version() const override;
     QString parserId() const override;

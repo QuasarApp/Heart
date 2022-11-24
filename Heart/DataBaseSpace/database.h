@@ -11,7 +11,6 @@
 #include "dbpatch.h"
 #include <dbobject.h>
 #include <hostaddress.h>
-#include <permission.h>
 
 
 namespace QH {
@@ -22,7 +21,7 @@ class ISubscribableData;
 
 }
 
-class ISqlDBCache;
+class ISqlDB;
 class SqlDBWriter;
 class DbAddress;
 class NodeId;
@@ -55,7 +54,7 @@ public:
      * @return True if the database initialized successful.
      */
     virtual bool initSqlDb( QString DBparamsFile = "",
-                            ISqlDBCache * cache = nullptr,
+                            ISqlDB * cache = nullptr,
                             SqlDBWriter* writer = nullptr);
 
     /**
@@ -89,92 +88,6 @@ public:
      *  For more information of available parameters see the SqlDBWriter::defaultInitPararm method.
      */
     virtual QVariantMap defaultDbParams() const;
-
-    /**
-     * @brief deleteObject This method delete object by database address.
-     *  @note If you want to delete any object use only this method because this method check permission of requester to execute this action.
-     * @param requester This is pointer to network member that send this request.
-     * @param dbObject This is pointer to object of database to remove.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult deleteObject(const QString &requester,
-                                   const QSharedPointer<PKG::DBObject> &dbObject);
-
-    /**
-     * @brief getObject This method try get an object by database address.
-     *  @note If you want to get any object use only this method because this method check permission of requester to execute this action
-     * @param requester This is pointer to network member that send this request.
-     * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param result This is a shared pointer for save result of request.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult getObject(const QString &requester,
-                                const PKG::DBObject &templateObj,
-                                QSharedPointer<PKG::DBObject> &result) const;
-
-    /**
-     * @brief getObjects This method try get objects by template object.
-     *  @note If you want to get any objects use only this method because this method check permission of requester to execute this action
-     * @param requester This is pointer to network member that send this request.
-     * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param result This is reference to the list of result objects.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult getObjects(const QString &requester,
-                                 const PKG::DBObject &templateObj,
-                                 QList<QSharedPointer<PKG::DBObject>> &result) const;
-
-    /**
-     * @brief updateObject This method try save or update database object.
-     *  @note If you want to save or update any objects use only this method because this method check permission of requester to execute this action
-     * @param requester This is network mebmer that send this request.
-     * @param saveObject This is pointer to object of database for save or update.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult updateObject(const QString &requester,
-                                   const QSharedPointer<PKG::DBObject> &saveObject);
-
-    /**
-     * @brief createObject This method create a new object in the database and add all permissions for the objects creator.
-     *  @note If you want to create any objects use only this method because this method check permission of requester to execute this action
-     * @param requester This is network member that send this request.
-     * @param obj This is pointer to object of database for save or update.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult createObject(const QString &requester,
-                                   const QSharedPointer<PKG::DBObject> &obj);
-
-    /**
-     * @brief updateIfNotExistsCreateObject This is wraper of the updateObject and createObjects methods.
-     * 1. Try update object
-     * 2. If object not exists Try create new object.
-     * 3. Return operation result
-     * @param requester This is network member that send this request.
-     * @param obj This is initializing object.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult updateIfNotExistsCreateObject(const QString &requester,
-                                                    const QSharedPointer<PKG::DBObject> &obj);
-
-    /**
-     * @brief changeObjects This is wrapper of the "ISqlDBCache::changeObjects" method.
-     *  Key difference between a base method is checking of the permision for needed action.
-     * @note If you want to change any objects use only this method because this method check permission of requester to execute this action
-     * @param requester This is network member that send this request.
-     * @param templateObj This is pointer to object of database with data for generation the sql select request.
-     * @param changeAction This is action function for change all selected objects.
-     * @return result of operation (allow, forbidden, unknown).
-     *  For more information about results see the DBOperationResult enum.
-     */
-    DBOperationResult changeObjects(const QString &requester,
-                                    const PKG::DBObject &templateObj,
-                                    const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction);
 
     /**
      * @brief isBanned This method check trust of node, if node trust is lover of 0 return true.
@@ -242,75 +155,13 @@ protected:
      * @param cache This is Cache database object.
      * @param writer This is Database writerObject.
      */
-    virtual void initDefaultDbObjects(ISqlDBCache *cache, SqlDBWriter *writer);
-
-    /**
-     * @brief memberSubsribed This method invoked when client with @a clientId subscribed on object with  @a subscribeId.
-     * @param clientId This is id of the client member.
-     * @param subscribeId This is id of the subscribeObject.
-     */
-    virtual void memberSubsribed(const QVariant &clientId, unsigned int subscribeId);
-
-    /**
-     * @brief memberUnSubsribed This method invoked when client with @a clientId unsubsribed on object with  @a subscribeId
-     * @param clientId This is id of the client member.
-     * @param subscribeId This is id of the subscribeObject.
-     */
-    virtual void memberUnsubsribed(const QVariant &clientId, unsigned int subscribeId);
+    virtual void initDefaultDbObjects(ISqlDB *cache, SqlDBWriter *writer);
 
     /**
      * @brief db This node return pointer to database object.
      * @return The pointer to data base.
      */
-    ISqlDBCache* db() const;
-
-    /**
-     * @brief getSender This method return id of requester.
-     *  By Default base implementation get id from BaseNdoeInfo.
-     * override this method for correctly work of the DataBaseNode::ParsePacakge method.
-     * @param connectInfo This is info about connection.
-     * @param requestData This is data of request.
-     * @return id of requester member.
-     */
-    virtual QVariant getSender(const AbstractNodeInfo *connectInfo, const PKG::AbstractData *requestData) const;
-
-    /**
-     * @brief checkPermision This method check a permision of requester, to database object with objectAddress.
-     *  Override this method if you have a custom database structure.
-     * @param requester This is  user, node or another object of network
-     * @param objectAddress This is address to database object
-     * @param requarimentPermision This is needed permission for requester
-     * @return DBOperationResult::Alowed if permission granted.
-     *  For more information about result see the DBOperationResult enum.
-     */
-    virtual DBOperationResult checkPermission(const QString &requester,
-                                              const DbAddress& objectAddress,
-                                              const Permission& requarimentPermision) const;
-
-
-    /**
-     * @brief addUpdatePermission This method added or update permission for member.
-     * @warning This method do not have a validation. It is just change a NetworkMembers table, so use this carefully.
-     * @param member This is member id (user of node).
-     * @param objectAddress This is database  object for which the permissions will be set.
-     * @param permision This is permission level.
-     * @param defaultPermision This is default permision for all of rest objects. By default This is Permission::Read
-     * @return true if method finished successful.
-     */
-    virtual bool addUpdatePermission(const QVariant &member,
-                                     const DbAddress& objectAddress,
-                                     const Permission& permision,
-                                     const Permission& defaultPermision = Permission::Read) const;
-
-    /**
-     * @brief removePermission This method use to removed permission for member.
-     * @warning This method do not have a validation. It is just change a NetworkMembers table, so use this carefully.
-     * @param member This is member id (user of node)
-     * @param objectAddress This is database object for which the permissions will be removed
-     * @return true if method finished successful.
-     */
-    virtual bool removePermission(const QVariant &member,
-                                  const DbAddress& objectAddress) const;
+    ISqlDB* db() const;
 
     /**
      * @brief welcomeAddress This method send to the node information about self.
@@ -462,7 +313,7 @@ private:
 
     bool isForbidenTable(const QString& table);
 
-    ISqlDBCache *_db = nullptr;
+    ISqlDB *_db = nullptr;
     unsigned short _targetDBVersion = 0;
     DBPatchMap _dbPatches;
     QString _localNodeName;

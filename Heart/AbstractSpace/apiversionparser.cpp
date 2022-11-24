@@ -41,25 +41,17 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
     }
 
     auto distVersion = sender->version();
-    const auto parsers = selectParser(distVersion);
+    const auto parser = selectParser(pkg->cmd(), sender);
 
-    if (parsers.isEmpty()) {
+    if (!parser) {
         QuasarAppUtils::Params::log(QString("Can't found requeried parser for versions"),
                                     QuasarAppUtils::Warning);
         return ParserResult::NotProcessed;
     }
 
-    for (const auto& parser: parsers) {
-        if (!parser) {
-            QuasarAppUtils::Params::log(QString("Internal Error with selection parasers."),
-                                        QuasarAppUtils::Error);
-            continue;
-        }
-
-        auto perserResult = parser->parsePackage(pkg, pkgHeader, sender);
-        if (perserResult != QH::ParserResult::NotProcessed) {
-            return perserResult;
-        }
+    auto perserResult = parser->parsePackage(pkg, pkgHeader, sender);
+    if (perserResult != QH::ParserResult::NotProcessed) {
+        return perserResult;
     }
 
     return ParserResult::NotProcessed;
@@ -73,8 +65,12 @@ QString APIVersionParser::parserId() const {
     return "APIVersionParser";
 }
 
-I shold be create method that can create package by commnad with needed version.
-QSharedPointer<PKG::AbstractData> APIVersionParser::genPackage(unsigned short cmd) const {
+QSharedPointer<PKG::AbstractData>
+APIVersionParser::searchPackage(unsigned short cmd,
+                                AbstractNodeInfo *sender) const {
+    if (!sender)
+        return nullptr;
+
     auto distVersion = sender->version();
     const auto parsers = selectParser(distVersion);
 
@@ -89,11 +85,11 @@ QSharedPointer<PKG::AbstractData> APIVersionParser::genPackage(unsigned short cm
             continue;
         }
 
-        auto perserResult = parser->parsePackage(pkg, pkgHeader, sender);
-        if (perserResult != QH::ParserResult::NotProcessed) {
-            return perserResult;
-        }
+        if (auto package = parser->genPackage(cmd))
+            return package;
     }
+
+    return nullptr;
 }
 
 QSharedPointer<iParser>
@@ -120,6 +116,31 @@ APIVersionParser::selectParser(const VersionData &distVersion) const {
 
     return result;
 }
+
+QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
+                                                       AbstractNodeInfo *sender) {
+    auto parser = sender->getParser(cmd);
+    if (!parser) {
+        parser = selectParserImpl(cmd, sender);
+    }
+
+    return parser;
+}
+
+QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
+                                                           AbstractNodeInfo *sender) {
+    auto version = sender->version();
+    const auto availableParser = selectParser(version);
+    for (const auto& parser: availableParser) {
+        if (parser->checkCommand(cmd)) {
+            sender->addParser(cmd, parser);
+            return parser;
+        }
+    }
+
+    return nullptr;
+}
+
 
 unsigned short APIVersionParser::maximumApiVersion(const QString &apiKey) const {
 

@@ -18,6 +18,7 @@ namespace PKG {
 class BigDataHeader;
 class BigDataPart;
 class BigDataRequest;
+class BigDataWraper;
 }
 
 class AbstractNode;
@@ -85,12 +86,23 @@ protected:
      * @param pkgHeader requested header.
      * @return true if package sent successful
      */
-    bool sendBigDataPackage(const PKG::AbstractData *data,
-                            const QH::AbstractNodeInfo *sender,
-                            const Header *pkgHeader);
+    bool processBigDataWraper(const QSharedPointer<PKG::BigDataWraper> &request,
+                              AbstractNodeInfo *sender,
+                              const Header &pkgHeader);
 
 
 private:
+
+     /**
+     * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.
+     * @param data This is package that will be sent to remote node.
+     * @param sender This is request object.
+     * @param pkgHeader requested header.
+     * @return true if package sent successful
+     */
+     bool sendBigDataPackage(const PKG::AbstractData *data,
+                             const QH::AbstractNodeInfo *sender,
+                             const Header *pkgHeader);
 
     void insertNewBigData(const QSharedPointer<PKG::BigDataHeader> &header);
     void checkOutDatedPacakges(unsigned int currentProcessedId);

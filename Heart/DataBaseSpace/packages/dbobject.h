@@ -12,9 +12,6 @@
 #include "abstractdata.h"
 #include "heart_global.h"
 #include "dbaddress.h"
-#include "basedefines.h"
-#include "dbcachekey.h"
-#include "isubscribabledata.h"
 
 class QSqlQuery;
 
@@ -96,7 +93,7 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  * @warning Object with empty table name is invalid.
  * @see DataBaseNode
  */
-class HEARTSHARED_EXPORT DBObject : public AbstractData, public ISubscribableData
+class HEARTSHARED_EXPORT DBObject : public AbstractData
 {
     QH_PACKAGE(DBObject, "DBObject")
 
@@ -108,14 +105,6 @@ public:
 
     bool isValid() const override;
     bool copyFrom(const AbstractData * other) override;
-    unsigned int subscribeId() const override;
-
-    /**
-     * @brief subscribeId This static method convert database address to the subscribe id.
-     * @param address This is input value of the database address.
-     * @return subscribe id.
-     */
-    static unsigned int subscribeId(const DbAddress& address);
 
     /**
      * @brief isHaveAPrimaryKey This method return true if this object has a primary key.
