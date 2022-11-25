@@ -321,14 +321,6 @@ public:
     virtual bool isBundle() const;
 
     /**
-     * @brief dbKey This method return unique key for this object.
-     * For more information see AbstractKey::hash method.
-     * This method calc hash of {id:table} data.
-     * @return unique key of this object.
-     */
-    virtual uint dbKey() const;
-
-    /**
      * @brief dbAddress This method return address of the database object.
      * IF the object is not valid then this method return an invalid database address.
      * @return The database address of current object.

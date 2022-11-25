@@ -9,18 +9,7 @@
 #define NETWORKPROTOCOL_H
 
 #include "package.h"
-
-#if HEART_BUILD_LVL >= 0
 #include "abstractnode.h"
-#endif
-
-#if HEART_BUILD_LVL >= 1
-#include "databasenode.h"
-#endif
-
-#if HEART_BUILD_LVL >= 2
-#include "networknode.h"
-#endif
 
 inline void initResources() { Q_INIT_RESOURCE(ProtockolResusces); }
 

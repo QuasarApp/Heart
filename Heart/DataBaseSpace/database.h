@@ -90,26 +90,10 @@ public:
     virtual QVariantMap defaultDbParams() const;
 
     /**
-     * @brief isBanned This method check trust of node, if node trust is lover of 0 return true.
-     * @param member This is member of network (node, client or server).
-     * @return true if node is banned.
-     */
-    bool isBanned(const QString &member) const;
-
-    /**
      * @brief dbLocation This method return location of nodes or clients database.
      * @return path to the location of database.
      */
     QString dbLocation() const;
-
-    /**
-     * @brief changeTrust This implementation of change trust is change trust node or user by self id.
-     * All changes of trust saving into local database.
-     * @param id This is id of user of other network member object.
-     * @param diff This is difference of trust.
-     * @return true if trust of user changed successful.
-     */
-    bool changeTrust(const QString &id, int diff);
 
 signals:
 

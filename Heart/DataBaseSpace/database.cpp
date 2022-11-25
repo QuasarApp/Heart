@@ -6,14 +6,11 @@
 */
 
 #include "database.h"
-#include "sqldbcache.h"
 #include "sqldbwriter.h"
 #include "asyncsqldbwriter.h"
 
 #include <quasarapp.h>
 #include <QCoreApplication>
-#include <abstractnetworkmember.h>
-#include <networkmember.h>
 #include <deleteobject.h>
 #include <QSet>
 #include <itoken.h>
@@ -132,16 +129,6 @@ bool DataBase::welcomeAddress(AbstractNodeInfo *) {
     return true;
 }
 
-bool DataBase::isBanned(const QString &node) const {
-    NetworkMember member(node);
-    auto objectFromDataBase = db()->getObject<AbstractNetworkMember>(member);
-
-    if (!objectFromDataBase)
-        return false;
-
-    return objectFromDataBase->trust() <= 0;
-}
-
 QStringList DataBase::SQLSources() const{
     return {
         DEFAULT_DB_INIT_FILE_PATH
@@ -184,24 +171,6 @@ QString DataBase::dbLocation() const {
     }
 
     return "";
-}
-
-bool DataBase::changeTrust(const QString &id, int diff) {
-    if (!_db)
-        return false;
-
-    auto action = [diff](const QSharedPointer<DBObject> &object) {
-        auto obj = object.dynamicCast<AbstractNetworkMember>();
-        if (!obj) {
-            return false;
-        }
-
-        obj->changeTrust(diff);
-
-        return true;
-    };
-
-    return _db->changeObjects(NetworkMember{id}, action);
 }
 
 ISqlDB *DataBase::db() const {

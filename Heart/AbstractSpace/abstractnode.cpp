@@ -69,8 +69,8 @@ AbstractNode::AbstractNode( QObject *ptr):
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
 
-    _apiVersionParser->addApiParser<BigDataParser>();
-    _apiVersionParser->addApiParser<AbstractNodeParser>();
+    _apiVersionParser->addApiParser<BigDataParser>(this);
+    _apiVersionParser->addApiParser<AbstractNodeParser>(this);
 
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL

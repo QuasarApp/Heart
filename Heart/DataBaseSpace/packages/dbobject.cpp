@@ -161,10 +161,6 @@ bool DBObject::isBundle() const {
     return false;
 }
 
-uint DBObject::dbKey() const {
-    return HASH_KEY(DbAddressKey(dbAddress()));
-}
-
 QString DBObject::condition() const {
 
     // prepare key value to string condition

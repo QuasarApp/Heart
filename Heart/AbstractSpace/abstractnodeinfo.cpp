@@ -12,6 +12,7 @@
 #include <QHostInfo>
 #include <QMetaObject>
 #include <quasarapp.h>
+#include <iparser.h>
 
 namespace QH {
 

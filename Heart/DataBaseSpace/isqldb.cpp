@@ -9,7 +9,6 @@
 #include "quasarapp.h"
 #include "sqldbwriter.h"
 #include "dbaddresskey.h"
-#include "permisiondata.h"
 
 #include <dbobject.h>
 #include <asyncsqldbwriter.h>

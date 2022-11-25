@@ -7,6 +7,7 @@
 
 #include "apiversionparser.h"
 #include "abstractnodeinfo.h"
+#include "distversion.h"
 
 #include <apiversion.h>
 #include <versionisreceived.h>
@@ -107,7 +108,7 @@ APIVersionParser::selectParser(const VersionData &distVersion) const {
     QHash<QString, QSharedPointer<iParser>> result;
 
     for (auto it = distVersion.begin(); it != distVersion.end(); ++it) {
-        for (int version = it->max; version >= it->min; --version) {
+        for (int version = it->max(); version >= it->min(); --version) {
             auto parser = _apiParsers[it.key()].value(version, nullptr);
             if (parser)
                 result[it.key()] = parser;
@@ -175,11 +176,11 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<APIVersion> &messa
 
             QuasarAppUtils::Params::log(QString("Can't found %0 parser for versions: %1-%2").
                                         arg(parserKey).
-                                        arg(requiredApi.min).
-                                        arg(requiredApi.max),
+                                        arg(requiredApi.min()).
+                                        arg(requiredApi.max()),
                                         QuasarAppUtils::Error);
 
-            unsigned short distMinVersion = sender->version().value(parserKey).min;
+            unsigned short distMinVersion = sender->version().value(parserKey).min();
 
             if (distMinVersion > maximumApiVersion(parserKey)) {
                 emit sigNoLongerSupport(parserKey, distMinVersion);

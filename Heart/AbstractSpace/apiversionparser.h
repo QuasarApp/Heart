@@ -62,9 +62,9 @@ public:
      * @brief addApiParser This is template metod that add sipport of new apiparser @a ApiType
      * @tparam ApiType This is type of new apiParser that will be added to the main parser.
      */
-    template<class ApiType>
-    void addApiParser() {
-        addApiParser(QSharedPointer<ApiType>::create(this));
+    template<class ApiType, class ... Args >
+    void addApiParser(Args&&... arg) {
+        addApiParser(QSharedPointer<ApiType>::create(std::forward<Args>(arg)...));
     }
 
     /**

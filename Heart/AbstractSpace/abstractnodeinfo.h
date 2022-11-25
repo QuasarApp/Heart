@@ -9,7 +9,9 @@
 #define ABSTRACTNODEINFO_H
 
 #include "hostaddress.h"
+#include "distversion.h"
 #include "heart_global.h"
+#include "iparser.h"
 #include <hostaddress.h>
 
 
@@ -17,25 +19,6 @@ class QAbstractSocket;
 class QHostInfo;
 
 namespace QH {
-
-class iParser;
-
-/**
- * @brief The DistVersion class This is infirmation of supported versions of the distanation api.
- */
-struct DistVersion {
-
-    /// This is monimum supported version.
-    unsigned short min = 0;
-
-    /// This is maximum supported version.
-    unsigned short max = 0;
-};
-
-/**
- * @brief VersionData This is array of all avalable apis and supported its versions.
- */
-typedef QHash<QString, unsigned int> VersionData;
 
 /**
  * @brief The TrustNode enum contains cases for trust of the client or nodes.
@@ -246,6 +229,22 @@ public:
      */
     void setFVersionDelivered(bool newFVersionDelivered);
 
+    /**
+     * @brief getParser This method return parser of choosed command.
+     * @param cmd This is command that need to parse.
+     * @return parser of the @a cmd comand.
+     */
+    QSharedPointer<QH::iParser> getParser(unsigned short cmd);
+
+    /**
+     * @brief addParser This method add to cache new parser for command .
+     * @param cmd
+     * @param parser
+     * @note All parsers will be removed after reconnect of this node.
+     */
+    void addParser(unsigned short cmd, QSharedPointer<QH::iParser> parser);
+
+
 public slots:
     /**
      * @brief removeSocket This method use for remove socket.
@@ -297,22 +296,6 @@ signals:
      * @param status This is status of node. For more information see the NodeCoonectionStatus enum.
      */
     void statusChaned(QH::AbstractNodeInfo* thisNode, QH::NodeCoonectionStatus status);
-
-    /**
-     * @brief getParser This method return parser of choosed command.
-     * @param cmd This is command that need to parse.
-     * @return parser of the @a cmd comand.
-     */
-    QSharedPointer<iParser> getParser(unsigned short cmd);
-
-    /**
-     * @brief addParser This method add to cache new parser for command .
-     * @param cmd
-     * @param parser
-     * @note All parsers will be removed after reconnect of this node.
-     */
-    void addParser(unsigned short cmd, QSharedPointer<QH::iParser> parser);
-
 
 protected:
 
