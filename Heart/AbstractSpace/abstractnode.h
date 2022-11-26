@@ -109,7 +109,7 @@ class Abstract;
  *  @see AbstractNode::registerPackageType
  *  @see AbstractNode::parsePackage
  */
-class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete, private iParser
+class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {
     Q_OBJECT
 
@@ -498,19 +498,6 @@ protected:
 #endif
 
     /**
-     * @brief incomingData This method invoked when node get command or ansver.
-     *  This method invoked befor parsing in the parsePackage method.
-     * @note use this method for handling received data, but do not change the @a pkg object.
-     *  If You want change pkg object use the parsePackage method.
-     * @param pkg This is received package (in this implementation it is only the Ping command)
-     * @param sender This is information of sender of the package.
-     * @note override this method for get a signals.
-     * @note This method will be invoked in the own thread.
-     */
-    virtual void incomingData(const PKG::AbstractData* pkg,
-                              const AbstractNodeInfo* sender);
-
-    /**
      * @brief connections - Return hash map of all connections of this node.
      * @return return map of connections.
      */
@@ -653,13 +640,10 @@ private:
     // iParser interface
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                               const Header &pkgHeader,
-                              AbstractNodeInfo *sender) override;
+                              AbstractNodeInfo *sender);
 
     QSharedPointer<PKG::AbstractData>
-    genPackage(unsigned short cmd) const override final;
-
-    int version() const override;
-    QString parserId() const override;
+    genPackage(unsigned short cmd) const;
 
     /**
       @note just disaable listen method in the node objects.

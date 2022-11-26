@@ -49,8 +49,6 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
         return ParserResult::Error;
     }
 
-    nodePtr->incomingData(pkg.data(), sender);
-
     if (PKG::Ping::command() == pkg->cmd()) {
         auto cmd = static_cast<PKG::Ping *>(pkg.data());
         if (!cmd->ansver()) {

@@ -9,6 +9,7 @@
 #ifndef IPARSER_H
 #define IPARSER_H
 
+#include "hostaddress.h"
 #include <QSharedPointer>
 #include <abstractdata.h>
 
@@ -115,7 +116,7 @@ public:
      * @brief pareseResultToString This method convert ParserResult value to string.
      * @return The String value of pareseresult.
      */
-    QString pareseResultToString(const ParserResult& parseResult) const;
+    static QString pareseResultToString(const ParserResult& parseResult);
 
     /**
      * @brief version This method return version of parser object
@@ -205,6 +206,28 @@ public:
 
 protected:
     AbstractNode *node() const;
+
+    /**
+     * @brief sendData This method send data  object another to node
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     * @note This method is a just wraper of the AbstractNode::sendData method.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
+                                  const Header *req = nullptr);
+
+    /**
+     * @brief sendData This method send data  object another to node
+     * @param resp This is pointer to sendet object.
+     * @param address This is target addres for sending.
+     * @param req This is header of request.
+     * @return hash of the sendet package. If function is failed then return 0.
+     * @note This method is a just wraper of the AbstractNode::sendData method.
+     */
+    virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
+                                  const Header *req = nullptr);
 
 private:
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;

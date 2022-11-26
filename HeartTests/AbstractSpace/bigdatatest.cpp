@@ -34,17 +34,16 @@ protected:
     };
 };
 
-class TestingClientBigData: public QH::AbstractNode {
 
-
-    // AbstractNode interface
-public:
-    TestingClientBigData(int i) {
-        Q_UNUSED(i);
+class BigDataTestParser: public QH::iParser {
+    BigDataTestParser(QH::AbstractNode* parentNode): QH::iParser(parentNode) {
         registerPackageType<BigPackage>();
         data = new BigPackage();
+
     }
 
+    // iParser interface
+public:
     bool sendRequest(const QByteArray& data) {
         BigPackage pkg;
         pkg.data = data;
@@ -57,9 +56,9 @@ public:
         return data;
     }
 
-protected:
-    void incomingData(const QH::PKG::AbstractData *pkg, const QH::AbstractNodeInfo *sender) override {
-        Q_UNUSED(sender);
+    QH::ParserResult parsePackage(const QSharedPointer<QH::PKG::AbstractData> &pkg,
+                                  const QH::Header &pkgHeader,
+                                  QH::AbstractNodeInfo *sender) override {
 
         if (pkg->cmd() == BigPackage::command()) {
 
@@ -67,17 +66,31 @@ protected:
             data->copy<BigPackage>(*pkg);
             _mData.unlock();
             sendData(data, sender);
+            return QH::ParserResult::Processed;
         }
-    }
+
+        return QH::ParserResult::NotProcessed;
+    };
+    int version() const override {return 0;};
+    QString parserId() const override {return "BigDataTestParser";};
 
 private:
     mutable QMutex _mData;
     BigPackage *data = nullptr;
 };
 
+class TestingClientBigData: public QH::AbstractNode {
+
+
+    // AbstractNode interface
+public:
+    TestingClientBigData() {
+    }
+};
+
 BigDataTest::BigDataTest() {
-    _nodeA = new TestingClientBigData(0);
-    _nodeB = new TestingClientBigData(0);
+    _nodeA = new TestingClientBigData();
+    _nodeB = new TestingClientBigData();
 }
 
 BigDataTest::~BigDataTest() {

@@ -10,6 +10,8 @@
 
 #include <abstractdata.h>
 #include <qaglobalutils.h>
+#include "abstractnode.h"
+
 namespace QH {
 
 iParser::iParser(AbstractNode *parentNode) {
@@ -17,7 +19,7 @@ iParser::iParser(AbstractNode *parentNode) {
     debug_assert(_node, "All parsers shold be initialized with parent node");
 }
 
-QString iParser::pareseResultToString(const ParserResult &parseResult) const {
+QString iParser::pareseResultToString(const ParserResult &parseResult) {
     switch (parseResult)
     {
     case ParserResult::Processed:
@@ -44,6 +46,19 @@ bool iParser::checkCommand(unsigned short cmd) const {
 
 AbstractNode *iParser::node() const {
     return _node;
+}
+
+unsigned int iParser::sendData(const PKG::AbstractData *resp,
+                               const HostAddress &address,
+                               const Header *req) {
+    return node()->sendData(resp, address, req);
+}
+
+unsigned int iParser::sendData(const PKG::AbstractData *resp,
+                               const AbstractNodeInfo *dist,
+                               const Header *req) {
+    return node()->sendData(resp, dist, req);
+
 }
 
 }

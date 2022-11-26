@@ -53,8 +53,7 @@ namespace QH {
 using namespace PKG;
 
 AbstractNode::AbstractNode( QObject *ptr):
-    QTcpServer(ptr),
-    iParser(this) {
+    QTcpServer(ptr) {
 
     initThreadId();
 
@@ -101,14 +100,6 @@ AbstractNode::~AbstractNode() {
     delete _socketWorker;
     delete _tasksheduller;
     delete _apiVersionParser;
-}
-
-int AbstractNode::version() const {
-    return 0;
-}
-
-QString AbstractNode::parserId() const {
-    return "";
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
@@ -1168,7 +1159,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
         if (parseResult != ParserResult::Processed) {
 
             auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").
-                           arg(pkg.toString(), pareseResultToString(parseResult), data->toString());
+                           arg(pkg.toString(), iParser::pareseResultToString(parseResult), data->toString());
 
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 
@@ -1209,12 +1200,6 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
 SslMode AbstractNode::getMode() const {
     return _mode;
-}
-
-void AbstractNode::incomingData(const AbstractData *pkg, const AbstractNodeInfo *sender) {
-    Q_UNUSED(pkg)
-    Q_UNUSED(sender)
-
 }
 
 QHash<HostAddress, AbstractNodeInfo *> AbstractNode::connections() const {
