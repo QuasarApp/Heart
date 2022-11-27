@@ -50,10 +50,11 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
     }
 
     if (PKG::Ping::command() == pkg->cmd()) {
-        auto cmd = static_cast<PKG::Ping *>(pkg.data());
+        auto cmd = pkg.staticCast<PKG::Ping>();
         if (!cmd->ansver()) {
             cmd->setAnsver(true);
-            nodePtr->sendData(cmd, sender, &pkgHeader);
+            nodePtr->sendData(cmd.data(), sender, &pkgHeader);
+            emit sigPingReceived(cmd);
         }
 
         return ParserResult::Processed;

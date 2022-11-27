@@ -10,6 +10,7 @@
 #define ABSTRACTNODEPARSER_H
 
 #include <iparser.h>
+#include <ping.h>
 
 namespace QH {
 
@@ -18,6 +19,7 @@ namespace QH {
  */
 class AbstractNodeParser: public iParser
 {
+    Q_OBJECT
 public:
     AbstractNodeParser(AbstractNode *parentNode);
     ~AbstractNodeParser() override;
@@ -26,6 +28,14 @@ public:
                               AbstractNodeInfo *sender) override;
     int version() const override;
     QString parserId() const override;
+
+signals:
+
+    /**
+     * @brief sigPingReceived This method emited
+     * @param ping this is received ping object.
+     */
+    void sigPingReceived(QSharedPointer<QH::PKG::Ping> ping);
 
 };
 }

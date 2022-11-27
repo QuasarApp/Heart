@@ -82,7 +82,6 @@ public:
      * @return parser for the @a cmd command
      */
     QSharedPointer<QH::iParser>
-    selectParser(unsigned short cmd, AbstractNodeInfo *sender);
 
     /**
      * @brief maximumApiVersion This method return maximum supported api version of this node.

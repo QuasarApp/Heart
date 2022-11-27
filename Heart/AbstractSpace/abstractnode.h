@@ -340,6 +340,7 @@ public:
     const QList<QSslError> &ignoreSslErrors() const;
 #endif
 
+    getParser();
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.

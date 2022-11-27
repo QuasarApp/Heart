@@ -44,8 +44,9 @@ enum class ParserResult {
  * @see AbstractNode::parsePackage
  * @see AbstractNode
  */
-class HEARTSHARED_EXPORT iParser
+class HEARTSHARED_EXPORT iParser: public QObject
 {
+    Q_OBJECT
 public:
     iParser(AbstractNode* parentNode);
     virtual ~iParser() = default;
