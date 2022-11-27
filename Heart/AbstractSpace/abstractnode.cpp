@@ -68,8 +68,6 @@ AbstractNode::AbstractNode( QObject *ptr):
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
 
-    _apiVersionParser->addApiParser<BigDataParser>(this);
-    _apiVersionParser->addApiParser<AbstractNodeParser>(this);
 
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL
@@ -82,6 +80,12 @@ AbstractNode::AbstractNode( QObject *ptr):
 
     initThreadPool();
 
+}
+
+void AbstractNode::initialize() {
+    if (!isInited()) {
+        init();
+    }
 }
 
 AbstractNode::~AbstractNode() {
@@ -103,6 +107,8 @@ AbstractNode::~AbstractNode() {
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
+
+    initialize();
 
     if (!port)
         return false;
@@ -212,6 +218,7 @@ bool AbstractNode::addNode(const HostAddress &address) {
         return true;
     };
 
+    initialize();
     return _socketWorker->run(action);
 }
 
@@ -513,6 +520,13 @@ const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
     return _ignoreSslErrors;
 }
 
+void AbstractNode::configureParser(const QSharedPointer<iParser> &) {}
+
+void AbstractNode::init() {
+    addApiParser<BigDataParser>(this);
+    addApiParser<AbstractNodeParser>(this);
+}
+
 void AbstractNode::setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors) {
     _ignoreSslErrors = newIgnoreSslErrors;
 };
@@ -558,6 +572,10 @@ bool AbstractNode::disableSSL() {
 
 void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
     handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
+}
+
+void AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
+    configureParser(_apiVersionParser->addApiParser(parserObject));
 }
 
 void AbstractNode::handleSslErrorOcurredPrivate(SslSocket * sslScocket, const QList<QSslError> &errors) {
@@ -1140,6 +1158,10 @@ void AbstractNode::removeTask(int taskId) {
 
 int AbstractNode::sheduledTaskCount() const {
     return _tasksheduller->taskCount();
+}
+
+bool AbstractNode::isInited() const {
+    return _apiVersionParser && _apiVersionParser->parsersTypedCount();
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

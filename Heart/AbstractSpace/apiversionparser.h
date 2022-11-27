@@ -21,7 +21,7 @@ class VersionIsReceived;
  * @brief The APIVersionParser class This is main parser forthe main command.
  * This parsers work only with the APIVersion packge;
  */
-class APIVersionParser: public QObject, public iParser
+class APIVersionParser: public iParser
 {
     Q_OBJECT
 public:
@@ -50,22 +50,15 @@ public:
      * @return needed parser of the distanation node.
      */
     QSharedPointer<iParser> getSelectedApiParser(const QString& apiKey,
-                         QH::AbstractNodeInfo *node) const;
+                                                 QH::AbstractNodeInfo *node) const;
 
     /**
      * @brief addApiParser This method add new Api parser for this node.
      * @param parserObject This is bew api parser.
+     * @return added parser.
      */
-    void addApiParser(const QSharedPointer<QH::iParser>& parserObject);
-
-    /**
-     * @brief addApiParser This is template metod that add sipport of new apiparser @a ApiType
-     * @tparam ApiType This is type of new apiParser that will be added to the main parser.
-     */
-    template<class ApiType, class ... Args >
-    void addApiParser(Args&&... arg) {
-        addApiParser(QSharedPointer<ApiType>::create(std::forward<Args>(arg)...));
-    }
+    const QSharedPointer<QH::iParser>&
+    addApiParser(const QSharedPointer<QH::iParser>& parserObject);
 
     /**
      * @brief selectParser This method select api parser betwin nodes.
@@ -76,12 +69,19 @@ public:
     selectParser(const VersionData& distVersion) const;
 
     /**
+     * @brief parsersTypedCount This method return count of the parsers types.
+     * @return count of the parsers types.
+     */
+    unsigned int parsersTypedCount() const;
+
+    /**
      * @brief selectParser This method select parser by command and sender.
      * @param cmd this is command that need to parse.
      * @param sender this is node that sent this command.
      * @return parser for the @a cmd command
      */
-    QSharedPointer<QH::iParser>
+    QSharedPointer<QH::iParser> selectParser(unsigned short cmd,
+                                             AbstractNodeInfo *sender);
 
     /**
      * @brief maximumApiVersion This method return maximum supported api version of this node.

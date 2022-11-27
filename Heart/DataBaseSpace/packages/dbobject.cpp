@@ -5,7 +5,6 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "dbaddresskey.h"
 #include "dbobject.h"
 #include <QDataStream>
 #include <QDateTime>

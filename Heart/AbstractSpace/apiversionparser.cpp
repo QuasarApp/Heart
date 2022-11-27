@@ -14,6 +14,7 @@
 #include <quasarapp.h>
 #include <versionisreceived.h>
 #include <abstractnode.h>
+#include <qaglobalutils.h>
 
 namespace QH {
 
@@ -99,8 +100,11 @@ APIVersionParser::getSelectedApiParser(const QString &apiKey,
     return selectParser(node->version()).value(apiKey, nullptr);
 }
 
-void APIVersionParser::addApiParser(const QSharedPointer<iParser> &parserObject) {
+const QSharedPointer<QH::iParser>& APIVersionParser::addApiParser(const QSharedPointer<iParser> &parserObject) {
+    debug_assert(parserObject, "Parser object should not be nullptr");
+
     _apiParsers[parserObject->parserId()][parserObject->version()] = parserObject;
+    return _apiParsers[parserObject->parserId()][parserObject->version()];
 }
 
 QHash<QString, QSharedPointer<iParser>>
@@ -116,6 +120,10 @@ APIVersionParser::selectParser(const VersionData &distVersion) const {
     }
 
     return result;
+}
+
+unsigned int APIVersionParser::parsersTypedCount() const {
+    return _apiParsers.size();
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,

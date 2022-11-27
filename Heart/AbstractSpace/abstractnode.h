@@ -132,6 +132,7 @@ public:
      */
     virtual bool run(const QString& addres, unsigned short port);
 
+
     /**
      * @brief stop - Stopped this node and close all network connections.
      */
@@ -317,7 +318,6 @@ public:
      * @param taskId This is task id that will be removed.
      * @see AbstractNode::sheduleTask
      * @see AbstractNode::sheduledTaskCount
-
      */
     void removeTask(int taskId);
 
@@ -326,9 +326,14 @@ public:
      * @return count of sheduled tasks.
      * @see AbstractNode::sheduleTask
      * @see AbstractNode::removeTask
-
      */
     int sheduledTaskCount() const;
+
+    /**
+     * @brief isInited This method return true if this node object initialized else false.
+     * @return true if this node object initialized else false.
+     */
+    bool isInited() const;
 
 #ifdef USE_HEART_SSL
 
@@ -340,7 +345,6 @@ public:
     const QList<QSslError> &ignoreSslErrors() const;
 #endif
 
-    getParser();
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -568,6 +572,29 @@ protected:
      */
     virtual void nodeAddedSucessful(AbstractNodeInfo* node);
 
+    /**
+     * @brief configureParser This method will invoke for the all added parsers of this node.
+     * @param parser This is current configured parser.
+     * @see AbstractNode::addApiParser
+     */
+    virtual void configureParser(const QSharedPointer<iParser> &parser);
+
+    /**
+     * @brief addApiParser This is template metod that add sipport of new apiparser @a ApiType
+     * @tparam ApiType This is type of new apiParser that will be added to the main parser.
+     * @tparam Args This is argumets that will forward to the Parser constructor.
+     * @see AbstractNode::configureParser
+     */
+    template<class ApiType, class ... Args >
+    void addApiParser(Args&&... arg) {
+        return addApiParser(QSharedPointer<ApiType>::create(std::forward<Args>(arg)...));
+    }
+
+    /**
+     * @brief init This method will invoke in when the node sent first packge or run as aserver.
+     */
+    virtual void init();
+
 protected slots:
     /**
      * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
@@ -592,6 +619,8 @@ protected slots:
 #endif
 
 private slots:
+
+    void initialize();
 
     void avelableBytes(QH::AbstractNodeInfo* sender);
 
@@ -637,6 +666,13 @@ private slots:
 #endif
 
 private:
+
+    /**
+     * @brief addApiParser This method add new Api parser for this node.
+     * @param parserObject This is bew api parser.
+     * @return added parser.
+     */
+    void addApiParser(const QSharedPointer<QH::iParser>& parserObject);
 
     // iParser interface
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
