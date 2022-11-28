@@ -35,7 +35,7 @@ signals:
      * @brief sigPingReceived This method emited
      * @param ping this is received ping object.
      */
-    void sigPingReceived(QSharedPointer<QH::PKG::Ping> ping);
+    void sigPingReceived(const QSharedPointer<QH::PKG::Ping> &ping);
 
 };
 }

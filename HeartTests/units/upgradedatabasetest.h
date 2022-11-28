@@ -1,9 +1,9 @@
 #ifndef UPGRADEDATABASETEST_H
 #define UPGRADEDATABASETEST_H
 #include "test.h"
-#include "basetestutils.h"
+#include "testutils.h"
 
-class UpgradeDataBaseTest: public Test, protected BaseTestUtils
+class UpgradeDataBaseTest: public Test, protected TestUtils
 {
 public:
     UpgradeDataBaseTest();

@@ -65,7 +65,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIR
 
 add_subdirectory(QuasarAppLib)
 add_subdirectory(submodules/crc)
-add_subdirectory(Heart)
+add_subdirectory(src)
 
 if (HEART_TESTS)
     add_subdirectory(HeartTests)

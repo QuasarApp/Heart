@@ -67,7 +67,11 @@ AbstractNode::AbstractNode( QObject *ptr):
     _socketWorker = new AsyncLauncher(_senderThread);
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
+    addApiParser<BigDataParser>();
+    auto abstractNodeParser = addApiParserNative<AbstractNodeParser>();
 
+    connect(abstractNodeParser.data(), &AbstractNodeParser::sigPingReceived,
+            this, &AbstractNode::receivePing, Qt::DirectConnection);
 
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL
@@ -80,12 +84,6 @@ AbstractNode::AbstractNode( QObject *ptr):
 
     initThreadPool();
 
-}
-
-void AbstractNode::initialize() {
-    if (!isInited()) {
-        init();
-    }
 }
 
 AbstractNode::~AbstractNode() {
@@ -107,8 +105,6 @@ AbstractNode::~AbstractNode() {
 }
 
 bool AbstractNode::run(const QString &addres, unsigned short port) {
-
-    initialize();
 
     if (!port)
         return false;
@@ -218,7 +214,6 @@ bool AbstractNode::addNode(const HostAddress &address) {
         return true;
     };
 
-    initialize();
     return _socketWorker->run(action);
 }
 
@@ -520,13 +515,6 @@ const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
     return _ignoreSslErrors;
 }
 
-void AbstractNode::configureParser(const QSharedPointer<iParser> &) {}
-
-void AbstractNode::init() {
-    addApiParser<BigDataParser>();
-    addApiParser<AbstractNodeParser>();
-}
-
 void AbstractNode::setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors) {
     _ignoreSslErrors = newIgnoreSslErrors;
 };
@@ -576,9 +564,7 @@ void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
 
 const QSharedPointer<iParser> &
 AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
-    const auto &parser = _apiVersionParser->addApiParser(parserObject);
-    configureParser(parser);
-    return parser;
+    return _apiVersionParser->addApiParser(parserObject);
 }
 
 void AbstractNode::handleSslErrorOcurredPrivate(SslSocket * sslScocket, const QList<QSslError> &errors) {
@@ -1151,6 +1137,8 @@ void AbstractNode::nodeAddedSucessful(AbstractNodeInfo *) {
 
 }
 
+void AbstractNode::receivePing(const QSharedPointer<PKG::Ping> &) {};
+
 bool AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {
     return _tasksheduller->shedule(task);
 }
@@ -1161,10 +1149,6 @@ void AbstractNode::removeTask(int taskId) {
 
 int AbstractNode::sheduledTaskCount() const {
     return _tasksheduller->taskCount();
-}
-
-bool AbstractNode::isInited() const {
-    return _apiVersionParser && _apiVersionParser->parsersTypedCount();
 }
 
 void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,

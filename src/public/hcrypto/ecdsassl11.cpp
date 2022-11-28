@@ -199,11 +199,11 @@ bool ECDSASSL11::checkSign(const QByteArray &inputData,
 
 }
 
-QByteArray ECDSASSL11::decript(const QByteArray &message, const QByteArray &key) {
+QByteArray ECDSASSL11::decript(const QByteArray &, const QByteArray &) {
     return {};
 }
 
-QByteArray ECDSASSL11::encript(const QByteArray &message, const QByteArray &key) {
+QByteArray ECDSASSL11::encript(const QByteArray &, const QByteArray &) {
     return {};
 }
 

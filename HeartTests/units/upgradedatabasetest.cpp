@@ -1,5 +1,4 @@
 #include "upgradedatabasetest.h"
-#include "databasenode.h"
 
 #include <QSqlQuery>
 #include <QSqlResult>

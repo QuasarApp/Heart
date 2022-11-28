@@ -54,12 +54,12 @@ CMakeCache.txt
 CMakeFiles/
 *_autogen
 
-Heart/Heart_autogen/
-Heart/cmake_install.cmake
+src/Heart_autogen/
+src/cmake_install.cmake
 HeartTests/cmake_install.cmake
 cmake_install.cmake
 docs/
-Heart/heart_global.h
+src/heart_global.h
 
 # git 
 *.orig

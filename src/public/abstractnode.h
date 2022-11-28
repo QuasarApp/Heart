@@ -10,6 +10,7 @@
 #define ABSTRACTNODE_H
 
 #include "abstractnodeinfo.h"
+#include "ping.h"
 
 #ifdef USE_HEART_SSL
 #include <openssl/evp.h>
@@ -329,12 +330,6 @@ public:
      */
     int sheduledTaskCount() const;
 
-    /**
-     * @brief isInited This method return true if this node object initialized else false.
-     * @return true if this node object initialized else false.
-     */
-    bool isInited() const;
-
 #ifdef USE_HEART_SSL
 
     /**
@@ -573,22 +568,14 @@ protected:
     virtual void nodeAddedSucessful(AbstractNodeInfo* node);
 
     /**
-     * @brief configureParser This method will invoke for the all added parsers of this node.
-     * @param parser This is current configured parser.
-     * @see AbstractNode::addApiParser
-     */
-    virtual void configureParser(const QSharedPointer<iParser> &parser);
-
-    /**
      * @brief addApiParserNative This is template metod that add sipport of new apiparser @a ApiType
      * @tparam ApiType This is type of new apiParser that will be added to the main parser.
      * @tparam Args This is argumets that will forward to the Parser constructor.
      * @return shared pointer to the @a ApiType
-     * @see AbstractNode::configureParser
      */
     template<class ApiType, class ... Args >
-    const QSharedPointer<ApiType> & addApiParserNative(Args&&... arg) {
-        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template static_canst<ApiType>();
+    QSharedPointer<ApiType> addApiParserNative(Args&&... arg) {
+        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template staticCast<ApiType>();
     }
 
     /**
@@ -596,19 +583,19 @@ protected:
      * @tparam ApiType This is type of new apiParser that will be added to the main parser.
      * @tparam Args This is argumets that will forward to the Parser constructor.
      * @return shared pointer to the iParser
-     * @see AbstractNode::configureParser
      */
     template<class ApiType, class ... Args >
     const QSharedPointer<iParser> & addApiParser(Args&&... arg) {
         return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...));
     }
 
-    /**
-     * @brief init This method will invoke in when the node sent first packge or run as aserver.
-     */
-    virtual void init();
-
 protected slots:
+    /**
+     * @brief receivePing This method invoked when node receive new ping object.
+     * @param ping This is ping object.
+     */
+    virtual void receivePing(const QSharedPointer<QH::PKG::Ping>& ping);;
+
     /**
      * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
      * @param nodeInfo This is pinter to modeInfoObject.
@@ -632,8 +619,6 @@ protected slots:
 #endif
 
 private slots:
-
-    void initialize();
 
     void avelableBytes(QH::AbstractNodeInfo* sender);
 

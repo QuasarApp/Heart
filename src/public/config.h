@@ -25,7 +25,7 @@
 // Data Base settings
 #define DEFAULT_DB_NAME "Storage.sqlite" // default database name of server
 #define DEFAULT_DB_PATH QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) // default location of database. in linux systems it is ~/.local/shared/<Company>/<AppName>
-#define DEFAULT_DB_INIT_FILE_PATH ":/sql/DataBaseSpace/Res/BaseDB.sql" // default database file path
+#define DEFAULT_DB_INIT_FILE_PATH ":/sql/res/BaseDB.sql" // default database file path
 #define DEFAULT_UPDATE_INTERVAL 3600000 // This is interval of update database cache by default it is 1 hour
 
 // Transport Protockol settings

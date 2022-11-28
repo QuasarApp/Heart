@@ -15,7 +15,7 @@
 #include <QSet>
 #include <QVariantMap>
 #include <QMutex>
-#include <AbstractSpace/config.h>
+#include "config.h"
 #include "softdelete.h"
 
 namespace QH {

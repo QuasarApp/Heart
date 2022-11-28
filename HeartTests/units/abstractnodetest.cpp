@@ -12,8 +12,6 @@
 #include <abstractnode.h>
 #include <ping.h>
 
-#include <Private/abstractnodeparser.h>
-
 #define LOCAL_TEST_PORT TEST_PORT + 1
 
 class TestingClient: public QH::AbstractNode {
@@ -24,26 +22,17 @@ public:
         return _ping;
     }
 
-protected:
-    void configureParser(const QSharedPointer<QH::iParser>& parser) {
-        if (parser->parserId() == "HeartLibAbstractAPI") {
-            connect(static_cast<QH::AbstractNodeParser*>(parser.data()), &QH::AbstractNodeParser::sigPingReceived,
-                    this, &TestingClient::receivePing, Qt::DirectConnection);
-        }
-
-    };
-
-private slots:
-    void receivePing(QSharedPointer<QH::PKG::Ping> ping) {
+protected slots:
+    void receivePing(const QSharedPointer<QH::PKG::Ping>& ping) override {
         _ping = *ping;
-    }
+    };
 
 private:
     QH::PKG::Ping _ping;
 };
 
 AbstractNodeTest::AbstractNodeTest() {
-    _nodeA = new QH::AbstractNode();
+    _nodeA = new TestingClient();
     _nodeB = new TestingClient();
 }
 

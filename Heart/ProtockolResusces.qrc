@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/sql">
-        <file>DataBaseSpace/Res/DbConfig.json</file>
-        <file>DataBaseSpace/Res/BaseDB.sql</file>
-    </qresource>
-</RCC>

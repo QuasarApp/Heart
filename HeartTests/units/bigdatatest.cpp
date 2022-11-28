@@ -36,6 +36,7 @@ protected:
 
 
 class BigDataTestParser: public QH::iParser {
+public:
     BigDataTestParser(QH::AbstractNode* parentNode): QH::iParser(parentNode) {
         registerPackageType<BigPackage>();
         data = new BigPackage();

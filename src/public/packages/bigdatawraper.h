@@ -22,7 +22,7 @@ class BigDataWraper: public AbstractData
     QH_PACKAGE(BigDataWraper, "BigDataWraper")
 
 public:
-    BigDataWraper();
+    BigDataWraper() = default;
 
     /**
      * @brief data This method sets data that shold be sent as big data.
