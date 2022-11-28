@@ -523,8 +523,8 @@ const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
 void AbstractNode::configureParser(const QSharedPointer<iParser> &) {}
 
 void AbstractNode::init() {
-    addApiParser<BigDataParser>(this);
-    addApiParser<AbstractNodeParser>(this);
+    addApiParser<BigDataParser>();
+    addApiParser<AbstractNodeParser>();
 }
 
 void AbstractNode::setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors) {
@@ -574,8 +574,11 @@ void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
     handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
 }
 
-void AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
-    configureParser(_apiVersionParser->addApiParser(parserObject));
+const QSharedPointer<iParser> &
+AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
+    const auto &parser = _apiVersionParser->addApiParser(parserObject);
+    configureParser(parser);
+    return parser;
 }
 
 void AbstractNode::handleSslErrorOcurredPrivate(SslSocket * sslScocket, const QList<QSslError> &errors) {

@@ -57,7 +57,7 @@ public:
     }
 
     QH::ParserResult parsePackage(const QSharedPointer<QH::PKG::AbstractData> &pkg,
-                                  const QH::Header &pkgHeader,
+                                  const QH::Header &,
                                   QH::AbstractNodeInfo *sender) override {
 
         if (pkg->cmd() == BigPackage::command()) {
@@ -81,16 +81,27 @@ private:
 
 class TestingClientBigData: public QH::AbstractNode {
 
-
     // AbstractNode interface
 public:
     TestingClientBigData() {
+        _parser = addApiParser<BigDataTestParser>();
     }
+
+    const QSharedPointer<QH::iParser>& parser() const {
+        return _parser;
+    }
+
+private:
+    QSharedPointer<QH::iParser> _parser;
 };
 
 BigDataTest::BigDataTest() {
     _nodeA = new TestingClientBigData();
+    _nodeAParser = static_cast<TestingClientBigData*>(_nodeA)->parser();
+
     _nodeB = new TestingClientBigData();
+    _nodeBParser = static_cast<TestingClientBigData*>(_nodeB)->parser();
+
 }
 
 BigDataTest::~BigDataTest() {
@@ -124,14 +135,17 @@ bool BigDataTest::sendDataTest() {
     }
 
     auto request = [this, testData](){
-        return static_cast<TestingClientBigData*>(_nodeB)->sendRequest(testData);
+        return _nodeBParser.staticCast<BigDataTestParser>()->sendRequest(testData);
     };
 
-    auto client = dynamic_cast<TestingClientBigData*>(_nodeB);
+    auto client = _nodeBParser.staticCast<BigDataTestParser>();
+    auto server = _nodeAParser.staticCast<BigDataTestParser>();
 
-    auto check = [client, testData](){
-        return client->getData() && client->getData()->data == testData;
+    auto check = [client, server, testData](){
+        return client->getData() && server->getData()->data == testData;
     };
 
     return funcPrivateConnect(request, check);
 }
+
+

@@ -28,6 +28,9 @@ public:
 private:
     QH::AbstractNode *_nodeA = nullptr;
     QH::AbstractNode *_nodeB = nullptr;
+    QSharedPointer<QH::iParser> _nodeBParser = nullptr;
+    QSharedPointer<QH::iParser> _nodeAParser = nullptr;
+
 
     bool connectTest();
     bool sendDataTest();

@@ -580,14 +580,27 @@ protected:
     virtual void configureParser(const QSharedPointer<iParser> &parser);
 
     /**
-     * @brief addApiParser This is template metod that add sipport of new apiparser @a ApiType
+     * @brief addApiParserNative This is template metod that add sipport of new apiparser @a ApiType
      * @tparam ApiType This is type of new apiParser that will be added to the main parser.
      * @tparam Args This is argumets that will forward to the Parser constructor.
+     * @return shared pointer to the @a ApiType
      * @see AbstractNode::configureParser
      */
     template<class ApiType, class ... Args >
-    void addApiParser(Args&&... arg) {
-        return addApiParser(QSharedPointer<ApiType>::create(std::forward<Args>(arg)...));
+    const QSharedPointer<ApiType> & addApiParserNative(Args&&... arg) {
+        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template static_canst<ApiType>();
+    }
+
+    /**
+     * @brief addApiParser This is template metod that add sipport of new apiparser @a ApiType
+     * @tparam ApiType This is type of new apiParser that will be added to the main parser.
+     * @tparam Args This is argumets that will forward to the Parser constructor.
+     * @return shared pointer to the iParser
+     * @see AbstractNode::configureParser
+     */
+    template<class ApiType, class ... Args >
+    const QSharedPointer<iParser> & addApiParser(Args&&... arg) {
+        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...));
     }
 
     /**
@@ -672,7 +685,7 @@ private:
      * @param parserObject This is bew api parser.
      * @return added parser.
      */
-    void addApiParser(const QSharedPointer<QH::iParser>& parserObject);
+    const QSharedPointer<iParser> & addApiParser(const QSharedPointer<QH::iParser>& parserObject);
 
     // iParser interface
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
