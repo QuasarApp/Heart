@@ -8,20 +8,11 @@
 
 #include <QtTest>
 
-#if HEART_BUILD_LVL >= 0
 #include "abstractnodetest.h"
 #include <shedullertest.h>
 #include <bigdatatest.h>
 #include <ecdsaauthtest.h>
-#endif
-#if HEART_BUILD_LVL >= 1
-#include <basenodetest.h>
-#include <singleservertest.h>
 #include <upgradedatabasetest.h>
-#endif
-#if HEART_BUILD_LVL >= 2
-#include <networknodetest.h>
-#endif
 
 #define TestCase(name, testClass) \
     void name() { \
@@ -38,7 +29,6 @@ public:
 
 private slots:
     // BEGIN TESTS CASES
-#if HEART_BUILD_LVL >= 0
 
     TestCase(abstractNodeTest, AbstractNodeTest)
     TestCase(bigDataTest, BigDataTest);
@@ -48,15 +38,7 @@ private slots:
     TestCase(ecdsaAuthTest, ECDSAAuthTest);
 #endif
 
-#endif
-#if HEART_BUILD_LVL >= 1
-    TestCase(baseNodeTest, BaseNodeTest)
-    TestCase(singleNodeTest, SingleServerTest)
     TestCase(upgradeDataBaseTest, UpgradeDataBaseTest)
-#endif
-#if HEART_BUILD_LVL >= 2
-    TestCase(networkNodeTest, NetworkNodeTest)
-#endif
 
     // END TEST CASES
 

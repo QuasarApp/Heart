@@ -20,40 +20,15 @@ set(CMAKE_AUTORCC ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Test REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Test REQUIRED)
 
-if (${HEART_BUILD_LVL} GREATER_EQUAL 0)
-    message("BUILD LVL >= 0")
-    file(GLOB SOURCE_CPP_LVL_0
-        "*.cpp" "*.h" "*.qrc"
-        "AbstractSpace/*.cpp" "AbstractSpace/*.h" "AbstractSpace/*.qrc"
-    )
-    set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/AbstractSpace")
-endif()
+file(GLOB SOURCE_CPP
+    "*.cpp" "*.h" "*.qrc"
+    "units/*.cpp" "units/*.h" "units/*.qrc"
+)
+set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/units")
 
-if (${HEART_BUILD_LVL} GREATER_EQUAL 1)
-    message("BUILD LVL >= 1")
-    file(GLOB SOURCE_CPP_LVL_1
-        "DataBaseSpace/*.cpp"
-        "DataBaseSpace/private/*.cpp"
-        "DataBaseSpace/*.h"
-        "DataBaseSpace/private/*.h"
 
-        "DataBaseSpace/*.qrc"
-    )
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/DataBaseSpace")
-
-endif()
-
-if (${HEART_BUILD_LVL} GREATER_EQUAL 2)
-    message("BUILD LVL >= 2")
-    file(GLOB SOURCE_CPP_LVL_2
-        "NetworkSpace/*.cpp" "NetworkSpace/*.h" "NetworkSpace/*.qrc"
-    )
-    set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/NetworkSpace")
-
-endif()
-
-set(SOURCE_CPP ${SOURCE_CPP_LVL_0} ${SOURCE_CPP_LVL_1} ${SOURCE_CPP_LVL_2})
+set(SOURCE_CPP ${SOURCE_CPP} )
 
 message(SOURCE_CPP = ${SOURCE_CPP})
 
@@ -65,4 +40,4 @@ target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
 
 
 initTests()
-addTests("NetworkProtokol" ${CURRENT_PROJECT})
+addTests("${CURRENT_PROJECT}" ${CURRENT_PROJECT})
