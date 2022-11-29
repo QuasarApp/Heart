@@ -66,7 +66,7 @@ bool TestUtils::connectFunc(
     };
 
     auto check = [&cli]() {
-        return cli->connectionsCount();
+        return cli->confirmendCount();
     };
 
     return funcPrivateConnect(wraper, check, [](){ return QMetaObject::Connection{};});
