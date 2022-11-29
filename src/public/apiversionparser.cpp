@@ -42,7 +42,6 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
         return parentResult;
     }
 
-    auto distVersion = sender->version();
     const auto parser = selectParser(pkg->cmd(), sender);
 
     if (!parser) {
@@ -170,6 +169,28 @@ unsigned short APIVersionParser::minimumApiVersion(const QString &apiKey) const 
     return 0;
 }
 
+bool APIVersionParser::sendSupportedAPI(AbstractNodeInfo *dist) const {
+    VersionData supportedAPIs;
+
+    for (auto it = _apiParsers.begin(); it != _apiParsers.end(); ++it) {
+        DistVersion supportVersions;
+
+        supportVersions.setMax(it->lastKey());
+        supportVersions.setMax(it->firstKey());
+
+        supportedAPIs.insert(it.key(), supportVersions);
+
+    }
+
+    if (supportedAPIs.isEmpty())
+        return false;
+
+    APIVersion versionInformationPkg;
+    versionInformationPkg.setVersion(supportedAPIs);
+
+    return sendData(&versionInformationPkg, dist);
+}
+
 bool APIVersionParser::processAppVersion(const QSharedPointer<APIVersion> &message,
                                          QH::AbstractNodeInfo *sender,
                                          const QH::Header &) {
@@ -178,20 +199,20 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<APIVersion> &messa
     sender->setVersion(distVersion);
     auto parser = selectParser(distVersion);
 
-    for (const auto &parserKey: message->version().keys()) {
-        if (!parser.contains(parserKey)) {
-            auto requiredApi = distVersion.value(parserKey);
+    for (auto parserKey = distVersion.keyBegin(); parserKey != distVersion.keyEnd(); ++parserKey) {
+        if (!parser.contains(*parserKey)) {
+            auto requiredApi = distVersion.value(*parserKey);
 
             QuasarAppUtils::Params::log(QString("Can't found %0 parser for versions: %1-%2").
-                                        arg(parserKey).
+                                        arg(*parserKey).
                                         arg(requiredApi.min()).
                                         arg(requiredApi.max()),
                                         QuasarAppUtils::Error);
 
-            unsigned short distMinVersion = sender->version().value(parserKey).min();
+            unsigned short distMinVersion = sender->version().value(*parserKey).min();
 
-            if (distMinVersion > maximumApiVersion(parserKey)) {
-                emit sigNoLongerSupport(parserKey, distMinVersion);
+            if (distMinVersion > maximumApiVersion(*parserKey)) {
+                emit sigNoLongerSupport(*parserKey, distMinVersion);
             }
 
             return false;

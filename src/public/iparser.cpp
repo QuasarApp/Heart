@@ -50,13 +50,13 @@ AbstractNode *iParser::node() const {
 
 unsigned int iParser::sendData(const PKG::AbstractData *resp,
                                const HostAddress &address,
-                               const Header *req) {
+                               const Header *req) const{
     return node()->sendData(resp, address, req);
 }
 
 unsigned int iParser::sendData(const PKG::AbstractData *resp,
                                const AbstractNodeInfo *dist,
-                               const Header *req) {
+                               const Header *req) const {
     return node()->sendData(resp, dist, req);
 
 }

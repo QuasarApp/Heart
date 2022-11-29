@@ -1264,6 +1264,10 @@ void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
 }
 
 void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
+    if (!_apiVersionParser->sendSupportedAPI(node)) {
+        QuasarAppUtils::Params::log("Failed to sent version information to dist node",
+                                    QuasarAppUtils::Error);
+    }
 
     auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     auto action = actions.take(node->networkAddress());

@@ -97,6 +97,13 @@ public:
      */
     unsigned short minimumApiVersion(const QString& apiKey) const;
 
+    /**
+     * @brief sendSupportedAPI This method sents all ainformation about suppported api.
+     * @param dist This is distanation node.
+     * @return true if the information sent successful else false.
+     */
+    bool sendSupportedAPI(AbstractNodeInfo *dist) const;
+
 signals:
 
     /**

@@ -217,7 +217,7 @@ protected:
      * @note This method is a just wraper of the AbstractNode::sendData method.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
-                                  const Header *req = nullptr);
+                                  const Header *req = nullptr) const;
 
     /**
      * @brief sendData This method send data  object another to node
@@ -228,7 +228,7 @@ protected:
      * @note This method is a just wraper of the AbstractNode::sendData method.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
-                                  const Header *req = nullptr);
+                                  const Header *req = nullptr) const;
 
 private:
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;

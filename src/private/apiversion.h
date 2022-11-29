@@ -8,8 +8,8 @@
 #ifndef APPVERSION_H
 #define APPVERSION_H
 
+#include "distversion.h"
 #include <abstractdata.h>
-#include "abstractnodeinfo.h"
 
 
 namespace QH {
