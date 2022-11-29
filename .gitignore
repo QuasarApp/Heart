@@ -60,6 +60,6 @@ HeartTests/cmake_install.cmake
 cmake_install.cmake
 docs/
 src/heart_global.h
-
+doxygen.conf
 # git 
 *.orig

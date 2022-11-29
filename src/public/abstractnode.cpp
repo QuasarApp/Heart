@@ -1264,6 +1264,7 @@ void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
 }
 
 void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
+
     auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     auto action = actions.take(node->networkAddress());
     if (action)

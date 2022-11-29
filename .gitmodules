@@ -1,7 +1,6 @@
-[submodule "QuasarAppLib"]
-	path = QuasarAppLib
-	url = https://github.com/QuasarApp/QuasarAppLib.git
-
 [submodule "submodules/crc"]
 	path = submodules/crc
 	url = https://github.com/QuasarApp/crc.git
+[submodule "submodules/QuasarAppLib"]
+	path = submodules/QuasarAppLib
+	url = https://github.com/QuasarApp/QuasarAppLib.git

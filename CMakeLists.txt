@@ -13,8 +13,8 @@ if(TARGET ${PROJECT_NAME})
   return()
 endif()
 
-include(QuasarAppLib/CMake/QuasarApp.cmake)
-include(QuasarAppLib/CMake/Version.cmake)
+include(submodules/QuasarAppLib/CMake/QuasarApp.cmake)
+include(submodules/QuasarAppLib/CMake/Version.cmake)
 
 if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     if (${TARGET_PLATFORM_TOOLCHAIN} STREQUAL "wasm32")
@@ -23,26 +23,14 @@ if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
     endif()
 endif()
 
-if(NOT DEFINED HEART_BUILD_LVL)
-    set(HEART_BUILD_LVL 1)
+updateGitVars()
+set(HEART_VERSION 1.2.${GIT_COMMIT_COUNT}.${GIT_COMMIT_HASH})
+
+if (ANDROID OR IOS)
+    option(HEART_TESTS "Enable or disable tests of the heart library" OFF)
+else()
+    option(HEART_TESTS "Enable or disable tests of the heart library" ON)
 endif()
-
-if (NOT DEFINED HEART_TESTS)
-    set(HEART_TESTS ON)
-
-    if (ANDROID OR IOS)
-        set(HEART_TESTS OFF)
-    endif()
-endif()
-
-if (NOT DEFINED HEART_DB_CACHE)
-    set(HEART_DB_CACHE OFF)
-
-    if (ANDROID OR WIN32)
-        set(HEART_DB_CACHE OFF)
-    endif()
-endif()
-
 # Use only for android debug builds with debugging from usb.
 option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraryes" OFF)
 option(CMAKE_SHARE "This option enable or disabled ssl functions of nodes" OFF)
@@ -54,16 +42,11 @@ else()
     option(HEART_SSL "This option enable or disabled ssl functions of nodes" ON)
 endif()
 
-
-if (HEART_DB_CACHE)
-    add_definitions(-DHEART_DB_CACHE)
-endif()
-
 # Add sub directories
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
 
-add_subdirectory(QuasarAppLib)
+add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/crc)
 add_subdirectory(src)
 
@@ -73,4 +56,6 @@ endif()
 
 initAll()
 
+configure_file_in(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
 addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
+
