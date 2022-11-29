@@ -89,10 +89,19 @@ void UpgradeDataBaseTest::test() {
     UpgradableDatabase *db = new UpgradableDatabase();
 
     QVERIFY(db->run("UpgradeDBTest"));
+    QuasarAppUtils::Params::log("Run DataBase finished successful", QuasarAppUtils::Info);
 
     QVERIFY(db->checkVersion(3));
+    QuasarAppUtils::Params::log("Version is valid", QuasarAppUtils::Info);
 
     db->stop();
+    QuasarAppUtils::Params::log("Stop Db finished successful", QuasarAppUtils::Info);
+
     QVERIFY(db->run("UpgradeDBTest"));
+    QuasarAppUtils::Params::log("try run again finished successful", QuasarAppUtils::Info);
+
     delete db;
+
+    QuasarAppUtils::Params::log("The UpgradeDataBaseTest test passed.", QuasarAppUtils::Info);
+
 }

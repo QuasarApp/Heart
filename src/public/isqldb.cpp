@@ -6,9 +6,7 @@
 */
 
 #include "isqldb.h"
-#include "quasarapp.h"
 #include "sqldbwriter.h"
-#include "dbaddresskey.h"
 
 #include <dbobject.h>
 #include <asyncsqldbwriter.h>
