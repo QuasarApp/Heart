@@ -28,7 +28,6 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QSslSocket>
-#include <apiversionparser.h>
 
 #endif
 
@@ -47,6 +46,7 @@
 #include <bigdatawraper.h>
 #include <bigdataparser.h>
 #include <abstractnodeparser.h>
+#include <apiversionparser.h>
 
 namespace QH {
 
@@ -67,6 +67,7 @@ AbstractNode::AbstractNode( QObject *ptr):
     _socketWorker = new AsyncLauncher(_senderThread);
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
+
     addApiParser<BigDataParser>();
     auto abstractNodeParser = addApiParserNative<AbstractNodeParser>();
 
