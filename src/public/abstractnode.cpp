@@ -563,11 +563,6 @@ void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
     handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
 }
 
-const QSharedPointer<iParser> &
-AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
-    return _apiVersionParser->addApiParser(parserObject);
-}
-
 void AbstractNode::handleSslErrorOcurredPrivate(SslSocket * sslScocket, const QList<QSslError> &errors) {
 
     QList<QSslError> ignore;
@@ -599,6 +594,11 @@ void AbstractNode::handleSslErrorOcurred(SslSocket *scket,
 }
 
 #endif
+
+const QSharedPointer<iParser> &
+AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
+    return _apiVersionParser->addApiParser(parserObject);
+}
 
 AbstractNodeInfo *AbstractNode::createNodeInfo(QAbstractSocket *socket,
                                                const HostAddress* clientAddress) const {
