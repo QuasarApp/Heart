@@ -54,8 +54,9 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
         if (!cmd->ansver()) {
             cmd->setAnsver(true);
             nodePtr->sendData(cmd.data(), sender, &pkgHeader);
-            emit sigPingReceived(cmd);
         }
+
+        emit sigPingReceived(cmd);
 
         return ParserResult::Processed;
     } else if (PKG::BadRequest::command() == pkg->cmd()) {

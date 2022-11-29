@@ -14,6 +14,9 @@
 
 namespace QH {
 
+namespace PKG {
+
+
 /**
  * @brief The APIVersion class This is base pacakge class that send information about supported api version on the paired node
  */
@@ -42,5 +45,5 @@ private:
 };
 
 }
-
+}
 #endif // APPVERSION_H

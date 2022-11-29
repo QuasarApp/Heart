@@ -18,6 +18,11 @@
 #define PROTOCKOL_VERSION_COMMAND 0xFFFF
 
 /**
+ * @brief PROTOCKOL_VERSION_RECEIVED_COMMAND is command for check delivered version.
+ */
+#define PROTOCKOL_VERSION_RECEIVED_COMMAND PROTOCKOL_VERSION_COMMAND - 1
+
+/**
  * @brief QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
 */

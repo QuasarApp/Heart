@@ -7,6 +7,7 @@
 
 #include "versionisreceived.h"
 namespace QH {
+namespace PKG {
 
 VersionIsReceived::VersionIsReceived()
 {
@@ -19,5 +20,6 @@ QDataStream &VersionIsReceived::fromStream(QDataStream &stream) {
 
 QDataStream &VersionIsReceived::toStream(QDataStream &stream) const {
     return stream;
+}
 }
 }

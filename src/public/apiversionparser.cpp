@@ -15,6 +15,7 @@
 #include <versionisreceived.h>
 #include <abstractnode.h>
 #include <qaglobalutils.h>
+#include <apiversion.h>
 
 namespace QH {
 
@@ -28,7 +29,7 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
 
     // here node must be receive version of connected application.
     // if not use the default version (0)APIVersion
-    auto parentResult = commandHandler<APIVersion>(this, &APIVersionParser::processAppVersion,
+    auto parentResult = commandHandler<PKG::APIVersion>(this, &APIVersionParser::processAppVersion,
                                                    pkg, sender, pkgHeader);
     if (parentResult != QH::ParserResult::NotProcessed) {
         return parentResult;
@@ -36,7 +37,7 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
 
     // here node must be receive responce that version is delivered.
     // when node receive this message then node status are confirmed
-    parentResult = commandHandler<VersionIsReceived>(this, &APIVersionParser::versionDeliveredSuccessful,
+    parentResult = commandHandler<PKG::VersionIsReceived>(this, &APIVersionParser::versionDeliveredSuccessful,
                                                      pkg, sender, pkgHeader);
     if (parentResult != QH::ParserResult::NotProcessed) {
         return parentResult;
@@ -71,6 +72,12 @@ APIVersionParser::searchPackage(unsigned short cmd,
                                 AbstractNodeInfo *sender) const {
     if (!sender)
         return nullptr;
+
+    if (cmd == PKG::APIVersion::command()) {
+        return QSharedPointer<PKG::APIVersion>::create();
+    } else if (cmd == PKG::VersionIsReceived::command()) {
+        return QSharedPointer<PKG::VersionIsReceived>::create();
+    }
 
     auto distVersion = sender->version();
     const auto parsers = selectParser(distVersion);
@@ -185,13 +192,13 @@ bool APIVersionParser::sendSupportedAPI(AbstractNodeInfo *dist) const {
     if (supportedAPIs.isEmpty())
         return false;
 
-    APIVersion versionInformationPkg;
+    PKG::APIVersion versionInformationPkg;
     versionInformationPkg.setVersion(supportedAPIs);
 
     return sendData(&versionInformationPkg, dist);
 }
 
-bool APIVersionParser::processAppVersion(const QSharedPointer<APIVersion> &message,
+bool APIVersionParser::processAppVersion(const QSharedPointer<PKG::APIVersion> &message,
                                          QH::AbstractNodeInfo *sender,
                                          const QH::Header &) {
 
@@ -219,11 +226,13 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<APIVersion> &messa
         }
     }
 
-    VersionIsReceived result;
+    sender->setFVersionReceived(true);
+
+    PKG::VersionIsReceived result;
     return node()->sendData(&result, sender);
 }
 
-bool APIVersionParser::versionDeliveredSuccessful(const QSharedPointer<VersionIsReceived> &,
+bool APIVersionParser::versionDeliveredSuccessful(const QSharedPointer<PKG::VersionIsReceived> &,
                                                   AbstractNodeInfo *sender,
                                                   const QH::Header &) {
     sender->setFVersionDelivered(true);

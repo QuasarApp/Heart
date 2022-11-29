@@ -8,6 +8,8 @@
 #include "apiversion.h"
 
 namespace QH {
+namespace PKG {
+
 
 APIVersion::APIVersion() {
 
@@ -32,4 +34,5 @@ void APIVersion::setVersion(const VersionData &newVersion) {
     _version = newVersion;
 }
 
+}
 }

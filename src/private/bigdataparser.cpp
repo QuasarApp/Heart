@@ -127,7 +127,8 @@ bool BigDataParser::processPart(const QSharedPointer<PKG::BigDataPart> &part,
 
     }
 
-    auto package = node()->genPackage(localPool.header->getCommand());
+    auto package = node()->genPackage(localPool.header->getCommand(),
+                                      sender);
     if (!package)
         return false;
 

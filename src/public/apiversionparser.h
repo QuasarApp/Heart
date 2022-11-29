@@ -14,9 +14,10 @@
 
 namespace QH {
 
+namespace PKG {
 class APIVersion;
 class VersionIsReceived;
-
+}
 /**
  * @brief The APIVersionParser class This is main parser forthe main command.
  * This parsers work only with the APIVersion packge;
@@ -118,10 +119,10 @@ private:
     QSharedPointer<QH::iParser>
     selectParserImpl(unsigned short cmd, AbstractNodeInfo *sender);
 
-    bool processAppVersion(const QSharedPointer<APIVersion> &message,
+    bool processAppVersion(const QSharedPointer<PKG::APIVersion> &message,
                            AbstractNodeInfo *sender,
                            const QH::Header &);
-    bool versionDeliveredSuccessful(const QSharedPointer<VersionIsReceived> &,
+    bool versionDeliveredSuccessful(const QSharedPointer<PKG::VersionIsReceived> &,
                                     QH::AbstractNodeInfo *sender,
                                     const QH::Header &);
 

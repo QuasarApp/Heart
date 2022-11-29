@@ -678,7 +678,7 @@ private:
                               AbstractNodeInfo *sender);
 
     QSharedPointer<PKG::AbstractData>
-    genPackage(unsigned short cmd) const;
+    genPackage(unsigned short cmd, AbstractNodeInfo *sender) const;
 
     /**
       @note just disaable listen method in the node objects.

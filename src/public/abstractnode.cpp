@@ -675,8 +675,10 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
     return _apiVersionParser->parsePackage(pkg, pkgHeader, sender);
 }
 
-QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short ) const {
-    debug_assert(false, "the AbstractNode::genPackage is disabled. use the searchPackage");
+QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd, AbstractNodeInfo *sender) const {
+    if (_apiVersionParser)
+        return _apiVersionParser->searchPackage(cmd, sender);
+
     return nullptr;
 }
 

@@ -12,22 +12,29 @@
 #include <abstractdata.h>
 
 namespace QH {
+namespace PKG {
 
 /**
- * @brief The VersionIsReceived class
+ * @brief The VersionIsReceived class base class for confirmed versions.
  */
 class VersionIsReceived: public QH::PKG::AbstractData
 {
-    QH_PACKAGE(VersionIsReceived, "VersionIsReceived")
 
 public:
     VersionIsReceived();
 
+    static unsigned short command(){return PROTOCKOL_VERSION_RECEIVED_COMMAND;}
+    static QString commandText(){return "PROTOCKOL_VERSION_RECEIVED_COMMAND";}
+    unsigned short cmd() const override {return VersionIsReceived::command();}
+    QString cmdString() const override {return VersionIsReceived::commandText();}
+
+
     // StreamBase interface
 protected:
+    unsigned int localCode() const override {return typeid(VersionIsReceived).hash_code();}
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 };
-
+}
 }
 #endif // VERSIONISRECEIVED_H
