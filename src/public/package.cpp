@@ -5,9 +5,8 @@
  * of this license document, but changing it is not allowed.
 */
 
-#include "abstractdata.h"
 #include "package.h"
-
+#include <crc/crchash.h>
 #include <QDataStream>
 
 namespace QH {
@@ -28,7 +27,11 @@ bool Package::isValid() const {
     if (hdr.size > maximumSize())
         return false;
 
+#ifdef HEART_DEPRECATED_API
+    return calcHash() == hdr.hash || calcHashOld() == hdr.hash;
+#else
     return calcHash() == hdr.hash;
+#endif
 }
 
 void Package::reset() {
@@ -42,7 +45,12 @@ QString Package::toString() const {
             arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
 }
 
-unsigned int Package::calcHash() const{
+unsigned int Package::calcHash() const {
+    auto tmp = data + QByteArray::number(hdr.command);
+    return common::Hash32(tmp.constData(), tmp.size());
+}
+
+unsigned int Package::calcHashOld() const {
     return qHash(data + QByteArray::number(hdr.command));
 }
 

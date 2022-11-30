@@ -17,6 +17,10 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions(-DHEART_LIBRARY)
 
+if (HEART_DEPRECATED_API)
+    add_definitions(-DHEART_DEPRECATED_API)
+endif()
+
 set(SLL_DEFINE "WITHOUT_SSL")
 
 if (HEART_SSL)
@@ -35,8 +39,14 @@ file(GLOB SOURCE_CPP
     "private/*.cpp" "private/*.h" "private/*.qrc"
     "public/hcrypto/*.cpp" "public/hcrypto/*.h" "public/hcrypto/*.qrc"
     "public/hcryptoFeatures/*.cpp" "public/hcryptoFeatures/*.h" "public/hcryptoFeatures/*.qrc"
-
 )
+
+if (NOT HEART_DEPRECATED_API)
+    file(GLOB SOURCE_CPP_DEPRECATED
+        "private/*_old.cpp" "private/*_old.h"
+    )
+    list(REMOVE_ITEM SOURCE_CPP ${SOURCE_CPP_DEPRECATED})
+endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public")
@@ -73,7 +83,6 @@ if (HEART_SSL)
     message("Use the OpenSSL libraries: ${OPENSSL_LIBRARIES}")
 
 endif()
-
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})

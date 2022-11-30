@@ -48,6 +48,11 @@
 #include <abstractnodeparser.h>
 #include <apiversionparser.h>
 
+#ifdef HEART_DEPRECATED_API
+#include "bigdataparser_old.h"
+#include "abstractnodeparser_old.h"
+#endif
+
 namespace QH {
 
 using namespace PKG;
@@ -68,9 +73,15 @@ AbstractNode::AbstractNode( QObject *ptr):
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
 
+#ifdef HEART_DEPRECATED_API
+    addApiParser<BigDataParserOld>();
+    auto abstractNodeParserOld = addApiParserNative<AbstractNodeParserOld>();
+    connect(abstractNodeParserOld.data(), &AbstractNodeParserOld::sigPingReceived,
+            this, &AbstractNode::receivePing, Qt::DirectConnection);
+#endif
     addApiParser<BigDataParser>();
-    auto abstractNodeParser = addApiParserNative<AbstractNodeParser>();
 
+    auto abstractNodeParser = addApiParserNative<AbstractNodeParser>();
     connect(abstractNodeParser.data(), &AbstractNodeParser::sigPingReceived,
             this, &AbstractNode::receivePing, Qt::DirectConnection);
 
@@ -722,6 +733,26 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
         return 0;
     }
 
+#ifdef HEART_DEPRECATED_API
+    bool fOld = node->version().value("HeartLibAbstractAPI").max() <= 0 &&
+                    resp->cmd() != PROTOCKOL_VERSION_RECEIVED_COMMAND &&
+                    resp->cmd() != PROTOCKOL_VERSION_COMMAND;
+    Package pkg;
+    bool convert = false;
+    if (req && req->isValid()) {
+        if (fOld) {
+            convert = resp->toPackageOld(pkg, req->hash);
+        } else {
+            convert = resp->toPackage(pkg, req->hash);
+        }
+    } else {
+        if (fOld) {
+            convert = resp->toPackageOld(pkg);
+        } else {
+            convert = resp->toPackage(pkg);
+        }
+    }
+#else
     Package pkg;
     bool convert = false;
     if (req && req->isValid()) {
@@ -729,6 +760,7 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     } else {
         convert = resp->toPackage(pkg);
     }
+#endif
 
     if (!convert) {
 

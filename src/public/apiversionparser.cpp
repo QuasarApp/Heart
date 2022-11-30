@@ -120,8 +120,10 @@ APIVersionParser::selectParser(const VersionData &distVersion) const {
     for (auto it = distVersion.begin(); it != distVersion.end(); ++it) {
         for (int version = it->max(); version >= it->min(); --version) {
             auto parser = _apiParsers[it.key()].value(version, nullptr);
-            if (parser)
+            if (parser) {
                 result[it.key()] = parser;
+                break;
+            }
         }
     }
 
@@ -183,7 +185,7 @@ bool APIVersionParser::sendSupportedAPI(AbstractNodeInfo *dist) const {
         DistVersion supportVersions;
 
         supportVersions.setMax(it->lastKey());
-        supportVersions.setMax(it->firstKey());
+        supportVersions.setMin(it->firstKey());
 
         supportedAPIs.insert(it.key(), supportVersions);
 

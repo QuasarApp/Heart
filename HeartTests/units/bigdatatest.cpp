@@ -13,6 +13,7 @@
 
 class BigPackage: public QH::PKG::AbstractData {
     QH_PACKAGE(BigPackage, "BigPackage")
+
 public:
     BigPackage(){
         data = {};

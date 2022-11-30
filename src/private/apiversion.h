@@ -29,10 +29,15 @@ public:
     static unsigned short command(){return PROTOCKOL_VERSION_COMMAND;}
     static QString commandText(){return "PROTOCKOL_VERSION_COMMAND";}
     unsigned short cmd() const override {return APIVersion::command();}
+
+    unsigned short cmdOld() const override {return APIVersion::command();}
+
     QString cmdString() const override {return APIVersion::commandText();}
 
     const VersionData &version() const;
     void setVersion(const VersionData &newVersion);
+
+    bool isValid() const override;
 
 protected:
     unsigned int localCode() const override {return typeid(APIVersion).hash_code();}
