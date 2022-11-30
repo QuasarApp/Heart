@@ -50,7 +50,7 @@ void PackageManager::processed(const Package &pkg, char processResult) {
     QMutexLocker lock(&_processMutex);
 
     if (_parseResults.size() > PACKAGE_CACHE_SIZE) {
-        _processTime.erase(_processTime.begin());
+        _processTime.erase(_processTime.cbegin());
     }
 
     _parseResults.insert(pkg.hdr.hash, new PackaData {

@@ -744,7 +744,9 @@ private:
     friend class WebSocketController;
     friend class SocketFactory;
     friend class BigDataParser;
+    friend class BigDataParserOld;
     friend class AbstractNodeParser;
+    friend class AbstractNodeParserOld;
 
 
 };

@@ -34,5 +34,18 @@ void APIVersion::setVersion(const VersionData &newVersion) {
     _version = newVersion;
 }
 
+bool APIVersion::isValid() const {
+    if (_version.isEmpty())
+        return false;
+
+    for (const auto & version: _version) {
+        if (version.max() < version.min()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 }
 }

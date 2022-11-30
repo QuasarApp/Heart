@@ -5,7 +5,7 @@
 //# of this license document, but changing it is not allowed.
 //#
 
-#include "abstractnodeparser.h"
+#include "abstractnodeparser_old.h"
 #include "params.h"
 #include "abstractnode.h"
 #include "qaglobalutils.h"
@@ -17,18 +17,18 @@
 
 namespace QH {
 
-AbstractNodeParser::AbstractNodeParser(AbstractNode* parentNode): iParser(parentNode) {
+AbstractNodeParserOld::AbstractNodeParserOld(AbstractNode* parentNode): iParser(parentNode) {
     debug_assert(parentNode, "Node object can't be null!");
 
-    registerPackageType<PKG::Ping>();
-    registerPackageType<PKG::BadRequest>();
-    registerPackageType<PKG::CloseConnection>();
+    registerPackageTypeOld<PKG::Ping>();
+    registerPackageTypeOld<PKG::BadRequest>();
+    registerPackageTypeOld<PKG::CloseConnection>();
 }
 
-AbstractNodeParser::~AbstractNodeParser() {
+AbstractNodeParserOld::~AbstractNodeParserOld() {
 }
 
-ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
+ParserResult AbstractNodeParserOld::parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
                                               const Header &pkgHeader,
                                               AbstractNodeInfo *sender) {
     auto nodePtr = node();
@@ -49,7 +49,7 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
         return ParserResult::Error;
     }
 
-    if (PKG::Ping::command() == pkg->cmd()) {
+    if (PKG::Ping::commandOld() == pkg->cmd()) {
         auto cmd = pkg.staticCast<PKG::Ping>();
         if (!cmd->ansver()) {
             cmd->setAnsver(true);
@@ -59,14 +59,14 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
         emit sigPingReceived(cmd);
 
         return ParserResult::Processed;
-    } else if (PKG::BadRequest::command() == pkg->cmd()) {
+    } else if (PKG::BadRequest::commandOld() == pkg->cmd()) {
         auto cmd = static_cast<PKG::BadRequest *>(pkg.data());
 
         emit nodePtr->requestError(cmd->errCode(), cmd->err());
 
         return ParserResult::Processed;
 
-    } else if (PKG::CloseConnection::command() == pkg->cmd()) {
+    } else if (PKG::CloseConnection::commandOld() == pkg->cmd()) {
         if (sender->isLocal()) {
             nodePtr->removeNode(sender->networkAddress());
         }
@@ -76,11 +76,11 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
     return ParserResult::NotProcessed;
 }
 
-int AbstractNodeParser::version() const {
-    return 1;
+int AbstractNodeParserOld::version() const {
+    return 0;
 }
 
-QString AbstractNodeParser::parserId() const {
+QString AbstractNodeParserOld::parserId() const {
     return "HeartLibAbstractAPI";
 }
 }

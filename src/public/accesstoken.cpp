@@ -70,8 +70,5 @@ QDataStream &AccessToken::toStream(QDataStream &stream) const {
     return stream;
 }
 
-uint qHash(const AccessToken &token) {
-    return qHash(token._data);
-}
 }
 

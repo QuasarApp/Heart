@@ -28,7 +28,7 @@ struct HEARTSHARED_EXPORT Header {
     unsigned int size;
 
     /**
-     * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation. qHash(QByteArray)
+     * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation.
      */
     unsigned int hash;
 

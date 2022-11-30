@@ -234,6 +234,9 @@ private:
     QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
     AbstractNode *_node;
 
+    friend class BigDataParserOld;
+    friend class AbstractNodeParserOld;
+
 };
 
 

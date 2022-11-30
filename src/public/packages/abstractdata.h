@@ -10,7 +10,7 @@
 #include "humanreadableobject.h"
 #include "package.h"
 #include <streambase.h>
-
+#include <crc/crchash.h>
 
 /**
  * @brief PROTOCKOL_VERSION_COMMAND is command for exchange versions number betwin nodes.
@@ -28,9 +28,11 @@
 */
 #define QH_PACKAGE(X, S) \
    public: \
-    static unsigned short command(){return qHash(QString(S)) % 0xFFFF;} \
+    static unsigned short commandOld(){return qHash(QString(S)) % 0xFFFF;} \
+    static unsigned short command(){return common::Hash16(S, strlen(S));} \
     static QString commandText(){return S;} \
     unsigned short cmd() const override {return X::command();} \
+    unsigned short cmdOld() const override {return X::commandOld();} \
     QString cmdString() const override {return X::commandText();} \
    protected: \
     unsigned int localCode() const override {return typeid(X).hash_code();} \
@@ -161,6 +163,23 @@ public:
      * @return True if convert to package finished successful.
      */
     bool toPackage(Package &package, unsigned int triggerHash = 0) const;
+
+    /**
+     * @brief toPackageOld This method convert this class object to the package.
+     *  For more info see Package class.
+     * @param package  This is return value of Package class.
+     * @param triggerHash This is hash of the package the current class is responding to.
+     * @return True if convert to package finished successful.
+     */
+    bool toPackageOld(Package &package, unsigned int triggerHash = 0) const;
+
+    /**
+     * @brief cmdOld - This is command of this object, (for generate cmd use macross QH_PACKAGE)
+     * @note Use the QH_PACKAGE macross for implement this method.
+     * @return global command of package.
+     * @see QH_PACKAGE
+     */
+    virtual unsigned short cmdOld() const = 0;
 
     /**
      * @brief isValid This method check current object to valid.

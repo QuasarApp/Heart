@@ -101,13 +101,6 @@ public:
      */
     AccessToken &operator =(const AccessToken& other);
 
-    /**
-     * @brief qHash This is hash function of the AccessToken type.
-     * @param token Input value of AccessToken type.
-     * @return Hash code of the AccessToken value.
-     */
-    friend uint qHash(const AccessToken& token);
-
 protected:
     QDataStream &fromStream(QDataStream &stream);
     QDataStream &toStream(QDataStream &stream) const;
