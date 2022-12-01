@@ -24,11 +24,6 @@ This library consists of two levels (AbstractNode level and DataBaseNode level).
      add_subdirectory(Heart)
      ```
      
- * select requirement build level for your project
-
-     ```cmake
-     set(HEART_BUILD_LVL 2)
-     ```
      where 1 - is code of build level 
    
      1 - AbstractNode
