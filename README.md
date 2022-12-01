@@ -160,5 +160,4 @@ public:
     }
 };
 ```
-
-For more information, see our QuasarApp Heart [Code](https://quasarapp.ddns.net/docs/heart/html/index.html) Documentation.
+For more information, see our QuasarApp Heart [Code](https://quasarapp.ddns.net:3031/docs/QuasarApp/Heart/latest/) Documentation.
