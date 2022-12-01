@@ -104,7 +104,6 @@ public:
     ~DBObject() override;
 
     bool isValid() const override;
-    bool copyFrom(const AbstractData * other) override;
 
     /**
      * @brief isHaveAPrimaryKey This method return true if this object has a primary key.
@@ -326,28 +325,6 @@ public:
      * @return The database address of current object.
      */
     DbAddress dbAddress() const;
-
-    /**
-     * @brief clone This method create a new object. The new Object is clone of current object.
-     *  This method is template, so you can set needed type for result.
-     * \code{cpp}
-     *  MyObject->clone<MyObjectType>();
-     * \endcode
-     * @note If you want to get raw pointer to the clone object use a DBObject::cloneRaw method.
-     * @return The shared pointer to clone of current object.
-     */
-    template<class Object = DBObject>
-    QSharedPointer<Object> clone() const {
-        return QSharedPointer<Object>(dynamic_cast<Object*>(cloneRaw()));
-    }
-
-    /**
-     * @brief cloneRaw This method return a raw pointer to clone of this object.
-     * @warning clone object do not removed automatically and may result in a memory leak.
-     * @note for get a shared pointer of clone object use the DBObject::clone method.
-     * @return The raw pointer to clone of this object.
-     */
-    DBObject* cloneRaw() const;
 
     QString toString() const override;
 

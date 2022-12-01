@@ -74,63 +74,7 @@ protected:
  *  \endcode
  * This is simple implementation of package for transport text data.
  * You need to override 2 serialization methods (fromStream and toStream).
- * For add the copying functionality of you class, you need to override the copyFrom  method.
- * \code {cpp}
- * class MyPackage: public QH::AbstractData
-{
-    QH_PACKAGE(MyPackage, "MyPackage")
-    ...
-    bool copyFrom(const AbstractData *other) {
-        if (!AbstractData::copyFrom(other))
-            return false;
 
-        auto otherObject = dynamic_cast<const MyPackage*>(other);
-        if (!otherObject)
-            return false;
-
-        this->_data = otherObject->_data;
-        return true;
-    };
-
-    // your data for for server of client
-    std::string _data = "";
-    ...
-};
- * \endcode
- * This method copyFrom supports copying between parent and child classes.
- * Consider the situation:
- * Classes A > B > C
- *
-   \code{cpp}
-    A * a = new A;
-    A * b = new B;
-    A * c = new C;
-   \endcode
-
- * The situation when the classes have the same type.
- * In this case, all object fields will be copied.
-
-   \code{cpp}
-    b.copyFrom (b1) // true
-    c.copyFrom (c1) // true
-   \endcode
-
- * The situation when the class Requesting data to be copied is a child of the class that is requesting data to be copied.
-   \code{cpp}
-    b.copyFrom (a) // false
-    c.copyFrom (a) // false
-   \endcode
-
-* In this case, copying will be partially performed and the result of calling the copyFrom method will be false, since the data has not been copied for all members of the child class.
-* The situation when the class Requesting data to be copied is the parent of the class from which data to be copied is requested.
-* In this case, all possible data will be copied and returned true.
-
-   \code{cpp}
-    a.copyFrom (b) // true
-    a.copyFrom (c) // true
-   \endcode
- * That is why it is important that the implementation of the copyFrom method is exactly the same as shown in the example.
- * If the implementation of this method differs from the example, the data will not be copied correctly.
  * @see AbstractNode
  */
 class HEARTSHARED_EXPORT AbstractData : public StreamBase, public QuasarAppUtils::iHRO
@@ -186,27 +130,6 @@ public:
      * @return True if class isValid.
      */
     virtual bool isValid() const;
-
-    /**
-     * @brief copyFrom This method copyFrom supports copying between parent and child classes.
-     *  @note The implementation of this method must be like a example:
-     *   \code
-         bool copyFrom(const AbstractData *other) {
-            if (!AbstractData::copyFrom(other))
-                return false;
-
-            auto otherObject = dynamic_cast<const MyPackage*>(other);
-            if (!otherObject)
-                return false;
-
-            this->_data = otherObject->_data;
-            return true;
-        };
-     *   \endcode
-     * @param other - Pointer to anther object.
-     * @return True all members of current object is updated.
-     */
-    virtual bool copyFrom(const AbstractData* other);
 
     /**
      * @brief toString - Return a string implementation for this object.

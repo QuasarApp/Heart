@@ -22,6 +22,10 @@ public:
         return _ping;
     }
 
+    NodeType nodeType() const override {
+        return NodeType::Node;
+    };
+
 protected slots:
     void receivePing(const QSharedPointer<QH::PKG::Ping>& ping) override {
         _ping = *ping;

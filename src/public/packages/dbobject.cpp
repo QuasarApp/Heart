@@ -236,15 +236,6 @@ DbAddress DBObject::dbAddress() const {
     return {table(), primaryValue()};
 }
 
-DBObject *DBObject::cloneRaw() const {
-    auto cloneObject = createDBObject();
-    if (!cloneObject->copyFrom(this)) {
-        return nullptr;
-    }
-
-    return cloneObject;
-}
-
 QString DBObject::toString() const {
     return AbstractData::toString() +
             QString(" %0").arg(dbAddress().toString());
@@ -315,10 +306,6 @@ bool DBObject::isValid() const {
     }
 
     return table().size();
-}
-
-bool DBObject::copyFrom(const AbstractData * other) {
-    return AbstractData::copyFrom(other);
 }
 
 bool DBObject::isHaveAPrimaryKey() const {

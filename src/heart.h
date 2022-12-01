@@ -15,10 +15,14 @@ inline void initResources() { Q_INIT_RESOURCE(ProtockolResusces); }
 
 /**
  * @brief The QH namespace - QuasarApp Heart namespace. This namespace contains all classes of the Heart library.
+ *
  * Usage:
- * 1. First one you need to create a package for transporting data betwin server and client. For this you need to do Inheritance with the
- * QF::PKG::AbstrcatData class. So, You need to override 2 serialization methods of AbstrcatData and the copyFrom method.
+ *
+ * 1. First one, you need to create a package for transporting data between server and client. For this you need to do Inheritance with the
+ * QF::PKG::AbstrcatData class.
+ *
  * Example: The package for transporting text data.
+ *
  * \code{cpp}
 class MyPackage: public QH::AbstractData
 {
@@ -46,18 +50,21 @@ protected:
 
 };
  * \endcode
- * @note The method copyFrom is not necessary method so you can be skip it. Bud if you want override it then you need to override like in example, with check of object type. If you do not override this method or override it not correctly then copy data from another package do not work correctly. In base case method copy From not using, but it is necessary for DBObject class
- * 2. You need to create a Server class. For this you need to do Inheritance with the QF::AbstrcatData class
- *  Example:
+ * 2. You need to create a ApiParserClass - The API parser class should be inherited of the iParser class and implement all business logics of your client - server app.
+ *
+ * Example:
  * \code{cpp}
-class TestingServer: public QH::AbstractNode {
-Q_OBJECT
-public:
-    TestingServer() {
-        registerPackageType<MyPackage>();
+ *
+ * class MyParser: public QH::iParser {
+    public:
+        MyParser(QH::AbstractNode* parentNode): QH::iParser(parentNode) {
+            registerPackageType<MyPackage>();
+            data = new BigPackage();
     }
 
-protected:
+    // iParser interface
+    public:
+
     // override this method for processed received data.
     ParserResult parsePackage(const Package &pkg,
                               const AbstractNodeInfo *sender) {
@@ -76,7 +83,7 @@ protected:
     }
 
     bool processMyPackage(const QSharedPointer<MyPackage> &cardrequest,
-                    const QH::AbstractNodeInfo *sender, const QH::Header &hdr) {
+                          const QH::AbstractNodeInfo *sender, const QH::Header &hdr) {
 
         BaseId requesterId = getSender(sender, &cardrequest);
 
@@ -87,12 +94,40 @@ protected:
 
         cardrequest._data = "responce for client "
 
-        SendData(cardrequest, sender->networkAddress(), &pkg.hdr);
+        // responce only for servers.
+        if (nodeType() == QH::AbstractNode::NodeType::Server)
+            sendData(cardrequest, sender->networkAddress(), &pkg.hdr);
+
         return ParserResult::Processed;
+    }
+
+    // This vesion of the parser (any digital value.) .
+    int version() const override {return 0;};
+    QString parserId() const override {return "MyParser";};
+
+    };
+    \endcode
+ *
+ *
+ * 3. You need to create a Server class. For this, you need to do Inheritance with the QF::AbstrcatData class
+
+*  Example:
+
+* \code{cpp}
+class TestingServer: public QH::AbstractNode {
+Q_OBJECT
+public:
+    TestingServer() {
+        addApiParser<MyParser>();
+    }
+
+    QH::AbstractNode::NodeType nodeType() const override {
+        return QH::AbstractNode::NodeType::Server;
     }
 };
  * \endcode
- *  This is simple echo server for our client - server application.
+ *
+ *  This is a simple echo server for our client - server application.
  *  For Run this serve use method QF::AbstrcatData::run
  *
  *  \code{cpp}
@@ -101,55 +136,48 @@ protected:
             testServer.run("127.0.0.1", 7777)
         }
     \endcode
- * 3. Create a client application class.
- * Client and server must be inheritance from QF::AbstrcatData class for support parsing packages.
+
+ * 4. Create a client application class.
+ * Client and server must be inheritance from QF::AbstrcatData class to support parsing packages.
  * \code{cpp}
 class TestingClient: public QH::AbstractNode {
 
-
-protected:
-    // parsing incoming packages
-    ParserResult parsePackage(const Package &pkg,
-                              const AbstractNodeInfo *sender) {
-
-        auto parentResult = AbstractNode::parsePackage(pkg, sender);
-        if (parentResult != ParserResult::NotProcessed) {
-            return parentResult;
-        }
-
-        if (MyPackage::command() == pkg.hdr.command) {
-            MyPackage obj(pkg);
-
-            // print responce of server
-            std::cout << obj._data;
-            ...
-            return ParserResult::Processed;
-        }
-        // Do not forget return status of parsing packages
-        return ParserResult::NotProcessed;
-
+public:
+    TestingClient() {
+        addApiParser<MyParser>();
     }
-    // sending request to server
-    bool sendMyPackage() {
-        Ping cmd;
-        return sendData(&cmd, address);
+
+    QH::AbstractNode::NodeType nodeType() const override {
+        return QH::AbstractNode::NodeType::Client;
     }
 };
  * \endcode
  *
  * The basic principle of the library.
  *
- * Node - it is server or client implementation of any of AbstractNode class of it child classes.
- *  - The node receive raw data from another network connection.
- *  - After parsing a raw data the node convert a bytes array to QH::Package.
- *  - The Package create a new thread for working with received request, so, all working of package working in own threads.
- *  - Next, the Node invoke a QH::AbstractNode::parsePackage method. This method must be return QH::ParserResult.
- *    @note Do not forget invoke the super class parsePackage method.
- *  - The Last step it is invoke your override parsePackage method on your server or client class.
- *     IF you need to send responce then use a  unsigned int sendData(PKG::AbstractData *resp,  const HostAddress& addere, const Header *req = nullptr).
+ * Node - it is the server or client implementation of any AbstractNode child's classes.
+ *  - The node receives raw data from another network connection.
+ *  - After parsing a raw data, the node converts a bytes array to QH::Package.
+ *  - The Package creates a new thread for working with received request, so, all working of package working in own threads.
+ *  - Next, the Node invokes a QH::iParser::parsePackage method of selected parsers. This method must be return QH::ParserResult.
+ *  - IF you need to send response then use a  unsigned int sendData(PKG::AbstractData *resp,  const HostAddress& addere, const Header *req = nullptr).
  *
- * Work scheme:
- *\image html Async.svg width=800px
+ * **About parsers**
+ *
+ * The Parser it is an object that works with your packages. You can create multiple version's parser for compatibility between node versions. Node will select most actually version that known both nodes. For example, server known parsers with version 1, 2 and 3 but client can work only with 1 and 2, so nodes choose parser v2 because all nodes known about this parser version.
+ *
+ * You can create multiple types of the parsers. For example, you want to create an absolute new API and add it to the node. You need override
+ * Example:
+ *
+ * \code{cpp}
+ *  TestingClient() {
+        addApiParser<MyParser_v1>();
+        addApiParser<MyParser_v2>();
+        addApiParser<MyParser_v3>();
+        addApiParser<MyParser_v4>();
+
+    }
+ * \endcode
  */
 namespace QH {
     /**
