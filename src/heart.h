@@ -171,10 +171,10 @@ public:
  *
  * \code{cpp}
  *  TestingClient() {
-        addApiParser<MyParser_v1>();
-        addApiParser<MyParser_v2>();
-        addApiParser<MyParser_v3>();
-        addApiParser<MyParser_v4>();
+        iParser::addApiParser<MyParser_v1>();
+        iParser::addApiParser<MyParser_v2>();
+        iParser::addApiParser<MyParser_v3>();
+        iParser::addApiParser<MyParser_v4>();
 
     }
  * \endcode
