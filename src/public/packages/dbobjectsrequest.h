@@ -93,10 +93,6 @@ public:
         return true;
     };
 
-    bool copyFrom(const AbstractData *) override {
-        return false;
-    };
-
     /**
      * @brief data This method return a list of getted objects.
      * @return list of const T * objects.

@@ -18,6 +18,12 @@ class ShedullerestNode: public QH::AbstractNode {
 public:
     quint64 executedTime = 0;
 
+
+    // AbstractNode interface
+public:
+    NodeType nodeType() const override {
+        return NodeType::Node;
+    };
 };
 
 class TestTask: public QH::AbstractTask {

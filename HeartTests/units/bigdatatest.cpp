@@ -89,6 +89,10 @@ public:
         _parser = addApiParser<BigDataTestParser>();
     }
 
+    NodeType nodeType() const override {
+        return NodeType::Node;
+    };
+
     const QSharedPointer<QH::iParser>& parser() const {
         return _parser;
     }

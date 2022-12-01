@@ -102,13 +102,13 @@ class Abstract;
 /**
  * @brief The AbstractNode class - Abstract implementation of node.
  *  this implementation have a methods for send and receive data messages,
- *  and work with crypto method for crease a security connections betwin nodes.
+ *  and work with crypto method for create a security connections betwin nodes.
  *  AbstractNode - is thread save class.
  *
- * @note For correctly working this class you should be register all you data types using the AbstractNode::registerPackageType method.
+ * @note For correctly working this class you should be register all you dataParser types using the AbstractNode::addApiParser method.
  *  @see AbstractData
- *  @see AbstractNode::registerPackageType
- *  @see AbstractNode::parsePackage
+ *  @see iParser
+ *  @see AbstractNode::addApiParser
  */
 class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 {
@@ -117,12 +117,32 @@ class HEARTSHARED_EXPORT AbstractNode : public QTcpServer, public SoftDelete
 public:
 
     /**
+     * @brief The NodeType enum contains types of the node. By default node contains only 3 types.
+      */
+    enum NodeType: int {
+        /// Node with this type is general clints nodes.
+        Client = 0,
+
+        /// Node with this ytpe is midle nodes that can works as a client and as servers.
+        Node = 1,
+
+        /// This is node can works only as a public server
+        Server = 2
+    };
+
+    /**
      * @brief AbstractNode - Base constructor of node.
      * @param ptr - Pointrt to parent Qt object, the AbstractNode class is Q_OBJECT.
      * @note For correctly working this class you should be register all you data types using the AbstractNode::registerPackageType method.
      */
     AbstractNode(QObject * ptr = nullptr);
     ~AbstractNode() override;
+
+    /**
+     * @brief nodeType This method should be return type of the serve.
+     * @return node type q qq
+     */
+    virtual NodeType nodeType() const = 0;
 
     /**
      * @brief run This method implement deployment a network node (server) on selected address.
