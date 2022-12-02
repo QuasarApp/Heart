@@ -24,13 +24,6 @@ This library consists of two levels (AbstractNode level and DataBaseNode level).
      add_subdirectory(Heart)
      ```
      
-     where 1 - is code of build level 
-   
-     1 - AbstractNode
-   
-     2 - DataBaseNode
-   
-     3 - NetworkNode
  * link the Heart library to your target
      ```cmake
      target_link_libraries(yourLib PUBLIC Heart)
