@@ -75,7 +75,7 @@ bool AbstractData::isValid() const {
 
 QString AbstractData::toString() const {
     return QString("Object: type:%0, command:%1").
-            arg(cmdString()).
+        arg(cmdString()).
             arg(cmd());
 }
 
