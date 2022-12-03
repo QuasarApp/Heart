@@ -106,8 +106,52 @@ APIVersionParser::getSelectedApiParser(const QString &apiKey,
     return selectParser(node->version()).value(apiKey, nullptr);
 }
 
+bool QH::APIVersionParser::commandsValidation(const QSharedPointer<iParser> &parserObject) {
+#ifdef QT_DEBUG
+    auto types = QSet<unsigned short>{parserObject->registeredTypes().keyBegin(),
+                                      parserObject->registeredTypes().keyEnd()};
+    int typesSize = types.size();
+
+    for (const auto &parsersMap : qAsConst(_apiParsers)) {
+        for (const auto &parser: parsersMap) {
+            auto localTypes = QSet<unsigned short>{parser->registeredTypes().keyBegin(),
+                                                   parser->registeredTypes().keyEnd()};
+            types -= localTypes;
+
+            if (types.size() != typesSize) {
+                auto err = QString("Parser object can't be added. "
+                                   "Because commands of the %0_v%1 parser "
+                                   "already registered in the %2_v%3 parser. "
+                                   "Use the iParser::initSupportedCommands method to "
+                                   "fix this issue. "
+                                   "See our documentation for get more inforamtion. "
+                                   "https://quasarapp.ddns.net:3031/docs/QuasarApp/Heart/latest/classQH_1_1iParser.html").
+                           arg(parserObject->parserId()).
+                           arg(parserObject->version()).
+                           arg(parser->parserId()).
+                           arg(parser->version());
+
+                QuasarAppUtils::Params::log(err, QuasarAppUtils::Error);
+
+                return false;
+            }
+        }
+    }
+#endif
+
+    return true;
+}
+
 const QSharedPointer<QH::iParser>& APIVersionParser::addApiParser(const QSharedPointer<iParser> &parserObject) {
     debug_assert(parserObject, "Parser object should not be nullptr");
+
+    parserObject->initSupportedCommands();
+
+    if (!commandsValidation(parserObject)) {
+        debug_assert(false, "Parser object can't be added. "
+                            "Because its commands already registered "
+                            "in the another parsers.");
+    }
 
     _apiParsers[parserObject->parserId()][parserObject->version()] = parserObject;
     return _apiParsers[parserObject->parserId()][parserObject->version()];

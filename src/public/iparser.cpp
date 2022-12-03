@@ -61,4 +61,6 @@ unsigned int iParser::sendData(const PKG::AbstractData *resp,
 
 }
 
+void iParser::initSupportedCommands() {}
+
 }

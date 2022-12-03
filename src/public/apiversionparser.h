@@ -128,6 +128,9 @@ private:
 
     QHash<QString, QMap<int, QSharedPointer<QH::iParser>>> _apiParsers;
 
+    // This is internal check of registered commands.
+    // works only in debug.
+    bool commandsValidation(const QSharedPointer<iParser> &parserObject);
 };
 }
 #endif // APIVERSIONPARSER_H
