@@ -85,6 +85,15 @@ public:
                                              AbstractNodeInfo *sender);
 
     /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param parserKey this is key of the parser type..
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& parserKey,
+                                             AbstractNodeInfo *sender);
+
+    /**
      * @brief maximumApiVersion This method return maximum supported api version of this node.
      * @param apiKey This is api key.
      * @return  maximum supported api version of this node.
@@ -118,6 +127,9 @@ private:
 
     QSharedPointer<QH::iParser>
     selectParserImpl(unsigned short cmd, AbstractNodeInfo *sender);
+
+    QSharedPointer<QH::iParser>
+    selectParserImpl(const QString& key, AbstractNodeInfo *sender);
 
     bool processAppVersion(const QSharedPointer<PKG::APIVersion> &message,
                            AbstractNodeInfo *sender,

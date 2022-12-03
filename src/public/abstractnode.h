@@ -153,6 +153,23 @@ public:
      */
     virtual bool run(const QString& addres, unsigned short port);
 
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param cmd this is command that need to parse.
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(unsigned short cmd,
+                                             AbstractNodeInfo *sender);
+
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param cmd this is command that need to parse.
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& type,
+                                             AbstractNodeInfo *sender);
 
     /**
      * @brief stop - Stopped this node and close all network connections.
@@ -750,7 +767,9 @@ private:
     TaskScheduler *_tasksheduller = nullptr;
     APIVersionParser *_apiVersionParser = nullptr;
 
-    QHash<NodeCoonectionStatus, QHash<HostAddress, std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
+    QHash<NodeCoonectionStatus,
+          QHash<HostAddress,
+                std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 
     QSet<QFutureWatcher <bool>*> _workers;
 

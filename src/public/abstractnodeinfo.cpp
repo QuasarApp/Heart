@@ -229,9 +229,18 @@ QSharedPointer<QH::iParser> AbstractNodeInfo::getParser(unsigned short cmd) {
     return _parsersMap.value(cmd, nullptr);
 }
 
+QSharedPointer<iParser> AbstractNodeInfo::getParser(const QString &type) {
+    return _parsersKeysMap.value(type, nullptr);
+}
+
 void QH::AbstractNodeInfo::addParser(unsigned short cmd,
                                      QSharedPointer<QH::iParser> parser) {
     _parsersMap[cmd] = parser;
+    _parsersKeysMap[parser->parserId()] = parser;
+}
+
+void AbstractNodeInfo::addParser(QSharedPointer<iParser> parser) {
+    _parsersKeysMap[parser->parserId()] = parser;
 }
 
 uint qHash(NodeCoonectionStatus status) {

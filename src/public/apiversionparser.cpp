@@ -192,6 +192,16 @@ QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
     return parser;
 }
 
+QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
+                                                       AbstractNodeInfo *sender) {
+    auto parser = sender->getParser(parserKey);
+    if (!parser) {
+        parser = selectParserImpl(parserKey, sender);
+    }
+
+    return parser;
+}
+
 QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
                                                            AbstractNodeInfo *sender) {
     auto version = sender->version();
@@ -206,6 +216,13 @@ QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
     return nullptr;
 }
 
+QSharedPointer<iParser> APIVersionParser::selectParserImpl(const QString &key, AbstractNodeInfo *sender) {
+    auto version = sender->version();
+    auto parser = selectParser(version).value(key);
+    sender->addParser(parser);
+
+    return parser;
+}
 
 unsigned short APIVersionParser::maximumApiVersion(const QString &apiKey) const {
 

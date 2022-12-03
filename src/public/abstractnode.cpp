@@ -140,6 +140,16 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
     return true;
 }
 
+QSharedPointer<iParser> AbstractNode::selectParser(unsigned short cmd,
+                                                   AbstractNodeInfo *sender) {
+    return _apiVersionParser->selectParser(cmd, sender);
+}
+
+QSharedPointer<iParser> AbstractNode::selectParser(const QString &type,
+                                                   AbstractNodeInfo *sender) {
+    return _apiVersionParser->selectParser(type, sender);
+}
+
 void AbstractNode::stop() {
     close();
 
