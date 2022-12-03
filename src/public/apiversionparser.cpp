@@ -114,6 +114,10 @@ bool QH::APIVersionParser::commandsValidation(const QSharedPointer<iParser> &par
 
     for (const auto &parsersMap : qAsConst(_apiParsers)) {
         for (const auto &parser: parsersMap) {
+            if (parser->parserId() == parserObject->parserId()) {
+                continue;
+            }
+
             auto localTypes = QSet<unsigned short>{parser->registeredTypes().keyBegin(),
                                                    parser->registeredTypes().keyEnd()};
             types -= localTypes;
