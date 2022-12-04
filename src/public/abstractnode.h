@@ -367,6 +367,17 @@ public:
      */
     int sheduledTaskCount() const;
 
+    /**
+     * @brief badRequest This method is send data about error of request.
+     * @param address This is addrees of receiver.
+     * @param req This is header of incomming request.
+     * @param err This is message and code of error. For more information see the ErrorData struct.
+     * @param diff This is difference of current trust (currenTrus += diff).
+     * By default diff equals REQUEST_ERROR
+     */
+    virtual void badRequest(const HostAddress &address, const Header &req,
+                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
+
 #ifdef USE_HEART_SSL
 
     /**
@@ -384,7 +395,6 @@ signals:
      * @param msg - received text of remoute node (server).
      */
     void requestError(unsigned char code, QString msg);
-
 
 protected:
 
@@ -450,17 +460,6 @@ protected:
      *  This is done that allthe data that is sent when node are dissconected come without fail.
      */
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
-
-    /**
-     * @brief badRequest This method is send data about error of request.
-     * @param address This is addrees of receiver.
-     * @param req This is header of incomming request.
-     * @param err This is message and code of error. For more information see the ErrorData struct.
-     * @param diff This is difference of current trust (currenTrus += diff).
-     * By default diff equals REQUEST_ERROR
-     */
-    virtual void badRequest(const HostAddress &address, const Header &req,
-                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
 
     /**
      * @brief getWorkStateString This method generate string about work state of server.
