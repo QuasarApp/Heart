@@ -18,7 +18,6 @@ namespace QH {
 namespace PKG {
 class WebSocket;
 class ISubscribableData;
-
 }
 
 class ISqlDB;
@@ -32,6 +31,9 @@ class AbstractNodeInfo;
  * @brief The DataBase class is DataBase base implementation.
  *  This implementation contains methods for work with database.
  *  DataBaseNode is thread save class.
+ *
+ *  @note before use the database you need to run it. Use The DataBase::run method for this. If you need to stop database, run the DataBase::stop method.
+
  * @see DBObject
  * @see DataBaseNode
  */
