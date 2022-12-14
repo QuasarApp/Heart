@@ -242,6 +242,7 @@ private:
 
     friend class BigDataParserOld;
     friend class AbstractNodeParserOld;
+    friend class AbstractNode;
 
 };
 

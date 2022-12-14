@@ -617,7 +617,7 @@ void AbstractNode::handleSslErrorOcurred(SslSocket *scket,
 #endif
 
 const QSharedPointer<iParser> &
-AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
+AbstractNode::addApiParserImpl(const QSharedPointer<iParser> &parserObject) {
     return _apiVersionParser->addApiParser(parserObject);
 }
 
@@ -1180,6 +1180,14 @@ void AbstractNode::addNodeFailed(AddNodeError error) {
 
 void AbstractNode::nodeAddedSucessful(AbstractNodeInfo *) {
 
+}
+
+bool AbstractNode::addApiParser(const QSharedPointer<iParser> &parser) {
+
+    if (!parser || parser->node() != this)
+        return false;
+
+    return addApiParserImpl(parser);
 }
 
 void AbstractNode::receivePing(const QSharedPointer<PKG::Ping> &) {};

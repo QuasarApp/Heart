@@ -388,6 +388,13 @@ public:
     const QList<QSslError> &ignoreSslErrors() const;
 #endif
 
+    /**
+     * @brief addApiParser This method add new Api parser for this node.
+     * @param parserObject This is bew api parser.
+     * @return added parser.
+     */
+    bool addApiParser(const QSharedPointer<iParser>& parser);
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -611,7 +618,7 @@ protected:
      */
     template<class ApiType, class ... Args >
     QSharedPointer<ApiType> addApiParserNative(Args&&... arg) {
-        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template staticCast<ApiType>();
+        return addApiParserImpl(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template staticCast<ApiType>();
     }
 
     /**
@@ -622,7 +629,7 @@ protected:
      */
     template<class ApiType, class ... Args >
     const QSharedPointer<iParser> & addApiParser(Args&&... arg) {
-        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...));
+        return addApiParserImpl(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...));
     }
 
 protected slots:
@@ -702,11 +709,11 @@ private slots:
 private:
 
     /**
-     * @brief addApiParser This method add new Api parser for this node.
+     * @brief addApiParserImpl This method add new Api parser for this node.
      * @param parserObject This is bew api parser.
      * @return added parser.
      */
-    const QSharedPointer<iParser> & addApiParser(const QSharedPointer<QH::iParser>& parserObject);
+    const QSharedPointer<iParser> & addApiParserImpl(const QSharedPointer<QH::iParser>& parserObject);
 
     // iParser interface
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
