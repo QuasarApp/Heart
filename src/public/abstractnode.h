@@ -407,6 +407,18 @@ public:
      */
     void setSendBadRequestErrors(bool value);
 
+    /**
+     * @brief fCloseConnectionAfterBadRequest This propery enable or disable droping connection after badRequests. By default it is true.
+     * @return true if the clossing connection is enabled and false if disabled.
+     */
+    bool fCloseConnectionAfterBadRequest() const;
+
+    /**
+     * @brief setSendBadRequestErrors This method enable or disable the fcloseConnectionAfterBadRequest property.
+     * @param value This is new value of the fcloseConnectionAfterBadRequest property.
+     */
+    void setCloseConnectionAfterBadRequest(bool value);
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -791,6 +803,7 @@ private:
 
     QSet<QFutureWatcher <bool>*> _workers;
     bool _sendBadRequestErrors = true;
+    bool _closeConnectionAfterBadRequest = true;
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;

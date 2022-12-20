@@ -533,6 +533,14 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
     return _socketWorker->run(action);
 }
 
+bool AbstractNode::fCloseConnectionAfterBadRequest() const {
+    return _closeConnectionAfterBadRequest;
+}
+
+void AbstractNode::setCloseConnectionAfterBadRequest(bool newCloseConnectionAfterBadRequest) {
+    _closeConnectionAfterBadRequest = newCloseConnectionAfterBadRequest;
+}
+
 bool AbstractNode::fSendBadRequestErrors() const {
     return _sendBadRequestErrors;
 }
@@ -826,7 +834,8 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
         return;
     }
 
-    if (!isBanned(getInfoPtr(address))) {
+    auto node = getInfoPtr(address);
+    if (!isBanned(node)) {
         auto bad = BadRequest(err);
         if (!sendData(&bad, address, &req)) {
             return;
@@ -835,6 +844,10 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
         QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
                                         address.toString(),
                                     QuasarAppUtils::Info);
+
+        if (fCloseConnectionAfterBadRequest()) {
+            removeNode(node);
+        }
     }
 }
 
