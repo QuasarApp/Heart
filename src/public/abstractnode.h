@@ -395,6 +395,18 @@ public:
      */
     bool addApiParser(const QSharedPointer<iParser>& parser);
 
+    /**
+     * @brief fSendBadRequestErrors This property enable or disable sending feedback to connected node when them sent wrong packages.
+     * @return true if the sending feedbacks is enabled and false if disabled.
+     */
+    bool fSendBadRequestErrors() const;
+
+    /**
+     * @brief setSendBadRequestErrors This method enable or disable the fSendBadRequestErrors property.
+     * @param value This is new value of the sendBadRequestErrors property.
+     */
+    void setSendBadRequestErrors(bool value);
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -778,6 +790,7 @@ private:
                 std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 
     QSet<QFutureWatcher <bool>*> _workers;
+    bool _sendBadRequestErrors = true;
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;

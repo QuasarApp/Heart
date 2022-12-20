@@ -533,6 +533,14 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
     return _socketWorker->run(action);
 }
 
+bool AbstractNode::fSendBadRequestErrors() const {
+    return _sendBadRequestErrors;
+}
+
+void AbstractNode::setSendBadRequestErrors(bool val) {
+    _sendBadRequestErrors = val;
+}
+
 const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
     return _ignoreSslErrors;
 }
@@ -818,14 +826,16 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
         return;
     }
 
-    auto bad = BadRequest(err);
-    if (!sendData(&bad, address, &req)) {
-        return;
-    }
+    if (!isBanned(getInfoPtr(address))) {
+        auto bad = BadRequest(err);
+        if (!sendData(&bad, address, &req)) {
+            return;
+        }
 
-    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                    address.toString(),
-                                QuasarAppUtils::Info);
+        QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
+                                        address.toString(),
+                                    QuasarAppUtils::Info);
+    }
 }
 
 WorkState AbstractNode::getWorkState() const {
@@ -1226,11 +1236,20 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
             QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
 
             if (parseResult == ParserResult::Error) {
-                changeTrust(id, REQUEST_ERROR);
+
+                if (fSendBadRequestErrors()) {
+                    badRequest(id, pkg.hdr, ErrorData{1, "Your send the invalid request."}, REQUEST_ERROR);
+                } else {
+                    changeTrust(id, REQUEST_ERROR);
+                }
             }
 
             if (parseResult == ParserResult::NotProcessed) {
-                changeTrust(id, NOTSUPPORT_ERROR);
+                if (fSendBadRequestErrors()) {
+                    badRequest(id, pkg.hdr, ErrorData{2, "Your send the not supported command."}, NOTSUPPORT_ERROR);
+                } else {
+                    changeTrust(id, NOTSUPPORT_ERROR);
+                }
             }
 
             return false;
