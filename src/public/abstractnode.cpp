@@ -1210,7 +1210,7 @@ bool AbstractNode::addApiParser(const QSharedPointer<iParser> &parser) {
     if (!parser || parser->node() != this)
         return false;
 
-    return addApiParserImpl(parser);
+    return !addApiParserImpl(parser).isNull();
 }
 
 void AbstractNode::receivePing(const QSharedPointer<PKG::Ping> &) {};
