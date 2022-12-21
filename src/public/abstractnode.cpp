@@ -533,22 +533,6 @@ bool AbstractNode::configureSslSocket(AbstractNodeInfo *node, bool fServer) {
     return _socketWorker->run(action);
 }
 
-bool AbstractNode::fCloseConnectionAfterBadRequest() const {
-    return _closeConnectionAfterBadRequest;
-}
-
-void AbstractNode::setCloseConnectionAfterBadRequest(bool newCloseConnectionAfterBadRequest) {
-    _closeConnectionAfterBadRequest = newCloseConnectionAfterBadRequest;
-}
-
-bool AbstractNode::fSendBadRequestErrors() const {
-    return _sendBadRequestErrors;
-}
-
-void AbstractNode::setSendBadRequestErrors(bool val) {
-    _sendBadRequestErrors = val;
-}
-
 const QList<QSslError> &AbstractNode::ignoreSslErrors() const {
     return _ignoreSslErrors;
 }
@@ -631,6 +615,22 @@ void AbstractNode::handleSslErrorOcurred(SslSocket *scket,
 }
 
 #endif
+
+bool AbstractNode::fCloseConnectionAfterBadRequest() const {
+    return _closeConnectionAfterBadRequest;
+}
+
+void AbstractNode::setCloseConnectionAfterBadRequest(bool newCloseConnectionAfterBadRequest) {
+    _closeConnectionAfterBadRequest = newCloseConnectionAfterBadRequest;
+}
+
+bool AbstractNode::fSendBadRequestErrors() const {
+    return _sendBadRequestErrors;
+}
+
+void AbstractNode::setSendBadRequestErrors(bool val) {
+    _sendBadRequestErrors = val;
+}
 
 const QSharedPointer<iParser> &
 AbstractNode::addApiParserImpl(const QSharedPointer<iParser> &parserObject) {
