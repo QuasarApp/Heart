@@ -21,6 +21,10 @@ if (HEART_DEPRECATED_API)
     add_definitions(-DHEART_DEPRECATED_API)
 endif()
 
+if (PRINT_SQL_QUERIES)
+    add_definitions(-DPRINT_SQL_QUERIES)
+endif()
+
 set(SLL_DEFINE "WITHOUT_SSL")
 
 if (HEART_SSL)

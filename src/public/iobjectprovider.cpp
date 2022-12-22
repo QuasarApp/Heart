@@ -27,14 +27,16 @@ QSharedPointer<DBObject> iObjectProvider::getObjectRaw(
 
     if (list.size() > 1) {
         QuasarAppUtils::Params::log("getObject method returned more than one object,"
-                                    " the first object was selected as the result, all the rest were lost.",
+                                    " the first object was selected as the result,"
+                                    " all the rest were lost.",
                                     QuasarAppUtils::Warning);
     }
 
     return list.first();
 }
 
-bool QH::iObjectProvider::insertIfExistsUpdateObject(const QSharedPointer<PKG::DBObject> &saveObject, bool wait) {
+bool QH::iObjectProvider::insertIfExistsUpdateObject(const QSharedPointer<PKG::DBObject> &saveObject,
+                                                     bool wait) {
 
     bool restore = saveObject->printError();
 
