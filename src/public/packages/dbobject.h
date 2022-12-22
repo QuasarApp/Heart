@@ -171,6 +171,9 @@ public:
      *  Override this method for insert item into database.
      * By Default This method prepare a insert query using the data that returned from the variantMap method.
      *
+     * @param q Thuis is query object.
+     * @param replace This option disable or enable replacing of exists objects.
+     *
      * Default insert query have a next template:
      * \code{sql}
      *     INSERT INTO %0(%1) VALUES (%3)
@@ -183,7 +186,7 @@ public:
      *
      * Example of overriding:
      * \code{cpp}
-     *  PrepareResult ExampleObject::prepareInsertQuery(QSqlQuery &q) const {
+     *  PrepareResult ExampleObject::prepareInsertQuery(QSqlQuery &q, replace) const {
 
             DBVariantMap map = variantMap();
 
@@ -225,7 +228,7 @@ public:
      *
      * @note If you want disable this method, just override it and return the PrepareResult::Disabled value.
      */
-    virtual PrepareResult prepareInsertQuery(QSqlQuery& q) const;
+    virtual PrepareResult prepareInsertQuery(QSqlQuery& q, bool replace) const;
 
     /**
      * @brief prepareUpdateQuery this method should be prepare a insert data query.
@@ -366,20 +369,6 @@ public:
      */
     virtual QString table() const = 0;
 
-    /**
-     * @brief printError This method return status of printing error messages for sql quries. by default this propertye is enabled.
-     * @return true if printing error messages is enabled else false.
-     * @see DBObject::setPrintError
-     */
-    bool printError() const;
-
-    /**
-     * @brief setPrintError This method sets new value for printError propertye.
-     * @param newPrintError This is new value for printError propertye
-     * @see DBObject::printError
-     */
-    void setPrintError(bool newPrintError);
-
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override;
@@ -428,7 +417,6 @@ protected:
 
 private:
     QString getWhereBlock() const;
-    bool _printError = true;
 };
 }
 }

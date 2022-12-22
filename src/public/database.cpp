@@ -244,7 +244,7 @@ bool DataBase::upgradeDataBase() {
                     DbAddress{"DataBaseAttributes", "version"},
                     "value", currentVersion, "name");
 
-        if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
+        if (!_db->replaceObject(updateVersionRequest, true)) {
             QuasarAppUtils::Params::log("Failed to update version attribute",
                                         QuasarAppUtils::Error);
             return false;

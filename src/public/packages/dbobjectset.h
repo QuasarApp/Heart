@@ -27,7 +27,7 @@ class HEARTSHARED_EXPORT DBObjectSet: public DBObject
 public:
     DBObjectSet(const QString table);
 
-    PrepareResult prepareInsertQuery(QSqlQuery &) const override final;
+    PrepareResult prepareInsertQuery(QSqlQuery &q, bool replace) const override final;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override final;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override final;
     PrepareResult prepareUpdateQuery(QSqlQuery &q) const override final;

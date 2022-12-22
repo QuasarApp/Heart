@@ -98,7 +98,26 @@ bool ISqlDB::insertObjectP(const QSharedPointer<DBObject> &saveObject,
     }
 
     return _writer && _writer->isValid() &&
-            _writer->insertObject(saveObject, wait);
+           _writer->insertObject(saveObject, wait);
+}
+
+bool ISqlDB::replaceObjectP(const QSharedPointer<PKG::DBObject> &saveObject, bool wait) {
+    if (updateCache(saveObject)) {
+
+        if (getMode() == SqlDBCasheWriteMode::Force) {
+
+            return _writer && _writer->isValid() &&
+                   _writer->replaceObject(saveObject, wait);
+        }
+
+        pushToQueue(saveObject, CacheAction::Update);
+        globalUpdateDataBase(getMode());
+
+        return true;
+    }
+
+    return _writer && _writer->isValid() &&
+           _writer->replaceObject(saveObject, wait);
 }
 
 qint64 ISqlDB::getLastUpdateTime() const {
@@ -203,6 +222,20 @@ bool ISqlDB::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait)
     }
 
     if (!insertObjectP(saveObject, wait)) {
+        return false;
+    }
+
+    emit sigItemChanged(saveObject);
+
+    return true;
+}
+
+bool ISqlDB::replaceObject(const QSharedPointer<PKG::DBObject> &saveObject, bool wait) {
+    if (!saveObject || !saveObject->isValid()) {
+        return false;
+    }
+
+    if (!replaceObjectP(saveObject, wait)) {
         return false;
     }
 

@@ -303,6 +303,14 @@ bool SqlDBWriter::insertObject(const QSharedPointer<DBObject> &ptr, bool wait) {
 
 }
 
+bool SqlDBWriter::replaceObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait) {
+    Async::Job job = [this, ptr]() {
+        return replaceQuery(ptr);
+    };
+
+    return asyncLauncher(job, wait);
+}
+
 void SqlDBWriter::setSQLSources(const QStringList &list) {
     _SQLSources = list;
 }
@@ -339,12 +347,31 @@ bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
     QSqlQuery q(*db());
 
     auto prepare = [ptr](QSqlQuery&q) {
-        return ptr->prepareInsertQuery(q);
+        return ptr->prepareInsertQuery(q, false);
     };
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb, ptr->printError());
+    return workWithQuery(q, prepare, cb);
+}
+
+bool SqlDBWriter::replaceQuery(const QSharedPointer<PKG::DBObject> &ptr) const {
+    if (!ptr)
+        return false;
+
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery q(*db());
+
+    auto prepare = [ptr](QSqlQuery&q) {
+        return ptr->prepareInsertQuery(q, true);
+    };
+
+    auto cb = [](){return true;};
+
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::doQuery(const QString &query,
@@ -422,7 +449,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
         return result.size();
     };
 
-    return workWithQuery(q, prepare, cb, requestObject.printError());
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) const {
@@ -440,7 +467,7 @@ bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) cons
     };
 
 
-    return workWithQuery(q, prepare, cb, deleteObject->printError());
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
@@ -455,18 +482,14 @@ bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb, ptr->printError());
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::workWithQuery(QSqlQuery &q,
                                 const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
-                                const std::function<bool ()> &cb,
-                                bool printErrors) const {
+                                const std::function<bool ()> &cb) const {
 
-    auto printError = [printErrors](const QSqlQuery &q) {
-
-        if (!printErrors)
-            return ;
+    auto printError = [](const QSqlQuery &q) {
 
         QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
                                     QuasarAppUtils::Debug);

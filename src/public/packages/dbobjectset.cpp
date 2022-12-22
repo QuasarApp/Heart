@@ -12,7 +12,7 @@ DBObjectSet::DBObjectSet(const QString table) {
     _table = table;
 }
 
-PrepareResult DBObjectSet::prepareInsertQuery(QSqlQuery &) const {
+PrepareResult DBObjectSet::prepareInsertQuery(QSqlQuery &, bool ) const {
     return PrepareResult::Disabled;
 }
 

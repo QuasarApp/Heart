@@ -42,7 +42,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
     return PrepareResult::Success;
 }
 
-PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
+PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q, bool replace) const {
 
     DBVariantMap map = variantMap();
 
@@ -53,7 +53,9 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
+    QString queryString = (replace)?
+                              "REPLACE INTO %0(%1) VALUES (%2) " :
+                              "INSERT INTO %0(%1) VALUES (%2) ";
 
 
     queryString = queryString.arg(table());
@@ -250,14 +252,6 @@ QString DBObject::getWhereBlock() const {
     QString whereBlock = "WHERE " + con;
 
     return whereBlock;
-}
-
-bool DBObject::printError() const {
-    return _printError;
-}
-
-void DBObject::setPrintError(bool newPrintError) {
-    _printError = newPrintError;
 }
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {

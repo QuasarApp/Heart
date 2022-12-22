@@ -49,7 +49,7 @@ public:
 
     DBObject *createDBObject() const override;
     PrepareResult prepareUpdateQuery(QSqlQuery &q) const override;
-    PrepareResult prepareInsertQuery(QSqlQuery &q) const override;
+    PrepareResult prepareInsertQuery(QSqlQuery &q, bool replace) const override;
 
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;

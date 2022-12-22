@@ -6,7 +6,7 @@
 */
 
 #include "setsinglevalue.h"
-#include "quasarapp.h"
+#include "params.h"
 #include <QSqlError>
 #include <QSqlQuery>
 
@@ -48,8 +48,11 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
     return PrepareResult::Success;
 }
 
-PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q) const {
-    QString queryString = "INSERT INTO %0 (%1, %2) VALUES (:%1, :%2)";
+PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q, bool replace) const {
+
+    QString queryString = (replace)?
+                              "REPLACE INTO %0 (%1, %2) VALUES (:%1, :%2)":
+                              "INSERT INTO %0 (%1, %2) VALUES (:%1, :%2)";
 
     queryString = queryString.arg(table(), primaryKey(), _field);
 

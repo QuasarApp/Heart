@@ -75,8 +75,17 @@ public:
                                QList<QSharedPointer<PKG::DBObject>> &result) = 0;
 
     /**
-     * @brief updateObject This method execute a update method of the saveObject and save all changes into database.
+     * @brief replaceObject This method execute a replace method of the saveObject and insert or save if not exists, all changes into database.
      * @note This method update object in the database only. If you try update not exists object then this method return false.
+     * @param saveObject This is object for updating.
+     * @param wait This arguments force current thread wait for the function finishing.
+     * @return true if objects is updated successful else false.
+     */
+    virtual bool replaceObject(const QSharedPointer<PKG::DBObject>& saveObject, bool wait) = 0;
+
+    /**
+     * @brief updateObject This method execute a update method of the saveObject and save all changes into database.
+     * @note This method update object in the database only.
      * @warning This method do not guarantee that return false if The updated object is not exist.
      * @param saveObject This is object for updating.
      * @param wait This arguments force current thread wait for the function finishing.
@@ -108,17 +117,6 @@ public:
      * For more information about sql sources see the DataBaseNode::SQLSources method.
      */
     virtual void setSQLSources(const QStringList& list) = 0;
-
-    /**
-     * @brief insertIfExistsUpdateObject This method try to insert object to database If object alredy exists in database then object will be updated.
-     * @param saveObject This is saved object pointer.
-     * @param wait This arguments force current thread wait for the function finishing.
-     * @return true if object is updated or inserted successful else false.
-     * @see iObjectProvider::insertObject
-     * @see iObjectProvider::updateObject
-     */
-    bool insertIfExistsUpdateObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
-                                    bool wait = true);
 
     /**
      * @brief doQuery This method execute a @a query in this database.

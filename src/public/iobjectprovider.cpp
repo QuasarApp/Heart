@@ -35,27 +35,4 @@ QSharedPointer<DBObject> iObjectProvider::getObjectRaw(
     return list.first();
 }
 
-bool QH::iObjectProvider::insertIfExistsUpdateObject(const QSharedPointer<PKG::DBObject> &saveObject,
-                                                     bool wait) {
-
-    bool restore = saveObject->printError();
-
-    if (restore) {
-        saveObject->setPrintError(false);
-    }
-    if(!insertObject(saveObject, wait)) {
-
-        if (restore) {
-            saveObject->setPrintError(true);
-        }
-        return updateObject(saveObject, wait);
-    }
-
-    if (restore) {
-        saveObject->setPrintError(true);
-    }
-    return true;
-
-}
-
 }
