@@ -1246,7 +1246,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
             auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").
                            arg(pkg.toString(), iParser::pareseResultToString(parseResult), data->toString());
 
-            QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
+            QuasarAppUtils::Params::log(message, QuasarAppUtils::Info);
 
             if (parseResult == ParserResult::Error) {
 
@@ -1263,6 +1263,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
                 } else {
                     changeTrust(id, NOTSUPPORT_ERROR);
                 }
+
             }
 
             return false;
