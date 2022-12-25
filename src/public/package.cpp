@@ -47,7 +47,7 @@ QString Package::toString() const {
 
 unsigned int Package::calcHash() const {
     auto tmp = data + QByteArray::number(hdr.command);
-    return common::Hash32(tmp.constData(), tmp.size());
+    return qa_common::hash32(tmp.constData(), tmp.size());
 }
 
 unsigned int Package::calcHashOld() const {

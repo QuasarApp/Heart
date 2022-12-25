@@ -31,7 +31,7 @@
     static unsigned short commandOld(){return qHash(QString(S)) % 0xFFFF;} \
     static unsigned short command(){\
         QByteArray ba = QString(S).toLocal8Bit();\
-        return common::Hash16(ba.data(), ba.size());\
+        return qa_common::hash16(ba.data(), ba.size());\
     } \
     static QString commandText(){return S;} \
     unsigned short cmd() const override {return X::command();} \
