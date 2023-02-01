@@ -32,7 +32,7 @@ struct DBPatch {
     unsigned short versionTo = 0;
 
     /// This is lymbda function with action that will upgrade data base to new versio.
-    std::function<bool (const QH::iObjectProvider *)> action;
+    std::function<bool (QH::iObjectProvider *)> action;
 
     /**
      * @brief isValid This method check this oject to valid.
