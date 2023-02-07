@@ -30,6 +30,14 @@ public:
     }
 
     /**
+     * @brief size This method return of the items count of this pack.
+     * @return size of the packs.
+     */
+    unsigned int size() const {
+        return _packData.size();
+    }
+
+    /**
      * @brief packData This method return source list of the elements.
      * @return source list
      */
