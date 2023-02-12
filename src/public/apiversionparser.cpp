@@ -183,7 +183,7 @@ unsigned int APIVersionParser::parsersTypedCount() const {
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
-                                                       AbstractNodeInfo *sender) {
+                                                       AbstractNodeInfo *sender) const{
     auto parser = sender->getParser(cmd);
     if (!parser) {
         parser = selectParserImpl(cmd, sender);
@@ -193,7 +193,7 @@ QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
-                                                       AbstractNodeInfo *sender) {
+                                                       AbstractNodeInfo *sender) const{
     auto parser = sender->getParser(parserKey);
     if (!parser) {
         parser = selectParserImpl(parserKey, sender);
@@ -203,7 +203,7 @@ QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
-                                                           AbstractNodeInfo *sender) {
+                                                           AbstractNodeInfo *sender) const{
     auto version = sender->version();
     const auto availableParser = selectParser(version);
     for (const auto& parser: availableParser) {
@@ -216,7 +216,8 @@ QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
     return nullptr;
 }
 
-QSharedPointer<iParser> APIVersionParser::selectParserImpl(const QString &key, AbstractNodeInfo *sender) {
+QSharedPointer<iParser> APIVersionParser::selectParserImpl(const QString &key,
+                                                           AbstractNodeInfo *sender) const{
     auto version = sender->version();
     auto parser = selectParser(version).value(key);
     sender->addParser(parser);

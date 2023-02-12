@@ -160,7 +160,7 @@ public:
      * @return parser for the @a cmd command
      */
     QSharedPointer<QH::iParser> selectParser(unsigned short cmd,
-                                             AbstractNodeInfo *sender);
+                                             AbstractNodeInfo *sender) const;
 
     /**
      * @brief selectParser This method select parser by command and sender.
@@ -169,7 +169,7 @@ public:
      * @return parser for the @a cmd command
      */
     QSharedPointer<QH::iParser> selectParser(const QString& type,
-                                             AbstractNodeInfo *sender);
+                                             AbstractNodeInfo *sender) const;
 
     /**
      * @brief stop - Stopped this node and close all network connections.
@@ -426,6 +426,15 @@ signals:
      * @param msg - received text of remoute node (server).
      */
     void requestError(unsigned char code, QString msg);
+
+    /**
+     * @brief sigNoLongerSupport is some as a APIVersionParser::sigNoLongerSupport. This signal just retronslate this signal as direct connection.
+     * @param ApiKey see the APIVersionParser::sigNoLongerSupport description
+     * @param version see the APIVersionParser::sigNoLongerSupport description
+     * @see APIVersionParser::sigNoLongerSupport
+     */
+    void sigNoLongerSupport(const QString& ApiKey, unsigned short version);
+
 
 protected:
 

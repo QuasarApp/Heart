@@ -85,6 +85,9 @@ AbstractNode::AbstractNode( QObject *ptr):
     connect(abstractNodeParser.data(), &AbstractNodeParser::sigPingReceived,
             this, &AbstractNode::receivePing, Qt::DirectConnection);
 
+    connect(_apiVersionParser, &APIVersionParser::sigNoLongerSupport,
+            this, &AbstractNode::sigNoLongerSupport, Qt::DirectConnection);
+
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL
     qRegisterMetaType<QList<QSslError>>();
@@ -141,12 +144,12 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
 }
 
 QSharedPointer<iParser> AbstractNode::selectParser(unsigned short cmd,
-                                                   AbstractNodeInfo *sender) {
+                                                   AbstractNodeInfo *sender) const {
     return _apiVersionParser->selectParser(cmd, sender);
 }
 
 QSharedPointer<iParser> AbstractNode::selectParser(const QString &type,
-                                                   AbstractNodeInfo *sender) {
+                                                   AbstractNodeInfo *sender) const {
     return _apiVersionParser->selectParser(type, sender);
 }
 
