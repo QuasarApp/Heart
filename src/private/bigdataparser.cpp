@@ -95,6 +95,8 @@ bool BigDataParser::newPackage(const QSharedPointer<PKG::BigDataHeader> &header,
     request.setCurrentPart(0);
     request.setPackageId(header->packageId());
 
+    QuasarAppUtils::Params::log("Receive BigData Header:" + header->toString());
+
     return node()->sendData(&request, sender, &hdr);
 }
 
@@ -109,6 +111,11 @@ bool BigDataParser::processPart(const QSharedPointer<PKG::BigDataPart> &part,
     checkOutDatedPacakges(part->packageId());
 
     auto& localPool = _pool[part->packageId()];
+
+    QuasarAppUtils::Params::log(QString("Process Part of %0: part %1/%2").
+                                arg(part->packageId()).
+                                arg(part->getPakckageNumber()).
+                                arg(localPool.chaindata.size() - 1));
 
     localPool.chaindata[part->getPakckageNumber()] = part;
 
