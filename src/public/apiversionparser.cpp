@@ -193,7 +193,10 @@ QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
-                                                       AbstractNodeInfo *sender) const{
+                                                       AbstractNodeInfo *sender) const {
+    if (!sender)
+        return nullptr;
+
     auto parser = sender->getParser(parserKey);
     if (!parser) {
         parser = selectParserImpl(parserKey, sender);

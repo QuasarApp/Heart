@@ -199,7 +199,7 @@ int AbstractNodeInfo::trust() const {
 void AbstractNodeInfo::setTrust(int trust) {
     _trust = trust;
 
-    if (isBanned()) {
+    if (isBanned() && _sct) {
         QuasarAppUtils::Params::log(QString("The node %0 is banned!").
                                     arg(_sct->peerAddress().toString()));
 
