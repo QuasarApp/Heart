@@ -35,6 +35,12 @@ public:
     QString parserId() const override;
 
     /**
+     * @brief toString This method show all supported commands and them names.
+     * @return list of the supported commands as a message
+     */
+    QString toString() const override;
+
+    /**
      * @brief searchPackage This method search package recursive in all registered pararsers. Searching will be in compatibility versions.
      * Before search methd choose compatibly verson.
      * @param cmd This is command for that shold be create pacakge object.

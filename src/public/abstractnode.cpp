@@ -1269,6 +1269,10 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
             }
 
+#ifdef QT_DEBUG
+            QuasarAppUtils::Params::log(_apiVersionParser->toString(), QuasarAppUtils::Info);
+#endif
+
             return false;
         }
 
@@ -1424,4 +1428,4 @@ QThread *AbstractNode::mainThreadID() {
     return thread;
 }
 
-}
+} // namespace QH

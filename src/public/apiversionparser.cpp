@@ -67,6 +67,19 @@ QString APIVersionParser::parserId() const {
     return "APIVersionParser";
 }
 
+QString APIVersionParser::toString() const {
+    QString message = " supports parsers:\n";
+    message += iParser::toString();
+
+    for (const auto& parser: _apiParsers) {
+        for (auto it = parser.begin(); it != parser.end(); ++it) {
+            message += "ver: " + QString::number(it.key()) + " " + it.value()->toString();
+        }
+    }
+
+    return message;
+}
+
 QSharedPointer<PKG::AbstractData>
 APIVersionParser::searchPackage(unsigned short cmd,
                                 AbstractNodeInfo *sender) const {

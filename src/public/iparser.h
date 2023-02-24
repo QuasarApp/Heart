@@ -44,7 +44,7 @@ enum class ParserResult {
  * @see AbstractNode::parsePackage
  * @see AbstractNode
  */
-class HEARTSHARED_EXPORT iParser: public QObject
+class HEARTSHARED_EXPORT iParser: public QObject, public QuasarAppUtils::iHRO
 {
     Q_OBJECT
 public:
@@ -211,6 +211,8 @@ public:
      * @see registerPackageType
      */
     virtual void initSupportedCommands();
+
+    QString toString() const override;
 protected:
     AbstractNode *node() const;
 

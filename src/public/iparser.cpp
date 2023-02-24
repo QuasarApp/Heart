@@ -63,4 +63,14 @@ unsigned int iParser::sendData(const PKG::AbstractData *resp,
 
 void iParser::initSupportedCommands() {}
 
+QString iParser::toString() const {
+    QString message = parserId() + " supports next commands:\n";
+
+    for (auto it = _registeredTypes.keyBegin(); it != _registeredTypes.keyEnd(); ++it) {
+        message += genPackage(*it)->cmdString() + " - " + QString::number(*it) + "\n";
+    }
+
+    return message;
+}
+
 }
