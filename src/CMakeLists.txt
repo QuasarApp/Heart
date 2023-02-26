@@ -17,10 +17,6 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions(-DHEART_LIBRARY)
 
-if (HEART_DEPRECATED_API)
-    add_definitions(-DHEART_DEPRECATED_API)
-endif()
-
 if (PRINT_SQL_QUERIES)
     add_definitions(-DPRINT_SQL_QUERIES)
 endif()
@@ -44,13 +40,6 @@ file(GLOB SOURCE_CPP
     "public/hcrypto/*.cpp" "public/hcrypto/*.h" "public/hcrypto/*.qrc"
     "public/hcryptoFeatures/*.cpp" "public/hcryptoFeatures/*.h" "public/hcryptoFeatures/*.qrc"
 )
-
-if (NOT HEART_DEPRECATED_API)
-    file(GLOB SOURCE_CPP_DEPRECATED
-        "private/*_old.cpp" "private/*_old.h"
-    )
-    list(REMOVE_ITEM SOURCE_CPP ${SOURCE_CPP_DEPRECATED})
-endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public")

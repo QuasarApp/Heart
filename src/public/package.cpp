@@ -27,11 +27,7 @@ bool Package::isValid() const {
     if (hdr.size > maximumSize())
         return false;
 
-#ifdef HEART_DEPRECATED_API
-    return calcHash() == hdr.hash || calcHashOld() == hdr.hash;
-#else
     return calcHash() == hdr.hash;
-#endif
 }
 
 void Package::reset() {

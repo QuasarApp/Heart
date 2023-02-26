@@ -30,8 +30,6 @@ public:
     static QString commandText(){return "PROTOCKOL_VERSION_COMMAND";}
     unsigned short cmd() const override {return APIVersion::command();}
 
-    unsigned short cmdOld() const override {return APIVersion::command();}
-
     QString cmdString() const override {return APIVersion::commandText();}
 
     const VersionData &version() const;

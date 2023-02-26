@@ -192,7 +192,7 @@ bool DataBase::upgradeDataBase() {
 
     int currentVersion = 0;
 
-    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", true);
+    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", {}, true);
 
     if (!fsupportUpgrade) {
 

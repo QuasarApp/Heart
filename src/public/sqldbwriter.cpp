@@ -131,17 +131,35 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     return initSuccessful;
 }
 
-bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const {
+bool SqlDBWriter::doQueryPrivate(const QString &query, const QVariantMap &bindValues, QSqlQuery* result) const {
 
     if (!db()) {
         return false;
     }
 
     QSqlQuery q(*db());
-    if (!q.exec(query)) {
-        QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
-        return false;
+    if (bindValues.size()) {
+        if (!q.prepare(query)) {
+            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+
+        for (auto it = bindValues.begin(); it != bindValues.end(); ++it) {
+            q.bindValue(it.key(), it.value());
+        }
+
+        if (!q.exec()) {
+            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+    } else {
+        if (!q.exec(query)) {
+            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
     }
 
     if (result) {
@@ -374,13 +392,13 @@ bool SqlDBWriter::replaceQuery(const QSharedPointer<PKG::DBObject> &ptr) const {
     return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::doQuery(const QString &query,
+bool SqlDBWriter::doQuery(const QString &query, const QVariantMap &bindValues,
                           bool wait, QSqlQuery* result) const {
 
     wait = result || wait;
 
-    Async::Job job = [this, query, result]() {
-        return doQueryPrivate(query, result);
+    Async::Job job = [this, query, bindValues, result]() {
+        return doQueryPrivate(query, bindValues, result);
     };
 
     return asyncLauncher(job, wait);

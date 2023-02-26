@@ -71,7 +71,7 @@ public:
     bool replaceObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
 
     void setSQLSources(const QStringList &list) override;
-    bool doQuery(const QString& query, bool wait = false, QSqlQuery *result = nullptr) const override;
+    bool doQuery(const QString& query, const QVariantMap& bindValues = {}, bool wait = false, QSqlQuery *result = nullptr) const override;
     bool doSql(const QString &sqlFile, bool wait) const override;
 
     /**
@@ -227,7 +227,9 @@ private:
      * @param result This is pointer to result value.
      * @return true if query finished successfull
      */
-    bool doQueryPrivate(const QString& query, QSqlQuery *result) const;
+    bool doQueryPrivate(const QString& query,
+                        const QVariantMap &bindValues,
+                        QSqlQuery *result) const;
 
     bool doSqlPrivate(const QString &sqlFile) const;
 

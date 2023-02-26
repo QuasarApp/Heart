@@ -43,27 +43,6 @@ bool AbstractData::toPackage(Package &package,
     return package.isValid();
 }
 
-bool AbstractData::toPackageOld(Package &package, unsigned int triggerHash) const {
-    if (!checkCmd()) {
-        QuasarAppUtils::Params::log("You try send pacakge without QH_PACKAGE macross. Please add QH_PACKAGE macros to this class.",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
-    if (!isValid()) {
-        return false;
-    }
-
-    package.data = toBytes();
-
-    package.hdr.command = cmdOld();
-    package.hdr.triggerHash = triggerHash;
-    package.hdr.size = package.data.size();
-    package.hdr.hash = package.calcHashOld();
-
-    return package.isValid();
-}
-
 bool AbstractData::checkCmd() const {
     unsigned int code = typeid (*this).hash_code();
     return code == localCode();

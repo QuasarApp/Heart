@@ -108,7 +108,8 @@ public:
     bool replaceObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                       bool wait = false) override;
 
-    bool doQuery(const QString &query, bool wait = false, QSqlQuery* result = nullptr) const override;
+    bool doQuery(const QString &query, const QVariantMap& bindValues,
+                 bool wait = false, QSqlQuery* result = nullptr) const override;
 
     bool doSql(const QString &sqlFile, bool wait) const override;
 

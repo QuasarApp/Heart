@@ -26,7 +26,6 @@ public:
     static unsigned short command(){return PROTOCKOL_VERSION_RECEIVED_COMMAND;}
     static QString commandText(){return "PROTOCKOL_VERSION_RECEIVED_COMMAND";}
     unsigned short cmd() const override {return VersionIsReceived::command();}
-    unsigned short cmdOld() const override {return VersionIsReceived::command();}
     QString cmdString() const override {return VersionIsReceived::commandText();}
 
 

@@ -244,14 +244,14 @@ bool ISqlDB::replaceObject(const QSharedPointer<PKG::DBObject> &saveObject, bool
     return true;
 }
 
-bool ISqlDB::doQuery(const QString &query, bool wait,
-                          QSqlQuery *result) const {
+bool ISqlDB::doQuery(const QString &query, const QVariantMap& toBind,
+                     bool wait, QSqlQuery *result) const {
 
     if (!_writer) {
         return false;
     }
 
-    return _writer->doQuery(query, wait, result);
+    return _writer->doQuery(query, toBind, wait, result);
 }
 
 bool ISqlDB::doSql(const QString &sqlFile, bool wait) const {

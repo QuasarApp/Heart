@@ -121,11 +121,13 @@ public:
     /**
      * @brief doQuery This method execute a @a query in this database.
      * @param query This is query that will be executed.
+     * @param bindValues This is values that need to bind before excute query.
      * @param result This is query result value.
      * @warning The result works onlt on await mode. Set the @a wait param to true.
      * @return true if the query finished successful
      */
-    virtual bool doQuery(const QString& query, bool wait = false, QSqlQuery* result = nullptr) const = 0;
+    virtual bool doQuery(const QString& query, const QVariantMap& bindValues = {},
+                         bool wait = false, QSqlQuery* result = nullptr) const = 0;
 
     /**
      * @brief doSql This method execute a @a query in this database.
