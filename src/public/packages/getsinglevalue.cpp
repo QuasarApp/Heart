@@ -19,9 +19,9 @@ GetSingleValue::GetSingleValue(const DbAddress& address,
                                const QString& primaryKey) {
 
     _table = address.table();
-    _id = address.id().toString();
+    _primaryValue = address.id();
     _field = field;
-    _key = primaryKey;
+    _primaryKey = primaryKey;
 }
 
 QVariant GetSingleValue::value() const {
@@ -33,13 +33,14 @@ DBObject *GetSingleValue::createDBObject() const {
 }
 
 PrepareResult GetSingleValue::prepareSelectQuery(QSqlQuery &q) const {
-    QString queryString = "SELECT %0 FROM %1 WHERE %2='%3'";
-
-    queryString = queryString.arg(_field, table(), _key, _id);
+    QString queryString = "SELECT %0 FROM %1 WHERE %2=:%2";
+    queryString = queryString.arg(_field, table(), _primaryKey);
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
     }
+
+    q.bindValue(":" + _primaryKey, _primaryValue);
 
     return PrepareResult::Success;
 }
@@ -59,11 +60,11 @@ QString GetSingleValue::table() const {
 }
 
 QString GetSingleValue::primaryKey() const {
-    return _id;
+    return _primaryKey;
 }
 
-QString GetSingleValue::primaryValue() const {
-    return _field;
+QVariant GetSingleValue::primaryValue() const {
+    return _primaryValue;
 }
 
 }

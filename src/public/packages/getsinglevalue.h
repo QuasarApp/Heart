@@ -63,13 +63,13 @@ public:
 
 protected:
     QString primaryKey() const override;
-    QString primaryValue() const override;
+    QVariant primaryValue() const override;
 private:
-    QString _id;
-    QString _field;
+    QString _primaryKey;
+    QVariant _primaryValue;
     QString _table;
     QVariant _value;
-    QString _key;
+    QString _field;
 
 };
 }

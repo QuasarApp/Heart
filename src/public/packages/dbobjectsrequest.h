@@ -56,14 +56,6 @@ public:
         _conditions = conditions;
     };
 
-    QString primaryValue() const override {
-        return "";
-    }
-
-    QString primaryKey() const override {
-        return "";
-    }
-
     void clear() override {
         _data.clear();
     };
@@ -115,8 +107,8 @@ public:
 
 protected:
 
-    QString condition() const override {
-        return _conditions;
+    std::pair<QString, QMap<QString, QVariant> > condition() const override {
+        return {_conditions, {}};
     }
 
     DBObject *createDBObject() const override {

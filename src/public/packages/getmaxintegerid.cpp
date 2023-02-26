@@ -36,7 +36,6 @@ PrepareResult GetMaxIntegerId::prepareSelectQuery(QSqlQuery &q) const {
 
 bool GetMaxIntegerId::fromSqlRecord(const QSqlRecord &q) {
     _value = q.value(0).toInt();
-
     return true;
 }
 
@@ -46,14 +45,6 @@ bool GetMaxIntegerId::isCached() const {
 
 QString GetMaxIntegerId::table() const {
     return _table;
-}
-
-QString GetMaxIntegerId::primaryKey() const {
-    return "";
-}
-
-QString GetMaxIntegerId::primaryValue() const {
-    return "";
 }
 
 }

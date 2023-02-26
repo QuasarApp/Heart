@@ -20,7 +20,7 @@ SetSingleValue::SetSingleValue(const DbAddress& address,
                                const QString& field,
                                const QVariant& value,
                                const QString &primaryKey) {
-    _id = address.id().toString();
+    _primaryValue = address.id();
     _table = address.table();
     _field = field;
     _value = value;
@@ -32,9 +32,9 @@ DBObject *SetSingleValue::createDBObject() const {
 }
 
 PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
-    QString queryString = "UPDATE %0 SET %1=:%1 WHERE %2='%3'";
+    QString queryString = "UPDATE %0 SET %1=:%1 WHERE %2=:%2";
 
-    queryString = queryString.arg(table(), _field, primaryKey(), _id);
+    queryString = queryString.arg(table(), _field, primaryKey());
 
     if (!q.prepare(queryString)) {
 
@@ -44,6 +44,7 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
     }
 
     q.bindValue(":" + _field, _value);
+    q.bindValue(":" + _primaryKey, _primaryValue);
 
     return PrepareResult::Success;
 }
@@ -63,7 +64,7 @@ PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q, bool replace) con
         return PrepareResult::Fail;
     }
 
-    q.bindValue(":" + primaryKey(), primaryValue());
+    q.bindValue(":" + _primaryKey, _primaryValue);
     q.bindValue(":" + _field, _value);
 
     return PrepareResult::Success;
@@ -85,8 +86,8 @@ QString SetSingleValue::primaryKey() const {
     return _primaryKey;
 }
 
-QString SetSingleValue::primaryValue() const {
-    return _id;
+QVariant SetSingleValue::primaryValue() const {
+    return _primaryValue;
 }
 }
 }

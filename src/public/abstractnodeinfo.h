@@ -12,6 +12,7 @@
 #include "distversion.h"
 #include "heart_global.h"
 #include "iparser.h"
+#include <QMutex>
 #include <hostaddress.h>
 
 
@@ -332,6 +333,7 @@ private:
 
     QHash<unsigned short, QSharedPointer<iParser>> _parsersMap;
     QHash<QString, QSharedPointer<iParser>> _parsersKeysMap;
+    QMutex _parsersListMutex;
 
     VersionData _version;
     bool _fVersionReceived = false;

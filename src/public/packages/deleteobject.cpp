@@ -72,8 +72,8 @@ QString DeleteObject::primaryKey() const {
     return "id";
 }
 
-QString DeleteObject::primaryValue() const {
-    return _address.id().toString();
+QVariant DeleteObject::primaryValue() const {
+    return _address.id();
 }
 
 }

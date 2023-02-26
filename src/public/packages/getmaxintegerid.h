@@ -41,10 +41,6 @@ public:
     bool isCached() const override;
     QString table() const override;
 
-protected:
-    QString primaryKey() const override;
-    QString primaryValue() const override;
-
 private:
     QString _table;
     QString _field;
