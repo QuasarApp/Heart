@@ -47,13 +47,16 @@ public:
      * @note If you want to get all elements from table then skip @a conditions argument or set it to empty string value.
      * @param table  This is name of database table.
      * @param conditions This is string with conditions for create sql query. If you want to get all elemts just ignore this argument.
+     * @param valuesToBind This is map of the value for the reques.
      * @see DBObjectsRequest::setConditions
      */
     DBObjectsRequest(const QString& table,
-                     const QString& conditions = "" ):
+                     const QString& conditions = "",
+                     const QVariantMap& valuesToBind = {}):
         DBObjectSet (table) {
 
         _conditions = conditions;
+        _condirionValues = valuesToBind;
     };
 
     void clear() override {
@@ -108,7 +111,7 @@ public:
 protected:
 
     std::pair<QString, QMap<QString, QVariant> > condition() const override {
-        return {_conditions, {}};
+        return {_conditions, _condirionValues};
     }
 
     DBObject *createDBObject() const override {
@@ -119,6 +122,7 @@ protected:
 
 private:
     QString _conditions;
+    QVariantMap _condirionValues;
 
 
 };

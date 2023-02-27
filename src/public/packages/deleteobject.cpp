@@ -12,6 +12,11 @@ DeleteObject::DeleteObject() {
 
 }
 
+DeleteObject::DeleteObject(const DbAddress &address, const QString &primaryKey) {
+    _primaryKey = primaryKey;
+    _address = address;
+}
+
 DeleteObject::DeleteObject(const Package &pkg): DeleteObject() {
     fromBytes(pkg.toBytes());
 }
@@ -41,6 +46,7 @@ QDataStream &DeleteObject::fromStream(QDataStream &stream) {
 
     stream >> _address;
     stream >> _token;
+    stream >> _primaryKey;
 
     return stream;
 }
@@ -48,8 +54,13 @@ QDataStream &DeleteObject::fromStream(QDataStream &stream) {
 QDataStream &DeleteObject::toStream(QDataStream &stream) const {
     stream << _address;
     stream << _token;
+    stream << _primaryKey;
 
     return stream;
+}
+
+void DeleteObject::setPrimaryKey(const QString &newPrimaryKey) {
+    _primaryKey = newPrimaryKey;
 }
 
 bool DeleteObject::isCached() const {
@@ -69,7 +80,7 @@ void DeleteObject::setAddress(const DbAddress &newAddress) {
 }
 
 QString DeleteObject::primaryKey() const {
-    return "id";
+    return _primaryKey;
 }
 
 QVariant DeleteObject::primaryValue() const {
