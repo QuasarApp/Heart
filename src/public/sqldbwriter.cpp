@@ -526,7 +526,7 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
             return false;
         }
 
-#ifdef PRINT_SQL_QUERIES
+#ifdef HEART_PRINT_SQL_QUERIES
         QuasarAppUtils::Params::log(QString("Query executed successfull into %0\n"
                                             "query: %1").
                                     arg(_db->databaseName(), q.executedQuery()),

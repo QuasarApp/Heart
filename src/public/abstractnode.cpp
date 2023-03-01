@@ -1212,6 +1212,10 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
         ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
 
+#ifdef HEART_PRINT_PACKAGES
+        QuasarAppUtils::Params::log(QString("Package received! %0").arg(data->toString()), QuasarAppUtils::Info);
+#endif
+
         if (parseResult != ParserResult::Processed) {
 
             auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").

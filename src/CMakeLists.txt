@@ -17,8 +17,12 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions(-DHEART_LIBRARY)
 
-if (PRINT_SQL_QUERIES)
-    add_definitions(-DPRINT_SQL_QUERIES)
+if (HEART_PRINT_SQL_QUERIES)
+    add_definitions(-DHEART_PRINT_SQL_QUERIES)
+endif()
+
+if (HEART_PRINT_PACKAGES)
+    add_definitions(-DHEART_PRINT_PACKAGES)
 endif()
 
 set(SLL_DEFINE "WITHOUT_SSL")
