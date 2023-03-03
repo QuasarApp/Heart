@@ -812,7 +812,7 @@ private:
 
     QSet<QFutureWatcher <bool>*> _workers;
     bool _sendBadRequestErrors = true;
-    bool _closeConnectionAfterBadRequest = true;
+    bool _closeConnectionAfterBadRequest = false;
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;
