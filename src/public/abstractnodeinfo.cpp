@@ -241,6 +241,9 @@ QSharedPointer<iParser> AbstractNodeInfo::getParser(const QString &type) {
 
 void QH::AbstractNodeInfo::addParser(unsigned short cmd,
                                      QSharedPointer<QH::iParser> parser) {
+    if (!parser)
+        return;
+
     QMutexLocker lock(&_parsersListMutex);
 
     _parsersMap[cmd] = parser;
@@ -248,6 +251,9 @@ void QH::AbstractNodeInfo::addParser(unsigned short cmd,
 }
 
 void AbstractNodeInfo::addParser(QSharedPointer<iParser> parser) {
+    if (!parser)
+        return;
+
     QMutexLocker lock(&_parsersListMutex);
 
     _parsersKeysMap[parser->parserId()] = parser;

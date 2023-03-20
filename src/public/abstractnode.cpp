@@ -142,6 +142,10 @@ QSharedPointer<iParser> AbstractNode::selectParser(const QString &type,
     return _apiVersionParser->selectParser(type, sender);
 }
 
+QSharedPointer<iParser> AbstractNode::selectParser(const QString &type, int version) const {
+    return _apiVersionParser->selectParser(type, version);
+}
+
 void AbstractNode::stop() {
     close();
 

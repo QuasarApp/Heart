@@ -93,6 +93,15 @@ public:
     /**
      * @brief selectParser This method select parser by command and sender.
      * @param parserKey this is key of the parser type..
+     * @param version this is needed version.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& parserKey,
+                                             unsigned short version) const;
+
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param parserKey this is key of the parser type..
      * @param sender this is node that sent this command.
      * @return parser for the @a cmd command
      */
