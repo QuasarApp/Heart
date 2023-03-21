@@ -27,7 +27,7 @@ bool Package::isValid() const {
     if (hdr.size > maximumSize())
         return false;
 
-    if ( calcHash() == hdr.hash)
+    if (calcHash() == hdr.hash)
         return true;
 
     return calcHashOld() ==  hdr.hash;
