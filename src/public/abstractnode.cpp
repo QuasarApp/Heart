@@ -1055,7 +1055,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             hdrArray.clear();
         }
 
-        if (static_cast<unsigned int>(pkg.data.size()) > pkg.hdr.size) {
+        if (static_cast<unsigned int>(pkg.data.size()) >= pkg.hdr.size) {
             QuasarAppUtils::Params::log("Invalid Package received." + pkg.toString(),
                                         QuasarAppUtils::Warning);
             pkg.reset();
