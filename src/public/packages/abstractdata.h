@@ -164,6 +164,11 @@ protected:
      */
     virtual unsigned int localCode() const = 0;
 
+    /**
+     * @brief isOldPackage This method mark package as a old, old pacakges use the  Package::calcHashOld method for calculation hash sum of packages.
+     * @return true if the pacakge is old.
+     */
+    virtual bool isOldPackage() const;
 private:
     /**
      * @brief checkCmd This method check QH_PACKAGE macross.

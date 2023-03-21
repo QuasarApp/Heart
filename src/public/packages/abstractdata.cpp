@@ -38,7 +38,12 @@ bool AbstractData::toPackage(Package &package,
     package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
-    package.hdr.hash = package.calcHash();
+
+    if (isOldPackage()) {
+        package.hdr.hash = package.calcHashOld();
+    } else {
+        package.hdr.hash = package.calcHash();
+    }
 
     return package.isValid();
 }
@@ -64,6 +69,10 @@ void AbstractData::fromPakcage(const Package &pkg) {
 
 AbstractData::~AbstractData() {
 
+}
+
+bool QH::PKG::AbstractData::isOldPackage() const {
+    return false;
 }
 
 
