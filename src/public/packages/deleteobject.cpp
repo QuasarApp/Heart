@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -10,6 +10,11 @@ namespace QH {
 namespace PKG {
 DeleteObject::DeleteObject() {
 
+}
+
+DeleteObject::DeleteObject(const DbAddress &address, const QString &primaryKey) {
+    _primaryKey = primaryKey;
+    _address = address;
 }
 
 DeleteObject::DeleteObject(const Package &pkg): DeleteObject() {
@@ -41,6 +46,7 @@ QDataStream &DeleteObject::fromStream(QDataStream &stream) {
 
     stream >> _address;
     stream >> _token;
+    stream >> _primaryKey;
 
     return stream;
 }
@@ -48,8 +54,13 @@ QDataStream &DeleteObject::fromStream(QDataStream &stream) {
 QDataStream &DeleteObject::toStream(QDataStream &stream) const {
     stream << _address;
     stream << _token;
+    stream << _primaryKey;
 
     return stream;
+}
+
+void DeleteObject::setPrimaryKey(const QString &newPrimaryKey) {
+    _primaryKey = newPrimaryKey;
 }
 
 bool DeleteObject::isCached() const {
@@ -69,11 +80,11 @@ void DeleteObject::setAddress(const DbAddress &newAddress) {
 }
 
 QString DeleteObject::primaryKey() const {
-    return "id";
+    return _primaryKey;
 }
 
-QString DeleteObject::primaryValue() const {
-    return _address.id().toString();
+QVariant DeleteObject::primaryValue() const {
+    return _address.id();
 }
 
 }

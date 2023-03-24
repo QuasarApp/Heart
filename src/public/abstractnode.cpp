@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -48,11 +48,6 @@
 #include <abstractnodeparser.h>
 #include <apiversionparser.h>
 
-#ifdef HEART_DEPRECATED_API
-#include "bigdataparser_old.h"
-#include "abstractnodeparser_old.h"
-#endif
-
 namespace QH {
 
 using namespace PKG;
@@ -73,17 +68,14 @@ AbstractNode::AbstractNode( QObject *ptr):
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
 
-#ifdef HEART_DEPRECATED_API
-    addApiParser<BigDataParserOld>();
-    auto abstractNodeParserOld = addApiParserNative<AbstractNodeParserOld>();
-    connect(abstractNodeParserOld.data(), &AbstractNodeParserOld::sigPingReceived,
-            this, &AbstractNode::receivePing, Qt::DirectConnection);
-#endif
     addApiParser<BigDataParser>();
 
     auto abstractNodeParser = addApiParserNative<AbstractNodeParser>();
     connect(abstractNodeParser.data(), &AbstractNodeParser::sigPingReceived,
             this, &AbstractNode::receivePing, Qt::DirectConnection);
+
+    connect(_apiVersionParser, &APIVersionParser::sigNoLongerSupport,
+            this, &AbstractNode::sigNoLongerSupport, Qt::DirectConnection);
 
     qRegisterMetaType<QSharedPointer<QH::AbstractTask>>();
 #ifdef USE_HEART_SSL
@@ -138,6 +130,20 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
     initThreadPool();
 
     return true;
+}
+
+QSharedPointer<iParser> AbstractNode::selectParser(unsigned short cmd,
+                                                   AbstractNodeInfo *sender) const {
+    return _apiVersionParser->selectParser(cmd, sender);
+}
+
+QSharedPointer<iParser> AbstractNode::selectParser(const QString &type,
+                                                   AbstractNodeInfo *sender) const {
+    return _apiVersionParser->selectParser(type, sender);
+}
+
+QSharedPointer<iParser> AbstractNode::selectParser(const QString &type, int version) const {
+    return _apiVersionParser->selectParser(type, version);
 }
 
 void AbstractNode::stop() {
@@ -606,8 +612,24 @@ void AbstractNode::handleSslErrorOcurred(SslSocket *scket,
 
 #endif
 
+bool AbstractNode::fCloseConnectionAfterBadRequest() const {
+    return _closeConnectionAfterBadRequest;
+}
+
+void AbstractNode::setCloseConnectionAfterBadRequest(bool newCloseConnectionAfterBadRequest) {
+    _closeConnectionAfterBadRequest = newCloseConnectionAfterBadRequest;
+}
+
+bool AbstractNode::fSendBadRequestErrors() const {
+    return _sendBadRequestErrors;
+}
+
+void AbstractNode::setSendBadRequestErrors(bool val) {
+    _sendBadRequestErrors = val;
+}
+
 const QSharedPointer<iParser> &
-AbstractNode::addApiParser(const QSharedPointer<iParser> &parserObject) {
+AbstractNode::addApiParserImpl(const QSharedPointer<iParser> &parserObject) {
     return _apiVersionParser->addApiParser(parserObject);
 }
 
@@ -733,26 +755,6 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
         return 0;
     }
 
-#ifdef HEART_DEPRECATED_API
-    bool fOld = node->version().value("HeartLibAbstractAPI").max() <= 0 &&
-                    resp->cmd() != PROTOCKOL_VERSION_RECEIVED_COMMAND &&
-                    resp->cmd() != PROTOCKOL_VERSION_COMMAND;
-    Package pkg;
-    bool convert = false;
-    if (req && req->isValid()) {
-        if (fOld) {
-            convert = resp->toPackageOld(pkg, req->hash);
-        } else {
-            convert = resp->toPackage(pkg, req->hash);
-        }
-    } else {
-        if (fOld) {
-            convert = resp->toPackageOld(pkg);
-        } else {
-            convert = resp->toPackage(pkg);
-        }
-    }
-#else
     Package pkg;
     bool convert = false;
     if (req && req->isValid()) {
@@ -760,7 +762,6 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     } else {
         convert = resp->toPackage(pkg);
     }
-#endif
 
     if (!convert) {
 
@@ -808,14 +809,21 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
         return;
     }
 
-    auto bad = BadRequest(err);
-    if (!sendData(&bad, address, &req)) {
-        return;
-    }
+    auto node = getInfoPtr(address);
+    if (!isBanned(node)) {
+        auto bad = BadRequest(err);
+        if (!sendData(&bad, address, &req)) {
+            return;
+        }
 
-    QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                    address.toString(),
-                                QuasarAppUtils::Info);
+        QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
+                                        address.toString(),
+                                    QuasarAppUtils::Info);
+
+        if (fCloseConnectionAfterBadRequest()) {
+            removeNode(node);
+        }
+    }
 }
 
 WorkState AbstractNode::getWorkState() const {
@@ -1045,9 +1053,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             newWork(pkg, sender, id);
             pkg.reset();
             hdrArray.clear();
-        }
-
-        if (static_cast<unsigned int>(pkg.data.size()) > pkg.hdr.size) {
+        } else if (static_cast<unsigned int>(pkg.data.size()) >= pkg.hdr.size) {
             QuasarAppUtils::Params::log("Invalid Package received." + pkg.toString(),
                                         QuasarAppUtils::Warning);
             pkg.reset();
@@ -1172,6 +1178,14 @@ void AbstractNode::nodeAddedSucessful(AbstractNodeInfo *) {
 
 }
 
+bool AbstractNode::addApiParser(const QSharedPointer<iParser> &parser) {
+
+    if (!parser || parser->node() != this)
+        return false;
+
+    return !addApiParserImpl(parser).isNull();
+}
+
 void AbstractNode::receivePing(const QSharedPointer<PKG::Ping> &) {};
 
 bool AbstractNode::sheduleTask(const QSharedPointer<AbstractTask> &task) {
@@ -1200,20 +1214,38 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
 
         ParserResult parseResult = parsePackage(data, pkg.hdr, sender);
 
+#ifdef HEART_PRINT_PACKAGES
+        QuasarAppUtils::Params::log(QString("Package received! %0").arg(data->toString()), QuasarAppUtils::Info);
+#endif
+
         if (parseResult != ParserResult::Processed) {
 
             auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").
                            arg(pkg.toString(), iParser::pareseResultToString(parseResult), data->toString());
 
-            QuasarAppUtils::Params::log(message, QuasarAppUtils::Warning);
+            QuasarAppUtils::Params::log(message, QuasarAppUtils::Info);
 
             if (parseResult == ParserResult::Error) {
-                changeTrust(id, REQUEST_ERROR);
+
+                if (fSendBadRequestErrors()) {
+                    badRequest(id, pkg.hdr, ErrorData{1, "Your send the invalid request."}, REQUEST_ERROR);
+                } else {
+                    changeTrust(id, REQUEST_ERROR);
+                }
             }
 
             if (parseResult == ParserResult::NotProcessed) {
-                changeTrust(id, NOTSUPPORT_ERROR);
+                if (fSendBadRequestErrors()) {
+                    badRequest(id, pkg.hdr, ErrorData{2, "Your send the not supported command."}, NOTSUPPORT_ERROR);
+                } else {
+                    changeTrust(id, NOTSUPPORT_ERROR);
+                }
+
             }
+
+#ifdef QT_DEBUG
+            QuasarAppUtils::Params::log(_apiVersionParser->toString(), QuasarAppUtils::Info);
+#endif
 
             return false;
         }
@@ -1370,4 +1402,4 @@ QThread *AbstractNode::mainThreadID() {
     return thread;
 }
 
-}
+} // namespace QH

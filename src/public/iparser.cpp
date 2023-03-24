@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2022 QuasarApp.
+ * Copyright (C) 2022-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -59,6 +59,18 @@ unsigned int iParser::sendData(const PKG::AbstractData *resp,
                                const Header *req) const {
     return node()->sendData(resp, dist, req);
 
+}
+
+void iParser::initSupportedCommands() {}
+
+QString iParser::toString() const {
+    QString message = parserId() + " supports next commands:\n";
+
+    for (auto it = _registeredTypes.keyBegin(); it != _registeredTypes.keyEnd(); ++it) {
+        message += genPackage(*it)->cmdString() + " - " + QString::number(*it) + "\n";
+    }
+
+    return message;
 }
 
 }

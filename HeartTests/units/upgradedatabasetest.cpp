@@ -22,7 +22,7 @@ public:
 
     bool checkVersion(int version) {
         QSqlQuery query;
-        if (!db()->doQuery("SELECT * FROM DataBaseAttributes WHERE name='version'", true, &query)){
+        if (!db()->doQuery("SELECT * FROM DataBaseAttributes WHERE name='version'", {},  true, &query)){
             return false;
         };
 
@@ -44,7 +44,7 @@ protected:
 
                        [](const QH::iObjectProvider* database) -> bool {
                            QSqlQuery query;
-                           if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
+                           if (!database->doQuery("select * from DataBaseAttributes", {}, true, &query)){
                                return false;
                            };
 
@@ -57,7 +57,7 @@ protected:
                        2, // to version
                        [](const QH::iObjectProvider* database) -> bool {
                            QSqlQuery query;
-                           if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
+                           if (!database->doQuery("select * from DataBaseAttributes", {}, true, &query)){
                                return false;
                            };
 
@@ -70,7 +70,7 @@ protected:
                        3, // to version
                        [](const QH::iObjectProvider* database) -> bool {
                            QSqlQuery query;
-                           if (!database->doQuery("select * from DataBaseAttributes", true, &query)){
+                           if (!database->doQuery("select * from DataBaseAttributes", {}, true, &query)){
                                return false;
                            };
 

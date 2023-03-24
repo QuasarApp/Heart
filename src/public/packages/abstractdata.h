@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -28,11 +28,12 @@
 */
 #define QH_PACKAGE(X, S) \
    public: \
-    static unsigned short commandOld(){return qHash(QString(S)) % 0xFFFF;} \
-    static unsigned short command(){return common::Hash16(S, strlen(S));} \
+    static unsigned short command(){\
+        QByteArray ba = QString(S).toLocal8Bit();\
+        return qa_common::hash16(ba.data(), ba.size());\
+    } \
     static QString commandText(){return S;} \
     unsigned short cmd() const override {return X::command();} \
-    unsigned short cmdOld() const override {return X::commandOld();} \
     QString cmdString() const override {return X::commandText();} \
    protected: \
     unsigned int localCode() const override {return typeid(X).hash_code();} \
@@ -109,23 +110,6 @@ public:
     bool toPackage(Package &package, unsigned int triggerHash = 0) const;
 
     /**
-     * @brief toPackageOld This method convert this class object to the package.
-     *  For more info see Package class.
-     * @param package  This is return value of Package class.
-     * @param triggerHash This is hash of the package the current class is responding to.
-     * @return True if convert to package finished successful.
-     */
-    bool toPackageOld(Package &package, unsigned int triggerHash = 0) const;
-
-    /**
-     * @brief cmdOld - This is command of this object, (for generate cmd use macross QH_PACKAGE)
-     * @note Use the QH_PACKAGE macross for implement this method.
-     * @return global command of package.
-     * @see QH_PACKAGE
-     */
-    virtual unsigned short cmdOld() const = 0;
-
-    /**
      * @brief isValid This method check current object to valid.
      * @return True if class isValid.
      */
@@ -180,6 +164,11 @@ protected:
      */
     virtual unsigned int localCode() const = 0;
 
+    /**
+     * @brief isOldPackage This method mark package as a old, old pacakges use the  Package::calcHashOld method for calculation hash sum of packages.
+     * @return true if the pacakge is old.
+     */
+    virtual bool isOldPackage() const;
 private:
     /**
      * @brief checkCmd This method check QH_PACKAGE macross.

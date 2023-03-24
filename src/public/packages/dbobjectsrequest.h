@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -47,22 +47,17 @@ public:
      * @note If you want to get all elements from table then skip @a conditions argument or set it to empty string value.
      * @param table  This is name of database table.
      * @param conditions This is string with conditions for create sql query. If you want to get all elemts just ignore this argument.
+     * @param valuesToBind This is map of the value for the reques.
      * @see DBObjectsRequest::setConditions
      */
     DBObjectsRequest(const QString& table,
-                     const QString& conditions = "" ):
+                     const QString& conditions = "",
+                     const QVariantMap& valuesToBind = {}):
         DBObjectSet (table) {
 
         _conditions = conditions;
+        _condirionValues = valuesToBind;
     };
-
-    QString primaryValue() const override {
-        return "";
-    }
-
-    QString primaryKey() const override {
-        return "";
-    }
 
     void clear() override {
         _data.clear();
@@ -115,8 +110,8 @@ public:
 
 protected:
 
-    QString condition() const override {
-        return _conditions;
+    std::pair<QString, QMap<QString, QVariant> > condition() const override {
+        return {_conditions, _condirionValues};
     }
 
     DBObject *createDBObject() const override {
@@ -127,6 +122,7 @@ protected:
 
 private:
     QString _conditions;
+    QVariantMap _condirionValues;
 
 
 };

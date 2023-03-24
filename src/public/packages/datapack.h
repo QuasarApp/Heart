@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -27,6 +27,14 @@ public:
 
         DataPack(const QList<QSharedPointer<Package>> &newPackData = {}) {
         setPackData(newPackData);
+    }
+
+    /**
+     * @brief size This method return of the items count of this pack.
+     * @return size of the packs.
+     */
+    unsigned int size() const {
+        return _packData.size();
     }
 
     /**

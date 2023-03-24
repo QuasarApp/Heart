@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -18,7 +18,6 @@ namespace QH {
 namespace PKG {
 class WebSocket;
 class ISubscribableData;
-
 }
 
 class ISqlDB;
@@ -32,6 +31,9 @@ class AbstractNodeInfo;
  * @brief The DataBase class is DataBase base implementation.
  *  This implementation contains methods for work with database.
  *  DataBaseNode is thread save class.
+ *
+ *  @note before use the database you need to run it. Use The DataBase::run method for this. If you need to stop database, run the DataBase::stop method.
+
  * @see DBObject
  * @see DataBaseNode
  */

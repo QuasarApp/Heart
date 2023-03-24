@@ -1,5 +1,5 @@
 //#
-//# Copyright (C) 2020-2022 QuasarApp.
+//# Copyright (C) 2020-2023 QuasarApp.
 //# Distributed under the GPLv3 software license, see the accompanying
 //# Everyone is permitted to copy and distribute verbatim copies
 //# of this license document, but changing it is not allowed.
@@ -29,8 +29,6 @@ public:
     static unsigned short command(){return PROTOCKOL_VERSION_COMMAND;}
     static QString commandText(){return "PROTOCKOL_VERSION_COMMAND";}
     unsigned short cmd() const override {return APIVersion::command();}
-
-    unsigned short cmdOld() const override {return APIVersion::command();}
 
     QString cmdString() const override {return APIVersion::commandText();}
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -68,8 +68,10 @@ public:
     bool updateObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     bool deleteObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     bool insertObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
+    bool replaceObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
+
     void setSQLSources(const QStringList &list) override;
-    bool doQuery(const QString& query, bool wait = false, QSqlQuery *result = nullptr) const override;
+    bool doQuery(const QString& query, const QVariantMap& bindValues = {}, bool wait = false, QSqlQuery *result = nullptr) const override;
     bool doSql(const QString &sqlFile, bool wait) const override;
 
     /**
@@ -112,7 +114,13 @@ public:
      */
     virtual bool insertQuery(const QSharedPointer<QH::PKG::DBObject>& insertObject) const;
 
-
+    /**
+     * @brief replaceQuery This method prepare the replce object query.
+     * @param insertObject This is strong pointer of object for generate the insert query.
+     * @return true if query generated successful.
+     * @note This method generate query for replace objects in the database.
+     */
+    virtual bool replaceQuery(const QSharedPointer<QH::PKG::DBObject>& insertObject) const;
 protected slots:
 
 
@@ -198,13 +206,11 @@ private:
      * @param q - query object with a request.
      * @param prepareFunc - function with prepare data for query.
      * @param cb - call after success exec and prepare steps.
-     * @param printErrors This propertye enabled or disabled printing error messages. By default is enabled.
      * @return true if all steps finished successful.
      */
     bool workWithQuery(QSqlQuery &q,
                       const std::function< PKG::PrepareResult (QSqlQuery &)> &prepareFunc,
-                      const std::function<bool()>& cb,
-                      bool printErrors = true) const;
+                      const std::function<bool()>& cb) const;
 
     bool exec(QSqlQuery *sq, const QString &sqlFile) const;
 
@@ -221,7 +227,9 @@ private:
      * @param result This is pointer to result value.
      * @return true if query finished successfull
      */
-    bool doQueryPrivate(const QString& query, QSqlQuery *result) const;
+    bool doQueryPrivate(const QString& query,
+                        const QVariantMap &bindValues,
+                        QSqlQuery *result) const;
 
     bool doSqlPrivate(const QString &sqlFile) const;
 

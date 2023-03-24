@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -192,7 +192,7 @@ bool DataBase::upgradeDataBase() {
 
     int currentVersion = 0;
 
-    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", true);
+    bool fsupportUpgrade = db()->doQuery("SELECT COUNT(*) FROM DataBaseAttributes", {}, true);
 
     if (!fsupportUpgrade) {
 
@@ -244,7 +244,7 @@ bool DataBase::upgradeDataBase() {
                     DbAddress{"DataBaseAttributes", "version"},
                     "value", currentVersion, "name");
 
-        if (!_db->insertIfExistsUpdateObject(updateVersionRequest, true)) {
+        if (!_db->replaceObject(updateVersionRequest, true)) {
             QuasarAppUtils::Params::log("Failed to update version attribute",
                                         QuasarAppUtils::Error);
             return false;

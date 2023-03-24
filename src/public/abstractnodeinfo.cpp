@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -199,7 +199,7 @@ int AbstractNodeInfo::trust() const {
 void AbstractNodeInfo::setTrust(int trust) {
     _trust = trust;
 
-    if (isBanned()) {
+    if (isBanned() && _sct) {
         QuasarAppUtils::Params::log(QString("The node %0 is banned!").
                                     arg(_sct->peerAddress().toString()));
 
@@ -221,17 +221,42 @@ void AbstractNodeInfo::reset() {
     setTrust(static_cast<int>(TrustNode::Default));
     setStatus(NodeCoonectionStatus::NotConnected);
     setIsLocal(false);
+
+    QMutexLocker lock(&_parsersListMutex);
     _parsersMap.clear();
 
 }
 
 QSharedPointer<QH::iParser> AbstractNodeInfo::getParser(unsigned short cmd) {
+    QMutexLocker lock(&_parsersListMutex);
+
     return _parsersMap.value(cmd, nullptr);
+}
+
+QSharedPointer<iParser> AbstractNodeInfo::getParser(const QString &type) {
+    QMutexLocker lock(&_parsersListMutex);
+
+    return _parsersKeysMap.value(type, nullptr);
 }
 
 void QH::AbstractNodeInfo::addParser(unsigned short cmd,
                                      QSharedPointer<QH::iParser> parser) {
+    if (!parser)
+        return;
+
+    QMutexLocker lock(&_parsersListMutex);
+
     _parsersMap[cmd] = parser;
+    _parsersKeysMap[parser->parserId()] = parser;
+}
+
+void AbstractNodeInfo::addParser(QSharedPointer<iParser> parser) {
+    if (!parser)
+        return;
+
+    QMutexLocker lock(&_parsersListMutex);
+
+    _parsersKeysMap[parser->parserId()] = parser;
 }
 
 uint qHash(NodeCoonectionStatus status) {

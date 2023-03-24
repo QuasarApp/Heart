@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -27,11 +27,10 @@ bool Package::isValid() const {
     if (hdr.size > maximumSize())
         return false;
 
-#ifdef HEART_DEPRECATED_API
-    return calcHash() == hdr.hash || calcHashOld() == hdr.hash;
-#else
-    return calcHash() == hdr.hash;
-#endif
+    if (calcHash() == hdr.hash)
+        return true;
+
+    return calcHashOld() ==  hdr.hash;
 }
 
 void Package::reset() {
@@ -47,7 +46,7 @@ QString Package::toString() const {
 
 unsigned int Package::calcHash() const {
     auto tmp = data + QByteArray::number(hdr.command);
-    return common::Hash32(tmp.constData(), tmp.size());
+    return qa_common::hash32(tmp.constData(), tmp.size());
 }
 
 unsigned int Package::calcHashOld() const {

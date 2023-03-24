@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -49,7 +49,7 @@ public:
 
     DBObject *createDBObject() const override;
     PrepareResult prepareUpdateQuery(QSqlQuery &q) const override;
-    PrepareResult prepareInsertQuery(QSqlQuery &q) const override;
+    PrepareResult prepareInsertQuery(QSqlQuery &q, bool replace) const override;
 
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;
@@ -59,14 +59,14 @@ public:
 
 protected:
     QString primaryKey() const override;
-    QString primaryValue() const override;
+    QVariant primaryValue() const override;
 
 private:
-    QString _id;
-    QString _table;
-    QString _field;
     QString _primaryKey;
+    QVariant _primaryValue;
+    QString _table;
     QVariant _value;
+    QString _field;
 };
 
 }

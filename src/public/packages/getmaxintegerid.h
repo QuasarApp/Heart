@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -40,10 +40,6 @@ public:
     bool fromSqlRecord(const QSqlRecord &q) override;
     bool isCached() const override;
     QString table() const override;
-
-protected:
-    QString primaryKey() const override;
-    QString primaryValue() const override;
 
 private:
     QString _table;

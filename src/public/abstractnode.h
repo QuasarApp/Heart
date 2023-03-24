@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -153,6 +153,32 @@ public:
      */
     virtual bool run(const QString& addres, unsigned short port);
 
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param cmd this is command that need to parse.
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(unsigned short cmd,
+                                             AbstractNodeInfo *sender) const;
+
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param type this is parser type.
+     * @param version this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& type,
+                                             int version) const;
+
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param type this is parser type.
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& type,
+                                             AbstractNodeInfo *sender) const;
 
     /**
      * @brief stop - Stopped this node and close all network connections.
@@ -350,6 +376,17 @@ public:
      */
     int sheduledTaskCount() const;
 
+    /**
+     * @brief badRequest This method is send data about error of request.
+     * @param address This is addrees of receiver.
+     * @param req This is header of incomming request.
+     * @param err This is message and code of error. For more information see the ErrorData struct.
+     * @param diff This is difference of current trust (currenTrus += diff).
+     * By default diff equals REQUEST_ERROR
+     */
+    virtual void badRequest(const HostAddress &address, const Header &req,
+                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
+
 #ifdef USE_HEART_SSL
 
     /**
@@ -360,6 +397,37 @@ public:
     const QList<QSslError> &ignoreSslErrors() const;
 #endif
 
+    /**
+     * @brief addApiParser This method add new Api parser for this node.
+     * @param parserObject This is bew api parser.
+     * @return added parser.
+     */
+    bool addApiParser(const QSharedPointer<iParser>& parser);
+
+    /**
+     * @brief fSendBadRequestErrors This property enable or disable sending feedback to connected node when them sent wrong packages.
+     * @return true if the sending feedbacks is enabled and false if disabled.
+     */
+    bool fSendBadRequestErrors() const;
+
+    /**
+     * @brief setSendBadRequestErrors This method enable or disable the fSendBadRequestErrors property.
+     * @param value This is new value of the sendBadRequestErrors property.
+     */
+    void setSendBadRequestErrors(bool value);
+
+    /**
+     * @brief fCloseConnectionAfterBadRequest This propery enable or disable droping connection after badRequests. By default it is true.
+     * @return true if the clossing connection is enabled and false if disabled.
+     */
+    bool fCloseConnectionAfterBadRequest() const;
+
+    /**
+     * @brief setSendBadRequestErrors This method enable or disable the fcloseConnectionAfterBadRequest property.
+     * @param value This is new value of the fcloseConnectionAfterBadRequest property.
+     */
+    void setCloseConnectionAfterBadRequest(bool value);
+
 signals:
     /**
      * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
@@ -367,6 +435,14 @@ signals:
      * @param msg - received text of remoute node (server).
      */
     void requestError(unsigned char code, QString msg);
+
+    /**
+     * @brief sigNoLongerSupport is some as a APIVersionParser::sigNoLongerSupport. This signal just retronslate this signal as direct connection.
+     * @param ApiKey see the APIVersionParser::sigNoLongerSupport description
+     * @param version see the APIVersionParser::sigNoLongerSupport description
+     * @see APIVersionParser::sigNoLongerSupport
+     */
+    void sigNoLongerSupport(const QString& ApiKey, unsigned short version);
 
 
 protected:
@@ -433,17 +509,6 @@ protected:
      *  This is done that allthe data that is sent when node are dissconected come without fail.
      */
     virtual bool sendPackage(const Package &pkg, QAbstractSocket *target) const;
-
-    /**
-     * @brief badRequest This method is send data about error of request.
-     * @param address This is addrees of receiver.
-     * @param req This is header of incomming request.
-     * @param err This is message and code of error. For more information see the ErrorData struct.
-     * @param diff This is difference of current trust (currenTrus += diff).
-     * By default diff equals REQUEST_ERROR
-     */
-    virtual void badRequest(const HostAddress &address, const Header &req,
-                            const PKG::ErrorData& err, qint8 diff = REQUEST_ERROR);
 
     /**
      * @brief getWorkStateString This method generate string about work state of server.
@@ -595,7 +660,7 @@ protected:
      */
     template<class ApiType, class ... Args >
     QSharedPointer<ApiType> addApiParserNative(Args&&... arg) {
-        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template staticCast<ApiType>();
+        return addApiParserImpl(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...)).template staticCast<ApiType>();
     }
 
     /**
@@ -606,7 +671,7 @@ protected:
      */
     template<class ApiType, class ... Args >
     const QSharedPointer<iParser> & addApiParser(Args&&... arg) {
-        return addApiParser(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...));
+        return addApiParserImpl(QSharedPointer<ApiType>::create(this, std::forward<Args>(arg)...));
     }
 
 protected slots:
@@ -686,11 +751,11 @@ private slots:
 private:
 
     /**
-     * @brief addApiParser This method add new Api parser for this node.
+     * @brief addApiParserImpl This method add new Api parser for this node.
      * @param parserObject This is bew api parser.
      * @return added parser.
      */
-    const QSharedPointer<iParser> & addApiParser(const QSharedPointer<QH::iParser>& parserObject);
+    const QSharedPointer<iParser> & addApiParserImpl(const QSharedPointer<QH::iParser>& parserObject);
 
     // iParser interface
     ParserResult parsePackage(const QSharedPointer<PKG::AbstractData> &pkg,
@@ -750,9 +815,13 @@ private:
     TaskScheduler *_tasksheduller = nullptr;
     APIVersionParser *_apiVersionParser = nullptr;
 
-    QHash<NodeCoonectionStatus, QHash<HostAddress, std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
+    QHash<NodeCoonectionStatus,
+          QHash<HostAddress,
+                std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 
     QSet<QFutureWatcher <bool>*> _workers;
+    bool _sendBadRequestErrors = true;
+    bool _closeConnectionAfterBadRequest = false;
 
     mutable QMutex _connectionsMutex;
     mutable QMutex _confirmNodeMutex;

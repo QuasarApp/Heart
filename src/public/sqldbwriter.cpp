@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -131,17 +131,35 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     return initSuccessful;
 }
 
-bool SqlDBWriter::doQueryPrivate(const QString &query, QSqlQuery* result) const {
+bool SqlDBWriter::doQueryPrivate(const QString &query, const QVariantMap &bindValues, QSqlQuery* result) const {
 
     if (!db()) {
         return false;
     }
 
     QSqlQuery q(*db());
-    if (!q.exec(query)) {
-        QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
-        return false;
+    if (bindValues.size()) {
+        if (!q.prepare(query)) {
+            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+
+        for (auto it = bindValues.begin(); it != bindValues.end(); ++it) {
+            q.bindValue(it.key(), it.value());
+        }
+
+        if (!q.exec()) {
+            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
+    } else {
+        if (!q.exec(query)) {
+            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
+                                        QuasarAppUtils::Error);
+            return false;
+        }
     }
 
     if (result) {
@@ -303,6 +321,14 @@ bool SqlDBWriter::insertObject(const QSharedPointer<DBObject> &ptr, bool wait) {
 
 }
 
+bool SqlDBWriter::replaceObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait) {
+    Async::Job job = [this, ptr]() {
+        return replaceQuery(ptr);
+    };
+
+    return asyncLauncher(job, wait);
+}
+
 void SqlDBWriter::setSQLSources(const QStringList &list) {
     _SQLSources = list;
 }
@@ -339,21 +365,40 @@ bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
     QSqlQuery q(*db());
 
     auto prepare = [ptr](QSqlQuery&q) {
-        return ptr->prepareInsertQuery(q);
+        return ptr->prepareInsertQuery(q, false);
     };
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb, ptr->printError());
+    return workWithQuery(q, prepare, cb);
 }
 
-bool SqlDBWriter::doQuery(const QString &query,
+bool SqlDBWriter::replaceQuery(const QSharedPointer<PKG::DBObject> &ptr) const {
+    if (!ptr)
+        return false;
+
+    if (!db()) {
+        return false;
+    }
+
+    QSqlQuery q(*db());
+
+    auto prepare = [ptr](QSqlQuery&q) {
+        return ptr->prepareInsertQuery(q, true);
+    };
+
+    auto cb = [](){return true;};
+
+    return workWithQuery(q, prepare, cb);
+}
+
+bool SqlDBWriter::doQuery(const QString &query, const QVariantMap &bindValues,
                           bool wait, QSqlQuery* result) const {
 
     wait = result || wait;
 
-    Async::Job job = [this, query, result]() {
-        return doQueryPrivate(query, result);
+    Async::Job job = [this, query, bindValues, result]() {
+        return doQueryPrivate(query, bindValues, result);
     };
 
     return asyncLauncher(job, wait);
@@ -422,7 +467,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
         return result.size();
     };
 
-    return workWithQuery(q, prepare, cb, requestObject.printError());
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) const {
@@ -440,7 +485,7 @@ bool SqlDBWriter::deleteQuery(const QSharedPointer<DBObject> &deleteObject) cons
     };
 
 
-    return workWithQuery(q, prepare, cb, deleteObject->printError());
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
@@ -455,18 +500,14 @@ bool SqlDBWriter::updateQuery(const QSharedPointer<DBObject> &ptr) const {
 
     auto cb = [](){return true;};
 
-    return workWithQuery(q, prepare, cb, ptr->printError());
+    return workWithQuery(q, prepare, cb);
 }
 
 bool SqlDBWriter::workWithQuery(QSqlQuery &q,
                                 const std::function< PrepareResult (QSqlQuery &)> &prepareFunc,
-                                const std::function<bool ()> &cb,
-                                bool printErrors) const {
+                                const std::function<bool ()> &cb) const {
 
-    auto printError = [printErrors](const QSqlQuery &q) {
-
-        if (!printErrors)
-            return ;
+    auto printError = [](const QSqlQuery &q) {
 
         QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
                                     QuasarAppUtils::Debug);
@@ -484,6 +525,13 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
             printError(q);
             return false;
         }
+
+#ifdef HEART_PRINT_SQL_QUERIES
+        QuasarAppUtils::Params::log(QString("Query executed successfull into %0\n"
+                                            "query: %1").
+                                    arg(_db->databaseName(), q.executedQuery()),
+                                    QuasarAppUtils::Debug);
+#endif
 
         return cb();
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -12,6 +12,7 @@
 #include "distversion.h"
 #include "heart_global.h"
 #include "iparser.h"
+#include <QMutex>
 #include <hostaddress.h>
 
 
@@ -237,13 +238,26 @@ public:
     QSharedPointer<QH::iParser> getParser(unsigned short cmd);
 
     /**
+     * @brief getParser This method return parser of choosed command.
+     * @param type This is type of api parser.
+     * @return parser by type.
+     */
+    QSharedPointer<QH::iParser> getParser(const QString& type);
+
+    /**
      * @brief addParser This method add to cache new parser for command .
-     * @param cmd
-     * @param parser
+     * @param cmd This is any command that support this parser.
+     * @param parser This is added parser.
      * @note All parsers will be removed after reconnect of this node.
      */
     void addParser(unsigned short cmd, QSharedPointer<QH::iParser> parser);
 
+    /**
+     * @brief addParser This method add to cache new parser for command .
+     * @param parser This is added parser.
+     * @note All parsers will be removed after reconnect of this node.
+     */
+    void addParser(QSharedPointer<QH::iParser> parser);
 
 public slots:
     /**
@@ -318,6 +332,8 @@ private:
     bool _isLocal = false;
 
     QHash<unsigned short, QSharedPointer<iParser>> _parsersMap;
+    QHash<QString, QSharedPointer<iParser>> _parsersKeysMap;
+    QMutex _parsersListMutex;
 
     VersionData _version;
     bool _fVersionReceived = false;

@@ -1,5 +1,5 @@
 //#
-//# Copyright (C) 2022-2022 QuasarApp.
+//# Copyright (C) 2022-2023 QuasarApp.
 //# Distributed under the lgplv3 software license, see the accompanying
 //# Everyone is permitted to copy and distribute verbatim copies
 //# of this license document, but changing it is not allowed.
@@ -33,6 +33,12 @@ public:
                               AbstractNodeInfo *sender) override;
     int version() const override;
     QString parserId() const override;
+
+    /**
+     * @brief toString This method show all supported commands and them names.
+     * @return list of the supported commands as a message
+     */
+    QString toString() const override;
 
     /**
      * @brief searchPackage This method search package recursive in all registered pararsers. Searching will be in compatibility versions.
@@ -82,7 +88,25 @@ public:
      * @return parser for the @a cmd command
      */
     QSharedPointer<QH::iParser> selectParser(unsigned short cmd,
-                                             AbstractNodeInfo *sender);
+                                             AbstractNodeInfo *sender) const;
+
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param parserKey this is key of the parser type..
+     * @param version this is needed version.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& parserKey,
+                                             unsigned short version) const;
+
+    /**
+     * @brief selectParser This method select parser by command and sender.
+     * @param parserKey this is key of the parser type..
+     * @param sender this is node that sent this command.
+     * @return parser for the @a cmd command
+     */
+    QSharedPointer<QH::iParser> selectParser(const QString& parserKey,
+                                             AbstractNodeInfo *sender) const;
 
     /**
      * @brief maximumApiVersion This method return maximum supported api version of this node.
@@ -117,7 +141,10 @@ signals:
 private:
 
     QSharedPointer<QH::iParser>
-    selectParserImpl(unsigned short cmd, AbstractNodeInfo *sender);
+    selectParserImpl(unsigned short cmd, AbstractNodeInfo *sender) const;
+
+    QSharedPointer<QH::iParser>
+    selectParserImpl(const QString& key, AbstractNodeInfo *sender) const;
 
     bool processAppVersion(const QSharedPointer<PKG::APIVersion> &message,
                            AbstractNodeInfo *sender,
@@ -128,6 +155,9 @@ private:
 
     QHash<QString, QMap<int, QSharedPointer<QH::iParser>>> _apiParsers;
 
+    // This is internal check of registered commands.
+    // works only in debug.
+    bool commandsValidation(const QSharedPointer<iParser> &parserObject);
 };
 }
 #endif // APIVERSIONPARSER_H

@@ -1,5 +1,5 @@
 //#
-//# Copyright (C) 2022-2022 QuasarApp.
+//# Copyright (C) 2022-2023 QuasarApp.
 //# Distributed under the lgplv3 software license, see the accompanying
 //# Everyone is permitted to copy and distribute verbatim copies
 //# of this license document, but changing it is not allowed.
@@ -67,6 +67,19 @@ QString APIVersionParser::parserId() const {
     return "APIVersionParser";
 }
 
+QString APIVersionParser::toString() const {
+    QString message = " supports parsers:\n";
+    message += iParser::toString();
+
+    for (const auto& parser: _apiParsers) {
+        for (auto it = parser.begin(); it != parser.end(); ++it) {
+            message += "ver: " + QString::number(it.key()) + " " + it.value()->toString();
+        }
+    }
+
+    return message;
+}
+
 QSharedPointer<PKG::AbstractData>
 APIVersionParser::searchPackage(unsigned short cmd,
                                 AbstractNodeInfo *sender) const {
@@ -106,8 +119,56 @@ APIVersionParser::getSelectedApiParser(const QString &apiKey,
     return selectParser(node->version()).value(apiKey, nullptr);
 }
 
+bool QH::APIVersionParser::commandsValidation(const QSharedPointer<iParser> &parserObject) {
+#ifdef QT_DEBUG
+    auto types = QSet<unsigned short>{parserObject->registeredTypes().keyBegin(),
+                                      parserObject->registeredTypes().keyEnd()};
+    int typesSize = types.size();
+
+    for (const auto &parsersMap : qAsConst(_apiParsers)) {
+        for (const auto &parser: parsersMap) {
+            if (parser->parserId() == parserObject->parserId()) {
+                continue;
+            }
+
+            auto localTypes = QSet<unsigned short>{parser->registeredTypes().keyBegin(),
+                                                   parser->registeredTypes().keyEnd()};
+            types -= localTypes;
+
+            if (types.size() != typesSize) {
+                auto err = QString("Parser object can't be added. "
+                                   "Because commands of the %0_v%1 parser "
+                                   "already registered in the %2_v%3 parser. "
+                                   "Use the iParser::initSupportedCommands method to "
+                                   "fix this issue. "
+                                   "See our documentation for get more inforamtion. "
+                                   "https://quasarapp.ddns.net:3031/docs/QuasarApp/Heart/latest/classQH_1_1iParser.html").
+                           arg(parserObject->parserId()).
+                           arg(parserObject->version()).
+                           arg(parser->parserId()).
+                           arg(parser->version());
+
+                QuasarAppUtils::Params::log(err, QuasarAppUtils::Error);
+
+                return false;
+            }
+        }
+    }
+#endif
+
+    return true;
+}
+
 const QSharedPointer<QH::iParser>& APIVersionParser::addApiParser(const QSharedPointer<iParser> &parserObject) {
     debug_assert(parserObject, "Parser object should not be nullptr");
+
+    parserObject->initSupportedCommands();
+
+    if (!commandsValidation(parserObject)) {
+        debug_assert(false, "Parser object can't be added. "
+                            "Because its commands already registered "
+                            "in the another parsers.");
+    }
 
     _apiParsers[parserObject->parserId()][parserObject->version()] = parserObject;
     return _apiParsers[parserObject->parserId()][parserObject->version()];
@@ -135,7 +196,7 @@ unsigned int APIVersionParser::parsersTypedCount() const {
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
-                                                       AbstractNodeInfo *sender) {
+                                                       AbstractNodeInfo *sender) const{
     auto parser = sender->getParser(cmd);
     if (!parser) {
         parser = selectParserImpl(cmd, sender);
@@ -144,8 +205,34 @@ QSharedPointer<iParser> APIVersionParser::selectParser(unsigned short cmd,
     return parser;
 }
 
+QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
+                                                       AbstractNodeInfo *sender) const {
+    if (!sender)
+        return nullptr;
+
+    auto parser = sender->getParser(parserKey);
+    if (!parser) {
+        parser = selectParserImpl(parserKey, sender);
+    }
+
+    return parser;
+}
+
+QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
+                                                       unsigned short version) const {
+
+    DistVersion versionData;
+    versionData.setMin(version);
+    versionData.setMax(version);
+
+    VersionData versions;
+    versions.insert(parserKey, versionData);
+
+    return  selectParser(versions).value(parserKey);
+}
+
 QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
-                                                           AbstractNodeInfo *sender) {
+                                                           AbstractNodeInfo *sender) const{
     auto version = sender->version();
     const auto availableParser = selectParser(version);
     for (const auto& parser: availableParser) {
@@ -158,6 +245,14 @@ QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
     return nullptr;
 }
 
+QSharedPointer<iParser> APIVersionParser::selectParserImpl(const QString &key,
+                                                           AbstractNodeInfo *sender) const{
+    auto version = sender->version();
+    auto parser = selectParser(version).value(key);
+    sender->addParser(parser);
+
+    return parser;
+}
 
 unsigned short APIVersionParser::maximumApiVersion(const QString &apiKey) const {
 

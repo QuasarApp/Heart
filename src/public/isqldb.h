@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -105,7 +105,11 @@ public:
     bool insertObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                       bool wait = false) override;
 
-    bool doQuery(const QString &query, bool wait = false, QSqlQuery* result = nullptr) const override;
+    bool replaceObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                      bool wait = false) override;
+
+    bool doQuery(const QString &query, const QVariantMap& bindValues,
+                 bool wait = false, QSqlQuery* result = nullptr) const override;
 
     bool doSql(const QString &sqlFile, bool wait) const override;
 
@@ -232,6 +236,8 @@ private:
                       bool wait = false);
     bool insertObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                       bool wait = false);
+    bool replaceObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                       bool wait = false);
 
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;

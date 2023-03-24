@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -30,10 +30,26 @@ DBObject::~DBObject() {
 PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
 
     auto map = variantMap().keys();
-
-    QString queryString = "SELECT " + map.join(",") + " FROM %0 " + getWhereBlock();
-
+    QString queryString = "SELECT " + map.join(",") + " FROM %0 ";
     queryString = queryString.arg(table());
+
+
+    auto [conditionQueryString, conditionBindingMap] = condition();
+
+    if (conditionQueryString.size()) {
+
+        queryString += " WHERE " + conditionQueryString;
+        if (!q.prepare(queryString)) {
+            return PrepareResult::Fail;
+        }
+
+        for (auto it = conditionBindingMap.begin(); it != conditionBindingMap.end(); ++it) {
+            q.bindValue(it.key(), it.value());
+        }
+
+        return PrepareResult::Success;
+    }
+
 
     if (!q.prepare(queryString)) {
         return PrepareResult::Fail;
@@ -42,7 +58,7 @@ PrepareResult DBObject::prepareSelectQuery(QSqlQuery &q) const {
     return PrepareResult::Success;
 }
 
-PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
+PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q, bool replace) const {
 
     DBVariantMap map = variantMap();
 
@@ -53,7 +69,9 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "INSERT INTO %0(%1) VALUES (%2) ";
+    QString queryString = (replace)?
+                              "REPLACE INTO %0(%1) VALUES (%2) " :
+                              "INSERT INTO %0(%1) VALUES (%2) ";
 
 
     queryString = queryString.arg(table());
@@ -105,7 +123,15 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
         return PrepareResult::Fail;
     }
 
-    QString queryString = "UPDATE %0 SET %1 WHERE " + condition();
+    auto [conditionQueryString, conditionBindingMap] = condition();
+
+    if (conditionQueryString.isEmpty()) {
+        QuasarAppUtils::Params::log("The object soue not have condition for update object.",
+                                    QuasarAppUtils::Error);
+        return PrepareResult::Fail;
+    }
+
+    QString queryString = "UPDATE %0 SET %1 WHERE " + conditionQueryString;
 
     queryString = queryString.arg(table());
     QString tableUpdateValues = "";
@@ -142,6 +168,21 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
             q.bindValue(":" + it.key(), it.value().value);
         }
 
+        for (auto it = conditionBindingMap.begin(); it != conditionBindingMap.end(); ++it) {
+#ifdef QT_DEBUG
+            if (bool(map.value(it.key()).type & MemberType::Update)) {
+                QuasarAppUtils::Params::log(QString("Bad object configuration: "
+                                            "The %0 field using in the condition and has MemberType::Update configuration."
+                                                    " All condition fields should not use the MemberType::Update. \n %1").
+                                            arg(it.key(), toString()),
+                                            QuasarAppUtils::Warning);
+            }
+#endif
+            q.bindValue(it.key(), it.value());
+        }
+
+
+
         return PrepareResult::Success;
     }
 
@@ -160,72 +201,30 @@ bool DBObject::isBundle() const {
     return false;
 }
 
-QString DBObject::condition() const {
-
-    // prepare key value to string condition
-    auto prepareCondition = [](const QString& key, const QString &val){
-        return key + "= '" + val + "'";
-    };
-
-    auto byteArrayWarning = [](){
-        QuasarAppUtils::Params::log("You try generate a condition from the raw bytes array."
-                                    " This operation can not be brok the sql request."
-                                    " Use the QString or int type for values of condition."
-                                    " If you want to  bytes array in condition then override the DBObject::condition method.",
-                                    QuasarAppUtils::Warning);
-    };
-
-    QString errorString = "WRONG OBJECT";
+std::pair<QString, QMap<QString, QVariant>> DBObject::condition() const {
 
     // if object have a primaryKey then return primary key
     auto primaryVal = primaryValue();
-    if (primaryVal.size()) {
-        return prepareCondition(primaryKey(), primaryVal);
+    if (!primaryVal.isNull()) {
+        return {QString("%0 = :%0").arg(primaryKey()),
+                {{QString(":%0").arg(primaryKey()), {primaryVal}}}};
     }
 
-    auto map = variantMap();
-
-    // check all objects fields
-    for (auto it = map.begin(); it != map.end(); ++it) {
-        // if field is unique then
-        if (bool(it.value().type & MemberType::Unique)) {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-
-            QVariant::Type type = it.value().value.type();
-
-            bool typeisString = type == QVariant::String;
-            bool typeisArray = type == QVariant::ByteArray;
-
-#else
-
-            int type = it.value().value.metaType().id();
-
-            bool typeisString = type == QMetaType::QString;
-            bool typeisArray = type == QMetaType::QByteArray;
-
-#endif
-
-            // if field is string then check size.
-            if (typeisString) {
-                QString val = it.value().value.toString();
-                if (val.size()) {
-                    return prepareCondition(it.key(), val);
-                }
-            } else if (typeisArray) {
-                byteArrayWarning();
-                continue;
-            } else if (it.value().value.isValid()) {
-                return prepareCondition(it.key(), it.value().value.toString());
-            }
-        }
-    }
 
     QuasarAppUtils::Params::log("Fail to generate condition for object: " + toString() +
                                 ". Object do not have valid unique fields or valid database address.",
                                 QuasarAppUtils::Error);
 
 
-    return errorString;
+    return {};
+}
+
+QString DBObject::primaryKey() const {
+    return "";
+}
+
+QVariant DBObject::primaryValue() const {
+    return {};
 }
 
 bool DBObject::isInsertPrimaryKey() const {
@@ -239,25 +238,6 @@ DbAddress DBObject::dbAddress() const {
 QString DBObject::toString() const {
     return AbstractData::toString() +
             QString(" %0").arg(dbAddress().toString());
-}
-
-QString DBObject::getWhereBlock() const {
-    auto con = condition();
-
-    if (!con.size())
-        return "";
-
-    QString whereBlock = "WHERE " + con;
-
-    return whereBlock;
-}
-
-bool DBObject::printError() const {
-    return _printError;
-}
-
-void DBObject::setPrintError(bool newPrintError) {
-    _printError = newPrintError;
 }
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {
@@ -278,15 +258,29 @@ QDataStream &DBObject::toStream(QDataStream &stream) const {
 
 PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
 
-    QString queryString = "DELETE FROM %0 " + getWhereBlock();
-
+    QString queryString = "DELETE FROM %0 ";
     queryString = queryString.arg(table());
 
-    if (!q.prepare(queryString)) {
-        return PrepareResult::Fail;
+    auto [conditionQueryString, conditionBindingMap] = condition();
+
+    if (conditionQueryString.size()) {
+
+        queryString += " WHERE " + conditionQueryString;
+        if (!q.prepare(queryString)) {
+            return PrepareResult::Fail;
+        }
+
+        for (auto it = conditionBindingMap.begin(); it != conditionBindingMap.end(); ++it) {
+            q.bindValue(it.key(), it.value());
+        }
+
+        return PrepareResult::Success;
     }
 
-    return PrepareResult::Success;
+    QuasarAppUtils::Params::log("This object doues not have condition for remove." + toString(),
+                                QuasarAppUtils::Error);
+
+    return PrepareResult::Fail;
 }
 
 DBVariantMap DBObject::variantMap() const {
@@ -302,7 +296,7 @@ bool DBObject::isValid() const {
         return false;
 
     if (isInsertPrimaryKey()) {
-        return primaryValue().size();
+        return primaryValue().isValid();
     }
 
     return table().size();

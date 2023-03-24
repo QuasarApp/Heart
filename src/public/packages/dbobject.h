@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -171,6 +171,9 @@ public:
      *  Override this method for insert item into database.
      * By Default This method prepare a insert query using the data that returned from the variantMap method.
      *
+     * @param q Thuis is query object.
+     * @param replace This option disable or enable replacing of exists objects.
+     *
      * Default insert query have a next template:
      * \code{sql}
      *     INSERT INTO %0(%1) VALUES (%3)
@@ -183,7 +186,7 @@ public:
      *
      * Example of overriding:
      * \code{cpp}
-     *  PrepareResult ExampleObject::prepareInsertQuery(QSqlQuery &q) const {
+     *  PrepareResult ExampleObject::prepareInsertQuery(QSqlQuery &q, replace) const {
 
             DBVariantMap map = variantMap();
 
@@ -225,7 +228,7 @@ public:
      *
      * @note If you want disable this method, just override it and return the PrepareResult::Disabled value.
      */
-    virtual PrepareResult prepareInsertQuery(QSqlQuery& q) const;
+    virtual PrepareResult prepareInsertQuery(QSqlQuery& q, bool replace) const;
 
     /**
      * @brief prepareUpdateQuery this method should be prepare a insert data query.
@@ -366,20 +369,6 @@ public:
      */
     virtual QString table() const = 0;
 
-    /**
-     * @brief printError This method return status of printing error messages for sql quries. by default this propertye is enabled.
-     * @return true if printing error messages is enabled else false.
-     * @see DBObject::setPrintError
-     */
-    bool printError() const;
-
-    /**
-     * @brief setPrintError This method sets new value for printError propertye.
-     * @param newPrintError This is new value for printError propertye
-     * @see DBObject::printError
-     */
-    void setPrintError(bool newPrintError);
-
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override;
@@ -390,18 +379,19 @@ protected:
      * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
      * The default implementation generate when block by map for more information see the variantMap nethod.
      * Override this method for customize your select or delete query.
-     * @return condition string.
+     * @return condition string and qvariant map of the values for binding (bindingKey:bindValue).
      * @note This operation can not be block the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.
      *
      * Example of overriding:
      * \code{cpp}
      *  QString DBObject::condition() const {
-            return {"id = '" + getId().toRaw() + "'"};
+            return {{"id = :id"},
+                    {{{":id"}, {getId()}}}};
         }
      * \endcode
      */
 
-    virtual QString condition() const;
+    virtual std::pair<QString, QMap<QString, QVariant>> condition() const;
 
     /**
      * @brief primaryKey This method must be return the name of primary key of this object table.
@@ -409,7 +399,7 @@ protected:
      * @note If you returned empty value then this method can not be prepare insert update and delete querys.
      * @return The primary key name.
      */
-    virtual QString primaryKey() const = 0;
+    virtual QString primaryKey() const;
 
     /**
      * @brief primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then return invalid value.
@@ -417,7 +407,7 @@ protected:
      * @note If you alredy override the condition method then You can return empty string because this method using in generate default condition only.
      * @see DBObject::condition.
      */
-    virtual QString primaryValue() const = 0;
+    virtual QVariant primaryValue() const;
 
     /**
      * @brief isInsertPrimaryKey This method check primaryKeys type.
@@ -426,9 +416,6 @@ protected:
      */
     bool isInsertPrimaryKey() const;
 
-private:
-    QString getWhereBlock() const;
-    bool _printError = true;
 };
 }
 }

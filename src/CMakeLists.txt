@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018-2022 QuasarApp.
+# Copyright (C) 2018-2023 QuasarApp.
 # Distributed under the lgplv3 software license, see the accompanying
 # Everyone is permitted to copy and distribute verbatim copies
 # of this license document, but changing it is not allowed.
@@ -17,8 +17,12 @@ set(CMAKE_AUTORCC ON)
 
 add_definitions(-DHEART_LIBRARY)
 
-if (HEART_DEPRECATED_API)
-    add_definitions(-DHEART_DEPRECATED_API)
+if (HEART_PRINT_SQL_QUERIES)
+    add_definitions(-DHEART_PRINT_SQL_QUERIES)
+endif()
+
+if (HEART_PRINT_PACKAGES)
+    add_definitions(-DHEART_PRINT_PACKAGES)
 endif()
 
 set(SLL_DEFINE "WITHOUT_SSL")
@@ -40,13 +44,6 @@ file(GLOB SOURCE_CPP
     "public/hcrypto/*.cpp" "public/hcrypto/*.h" "public/hcrypto/*.qrc"
     "public/hcryptoFeatures/*.cpp" "public/hcryptoFeatures/*.h" "public/hcryptoFeatures/*.qrc"
 )
-
-if (NOT HEART_DEPRECATED_API)
-    file(GLOB SOURCE_CPP_DEPRECATED
-        "private/*_old.cpp" "private/*_old.h"
-    )
-    list(REMOVE_ITEM SOURCE_CPP ${SOURCE_CPP_DEPRECATED})
-endif()
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022-2022 QuasarApp.
+ * Copyright (C) 2022-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -44,7 +44,7 @@ enum class ParserResult {
  * @see AbstractNode::parsePackage
  * @see AbstractNode
  */
-class HEARTSHARED_EXPORT iParser: public QObject
+class HEARTSHARED_EXPORT iParser: public QObject, public QuasarAppUtils::iHRO
 {
     Q_OBJECT
 public:
@@ -54,6 +54,7 @@ public:
     /**
      * @brief registerPackageType This method register package type T.
      * This is need to prepare pacakge for parsing in the parsePackage method.
+     * @see initSupportedCommands
      */
     void registerPackageType() {
         _registeredTypes[T::command()] = [](){
@@ -190,7 +191,7 @@ public:
      * @see AbstractNode::registerPackageType
      * @see Header::command
      */
-    virtual QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const ;
+    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const;
 
     /**
      * @brief checkCommand This method check command are if registered type or not.
@@ -205,6 +206,13 @@ public:
      */
     virtual QString parserId() const = 0;
 
+    /**
+     * @brief initSupportedCommands This method will be invoked before add a parser into parser's storage. Use this method to register your command for this parser object. By default, this method does nothing, You still can register your command in the class constructor. But if you use inheritance between your APIs versions to you must use this method, because your constructors both all your commands, this broken API selector of your node.
+     * @see registerPackageType
+     */
+    virtual void initSupportedCommands();
+
+    QString toString() const override;
 protected:
     AbstractNode *node() const;
 
@@ -236,6 +244,7 @@ private:
 
     friend class BigDataParserOld;
     friend class AbstractNodeParserOld;
+    friend class AbstractNode;
 
 };
 

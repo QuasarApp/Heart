@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -98,7 +98,26 @@ bool ISqlDB::insertObjectP(const QSharedPointer<DBObject> &saveObject,
     }
 
     return _writer && _writer->isValid() &&
-            _writer->insertObject(saveObject, wait);
+           _writer->insertObject(saveObject, wait);
+}
+
+bool ISqlDB::replaceObjectP(const QSharedPointer<PKG::DBObject> &saveObject, bool wait) {
+    if (updateCache(saveObject)) {
+
+        if (getMode() == SqlDBCasheWriteMode::Force) {
+
+            return _writer && _writer->isValid() &&
+                   _writer->replaceObject(saveObject, wait);
+        }
+
+        pushToQueue(saveObject, CacheAction::Update);
+        globalUpdateDataBase(getMode());
+
+        return true;
+    }
+
+    return _writer && _writer->isValid() &&
+           _writer->replaceObject(saveObject, wait);
 }
 
 qint64 ISqlDB::getLastUpdateTime() const {
@@ -211,14 +230,28 @@ bool ISqlDB::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait)
     return true;
 }
 
-bool ISqlDB::doQuery(const QString &query, bool wait,
-                          QSqlQuery *result) const {
+bool ISqlDB::replaceObject(const QSharedPointer<PKG::DBObject> &saveObject, bool wait) {
+    if (!saveObject || !saveObject->isValid()) {
+        return false;
+    }
+
+    if (!replaceObjectP(saveObject, wait)) {
+        return false;
+    }
+
+    emit sigItemChanged(saveObject);
+
+    return true;
+}
+
+bool ISqlDB::doQuery(const QString &query, const QVariantMap& toBind,
+                     bool wait, QSqlQuery *result) const {
 
     if (!_writer) {
         return false;
     }
 
-    return _writer->doQuery(query, wait, result);
+    return _writer->doQuery(query, toBind, wait, result);
 }
 
 bool ISqlDB::doSql(const QString &sqlFile, bool wait) const {

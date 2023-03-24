@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -38,28 +38,12 @@ bool AbstractData::toPackage(Package &package,
     package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
-    package.hdr.hash = package.calcHash();
 
-    return package.isValid();
-}
-
-bool AbstractData::toPackageOld(Package &package, unsigned int triggerHash) const {
-    if (!checkCmd()) {
-        QuasarAppUtils::Params::log("You try send pacakge without QH_PACKAGE macross. Please add QH_PACKAGE macros to this class.",
-                                    QuasarAppUtils::Error);
-        return false;
+    if (isOldPackage()) {
+        package.hdr.hash = package.calcHashOld();
+    } else {
+        package.hdr.hash = package.calcHash();
     }
-
-    if (!isValid()) {
-        return false;
-    }
-
-    package.data = toBytes();
-
-    package.hdr.command = cmdOld();
-    package.hdr.triggerHash = triggerHash;
-    package.hdr.size = package.data.size();
-    package.hdr.hash = package.calcHashOld();
 
     return package.isValid();
 }
@@ -74,8 +58,8 @@ bool AbstractData::isValid() const {
 }
 
 QString AbstractData::toString() const {
-    return QString("Object: type:%0, command:%1").
-            arg(cmdString()).
+    return QString("Type: %0, command: %1").
+        arg(cmdString()).
             arg(cmd());
 }
 
@@ -85,6 +69,10 @@ void AbstractData::fromPakcage(const Package &pkg) {
 
 AbstractData::~AbstractData() {
 
+}
+
+bool QH::PKG::AbstractData::isOldPackage() const {
+    return false;
 }
 
 

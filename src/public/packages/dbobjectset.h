@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018-2022 QuasarApp.
+ * Copyright (C) 2018-2023 QuasarApp.
  * Distributed under the lgplv3 software license, see the accompanying
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
@@ -27,7 +27,7 @@ class HEARTSHARED_EXPORT DBObjectSet: public DBObject
 public:
     DBObjectSet(const QString table);
 
-    PrepareResult prepareInsertQuery(QSqlQuery &) const override final;
+    PrepareResult prepareInsertQuery(QSqlQuery &q, bool replace) const override final;
     PrepareResult prepareRemoveQuery(QSqlQuery &q) const override final;
     PrepareResult prepareSelectQuery(QSqlQuery &q) const override final;
     PrepareResult prepareUpdateQuery(QSqlQuery &q) const override final;
