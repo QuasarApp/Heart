@@ -277,10 +277,11 @@ PrepareResult DBObject::prepareRemoveQuery(QSqlQuery &q) const {
         return PrepareResult::Success;
     }
 
-    QuasarAppUtils::Params::log("This object doues not have condition for remove." + toString(),
-                                QuasarAppUtils::Error);
+    if (!q.prepare(queryString)) {
+        return PrepareResult::Fail;
+    }
 
-    return PrepareResult::Fail;
+    return PrepareResult::Success;
 }
 
 DBVariantMap DBObject::variantMap() const {
