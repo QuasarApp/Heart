@@ -489,6 +489,7 @@ QSslConfiguration AbstractNode::selfSignedSslConfiguration(const SslSrtData & ss
 
     res.setPrivateKey(pkey);
     res.setLocalCertificate(crt);
+    res.setPeerVerifyMode(QSslSocket::VerifyNone);
 
     return res;
 }
