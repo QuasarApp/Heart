@@ -23,6 +23,11 @@ bool StreamBase::fromBytes(const QByteArray &data) {
         return false;
 
     QDataStream stream(data);
+
+    if (parsingVersion()) {
+        stream.setVersion(parsingVersion());
+    }
+
     fromStream(stream);
     return true;
 }
@@ -30,6 +35,11 @@ bool StreamBase::fromBytes(const QByteArray &data) {
 QByteArray StreamBase::toBytes() const {
     QByteArray res;
     QDataStream stream(&res, QIODevice::WriteOnly);
+
+    if (parsingVersion()) {
+        stream.setVersion(parsingVersion());
+    }
+
     toStream(stream);
     return res;
 }
@@ -44,6 +54,10 @@ bool StreamBase::fromBase64(const QByteArray &data) {
 
 QByteArray StreamBase::toBase64() const {
     return toBytes().toBase64(QByteArray::Base64UrlEncoding);
+}
+
+int StreamBase::parsingVersion() const {
+    return 0;
 }
 
 unsigned int StreamBase::typeId() const {

@@ -116,6 +116,13 @@ public:
 protected:
 
     /**
+     * @brief parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing).
+     * see https://doc.qt.io/qt-6/qdatastream.html#Version-enum
+     * @return version number.
+     */
+    virtual int parsingVersion() const;
+
+    /**
      * @brief fromStream This method should be read all bytes from the stream object and full the current object.
      * @note The implementation of this method should be invoke a method of base class.
      * @param stream This is Qt stream object.
