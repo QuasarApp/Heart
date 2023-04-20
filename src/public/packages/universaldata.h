@@ -66,8 +66,8 @@ public:
     QVariant value(int key, const QVariant& defaultVal = {}) const;
 
 protected:
-    QDataStream &fromStream(QDataStream &stream) override;
-    QDataStream &toStream(QDataStream &stream) const override;
+    QDataStream &fromStream(QDataStream &stream) override final;
+    QDataStream &toStream(QDataStream &stream) const override final;
 
 private:
     QMap<int, QVariant> _data;
