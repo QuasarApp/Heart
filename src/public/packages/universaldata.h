@@ -63,14 +63,21 @@ public:
      * @brief value this method return value of the key.
      * @return value of the key.
     */
-    QVariant value(int key, const QVariant& defaultVal = {}) const;
+    const QVariant& value(int key, const QVariant& defaultVal = {}) const;
+
+    /**
+     * @brief ref This method return pointer to the object If this object is not exists return nullptr
+     * @param key This is key of object
+     * @return pointer to the required object.
+     */
+    QVariant* ref(int key);
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override final;
     QDataStream &toStream(QDataStream &stream) const override final;
 
 private:
-    QMap<int, QVariant> _data;
+    QHash<int, QVariant> _data;
 };
 
 }

@@ -8,7 +8,7 @@
 #ifndef DATAPACK_H
 #define DATAPACK_H
 
-#include "abstractdata.h"
+#include "universaldata.h"
 
 
 namespace QH {
@@ -17,6 +17,10 @@ namespace PKG {
 /**
  * @brief DataPack this is conteiner is wraqper of the QList for transport arrays to another node.
  * @tparam Package This is type of trasported pacakges item.
+ * @note All packs data objects should be inherited of the UniversalData class.
+ *  This is due to classes base on abstract data may broken transporting data between nodes if you change toStream and fromStream methods.
+ *  To fix this issue, we use QVariantMap container for parsing data.
+ * @see UniversalData
  */
 template<class Package>
 class DataPack final: public AbstractData
@@ -27,6 +31,8 @@ public:
 
         DataPack(const QList<QSharedPointer<Package>> &newPackData = {}) {
         setPackData(newPackData);
+            static_assert(std::is_base_of_v<UniversalData, Package> &&
+                      "The template class of DataPack must be child of the UniversalData class");
     }
 
     /**
