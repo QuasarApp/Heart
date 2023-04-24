@@ -31,8 +31,10 @@ public:
 
         DataPack(const QList<QSharedPointer<Package>> &newPackData = {}) {
         setPackData(newPackData);
+#ifdef HEART_VALIDATE_PACKS
             static_assert(std::is_base_of_v<UniversalData, Package> &&
                       "The template class of DataPack must be child of the UniversalData class");
+#endif
     }
 
     /**

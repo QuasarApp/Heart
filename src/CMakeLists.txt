@@ -25,6 +25,10 @@ if (HEART_PRINT_PACKAGES)
     add_definitions(-DHEART_PRINT_PACKAGES)
 endif()
 
+if (HEART_VALIDATE_PACKS)
+    add_definitions(-DHEART_VALIDATE_PACKS)
+endif()
+
 set(SLL_DEFINE "WITHOUT_SSL")
 
 if (HEART_SSL)

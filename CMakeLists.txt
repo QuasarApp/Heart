@@ -35,6 +35,7 @@ endif()
 option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraryes" OFF)
 option(HEART_PRINT_PACKAGES "This option enable or disabled log of add incoming network packages" OFF)
 option(HEART_PRINT_SQL_QUERIES "This option enable or disabled log of all sql queries" OFF)
+option(HEART_VALIDATE_PACKS "This option enable or disabled validation of child classes of the DataPack class" ON)
 
 option(BUILD_SHARED_LIBS "Enable or disable shared libraryes" OFF)
 
