@@ -21,6 +21,7 @@ AbstractData::AbstractData() {
 }
 
 bool AbstractData::toPackage(Package &package,
+                             unsigned short reqVersion,
                              unsigned int triggerHash) const {
 
     if (!checkCmd()) {
@@ -33,7 +34,11 @@ bool AbstractData::toPackage(Package &package,
         return false;
     }
 
-    package.data = toBytes();
+    if (!toVersion(package.data, reqVersion)) {
+        QuasarAppUtils::Params::log("You try send not supported version of packge on the distanation node.",
+                                    QuasarAppUtils::Error);
+        return false;
+    }
 
     package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
@@ -65,6 +70,15 @@ QString AbstractData::toString() const {
 
 void AbstractData::fromPakcage(const Package &pkg) {
     fromBytes(pkg.data);
+}
+
+bool AbstractData::toVersion(QByteArray& out, unsigned short reqVersion) const {
+    if (reqVersion == ver()) {
+        out = toBytes();
+        return true;
+    }
+
+    return false;
 }
 
 AbstractData::~AbstractData() {

@@ -12,7 +12,7 @@
 #define LOCAL_TEST_PORT TEST_PORT + 4
 
 class BigPackage: public QH::PKG::AbstractData {
-    QH_PACKAGE(BigPackage, "BigPackage")
+    QH_PACKAGE_AUTO(BigPackage)
 
 public:
     BigPackage(){

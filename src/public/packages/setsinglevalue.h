@@ -32,7 +32,7 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT SetSingleValue final: public DBObject
 {
-    QH_PACKAGE(SetSingleValue, "SetSingleValue")
+    QH_PACKAGE_AUTO(SetSingleValue)
 
 public:
     /**

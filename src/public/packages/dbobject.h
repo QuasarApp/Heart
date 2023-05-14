@@ -21,7 +21,7 @@ namespace PKG {
 /**
  *  The ONLY_DATABASE_PACKAGE macross is base macros for all database objects that do not use stream and network functions.
 */
-#define ONLY_DATABASE_PACKAGE QH_PACKAGE(DBObject, "DBObject")
+#define ONLY_DATABASE_PACKAGE QH_PACKAGE(DBObject, "DBObject", 0)
 
 
 /**
@@ -95,7 +95,7 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData
 {
-    QH_PACKAGE(DBObject, "DBObject")
+    QH_PACKAGE_AUTO(DBObject)
 
 public:
 

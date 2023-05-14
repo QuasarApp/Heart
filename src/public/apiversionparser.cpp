@@ -290,7 +290,7 @@ bool APIVersionParser::sendSupportedAPI(AbstractNodeInfo *dist) const {
         return false;
 
     PKG::APIVersion versionInformationPkg;
-    versionInformationPkg.setVersion(supportedAPIs);
+    versionInformationPkg.setNodeVersion(supportedAPIs);
 
     return sendData(&versionInformationPkg, dist);
 }
@@ -299,7 +299,7 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<PKG::APIVersion> &
                                          QH::AbstractNodeInfo *sender,
                                          const QH::Header &) {
 
-    auto distVersion = message->version();
+    auto distVersion = message->nodeVersion();
     sender->setVersion(distVersion);
     auto parser = selectParser(distVersion);
 

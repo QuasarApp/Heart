@@ -9,6 +9,7 @@
 #define ABSTRACTDATA_H
 #include "humanreadableobject.h"
 #include "package.h"
+#include <QSharedPointer>
 #include <streambase.h>
 #include <crc/crchash.h>
 
@@ -26,22 +27,37 @@
  * @brief QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
 */
-#define QH_PACKAGE(X, S) \
+#define QH_PACKAGE(X, S, V) \
    public: \
     static unsigned short command(){\
         QByteArray ba = QString(S).toLocal8Bit();\
         return qa_common::hash16(ba.data(), ba.size());\
     } \
     static QString commandText(){return S;} \
+    static unsigned short version(){ return V; } \
     unsigned short cmd() const override {return X::command();} \
+    unsigned short ver() const override {return  X::version();}; \
+\
     QString cmdString() const override {return X::commandText();} \
    protected: \
     unsigned int localCode() const override {return typeid(X).hash_code();} \
     \
    private:
 
+/**
+ * @brief QH_PACKAGE_AUTO This macross prepare data to send and create a global id for package.
+ * @arg X This is unique id of the pacakge. shold be some on all your network devices.
+ * @note auto pacakge create a 0 version of your package.
+*/
+#define QH_PACKAGE_AUTO(X) QH_PACKAGE(X,#X, 0)
 
-#define QH_PACKAGE_AUTO(X) QH_PACKAGE(X,#X)
+/**
+ * @brief QH_PACKAGE_AUTO This macross prepare data to send and create a global id for package.
+ * @arg X This is unique id of the pacakge. shold be some on all your network devices.
+ * @arg V This is version of the yor pacakge.
+ * @note auto pacakge create a 0 version of your package.
+*/
+#define QH_PACKAGE_AUTO_VER(X, V) QH_PACKAGE(X,#X, V)
 
 namespace QH {
 namespace PKG {
@@ -54,6 +70,7 @@ namespace PKG {
  *  \code{cpp}
  * class MyPackage: public QH::AbstractData
 {
+    QH_PACKAGE_AUTO_VER(MyPackage, 1)
 public:
     MyPackage();
 
@@ -93,6 +110,12 @@ public:
     virtual unsigned short cmd() const = 0;
 
     /**
+     * @brief ver This method should be return number of the pacakge version.
+     * @return pcakge version. by default return - 0 (any version)
+     */
+    virtual unsigned short ver() const = 0;
+
+    /**
      * @brief cmd - This is command string of this object, (for generate cmd use macross QH_PACKAGE)
      * @note Use the QH_PACKAGE macross for implement this method.
      * @return global command of package.
@@ -103,11 +126,12 @@ public:
     /**
      * @brief toPackage This method convert this class object to the package.
      *  For more info see Package class.
-     * @param package  This is return value of Package class.
+     * @param package This is return value of Package class.
+     * @param reqVersion This is required version. This method create package of the needed version.
      * @param triggerHash This is hash of the package the current class is responding to.
      * @return True if convert to package finished successful.
      */
-    bool toPackage(Package &package, unsigned int triggerHash = 0) const;
+    bool toPackage(Package &package, unsigned short reqVersion, unsigned int triggerHash = 0) const;
 
     /**
      * @brief isValid This method check current object to valid.
@@ -151,6 +175,14 @@ public:
      * @return text of pacakge command
      */
     static QString commandText(){return "NULL";};
+
+    /**
+     * @brief toVersion This method should be convert package to rquired version.
+     * @param outputArray This is output byte array after convertation.
+     * @param version This is required version pacakge.
+     * @return true if convertation finished successful.
+     */
+    virtual bool toVersion(QByteArray& outputArray, unsigned short version) const;
 
 protected:
     /**

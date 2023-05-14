@@ -26,11 +26,11 @@ QDataStream &APIVersion::toStream(QDataStream &stream) const {
     return stream;
 }
 
-const VersionData &APIVersion::version() const {
+const VersionData &APIVersion::nodeVersion() const {
     return _version;
 }
 
-void APIVersion::setVersion(const VersionData &newVersion) {
+void APIVersion::setNodeVersion(const VersionData &newVersion) {
     _version = newVersion;
 }
 

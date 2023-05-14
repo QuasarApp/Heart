@@ -27,13 +27,16 @@ public:
     APIVersion();
 
     static unsigned short command(){return PROTOCKOL_VERSION_COMMAND;}
+    static unsigned short version(){return 0;}
+
     static QString commandText(){return "PROTOCKOL_VERSION_COMMAND";}
     unsigned short cmd() const override {return APIVersion::command();}
+    unsigned short ver() const override {return APIVersion::version();}
 
     QString cmdString() const override {return APIVersion::commandText();}
 
-    const VersionData &version() const;
-    void setVersion(const VersionData &newVersion);
+    const VersionData &nodeVersion() const;
+    void setNodeVersion(const VersionData &newVersion);
 
     bool isValid() const override;
 

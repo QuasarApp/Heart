@@ -25,7 +25,7 @@ namespace PKG {
 template<class Package>
 class DataPack final: public AbstractData
 {
-    QH_PACKAGE(DataPack<Package>, Package::commandText() + "Pack")
+    QH_PACKAGE(DataPack<Package>, Package::commandText() + "Pack", 0)
 
 public:
 
