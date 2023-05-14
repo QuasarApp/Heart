@@ -177,12 +177,12 @@ public:
     static QString commandText(){return "NULL";};
 
     /**
-     * @brief toVersion This method should be convert package to rquired version.
+     * @brief toBytesAdaptiveWithVersion This method should be convert package to rquired version.
      * @param outputArray This is output byte array after convertation.
      * @param version This is required version pacakge.
      * @return true if convertation finished successful.
      */
-    virtual bool toVersion(QByteArray& outputArray, unsigned short version) const;
+    virtual bool toBytesAdaptiveWithVersion(QByteArray& outputArray, unsigned short version) const;
 
 protected:
     /**

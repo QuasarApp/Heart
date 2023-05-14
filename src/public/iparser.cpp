@@ -31,17 +31,17 @@ QString iParser::pareseResultToString(const ParserResult &parseResult) {
     }
 }
 
-const QHash<unsigned short, std::function<PKG::AbstractData *()> > &
-iParser::registeredTypes() const {
+const PacksMap &iParser::registeredTypes() const {
     return _registeredTypes;
 }
 
-QSharedPointer<PKG::AbstractData> iParser::genPackage(unsigned short cmd) const {
-    return QSharedPointer<PKG::AbstractData>(_registeredTypes.value(cmd, [](){return nullptr;})());
+QSharedPointer<PKG::AbstractData> iParser::genPackage(unsigned short cmd, unsigned short ver) const {
+    return QSharedPointer<PKG::AbstractData>(_registeredTypes.value(cmd, {}).value(ver, [](){return nullptr;})());
 }
 
-bool iParser::checkCommand(unsigned short cmd) const {
-    return _registeredTypes.contains(cmd);
+bool iParser::checkCommand(unsigned short cmd, unsigned short ver) const {
+    auto versions = _registeredTypes.value(cmd, {});
+    return versions.contains(ver);
 }
 
 AbstractNode *iParser::node() const {
@@ -58,7 +58,10 @@ unsigned int iParser::sendData(const PKG::AbstractData *resp,
                                const AbstractNodeInfo *dist,
                                const Header *req) const {
     return node()->sendData(resp, dist, req);
+}
 
+const PackagesVersionData &iParser::multiVersionPackages() const {
+    return _multiVersionPackages;
 }
 
 void iParser::initSupportedCommands() {}
@@ -66,8 +69,11 @@ void iParser::initSupportedCommands() {}
 QString iParser::toString() const {
     QString message = parserId() + " supports next commands:\n";
 
-    for (auto it = _registeredTypes.keyBegin(); it != _registeredTypes.keyEnd(); ++it) {
-        message += genPackage(*it)->cmdString() + " - " + QString::number(*it) + "\n";
+    for (const auto& versionsMap: _registeredTypes) {
+        for (auto it = versionsMap.keyBegin(); it != versionsMap.keyEnd(); ++it) {
+            auto pkg = genPackage(*it);
+            message += pkg->cmdString() + ":v" + pkg->ver() + " - " + QString::number(*it) + "\n";
+        }
     }
 
     return message;

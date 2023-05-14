@@ -34,7 +34,7 @@ bool AbstractData::toPackage(Package &package,
         return false;
     }
 
-    if (!toVersion(package.data, reqVersion)) {
+    if (!toBytesAdaptiveWithVersion(package.data, reqVersion)) {
         QuasarAppUtils::Params::log("You try send not supported version of packge on the distanation node.",
                                     QuasarAppUtils::Error);
         return false;
@@ -72,7 +72,7 @@ void AbstractData::fromPakcage(const Package &pkg) {
     fromBytes(pkg.data);
 }
 
-bool AbstractData::toVersion(QByteArray& out, unsigned short reqVersion) const {
+bool AbstractData::toBytesAdaptiveWithVersion(QByteArray& out, unsigned short reqVersion) const {
     if (reqVersion == ver()) {
         out = toBytes();
         return true;

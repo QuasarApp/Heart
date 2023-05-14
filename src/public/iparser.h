@@ -9,6 +9,7 @@
 #ifndef IPARSER_H
 #define IPARSER_H
 
+#include "distversion.h"
 #include "hostaddress.h"
 #include <QSharedPointer>
 #include <abstractdata.h>
@@ -21,6 +22,11 @@ class AbstractNode;
 namespace PKG {
 class AbstractData;
 }
+
+/**
+ * @brief PacksMap This is hash map with the package id - version of package and package factory function.
+ */
+using PacksMap = QHash<unsigned short, QMap<unsigned short, std::function<PKG::AbstractData *()>>>;
 
 
 /**
@@ -57,9 +63,15 @@ public:
      * @see initSupportedCommands
      */
     void registerPackageType() {
-        _registeredTypes[T::command()] = [](){
+        _registeredTypes[T::command()][T::version()] = [](){
             return new T();
         };
+
+        auto multiVersionsList = _registeredTypes.value(T::command());
+        if (multiVersionsList.size() > 1) {
+            _multiVersionPackages[T::command()].setMax(multiVersionsList.lastKey());
+            _multiVersionPackages[T::command()].setMin(multiVersionsList.firstKey());
+        }
     };
 
     /**
@@ -181,24 +193,25 @@ public:
      * @return list of registered command.
      * @see iParser::registerPackageType
      */
-    const QHash<unsigned short, std::function<PKG::AbstractData *()> > &registeredTypes() const;
+    const PacksMap &registeredTypes() const;
 
     /**
      * @brief genPackage This is factory method that generate data pacakge objects by command.
      *  All object should be registered before using this method.
      * @param cmd This is command of pacakge see Header::command.
+     * @param ver - This is version of the package - by default is 0
      * @return shared pointer to new data object.
      * @see AbstractNode::registerPackageType
      * @see Header::command
      */
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const;
+    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd, unsigned short ver = 0) const;
 
     /**
      * @brief checkCommand This method check command are if registered type or not.
      * @brief cmd This is command of a verifiable package.
      * @return True if the package is registered in a node.
      */
-    bool checkCommand(unsigned short cmd) const;
+    bool checkCommand(unsigned short cmd, unsigned short ver = 0) const;
 
     /**
      * @brief parserId This is id of the parsers. All parser will be synced betwin nodes by ids.
@@ -213,6 +226,13 @@ public:
     virtual void initSupportedCommands();
 
     QString toString() const override;
+
+    /**
+     * @brief multiVersionPackages return list of the supported multiversions packages.
+     * @return list of the supported multiversions packages.
+     */
+    const PackagesVersionData& multiVersionPackages() const;
+
 protected:
     AbstractNode *node() const;
 
@@ -239,7 +259,10 @@ protected:
                                   const Header *req = nullptr) const;
 
 private:
-    QHash<unsigned short, std::function<PKG::AbstractData*()>> _registeredTypes;
+    // command - {version - factory}
+    PacksMap _registeredTypes;
+    PackagesVersionData _multiVersionPackages;
+
     AbstractNode *_node;
 
     friend class BigDataParserOld;

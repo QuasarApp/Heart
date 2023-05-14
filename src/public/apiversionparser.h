@@ -129,6 +129,8 @@ public:
      */
     bool sendSupportedAPI(AbstractNodeInfo *dist) const;
 
+    unsigned short selectPackageVersion(const VersionData& local, const VersionData& dist);
+
 signals:
 
     /**

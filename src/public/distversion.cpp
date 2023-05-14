@@ -16,6 +16,26 @@ void DistVersion::setMax(unsigned short newMax) {
     _max = newMax;
 }
 
+int DistVersion::getMaxСompatible(const DistVersion &distVersion) const {
+    unsigned short midMax = std::min(distVersion.max(), _max);
+    unsigned short midMin = std::max(distVersion.min(), _min);
+
+    if (midMax < midMin)
+        return -1;
+
+    return midMax;
+}
+
+int DistVersion::getMinСompatible(const DistVersion &distVersion) const {
+    unsigned short midMax = std::min(distVersion.max(), _max);
+    unsigned short midMin = std::max(distVersion.min(), _min);
+
+    if (midMax < midMin)
+        return -1;
+
+    return midMin;
+}
+
 QDataStream &DistVersion::fromStream(QDataStream &stream) {
     stream >> _min;
     stream >> _max;

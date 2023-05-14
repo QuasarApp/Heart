@@ -35,10 +35,17 @@ public:
 
     QString cmdString() const override {return APIVersion::commandText();}
 
-    const VersionData &nodeVersion() const;
-    void setNodeVersion(const VersionData &newVersion);
-
     bool isValid() const override;
+
+    /**
+     * @brief packagesVersions This method return list of available multi-version packages on the node.
+     * @return
+     */
+    PackagesVersionData packagesVersions() const;
+    void setPackagesVersions(const PackagesVersionData &newPackagesVersions);
+
+    VersionData apisVersions() const;
+    void setApisVersions(const VersionData &newApisVersions);
 
 protected:
     unsigned int localCode() const override {return typeid(APIVersion).hash_code();}
@@ -46,7 +53,8 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    VersionData _version;
+    VersionData _apisVersions;
+    PackagesVersionData _packagesVersions;
 
 };
 
