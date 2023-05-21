@@ -33,7 +33,6 @@ public:
      */
     int getMaxСompatible(const DistVersion& distVersion) const;
 
-
     /**
      * @brief getMinСompatible return maximum available on booth nodes version.
      * @param distVersion this is dis version.
