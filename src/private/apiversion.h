@@ -48,7 +48,6 @@ public:
     void setApisVersions(const VersionData &newApisVersions);
 
 protected:
-    unsigned int localCode() const override {return typeid(APIVersion).hash_code();}
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 

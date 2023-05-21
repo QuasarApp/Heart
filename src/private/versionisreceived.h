@@ -33,7 +33,6 @@ public:
 
     // StreamBase interface
 protected:
-    unsigned int localCode() const override {return typeid(VersionIsReceived).hash_code();}
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 };

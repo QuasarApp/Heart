@@ -20,7 +20,7 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT Ping: public AbstractData
 {
-    QH_PACKAGE_AUTO(Ping)
+    QH_PACKAGE_AUTO("Ping")
 
 public:
     Ping();

@@ -8,8 +8,7 @@
 #ifndef DATAPACK_H
 #define DATAPACK_H
 
-#include "universaldata.h"
-
+#include <abstractdata.h>
 
 namespace QH {
 namespace PKG {
@@ -25,7 +24,7 @@ namespace PKG {
 template<class Package>
 class DataPack final: public AbstractData
 {
-    QH_PACKAGE(DataPack<Package>, Package::commandText() + "Pack", 0)
+    QH_PACKAGE(Package::commandText() + "Pack", Package::version())
 
 public:
 
@@ -113,6 +112,15 @@ public:
     void setCustomData(const QByteArray &newToken) {
         _data = newToken;
     }
+
+    bool toBytesAdaptiveWithVersion(QByteArray& outputArray, unsigned short version) const override {
+        if (AbstractData::toBytesAdaptiveWithVersion(outputArray, version)) {
+            return true;
+        }
+
+        version == ???
+    }
+
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override {

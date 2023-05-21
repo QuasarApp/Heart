@@ -24,12 +24,6 @@ bool AbstractData::toPackage(Package &package,
                              unsigned short reqVersion,
                              unsigned int triggerHash) const {
 
-    if (!checkCmd()) {
-        QuasarAppUtils::Params::log("You try send pacakge without QH_PACKAGE macross. Please add QH_PACKAGE macros to this class.",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
     if (!isValid()) {
         return false;
     }
@@ -51,11 +45,6 @@ bool AbstractData::toPackage(Package &package,
     }
 
     return package.isValid();
-}
-
-bool AbstractData::checkCmd() const {
-    unsigned int code = typeid (*this).hash_code();
-    return code == localCode();
 }
 
 bool AbstractData::isValid() const {

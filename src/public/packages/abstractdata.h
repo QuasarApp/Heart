@@ -24,10 +24,14 @@
 #define PROTOCKOL_VERSION_RECEIVED_COMMAND PROTOCKOL_VERSION_COMMAND - 1
 
 /**
- * @brief QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id use the cmd method.
+ * @brief QH_PACKAGE This macross prepare data to send and create a global id for package.
+ * For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
+ * @arg S This is unique id of the pacakge. Shold be some on all your network devices.
+ * @arg V This is version of the package If you do not use multople versions use 0 or QH_PACKAGE_AUTO instand QH_PACKAGE.
+
 */
-#define QH_PACKAGE(X, S, V) \
+#define QH_PACKAGE(S, V) \
    public: \
     static unsigned short command(){\
         QByteArray ba = QString(S).toLocal8Bit();\
@@ -35,29 +39,28 @@
     } \
     static QString commandText(){return S;} \
     static unsigned short version(){ return V; } \
-    unsigned short cmd() const override {return X::command();} \
-    unsigned short ver() const override {return  X::version();}; \
+    unsigned short cmd() const override {return command();} \
+    unsigned short ver() const override {return V;} \
 \
-    QString cmdString() const override {return X::commandText();} \
-   protected: \
-    unsigned int localCode() const override {return typeid(X).hash_code();} \
-    \
+    QString cmdString() const override {return S;} \
    private:
 
 /**
  * @brief QH_PACKAGE_AUTO This macross prepare data to send and create a global id for package.
- * @arg X This is unique id of the pacakge. shold be some on all your network devices.
+ * @arg S This is unique id of the pacakge. shold be some on all your network devices.
  * @note auto pacakge create a 0 version of your package.
 */
-#define QH_PACKAGE_AUTO(X) QH_PACKAGE(X,#X, 0)
+#define QH_PACKAGE_AUTO(S) QH_PACKAGE(S, 0)
 
 /**
- * @brief QH_PACKAGE_AUTO This macross prepare data to send and create a global id for package.
- * @arg X This is unique id of the pacakge. shold be some on all your network devices.
- * @arg V This is version of the yor pacakge.
- * @note auto pacakge create a 0 version of your package.
+ * @brief QH_PACKAGE_ONLY_VERSION This macross can be used only if parrent class alredy has QH_PACKAGE macros and int is some pacakge but with new version.
+ * @arg B This is new version of the package.
 */
-#define QH_PACKAGE_AUTO_VER(X, V) QH_PACKAGE(X,#X, V)
+#define QH_PACKAGE_ONLY_VERSION(V) \
+public: \
+    static unsigned short version(){ return V; } \
+    unsigned short ver() const override {return V;} \
+    private: \
 
 namespace QH {
 namespace PKG {
@@ -191,22 +194,10 @@ protected:
     explicit AbstractData();
 
     /**
-     * @brief localCode This method return local code
-     * @return local command of this class. used for check QH_PACKAGE macro before send pacakge.
-     */
-    virtual unsigned int localCode() const = 0;
-
-    /**
      * @brief isOldPackage This method mark package as a old, old pacakges use the  Package::calcHashOld method for calculation hash sum of packages.
      * @return true if the pacakge is old.
      */
     virtual bool isOldPackage() const;
-private:
-    /**
-     * @brief checkCmd This method check QH_PACKAGE macross.
-     * @return true if the QH_PACKAGE macross is enabled else fal.
-     */
-    bool checkCmd() const;;
 
 };
 

@@ -19,12 +19,6 @@ namespace QH {
 namespace PKG {
 
 /**
- *  The ONLY_DATABASE_PACKAGE macross is base macros for all database objects that do not use stream and network functions.
-*/
-#define ONLY_DATABASE_PACKAGE QH_PACKAGE(DBObject, "DBObject", 0)
-
-
-/**
  * @brief The PrepareResult enum is result of work prepare sql query of dbobjects.
  */
 enum class PrepareResult {
@@ -95,7 +89,7 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData
 {
-    QH_PACKAGE_AUTO(DBObject)
+    QH_PACKAGE("DBObject", 0)
 
 public:
 
