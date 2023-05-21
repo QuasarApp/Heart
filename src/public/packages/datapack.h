@@ -113,15 +113,6 @@ public:
         _data = newToken;
     }
 
-    bool toBytesAdaptiveWithVersion(QByteArray& outputArray, unsigned short version) const override {
-        if (AbstractData::toBytesAdaptiveWithVersion(outputArray, version)) {
-            return true;
-        }
-
-        version == ???
-    }
-
-
 protected:
     QDataStream &fromStream(QDataStream &stream) override {
 
@@ -143,8 +134,8 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override {
         stream << static_cast<int>(_packData.size());
 
-        for (const auto &ptr: qAsConst(_packData)) {
-            stream << *ptr;
+        for (const auto &data: qAsConst(_packData)) {
+            stream << *data;
         }
 
         stream << _data;
@@ -152,6 +143,17 @@ protected:
         return stream;
     }
 
+    QDataStream &toStreamOf(QDataStream &stream, unsigned short version) const override {
+        stream << static_cast<int>(_packData.size());
+
+        for (const auto &data: qAsConst(_packData)) {
+            data->toStreamOf(stream, version);
+        }
+
+        stream << _data;
+
+        return stream;
+    }
 
 private:
     QList<QSharedPointer<Package>> _packData;

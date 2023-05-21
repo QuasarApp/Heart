@@ -180,12 +180,20 @@ public:
     static QString commandText(){return "NULL";};
 
     /**
-     * @brief toBytesAdaptiveWithVersion This method should be convert package to rquired version.
-     * @param outputArray This is output byte array after convertation.
+     * @brief toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages.
      * @param version This is required version pacakge.
-     * @return true if convertation finished successful.
+     * @return bytes array for package.
+     * @note This is just wrapper method for the AbstractData::toStream method.
      */
-    virtual bool toBytesAdaptiveWithVersion(QByteArray& outputArray, unsigned short version) const;
+    QByteArray toBytesOf(unsigned short version) const;
+
+    /**
+     * @brief toStreamOf This overrload of the base toStream method for support the multi version packages.
+     * @param stream this is stream object.
+     * @param version this is custom version of parsing function.
+     * @return stream object.
+     */
+    virtual QDataStream& toStreamOf(QDataStream& stream, unsigned short version) const;
 
 protected:
     /**

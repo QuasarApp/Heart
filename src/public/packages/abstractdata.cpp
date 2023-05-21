@@ -28,12 +28,7 @@ bool AbstractData::toPackage(Package &package,
         return false;
     }
 
-    if (!toBytesAdaptiveWithVersion(package.data, reqVersion)) {
-        QuasarAppUtils::Params::log("You try send not supported version of packge on the distanation node.",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
-
+    package.data = toBytesOf(reqVersion);
     package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
@@ -63,13 +58,22 @@ void AbstractData::fromPakcage(const Package &pkg) {
     fromBytes(pkg.data);
 }
 
-bool AbstractData::toBytesAdaptiveWithVersion(QByteArray& out, unsigned short reqVersion) const {
-    if (reqVersion == ver()) {
-        out = toBytes();
-        return true;
+QByteArray AbstractData::toBytesOf(unsigned short reqVersion) const {
+    QByteArray res;
+    QDataStream stream(&res, QIODevice::WriteOnly);
+
+    if (parsingVersion()) {
+        stream.setVersion(parsingVersion());
     }
 
-    return false;
+    toStreamOf(stream, reqVersion);
+    return res;
+}
+
+QDataStream &AbstractData::toStreamOf(QDataStream &stream, unsigned short version) const {
+    debug_assert(version == ver(), "from stream should be overload for the multi version packages.");
+
+    return toStream(stream);
 }
 
 AbstractData::~AbstractData() {
