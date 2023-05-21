@@ -63,9 +63,11 @@ bool AbstractData::isValid() const {
 }
 
 QString AbstractData::toString() const {
-    return QString("Type: %0, command: %1").
+    return QString("Type: %0 \n"
+                   "Version: %2 \n"
+                   "Command: %1 \n").
         arg(cmdString()).
-            arg(cmd());
+        arg(cmd()).arg(ver());
 }
 
 void AbstractData::fromPakcage(const Package &pkg) {
