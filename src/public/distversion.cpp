@@ -16,7 +16,7 @@ void DistVersion::setMax(unsigned short newMax) {
     _max = newMax;
 }
 
-int DistVersion::getMaxСompatible(const DistVersion &distVersion) const {
+int DistVersion::getMaxCompatible(const DistVersion &distVersion) const {
     unsigned short midMax = std::min(distVersion.max(), _max);
     unsigned short midMin = std::max(distVersion.min(), _min);
 
@@ -26,7 +26,7 @@ int DistVersion::getMaxСompatible(const DistVersion &distVersion) const {
     return midMax;
 }
 
-int DistVersion::getMinСompatible(const DistVersion &distVersion) const {
+int DistVersion::getMinCompatible(const DistVersion &distVersion) const {
     unsigned short midMax = std::min(distVersion.max(), _max);
     unsigned short midMin = std::max(distVersion.min(), _min);
 

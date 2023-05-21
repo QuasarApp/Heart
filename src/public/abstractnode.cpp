@@ -757,7 +757,7 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     }
 
     int version = node->multiVersionPackages().value(resp->cmd()).
-                  getMaxСompatible(_apiVersionParser->multiVersionPackages().value(resp->cmd()));
+                  getMaxCompatible(_apiVersionParser->multiVersionPackages().value(resp->cmd()));
     if (version < 0) {
         return 0;
     }

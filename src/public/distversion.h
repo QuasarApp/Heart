@@ -15,7 +15,7 @@
 namespace QH {
 
 /**
- * @brief The DistVersion class This is infirmation of supported versions of the distanation api.
+ * @brief The DistVersion class This is information of supported versions of the destinations api.
  */
 class DistVersion: public StreamBase {
 
@@ -29,16 +29,16 @@ public:
     /**
      * @brief getMaxСompatible return maximum available on booth nodes version.
      * @param distVersion this is dis version.
-     * @return return maximum version. if this version is not found retun "-1"
+     * @return return maximum version. if this version is not found return "-1"
      */
-    int getMaxСompatible(const DistVersion& distVersion) const;
+    int getMaxCompatible(const DistVersion& distVersion) const;
 
     /**
      * @brief getMinСompatible return maximum available on booth nodes version.
      * @param distVersion this is dis version.
-     * @return return minimum version. if this version is not found retun "-1"
+     * @return return minimum version. if this version is not found return "-1"
      */
-    int getMinСompatible(const DistVersion& distVersion) const;
+    int getMinCompatible(const DistVersion& distVersion) const;
 
 protected:
 
@@ -47,7 +47,7 @@ protected:
 
 private:
 
-    /// This is monimum supported version.
+    /// This is minimum supported version.
     unsigned short _min = 0;
 
     /// This is maximum supported version.
@@ -57,7 +57,7 @@ private:
 
 
 /**
- * @brief VersionData This is array of all avalable apis and supported its versions.
+ * @brief VersionData This is array of all available apis and supported its versions.
  */
 typedef QHash<QString, DistVersion> VersionData;
 
