@@ -29,7 +29,7 @@ public:
     /**
      * @brief getMaxСompatible return maximum available on booth nodes version.
      * @param distVersion this is dis version.
-     * @return return maximum version. if this version is not found retun -1
+     * @return return maximum version. if this version is not found retun "-1"
      */
     int getMaxСompatible(const DistVersion& distVersion) const;
 
@@ -37,7 +37,7 @@ public:
     /**
      * @brief getMinСompatible return maximum available on booth nodes version.
      * @param distVersion this is dis version.
-     * @return return minimum version. if this version is not found retun -1
+     * @return return minimum version. if this version is not found retun "-1"
      */
     int getMinСompatible(const DistVersion& distVersion) const;
 
