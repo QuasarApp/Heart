@@ -41,7 +41,7 @@ void Package::reset() {
 QString Package::toString() const {
     return QString("Pakcage description: %0."
                    " Data description: Data size - %1, Data: %2").
-            arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
+        arg(hdr.toString()).arg(data.size()).arg(QString(data.toHex().toUpper()));
 }
 
 unsigned int Package::calcHash() const {

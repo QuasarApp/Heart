@@ -1126,7 +1126,7 @@ QSharedPointer<AbstractData>
 AbstractNode::prepareData(const Package &pkg,
                           AbstractNodeInfo *sender) const {
 
-    auto value = _apiVersionParser->searchPackage(pkg.hdr.command, sender);
+    auto value = _apiVersionParser->searchPackage(pkg.hdr.command, pkg.hdr.packageVersion, sender);
     if (!value) {
         QuasarAppUtils::Params::log("You try parse not registered package type."
                                     " Plese use the registerPackageType method befor parsing."

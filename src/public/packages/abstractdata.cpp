@@ -30,6 +30,7 @@ bool AbstractData::toPackage(Package &package,
 
     package.data = toBytesOf(reqVersion);
     package.hdr.command = cmd();
+    package.hdr.packageVersion = reqVersion;
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
 

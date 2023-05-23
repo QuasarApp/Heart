@@ -15,10 +15,9 @@
 
 namespace QH {
 
-class Abstract;
 /**
  * @brief The Package struct. This is base structure for transporting data by network between QH nodes.
- * The Package contains a 12 bytes header and Package::data array. The size on the header should be equals size of Package::data array.
+ * The Package contains a 32 bytes header and Package::data array. The size on the header should be equals size of Package::data array.
  *
  */
 class HEARTSHARED_EXPORT Package: public StreamBase {

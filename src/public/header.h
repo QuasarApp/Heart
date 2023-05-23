@@ -13,31 +13,50 @@
 namespace QH {
 
 /**
- * @brief The Header struct 12 bytes.
+ * @brief The Header struct 32 bytes.
  */
 #pragma pack(push, 1)
 struct HEARTSHARED_EXPORT Header {
     /**
      * @brief command of package for more information see the AbstractData::toPackage method.
      */
-    unsigned short command;
+    unsigned short command = 0;                     //2 bytes
+
+    /**
+     * @brief headerVersion This is version of the header struct
+     */
+    const unsigned char headerVersion = 1;          //3 bytes
+
+    /**
+     * @brief packageVersion This is package's version
+     */
+    unsigned short packageVersion = 0;              //5 bytes
 
     /**
      * @brief size This is size of package data (exclude header size).
      */
-    unsigned int size;
+    unsigned int size = 0;                          //9 bytes
 
     /**
      * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation.
      */
-    unsigned int hash;
+    unsigned int hash = 0;                          //13 bytes
 
     /**
      * @brief triggerHash This is hash of request package that package has been responded.
      *  The server should write to which command it responds.
      */
-    unsigned int triggerHash;
+    unsigned int triggerHash = 0;                   //17 bytes
 
+    /**
+     * @brief unusedSpace This is unused space for changes of the header struct in the future.
+     */
+    unsigned long long unusedSpace1 = 0;            //25 bytes
+
+    /**
+     * @brief unusedSpace This is unused space for changes of the header struct in the future.
+     */
+    unsigned long long unusedSpace2:7  ;            //32 bytes
     /**
      * @brief Header default constructor
      */
@@ -63,7 +82,6 @@ struct HEARTSHARED_EXPORT Header {
 
 };
 #pragma pack(pop)
-
 }
 
 
