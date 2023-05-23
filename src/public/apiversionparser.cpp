@@ -82,6 +82,7 @@ QString APIVersionParser::toString() const {
 
 QSharedPointer<PKG::AbstractData>
 APIVersionParser::searchPackage(unsigned short cmd,
+                                unsigned short ver,
                                 AbstractNodeInfo *sender) const {
     if (!sender)
         return nullptr;
@@ -106,7 +107,7 @@ APIVersionParser::searchPackage(unsigned short cmd,
             continue;
         }
 
-        if (auto package = parser->genPackage(cmd))
+        if (auto package = parser->genPackage(cmd, ver))
             return package;
     }
 

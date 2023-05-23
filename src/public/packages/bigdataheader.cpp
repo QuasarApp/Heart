@@ -39,6 +39,7 @@ QDataStream &BigDataHeader::fromStream(QDataStream &stream) {
 
     stream >> packagesCount;
     stream >> _command;
+    stream >> _version;
 
     return stream;
 }
@@ -48,8 +49,17 @@ QDataStream &BigDataHeader::toStream(QDataStream &stream) const {
 
     stream << packagesCount;
     stream << _command;
+    stream << _version;
 
     return stream;
+}
+
+unsigned short BigDataHeader::pkgVersion() const {
+    return _version;
+}
+
+void BigDataHeader::setPkgVersion(unsigned short newVersion) {
+    _version = newVersion;
 }
 
 unsigned short BigDataHeader::getCommand() const {

@@ -135,6 +135,7 @@ bool BigDataParser::processPart(const QSharedPointer<PKG::BigDataPart> &part,
     }
 
     auto package = node()->genPackage(localPool.header->getCommand(),
+                                      localPool.header->pkgVersion(),
                                       sender);
     if (!package)
         return false;
@@ -209,6 +210,7 @@ bool BigDataParser::sendBigDataPackage(const PKG::AbstractData *data,
     hdr->setPackagesCount(std::ceil(rawData.size() / static_cast<double>(sizeLimit)));
     hdr->setPackageId(rand());
     hdr->setCommand(data->cmd());
+    hdr->setPkgVersion(data->ver());
 
     insertNewBigData(hdr);
 

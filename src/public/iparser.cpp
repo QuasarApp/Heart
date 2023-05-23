@@ -69,10 +69,12 @@ void iParser::initSupportedCommands() {}
 QString iParser::toString() const {
     QString message = parserId() + " supports next commands:\n";
 
-    for (const auto& versionsMap: _registeredTypes) {
-        for (auto it = versionsMap.keyBegin(); it != versionsMap.keyEnd(); ++it) {
-            auto pkg = genPackage(*it);
-            message += pkg->cmdString() + ":v" + pkg->ver() + " - " + QString::number(*it) + "\n";
+    for (auto versionsMap = _registeredTypes.begin(); versionsMap != _registeredTypes.end(); ++versionsMap) {
+        auto cmd = versionsMap.key();
+        auto versions = versionsMap.value();
+        for (auto it = versions.begin(); it != versions.end(); ++it) {
+            auto pkg = genPackage(cmd, it.key());
+            message += pkg->cmdString() + "-" + QString::number(pkg->cmd()) + ":v" + QString::number(it.key()) + "\n";
         }
     }
 
