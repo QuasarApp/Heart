@@ -17,7 +17,7 @@ namespace QH {
 /**
  * @brief The DistVersion class This is information of supported versions of the destinations api.
  */
-class DistVersion: public StreamBase {
+class HEARTSHARED_EXPORT DistVersion: public StreamBase {
 
 public:
 
