@@ -67,7 +67,6 @@ testProtockol::testProtockol() {
 }
 
 testProtockol::~testProtockol() {
-    _app->exit(0);
     delete _app;
 }
 
