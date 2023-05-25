@@ -8,6 +8,7 @@
 #ifndef DISTVERSION_H
 #define DISTVERSION_H
 
+#include "humanreadableobject.h"
 #include <QHash>
 #include <streambase.h>
 
@@ -17,9 +18,11 @@ namespace QH {
 /**
  * @brief The DistVersion class This is information of supported versions of the destinations api.
  */
-class HEARTSHARED_EXPORT DistVersion: public StreamBase {
+class HEARTSHARED_EXPORT DistVersion: public StreamBase, public QuasarAppUtils::iHRO {
 
 public:
+
+    operator bool() const;
 
     unsigned short min() const;
     void setMin(unsigned short newMin);
@@ -40,6 +43,15 @@ public:
      */
     int getMinCompatible(const DistVersion& distVersion) const;
 
+    /**
+     * @brief isSupport This method return true if the @a version is supported of this versions range.
+     * @param version This is checked version.
+     * @return true if the @a version is supported of this versions range.
+     */
+    bool isSupport(unsigned short version) const;
+
+    QString toString() const override;
+
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override;
@@ -54,7 +66,6 @@ private:
     unsigned short _max = 0;
 
 };
-
 
 /**
  * @brief VersionData This is array of all available apis and supported its versions.

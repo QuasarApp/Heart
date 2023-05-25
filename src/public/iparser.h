@@ -24,9 +24,9 @@ class AbstractData;
 }
 
 /**
- * @brief PacksMap This is hash map with the package id - version of package and package factory function.
+ * @brief PacksMap This is hash map where id is command of package and value is factory function.
  */
-using PacksMap = QHash<unsigned short, QMap<unsigned short, std::function<PKG::AbstractData *()>>>;
+using PacksMap = QHash<unsigned short, std::function<PKG::AbstractData *()>>;
 
 
 /**
@@ -63,14 +63,17 @@ public:
      * @see initSupportedCommands
      */
     void registerPackageType() {
-        _registeredTypes[T::command()][T::version()] = [](){
+
+        static_assert(std::is_base_of_v<PKG::AbstractData, T>,
+                      "The template type must inheret of the AbstractData class.");
+
+        _registeredTypes[T::command()] = [](){
             return new T();
         };
 
-        auto multiVersionsList = _registeredTypes.value(T::command());
-        if (multiVersionsList.size() > 1) {
-            _multiVersionPackages[T::command()].setMax(multiVersionsList.lastKey());
-            _multiVersionPackages[T::command()].setMin(multiVersionsList.firstKey());
+        T tmp;
+        if (const DistVersion &distVersion = tmp.packageVersion()) {
+            _multiVersionPackages[tmp.cmd()] = distVersion;
         }
     };
 
@@ -199,19 +202,18 @@ public:
      * @brief genPackage This is factory method that generate data pacakge objects by command.
      *  All object should be registered before using this method.
      * @param cmd This is command of pacakge see Header::command.
-     * @param ver - This is version of the package - by default is 0
      * @return shared pointer to new data object.
      * @see AbstractNode::registerPackageType
      * @see Header::command
      */
-    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd, unsigned short ver = 0) const;
+    QSharedPointer<PKG::AbstractData> genPackage(unsigned short cmd) const;
 
     /**
      * @brief checkCommand This method check command are if registered type or not.
      * @brief cmd This is command of a verifiable package.
      * @return True if the package is registered in a node.
      */
-    bool checkCommand(unsigned short cmd, unsigned short ver = 0) const;
+    bool checkCommand(unsigned short cmd) const;
 
     /**
      * @brief parserId This is id of the parsers. All parser will be synced betwin nodes by ids.
@@ -231,8 +233,7 @@ public:
      * @brief multiVersionPackages return list of the supported multiversions packages.
      * @return list of the supported multiversions packages.
      */
-    const PackagesVersionData& multiVersionPackages() const;
-
+    const PackagesVersionData &multiVersionPackages() const;
 protected:
     AbstractNode *node() const;
 

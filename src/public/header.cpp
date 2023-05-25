@@ -19,7 +19,7 @@ bool Header::isValid() const {
     if (size > Package::maximumSize()) {
         return false;
     }
-    return command && hash && headerVersion == 1 && unusedSpace1 == 0;
+    return command && hash && headerVersion == 1 && unusedSpace1 == 0 && unusedSpace2 == 0 && unusedSpace3 == 0;
 }
 
 void Header::reset() {
@@ -27,14 +27,14 @@ void Header::reset() {
     command = 0;
     triggerHash = 0;
     hash = 0;
-    packageVersion = 0;
     unusedSpace1 = 0;
     unusedSpace2 = 0;
+    unusedSpace3 = 0;
 
 }
 
 QString Header::toString() const {
-    return QString("Header description: HeaderVersion - %0, PackageVersion - %1, Size - %2, Command - %3, hash - %4, triggerHash - %5").
-        arg(headerVersion).arg(packageVersion).arg(size).arg(command).arg(QString::number(hash, 16), QString::number(triggerHash, 16));
+    return QString("Header description: HeaderVersion - %0, Size - %1, Command - %2, hash - %3, triggerHash - %4").
+        arg(headerVersion).arg(size).arg(command).arg(QString::number(hash, 16), QString::number(triggerHash, 16));
 }
 }

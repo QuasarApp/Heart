@@ -50,7 +50,6 @@ public:
      */
     QSharedPointer<PKG::AbstractData>
     searchPackage(unsigned short cmd,
-                  unsigned short ver,
                   AbstractNodeInfo *sender) const;
 
     /**

@@ -7,6 +7,7 @@
 
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
+#include "distversion.h"
 #include "humanreadableobject.h"
 #include "package.h"
 #include <QSharedPointer>
@@ -28,39 +29,19 @@
  * For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
  * @arg S This is unique id of the pacakge. Shold be some on all your network devices.
- * @arg V This is version of the package If you do not use multople versions use 0 or QH_PACKAGE_AUTO instand QH_PACKAGE.
 
 */
-#define QH_PACKAGE(S, V) \
+#define QH_PACKAGE(S) \
    public: \
     static unsigned short command(){\
         QByteArray ba = QString(S).toLocal8Bit();\
         return qa_common::hash16(ba.data(), ba.size());\
     } \
     static QString commandText(){return S;} \
-    static unsigned short version(){ return V; } \
     unsigned short cmd() const override {return command();} \
-    unsigned short ver() const override {return V;} \
 \
     QString cmdString() const override {return S;} \
    private:
-
-/**
- * @brief QH_PACKAGE_AUTO This macross prepare data to send and create a global id for package.
- * @arg S This is unique id of the pacakge. shold be some on all your network devices.
- * @note auto pacakge create a 0 version of your package.
-*/
-#define QH_PACKAGE_AUTO(S) QH_PACKAGE(S, 0)
-
-/**
- * @brief QH_PACKAGE_ONLY_VERSION This macross can be used only if parrent class alredy has QH_PACKAGE macros and int is some pacakge but with new version.
- * @arg B This is new version of the package.
-*/
-#define QH_PACKAGE_ONLY_VERSION(V) \
-public: \
-    static unsigned short version(){ return V; } \
-    unsigned short ver() const override {return V;} \
-    private: \
 
 namespace QH {
 namespace PKG {
@@ -111,12 +92,6 @@ public:
      * @see QH_PACKAGE
      */
     virtual unsigned short cmd() const = 0;
-
-    /**
-     * @brief ver This method should be return number of the pacakge version.
-     * @return pcakge version. by default return - 0 (any version)
-     */
-    virtual unsigned short ver() const = 0;
 
     /**
      * @brief cmd - This is command string of this object, (for generate cmd use macross QH_PACKAGE)
@@ -195,17 +170,29 @@ public:
      */
     virtual QDataStream& toStreamOf(QDataStream& stream, unsigned short version) const;
 
+    /**
+     * @brief packageVersion This method should be return number of the pacakge version.
+     * @return pcakge version. by default return - 0 (any version)
+     */
+    const DistVersion& packageVersion() const;
+
+    /**
+     * @brief setPackageVersion This method sets new version of package.
+     * @param newPackageVersion This is new version value.
+     */
+    void setPackageVersion(const DistVersion& newPackageVersion);
+
 protected:
     /**
      * @brief AbstractData - Base constructor of this object.
      */
     explicit AbstractData();
 
-    /**
-     * @brief isOldPackage This method mark package as a old, old pacakges use the  Package::calcHashOld method for calculation hash sum of packages.
-     * @return true if the pacakge is old.
-     */
-    virtual bool isOldPackage() const;
+    QDataStream& fromStream(QDataStream& stream) override;
+    QDataStream& toStream(QDataStream& stream) const override;
+
+private:
+    DistVersion _packageVersion;
 
 };
 

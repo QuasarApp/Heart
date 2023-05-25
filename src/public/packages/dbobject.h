@@ -89,7 +89,7 @@ typedef QMap<QString, DBVariant> DBVariantMap;
  */
 class HEARTSHARED_EXPORT DBObject : public AbstractData
 {
-    QH_PACKAGE("DBObject", 0)
+    QH_PACKAGE("DBObject")
 
 public:
 

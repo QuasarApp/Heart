@@ -27,10 +27,7 @@ bool Package::isValid() const {
     if (hdr.size > maximumSize())
         return false;
 
-    if (calcHash() == hdr.hash)
-        return true;
-
-    return calcHashOld() ==  hdr.hash;
+    return calcHash() == hdr.hash;
 }
 
 void Package::reset() {
@@ -47,10 +44,6 @@ QString Package::toString() const {
 unsigned int Package::calcHash() const {
     auto tmp = data + QByteArray::number(hdr.command);
     return qa_common::hash32(tmp.constData(), tmp.size());
-}
-
-unsigned int Package::calcHashOld() const {
-    return qHash(data + QByteArray::number(hdr.command));
 }
 
 unsigned int Package::maximumSize() {

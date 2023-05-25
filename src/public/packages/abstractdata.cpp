@@ -30,15 +30,11 @@ bool AbstractData::toPackage(Package &package,
 
     package.data = toBytesOf(reqVersion);
     package.hdr.command = cmd();
-    package.hdr.packageVersion = reqVersion;
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
 
-    if (isOldPackage()) {
-        package.hdr.hash = package.calcHashOld();
-    } else {
-        package.hdr.hash = package.calcHash();
-    }
+    package.hdr.hash = package.calcHash();
+
 
     return package.isValid();
 }
@@ -49,10 +45,10 @@ bool AbstractData::isValid() const {
 
 QString AbstractData::toString() const {
     return QString("Type: %0 \n"
-                   "Version: %2 \n"
-                   "Command: %1 \n").
-        arg(cmdString()).
-        arg(cmd()).arg(ver());
+                   "Version: %1 \n"
+                   "Command: %2 \n").
+        arg(cmdString(), packageVersion().toString()).
+        arg(cmd());
 }
 
 void AbstractData::fromPakcage(const Package &pkg) {
@@ -72,7 +68,7 @@ QByteArray AbstractData::toBytesOf(unsigned short reqVersion) const {
 }
 
 QDataStream &AbstractData::toStreamOf(QDataStream &stream, unsigned short version) const {
-    debug_assert(version == ver(), "from stream should be overload for the multi version packages.");
+    debug_assert(packageVersion().max() == version, "from stream should be overload for the multi version packages.");
 
     return toStream(stream);
 }
@@ -81,10 +77,22 @@ AbstractData::~AbstractData() {
 
 }
 
-bool QH::PKG::AbstractData::isOldPackage() const {
-    return false;
+QDataStream &AbstractData::fromStream(QDataStream &stream) {
+    stream >> _packageVersion;
+    return stream;
 }
 
+QDataStream &AbstractData::toStream(QDataStream &stream) const {
+    stream << _packageVersion;
+    return stream;
+}
 
+const DistVersion &AbstractData::packageVersion() const {
+    return _packageVersion;
+}
+
+void AbstractData::setPackageVersion(const DistVersion &newPackageVersion) {
+    _packageVersion = newPackageVersion;
+}
 }
 }

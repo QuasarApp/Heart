@@ -36,7 +36,16 @@ int DistVersion::getMinCompatible(const DistVersion &distVersion) const {
     return midMin;
 }
 
+bool DistVersion::isSupport(unsigned short version) const {
+    return _min <= version && version <= _max;
+}
+
+QString DistVersion::toString() const {
+    return QString("%0:%1").arg(_min).arg(_max);
+}
+
 QDataStream &DistVersion::fromStream(QDataStream &stream) {
+
     stream >> _min;
     stream >> _max;
     return stream;
@@ -46,6 +55,10 @@ QDataStream &DistVersion::toStream(QDataStream &stream) const {
     stream << _min;
     stream << _max;
     return stream;
+}
+
+DistVersion::operator bool() const {
+    return _min || _max;
 }
 
 unsigned short DistVersion::min() const {

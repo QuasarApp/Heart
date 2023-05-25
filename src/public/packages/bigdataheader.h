@@ -27,7 +27,7 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT BigDataHeader : public BigDataBase
 {
-    QH_PACKAGE_AUTO("BigDataHeader")
+    QH_PACKAGE("BigDataHeader")
 
 public:
     BigDataHeader();
@@ -60,18 +60,6 @@ public:
      */
     void setCommand(unsigned short newCommand);
 
-    /**
-     * @brief pkgVersion This is version of the moving big data package.
-     * @return version of the moving big data package.
-     */
-    unsigned short pkgVersion() const;
-
-    /**
-     * @brief setPkgVersion This method sets new version of bid data package.
-     * @param newVersion This is new version
-     */
-    void setPkgVersion(unsigned short newVersion);
-
 protected:
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
@@ -79,7 +67,6 @@ protected:
 private:
     int packagesCount;
     unsigned short _command = 0;
-    unsigned short _version = 0;
 };
 }
 }

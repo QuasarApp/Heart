@@ -59,13 +59,6 @@ public:
      */
     unsigned int calcHash() const;
 
-
-    /**
-     * @brief calcHash This method recalc hash sum for this pacakge.
-     * @return int32 hash of pacakge.
-     */
-    unsigned int calcHashOld() const;
-
     /**
      * @brief maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package will separate to BigDataPart in sending.
      * @return size in bytes of pacakge.

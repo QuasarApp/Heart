@@ -35,13 +35,12 @@ const PacksMap &iParser::registeredTypes() const {
     return _registeredTypes;
 }
 
-QSharedPointer<PKG::AbstractData> iParser::genPackage(unsigned short cmd, unsigned short ver) const {
-    return QSharedPointer<PKG::AbstractData>(_registeredTypes.value(cmd, {}).value(ver, [](){return nullptr;})());
+QSharedPointer<PKG::AbstractData> iParser::genPackage(unsigned short cmd) const {
+    return QSharedPointer<PKG::AbstractData>(_registeredTypes.value(cmd, [](){return nullptr;})());
 }
 
-bool iParser::checkCommand(unsigned short cmd, unsigned short ver) const {
-    auto versions = _registeredTypes.value(cmd, {});
-    return versions.contains(ver);
+bool iParser::checkCommand(unsigned short cmd) const {
+    return _registeredTypes.contains(cmd);
 }
 
 AbstractNode *iParser::node() const {
@@ -69,13 +68,8 @@ void iParser::initSupportedCommands() {}
 QString iParser::toString() const {
     QString message = parserId() + " supports next commands:\n";
 
-    for (auto versionsMap = _registeredTypes.begin(); versionsMap != _registeredTypes.end(); ++versionsMap) {
-        auto cmd = versionsMap.key();
-        auto versions = versionsMap.value();
-        for (auto it = versions.begin(); it != versions.end(); ++it) {
-            auto pkg = genPackage(cmd, it.key());
-            message += pkg->cmdString() + "-" + QString::number(pkg->cmd()) + ":v" + QString::number(it.key()) + "\n";
-        }
+    for (auto it = _registeredTypes.keyBegin(); it != _registeredTypes.keyEnd(); ++it) {
+        message += genPackage(*it)->cmdString() + " - " + QString::number(*it) + "\n";
     }
 
     return message;

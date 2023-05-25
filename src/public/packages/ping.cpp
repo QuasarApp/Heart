@@ -33,6 +33,8 @@ void Ping::setAnsver(bool ansver) {
 }
 
 QDataStream &Ping::fromStream(QDataStream &stream) {
+    AbstractData::fromStream(stream);
+
     stream >> _ansver;
     return stream;
 

@@ -765,13 +765,11 @@ private:
     /**
      * @brief genPackage This method generate a package from the command and version
      * @param cmd this is command of the package.
-     * @param ver this is version of the package
      * @param sender This is sender that sent this requests.
      * @return empty package object.
      */
     QSharedPointer<PKG::AbstractData>
     genPackage(unsigned short cmd,
-               unsigned short ver,
                AbstractNodeInfo *sender) const;
 
     /**

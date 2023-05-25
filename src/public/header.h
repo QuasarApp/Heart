@@ -28,35 +28,28 @@ struct HEARTSHARED_EXPORT Header {
     const unsigned char headerVersion = 1;          //3 bytes
 
     /**
-     * @brief packageVersion This is package's version
-     */
-    unsigned short packageVersion = 0;              //5 bytes
-
-    /**
      * @brief size This is size of package data (exclude header size).
      */
-    unsigned int size = 0;                          //9 bytes
+    unsigned int size = 0;                          //7 bytes
 
     /**
      * @brief hash This is unique id of a package. id calc with CRC32 function for Qt implementation.
      */
-    unsigned int hash = 0;                          //13 bytes
+    unsigned int hash = 0;                          //11 bytes
 
     /**
      * @brief triggerHash This is hash of request package that package has been responded.
      *  The server should write to which command it responds.
      */
-    unsigned int triggerHash = 0;                   //17 bytes
+    unsigned int triggerHash = 0;                   //15 bytes
 
     /**
      * @brief unusedSpace This is unused space for changes of the header struct in the future.
      */
-    unsigned long long unusedSpace1 = 0;            //25 bytes
+    unsigned long long unusedSpace1 = 0;            //23 bytes
+    unsigned long long unusedSpace2 = 0;            //31 bytes
+    unsigned char      unusedSpace3 = 0;            //32 bytes
 
-    /**
-     * @brief unusedSpace This is unused space for changes of the header struct in the future.
-     */
-    unsigned long long unusedSpace2:7  ;            //32 bytes
     /**
      * @brief Header default constructor
      */

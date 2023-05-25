@@ -16,6 +16,7 @@ APIVersion::APIVersion() {
 }
 
 QDataStream &APIVersion::fromStream(QDataStream &stream) {
+    AbstractData::fromStream(stream);
 
     stream >> _apisVersions;
     stream >> _packagesVersions;

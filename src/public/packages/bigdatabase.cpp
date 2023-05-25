@@ -25,6 +25,8 @@ void BigDataBase::setPackageId(int newPackageId) {
 }
 
 QDataStream &BigDataBase::fromStream(QDataStream &stream) {
+    AbstractData::fromStream(stream);
+
     stream >> _packageId;
 
     return stream;

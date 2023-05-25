@@ -28,7 +28,6 @@ public:
     static QString commandText(){return "PROTOCKOL_VERSION_RECEIVED_COMMAND";}
     unsigned short cmd() const override {return VersionIsReceived::command();}
     QString cmdString() const override {return VersionIsReceived::commandText();}
-    unsigned short ver() const override {return VersionIsReceived::version();}
 
 
     // StreamBase interface
