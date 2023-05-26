@@ -12,16 +12,13 @@
 #include "distversion.h"
 #include "hostaddress.h"
 #include <QSharedPointer>
-#include <abstractdata.h>
+#include <multiversiondata.h>
 
 namespace QH {
 
 class AbstractNodeInfo;
 class AbstractNode;
 
-namespace PKG {
-class AbstractData;
-}
 
 /**
  * @brief PacksMap This is hash map where id is command of package and value is factory function.
@@ -63,17 +60,15 @@ public:
      * @see initSupportedCommands
      */
     void registerPackageType() {
-
-        static_assert(std::is_base_of_v<PKG::AbstractData, T>,
-                      "The template type must inheret of the AbstractData class.");
-
         _registeredTypes[T::command()] = [](){
             return new T();
         };
 
-        T tmp;
-        if (const DistVersion &distVersion = tmp.packageVersion()) {
-            _multiVersionPackages[tmp.cmd()] = distVersion;
+        if constexpr(std::is_base_of_v<PKG::MultiversionData, T>) {
+            T tmp;
+            if (const DistVersion &distVersion = tmp.packageVersion()) {
+                _multiVersionPackages[tmp.cmd()] = distVersion;
+            }
         }
     };
 

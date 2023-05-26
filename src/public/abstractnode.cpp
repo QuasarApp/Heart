@@ -757,18 +757,12 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
         return 0;
     }
 
-    int version = node->multiVersionPackages().value(resp->cmd()).
-                  getMaxCompatible(_apiVersionParser->multiVersionPackages().value(resp->cmd()));
-    if (version < 0) {
-        return 0;
-    }
-
     Package pkg;
     bool convert = false;
     if (req && req->isValid()) {
-        convert = resp->toPackage(pkg, version,req->hash);
+        convert = resp->toPackage(pkg, node->multiVersionPackages().value(resp->cmd()),req->hash);
     } else {
-        convert = resp->toPackage(pkg, version);
+        convert = resp->toPackage(pkg, node->multiVersionPackages().value(resp->cmd()));
     }
 
     if (!convert) {

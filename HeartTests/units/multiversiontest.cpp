@@ -28,25 +28,45 @@ private:
     QH::PKG::Ping _ping;
 };
 
-class MultiVersionPkg: public QH::PKG::AbstractData {
+class MultiVersionPkg: public QH::PKG::MultiversionData {
     QH_PACKAGE("MultiVersionPkg")
 
 public:
-    int v1 = 0;
+    MultiVersionPkg():  QH::PKG::MultiversionData(
+            {
+                {0, // version 0
+                    {
+                        [this](QDataStream& stream){ // from
+                            stream >> v1;
+                            return stream;
+                        },
+                        [this](QDataStream& stream){ // to
+                            stream << v1;
 
-    // StreamBase interface
-protected:
-    QDataStream &fromStream(QDataStream &stream) override {
-        AbstractData::fromStream(stream);
+                            return stream;
+                        }
+                    }
+                },
+                {1, // version 1
+                    {
+                        [this](const QDataStream* stream){ // from
+                            stream >> v1;
+                            stream >> v2;
 
-        stream >> v1;
-        return stream;
-    };
+                            return stream;
+                        },
+                        [this](const QDataStream* stream){ // to
+                            stream << v1;
+                            stream << v2;
+                            return stream;
+                        }
+                    }
+                }
+            }
+            ) {};
+    int v1;
+    int v2;
 
-    QDataStream &toStream(QDataStream &stream) const override{
-        stream << v1;
-        return stream;
-    };
 };
 
 MultiVersionTest::MultiVersionTest() {

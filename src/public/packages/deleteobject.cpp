@@ -43,7 +43,6 @@ bool DeleteObject::fromSqlRecord(const QSqlRecord &q) {
 }
 
 QDataStream &DeleteObject::fromStream(QDataStream &stream) {
-    AbstractData::fromStream(stream);
 
     stream >> _address;
     stream >> _token;

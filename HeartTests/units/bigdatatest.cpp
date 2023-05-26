@@ -23,7 +23,6 @@ public:
     // StreamBase interface
 protected:
     QDataStream &fromStream(QDataStream &stream) override {
-        AbstractData::fromStream(stream);
 
         stream >> data;
 
@@ -31,7 +30,6 @@ protected:
     };
 
     QDataStream &toStream(QDataStream &stream) const override {
-        AbstractData::toStream(stream);
 
         stream << data;
 

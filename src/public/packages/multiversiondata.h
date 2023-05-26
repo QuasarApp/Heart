@@ -15,8 +15,8 @@ namespace QH {
 namespace PKG {
 
 struct SerializationBox {
-    std::function<QDataStream& (QDataStream& stream)> from;
-    std::function<QDataStream& (QDataStream& stream)> to;
+    std::function<QDataStream& (QDataStream& stream)> from = nullptr;
+    std::function<QDataStream& (QDataStream& stream)> to = nullptr;
 };
 
 /**
@@ -44,7 +44,7 @@ struct SerializationBox {
  *                  // some code to stream for version 1 ;
  *                  return stream;
  *              }},}
- *          ){
+ *          ) {
  *          }
  *      }
  *  @endcode
@@ -60,13 +60,41 @@ public:
      */
     MultiversionData(const QMap<unsigned short /*version*/, SerializationBox>& serializers);
 
+    /**
+     * @brief packageVersion This method should be return number of the pacakge version.
+     * @return pcakge version. by default return - 0 (any version)
+     */
+    const DistVersion& packageVersion() const;
+
     QDataStream& fromStream(QDataStream& stream) override final;
     QDataStream& toStream(QDataStream& stream) const override final;
-    QDataStream& toStreamOf(QDataStream& stream, unsigned short version) const override final;
+
+    /**
+     * @brief toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages.
+     * @param version This is required version pacakge.
+     * @return bytes array for package.
+     * @note This is just wrapper method for the AbstractData::toStream method.
+     */
+    QByteArray toBytesOf(const DistVersion &version) const;
+
+    /**
+     * @brief toStreamOf This overrload of the base toStream method for support the multi version packages.
+     * @param stream this is stream object.
+     * @param version this is custom version of parsing function.
+     * @return stream object.
+     */
+    QDataStream& toStreamOf(QDataStream& stream, const DistVersion &version) const;
+
+
+    bool toPackage(Package &package, const DistVersion &reqVersion, unsigned int triggerHash = 0) const override final;
+
 
 private:
-
+    DistVersion _packageVersion;
     QMap<unsigned short /*version*/, SerializationBox> _serializers;
+
+    const char* magic = "mVer";
+
 };
 }
 }

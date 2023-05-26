@@ -109,7 +109,7 @@ public:
      * @param triggerHash This is hash of the package the current class is responding to.
      * @return True if convert to package finished successful.
      */
-    bool toPackage(Package &package, unsigned short reqVersion, unsigned int triggerHash = 0) const;
+    virtual bool toPackage(Package &package, const DistVersion &reqVersion, unsigned int triggerHash = 0) const;
 
     /**
      * @brief isValid This method check current object to valid.
@@ -154,45 +154,11 @@ public:
      */
     static QString commandText(){return "NULL";};
 
-    /**
-     * @brief toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages.
-     * @param version This is required version pacakge.
-     * @return bytes array for package.
-     * @note This is just wrapper method for the AbstractData::toStream method.
-     */
-    QByteArray toBytesOf(unsigned short version) const;
-
-    /**
-     * @brief toStreamOf This overrload of the base toStream method for support the multi version packages.
-     * @param stream this is stream object.
-     * @param version this is custom version of parsing function.
-     * @return stream object.
-     */
-    virtual QDataStream& toStreamOf(QDataStream& stream, unsigned short version) const;
-
-    /**
-     * @brief packageVersion This method should be return number of the pacakge version.
-     * @return pcakge version. by default return - 0 (any version)
-     */
-    const DistVersion& packageVersion() const;
-
-    /**
-     * @brief setPackageVersion This method sets new version of package.
-     * @param newPackageVersion This is new version value.
-     */
-    void setPackageVersion(const DistVersion& newPackageVersion);
-
 protected:
     /**
      * @brief AbstractData - Base constructor of this object.
      */
     explicit AbstractData();
-
-    QDataStream& fromStream(QDataStream& stream) override;
-    QDataStream& toStream(QDataStream& stream) const override;
-
-private:
-    DistVersion _packageVersion;
 
 };
 
