@@ -28,25 +28,38 @@ struct SerializationBox {
  *  @code{cpp}
  *
  *      class MyPackage: public MultiversionData {
- *          MyPackage(): MultiversionData(
- *              {0, {[](auto stream){
- *                  // some code from stream for version 0 ;
- *                  return stream;
- *              },{[](auto stream){
- *                  // some code to stream for version 0 ;
- *                  return stream;
- *              }},
- *
- *              1, {[](auto stream){
- *                  // some code from stream for version 1 ;
- *                  return stream;
- *              },{[](auto stream){
- *                  // some code to stream for version 1 ;
- *                  return stream;
- *              }},}
- *          ) {
- *          }
- *      }
+            MyPackage():  QH::PKG::MultiversionData(
+                    {
+                        {0, // version 0
+                            {
+                                [this](QDataStream& stream) -> QDataStream&{ // from
+                                    stream >> v1;
+                                    return stream;
+                                },
+                                [this](QDataStream& stream) -> QDataStream&{ // to
+                                    stream << v1;
+
+                                    return stream;
+                                }
+                            }
+                        },
+                        {1, // version 1
+                            {
+                                [this](QDataStream& stream) -> QDataStream&{ // from
+                                    stream >> v1;
+                                    stream >> v2;
+
+                                    return stream;
+                                },
+                                [this](QDataStream& stream) -> QDataStream&{ // to
+                                    stream << v1;
+                                    stream << v2;
+                                    return stream;
+                                }
+                            }
+                        }
+                    }
+                    ) {};
  *  @endcode
  *
  *  @note the default toBytes function of this class will be convert your class using latest version.
