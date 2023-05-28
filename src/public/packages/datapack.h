@@ -143,18 +143,6 @@ protected:
         return stream;
     }
 
-    QDataStream &toStreamOf(QDataStream &stream, unsigned short version) const override {
-        stream << static_cast<int>(_packData.size());
-
-        for (const auto &data: qAsConst(_packData)) {
-            data->toStreamOf(stream, version);
-        }
-
-        stream << _data;
-
-        return stream;
-    }
-
 private:
     QList<QSharedPointer<Package>> _packData;
     QByteArray _data;
