@@ -106,7 +106,6 @@ private:
     DistVersion _packageVersion;
     QMap<unsigned short /*version*/, SerializationBox> _serializers;
 
-    const char* magic = "mVer";
 
 };
 }

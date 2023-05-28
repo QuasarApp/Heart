@@ -22,7 +22,17 @@ class MultiVersionTest: public Test, protected TestUtils
 {
 public:
     MultiVersionTest();
+    ~MultiVersionTest();
     void test();
+protected:
+
+    void testMultipacakges();
+    void testSinglePackages();
+
+private:
+    QH::AbstractNode *_nodeV1 = nullptr;
+    QH::AbstractNode *_nodeV2 = nullptr;
+    QH::AbstractNode *_nodeOld = nullptr;
 
 };
 

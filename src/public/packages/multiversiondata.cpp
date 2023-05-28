@@ -13,6 +13,7 @@
 namespace QH {
 namespace PKG {
 
+#define MAGIC "mver"
 
 MultiversionData::MultiversionData(const QMap<unsigned short /*version*/, SerializationBox>& serializers):
     _serializers(serializers) {
@@ -32,17 +33,15 @@ QDataStream &MultiversionData::fromStream(QDataStream &stream) {
         return stream;
     }
 
-    char* buf = new char[sizeof(magic)];
-    stream.readRawData(buf, sizeof(magic)) ;
+    QByteArray magic;
+    stream >> magic;
 
     unsigned short version = 0;
-    if (buf == magic) {
+    if (magic == MAGIC) {
         stream >> version;
     } else {
         stream.device()->seek(0);
     }
-
-    delete[] buf;
 
     return _serializers.value(version).from(stream);
 }
@@ -56,7 +55,7 @@ QDataStream &MultiversionData::toStream(QDataStream &stream) const {
         return stream;
     }
 
-    stream << magic;
+    stream << QByteArray{MAGIC};
     stream << _serializers.lastKey();
 
     return _serializers.last().to(stream);
@@ -76,7 +75,8 @@ QByteArray MultiversionData::toBytesOf(const DistVersion& version) const {
 
 QDataStream &MultiversionData::toStreamOf(QDataStream &stream, const DistVersion& version) const {
 
-    auto serializer = _serializers.value(_packageVersion.getMaxCompatible(version), {});
+    unsigned short ver = _packageVersion.getMaxCompatible(version);
+    auto serializer = _serializers.value(ver, {});
     if (!serializer.to) {
         debug_assert(false,
                      "Your MultiversionData not support the required version serialized functions. "
@@ -84,8 +84,10 @@ QDataStream &MultiversionData::toStreamOf(QDataStream &stream, const DistVersion
         return stream;
     }
 
-    stream << magic;
-    stream << version;
+    if (ver) {
+        stream << QByteArray{MAGIC};
+        stream << ver;
+    }
 
     return serializer.to(stream);
 }
