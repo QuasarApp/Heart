@@ -31,8 +31,7 @@ QString iParser::pareseResultToString(const ParserResult &parseResult) {
     }
 }
 
-const QHash<unsigned short, std::function<PKG::AbstractData *()> > &
-iParser::registeredTypes() const {
+const PacksMap &iParser::registeredTypes() const {
     return _registeredTypes;
 }
 
@@ -58,7 +57,10 @@ unsigned int iParser::sendData(const PKG::AbstractData *resp,
                                const AbstractNodeInfo *dist,
                                const Header *req) const {
     return node()->sendData(resp, dist, req);
+}
 
+const PackagesVersionData &iParser::multiVersionPackages() const {
+    return _multiVersionPackages;
 }
 
 void iParser::initSupportedCommands() {}

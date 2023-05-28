@@ -710,7 +710,8 @@ ParserResult AbstractNode::parsePackage(const QSharedPointer<AbstractData> &pkg,
     return _apiVersionParser->parsePackage(pkg, pkgHeader, sender);
 }
 
-QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd, AbstractNodeInfo *sender) const {
+QSharedPointer<AbstractData> AbstractNode::genPackage(unsigned short cmd,
+                                                      AbstractNodeInfo *sender) const {
     if (_apiVersionParser)
         return _apiVersionParser->searchPackage(cmd, sender);
 
@@ -759,9 +760,9 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
     Package pkg;
     bool convert = false;
     if (req && req->isValid()) {
-        convert = resp->toPackage(pkg, req->hash);
+        convert = resp->toPackage(pkg, node->multiVersionPackages().value(resp->cmd()),req->hash);
     } else {
-        convert = resp->toPackage(pkg);
+        convert = resp->toPackage(pkg, node->multiVersionPackages().value(resp->cmd()));
     }
 
     if (!convert) {

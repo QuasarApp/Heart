@@ -22,6 +22,7 @@ class VersionIsReceived: public QH::PKG::AbstractData
 
 public:
     VersionIsReceived();
+    static unsigned short version(){return 0;}
 
     static unsigned short command(){return PROTOCKOL_VERSION_RECEIVED_COMMAND;}
     static QString commandText(){return "PROTOCKOL_VERSION_RECEIVED_COMMAND";}
@@ -31,7 +32,6 @@ public:
 
     // StreamBase interface
 protected:
-    unsigned int localCode() const override {return typeid(VersionIsReceived).hash_code();}
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 };

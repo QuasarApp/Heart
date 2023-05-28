@@ -20,7 +20,7 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT BigDataPart : public BigDataBase
 {
-    QH_PACKAGE(BigDataPart, "BigDataPart")
+    QH_PACKAGE("BigDataPart")
 
 public:
     BigDataPart();

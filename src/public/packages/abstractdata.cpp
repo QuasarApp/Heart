@@ -21,36 +21,22 @@ AbstractData::AbstractData() {
 }
 
 bool AbstractData::toPackage(Package &package,
+                             const DistVersion& ,
                              unsigned int triggerHash) const {
-
-    if (!checkCmd()) {
-        QuasarAppUtils::Params::log("You try send pacakge without QH_PACKAGE macross. Please add QH_PACKAGE macros to this class.",
-                                    QuasarAppUtils::Error);
-        return false;
-    }
 
     if (!isValid()) {
         return false;
     }
 
     package.data = toBytes();
-
     package.hdr.command = cmd();
     package.hdr.triggerHash = triggerHash;
     package.hdr.size = package.data.size();
 
-    if (isOldPackage()) {
-        package.hdr.hash = package.calcHashOld();
-    } else {
-        package.hdr.hash = package.calcHash();
-    }
+    package.hdr.hash = package.calcHash();
+
 
     return package.isValid();
-}
-
-bool AbstractData::checkCmd() const {
-    unsigned int code = typeid (*this).hash_code();
-    return code == localCode();
 }
 
 bool AbstractData::isValid() const {
@@ -58,9 +44,10 @@ bool AbstractData::isValid() const {
 }
 
 QString AbstractData::toString() const {
-    return QString("Type: %0, command: %1").
+    return QString("Type: %0 \n"
+                   "Command: %1 \n").
         arg(cmdString()).
-            arg(cmd());
+        arg(cmd());
 }
 
 void AbstractData::fromPakcage(const Package &pkg) {
@@ -71,9 +58,6 @@ AbstractData::~AbstractData() {
 
 }
 
-bool QH::PKG::AbstractData::isOldPackage() const {
-    return false;
-}
 
 
 }

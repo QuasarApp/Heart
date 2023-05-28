@@ -44,11 +44,13 @@ public:
      * @brief searchPackage This method search package recursive in all registered pararsers. Searching will be in compatibility versions.
      * Before search methd choose compatibly verson.
      * @param cmd This is command for that shold be create pacakge object.
+     * @param ver This is version for that shold be create pacakge object.
      * @param sender This is node that sent @a the cmd.
      * @return Package generated from cmd.
      */
     QSharedPointer<PKG::AbstractData>
-    searchPackage(unsigned short cmd, AbstractNodeInfo *sender) const;
+    searchPackage(unsigned short cmd,
+                  AbstractNodeInfo *sender) const;
 
     /**
      * @brief getSelectedApiParser This method return apiParser for selected node
@@ -128,6 +130,8 @@ public:
      * @return true if the information sent successful else false.
      */
     bool sendSupportedAPI(AbstractNodeInfo *dist) const;
+
+    unsigned short selectPackageVersion(const VersionData& local, const VersionData& dist);
 
 signals:
 

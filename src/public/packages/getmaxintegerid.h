@@ -19,7 +19,6 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT GetMaxIntegerId: public DBObject
 {
-    QH_PACKAGE(GetMaxIntegerId, "GetMaxIntegerId")
 
 public:
     /**

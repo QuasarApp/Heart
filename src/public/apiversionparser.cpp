@@ -232,7 +232,7 @@ QSharedPointer<iParser> APIVersionParser::selectParser(const QString &parserKey,
 }
 
 QSharedPointer<iParser> APIVersionParser::selectParserImpl(unsigned short cmd,
-                                                           AbstractNodeInfo *sender) const{
+                                                           AbstractNodeInfo *sender) const {
     auto version = sender->version();
     const auto availableParser = selectParser(version);
     for (const auto& parser: availableParser) {
@@ -275,9 +275,17 @@ unsigned short APIVersionParser::minimumApiVersion(const QString &apiKey) const 
 
 bool APIVersionParser::sendSupportedAPI(AbstractNodeInfo *dist) const {
     VersionData supportedAPIs;
+    PackagesVersionData multiVersionPackages;
 
     for (auto it = _apiParsers.begin(); it != _apiParsers.end(); ++it) {
         DistVersion supportVersions;
+
+        for (auto api = it->begin(); api != it->end(); ++api) {
+            const auto packages = api.value()->multiVersionPackages();
+            for (auto pkg = packages.begin(); pkg != packages.end(); ++pkg) {
+                multiVersionPackages[pkg.key()] = pkg.value();
+            }
+        }
 
         supportVersions.setMax(it->lastKey());
         supportVersions.setMin(it->firstKey());
@@ -290,7 +298,8 @@ bool APIVersionParser::sendSupportedAPI(AbstractNodeInfo *dist) const {
         return false;
 
     PKG::APIVersion versionInformationPkg;
-    versionInformationPkg.setVersion(supportedAPIs);
+    versionInformationPkg.setApisVersions(supportedAPIs);
+    versionInformationPkg.setPackagesVersions(multiVersionPackages);
 
     return sendData(&versionInformationPkg, dist);
 }
@@ -299,8 +308,10 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<PKG::APIVersion> &
                                          QH::AbstractNodeInfo *sender,
                                          const QH::Header &) {
 
-    auto distVersion = message->version();
+    auto distVersion = message->apisVersions();
     sender->setVersion(distVersion);
+    sender->setMultiVersionPackages(message->packagesVersions());
+
     auto parser = selectParser(distVersion);
 
     for (auto parserKey = distVersion.keyBegin(); parserKey != distVersion.keyEnd(); ++parserKey) {

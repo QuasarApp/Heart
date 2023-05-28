@@ -15,10 +15,9 @@
 
 namespace QH {
 
-class Abstract;
 /**
  * @brief The Package struct. This is base structure for transporting data by network between QH nodes.
- * The Package contains a 12 bytes header and Package::data array. The size on the header should be equals size of Package::data array.
+ * The Package contains a 32 bytes header and Package::data array. The size on the header should be equals size of Package::data array.
  *
  */
 class HEARTSHARED_EXPORT Package: public StreamBase {
@@ -59,13 +58,6 @@ public:
      * @return int32 hash of pacakge.
      */
     unsigned int calcHash() const;
-
-
-    /**
-     * @brief calcHash This method recalc hash sum for this pacakge.
-     * @return int32 hash of pacakge.
-     */
-    unsigned int calcHashOld() const;
 
     /**
      * @brief maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package will separate to BigDataPart in sending.

@@ -13,6 +13,7 @@
 #include <bigdatatest.h>
 #include <ecdsaauthtest.h>
 #include <upgradedatabasetest.h>
+#include <multiversiontest.h>
 
 #define TestCase(name, testClass) \
     void name() { \
@@ -39,6 +40,8 @@ private slots:
 #endif
 
     TestCase(upgradeDataBaseTest, UpgradeDataBaseTest)
+    TestCase(multiVersionTest, MultiVersionTest)
+
 
     // END TEST CASES
 
@@ -67,7 +70,6 @@ testProtockol::testProtockol() {
 }
 
 testProtockol::~testProtockol() {
-    _app->exit(0);
     delete _app;
 }
 

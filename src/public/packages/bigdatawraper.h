@@ -19,7 +19,7 @@ namespace PKG {
  */
 class BigDataWraper: public AbstractData
 {
-    QH_PACKAGE(BigDataWraper, "BigDataWraper")
+    QH_PACKAGE("BigDataWraper")
 
 public:
     BigDataWraper() = default;

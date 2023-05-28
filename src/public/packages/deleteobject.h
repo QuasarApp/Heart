@@ -25,7 +25,6 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT DeleteObject: public DBObject, public IToken
 {
-    QH_PACKAGE(DeleteObject, "DeleteObject")
 
 public:
     DeleteObject();

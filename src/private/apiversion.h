@@ -27,23 +27,32 @@ public:
     APIVersion();
 
     static unsigned short command(){return PROTOCKOL_VERSION_COMMAND;}
+    static unsigned short version(){return 0;}
+
     static QString commandText(){return "PROTOCKOL_VERSION_COMMAND";}
     unsigned short cmd() const override {return APIVersion::command();}
 
     QString cmdString() const override {return APIVersion::commandText();}
 
-    const VersionData &version() const;
-    void setVersion(const VersionData &newVersion);
-
     bool isValid() const override;
 
+    /**
+     * @brief packagesVersions This method return list of available multi-version packages on the node.
+     * @return
+     */
+    PackagesVersionData packagesVersions() const;
+    void setPackagesVersions(const PackagesVersionData &newPackagesVersions);
+
+    VersionData apisVersions() const;
+    void setApisVersions(const VersionData &newApisVersions);
+
 protected:
-    unsigned int localCode() const override {return typeid(APIVersion).hash_code();}
     QDataStream &fromStream(QDataStream &stream) override;
     QDataStream &toStream(QDataStream &stream) const override;
 
 private:
-    VersionData _version;
+    VersionData _apisVersions;
+    PackagesVersionData _packagesVersions;
 
 };
 
