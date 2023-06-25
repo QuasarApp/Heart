@@ -5,7 +5,7 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.18)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -34,7 +34,7 @@ set(SLL_DEFINE "WITHOUT_SSL")
 if (HEART_SSL)
 
     list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
-    find_package(OpenSSL 1.1.1 REQUIRED)
+    find_package(OpenSSL  REQUIRED)
     set(SLL_DEFINE "USE_HEART_SSL")
 endif()
 
@@ -74,8 +74,8 @@ if (HEART_SSL)
             set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
 
             set(ANDROID_EXTRA_LIBS
-                ${OPENSSL_ROOT_PATH}/lib/libcrypto_1_1.so
-                ${OPENSSL_ROOT_PATH}/lib/libssl_1_1.so
+                ${OPENSSL_ROOT_PATH}/lib/libcrypto_3.so
+                ${OPENSSL_ROOT_PATH}/lib/libssl_3.so
             CACHE INTERNAL "")
 
             message(ANDROID_EXTRA_LIBS = ${ANDROID_EXTRA_LIBS})
