@@ -34,7 +34,7 @@ set(SLL_DEFINE "WITHOUT_SSL")
 if (HEART_SSL)
 
     list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
-    find_package(OpenSSL  REQUIRED)
+    find_package(OpenSSL 3.0 REQUIRED)
     set(SLL_DEFINE "USE_HEART_SSL")
 endif()
 
@@ -74,8 +74,8 @@ if (HEART_SSL)
             set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
 
             set(ANDROID_EXTRA_LIBS
-                ${OPENSSL_ROOT_PATH}/lib/libcrypto_3.so
-                ${OPENSSL_ROOT_PATH}/lib/libssl_3.so
+                ${OPENSSL_ROOT_PATH}/lib/libcrypto_android.so
+                ${OPENSSL_ROOT_PATH}/lib/libssl_android.so
             CACHE INTERNAL "")
 
             message(ANDROID_EXTRA_LIBS = ${ANDROID_EXTRA_LIBS})
