@@ -30,11 +30,7 @@ if (HEART_VALIDATE_PACKS)
 endif()
 
 set(SLL_DEFINE "WITHOUT_SSL")
-
 if (HEART_SSL)
-
-    list(APPEND CMAKE_FIND_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
-    find_package(OpenSSL 3.0 REQUIRED)
     set(SLL_DEFINE "USE_HEART_SSL")
 endif()
 
@@ -45,8 +41,6 @@ file(GLOB SOURCE_CPP
     "public/*.cpp" "public/*.h" "public/*.qrc"
     "public/packages/*.cpp" "public/packages/*.h" "public/packages/*.qrc"
     "private/*.cpp" "private/*.h" "private/*.qrc"
-    "public/hcrypto/*.cpp" "public/hcrypto/*.h" "public/hcrypto/*.qrc"
-    "public/hcryptoFeatures/*.cpp" "public/hcryptoFeatures/*.h" "public/hcryptoFeatures/*.qrc"
 )
 
 set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -56,33 +50,9 @@ set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crc)
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crc )
 if (HEART_SSL)
-
-    if (HEART_STATIC_SSL)
-
-        message("Use static ssl")
-        target_link_libraries(${PROJECT_NAME} PUBLIC libcrypto.a libssl.a)
-
-    else()
-
-        message("Use shared ssl ")
-        target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto OpenSSL::SSL)
-
-
-        if (ANDROID)
-            set(OPENSSL_ROOT_PATH "$ENV{OPENSSL_ROOT_DIR}")
-
-            set(ANDROID_EXTRA_LIBS
-                ${OPENSSL_ROOT_PATH}/lib/libcrypto_android.so
-                ${OPENSSL_ROOT_PATH}/lib/libssl_android.so
-            CACHE INTERNAL "")
-
-            message(ANDROID_EXTRA_LIBS = ${ANDROID_EXTRA_LIBS})
-        endif()
-    endif()
-    message("Use the OpenSSL libraries: ${OPENSSL_LIBRARIES}")
-
+    target_link_libraries(${PROJECT_NAME} PUBLIC easyssl)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
