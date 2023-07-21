@@ -5,7 +5,7 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.18)
 
 project(Heart)
 if(TARGET ${PROJECT_NAME})
@@ -51,6 +51,14 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIR
 
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/crc)
+
+if (HEART_SSL)
+    option(EASYSSL_TESTS "disable tests of the easyssl submodule " OFF)
+    option(EASYSSL_STATIC_SSL "disable tests of the easyssl submodule " ${HEART_STATIC_SSL})
+
+    add_subdirectory(submodules/easyssl)
+endif()
+
 add_subdirectory(src)
 
 if (HEART_TESTS)

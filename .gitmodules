@@ -4,3 +4,6 @@
 [submodule "submodules/QuasarAppLib"]
 	path = submodules/QuasarAppLib
 	url = https://github.com/QuasarApp/QuasarAppLib.git
+[submodule "submodules/easyssl"]
+	path = submodules/easyssl
+	url = https://github.com/QuasarApp/easyssl.git

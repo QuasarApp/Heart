@@ -17,12 +17,9 @@
 
 #ifdef USE_HEART_SSL
 
-#include <openssl/bn.h>
-#include <openssl/rsa.h>
-#include <openssl/pem.h>
-#include <openssl/bio.h>
-#include <openssl/x509.h>
 #include <sslsocket.h>
+#include <easyssl/x509.h>
+#include <easyssl/rsassl.h>
 
 #include <QSslConfiguration>
 #include <QSslCertificate>
@@ -329,166 +326,16 @@ QSslConfiguration AbstractNode::getSslConfig() const {
     return _ssl;
 }
 
-bool AbstractNode::generateRSAforSSL(EVP_PKEY *pkey) const {
-
-    if (!pkey) {
-        return false;
-    }
-
-    //#if OPENSSL_VERSION_MAJOR >= 3
-
-    //    EVP_PKEY_CTX *pctx =
-    //        EVP_PKEY_CTX_new_from_name(NULL, "RSA", NULL);
-
-    //    unsigned int primes = 3;
-    //    unsigned int bits = 4096;
-    //    OSSL_PARAM params[3];
-
-    //    pkey = EVP_RSA_gen(4096);
-
-    //    EVP_PKEY_keygen_init(pctx);
-
-    //    params[0] = OSSL_PARAM_construct_uint("bits", &bits);
-    //    params[1] = OSSL_PARAM_construct_uint("primes", &primes);
-    //    params[2] = OSSL_PARAM_construct_end();
-    //    EVP_PKEY_CTX_set_params(pctx, params);
-
-
-    //    EVP_PKEY_generate(pctx, &pkey);
-    //    EVP_PKEY_CTX_free(pctx);
-
-    //#else
-    BIGNUM * bn = BN_new();
-
-    int rc = BN_set_word(bn, RSA_F4);
-
-    if (rc != 1) {
-        BN_free(bn);
-        return false;
-    }
-
-    RSA * rsa = RSA_new();
-
-    if (!RSA_generate_key_ex(rsa, 2048, bn, nullptr)) {
-        return false;
-    }
-
-    q_check_ptr(rsa);
-    if (EVP_PKEY_assign_RSA(pkey, rsa) <= 0)
-        return false;
-    //#endif
-    return true;
-}
-
-bool AbstractNode::generateSslDataPrivate(const SslSrtData &data, QSslCertificate& r_srt, QSslKey& r_key) {
-
-    EVP_PKEY *pkey = EVP_PKEY_new();
-
-    if (!generateRSAforSSL(pkey)) {
-        return false;
-    }
-
-    X509 * x509 = nullptr;
-    X509_NAME * name = nullptr;
-    BIO * bp_public = nullptr, * bp_private = nullptr;
-    const char *buffer = nullptr;
-    int size;
-
-    x509 = X509_new();
-    q_check_ptr(x509);
-    ASN1_INTEGER_set(X509_get_serialNumber(x509), 1);
-    X509_gmtime_adj(X509_get_notBefore(x509), 0); // not before current time
-    X509_gmtime_adj(X509_get_notAfter(x509), data.endTime); // not after a year from this point
-    X509_set_pubkey(x509, pkey);
-    name = X509_get_subject_name(x509);
-    q_check_ptr(name);
-
-    unsigned char *C = reinterpret_cast<unsigned char *>(data.country.toLatin1().data());
-    X509_NAME_add_entry_by_txt(name, "C", MBSTRING_ASC, C, -1, -1, 0);
-
-    unsigned char *O = reinterpret_cast<unsigned char *>(data.organization.toLatin1().data());
-    X509_NAME_add_entry_by_txt(name, "O", MBSTRING_ASC, O, -1, -1, 0);
-
-    unsigned char *CN = reinterpret_cast<unsigned char *>(data.commonName.toLatin1().data());
-    X509_NAME_add_entry_by_txt(name, "CN", MBSTRING_ASC, CN, -1, -1, 0);
-
-    X509_set_issuer_name(x509, name);
-    X509_sign(x509, pkey, EVP_sha256());
-    bp_private = BIO_new(BIO_s_mem());
-    q_check_ptr(bp_private);
-    if(PEM_write_bio_PrivateKey(bp_private, pkey, nullptr, nullptr, 0, nullptr, nullptr) != 1) {
-        EVP_PKEY_free(pkey);
-        X509_free(x509);
-        BIO_free_all(bp_private);
-        qCritical("PEM_write_bio_PrivateKey");
-        return false;
-
-    }
-
-    bp_public = BIO_new(BIO_s_mem());
-    q_check_ptr(bp_public);
-    if(PEM_write_bio_X509(bp_public, x509) != 1){
-        EVP_PKEY_free(pkey);
-        X509_free(x509);
-        BIO_free_all(bp_public);
-        BIO_free_all(bp_private);
-        qCritical("PEM_write_bio_PrivateKey");
-        return false;
-
-    }
-
-    size = static_cast<int>(BIO_get_mem_data(bp_public, &buffer));
-    q_check_ptr(buffer);
-
-    r_srt = QSslCertificate(QByteArray(buffer, size));
-
-    if(r_srt.isNull()) {
-        EVP_PKEY_free(pkey);
-        X509_free(x509);
-        BIO_free_all(bp_public);
-        BIO_free_all(bp_private);
-        qCritical("Failed to generate a random client certificate");
-        return false;
-
-    }
-
-    size = static_cast<int>(BIO_get_mem_data(bp_private, &buffer));
-    q_check_ptr(buffer);
-    r_key = QSslKey(QByteArray(buffer, size), QSsl::Rsa);
-    if(r_key.isNull()) {
-        EVP_PKEY_free(pkey);
-        X509_free(x509);
-        BIO_free_all(bp_public);
-        BIO_free_all(bp_private);
-        qCritical("Failed to generate a random private key");
-        return false;
-
-    }
-
-    EVP_PKEY_free(pkey); // this will also free the rsa key
-    X509_free(x509);
-    BIO_free_all(bp_public);
-    BIO_free_all(bp_private);
-
-    return true;
-}
-
-QSslConfiguration AbstractNode::selfSignedSslConfiguration(const SslSrtData & sslData) {
+QSslConfiguration AbstractNode::selfSignedSslConfiguration(const EasySSL::SslSrtData &sslData) {
     QSslConfiguration res = QSslConfiguration::defaultConfiguration();
 
     QSslKey pkey;
     QSslCertificate crt;
 
-    if (!generateSslDataPrivate(sslData, crt, pkey)) {
-
-        QuasarAppUtils::Params::log("fail to create ssl certificate. node svitch to InitFromSystem mode",
-                                    QuasarAppUtils::Warning);
-
-        return res;
-    }
-
-    res.setPrivateKey(pkey);
-    res.setLocalCertificate(crt);
+    EasySSL::X509 generator(QSharedPointer<EasySSL::RSASSL>::create());
+    EasySSL::SelfSignedSertificate certificate = generator.create(sslData);
+    res.setPrivateKey(certificate.key);
+    res.setLocalCertificate(certificate.crt);
     res.setPeerVerifyMode(QSslSocket::VerifyNone);
 
     return res;
@@ -538,7 +385,7 @@ void AbstractNode::setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors
     _ignoreSslErrors = newIgnoreSslErrors;
 };
 
-bool AbstractNode::useSelfSignedSslConfiguration(const SslSrtData &crtData) {
+bool AbstractNode::useSelfSignedSslConfiguration(const EasySSL::SslSrtData &crtData) {
 
     if (isListening()) {
         return false;

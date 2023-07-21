@@ -11,7 +11,6 @@
 #include "abstractnodetest.h"
 #include <shedullertest.h>
 #include <bigdatatest.h>
-#include <ecdsaauthtest.h>
 #include <upgradedatabasetest.h>
 #include <multiversiontest.h>
 
@@ -34,10 +33,6 @@ private slots:
     TestCase(abstractNodeTest, AbstractNodeTest)
     TestCase(bigDataTest, BigDataTest);
     TestCase(shedullerTest, ShedullerTest);
-
-#ifdef USE_HEART_SSL
-    TestCase(ecdsaAuthTest, ECDSAAuthTest);
-#endif
 
     TestCase(upgradeDataBaseTest, UpgradeDataBaseTest)
     TestCase(multiVersionTest, MultiVersionTest)

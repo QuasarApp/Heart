@@ -13,8 +13,8 @@
 #include "ping.h"
 
 #ifdef USE_HEART_SSL
-#include <openssl/evp.h>
 #include <QSslConfiguration>
+#include <easyssl/icertificate.h>
 #endif
 
 #include <QAbstractSocket>
@@ -76,19 +76,6 @@ enum class AddNodeError {
     /// This error ocurred when you try add baned node or server is overrload.
     RegisterSocketFailed
 };
-
-#ifdef USE_HEART_SSL
-/**
- * @brief The SslSrtData struct This structure contains base information for generate self signed ssl certefication.
- *  If you want change selfSigned certificate then use method AbstractNode::useSelfSignedSslConfiguration.
- */
-struct SslSrtData {
-    QString country = "BY";
-    QString organization = "QuasarApp";
-    QString commonName = "";
-    long long endTime = 31536000L; //1 year
-};
-#endif
 
 #define CRITICAL_ERROOR  -50
 #define LOGICK_ERROOR    -20
@@ -457,27 +444,11 @@ protected:
     void setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors);
 
     /**
-     * @brief generateRSAforSSL This method generate ssl rsa pair keys for using in selfsigned cetificate.
-     *  By default generate RSA 2048, if you want change algorithm or keys size then override this method.
-     * @param pkey This is openssl pointer to RSA pair key.
-     * @return True if keys generated successful.
-     */
-    virtual bool generateRSAforSSL(EVP_PKEY* pkey) const;
-    /**
-     * @brief generateSslDataPrivate This method generate a ssl certificate and a ssl keys using The SslSrtData structure.
-     * @param data The data for generate a selfSigned certificate.
-     * @param r_srt This is return value of a certivicate.
-     * @param r_key - This is return value of private ssl key.
-     * @return True if generate the selfSigned certificate finished succesful.
-     */
-    virtual bool generateSslDataPrivate(const SslSrtData& data, QSslCertificate& r_srt, QSslKey& r_key);
-
-    /**
      * @brief selfSignedSslConfiguration This method create a new ssl configuration with selfsigned certificates.
      * @param data This is data for generate selfsigned certification for more information see SslSrtData structure.
      * @return The new selfsigned ssl configuration.
      */
-    virtual QSslConfiguration selfSignedSslConfiguration( const SslSrtData& data = {});
+    virtual QSslConfiguration selfSignedSslConfiguration( const EasySSL::SslSrtData& data = {});
 #endif
 
     /**
@@ -562,7 +533,7 @@ protected:
      * @param crtData - This is data for generation a new self signed certification.
      * @return result of change node ssl configuration.
      */
-    bool useSelfSignedSslConfiguration(const SslSrtData& crtData);
+    bool useSelfSignedSslConfiguration(const EasySSL::SslSrtData& crtData);
 
     /**
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
