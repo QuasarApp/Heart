@@ -27,7 +27,7 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT CloseConnection: public AbstractData
 {
-    QH_PACKAGE(CloseConnection, "CloseConnection")
+    QH_PACKAGE("CloseConnection")
 
 public:
     CloseConnection();

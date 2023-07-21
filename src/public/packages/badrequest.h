@@ -33,7 +33,7 @@ struct ErrorData {
  */
 class HEARTSHARED_EXPORT BadRequest : public AbstractData
 {
-    QH_PACKAGE(BadRequest, "BadRequest")
+    QH_PACKAGE("BadRequest")
 public:
 
     /**

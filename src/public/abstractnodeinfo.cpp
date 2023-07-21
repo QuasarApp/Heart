@@ -131,6 +131,14 @@ bool AbstractNodeInfo::confirmData() const {
     return _status != NodeCoonectionStatus::NotConnected && fVersionDelivered() && fVersionReceived();
 }
 
+const PackagesVersionData& AbstractNodeInfo::multiVersionPackages() const {
+    return _multiVersionPackages;
+}
+
+void AbstractNodeInfo::setMultiVersionPackages(const PackagesVersionData &newMultiVersionPackages) {
+    _multiVersionPackages = newMultiVersionPackages;
+}
+
 bool AbstractNodeInfo::fVersionDelivered() const {
     return _fVersionDelivered;
 }

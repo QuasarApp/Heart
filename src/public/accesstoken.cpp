@@ -59,6 +59,7 @@ bool AccessToken::operator !=(const AccessToken &other) const {
 AccessToken& AccessToken::operator =(const AccessToken &other) = default;
 
 QDataStream &AccessToken::fromStream(QDataStream &stream) {
+
     stream >> _data;
     stream >> _duration;
     return stream;

@@ -22,7 +22,7 @@ namespace PKG {
  * @code{cpp}
  * class AuthRequest: public QH::PKG::UniversalData
     {
-        QH_PACKAGE_AUTO(RC::API::V4::AuthRequest)
+        QH_PACKAGE(RC::API::V4::AuthRequest)
 
         enum Filds{
             UserId = 0

@@ -733,8 +733,15 @@ private:
                               const Header &pkgHeader,
                               AbstractNodeInfo *sender);
 
+    /**
+     * @brief genPackage This method generate a package from the command and version
+     * @param cmd this is command of the package.
+     * @param sender This is sender that sent this requests.
+     * @return empty package object.
+     */
     QSharedPointer<PKG::AbstractData>
-    genPackage(unsigned short cmd, AbstractNodeInfo *sender) const;
+    genPackage(unsigned short cmd,
+               AbstractNodeInfo *sender) const;
 
     /**
       @note just disaable listen method in the node objects.

@@ -28,7 +28,6 @@ BadRequest::BadRequest(const Package &package):
 }
 
 QDataStream &BadRequest::fromStream(QDataStream &stream) {
-
     stream >> _errCode;
     stream >> _err;
 

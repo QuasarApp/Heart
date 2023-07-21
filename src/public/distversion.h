@@ -8,6 +8,7 @@
 #ifndef DISTVERSION_H
 #define DISTVERSION_H
 
+#include "humanreadableobject.h"
 #include <QHash>
 #include <streambase.h>
 
@@ -15,16 +16,41 @@
 namespace QH {
 
 /**
- * @brief The DistVersion class This is infirmation of supported versions of the distanation api.
+ * @brief The DistVersion class This is information of supported versions of the destinations api.
  */
-class DistVersion: public StreamBase {
+class HEARTSHARED_EXPORT DistVersion: public StreamBase, public QuasarAppUtils::iHRO {
 
 public:
+
+    operator bool() const;
 
     unsigned short min() const;
     void setMin(unsigned short newMin);
     unsigned short max() const;
     void setMax(unsigned short newMax);
+
+    /**
+     * @brief getMaxСompatible return maximum available on booth nodes version.
+     * @param distVersion this is dis version.
+     * @return return maximum version. if this version is not found return "-1"
+     */
+    int getMaxCompatible(const DistVersion& distVersion) const;
+
+    /**
+     * @brief getMinСompatible return maximum available on booth nodes version.
+     * @param distVersion this is dis version.
+     * @return return minimum version. if this version is not found return "-1"
+     */
+    int getMinCompatible(const DistVersion& distVersion) const;
+
+    /**
+     * @brief isSupport This method return true if the @a version is supported of this versions range.
+     * @param version This is checked version.
+     * @return true if the @a version is supported of this versions range.
+     */
+    bool isSupport(unsigned short version) const;
+
+    QString toString() const override;
 
 protected:
 
@@ -33,7 +59,7 @@ protected:
 
 private:
 
-    /// This is monimum supported version.
+    /// This is minimum supported version.
     unsigned short _min = 0;
 
     /// This is maximum supported version.
@@ -41,11 +67,15 @@ private:
 
 };
 
-
 /**
- * @brief VersionData This is array of all avalable apis and supported its versions.
+ * @brief VersionData This is array of all available apis and supported its versions.
  */
 typedef QHash<QString, DistVersion> VersionData;
+
+/**
+ * @brief PackagesVersionData This is some as VersionData but for int commands.
+ */
+typedef QHash<unsigned short, DistVersion> PackagesVersionData;
 
 }
 #endif // DISTVERSION_H

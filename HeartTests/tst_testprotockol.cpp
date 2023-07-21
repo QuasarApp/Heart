@@ -12,6 +12,7 @@
 #include <shedullertest.h>
 #include <bigdatatest.h>
 #include <upgradedatabasetest.h>
+#include <multiversiontest.h>
 
 #define TestCase(name, testClass) \
     void name() { \
@@ -34,6 +35,8 @@ private slots:
     TestCase(shedullerTest, ShedullerTest);
 
     TestCase(upgradeDataBaseTest, UpgradeDataBaseTest)
+    TestCase(multiVersionTest, MultiVersionTest)
+
 
     // END TEST CASES
 
@@ -62,7 +65,6 @@ testProtockol::testProtockol() {
 }
 
 testProtockol::~testProtockol() {
-    _app->exit(0);
     delete _app;
 }
 

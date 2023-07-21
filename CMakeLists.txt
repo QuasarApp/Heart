@@ -24,7 +24,7 @@ if (DEFINED TARGET_PLATFORM_TOOLCHAIN)
 endif()
 
 updateGitVars()
-set(HEART_VERSION 1.2.${GIT_COMMIT_COUNT}.${GIT_COMMIT_HASH})
+set(HEART_VERSION 1.3.${GIT_COMMIT_COUNT}.${GIT_COMMIT_HASH})
 
 if (ANDROID OR IOS)
     option(HEART_TESTS "Enable or disable tests of the heart library" OFF)

@@ -27,7 +27,7 @@ namespace PKG {
  */
 class HEARTSHARED_EXPORT BigDataHeader : public BigDataBase
 {
-    QH_PACKAGE(BigDataHeader, "BigDataHeader")
+    QH_PACKAGE("BigDataHeader")
 
 public:
     BigDataHeader();
@@ -66,7 +66,7 @@ protected:
 
 private:
     int packagesCount;
-    unsigned short _command;
+    unsigned short _command = 0;
 };
 }
 }

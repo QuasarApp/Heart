@@ -43,6 +43,7 @@ QVariant *UniversalData::ref(int key) {
 }
 
 QDataStream &UniversalData::fromStream(QDataStream &stream) {
+
     stream >> _data;
 
     return stream;

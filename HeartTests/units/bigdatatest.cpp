@@ -12,7 +12,7 @@
 #define LOCAL_TEST_PORT TEST_PORT + 4
 
 class BigPackage: public QH::PKG::AbstractData {
-    QH_PACKAGE(BigPackage, "BigPackage")
+    QH_PACKAGE("BigPackage")
 
 public:
     BigPackage(){
@@ -22,13 +22,15 @@ public:
 
     // StreamBase interface
 protected:
-    QDataStream &fromStream(QDataStream &stream) override{
+    QDataStream &fromStream(QDataStream &stream) override {
+
         stream >> data;
 
         return stream;
     };
 
-    QDataStream &toStream(QDataStream &stream) const override{
+    QDataStream &toStream(QDataStream &stream) const override {
+
         stream << data;
 
         return stream;

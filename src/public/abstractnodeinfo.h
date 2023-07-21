@@ -259,6 +259,18 @@ public:
      */
     void addParser(QSharedPointer<QH::iParser> parser);
 
+    /**
+     * @brief multiVersionPackages This is list of packages of one api package tah support multiple versions.
+     * @return list of packages of one api package tah support multiple versions.
+     */
+    const PackagesVersionData &multiVersionPackages() const;
+
+    /**
+     * @brief setMultiVersionPackages This method sets new list of multi-version packages.
+     * @param newMultiVersionPackages This is new value of multi-version packages.
+     */
+    void setMultiVersionPackages(const PackagesVersionData &newMultiVersionPackages);
+
 public slots:
     /**
      * @brief removeSocket This method use for remove socket.
@@ -335,6 +347,10 @@ private:
     QHash<QString, QSharedPointer<iParser>> _parsersKeysMap;
     QMutex _parsersListMutex;
 
+    /**
+     * @brief _multiVersionPackages contains packages list that has multiple versions on one api rest of this is universal packages with version 0.
+     */
+    PackagesVersionData _multiVersionPackages;
     VersionData _version;
     bool _fVersionReceived = false;
     bool _fVersionDelivered = false;

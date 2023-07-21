@@ -7,8 +7,10 @@
 
 #ifndef ABSTRACTDATA_H
 #define ABSTRACTDATA_H
+#include "distversion.h"
 #include "humanreadableobject.h"
 #include "package.h"
+#include <QSharedPointer>
 #include <streambase.h>
 #include <crc/crchash.h>
 
@@ -23,25 +25,23 @@
 #define PROTOCKOL_VERSION_RECEIVED_COMMAND PROTOCKOL_VERSION_COMMAND - 1
 
 /**
- * @brief QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id use the cmd method.
+ * @brief QH_PACKAGE This macross prepare data to send and create a global id for package.
+ * For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
+ * @arg S This is unique id of the pacakge. Shold be some on all your network devices.
+
 */
-#define QH_PACKAGE(X, S) \
+#define QH_PACKAGE(S) \
    public: \
     static unsigned short command(){\
         QByteArray ba = QString(S).toLocal8Bit();\
         return qa_common::hash16(ba.data(), ba.size());\
     } \
     static QString commandText(){return S;} \
-    unsigned short cmd() const override {return X::command();} \
-    QString cmdString() const override {return X::commandText();} \
-   protected: \
-    unsigned int localCode() const override {return typeid(X).hash_code();} \
-    \
+    unsigned short cmd() const override {return command();} \
+\
+    QString cmdString() const override {return S;} \
    private:
-
-
-#define QH_PACKAGE_AUTO(X) QH_PACKAGE(X,#X)
 
 namespace QH {
 namespace PKG {
@@ -54,6 +54,7 @@ namespace PKG {
  *  \code{cpp}
  * class MyPackage: public QH::AbstractData
 {
+    QH_PACKAGE_AUTO_VER(MyPackage, 1)
 public:
     MyPackage();
 
@@ -103,11 +104,12 @@ public:
     /**
      * @brief toPackage This method convert this class object to the package.
      *  For more info see Package class.
-     * @param package  This is return value of Package class.
+     * @param package This is return value of Package class.
+     * @param reqVersion This is required version. This method create package of the needed version.
      * @param triggerHash This is hash of the package the current class is responding to.
      * @return True if convert to package finished successful.
      */
-    bool toPackage(Package &package, unsigned int triggerHash = 0) const;
+    virtual bool toPackage(Package &package, const DistVersion &reqVersion, unsigned int triggerHash = 0) const;
 
     /**
      * @brief isValid This method check current object to valid.
@@ -157,24 +159,6 @@ protected:
      * @brief AbstractData - Base constructor of this object.
      */
     explicit AbstractData();
-
-    /**
-     * @brief localCode This method return local code
-     * @return local command of this class. used for check QH_PACKAGE macro before send pacakge.
-     */
-    virtual unsigned int localCode() const = 0;
-
-    /**
-     * @brief isOldPackage This method mark package as a old, old pacakges use the  Package::calcHashOld method for calculation hash sum of packages.
-     * @return true if the pacakge is old.
-     */
-    virtual bool isOldPackage() const;
-private:
-    /**
-     * @brief checkCmd This method check QH_PACKAGE macross.
-     * @return true if the QH_PACKAGE macross is enabled else fal.
-     */
-    bool checkCmd() const;;
 
 };
 

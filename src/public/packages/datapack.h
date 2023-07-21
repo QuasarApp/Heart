@@ -8,8 +8,7 @@
 #ifndef DATAPACK_H
 #define DATAPACK_H
 
-#include "universaldata.h"
-
+#include <abstractdata.h>
 
 namespace QH {
 namespace PKG {
@@ -25,7 +24,7 @@ namespace PKG {
 template<class Package>
 class DataPack final: public AbstractData
 {
-    QH_PACKAGE(DataPack<Package>, Package::commandText() + "Pack")
+    QH_PACKAGE(Package::commandText() + "Pack")
 
 public:
 
@@ -135,15 +134,14 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override {
         stream << static_cast<int>(_packData.size());
 
-        for (const auto &ptr: qAsConst(_packData)) {
-            stream << *ptr;
+        for (const auto &data: qAsConst(_packData)) {
+            stream << *data;
         }
 
         stream << _data;
 
         return stream;
     }
-
 
 private:
     QList<QSharedPointer<Package>> _packData;
