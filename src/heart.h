@@ -8,8 +8,7 @@
 #ifndef NETWORKPROTOCOL_H
 #define NETWORKPROTOCOL_H
 
-#include "package.h"
-#include "abstractnode.h"
+#include "heart_global.h"
 
 inline void initResources() { Q_INIT_RESOURCE(ProtockolResusces); }
 
