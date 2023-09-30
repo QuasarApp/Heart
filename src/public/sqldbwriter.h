@@ -163,13 +163,14 @@ protected:
      *
      * Support parameters of database:
      *
-     * - DBDriver - This is sql driver of data base for more information see The Qt Documentations https://doc.qt.io/qt-5/sql-driver.html
-     * - DBFilePath - This is path to file of data base (sqlite only). This is phusical location of sqlite database.
-     * - DBInitFile - This is sql file with sql code (structure) with default structure of the database.
-     * - DBPass - This is password of a remote database.
-     * - DBLogin - This is login of a remote database.
-     * - DBHost - This is host address of a remote database.
-     * - DBPort - port of a remote database.
+     * - DBDriver - This is sql driver of data base for more information see The Qt Documentations https://doc.qt.io/qt-5/sql-driver.html (or QH_DB_DRIVER)
+     * - DBFilePath - This is path to file of data base (sqlite only). This is phusical location of sqlite database. Or (QH_DB_FILE_PATH)
+     * - DBInitFile - This is sql file with sql code (structure) with default structure of the database. Or (QH_DB_INIT_FILE)
+     * - DBPass - This is password of a remote database. Or (QH_DB_PASS)
+     * - DBLogin - This is login of a remote database. Or (QH_DB_LOGIN)
+     * - DBHost - This is host address of a remote database. Or (QH_DB_HOST)
+     * - DBPort - port of a remote database. or (QH_DB_PORT)
+     * - DBBackUpPath - path of database backups (sqlite only). Or (QH_DB_BACKUP_PATH)
 
      */
     virtual QVariantMap defaultInitPararm() const;

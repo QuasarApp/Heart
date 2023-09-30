@@ -173,6 +173,32 @@ QString DataBase::dbLocation() const {
     return "";
 }
 
+QString DataBase::backUp(int version) const {
+    auto&& params = defaultDbParams();
+
+    if (params.value(QH_DB_DRIVER) != "QSQLITE")
+        return {};
+
+    QString&& path = params.value(QH_DB_BACKUP_PATH).toString();
+    if (path.isEmpty()) {
+        return {};
+    }
+
+    auto file = path + "/DBv%0_" + QDateTime::currentDateTimeUtc().toString("hh:mm:ss_dd_MM_yyyy") + ".db";
+    file = file.arg(version);
+    if (db() && db()->writer() &&
+        QFile::exists(db()->writer()->databaseLocation())) {
+
+        QDir().mkpath(path);
+
+        if (!QFile::copy(db()->writer()->databaseLocation(), file)) {
+            return {};
+        }
+    }
+
+    return file;
+}
+
 ISqlDB *DataBase::db() const {
     return _db;
 }
@@ -254,7 +280,9 @@ bool DataBase::upgradeDataBase() {
     return true;
 }
 
-void DataBase::onBeforeDBUpgrade(int , int ) const { }
+void DataBase::onBeforeDBUpgrade(int currentVerion, int ) const {
+    backUp(currentVerion);
+}
 
 const QString &DataBase::localNodeName() const {
     return _localNodeName;
@@ -267,8 +295,9 @@ void DataBase::setLocalNodeName(const QString &newLocalNodeName) {
 QVariantMap DataBase::defaultDbParams() const {
 
     return {
-        {"DBDriver", "QSQLITE"},
-        {"DBFilePath", DEFAULT_DB_PATH + "/" + localNodeName() + "/" + localNodeName() + "_" + DEFAULT_DB_NAME},
+        {QH_DB_DRIVER, "QSQLITE"},
+        {QH_DB_FILE_PATH, DEFAULT_DB_PATH + "/" + localNodeName() + "/" + QCoreApplication::applicationName() + "_" + DEFAULT_DB_NAME},
+        {QH_DB_BACKUP_PATH, DEFAULT_DB_PATH + "/" + localNodeName() + "/BackUp"}
     };
 }
 }
