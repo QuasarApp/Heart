@@ -120,6 +120,13 @@ signals:
 protected:
 
     /**
+     * @brief backUp This method make a backup of database.
+     * @param version This is current version of db.
+     * @return path to backupped db.
+     */
+    QString backUp(int version) const;
+
+    /**
      * @brief localNodeName This method return local node name.
      * @return local node name
      */
@@ -285,6 +292,7 @@ protected:
      * @see DataBase::addDBPatch
      */
     virtual void onBeforeDBUpgrade(int currentVerion, int tergetVersion) const;
+
 private:
     /**
          * @brief workWithSubscribe This method work with subscribe commnads.
