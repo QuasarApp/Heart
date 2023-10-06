@@ -8,7 +8,9 @@
 #ifndef QH_DATABASE_H
 #define QH_DATABASE_H
 
+#include "dbobjectsrequest.h"
 #include "dbpatch.h"
+#include "isqldb.h"
 #include <dbobject.h>
 #include <hostaddress.h>
 
@@ -292,6 +294,120 @@ protected:
      * @see DataBase::addDBPatch
      */
     virtual void onBeforeDBUpgrade(int currentVerion, int tergetVersion) const;
+
+
+    /**
+     * @brief Get an object by its identifier.
+     *
+     * This method retrieves an object of type @c Object from the database using the
+     * given identifier and setter function.
+     *
+     * @tparam Object The type of object to retrieve.
+     * @tparam Id The type of the identifier.
+     * @tparam Setter The type of the setter function.
+     * @param id The identifier of the object.
+     * @param setter The setter function to set the identifier in the object.
+     * @return A pointer to an object of type QSharedPointer<Object>, or nullptr if the object is not found.
+     *
+     * Example:
+     *
+     * @code{cpp}
+     *          return getById<MenuItem>(id, &MenuItem::setId);
+     * @endcode
+     */
+    template <class Object, class Id, class Setter>
+    QSharedPointer<Object> getById(const Id& id, Setter setter) {
+        if (auto&& database = db()) {
+            Object request;
+            (request.*setter)(id);
+            return database->getObject(request);
+        }
+
+        return nullptr;
+    };
+
+    /**
+     * @brief Delete an object by its identifier.
+     *
+     * This method deletes an object of type @c Object from the database using the
+     * given identifier and setter function.
+     *
+     * @tparam Object The type of object to delete.
+     * @tparam Id The type of the identifier.
+     * @tparam Setter The type of the setter function.
+     * @param id The identifier of the object.
+     * @param setter The setter function to set the identifier in the object.
+     * @return true if the object is successfully deleted, false otherwise.
+     *
+     * Example:
+     *
+     * @code{cpp}
+            deleteById<Role>(userId, &Role::setUserId);
+     * @endcode
+     */
+    template <class Object, class Id, class Setter>
+    bool deleteById(const Id& id, Setter setter) {
+        if (auto&& database = db()) {
+            auto&& request = QSharedPointer<Object>::create();
+            (*request.*setter)(id);
+            return database->deleteObject(request);
+        }
+
+        return false;
+    };
+
+    /**
+     * @brief Save an object in the database.
+     *
+     * This method saves an object of type @c Object in the database.
+     *
+     * @tparam Object The type of object to save.
+     * @param obj The object to save.
+     * @return true if the object is successfully saved, false otherwise.
+     *
+     * Example:
+     *
+     * @code{cpp}
+            saveObj(role.dynamicCast<Role>());
+     * @endcode
+     */
+    template <class Object>
+    bool saveObj(const Object& obj) {
+        if (auto&& database = db()) {
+            return database->replaceObject(obj);
+        }
+
+        return false;
+    };
+
+    /**
+     * @brief Get a list of all objects from a specified table.
+     *
+     * This method retrieves a list of all objects of type @c Object from the specified
+     * table in the database.
+     *
+     * @tparam Object The type of objects to retrieve.
+     * @param table The name of the table in the database.
+     * @return A list of pointers to objects of type QSharedPointer<Object>.
+     * If no objects are found, an empty list is returned.
+     *
+     * Example:
+     *
+     * @code{cpp}
+            auto&& data = getAll<User>("Users");
+     * @endcode
+     */
+    template<class Object>
+    QList<QSharedPointer<Object>> getAll(const QString& table) {
+        QH::PKG::DBObjectsRequest<Object> request(table);
+
+        auto&& response = db()->getObject(request);
+        if (!response) {
+            return {};
+        }
+
+        return response->data();
+    }
 
 private:
     /**
