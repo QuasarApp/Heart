@@ -307,6 +307,7 @@ protected:
      * @tparam Setter The type of the setter function.
      * @param id The identifier of the object.
      * @param setter The setter function to set the identifier in the object.
+     * @param ifNotExistsCreate - this option will create a new object if object with @a id is not existst into database. But object wil not save into database.
      * @return A pointer to an object of type QSharedPointer<Object>, or nullptr if the object is not found.
      *
      * Example:
@@ -316,11 +317,17 @@ protected:
      * @endcode
      */
     template <class Object, class Id, class Setter>
-    QSharedPointer<Object> getById(const Id& id, Setter setter) {
+    QSharedPointer<Object> getById(const Id& id, Setter setter, bool ifNotExistsCreate = false) {
         if (auto&& database = db()) {
-            Object request;
-            (request.*setter)(id);
-            return database->getObject(request);
+            auto&& request = QSharedPointer<Object>::create();
+            (*request.*setter)(id);
+
+            if (auto&& result = database->getObject(*request)) {
+                return result;
+            }
+
+            if (ifNotExistsCreate)
+                return request;
         }
 
         return nullptr;
