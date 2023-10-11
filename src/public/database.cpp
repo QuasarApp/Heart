@@ -229,11 +229,7 @@ bool DataBase::upgradeDataBase() {
         return false;
     }
 
-    PKG::GetSingleValue request({"DataBaseAttributes", "version"}, "value", "name");
-
-    if (auto responce = _db->getObject(request)) {
-        currentVersion = responce->value().toInt();
-    }    
+    currentVersion = getDBAttribute("version", 0).toInt();
 
     if (currentVersion < _targetDBVersion)
         onBeforeDBUpgrade(currentVersion, _targetDBVersion);
@@ -265,14 +261,7 @@ bool DataBase::upgradeDataBase() {
         }
 
         currentVersion = patch.versionTo;
-
-        auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
-                    DbAddress{"DataBaseAttributes", "version"},
-                    "value", currentVersion, "name");
-
-        if (!_db->replaceObject(updateVersionRequest, true)) {
-            QuasarAppUtils::Params::log("Failed to update version attribute",
-                                        QuasarAppUtils::Error);
+        if (!setDBAttribute("version", currentVersion)) {
             return false;
         }
     }
@@ -300,5 +289,35 @@ QVariantMap DataBase::defaultDbParams() const {
         {QH_DB_BACKUP_PATH, DEFAULT_DB_PATH + "/" + localNodeName() + "/BackUp"}
     };
 }
+
+QVariant DataBase::getDBAttribute(const QString& key, const QVariant& defaultVal) {
+    if (!_db)
+        return defaultVal;
+
+    PKG::GetSingleValue request({"DataBaseAttributes", key}, "value", "name");
+
+    if (auto&& responce = _db->getObject(request)) {
+        if (!responce->value().isNull())
+            return responce->value();
+
+    }
+
+    return defaultVal;
+}
+
+bool DataBase::setDBAttribute(const QString& key, const QVariant& newValue) {
+    auto updateVersionRequest = QSharedPointer<PKG::SetSingleValue>::create(
+        DbAddress{"DataBaseAttributes", key},
+        "value", newValue, "name");
+
+    if (!_db->replaceObject(updateVersionRequest, true)) {
+        QuasarAppUtils::Params::log(QString("Failed to update %0 attribute").arg(key),
+                                    QuasarAppUtils::Error);
+        return false;
+    }
+
+    return true;
+}
+
 }
 

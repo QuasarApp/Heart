@@ -99,6 +99,21 @@ public:
      */
     QString dbLocation() const;
 
+    /**
+     * @brief getDBAttribute This method gets value from the default of QH DB table "DataBaseAttributes".
+     * @param key This is key of attribute
+     * @param defaultVal this is default value, if needed attribute is not exists.
+     * @return attribute value.
+     */
+    QVariant getDBAttribute(const QString& key, const QVariant& defaultVal);
+
+    /**
+     * @brief setDBAttribute This method sets value for the default of QH DB table "DataBaseAttributes".
+     * @param key This is key of attribute
+     * @param newValue this is new value
+     */
+    bool setDBAttribute(const QString& key, const QVariant& newValue);
+
 signals:
 
     /**
