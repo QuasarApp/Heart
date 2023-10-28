@@ -167,7 +167,7 @@ bool ISqlDB::getAllObjects(const DBObject &templateObject,
             return false;
         }
 
-        for (const auto &object: qAsConst(result)) {
+        for (const auto &object: std::as_const(result)) {
             if (object->isCached() && !insertToCache(object)) {
                 QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
                                             object->toString(),
@@ -301,7 +301,7 @@ bool ISqlDB::changeObjects(const DBObject &templateObject,
     if (!list.size())
         return false;
 
-    for (const auto& obj :qAsConst(list)) {
+    for (const auto& obj :std::as_const(list)) {
 
         if (!changeAction(obj)) {
             return false;

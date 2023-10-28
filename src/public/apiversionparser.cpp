@@ -125,7 +125,7 @@ bool QH::APIVersionParser::commandsValidation(const QSharedPointer<iParser> &par
                                       parserObject->registeredTypes().keyEnd()};
     int typesSize = types.size();
 
-    for (const auto &parsersMap : qAsConst(_apiParsers)) {
+    for (const auto &parsersMap : std::as_const(_apiParsers)) {
         for (const auto &parser: parsersMap) {
             if (parser->parserId() == parserObject->parserId()) {
                 continue;
