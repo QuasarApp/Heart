@@ -420,8 +420,8 @@ protected:
      * @endcode
      */
     template<class Object>
-    QList<QSharedPointer<Object>> getAll(const QString& table) {
-        QH::PKG::DBObjectsRequest<Object> request(table);
+    QList<QSharedPointer<Object>> getAll(const QString& table, const QString& condition = "") {
+        QH::PKG::DBObjectsRequest<Object> request(table, condition);
 
         auto&& response = db()->getObject(request);
         if (!response) {
