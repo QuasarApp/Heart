@@ -92,7 +92,7 @@ AbstractNode::~AbstractNode() {
     _senderThread->quit();
     _senderThread->wait();
 
-    for (auto it: qAsConst(_receiveData)) {
+    for (auto it: std::as_const(_receiveData)) {
         delete  it;
     }
 
@@ -147,13 +147,13 @@ void AbstractNode::stop() {
     close();
 
     _connectionsMutex.lock();
-    for (const auto &i : qAsConst(_connections)) {
+    for (const auto &i : std::as_const(_connections)) {
         i->disconnect();
     }
     _connectionsMutex.unlock();
 
     _workersMutex.lock();
-    for (auto it: qAsConst(_workers)) {
+    for (auto it: std::as_const(_workers)) {
         if (!it->isFinished()) {
             it->cancel();
             it->waitForFinished();

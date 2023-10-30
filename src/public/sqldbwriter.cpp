@@ -111,7 +111,7 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
         return false;
     }
 
-    for (const QString& sqlFile : qAsConst(_SQLSources)) {
+    for (const QString& sqlFile : std::as_const(_SQLSources)) {
         QSqlQuery query(*_db);
         if (!exec(&query, sqlFile)) {
             return false;

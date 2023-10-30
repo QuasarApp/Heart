@@ -134,7 +134,7 @@ protected:
     QDataStream &toStream(QDataStream &stream) const override {
         stream << static_cast<int>(_packData.size());
 
-        for (const auto &data: qAsConst(_packData)) {
+        for (const auto &data: std::as_const(_packData)) {
             stream << *data;
         }
 
