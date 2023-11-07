@@ -67,7 +67,8 @@ public:
                        QList<QSharedPointer<PKG::DBObject>> &result) override;
     bool updateObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
     bool deleteObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
-    bool insertObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
+    bool insertObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false,
+                      const QWeakPointer<unsigned int>& autoincrementIdResult = {}) override;
     bool replaceObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait = false) override;
 
     void setSQLSources(const QStringList &list) override;
@@ -110,9 +111,12 @@ public:
     /**
      * @brief insertQuery This method prepare the insert object query.
      * @param insertObject This is strong pointer of object for generate the insert query.
+     * @param autoIncrementID Week pointer to result id of new inserteed record.
      * @return true if query generated successful.
+     * @note Works only of the int autoincrement ids...
      */
-    virtual bool insertQuery(const QSharedPointer<QH::PKG::DBObject>& insertObject) const;
+    virtual bool insertQuery(const QSharedPointer<QH::PKG::DBObject>& insertObject,
+                             const QWeakPointer<unsigned int>& autoIncrementID = {}) const;
 
     /**
      * @brief replaceQuery This method prepare the replce object query.

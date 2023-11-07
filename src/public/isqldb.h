@@ -80,7 +80,7 @@ public:
      * @param mode See the SqlDBCache::setMode method  for more information.
      */
     ISqlDB(qint64 updateInterval = DEFAULT_UPDATE_INTERVAL,
-               SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
+           SqlDBCasheWriteMode mode = SqlDBCasheWriteMode::Default);
     ~ISqlDB() override;
 
     /**
@@ -103,10 +103,11 @@ public:
     bool deleteObject(const QSharedPointer<QH::PKG::DBObject>& delObj,
                       bool wait = false) override;
     bool insertObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
-                      bool wait = false) override;
+                      bool wait = false,
+                      const QWeakPointer<unsigned int>& autoincrementIdResult = {}) override;
 
     bool replaceObject(const QSharedPointer<QH::PKG::DBObject>& saveObject,
-                      bool wait = false) override;
+                       bool wait = false) override;
 
     bool doQuery(const QString &query, const QVariantMap& bindValues,
                  bool wait = false, QSqlQuery* result = nullptr) const override;
@@ -231,13 +232,14 @@ protected:
 private:
 
     bool updateObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
-                      bool wait = false);
-    bool deleteObjectP(const QSharedPointer<QH::PKG::DBObject>& delObj,
-                      bool wait = false);
-    bool insertObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
-                      bool wait = false);
-    bool replaceObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
                        bool wait = false);
+    bool deleteObjectP(const QSharedPointer<QH::PKG::DBObject>& delObj,
+                       bool wait = false);
+    bool insertObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                       bool wait,
+                       const QWeakPointer<unsigned int>& autoincrementIdResult);
+    bool replaceObjectP(const QSharedPointer<QH::PKG::DBObject>& saveObject,
+                        bool wait = false);
 
     qint64 lastUpdateTime = 0;
     qint64 updateInterval = DEFAULT_UPDATE_INTERVAL;

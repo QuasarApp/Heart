@@ -77,7 +77,7 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
         delete _db;
 
     _db = new QSqlDatabase(initSqlDataBasse(_config["DBDriver"].toString(),
-            _config["DBFilePath"].toString()));
+                                            _config["DBFilePath"].toString()));
 
     if (_config.contains("DBFilePath")) {
 
@@ -311,14 +311,24 @@ bool SqlDBWriter::deleteObject(const QSharedPointer<DBObject> &ptr, bool wait) {
     return asyncLauncher(job, wait);
 }
 
-bool SqlDBWriter::insertObject(const QSharedPointer<DBObject> &ptr, bool wait) {
+bool SqlDBWriter::insertObject(const QSharedPointer<DBObject> &ptr,
+                               bool wait,
+                               const QWeakPointer<unsigned int>& autoincrementIdResult) {
 
-    Async::Job job = [this, ptr]() {
-        return insertQuery(ptr);
-    };
+    if (wait) {
+        auto resultId = QSharedPointer<int>::create();
+        Async::Job job = [this, ptr, autoincrementIdResult]() {
+            return insertQuery(ptr, autoincrementIdResult);
+        };
 
-    return asyncLauncher(job, wait);
+        return asyncLauncher(job, wait);
+    } else {
+        Async::Job job = [this, ptr]() {
+            return insertQuery(ptr);
+        };
 
+        return asyncLauncher(job, wait);
+    }
 }
 
 bool SqlDBWriter::replaceObject(const QSharedPointer<PKG::DBObject> &ptr, bool wait) {
@@ -354,7 +364,8 @@ SqlDBWriter::~SqlDBWriter() {
 
 }
 
-bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
+bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr,
+                              const QWeakPointer<unsigned int>& autoincrementIdResult) const {
     if (!ptr)
         return false;
 
@@ -368,7 +379,14 @@ bool SqlDBWriter::insertQuery(const QSharedPointer<DBObject> &ptr) const {
         return ptr->prepareInsertQuery(q, false);
     };
 
-    auto cb = [](){return true;};
+    auto cb = [&q, autoincrementIdResult]() {
+
+        if (auto&& ptr = autoincrementIdResult.lock()) {
+            *ptr = q.lastInsertId().toInt();
+        }
+
+        return true;
+    };
 
     return workWithQuery(q, prepare, cb);
 }
@@ -438,7 +456,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
                 if (!newObject->fromSqlRecord(q.record())) {
                     QuasarAppUtils::Params::log("Select query finished successful but, "
                                                 "the fromSqlRecord method return false." +
-                                                newObject->toString(),
+                                                    newObject->toString(),
                                                 QuasarAppUtils::Error);
                     return false;
                 }
