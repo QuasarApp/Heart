@@ -47,6 +47,9 @@ enum class MemberType {
     /// The Field with this type can not be duplicate on a table. If a Database object do not have a primary key then default implementation for select query try get object by fields with unique type.
     Unique = 0x4,
 
+    /// The field with this atribute automaticaly incemented into database, and will not to added into insert reqests, but it can be used with replace request as a key.
+    Autoincement = 0x8,
+
     /// The Field With This type can be inserted and updated.
     InsertUpdate = Insert | Update,
 
@@ -54,7 +57,7 @@ enum class MemberType {
     PrimaryKey = Insert | Unique,
 
     //// The primary key field with autoincrement.
-    PrimaryKeyAutoIncrement = Unique
+    PrimaryKeyAutoIncrement = PrimaryKey | Autoincement
 };
 
 constexpr inline uint qHash(MemberType type) {
