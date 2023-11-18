@@ -419,7 +419,7 @@ protected:
     template <class Object>
     bool insertObj(const Object& obj, const QWeakPointer<unsigned int>& resultId = {}) {
         if (auto&& database = db()) {
-            return database->insertObject(obj, resultId.isNull(), resultId);
+            return database->insertObject(obj, !resultId.isNull(), resultId);
         }
 
         return false;
