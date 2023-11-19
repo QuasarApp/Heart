@@ -23,7 +23,7 @@ void ISqlDB::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
     qint64 currentTime = QDateTime::currentMSecsSinceEpoch();
 
     if (currentTime - lastUpdateTime > updateInterval ||
-            static_cast<bool>(mode & SqlDBCasheWriteMode::Force)) {
+        static_cast<bool>(mode & SqlDBCasheWriteMode::Force)) {
 
         if (static_cast<bool>(mode & SqlDBCasheWriteMode::On_New_Thread)) {
 
@@ -48,13 +48,13 @@ void ISqlDB::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
 }
 
 bool ISqlDB::updateObjectP(const QSharedPointer<DBObject> &saveObject,
-                                bool wait) {
+                           bool wait) {
 
     if (updateCache(saveObject)) {
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
             return _writer && _writer->isValid() &&
-                    _writer->updateObject(saveObject, wait);
+                   _writer->updateObject(saveObject, wait);
         }
 
         pushToQueue(saveObject, CacheAction::Update);
@@ -64,11 +64,11 @@ bool ISqlDB::updateObjectP(const QSharedPointer<DBObject> &saveObject,
     }
 
     return  _writer && _writer->isValid() &&
-            _writer->updateObject(saveObject, wait);
+           _writer->updateObject(saveObject, wait);
 }
 
 bool ISqlDB::deleteObjectP(const QSharedPointer<DBObject> &delObj,
-                                bool wait) {
+                           bool wait) {
 
     deleteFromCache(delObj);
     pushToQueue(delObj, CacheAction::Delete);
@@ -81,14 +81,15 @@ bool ISqlDB::deleteObjectP(const QSharedPointer<DBObject> &delObj,
 }
 
 bool ISqlDB::insertObjectP(const QSharedPointer<DBObject> &saveObject,
-                                bool wait) {
+                           bool wait,
+                           const QWeakPointer<unsigned int>& autoincrementIdResult) {
 
     if (insertToCache(saveObject)) {
 
         if (getMode() == SqlDBCasheWriteMode::Force) {
 
             return _writer && _writer->isValid() &&
-                    _writer->insertObject(saveObject, wait);
+                   _writer->insertObject(saveObject, wait, autoincrementIdResult);
         }
 
         pushToQueue(saveObject, CacheAction::Update);
@@ -98,7 +99,7 @@ bool ISqlDB::insertObjectP(const QSharedPointer<DBObject> &saveObject,
     }
 
     return _writer && _writer->isValid() &&
-           _writer->insertObject(saveObject, wait);
+           _writer->insertObject(saveObject, wait, autoincrementIdResult);
 }
 
 bool ISqlDB::replaceObjectP(const QSharedPointer<PKG::DBObject> &saveObject, bool wait) {
@@ -129,7 +130,7 @@ void ISqlDB::setLastUpdateTime(const qint64 &value) {
 }
 
 void ISqlDB::pushToQueue(const QSharedPointer<DBObject> &obj,
-                              CacheAction type) {
+                         CacheAction type) {
     _saveLaterMutex.lock();
     _changes.insert(type, obj);
     _saveLaterMutex.unlock();
@@ -155,7 +156,7 @@ void ISqlDB::setWriter(SqlDBWriter *writer) {
 }
 
 bool ISqlDB::getAllObjects(const DBObject &templateObject,
-                                QList<QSharedPointer<QH::PKG::DBObject>> &result) {
+                           QList<QSharedPointer<QH::PKG::DBObject>> &result) {
 
     result = getFromCache(&templateObject);
     if(result.size()) {
@@ -170,7 +171,7 @@ bool ISqlDB::getAllObjects(const DBObject &templateObject,
         for (const auto &object: std::as_const(result)) {
             if (object->isCached() && !insertToCache(object)) {
                 QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
-                                            object->toString(),
+                                                object->toString(),
                                             QuasarAppUtils::Warning);
             }
         }
@@ -182,7 +183,7 @@ bool ISqlDB::getAllObjects(const DBObject &templateObject,
 }
 
 bool ISqlDB::deleteObject(const QSharedPointer<DBObject> &delObj,
-                               bool wait) {
+                          bool wait) {
 
     if (!delObj)
         return false;
@@ -201,7 +202,7 @@ bool ISqlDB::deleteObject(const QSharedPointer<DBObject> &delObj,
 }
 
 bool ISqlDB::updateObject(const QSharedPointer<DBObject> &saveObject,
-                               bool wait) {
+                          bool wait) {
 
     if (!saveObject || !saveObject->isValid()) {
         return false;
@@ -216,12 +217,13 @@ bool ISqlDB::updateObject(const QSharedPointer<DBObject> &saveObject,
     return true;
 }
 
-bool ISqlDB::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait) {
+bool ISqlDB::insertObject(const QSharedPointer<DBObject> &saveObject, bool wait,
+                          const QWeakPointer<unsigned int>& autoincrementIdResult) {
     if (!saveObject || !saveObject->isValid()) {
         return false;
     }
 
-    if (!insertObjectP(saveObject, wait)) {
+    if (!insertObjectP(saveObject, wait, autoincrementIdResult)) {
         return false;
     }
 
@@ -291,7 +293,7 @@ void ISqlDB::prepareForDelete() {
 }
 
 bool ISqlDB::changeObjects(const DBObject &templateObject,
-                                const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction) {
+                           const std::function<bool (const QSharedPointer<QH::PKG::DBObject>&)> &changeAction) {
 
     QList<QSharedPointer<DBObject>> list;
     if (!getAllObjects(templateObject, list)) {
@@ -337,7 +339,7 @@ void ISqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
 
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
                                             " db object is not valid! obj=" +
-                                            obj->toString(),
+                                                obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Error);
                 continue;
             }
@@ -359,7 +361,7 @@ void ISqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
             }
             default: {
                 QuasarAppUtils::Params::log("The Object of the cache have wrong type " +
-                                            obj->toString(),
+                                                obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Warning);
 
                 continue;
@@ -369,7 +371,7 @@ void ISqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
             if (!saveResult ) {
                 QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
                                             " work globalUpdateDataRelease!!! obj=" +
-                                            obj->toString(),
+                                                obj->toString(),
                                             QuasarAppUtils::VerboseLvl::Error);
             }
         } else {

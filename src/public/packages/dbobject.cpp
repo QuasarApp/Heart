@@ -80,7 +80,11 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q, bool replace) const {
 
     for (auto it = map.begin(); it != map.end(); ++it) {
 
-        if (!bool(it.value().type & MemberType::Insert)) {
+        if (!static_cast<bool>(it.value().type & MemberType::Insert)) {
+            continue;
+        }
+
+        if (static_cast<bool>(it.value().type & MemberType::Autoincement) && !replace) {
             continue;
         }
 
@@ -99,7 +103,11 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q, bool replace) const {
     if (q.prepare(queryString)) {
 
         for (auto it = map.begin(); it != map.end(); ++it) {
-            if (!bool(it.value().type & MemberType::Insert)) {
+            if (!static_cast<bool>(it.value().type & MemberType::Insert)) {
+                continue;
+            }
+
+            if (static_cast<bool>(it.value().type & MemberType::Autoincement) && !replace) {
                 continue;
             }
 

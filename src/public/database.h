@@ -403,6 +403,29 @@ protected:
     };
 
     /**
+     * @brief insert a new value into database, and save into @a resultId autoincremented id of inserted object.
+     *
+     * @tparam Object The type of object to save.
+     * @param obj The object to save.
+     * @return true if the object is successfully saved, false otherwise.
+     *
+     * Example:
+     *
+     * @code{cpp}
+     *      auto&& id = QSharedPointe<unsigned int>:: create();
+            insertObj(role.dynamicCast<Role>(), id.toWeekRef());
+     * @endcode
+     */
+    template <class Object>
+    bool insertObj(const Object& obj, const QWeakPointer<unsigned int>& resultId = {}) {
+        if (auto&& database = db()) {
+            return database->insertObject(obj, !resultId.isNull(), resultId);
+        }
+
+        return false;
+    };
+
+    /**
      * @brief Get a list of all objects from a specified table.
      *
      * This method retrieves a list of all objects of type @c Object from the specified

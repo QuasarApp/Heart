@@ -98,9 +98,13 @@ public:
      * @note This method insert object into database only. IF object is exits in the database then this method return false.
      * @param saveObject This is object for inserting.
      * @param wait This arguments force current thread wait for the function finishing.
-     * @return true if objects is saved successful else false.
+     * @param autoincrementIdResult is id of the insert query to the Table with autoincrement id field.
+     * @return true if objects is saved successful else false. Note return two value. First is boolean result, second is id of inserted value.
+     * @note id will be returned only for the autoincement records.
      */
-    virtual bool insertObject(const QSharedPointer<PKG::DBObject>& saveObject, bool wait) = 0;
+    virtual bool insertObject(const QSharedPointer<PKG::DBObject>& saveObject,
+                              bool wait,
+                              const QWeakPointer<unsigned int>& autoincrementIdResult) = 0;
 
     /**
      * @brief deleteObject This method execute a delete method of obj and remove current object from database.
