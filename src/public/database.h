@@ -332,7 +332,7 @@ protected:
      * @endcode
      */
     template <class Object, class Id, class Setter>
-    QSharedPointer<Object> getById(const Id& id, Setter setter, bool ifNotExistsCreate = false) {
+    QSharedPointer<Object> getById(const Id& id, Setter setter, bool ifNotExistsCreate = false) const {
         if (auto&& database = db()) {
             auto&& request = QSharedPointer<Object>::create();
             (*request.*setter)(id);
@@ -368,7 +368,7 @@ protected:
      * @endcode
      */
     template <class Object, class Id, class Setter>
-    bool deleteById(const Id& id, Setter setter) {
+    bool deleteById(const Id& id, Setter setter) const {
         if (auto&& database = db()) {
             auto&& request = QSharedPointer<Object>::create();
             (*request.*setter)(id);
@@ -394,7 +394,7 @@ protected:
      * @endcode
      */
     template <class Object>
-    bool saveObj(const Object& obj) {
+    bool saveObj(const Object& obj) const {
         if (auto&& database = db()) {
             return database->replaceObject(obj);
         }
@@ -417,7 +417,7 @@ protected:
      * @endcode
      */
     template <class Object>
-    bool insertObj(const Object& obj, const QWeakPointer<unsigned int>& resultId = {}) {
+    bool insertObj(const Object& obj, const QWeakPointer<unsigned int>& resultId = {}) const {
         if (auto&& database = db()) {
             return database->insertObject(obj, !resultId.isNull(), resultId);
         }
@@ -443,7 +443,7 @@ protected:
      * @endcode
      */
     template<class Object>
-    QList<QSharedPointer<Object>> getAll(const QString& table, const QString& condition = "") {
+    QList<QSharedPointer<Object>> getAll(const QString& table, const QString& condition = "") const {
         QH::PKG::DBObjectsRequest<Object> request(table, condition);
 
         auto&& response = db()->getObject(request);
