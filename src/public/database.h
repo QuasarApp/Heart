@@ -443,7 +443,7 @@ protected:
      * @endcode
      */
     template<class Object>
-    QList<QSharedPointer<Object>> getAll(const QString& table, const QString& condition = "") {
+    QList<QSharedPointer<Object>> getAll(const QString& table, const QString& condition = "") const {
         QH::PKG::DBObjectsRequest<Object> request(table, condition);
 
         auto&& response = db()->getObject(request);
