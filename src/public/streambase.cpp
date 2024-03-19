@@ -61,7 +61,7 @@ int StreamBase::parsingVersion() const {
 }
 
 unsigned int StreamBase::typeId() const {
-    return typeid (*this).hash_code();
+    return typeid (this).hash_code();
 }
 
 QDataStream &operator<<(QDataStream &stream, const StreamBase &obj) {
