@@ -22,10 +22,6 @@ public:
     StreamMultiversion();
 
     // StreamBase interface
-protected:
-    QDataStream &fromStream(QDataStream &stream) override;
-    QDataStream &toStream(QDataStream &stream) const override;
-
     /**
      * @brief version override this method to sets version of package.
      * @return
@@ -38,6 +34,11 @@ protected:
      * @note use this method to check version of read package in the fromStream method..
      */
     virtual int realVersion() const;
+protected:
+    QDataStream &fromStream(QDataStream &stream) override;
+    QDataStream &toStream(QDataStream &stream) const override;
+
+
 
 private:
     int _realVersion = 0;
