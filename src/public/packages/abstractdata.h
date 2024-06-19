@@ -94,7 +94,7 @@ public:
     virtual unsigned short cmd() const = 0;
 
     /**
-     * @brief cmd - This is command string of this object, (for generate cmd use macross QH_PACKAGE)
+     * @brief cmdString - This is command string of this object, (for generate cmd use macross QH_PACKAGE)
      * @note Use the QH_PACKAGE macross for implement this method.
      * @return global command of package.
      * @see QH_PACKAGE

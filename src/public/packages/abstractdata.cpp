@@ -8,8 +8,6 @@
 #include "abstractdata.h"
 #include <QDataStream>
 #include <QMap>
-#include <typeinfo>
-#include <limits>
 #include <quasarapp.h>
 #include <QCryptographicHash>
 #include <qaglobalutils.h>
