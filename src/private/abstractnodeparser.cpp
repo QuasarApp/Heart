@@ -6,7 +6,6 @@
 //#
 
 #include "abstractnodeparser.h"
-#include "params.h"
 #include "abstractnode.h"
 #include "qaglobalutils.h"
 
@@ -37,14 +36,13 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
     }
 
     if (!(sender)) {
-        QuasarAppUtils::Params::log("sender socket is not valid!",
-                                    QuasarAppUtils::Error);
+        qCritical() << "sender socket is not valid!";
         return ParserResult::Error;
     }
 
     if (!pkg->isValid()) {
-        QuasarAppUtils::Params::log("incomming package is not valid!",
-                                    QuasarAppUtils::Error);
+        qCritical() << "incomming package is not valid!";
+
         nodePtr->changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
         return ParserResult::Error;
     }
