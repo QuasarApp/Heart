@@ -38,7 +38,7 @@ void ISqlDB::globalUpdateDataBase(SqlDBCasheWriteMode mode) {
             });
 
             if (!future.isValid()) {
-                QuasarAppUtils::Params::log("Failde to start update database thread");
+                qDebug() << "Failde to start update database thread";
             }
 #endif
         } else {
@@ -170,9 +170,7 @@ bool ISqlDB::getAllObjects(const DBObject &templateObject,
 
         for (const auto &object: std::as_const(result)) {
             if (object->isCached() && !insertToCache(object)) {
-                QuasarAppUtils::Params::log("Selected object from database can not be saved into database cache. " +
-                                                object->toString(),
-                                            QuasarAppUtils::Warning);
+                qWarning() << "Selected object from database can not be saved into database cache. " + object->toString();
             }
         }
 
@@ -337,10 +335,7 @@ void ISqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
             if (!obj || !obj->isValid()) {
                 deleteFromCache(obj);
 
-                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " db object is not valid! obj=" +
-                                                obj->toString(),
-                                            QuasarAppUtils::VerboseLvl::Error);
+                qCritical() << "writeUpdateItemIntoDB failed when db object is not valid! obj=" << obj->toString();
                 continue;
             }
 
@@ -360,25 +355,18 @@ void ISqlDB::globalUpdateDataBasePrivate(qint64 currentTime) {
                 break;
             }
             default: {
-                QuasarAppUtils::Params::log("The Object of the cache have wrong type " +
-                                                obj->toString(),
-                                            QuasarAppUtils::VerboseLvl::Warning);
+                qWarning() << "The Object of the cache have wrong type " << obj->toString();
 
                 continue;
             }
             }
 
             if (!saveResult ) {
-                QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                            " work globalUpdateDataRelease!!! obj=" +
-                                                obj->toString(),
-                                            QuasarAppUtils::VerboseLvl::Error);
+                qCritical() << "writeUpdateItemIntoDB failed when work globalUpdateDataRelease!!! obj=" << obj->toString();
             }
         } else {
 
-            QuasarAppUtils::Params::log("writeUpdateItemIntoDB failed when"
-                                        " db writer is npt inited! ",
-                                        QuasarAppUtils::VerboseLvl::Error);
+            qCritical() << "writeUpdateItemIntoDB failed when db writer is not inited!";
             return;
         }
     }

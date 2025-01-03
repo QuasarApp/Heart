@@ -52,13 +52,11 @@ bool DataBase::initSqlDb(QString DBparamsFile,
     }
 
     if (!upgradeDataBase()) {
-        QuasarAppUtils::Params::log("Failed to upgrade database",
-                                    QuasarAppUtils::Error);
+        qCritical() << "Failed to upgrade database";
         return false;
     }
 
-    QuasarAppUtils::Params::log(QString("Database loaded from: %0").arg(dbLocation()),
-                                QuasarAppUtils::Debug);
+    qDebug() << "Database loaded from: " << dbLocation();
 
     connect(_db, &ISqlDB::sigItemChanged,
             this, &DataBase::sigObjectChanged,
@@ -222,10 +220,9 @@ bool DataBase::upgradeDataBase() {
 
     if (!fsupportUpgrade) {
 
-        QuasarAppUtils::Params::log("The data base of application do not support soft upgrade. "
-                                    "Please remove database monyaly and restart application."
-                                    "You can disable upgrade functions for this override the upgradeDataBase method. ",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The data base of application do not support soft upgrade. "
+                       "Please remove database monyaly and restart application."
+                       "You can disable upgrade functions for this override the upgradeDataBase method. ";
         return false;
     }
 
@@ -243,20 +240,17 @@ bool DataBase::upgradeDataBase() {
         auto patches = patchesPack.value(currentVersion, {});
 
         if (!patches.size()) {
-            QuasarAppUtils::Params::log("Failed to " + message.arg("Unknown", "Required patch not found!"),
-                                        QuasarAppUtils::Error);
+            qCritical() << "Failed to " + message.arg("Unknown", "Required patch not found!");
             return false;
         }
 
         auto patch = patches.last();
         message = message.arg(patch.versionTo);
 
-        QuasarAppUtils::Params::log(message.arg("(Begin)"),
-                                    QuasarAppUtils::Info);
+        qInfo() << message.arg("(Begin)");
 
         if (!patch.action(db())) {
-            QuasarAppUtils::Params::log("Failed to " + message.arg("Patch finished with error code!"),
-                                        QuasarAppUtils::Error);
+            qCritical() << "Failed to " + message.arg("Patch finished with error code!");
             return false;
         }
 
@@ -311,8 +305,8 @@ bool DataBase::setDBAttribute(const QString& key, const QVariant& newValue) {
         "value", newValue, "name");
 
     if (!_db->replaceObject(updateVersionRequest, true)) {
-        QuasarAppUtils::Params::log(QString("Failed to update %0 attribute").arg(key),
-                                    QuasarAppUtils::Error);
+
+        qCritical() << "Failed to update " << key << " attribute";
         return false;
     }
 

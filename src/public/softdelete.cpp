@@ -14,10 +14,10 @@ QH::SoftDelete::~SoftDelete() {
 
     if (!fSoftDelete) {
 
-        QuasarAppUtils::Params::log(QString("You delete %0 without preparing. "
-                                    "All changes can not be saved. "
-                                    "For fix it trouble use the softDelete method.").arg(typeid (this).name()),
-                                    QuasarAppUtils::Error);
+        qCritical() << "You delete %0 without preparing. " << typeid (this).name() <<
+            "The object was deleted without preparing. All changes can not be saved. "
+                       "For fix it trouble use the softDelete method.";
+
 #ifdef QT_DEBUG
         std::abort();
 #endif

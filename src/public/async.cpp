@@ -85,8 +85,7 @@ bool Async::asyncLauncher(const Async::Job &job, bool await, bool freaze) const 
 
     if (!thread()->isRunning()) {
 
-        QuasarAppUtils::Params::log("The work threand of the async object is not running",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The work threand of the async object is not running";
 
         return false;
     }

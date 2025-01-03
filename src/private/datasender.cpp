@@ -26,7 +26,7 @@ bool QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
     auto ptr = static_cast<QAbstractSocket*>(target);
 
     if (!(ptr && ptr->isValid() && ptr->isWritable())) {
-        QuasarAppUtils::Params::log("Send raw data error. Socket is invalid", QuasarAppUtils::Error);
+        qCritical() << "Send raw data error. Socket is invalid";
         return false;
     }
 
@@ -37,13 +37,12 @@ bool QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
     }
 
     if (!ptr->flush()) {
-        QuasarAppUtils::Params::log("Send raw data error. data not flushed", QuasarAppUtils::Error);
-
+        qCritical() << "Send raw data error. data not flushed";
         return false;
     }
 
     if (array.size() != wrote) {
-        QuasarAppUtils::Params::log("not writed data to socket", QuasarAppUtils::Error);
+        qCritical() << "Send raw data error. not all data writed";
         return false;
     }
 

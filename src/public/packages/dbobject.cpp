@@ -63,8 +63,7 @@ PrepareResult DBObject::prepareInsertQuery(QSqlQuery &q, bool replace) const {
     DBVariantMap map = variantMap();
 
     if (!map.size()) {
-        QuasarAppUtils::Params::log("The variantMap method return an empty map.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The variantMap method return an empty map.";
 
         return PrepareResult::Fail;
     }
@@ -125,8 +124,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     DBVariantMap map = variantMap();
 
     if (!map.size()) {
-        QuasarAppUtils::Params::log("The variantMap method return an empty map.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The variantMap method return an empty map.";
 
         return PrepareResult::Fail;
     }
@@ -134,8 +132,7 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     auto [conditionQueryString, conditionBindingMap] = condition();
 
     if (conditionQueryString.isEmpty()) {
-        QuasarAppUtils::Params::log("The object soue not have condition for update object.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The object soue not have condition for update object.";
         return PrepareResult::Fail;
     }
 
@@ -158,9 +155,8 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
     }
 
     if (tableUpdateValues.isEmpty()) {
-        QuasarAppUtils::Params::log("Fail to generate condition for object: " + toString() +
-                                    ". The object do not have valid update fields.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "Fail to generate condition for object: " + toString() +
+                           ". The object do not have valid update fields.";
         return PrepareResult::Fail;
     }
 
@@ -179,11 +175,9 @@ PrepareResult DBObject::prepareUpdateQuery(QSqlQuery &q) const {
         for (auto it = conditionBindingMap.begin(); it != conditionBindingMap.end(); ++it) {
 #ifdef QT_DEBUG
             if (bool(map.value(it.key()).type & MemberType::Update)) {
-                QuasarAppUtils::Params::log(QString("Bad object configuration: "
-                                            "The %0 field using in the condition and has MemberType::Update configuration."
-                                                    " All condition fields should not use the MemberType::Update. \n %1").
-                                            arg(it.key(), toString()),
-                                            QuasarAppUtils::Warning);
+                qWarning() << "Bad object configuration: "
+                              "The " << it.key() << " field using in the condition and has MemberType::Update configuration."
+                              " All condition fields should not use the MemberType::Update. \n" << toString();
             }
 #endif
             q.bindValue(it.key(), it.value());
@@ -218,10 +212,8 @@ std::pair<QString, QMap<QString, QVariant>> DBObject::condition() const {
                 {{QString(":%0").arg(primaryKey()), {primaryVal}}}};
     }
 
-
-    QuasarAppUtils::Params::log("Fail to generate condition for object: " + toString() +
-                                ". Object do not have valid unique fields or valid database address.",
-                                QuasarAppUtils::Error);
+    qCritical() << "Fail to generate condition for object: " + toString() +
+                   ". Object do not have valid unique fields or valid database address.";
 
 
     return {};
@@ -249,18 +241,17 @@ QString DBObject::toString() const {
 }
 
 QDataStream &DBObject::fromStream(QDataStream &stream) {
-    QuasarAppUtils::Params::log("This object not support stream operator."
-                                " Please Override the fromStream method for this object. " + toString(),
-                                QuasarAppUtils::Warning);
+
+    qWarning() << "This object not support stream operator."
+                  " Please Override the fromStream method for this object. " + toString();
 
     return stream;
 }
 
 QDataStream &DBObject::toStream(QDataStream &stream) const {
 
-    QuasarAppUtils::Params::log("This object not support stream operator."
-                                " Please Override the toStream method for this object. " + toString(),
-                                QuasarAppUtils::Warning);
+    qWarning() << "This object not support stream operator."
+                  " Please Override the toStream method for this object. " + toString();
     return stream;
 }
 
