@@ -51,9 +51,7 @@ bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) const {
                 temp = temp.remove(0, delimiterIndex + 1);
 
                 if (!result) {
-                    QuasarAppUtils::Params::log(QString("Exec database error. File: %0. Line:%1: %2").
-                                                arg(sqlFile).arg(lineNumber).arg(sq->lastError().text()),
-                                                QuasarAppUtils::Error);
+                    qCritical() << "Exec database error. File: " << sqlFile << " Line:" << lineNumber << sq->lastError().text();
                     f.close();
                     return false;
                 }
@@ -64,8 +62,7 @@ bool SqlDBWriter::exec(QSqlQuery *sq, const QString& sqlFile) const {
         return result;
     }
 
-    QuasarAppUtils::Params::log("sql source file is not open: " + sqlFile,
-                                QuasarAppUtils::Error);
+    qCritical() << "sql source file is not open: " << sqlFile;
 
     return false;
 }
@@ -106,8 +103,7 @@ bool SqlDBWriter::initDbPrivate(const QVariantMap &params) {
     }
 
     if (!_db->open()) {
-        QuasarAppUtils::Params::log(_db->lastError().text(),
-                                    QuasarAppUtils::Error);
+        qCritical() << _db->lastError().text();
         return false;
     }
 
@@ -140,8 +136,7 @@ bool SqlDBWriter::doQueryPrivate(const QString &query, const QVariantMap &bindVa
     QSqlQuery q(*db());
     if (bindValues.size()) {
         if (!q.prepare(query)) {
-            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
-                                        QuasarAppUtils::Error);
+            qCritical() << "request error : " << q.lastError().text();
             return false;
         }
 
@@ -150,14 +145,14 @@ bool SqlDBWriter::doQueryPrivate(const QString &query, const QVariantMap &bindVa
         }
 
         if (!q.exec()) {
-            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
-                                        QuasarAppUtils::Error);
+            qCritical() << "execute error : " << q.lastError().text();
+
             return false;
         }
     } else {
         if (!q.exec(query)) {
-            QuasarAppUtils::Params::log("request error : " + q.lastError().text(),
-                                        QuasarAppUtils::Error);
+            qCritical() << "bind values error : " << q.lastError().text();
+
             return false;
         }
     }
@@ -187,7 +182,7 @@ bool SqlDBWriter::enableFK() {
     QSqlQuery query(*db());
     QString request = QString("PRAGMA foreign_keys = ON");
     if (!query.exec(request)) {
-        QuasarAppUtils::Params::log("request error : " + query.lastError().text());
+        qDebug() << "request error : " << query.lastError().text();
         return false;
     }
 
@@ -203,7 +198,7 @@ bool SqlDBWriter::disableFK() {
     QSqlQuery query(*db());
     QString request = QString("PRAGMA foreign_keys = OFF");
     if (!query.exec(request)) {
-        QuasarAppUtils::Params::log("request error : " + query.lastError().text());
+        qDebug() << "request error : " << query.lastError().text();
         return false;
     }
 
@@ -454,10 +449,8 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
 
             while (q.next()) {
                 if (!newObject->fromSqlRecord(q.record())) {
-                    QuasarAppUtils::Params::log("Select query finished successful but, "
-                                                "the fromSqlRecord method return false." +
-                                                    newObject->toString(),
-                                                QuasarAppUtils::Error);
+                    qCritical() << "Select query finished successful but, "
+                                   "the fromSqlRecord method return false." << newObject->toString();
                     return false;
                 }
             }
@@ -472,8 +465,7 @@ bool SqlDBWriter::selectQuery(const DBObject& requestObject,
                     return false;
 
                 if (!newObject->fromSqlRecord(q.record())) {
-                    QuasarAppUtils::Params::log("Init sql object error.",
-                                                QuasarAppUtils::Error);
+                    qCritical() << "Init sql object error.";
                     return false;
                 }
                 result.push_back(newObject);
@@ -527,11 +519,9 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
 
     auto printError = [](const QSqlQuery &q) {
 
-        QuasarAppUtils::Params::log("prepare sql error: " + q.executedQuery(),
-                                    QuasarAppUtils::Debug);
+        qDebug() << "prepare sql error: " << q.lastError().text();
 
-        QuasarAppUtils::Params::log("exec sql error: " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
+        qCritical() << "exec sql error: " << q.lastError();
 
     };
 
@@ -545,17 +535,16 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
         }
 
 #ifdef HEART_PRINT_SQL_QUERIES
-        QuasarAppUtils::Params::log(QString("Query executed successfull into %0\n"
-                                            "query: %1").
-                                    arg(_db->databaseName(), q.executedQuery()),
-                                    QuasarAppUtils::Debug);
+        qDebug() << QString("Query executed successfull into %0\n"
+                            "query: %1").
+                    arg(_db->databaseName(), q.executedQuery();
 #endif
 
         return cb();
     }
     case PrepareResult::Disabled: {
-        QuasarAppUtils::Params::log("call disabled operator! ",
-                                    QuasarAppUtils::Warning);
+
+        qWarning() << "call disabled operator!";
         return true;
     }
 

@@ -48,9 +48,9 @@ public:
         auto val = getObjectRaw(templateVal);
         auto result = val.template dynamicCast<TYPE>();
         if (!result && !val.isNull()) {
-            QuasarAppUtils::Params::log("getObject method returned object with deffirent type of TYPE,"
-                                        " check getAllObjects merhod",
-                                        QuasarAppUtils::Error);
+
+            qCritical() << "getObject method returned object with deffirent type of TYPE,"
+                           " check getAllObjects merhod";
 
         }
 

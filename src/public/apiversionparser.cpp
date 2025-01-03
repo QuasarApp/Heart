@@ -46,8 +46,7 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
     const auto parser = selectParser(pkg->cmd(), sender);
 
     if (!parser) {
-        QuasarAppUtils::Params::log(QString("Can't found requeried parser for versions"),
-                                    QuasarAppUtils::Warning);
+        qWarning () << "Can't found requeried parser for versions";
         return ParserResult::NotProcessed;
     }
 
@@ -101,8 +100,7 @@ APIVersionParser::searchPackage(unsigned short cmd,
 
     for (const auto& parser: parsers) {
         if (!parser) {
-            QuasarAppUtils::Params::log(QString("Internal Error with selection parasers."),
-                                        QuasarAppUtils::Error);
+            qCritical() << "Internal Error with selection parasers.";
             continue;
         }
 
@@ -148,7 +146,7 @@ bool QH::APIVersionParser::commandsValidation(const QSharedPointer<iParser> &par
                            arg(parser->parserId()).
                            arg(parser->version());
 
-                QuasarAppUtils::Params::log(err, QuasarAppUtils::Error);
+                qCritical() << err;
 
                 return false;
             }
@@ -318,11 +316,7 @@ bool APIVersionParser::processAppVersion(const QSharedPointer<PKG::APIVersion> &
         if (!parser.contains(*parserKey)) {
             auto requiredApi = distVersion.value(*parserKey);
 
-            QuasarAppUtils::Params::log(QString("Can't found %0 parser for versions: %1-%2").
-                                        arg(*parserKey).
-                                        arg(requiredApi.min()).
-                                        arg(requiredApi.max()),
-                                        QuasarAppUtils::Error);
+            qCritical() << "Can't found required parser for versions: " << *parserKey << requiredApi.min() << requiredApi.max();
 
             unsigned short distMinVersion = sender->version().value(*parserKey).min();
 

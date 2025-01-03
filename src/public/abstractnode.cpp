@@ -116,11 +116,10 @@ bool AbstractNode::run(const QString &addres, unsigned short port) {
     }
 
     if (!listen(adr)) {
-        QuasarAppUtils::Params::log("Run fail " + this->errorString(),
-                                    QuasarAppUtils::Error);
 
-        QuasarAppUtils::Params::log("Address:: " + adr.toString(),
-                                    QuasarAppUtils::Error);
+        qCritical() << "Run fail " << this->errorString();
+        qCritical() << "Address:: " << adr.toString();
+
         return false;
     }
 
@@ -256,9 +255,9 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port,
         QHostInfo::lookupHost(domain, [this, port, domain, action, status](QHostInfo info) {
 
             if (info.error() != QHostInfo::NoError) {
-                QuasarAppUtils::Params::log("The domain name :" + domain +
-                                                " has error: " + info.errorString(),
-                                            QuasarAppUtils::Error);
+
+                qCritical() << "The domain name :" + domain +
+                               " has error: " + info.errorString();
                 addNodeFailed(AddNodeError::HostNotFound);
                 return;
             }
@@ -266,9 +265,8 @@ bool AbstractNode::addNode(const QString &domain, unsigned short port,
             auto addresses = info.addresses();
 
             if (addresses.size() > 1) {
-                QuasarAppUtils::Params::log("The domain name :" + domain +
-                                                " has more 1 ip addresses.",
-                                            QuasarAppUtils::Warning);
+                qWarning() << "The domain name :" + domain +
+                              " has more 1 ip addresses.";
             }
 
             if (action) {
@@ -571,14 +569,13 @@ bool AbstractNode::sendPackage(const Package &pkg, QAbstractSocket *target) cons
     }
 
     if (!target || !target->isValid()) {
-        QuasarAppUtils::Params::log("destination server not valid!",
-                                    QuasarAppUtils::Error);
+
+        qCritical() << "Destination server not valid!";
         return false;
     }
 
     if (!target->waitForConnected()) {
-        QuasarAppUtils::Params::log("no connected to server! " + target->errorString(),
-                                    QuasarAppUtils::Error);
+        qCritical() << "no connected to server! " + target->errorString();
         return false;
     }
 
@@ -596,7 +593,7 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
                                     const Header *req) {
 
     if (!node) {
-        QuasarAppUtils::Params::log("Response not sent because client == null");
+        qDebug() << "Response not sent because client == null";
         return 0;
     }
 
@@ -625,15 +622,12 @@ unsigned int AbstractNode::sendData(const PKG::AbstractData *resp,
 
             return BIG_DATA_HASH_ID;
         }
-
-        QuasarAppUtils::Params::log("Response not sent because dont create package from object",
-                                    QuasarAppUtils::Error);
+        qCritical() << "Response not sent because dont create package from object";
         return 0;
     }
 
     if (!sendPackage(pkg, node->sct())) {
-        QuasarAppUtils::Params::log("Response not sent!",
-                                    QuasarAppUtils::Error);
+        qCritical() << "Response not sent!";
         return 0;
     }
 
@@ -645,13 +639,13 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
 
     if (!changeTrust(address, diff)) {
 
-        QuasarAppUtils::Params::log("Bad request detected, bud response command not sent!"
-                                    " because trust not changed",
-                                    QuasarAppUtils::Error);
 
-        QuasarAppUtils::Params::log("SECURITY LOG: Force block the " + address.toString() +
-                                        " because trust defined",
-                                    QuasarAppUtils::Error);
+        qCritical() << "Bad request detected, bud response command not sent!"
+                       " because trust not changed";
+
+
+        qCritical() << "SECURITY LOG: Force block the " + address.toString() +
+                       " because trust defined";
 
         ban(address);
 
@@ -665,9 +659,7 @@ void AbstractNode::badRequest(const HostAddress &address, const Header &req,
             return;
         }
 
-        QuasarAppUtils::Params::log("Bad request sendet to adderess: " +
-                                        address.toString(),
-                                    QuasarAppUtils::Info);
+        qInfo() << "Bad request sendet to adderess: " + address.toString();
 
         if (fCloseConnectionAfterBadRequest()) {
             removeNode(node);
@@ -776,8 +768,7 @@ void AbstractNode::incomingConnection(qintptr handle) {
         socket->setSocketDescriptor(handle);
 
         if (isBanned(getInfoPtr(HostAddress{socket->peerAddress(), socket->peerPort()}))) {
-            QuasarAppUtils::Params::log("Income connection from banned address",
-                                        QuasarAppUtils::Error);
+            qCritical() << "Income connection from banned address";
 
             delete socket;
             return false;
@@ -785,8 +776,7 @@ void AbstractNode::incomingConnection(qintptr handle) {
 
         if (!registerSocket(socket)) {
 
-            QuasarAppUtils::Params::log("Failed to register new socket",
-                                        QuasarAppUtils::Error);
+            qCritical() << "Failed to register new socket";
 
             delete socket;
             return false;
@@ -903,8 +893,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             pkg.reset();
             hdrArray.clear();
         } else if (static_cast<unsigned int>(pkg.data.size()) >= pkg.hdr.size) {
-            QuasarAppUtils::Params::log("Invalid Package received." + pkg.toString(),
-                                        QuasarAppUtils::Warning);
+            qWarning() << "Invalid Package received." + pkg.toString();
             pkg.reset();
             hdrArray.clear();
             changeTrust(id, CRITICAL_ERROOR);
@@ -968,9 +957,9 @@ AbstractNode::prepareData(const Package &pkg,
 
     auto value = _apiVersionParser->searchPackage(pkg.hdr.command, sender);
     if (!value) {
-        QuasarAppUtils::Params::log("You try parse not registered package type."
-                                    " Plese use the registerPackageType method befor parsing."
-                                    " Example invoke registerPackageType<MyData>() into constructor of you client and server nodes.");
+        qDebug() << "Package type not registered!"
+                    " Please use the registerPackageType method before parsing."
+                    " Example invoke registerPackageType<MyData>() into constructor of you client and server nodes.";
 
         return nullptr;
     }
@@ -1003,21 +992,18 @@ void AbstractNode::addNodeFailed(AddNodeError error) {
 
     switch (error) {
     case AddNodeError::HostNotFound: {
-        QuasarAppUtils::Params::log("The remote host not found or dns server not responce.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The remote host not found or dns server not responce.";
         break;
 
     }
 
     case AddNodeError::RegisterSocketFailed: {
-        QuasarAppUtils::Params::log("The remote node is banned or serve is overload.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The remote node is banned or serve is overload.";
         break;
 
     }
     default: {
-        QuasarAppUtils::Params::log("The unknown error ocurred.",
-                                    QuasarAppUtils::Error);
+        qCritical() << "The unknown error ocurred.";
     }
     }
 
@@ -1072,7 +1058,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
             auto message = QString("Package not parsed! %0 \nresult: %1. \n%2").
                            arg(pkg.toString(), iParser::pareseResultToString(parseResult), data->toString());
 
-            QuasarAppUtils::Params::log(message, QuasarAppUtils::Info);
+            qInfo() << message;
 
             if (parseResult == ParserResult::Error) {
 
@@ -1093,7 +1079,7 @@ void AbstractNode::newWork(const Package &pkg, AbstractNodeInfo *sender,
             }
 
 #ifdef QT_DEBUG
-            QuasarAppUtils::Params::log(_apiVersionParser->toString(), QuasarAppUtils::Info);
+            qInfo() << _apiVersionParser->toString();
 #endif
 
             return false;
@@ -1181,8 +1167,7 @@ void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
 
 void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
     if (!_apiVersionParser->sendSupportedAPI(node)) {
-        QuasarAppUtils::Params::log("Failed to sent version information to dist node",
-                                    QuasarAppUtils::Error);
+        qCritical() << "Failed to sent version information to dist node";
     }
 
     auto &actions = _connectActions[NodeCoonectionStatus::Connected];
@@ -1201,9 +1186,7 @@ void AbstractNode::nodeErrorOccured(AbstractNodeInfo *nodeInfo,
     Q_UNUSED(errorCode)
 
     QString message("Network error occured on the %0 node. Message: %1");
-    QuasarAppUtils::Params::log(
-        message.arg(nodeInfo->networkAddress().toString(), errorString),
-        QuasarAppUtils::Error);
+    qCritical() << message.arg(nodeInfo->networkAddress().toString(), errorString);
 
     auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     actions.remove(nodeInfo->networkAddress());

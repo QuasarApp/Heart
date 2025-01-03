@@ -38,8 +38,7 @@ PrepareResult SetSingleValue::prepareUpdateQuery(QSqlQuery &q) const {
 
     if (!q.prepare(queryString)) {
 
-        QuasarAppUtils::Params::log("Failed to prepare query: " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
+        qCritical() << "Failed to prepare query: " + q.lastError().text();
         return PrepareResult::Fail;
     }
 
@@ -59,8 +58,7 @@ PrepareResult SetSingleValue::prepareInsertQuery(QSqlQuery &q, bool replace) con
 
     if (!q.prepare(queryString)) {
 
-        QuasarAppUtils::Params::log("Failed to prepare query: " + q.lastError().text(),
-                                    QuasarAppUtils::Error);
+        qCritical() << "Failed to prepare query: " + q.lastError().text();
         return PrepareResult::Fail;
     }
 
