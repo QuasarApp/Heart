@@ -15,6 +15,10 @@ AsyncRenderLoop::AsyncRenderLoop(QThread *thread, QObject *ptr): Async(thread, p
 
 }
 
+AsyncRenderLoop::~AsyncRenderLoop() {
+    stop();
+}
+
 void QH::AsyncRenderLoop::run() {
     m_run = true;
     asyncLauncher([this](){
@@ -25,7 +29,6 @@ void QH::AsyncRenderLoop::run() {
 
 void QH::AsyncRenderLoop::stop() {
     m_run = false;
-    thread()->exit();
     thread()->wait();
 }
 

@@ -41,6 +41,7 @@ class HEARTSHARED_EXPORT AsyncRenderLoop: public Async
     Q_OBJECT
 public:
     AsyncRenderLoop(QThread* thread, QObject* ptr = nullptr);
+    ~AsyncRenderLoop();
 
     /**
      * @brief run This method starts the render loop.
