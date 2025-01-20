@@ -13,7 +13,28 @@
 namespace QH {
 
 /**
- * @brief The AsyncRenderLoop class is a class for rendering the world.
+ * @brief The AsyncRenderLoop is a class for asynchronous rendering.
+ * This class is used to create a render loop that is executed in a separate thread.
+ * To use this class, you must inherit from it and implement the renderIteration method.
+ * @example :
+ * @code{cpp}
+ * class MyRenderLoop: public AsyncRenderLoop
+ * {
+ * public:
+ *    MyRenderLoop(QThread* thread, QObject* ptr = nullptr): AsyncRenderLoop(thread, ptr) {}
+ *    void renderIteration(int msec) override {
+ *    // your code here
+ *    }
+ * };
+ * int main (int argc, char* argv[]) {
+ *    QCoreApplication app(argc, argv);
+ *
+ *    MyRenderLoop loop(new thread());
+ *    loop.run();
+ *    loop.stop();
+ *
+ *    return app.exec();
+ * @endcode
  */
 class HEARTSHARED_EXPORT AsyncRenderLoop: public Async
 {
