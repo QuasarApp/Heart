@@ -10,7 +10,6 @@
 #include <QObject>
 #include <functional>
 #include "config.h"
-#include "atomicmetatypes.h"
 #include "heart_global.h"
 
 namespace QH {
