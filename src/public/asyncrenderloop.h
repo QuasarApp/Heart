@@ -51,7 +51,7 @@ public:
     /**
      * @brief stop This method stops the render loop.
      */
-    virtual void stop();
+    void stop();
 
     /**
      * @brief isRun This method returns the state of the render loop.
