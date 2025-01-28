@@ -20,11 +20,16 @@ AsyncRenderLoop::~AsyncRenderLoop() {
 }
 
 void QH::AsyncRenderLoop::run() {
-    m_run = true;
-    asyncLauncher([this](){
-        renderLoopPrivate();
-        return true;
-    });
+    if (auto && thrd = thread()) {
+        m_run = true;
+        thrd->start();
+
+        asyncLauncher([this](){
+            renderLoopPrivate();
+            return true;
+        });
+    }
+
 }
 
 void QH::AsyncRenderLoop::stop() {
@@ -34,7 +39,7 @@ void QH::AsyncRenderLoop::stop() {
 }
 
 bool AsyncRenderLoop::isRun() const {
-    return m_run || (thread() && thread()->isRunning());
+    return m_run && (thread() && thread()->isRunning());
 }
 
 void QH::AsyncRenderLoop::renderLoopPrivate() {
