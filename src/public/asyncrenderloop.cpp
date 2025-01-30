@@ -6,13 +6,11 @@
 */
 
 #include "asyncrenderloop.h"
-#include <QDateTime>
 #include <QThread>
 
 namespace QH {
 
 AsyncRenderLoop::AsyncRenderLoop(QThread *thread, QObject *ptr): Async(thread, ptr) {
-
 }
 
 AsyncRenderLoop::~AsyncRenderLoop() {
@@ -43,7 +41,7 @@ bool AsyncRenderLoop::isRun() const {
 }
 
 void QH::AsyncRenderLoop::renderLoopPrivate() {
-    quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+    auto&& currentTime = std::chrono::high_resolution_clock::now();
 
     _lastIterationTime = currentTime;
     int iterationTime = 0;
@@ -51,8 +49,8 @@ void QH::AsyncRenderLoop::renderLoopPrivate() {
     while (m_run) {
         renderIteration(iterationTime);
 
-        currentTime = QDateTime::currentMSecsSinceEpoch();
-        iterationTime = currentTime - _lastIterationTime;
+        currentTime = std::chrono::high_resolution_clock::now();
+        iterationTime = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - _lastIterationTime).count();
         _lastIterationTime = currentTime;
     }
 }
