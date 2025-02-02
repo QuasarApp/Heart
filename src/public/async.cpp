@@ -94,7 +94,7 @@ bool Async::asyncLauncher(const Async::Job &job, bool await, bool freaze) const 
         return  QMetaObject::invokeMethod(const_cast<Async*>(this),
                                           "asyncHandler",
                                           Qt::QueuedConnection,
-                                          Q_ARG(QH::Async::Job, job));
+                                          Q_ARG(QH::Async::Job, std::move(job)));
     }
 
     bool workOfEnd = false, workResult = false;
@@ -102,7 +102,7 @@ bool Async::asyncLauncher(const Async::Job &job, bool await, bool freaze) const 
     bool invockeResult = QMetaObject::invokeMethod(const_cast<Async*>(this),
                                                    "asyncHandler",
                                                    Qt::QueuedConnection,
-                                                   Q_ARG(QH::Async::Job, job),
+                                                   Q_ARG(QH::Async::Job, std::move(job)),
                                                    Q_ARG(bool*, &workOfEnd),
                                                    Q_ARG(bool*, &workResult));
 

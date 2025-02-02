@@ -6,38 +6,42 @@
 */
 
 #include "asyncrenderloop.h"
-#include <QDateTime>
 #include <QThread>
 
 namespace QH {
 
 AsyncRenderLoop::AsyncRenderLoop(QThread *thread, QObject *ptr): Async(thread, ptr) {
-
 }
 
 AsyncRenderLoop::~AsyncRenderLoop() {
-    stop();
+    AsyncRenderLoop::stop();
 }
 
 void QH::AsyncRenderLoop::run() {
-    m_run = true;
-    asyncLauncher([this](){
-        renderLoopPrivate();
-        return true;
-    });
+    if (auto && thrd = thread()) {
+        m_run = true;
+        thrd->start();
+
+        asyncLauncher([this](){
+            renderLoopPrivate();
+            return true;
+        });
+    }
+
 }
 
 void QH::AsyncRenderLoop::stop() {
     m_run = false;
+    thread()->quit();
     thread()->wait();
 }
 
 bool AsyncRenderLoop::isRun() const {
-    return m_run || (thread() && thread()->isRunning());
+    return m_run && (thread() && thread()->isRunning());
 }
 
 void QH::AsyncRenderLoop::renderLoopPrivate() {
-    quint64 currentTime = QDateTime::currentMSecsSinceEpoch();
+    auto&& currentTime = std::chrono::high_resolution_clock::now();
 
     _lastIterationTime = currentTime;
     int iterationTime = 0;
@@ -45,8 +49,8 @@ void QH::AsyncRenderLoop::renderLoopPrivate() {
     while (m_run) {
         renderIteration(iterationTime);
 
-        currentTime = QDateTime::currentMSecsSinceEpoch();
-        iterationTime = currentTime - _lastIterationTime;
+        currentTime = std::chrono::high_resolution_clock::now();
+        iterationTime = std::chrono::duration_cast<std::chrono::microseconds>(currentTime - _lastIterationTime).count();
         _lastIterationTime = currentTime;
     }
 }

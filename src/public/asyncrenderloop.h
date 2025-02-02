@@ -51,7 +51,7 @@ public:
     /**
      * @brief stop This method stops the render loop.
      */
-    virtual void stop();
+    void stop();
 
     /**
      * @brief isRun This method returns the state of the render loop.
@@ -64,18 +64,18 @@ protected:
     /**
      * @brief renderIteration This method is called in each iteration of the render loop.
      * This method must be implemented in the derived class.
-     * @param msec time in milliseconds from the last iteration.
+     * @param mmsec time in microseconds from the last iteration.
      * @see stop
      * @see run
      */
-    virtual void renderIteration(int msec) = 0;
+    virtual void renderIteration(int mmsec) = 0;
 
 private slots:
     void renderLoopPrivate();
 
 private:
     bool m_run = false;
-    quint64 _lastIterationTime = 0;
+    std::chrono::time_point<std::chrono::high_resolution_clock> _lastIterationTime;
 
 };
 }
