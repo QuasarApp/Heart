@@ -16,7 +16,7 @@ namespace QH {
  * @brief The AsyncRenderLoop is a class for asynchronous rendering.
  * This class is used to create a render loop that is executed in a separate thread.
  * To use this class, you must inherit from it and implement the renderIteration method.
- * @example :
+ * **example:** :
  * @code{cpp}
  * class MyRenderLoop: public AsyncRenderLoop
  * {
