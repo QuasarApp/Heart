@@ -7,6 +7,7 @@
 
 #include "asyncrenderloop.h"
 #include <QThread>
+#include <qdebug.h>
 
 namespace QH {
 
@@ -15,6 +16,8 @@ AsyncRenderLoop::AsyncRenderLoop(QThread *thread, QObject *ptr): Async(thread, p
 
 AsyncRenderLoop::~AsyncRenderLoop() {
     AsyncRenderLoop::stop();
+    delete thread();
+
 }
 
 void QH::AsyncRenderLoop::run() {
@@ -34,6 +37,7 @@ void QH::AsyncRenderLoop::stop() {
     m_run = false;
     thread()->quit();
     thread()->wait();
+
 }
 
 bool AsyncRenderLoop::isRun() const {
