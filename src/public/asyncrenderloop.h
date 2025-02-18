@@ -35,11 +35,62 @@ namespace QH {
  *
  *    return app.exec();
  * @endcode
+ *
+ * @warning This class may be broken if you use it as a QSharedPointer and push WeackPointer to the child objects. To solve this issue use the @a AsyncRenderLoop::MainSharedPtr class.
+ *
+ * Example:
+ *
+ * @code{cpp}
+ * class MyRenderLoop: public AsyncRenderLoop
+ * {
+ * ...
+ * };
+ *
+ * int main (int argc, char* argv[]) {
+ *   auto loop = QSharedPointer<MyRenderLoop>(new MyRenderLoop(new QThread())); // wrong! it will be broken
+ *   auto loop = MyRenderLoop::MainSharedPtr<QSharedPointer<MyRenderLoop>>(QSharedPointer<MyRenderLoop>::create(new QThread())); // right!
+ *  ...
+ *  return app.exec();
+ *  }
+ *  @endcode
  */
 class HEARTSHARED_EXPORT AsyncRenderLoop: public Async
 {
+
     Q_OBJECT
 public:
+
+    /**
+     * @brief The MainSharedPtr class is a helper class for creating a shared pointer to the render loop.
+     * This class make main sharedPointer of your render loop object. it is used to solve issue with deleting object in self thread.
+     *
+     * if you use the AsyncRenderLoop as a QSharedPointer and push WeackPointer to the child objects, you must use this wrapper class.
+     */
+    template<typename T>
+    class MainSharedPtr {
+    public:
+        MainSharedPtr(const T& ptr): _ptr(ptr) {
+            static_assert(std::is_base_of_v<AsyncRenderLoop, typename T::element_type>,
+                          "T must be derived from QSharedPointer<AsyncRender>");
+        }
+        ~MainSharedPtr() {
+            if (_ptr) {
+                _ptr->stop();
+            }
+        }
+
+        typename T::element_type* operator->() const {
+            return _ptr.operator->();
+        }
+
+        typename T::element_type* get() const {
+            return _ptr.get();
+        }
+
+    private:
+        T _ptr;
+    };
+
     AsyncRenderLoop(QThread* thread, QObject* ptr = nullptr);
     ~AsyncRenderLoop();
 
