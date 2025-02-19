@@ -49,6 +49,7 @@ namespace QH {
  * int main (int argc, char* argv[]) {
  *   auto loop = QSharedPointer<MyRenderLoop>(new MyRenderLoop(new QThread())); // wrong! it will be broken
  *   auto loop = MyRenderLoop::MainSharedPtr<QSharedPointer<MyRenderLoop>>(QSharedPointer<MyRenderLoop>::create(new QThread())); // right!
+ *   auto loop = MyRenderLoop::createMainPtr<MyRenderLoop>(new QThread()); // this is short version of initialization Main pointer
  *  ...
  *  return app.exec();
  *  }
@@ -69,6 +70,11 @@ public:
     template<typename T>
     class MainSharedPtr {
     public:
+        MainSharedPtr() {
+            static_assert(std::is_base_of_v<AsyncRenderLoop, typename T::element_type>,
+                          "T must be derived from QSharedPointer<AsyncRender>");
+        }
+
         MainSharedPtr(const T& ptr): _ptr(ptr) {
             static_assert(std::is_base_of_v<AsyncRenderLoop, typename T::element_type>,
                           "T must be derived from QSharedPointer<AsyncRender>");
@@ -83,13 +89,26 @@ public:
             return _ptr.operator->();
         }
 
+        /**
+         * @brief get This is a alias of the QSharedPointer::get method.
+         * @return pointer to the object.
+         */
         typename T::element_type* get() const {
             return _ptr.get();
+        }
+
+        /**
+         * @brief getShared This method return child shared pointer. You can use them as a general shared pointer of the object.
+         * @return reference to the object.
+         */
+        const T& getShared() const {
+            return _ptr;
         }
 
     private:
         T _ptr;
     };
+
 
     AsyncRenderLoop(QThread* thread, QObject* ptr = nullptr);
     ~AsyncRenderLoop();
@@ -109,6 +128,18 @@ public:
      * @return true if the render loop is running, else false.
      */
     bool isRun() const;
+
+    /**
+     * @brief createMainPtr This method creates a shared pointer to the render loop.
+     * @tparam Type type of the render loop object.
+     * @tparam Args arguments for the constructor of the render loop object.
+     * @param arguments arguments for the constructor of the render loop object.
+     * @return shared pointer to the render loop.
+     */
+    template<typename Type, typename... Args>
+    static MainSharedPtr<QSharedPointer<Type>> createMainPtr(Args && ...arguments) {
+        return MainSharedPtr<QSharedPointer<Type>>(QSharedPointer<Type>::create(std::forward<Args>(arguments)...));
+    };
 
 protected:
 
@@ -130,4 +161,5 @@ private:
 
 };
 }
+
 #endif // ASYNCRENDERLOOP_H
