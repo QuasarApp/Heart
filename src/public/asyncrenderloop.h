@@ -48,7 +48,7 @@ namespace QH {
  *
  * int main (int argc, char* argv[]) {
  *   auto loop = QSharedPointer<MyRenderLoop>(new MyRenderLoop(new QThread())); // wrong! it will be broken
- *   auto loop = MyRenderLoop::MainSharedPtr<QSharedPointer<MyRenderLoop>>(QSharedPointer<MyRenderLoop>::create(new QThread())); // right!
+ *   auto loop = MyRenderLoop::MainSharedPtr<MyRenderLoop>>(new QThread()); // right!
  *   auto loop = MyRenderLoop::createMainPtr<MyRenderLoop>(new QThread()); // this is short version of initialization Main pointer
  *  ...
  *  return app.exec();
@@ -63,6 +63,7 @@ public:
 
     /**
      * @brief The MainSharedPtr class is a helper class for creating a shared pointer to the render loop.
+     * @tparam T type of the render loop object.
      * This class make main sharedPointer of your render loop object. it is used to solve issue with deleting object in self thread.
      *
      * if you use the AsyncRenderLoop as a QSharedPointer and push WeackPointer to the child objects, you must use this wrapper class.
@@ -71,13 +72,13 @@ public:
     class MainSharedPtr {
     public:
         MainSharedPtr() {
-            static_assert(std::is_base_of_v<AsyncRenderLoop, typename T::element_type>,
-                          "T must be derived from QSharedPointer<AsyncRender>");
+            static_assert(std::is_base_of_v<AsyncRenderLoop, T>,
+                          "T must be derived from AsyncRenderLoop");
         }
 
-        MainSharedPtr(const T& ptr): _ptr(ptr) {
-            static_assert(std::is_base_of_v<AsyncRenderLoop, typename T::element_type>,
-                          "T must be derived from QSharedPointer<AsyncRender>");
+        MainSharedPtr(const QSharedPointer<T>& ptr): _ptr(ptr) {
+            static_assert(std::is_base_of_v<AsyncRenderLoop, T>,
+                          "T must be derived from AsyncRenderLoop");
         }
         ~MainSharedPtr() {
             if (_ptr) {
@@ -85,7 +86,7 @@ public:
             }
         }
 
-        typename T::element_type* operator->() const {
+        T* operator->() const {
             return _ptr.operator->();
         }
 
@@ -93,20 +94,30 @@ public:
          * @brief get This is a alias of the QSharedPointer::get method.
          * @return pointer to the object.
          */
-        typename T::element_type* get() const {
+        T* get() const {
             return _ptr.get();
+        }
+
+        /**
+         * @brief create This method creates a shared pointer to the render loop.
+         * @param arguments arguments for the constructor of the render loop object.
+         * @return shared pointer to the render loop.
+         */
+        template <typename... Args>
+        [[nodiscard]] static MainSharedPtr create(Args && ...arguments) {
+            return MainSharedPtr(QSharedPointer<T>::create(std::forward<Args>(arguments)...));
         }
 
         /**
          * @brief getShared This method return child shared pointer. You can use them as a general shared pointer of the object.
          * @return reference to the object.
          */
-        const T& getShared() const {
+        const QSharedPointer<T>& getShared() const {
             return _ptr;
         }
 
     private:
-        T _ptr;
+        QSharedPointer<T> _ptr;
     };
 
 
@@ -137,8 +148,8 @@ public:
      * @return shared pointer to the render loop.
      */
     template<typename Type, typename... Args>
-    static MainSharedPtr<QSharedPointer<Type>> createMainPtr(Args && ...arguments) {
-        return MainSharedPtr<QSharedPointer<Type>>(QSharedPointer<Type>::create(std::forward<Args>(arguments)...));
+    static MainSharedPtr<Type> createMainPtr(Args && ...arguments) {
+        return MainSharedPtr<Type>(QSharedPointer<Type>::create(std::forward<Args>(arguments)...));
     };
 
 protected:
