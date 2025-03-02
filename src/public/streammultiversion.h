@@ -40,7 +40,7 @@ class HEARTSHARED_EXPORT StreamMultiversion: public StreamBase
 public:
 
     StreamMultiversion();
-
+    ~StreamMultiversion();
     // StreamBase interface
 
     /**
