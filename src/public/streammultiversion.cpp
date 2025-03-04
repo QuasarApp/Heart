@@ -15,7 +15,7 @@ void StreamMultiversion::saveVersion(char version, QDataStream &stream) const {
     stream << version;
 }
 
-char StreamMultiversion::readVersion(QDataStream &stream) const {
+char StreamMultiversion::readVersion(QDataStream &stream) {
     char version;
     stream >> version;
 

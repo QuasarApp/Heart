@@ -60,7 +60,7 @@ public:
      * @see fromStream
 
      */
-    char readVersion(QDataStream &stream) const;
+    char readVersion(QDataStream &stream);
 
 
 };
