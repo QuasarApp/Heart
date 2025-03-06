@@ -7,18 +7,19 @@ StreamMultiversion::StreamMultiversion() {
 
 }
 
-QDataStream &StreamMultiversion::fromStream(QDataStream &stream) {
-    stream >> _realVersion ;
-    return stream;
+StreamMultiversion::~StreamMultiversion() {
+
 }
 
-QDataStream &StreamMultiversion::toStream(QDataStream &stream) const {
-    stream << _realVersion;
-
-    return stream;
+void StreamMultiversion::saveVersion(char version, QDataStream &stream) const {
+    stream << version;
 }
 
-int StreamMultiversion::realVersion() const {
-    return _realVersion;
+char StreamMultiversion::readVersion(QDataStream &stream) {
+    char version;
+    stream >> version;
+
+    return version;
+
 }
 }

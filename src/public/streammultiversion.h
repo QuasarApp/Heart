@@ -14,34 +14,55 @@ namespace QH {
 
 /**
  * @brief The StreamMultiversion class this parser works with simple multiversion packages.
+ *
+ * This class used to save and read version of the object in file.
+ *
+ * @see StreamBase
+ *
+ * @code{cpp}
+ * class myClass: public StreamMultiversion {
+ *      protected:
+ *      QDataStream &fromStream(QDataStream &stream) override {
+ *          char version = readVersion();
+ *          return stream;
+ *      }
+ *
+ *      QDataStream &toStream(QDataStream &stream) const override {
+ *          saveVersion(1, stream);
+ *          return stream;
+ *      }
+ *
+ * }
+ *
  */
 class HEARTSHARED_EXPORT StreamMultiversion: public StreamBase
 {
 public:
 
     StreamMultiversion();
-
+    ~StreamMultiversion();
     // StreamBase interface
-    /**
-     * @brief version override this method to sets version of package.
-     * @return
-     */
-    virtual int version() const = 0;
 
     /**
-     * @brief realVersion This method return value of the version that was be saved in the bytes array.
-     * @return
-     * @note use this method to check version of read package in the fromStream method..
+     * @brief saveVersion save version of the object to the stream.
+     * @param version - version of the object.
+     * @param stream - stream to save.
+     *
+     * This method used to save version of the object in file.
+     * @see toStream
      */
-    virtual int realVersion() const;
-protected:
-    QDataStream &fromStream(QDataStream &stream) override;
-    QDataStream &toStream(QDataStream &stream) const override;
+    void saveVersion(char version, QDataStream &stream) const;
+
+    /**
+     * @brief readVersion read version of the object from the stream.
+     * @param stream - stream to read.
+     * @return version of the object.
+     * @see fromStream
+
+     */
+    char readVersion(QDataStream &stream);
 
 
-
-private:
-    int _realVersion = 0;
 };
 }
 #endif // STREAMMULTIVERSION_H
