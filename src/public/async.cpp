@@ -35,6 +35,7 @@
     return CONDITION; \
 
 namespace QH {
+
 Async::Async(QThread *thread, QObject *ptr):
     QObject(ptr) {
 

@@ -6,6 +6,8 @@
 */
 
 #include "asynclauncher.h"
+
+#include <QThread>
 namespace QH {
 
 AsyncLauncher::AsyncLauncher(QThread *thread, QObject *ptr):
@@ -14,7 +16,27 @@ AsyncLauncher::AsyncLauncher(QThread *thread, QObject *ptr):
 
 
 bool AsyncLauncher::run(const Async::Job &action, bool wait) {
+    if (thread() && !thread()->isRunning()) {
+        thread()->start();
+    }
+
     return asyncLauncher(action, wait);
+}
+
+bool AsyncLauncher::stop() {
+    if (thread() && thread()->isRunning()) {
+        thread()->exit();
+    }
+
+    return true;
+}
+
+bool AsyncLauncher::waitForStop() {
+    if (thread() && thread()->isRunning()) {
+        return thread()->wait();
+    }
+
+    return true;
 }
 
 }

@@ -47,6 +47,18 @@ public:
      */
     bool run(const Job &action, bool wait = false);
 
+    /**
+     * @brief stop This method stop the work thread of this object.
+     * @return true if the thread is stopped.
+     */
+    bool stop();
+
+    /**
+     * @brief waitForStop This method wait for the thread of this object is stopped.
+     * @return true if the thread is stopped.
+     */
+    bool waitForStop();
+
 };
 
 }
