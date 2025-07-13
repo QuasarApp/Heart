@@ -69,7 +69,9 @@ QDataStream &operator<<(QDataStream &stream, const StreamBase &obj) {
 }
 
 QDataStream &operator>>(QDataStream &stream, StreamBase &obj) {
-    return (&obj)->fromStream(stream);
+    (&obj)->fromStream(stream);
+    Q_ASSERT_X(obj.isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+    return stream;
 }
 
 }

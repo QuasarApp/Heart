@@ -12,6 +12,7 @@
 #include <QDataStream>
 #include <QVariantMap>
 #include "heart_global.h"
+#include "validableobject.h"
 #include <type_traits>
 
 class QDataStream;
@@ -24,7 +25,7 @@ class Package;
  *  For correctly working all serializations functions you need to override fromStream and toStream methods.
  * All implementations of overridden method should be contains a invoke of method of base class.
  */
-class HEARTSHARED_EXPORT StreamBase
+class HEARTSHARED_EXPORT StreamBase: public QuasarAppUtils::iVO
 {
 public:
     StreamBase();
