@@ -21,10 +21,6 @@ if (HEART_PRINT_SQL_QUERIES)
     add_definitions(-DHEART_PRINT_SQL_QUERIES)
 endif()
 
-if (HEART_SERIALISATION_VALIDATION)
-    add_definitions(-DHEART_SERIALISATION_VALIDATION)
-endif()
-
 
 if (HEART_PRINT_PACKAGES)
     add_definitions(-DHEART_PRINT_PACKAGES)
