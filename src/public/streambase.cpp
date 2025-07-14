@@ -61,6 +61,12 @@ QByteArray StreamBase::toBase64() const {
     return toBytes().toBase64(QByteArray::Base64UrlEncoding);
 }
 
+#ifndef HEART_SERIALISATION_VALIDATION
+bool StreamBase::isValid() const {
+    return true;
+}
+#endif
+
 int StreamBase::parsingVersion() const {
     return 0;
 }

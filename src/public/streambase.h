@@ -114,6 +114,10 @@ public:
         return toBytes() == right.toBytes();
     }
 
+#ifndef HEART_SERIALISATION_VALIDATION
+    bool isValid() const override;;
+#endif
+
 protected:
 
     /**
