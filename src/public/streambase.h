@@ -35,7 +35,7 @@ public:
      * @brief fromBytes This method provide initialization of object from byte array.
      * @return true if all good.
      */
-    bool fromBytes(const QByteArray &data);
+    bool fromBytes(const QByteArray &dataz);
 
     /**
      * @brief toBytes This method convert a current object to bytes array.
