@@ -28,6 +28,9 @@ AsyncRenderLoop::~AsyncRenderLoop() {
 }
 
 void QH::AsyncRenderLoop::run() {
+    if (isRun())
+        return ;
+
     if (auto && thrd = thread()) {
         m_run = true;
         thrd->start();
