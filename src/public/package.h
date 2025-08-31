@@ -40,7 +40,7 @@ public:
      * Default implementation is checked a header and compare a size of package in header and size of source data.
      * @return true if package is valid.
      */
-    virtual bool isValid() const;
+    bool isValid() const override;
 
     /**
      * @brief reset This method reset all data and set for package invalid status.

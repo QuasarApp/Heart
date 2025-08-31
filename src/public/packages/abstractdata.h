@@ -115,7 +115,7 @@ public:
      * @brief isValid This method check current object to valid.
      * @return True if class isValid.
      */
-    virtual bool isValid() const;
+    bool isValid() const override;
 
     /**
      * @brief toString - Return a string implementation for this object.
