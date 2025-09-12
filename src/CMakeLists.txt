@@ -5,7 +5,7 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.19)
 
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -20,6 +20,7 @@ add_definitions(-DHEART_LIBRARY)
 if (HEART_PRINT_SQL_QUERIES)
     add_definitions(-DHEART_PRINT_SQL_QUERIES)
 endif()
+
 
 if (HEART_PRINT_PACKAGES)
     add_definitions(-DHEART_PRINT_PACKAGES)

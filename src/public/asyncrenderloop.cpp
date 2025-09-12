@@ -11,16 +11,14 @@
 
 namespace QH {
 
-AsyncRenderLoop::AsyncRenderLoop(QThread *thread, QObject *ptr): Async(thread, ptr) {
+AsyncRenderLoop::AsyncRenderLoop(QThread *thread): Async(thread) {
 }
 
 AsyncRenderLoop::~AsyncRenderLoop() {
 
-#ifdef QT_DEBUG
     Q_ASSERT_X(!isRun(), __FUNCTION__, "try to delete runned render loop! Please stop before delete."
                                        "If you the SharedPointer,"
                                        " it should be stoped monualy Or You can use AsyncRenderLoop::MainSharedPtr class");
-#endif
     AsyncRenderLoop::stop();
 
     delete thread();
@@ -28,6 +26,9 @@ AsyncRenderLoop::~AsyncRenderLoop() {
 }
 
 void QH::AsyncRenderLoop::run() {
+    if (isRun())
+        return ;
+
     if (auto && thrd = thread()) {
         m_run = true;
         thrd->start();

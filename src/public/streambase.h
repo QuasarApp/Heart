@@ -12,6 +12,7 @@
 #include <QDataStream>
 #include <QVariantMap>
 #include "heart_global.h"
+#include "validableobject.h"
 #include <type_traits>
 
 class QDataStream;
@@ -24,7 +25,7 @@ class Package;
  *  For correctly working all serializations functions you need to override fromStream and toStream methods.
  * All implementations of overridden method should be contains a invoke of method of base class.
  */
-class HEARTSHARED_EXPORT StreamBase
+class HEARTSHARED_EXPORT StreamBase: public QuasarAppUtils::iVO
 {
 public:
     StreamBase();
@@ -34,7 +35,7 @@ public:
      * @brief fromBytes This method provide initialization of object from byte array.
      * @return true if all good.
      */
-    bool fromBytes(const QByteArray &data);
+    bool fromBytes(const QByteArray &dataz);
 
     /**
      * @brief toBytes This method convert a current object to bytes array.
@@ -112,6 +113,7 @@ public:
 
         return toBytes() == right.toBytes();
     }
+
 
 protected:
 

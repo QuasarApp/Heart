@@ -37,7 +37,7 @@ public:
      * @param thread This is pointer to the work thread. If you want to change thread in run time just use the setThread method.
      * @param ptr This is QObject parent.
      */
-    AsyncLauncher(QThread *thread, QObject* ptr = nullptr);
+    AsyncLauncher(QThread *thread);
 
     /**
      * @brief run This method run the @a action function in the work thread of this object.

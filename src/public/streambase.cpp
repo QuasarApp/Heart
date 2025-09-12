@@ -29,6 +29,9 @@ bool StreamBase::fromBytes(const QByteArray &data) {
     }
 
     fromStream(stream);
+
+    Q_ASSERT_X(isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+
     return true;
 }
 
@@ -39,6 +42,8 @@ QByteArray StreamBase::toBytes() const {
     if (parsingVersion()) {
         stream.setVersion(parsingVersion());
     }
+
+    Q_ASSERT_X(isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
 
     toStream(stream);
     return res;
@@ -65,11 +70,16 @@ unsigned int StreamBase::typeId() const {
 }
 
 QDataStream &operator<<(QDataStream &stream, const StreamBase &obj) {
+
+    Q_ASSERT_X(obj.isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+
     return (&obj)->toStream(stream);
 }
 
 QDataStream &operator>>(QDataStream &stream, StreamBase &obj) {
-    return (&obj)->fromStream(stream);
+    (&obj)->fromStream(stream);
+    Q_ASSERT_X(obj.isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+    return stream;
 }
 
 }

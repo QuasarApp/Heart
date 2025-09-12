@@ -17,8 +17,8 @@ namespace QH {
 
 using namespace PKG;
 
-AsyncSqlDBWriter::AsyncSqlDBWriter(QObject *ptr):
-    SqlDBWriter(new QThread(), ptr) {
+AsyncSqlDBWriter::AsyncSqlDBWriter():
+    SqlDBWriter(new QThread()) {
     thread()->setObjectName("AsyncSqlDbWriter");
     thread()->start();
 }

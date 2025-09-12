@@ -69,4 +69,8 @@ void DistVersion::setMin(unsigned short newMin) {
     _min = newMin;
 }
 
+bool DistVersion::isValid() const {
+    return _min <= _max;
 }
+}
+

@@ -5,7 +5,7 @@
 # of this license document, but changing it is not allowed.
 #
 
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.19)
 
 project(Heart)
 if(TARGET ${PROJECT_NAME})
@@ -37,7 +37,6 @@ option(HEART_PRINT_PACKAGES "This option enable or disabled log of add incoming 
 option(HEART_PRINT_SQL_QUERIES "This option enable or disabled log of all sql queries" OFF)
 option(HEART_VALIDATE_PACKS "This option enable or disabled validation of child classes of the DataPack class" ON)
 
-option(BUILD_SHARED_LIBS "Enable or disable shared libraryes" OFF)
 
 if (WIN32)
     option(HEART_SSL "This option enable or disabled ssl functions of nodes" OFF)

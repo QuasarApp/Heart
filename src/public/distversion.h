@@ -52,6 +52,9 @@ public:
 
     QString toString() const override;
 
+    // ValidableObject interface
+    bool isValid() const override;
+
 protected:
 
     QDataStream &fromStream(QDataStream &stream) override;
@@ -64,6 +67,8 @@ private:
 
     /// This is maximum supported version.
     unsigned short _max = 0;
+
+
 
 };
 
