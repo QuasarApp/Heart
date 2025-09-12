@@ -50,7 +50,7 @@ protected:
      * @param ptr This is pointer to qtparent of this object.
      * @note @a thread must be different of the main thread.
      */
-    Async(QThread* thread, QObject* ptr = nullptr);
+    Async(QThread* thread);
 
     /**
       @note This is async distructor.

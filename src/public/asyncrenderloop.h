@@ -121,7 +121,7 @@ public:
     };
 
 
-    AsyncRenderLoop(QThread* thread, QObject* ptr = nullptr);
+    AsyncRenderLoop(QThread* thread);
     ~AsyncRenderLoop();
 
     /**

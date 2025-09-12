@@ -36,7 +36,7 @@ class HEARTSHARED_EXPORT SqlDBWriter : public Async, public iObjectProvider
 {
     Q_OBJECT
 public:
-    SqlDBWriter(QThread *thread, QObject* ptr = nullptr);
+    SqlDBWriter(QThread *thread);
 
     /**
      * @brief initDb This method is wraper of the initDb(const QVariantMap &params) method.

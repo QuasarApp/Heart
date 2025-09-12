@@ -10,8 +10,8 @@
 #include <QThread>
 namespace QH {
 
-AsyncLauncher::AsyncLauncher(QThread *thread, QObject *ptr):
-    Async(thread, ptr) {
+AsyncLauncher::AsyncLauncher(QThread *thread):
+    Async(thread) {
 }
 
 

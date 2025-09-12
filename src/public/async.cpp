@@ -36,8 +36,8 @@
 
 namespace QH {
 
-Async::Async(QThread *thread, QObject *ptr):
-    QObject(ptr) {
+Async::Async(QThread *thread):
+    QObject() {
 
     threadAnalize(thread);
     moveToThread(thread);

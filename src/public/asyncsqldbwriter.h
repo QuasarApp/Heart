@@ -21,7 +21,7 @@ class HEARTSHARED_EXPORT AsyncSqlDBWriter : public SqlDBWriter
 {
     Q_OBJECT
 public:
-    AsyncSqlDBWriter(QObject* ptr = nullptr);
+    AsyncSqlDBWriter();
     ~AsyncSqlDBWriter();
 
 };

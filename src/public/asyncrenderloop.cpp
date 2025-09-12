@@ -11,7 +11,7 @@
 
 namespace QH {
 
-AsyncRenderLoop::AsyncRenderLoop(QThread *thread, QObject *ptr): Async(thread, ptr) {
+AsyncRenderLoop::AsyncRenderLoop(QThread *thread): Async(thread) {
 }
 
 AsyncRenderLoop::~AsyncRenderLoop() {
