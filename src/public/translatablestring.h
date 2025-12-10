@@ -34,6 +34,8 @@ public:
     // ValidableObject interface
     bool isValid() const override;
 
+    bool isEmpty() const;
+
     /**
      * @brief text this method return translated text.
      * @return

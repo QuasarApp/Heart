@@ -22,6 +22,10 @@ bool TranslatableString::isValid() const {
     return _data.size();
 }
 
+bool TranslatableString::isEmpty() const {
+    return _data.isEmpty();
+}
+
 QString TranslatableString::text() const {
     if (_isKey) {
         QString result = QObject::tr(_data.toLatin1());
