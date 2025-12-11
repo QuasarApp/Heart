@@ -19,7 +19,7 @@ bool TranslatableString::operator==(const TranslatableString &other) const {
 }
 
 bool TranslatableString::isValid() const {
-    return _data.size();
+    return true;
 }
 
 bool TranslatableString::isEmpty() const {
