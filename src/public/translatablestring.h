@@ -44,7 +44,7 @@ public:
 
     /**
      * @brief rawText return raw key source.
-     * @return
+     * @return source text (key if object created with the qtTrId method)
      */
     const QString& rawText() const;
 
@@ -61,6 +61,19 @@ public:
      */
     static TranslatableString tr(const QString& source);
 
+    /**
+     * @brief qtTrId this method create a string translation wrapper and save translation key for lupdate tool
+     * @param source this is a source text.
+     * @return translatable string.
+     * @see https://doc.qt.io/qt-6/qttranslation.html#qtTrId
+     */
+    static TranslatableString qtTrId(const QString& source);
+
+    /**
+     * @brief setArgs this method set args for translation.
+     * @param newArgs this is a list of args.
+     * @return this object.
+     */
     TranslatableString& setArgs(const QList<TranslatableString> &newArgs);
 
 protected:
