@@ -23,14 +23,19 @@ namespace QH {
  * class myClass: public StreamMultiversion {
  *      protected:
  *      QDataStream &fromStream(QDataStream &stream) override {
- *          char version = readVersion();
+ *          char version = versionHeader(0, stream);
+ *          readWrite(stream, data);
  *          return stream;
  *      }
  *
  *      QDataStream &toStream(QDataStream &stream) const override {
- *          saveVersion(1, stream);
+ *          char version = versionHeader(0, stream);
+ *          readWrite(stream, data);
  *          return stream;
  *      }
+ *
+ *      private:
+ *      int data;
  *
  * }
  *
@@ -42,6 +47,8 @@ public:
     StreamMultiversion();
     ~StreamMultiversion();
     // StreamBase interface
+
+protected:
 
     /**
      * @brief saveVersion save version of the object to the stream.
@@ -62,6 +69,42 @@ public:
      */
     char readVersion(QDataStream &stream);
 
+    /**
+     * @brief versionHeader this is new function that automaticaly choose what shuld be to-do (read/wirte).
+     * @param version this is a version of object.
+     * @param stream this is stream cheenel to save or read.
+     * @return version of object.
+     */
+    char versionHeader(char version, QDataStream &stream);
+
+    /**
+     * @brief versionHeader this is new function that automaticaly choose what shuld be to-do (read/wirte).
+     * @param version this is a version of object.
+     * @param stream this is stream cheenel to save or read.
+     * @return version of object.
+     */
+    char versionHeader(char version, QDataStream &stream) const;
+
+    /**
+     * @brief readWrite this method automaticaly choose what we need to-do read or write.
+     * @param stream
+     * @param data
+     */
+    template <class T>
+    void readWrite(QDataStream &stream, const T& data) const {
+        stream << data;
+    }
+
+    /**
+     * @brief readWrite this method automaticaly choose what we need to-do read or write.
+     * @param stream
+     * @param data
+     */
+    template <class T>
+    void readWrite(QDataStream &stream, T& data) {
+        stream >> data;
+
+    }
 
 };
 }
