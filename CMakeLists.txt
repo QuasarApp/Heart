@@ -50,6 +50,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIR
 
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/crc)
+add_subdirectory(submodules/constexpr-xxh3)
+
 
 if (HEART_SSL)
     option(EASYSSL_TESTS "disable tests of the easyssl submodule " OFF)

@@ -7,3 +7,6 @@
 [submodule "submodules/easyssl"]
 	path = submodules/easyssl
 	url = https://github.com/QuasarApp/easyssl.git
+[submodule "submodules/constexpr-xxh3"]
+	path = submodules/constexpr-xxh3
+	url = git@github.com:QuasarApp/constexpr-xxh3.git
