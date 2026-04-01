@@ -21,6 +21,8 @@ namespace QH {
 class HEARTSHARED_EXPORT TranslatableString: public StreamMultiversion
 {
 public:
+    TranslatableString(int data );
+
     TranslatableString(const QString& data = "",
                        bool isKey = false);
 
@@ -75,6 +77,8 @@ public:
      * @return this object.
      */
     TranslatableString& setArgs(const QList<TranslatableString> &newArgs);
+    TranslatableString& arg(const TranslatableString &newArg);
+    TranslatableString& arg(int newArg);
 
 protected:
     QDataStream &fromStream(QDataStream &stream) override;

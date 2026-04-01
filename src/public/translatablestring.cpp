@@ -9,6 +9,11 @@
 #include "crc32constexper.h"
 namespace QH {
 
+TranslatableString::TranslatableString(int data) {
+    _data = QString::number(data);
+    _isKey = false;
+}
+
 TranslatableString::TranslatableString(const QString& data, bool isKey) {
     _data = data;
     _isKey = isKey;
@@ -74,6 +79,17 @@ QDataStream &TranslatableString::toStream(QDataStream &stream) const {
 TranslatableString &TranslatableString::setArgs(const QList<TranslatableString> &newArgs) {
     _args = newArgs;
 
+    return *this;
+}
+
+TranslatableString &TranslatableString::arg(const TranslatableString &newArg) {
+    _args.push_back(newArg);
+
+    return *this;
+}
+
+TranslatableString &TranslatableString::arg(int newArg) {
+    _args.push_back({newArg});
     return *this;
 }
 }
