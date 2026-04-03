@@ -49,6 +49,8 @@ const QString &TranslatableString::rawText() const {
 }
 
 int TranslatableString::calcCrc32Hash() const {
+    if (_data.isEmpty())
+        return 0;
     return QuasarAppUtils::calculateCrc32(_data.toLatin1(), _data.size());
 }
 
