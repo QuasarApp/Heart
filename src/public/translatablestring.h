@@ -26,6 +26,9 @@ public:
     TranslatableString(const QString& data = "",
                        bool isKey = false);
 
+    TranslatableString(const QList<TranslatableString>& pack);
+
+
     TranslatableString(const TranslatableString &) = default;
     TranslatableString(TranslatableString &&) = default;
     TranslatableString &operator=(const TranslatableString &) = default;
@@ -78,6 +81,7 @@ public:
      */
     TranslatableString& setArgs(const QList<TranslatableString> &newArgs);
     TranslatableString& arg(const TranslatableString &newArg);
+
     TranslatableString& arg(int newArg);
 
 protected:
@@ -88,6 +92,7 @@ private:
     QString _data;
     bool _isKey = false;
     QList<TranslatableString> _args;
+    QList<TranslatableString> _pack;
 
 };
 }

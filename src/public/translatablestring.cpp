@@ -19,8 +19,12 @@ TranslatableString::TranslatableString(const QString& data, bool isKey) {
     _isKey = isKey;
 }
 
+TranslatableString::TranslatableString(const QList<TranslatableString> &pack) {
+    _pack = pack;
+}
+
 bool TranslatableString::operator==(const TranslatableString &other) const {
-    return _data == other._data && _isKey == other._isKey && _args == other._args;
+    return _data == other._data && _isKey == other._isKey && _args == other._args && _pack == other._pack;
 }
 
 bool TranslatableString::isValid() const {
@@ -28,10 +32,18 @@ bool TranslatableString::isValid() const {
 }
 
 bool TranslatableString::isEmpty() const {
-    return _data.isEmpty();
+    return _data.isEmpty() && _pack.isEmpty();
 }
 
 QString TranslatableString::text() const {
+    if (_pack.size()) {
+        QString result = _pack.first().text();
+        for (int i = 1; i < _pack.size(); i++) {
+            result += ", " + _pack[i].text();
+        }
+        return result;
+    }
+
     if (_isKey) {
         QString result = QObject::tr(_data.toLatin1());
         for (const auto& arg: _args) {
@@ -64,6 +76,7 @@ QDataStream &TranslatableString::fromStream(QDataStream &stream) {
     readWrite(stream, _isKey);
     readWrite(stream, _data);
     readWrite(stream, _args);
+    readWrite(stream, _pack);
 
     return stream;
 }
@@ -74,6 +87,7 @@ QDataStream &TranslatableString::toStream(QDataStream &stream) const {
     readWrite(stream, _isKey);
     readWrite(stream, _data);
     readWrite(stream, _args);
+    readWrite(stream, _pack);
 
     return stream;
 }
