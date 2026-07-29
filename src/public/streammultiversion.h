@@ -38,6 +38,26 @@ namespace QH {
  *      int data;
  *
  * }
+ * @endcode
+ *
+ * More example of use:
+ * @code{cpp}
+ * QDataStream &ClassName::fromStream(QDataStream &stream)
+    {
+        versionHeader(0, stream);
+
+        READ_WRITE_IMPL(fild0,
+                        fild1)
+    }
+
+    QDataStream &ClassName::toStream(QDataStream &stream) const
+    {
+        versionHeader(0, stream);
+
+        READ_WRITE_IMPL(fild0,
+                        fild1)
+    }
+ * @endcode
  *
  */
 class HEARTSHARED_EXPORT StreamMultiversion: public StreamBase
@@ -106,6 +126,35 @@ protected:
 
     }
 
+    /**
+     * @brief readWritePack - this is a pack write or read from the srting
+     * @param stream - stream cheenel to save or read.
+     * @param args - list of arguments
+     */
+    template <typename... Args>
+    void readWritePack(QDataStream &stream, Args&&... args) const {
+        (readWrite(stream, std::forward<Args>(args)), ...);
+    }
+
+    /**
+     * @brief readWritePack - this is a pack write or read from the srting
+     * @param stream - stream cheenel to save or read.
+     * @param args - list of arguments
+     */
+    template <typename... Args>
+    void readWritePack(QDataStream &stream, Args&&... args) {
+        (readWrite(stream, std::forward<Args>(args)), ...);
+    }
+
 };
+
 }
+
+
+#define READ_WRITE_IMPL(...) \
+    readWritePack(stream, __VA_ARGS__); \
+    return stream; \
+
+
+
 #endif // STREAMMULTIVERSION_H
