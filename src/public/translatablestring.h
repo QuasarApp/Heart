@@ -24,7 +24,7 @@ public:
     TranslatableString(int data );
 
     TranslatableString(const QString& data = "",
-                       bool isKey = false);
+                       bool isKey = true);
 
     TranslatableString(const QList<TranslatableString>& pack);
 
