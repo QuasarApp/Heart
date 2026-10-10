@@ -48,7 +48,8 @@ protected:
      * @brief Async This is default constructor of the async object.
      * @param thread This is work thread of the async object.
      * @param ptr This is pointer to qtparent of this object.
-     * @note @a thread must be different of the main thread.
+     * @note @a thread must be a valid thread. It is allowed to use the node worker (main) thread:
+     * in this case all jobs are executed directly in that thread.
      */
     Async(QThread* thread);
 
