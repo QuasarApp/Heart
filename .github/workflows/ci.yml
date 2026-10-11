@@ -80,8 +80,11 @@ jobs:
       - name: Run Tests (Windows)
         if: runner.os == 'Windows'
         working-directory: ${{ github.workspace }}/build
+        env:
+          QT_FORCE_STDERR_LOGGING: 1
+          QT_ASSUME_STDERR_HAS_CONSOLE: 1
         run: |
-          copy src\Heart.dll HeartTests\
-          copy submodules\QuasarAppLib\QuasarApp.dll HeartTests\
-          copy submodules\crc\crc.dll HeartTests\
+          copy src\libHeart.dll HeartTests\
+          copy submodules\QuasarAppLib\libQuasarApp.dll HeartTests\
+          copy submodules\crc\libcrc.dll HeartTests\
           .\HeartTests\HeartTest.exe
