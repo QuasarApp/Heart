@@ -9,9 +9,6 @@ jobs:
     name: ${{ matrix.os }} (${{ matrix.build_type }})
     runs-on: ${{ matrix.os }}
 
-    env:
-      CCACHE_DIR: ${{ github.workspace }}/.ccache
-
     strategy:
       fail-fast: false
       matrix:
@@ -45,26 +42,19 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install ccache (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          Invoke-WebRequest -Uri "https://github.com/ccache/ccache/releases/download/v4.14.1/ccache-4.14.1-windows-x86_64.zip" -OutFile ccache.zip
-          Expand-Archive -Path ccache.zip -DestinationPath ccache-dist
-          Add-Content "$env:GITHUB_PATH" "${{ github.workspace }}\ccache-dist\ccache-4.14.1-windows-x86_64"
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: ${{ matrix.os }}-${{ matrix.build_type }}
+
+      - name: Install CQtDeployer
+        uses: QuasarApp/cqtdeployer-install-action@v1.0.1
 
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev ccache
-
-      - name: Cache ccache
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/.ccache
-          key: ccache-${{ runner.os }}-${{ matrix.build_type }}-${{ github.sha }}
-          restore-keys: |
-            ccache-${{ runner.os }}-${{ matrix.build_type }}-
+          sudo apt-get install -y libssl-dev
 
       - name: Configure CMake (Windows)
         if: runner.os == 'Windows'
@@ -97,19 +87,8 @@ jobs:
       - name: ccache statistics
         run: ccache -s
 
-      - name: Run Tests (Linux)
-        if: runner.os == 'Linux'
-        working-directory: ${{ github.workspace }}/build
-        run: ./HeartTests/HeartTest
-
-      - name: Run Tests (Windows)
-        if: runner.os == 'Windows'
-        working-directory: ${{ github.workspace }}/build
+      - name: Run Tests
         env:
           QT_FORCE_STDERR_LOGGING: 1
           QT_ASSUME_STDERR_HAS_CONSOLE: 1
-        run: |
-          copy src\libHeart.dll HeartTests\
-          copy submodules\QuasarAppLib\libQuasarApp.dll HeartTests\
-          copy submodules\crc\libcrc.dll HeartTests\
-          .\HeartTests\HeartTest.exe
+        run: cmake --build ${{ github.workspace }}/build --target test --parallel 4
