@@ -50,6 +50,29 @@ jobs:
       - name: Install CQtDeployer
         uses: QuasarApp/cqtdeployer-install-action@v1.0.1
 
+      - name: Locate aqt MSVCRT MinGW runtime (Windows)
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        shell: cmd
+        run: |
+          echo "=== LOCATE AQT MINGW RUNTIME ==="
+          echo "IQTA_TOOLS=%IQTA_TOOLS%"
+          echo "--- dir IQTA_TOOLS ---"
+          dir "%IQTA_TOOLS%" 2>nul
+          echo "--- where gcc ---"
+          where gcc 2>nul
+          echo "--- where g++ ---"
+          where g++ 2>nul
+          echo "--- dir D:\a\Heart\Qt ---"
+          dir "D:\a\Heart\Qt" 2>nul
+          echo "--- find libstdc++-6.dll under D:\a\Heart\Qt ---"
+          dir /s /b "D:\a\Heart\Qt\libstdc++-6.dll" 2>nul
+          echo "--- find libstdc++-6.dll under IQTA_TOOLS ---"
+          dir /s /b "%IQTA_TOOLS%\libstdc++-6.dll" 2>nul
+          echo "--- cqt dir ---"
+          dir "%GITHUB_WORKSPACE%\cqt" 2>nul
+          echo "=== END ==="
+
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
         run: |
