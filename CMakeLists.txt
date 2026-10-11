@@ -44,14 +44,6 @@ else()
     option(HEART_SSL "This option enable or disabled ssl functions of nodes" ON)
 endif()
 
-# When the libraries are built as static archives the symbols must not be
-# decorated with Q_DECL_IMPORT/Q_DECL_EXPORT (dllimport/dllexport on Windows),
-# otherwise the Windows link fails with undefined __imp_ references.
-if (NOT BUILD_SHARED_LIBS)
-    add_definitions(-DHEART_STATIC_LIB)
-    add_definitions(-DQUASARAPP_STATIC_LIB)
-endif()
-
 # Add sub directories
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
