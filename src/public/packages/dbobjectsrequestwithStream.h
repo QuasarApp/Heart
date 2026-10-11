@@ -23,7 +23,7 @@ namespace PKG {
  * @see DBObjectSet
  */
 template <class T>
-class DBObjectsRequestWithStream final: public DBObjectsRequest<T>
+class HEARTSHARED_EXPORT DBObjectsRequestWithStream final: public DBObjectsRequest<T>
 {
 public:
 

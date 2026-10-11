@@ -17,7 +17,7 @@ namespace PKG {
 /**
  * @brief The BigDataWraper class is wrapper of any big data commands.
  */
-class BigDataWraper: public AbstractData
+class HEARTSHARED_EXPORT BigDataWraper: public AbstractData
 {
     QH_PACKAGE("BigDataWraper")
 

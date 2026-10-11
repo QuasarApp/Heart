@@ -34,7 +34,7 @@ template <class BASE>
         }
  * \endcode
  */
-class CachedDbObjectsRequest : public BASE
+class HEARTSHARED_EXPORT CachedDbObjectsRequest : public BASE
 {
 
 public:
