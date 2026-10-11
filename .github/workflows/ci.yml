@@ -50,28 +50,6 @@ jobs:
       - name: Install CQtDeployer
         uses: QuasarApp/cqtdeployer-install-action@v1.0.1
 
-      # The released Windows CQtDeployer binary (CQtDeployer.exe + Qt6Core.dll) is built with
-      # the MSVCRT-based MinGW (aqt win64_mingw / tools_mingw1310, GCC 13.1.0), but the
-      # bundled libstdc++-6.dll / libgcc_s_seh-1.dll / libwinpthread-1.dll in the release
-      # zip are from a UCRT-based MinGW (GCC 13.2.0, "x86_64-ucrt-posix-seh"). Loading the
-      # UCRT C++ runtime from the MSVCRT exe fails with STATUS_ENTRYPOINT_NOT_FOUND
-      # (0xc0000139) before the deploy step can run. Overwrite the three runtime DLLs with
-      # the matching MSVCRT versions shipped by aqt tools_mingw1310 so the bundle is
-      # self-consistent.
-      - name: Fix CQtDeployer MinGW runtime (Windows)
-        if: runner.os == 'Windows'
-        shell: cmd
-        run: |
-          echo "Aligning CQtDeployer bundled MinGW runtime with aqt tools_mingw1310 (MSVCRT)"
-          if not exist "%IQTA_TOOLS%\mingw1310\bin\libstdc++-6.dll" (
-            echo "ERROR: aqt mingw1310 runtime not found at %IQTA_TOOLS%\mingw1310\bin"
-            exit /b 1
-          )
-          copy /Y "%IQTA_TOOLS%\mingw1310\bin\libstdc++-6.dll" "%GITHUB_WORKSPACE%\cqt\libstdc++-6.dll"
-          copy /Y "%IQTA_TOOLS%\mingw1310\bin\libgcc_s_seh-1.dll" "%GITHUB_WORKSPACE%\cqt\libgcc_s_seh-1.dll"
-          copy /Y "%IQTA_TOOLS%\mingw1310\bin\libwinpthread-1.dll" "%GITHUB_WORKSPACE%\cqt\libwinpthread-1.dll"
-          echo "Done."
-
       - name: Install dependencies (Linux)
         if: runner.os == 'Linux'
         run: |
@@ -113,4 +91,4 @@ jobs:
         env:
           QT_FORCE_STDERR_LOGGING: 1
           QT_ASSUME_STDERR_HAS_CONSOLE: 1
-        run: cmake --build ${{ github.workspace }}/build --target test --parallel 4
+        run: cmake --build ${{ github.workspace }}/build --target test 
