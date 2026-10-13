@@ -41,7 +41,12 @@ jobs:
           grep -E '^(PROJECT_NAME|PROJECT_NUMBER|OUTPUT_DIRECTORY)' doxygen.conf
 
       - name: Generate the Doxygen HTML documentation
-        run: doxygen doxygen.conf
+        run: |
+          # The docs/ directory no longer exists in the repository
+          # (docs/index.md is generated at build time), so it has to be
+          # created before Doxygen writes its output into docs/api/.
+          mkdir -p docs
+          doxygen doxygen.conf
 
       - name: Copy the images referenced by the README
         run: |
@@ -52,6 +57,13 @@ jobs:
           mkdir -p docs/res docs/api/res
           cp res/Banner_Web.png docs/res/
           cp res/Banner_Web.png docs/api/res/
+
+      - name: Copy the README as the site home page
+        run: |
+          # docs/index.md is generated from the root README.md at build
+          # time (it is gitignored), so the README stays the single
+          # source of truth for the site home page.
+          cp README.md docs/index.md
 
       - name: Install MkDocs and the Material theme
         run: |

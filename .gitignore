@@ -60,6 +60,7 @@ HeartTests/cmake_install.cmake
 cmake_install.cmake
 docs/api/
 docs/res/
+docs/index.md
 site/
 src/heart_global.h
 doxygen.conf
