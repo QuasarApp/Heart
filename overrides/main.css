@@ -1,0 +1,43 @@
+/*
+ * main.css
+ *
+ * Custom stylesheet for the MkDocs Material site, attached through the
+ * top-level extra_css option (see mkdocs.yml) and therefore loaded after
+ * the theme's main.css and palette.css, so every rule in this file wins
+ * the cascade.
+ *
+ * Material for MkDocs only ships prebuilt palette rules for the named
+ * Material colors, so the softer warm palette derived from the project
+ * banner (res/Banner_Web.png) is applied here by overriding the theme's
+ * CSS custom properties per color scheme:
+ *
+ *   banner maroon  #5d1908 (dominant background) ... #9a3625 (center glow)
+ *   primary        #7f2a19 (mid maroon: top bar, active nav, tabs)
+ *   dark maroon    #5a1c10 (pressed / dark variant of the primary bar)
+ *   coral accent   #b84e38 (light-scheme links, 5.0:1 contrast on white)
+ *   salmon accent  #e8917a (dark-scheme links, 5.5:1 on the slate bg)
+ */
+
+/* primary: mid maroon from the banner background (both schemes) */
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #7f2a19;
+    --md-primary-fg-color--light: #8f3a28;
+    --md-primary-fg-color--dark: #5a1c10;
+}
+
+/* accent: soft coral on the light scheme (also colors the in-text
+   links, since Material 9 derives --md-typeset-a-color from the
+   primary color by default) */
+[data-md-color-scheme="default"] {
+    --md-accent-fg-color: #b84e38;
+    --md-accent-fg-color--transparent: #b84e381a;
+    --md-typeset-a-color: #b84e38;
+}
+
+/* accent: soft salmon on the dark (slate) scheme */
+[data-md-color-scheme="slate"] {
+    --md-accent-fg-color: #e8917a;
+    --md-accent-fg-color--transparent: #e8917a1a;
+    --md-typeset-a-color: #e8917a;
+}
