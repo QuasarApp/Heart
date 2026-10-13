@@ -1,0 +1,7 @@
+<map id="QH::AbstractNode::stop" name="QH::AbstractNode::stop">
+<area shape="rect" id="Node000001" title="stop &#45; Stopped this node and close all network connections." alt="" coords="261,35,436,60"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,5,213,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,38,213,33,214,28,248,32"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a7cf8ff65202c98fae65a62eb74285793" title="prepareForDelete This method must be prepare object for delete. Override this for working main functi..." alt="" coords="11,55,207,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,62,208,67,207,61,248,56"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="QH::iParser" name="QH::iParser">
+<area shape="rect" id="Node000001" title="The iParser class This class provide functions for parsing income packages. For yousing just override..." alt="" coords="195,119,395,504"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html" title="The APIVersionParser class This is main parser forthe main command. This parsers work only with the A..." alt="" coords="5,552,183,817"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="191,510,168,553,163,551,187,507"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNodeParser.html" title="The AbstractNodeParser class is main parser of the abstract level of the hear lib." alt="" coords="207,612,384,757"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="298,518,298,612,293,612,293,518"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1BigDataParser.html" title="The BigDataParser class is main manager for control big data packages." alt="" coords="408,582,596,787"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="404,503,448,581,443,583,400,505"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="194,5,261,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="241,83,250,118,245,119,236,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="285,5,441,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="355,85,346,119,341,118,349,83"/>
+</map>

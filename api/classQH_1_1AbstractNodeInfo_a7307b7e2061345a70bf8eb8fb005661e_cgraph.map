@@ -1,0 +1,8 @@
+<map id="QH::AbstractNodeInfo::setNetworkAddress" name="QH::AbstractNodeInfo::setNetworkAddress">
+<area shape="rect" id="Node000001" title="setNetworkAddress This method update network address of the current node." alt="" coords="5,61,168,101"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a9cf6584038ac40b2c58e066088a1d79b" title="info &#45; This method return Host domain information. For more information see the Qt Documentation abou..." alt="" coords="216,29,379,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,66,202,61,203,66,169,72"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a6e8f12dfe44a951590f139a6366c8c80" title="networkAddress This method return network address of current node or client." alt="" coords="216,93,379,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="169,91,203,96,202,102,168,96"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="258,30,255,20,262,10,276,5,297,3,322,6,335,13,333,18,320,11,297,8,277,10,265,15,261,21,263,28"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="QH::iParser::multiVersionPackages" name="QH::iParser::multiVersionPackages">
+<area shape="rect" id="Node000001" title="multiVersionPackages return list of the supported multiversions packages." alt="" coords="620,35,804,75"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="415,13,570,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="605,43,570,38,570,33,606,38"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="413,63,572,103"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="606,71,572,75,572,70,606,66"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,13,365,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="402,37,366,37,366,31,402,32"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="379,14,415,14,415,19,379,19"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,5,164,45"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="198,28,164,28,164,23,198,23"/>
+</map>

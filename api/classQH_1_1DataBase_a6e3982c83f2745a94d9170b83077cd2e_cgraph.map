@@ -1,0 +1,5 @@
+<map id="QH::DataBase::saveObj" name="QH::DataBase::saveObj">
+<area shape="rect" id="Node000001" title="Save an object in the database." alt="" coords="5,5,180,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#ac855a4008eb35fb88d8d5e3db32bd291" title="db This node return pointer to database object." alt="" coords="228,5,365,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,15,214,15,214,21,181,21"/>
+</map>

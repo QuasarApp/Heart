@@ -1,0 +1,11 @@
+<map id="QH::iObjectProvider" name="QH::iObjectProvider">
+<area shape="rect" id="Node000001" title="The iObjectProvider class is base interface for work with database objects. Using on database writers..." alt="" coords="163,5,306,251"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="7,299,241,804"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,265,193,299,188,298,197,263"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="269,349,421,754"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="273,263,295,348,290,349,268,265"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation fo datatbase. The SqlDB do not use caches,..." alt="" coords="5,852,240,1057"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="126,818,126,852,120,852,120,818"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AsyncSqlDBWriter.html" title="The AsyncSqlDbWriter class is some as SqlDBWriter but run all command in own thread...." alt="" coords="264,912,432,997"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="349,768,350,912,345,912,344,768"/>
+</map>

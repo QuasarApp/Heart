@@ -1,0 +1,26 @@
+<map id="QH::AbstractNodeInfo::setNetworkAddress" name="QH::AbstractNodeInfo::setNetworkAddress">
+<area shape="rect" id="Node000001" title="setNetworkAddress This method update network address of the current node." alt="" coords="1416,127,1579,167"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a274cbc7cbd3f0176d8eb7a77bd8cab93" title="AbstractNodeInfo." alt="" coords="995,77,1157,117"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1412,127,1368,118,1258,106,1158,101,1158,95,1259,101,1368,113,1413,121"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNodeInfo.html#a10d0390fb5bfa5d58bf8195a3ffc4f32" title="reset This method reset all fields of the nodeInfo." alt="" coords="995,171,1157,211"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1414,173,1368,182,1259,192,1158,195,1158,190,1258,187,1368,177,1413,168"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNodeInfo.html#a5b5fedac71ba0a760da283867231a2e1" title="setSct This method sets a new socket for this node or client." alt="" coords="1205,127,1368,167"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="1402,150,1368,150,1368,145,1402,145"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a525c9bed45161fefcbc6d3833ff1137a" title="createNodeInfo This method create a nodeInfo object. override this method for create your own nodeInf..." alt="" coords="760,77,947,117"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="981,99,947,99,947,94,981,94"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#aa0a2e3439c01b9b30017ae159c6885ea" title="registerSocket This method registration new socket object." alt="" coords="516,77,712,117"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="746,99,712,99,712,94,746,94"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#a5d66fe8476e6a17bcca8ee66e177a575" title="addNode &#45; Connect to node (server) with address." alt="" coords="263,55,467,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="502,86,467,82,467,77,503,81"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1AbstractNode.html#a8f2a1fec2f063d16af89af0cb7183a5d" title="incomingConnection This is ovverided method of QTCPServer." alt="" coords="261,105,468,145"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="503,112,468,116,468,110,502,107"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNode.html#a6c64327f29ae5e1b38b8d06212948631" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="7,5,211,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="285,55,175,33,176,28,286,49"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#a625931eebfe7c7710e2cb71ce47b803e" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="7,55,211,80"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="249,70,211,70,211,65,249,65"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,104,213,129"/>
+<area shape="poly" id="edge7_Node000005_Node000008" title=" " alt="" coords="286,85,176,107,175,101,285,80"/>
+<area shape="poly" id="edge10_Node000010_Node000010" title=" " alt="" coords="1112,160,1099,153,1076,150,1056,152,1044,157,1039,163,1042,170,1036,172,1034,162,1040,152,1055,147,1076,145,1101,148,1114,155"/>
+<area shape="poly" id="edge12_Node000011_Node000002" title=" " alt="" coords="1191,127,1157,119,1158,114,1192,122"/>
+<area shape="poly" id="edge13_Node000011_Node000010" title=" " alt="" coords="1192,170,1158,177,1157,172,1191,165"/>
+</map>

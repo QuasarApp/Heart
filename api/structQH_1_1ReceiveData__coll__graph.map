@@ -1,0 +1,11 @@
+<map id="QH::ReceiveData" name="QH::ReceiveData">
+<area shape="rect" id="Node000001" title="The ReceiveData struct This is private structure for contains informaton for parse packages." alt="" coords="92,792,217,857"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html" title="The Package struct. This is base structure for transporting data by network between QH nodes...." alt="" coords="88,496,221,721"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="157,722,157,775,152,775,152,722"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="11,120,146,425"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,438,132,495,127,496,114,439"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,5,152,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="81,85,81,120,76,120,76,85"/>
+<area shape="rect" id="Node000005" href="$structQH_1_1Header.html" title="The Header struct 32 bytes." alt="" coords="171,130,293,415"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="202,416,187,480,182,479,197,415"/>
+</map>

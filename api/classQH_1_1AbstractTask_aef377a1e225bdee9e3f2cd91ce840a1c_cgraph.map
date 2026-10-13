@@ -1,0 +1,11 @@
+<map id="QH::AbstractTask::~AbstractTask" name="QH::AbstractTask::~AbstractTask">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,73,147,113"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractTask.html#a5640dcca28818b8894a1dc0ef10ac330" title="mode This method retunr current mode of this task." alt="" coords="204,5,383,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,70,194,39,219,32,221,37,196,45,120,75"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractTask.html#a41814bca675813bbf43397da13c80745" title="setMode This method sets new mode of this task." alt="" coords="195,55,392,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,82,181,78,181,83,147,87"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractTask.html#a5d47e89cf5b0abdd193604999d82fe02" title="setTime This method sets new value for the AbstractTask::time property." alt="" coords="196,104,391,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,98,183,102,182,107,147,103"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractTask.html#ae00f12cafd350f0e00163dbbd61ba534" title="time This is universal property. This property has its own meaning for each AbstractTask::mode...." alt="" coords="208,153,379,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="123,110,196,138,225,147,224,152,194,143,122,115"/>
+</map>

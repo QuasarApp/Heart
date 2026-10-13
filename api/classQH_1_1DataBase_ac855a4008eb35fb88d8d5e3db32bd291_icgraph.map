@@ -1,0 +1,37 @@
+<map id="QH::DataBase::db" name="QH::DataBase::db">
+<area shape="rect" id="Node000001" title="db This node return pointer to database object." alt="" coords="1532,261,1669,286"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#ae6b6601496dcf13a56c3ac45fda90d95" title="backUp This method make a backup of database." alt="" coords="1303,109,1474,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1580,252,1539,203,1512,178,1483,156,1441,137,1443,132,1485,151,1515,174,1543,200,1584,248"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#a91bcaebc9a0f58940ddf4b5acfcfdb2d" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="424,109,657,134"/>
+<area shape="poly" id="edge17_Node000001_Node000004" title=" " alt="" coords="1588,248,1573,213,1551,171,1521,131,1483,98,1424,67,1361,44,1297,27,1230,15,1163,10,1096,8,963,17,839,37,729,63,640,90,576,111,574,106,638,84,728,58,838,32,963,12,1096,3,1163,4,1231,10,1298,21,1363,39,1426,63,1485,94,1525,127,1556,168,1578,211,1593,246"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1DataBase.html#a44cdd4332be17948515ff03461e22c71" title="upgradeDataBase This method upgrade data base to actyaly database version." alt="" coords="705,160,943,185"/>
+<area shape="poly" id="edge20_Node000001_Node000008" title=" " alt="" coords="1564,257,1526,239,1483,224,1340,196,1194,180,1057,173,943,172,943,166,1058,167,1194,174,1341,191,1485,219,1528,234,1566,252"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1DataBase.html#ab43e83e2b219d0585b7cd05ddc23d37e" title="dbLocation This method return location of nodes or clients database." alt="" coords="728,210,920,236"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="1536,260,1484,251,1330,236,1175,227,920,224,920,219,1175,222,1330,230,1484,246,1537,255"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1DataBase.html#a25b102ed0199e08e2e5d0a2c70326f7e" title="Delete an object by its identifier." alt="" coords="1293,261,1484,286"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="1519,276,1484,276,1484,271,1519,271"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1DataBase.html#ae69c20a23974ff769d4a093149b208c6" title="Get a list of all objects from a specified table." alt="" coords="1309,310,1468,336"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="1533,292,1445,313,1443,308,1532,287"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1DataBase.html#a9386c37950d245d8003f12433c27a196" title="Get an object by its identifier." alt="" coords="1303,360,1474,385"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="1574,297,1534,324,1485,351,1453,362,1451,357,1483,346,1531,320,1571,292"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1DataBase.html#a6e3982c83f2745a94d9170b83077cd2e" title="Save an object in the database." alt="" coords="1301,409,1476,434"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="1586,299,1544,350,1517,377,1485,400,1460,411,1458,406,1483,395,1513,373,1540,347,1581,296"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1DataBase.html#a3c607400d5b8e7ebb49fda5a3cf93fac" title="stop This method stop and diskonnect the database." alt="" coords="1314,458,1463,484"/>
+<area shape="poly" id="edge18_Node000001_Node000014" title=" " alt="" coords="1592,300,1576,334,1553,374,1523,415,1486,449,1464,461,1461,456,1482,445,1519,411,1549,371,1572,331,1587,298"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#aded8da0f6bae3cd149b775ef5c24f253" title="onBeforeDBUpgrade This method will be invoked before upgrade database." alt="" coords="991,109,1245,134"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1290,124,1246,124,1246,119,1290,119"/>
+<area shape="poly" id="edge10_Node000002_Node000004" title=" " alt="" coords="1316,109,1245,99,1094,89,976,88,706,106,641,112,640,106,705,100,975,83,1094,83,1246,94,1316,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="977,124,658,124,658,119,977,119"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="1031,139,899,162,898,157,1030,134"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="196,160,376,185"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="463,140,351,162,350,157,462,134"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="5,134,148,160"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="182,162,148,158,148,153,183,157"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d" title="run This method is some as AbstractNode::run but set for node custom work folder. This maybe use for ..." alt="" coords="5,184,148,209"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="183,187,148,191,148,185,182,181"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="738,160,612,137,613,132,739,154"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="692,175,376,175,376,170,692,170"/>
+<area shape="poly" id="edge12_Node000009_Node000005" title=" " alt="" coords="714,215,376,183,376,178,714,210"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1DataBase.html#a835ba2215e9b86928d11b65026ffc9f3" title=" " alt="" coords="1021,458,1215,484"/>
+<area shape="poly" id="edge19_Node000014_Node000015" title=" " alt="" coords="1300,474,1215,474,1215,468,1300,468"/>
+</map>

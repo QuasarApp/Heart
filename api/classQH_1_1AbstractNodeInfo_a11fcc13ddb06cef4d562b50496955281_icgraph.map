@@ -1,0 +1,42 @@
+<map id="QH::AbstractNodeInfo::setStatus" name="QH::AbstractNodeInfo::setStatus">
+<area shape="rect" id="Node000001" title="setStatus This method Sets new value of status node." alt="" coords="1699,357,1861,397"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a91508c98d7052c9186986dd90650c23a" title="removeSocket This method use for remove socket. You can override this method for handle this event." alt="" coords="1486,262,1649,302"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1721,354,1612,304,1614,300,1723,349"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a5b5fedac71ba0a760da283867231a2e1" title="setSct This method sets a new socket for this node or client." alt="" coords="1239,77,1402,117"/>
+<area shape="poly" id="edge21_Node000001_Node000006" title=" " alt="" coords="1751,348,1705,301,1649,252,1593,211,1547,183,1499,159,1435,131,1402,119,1403,114,1437,126,1501,154,1550,178,1596,207,1652,248,1709,297,1754,345"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1AbstractNodeInfo.html#a10d0390fb5bfa5d58bf8195a3ffc4f32" title="reset This method reset all fields of the nodeInfo." alt="" coords="995,393,1157,433"/>
+<area shape="poly" id="edge20_Node000001_Node000015" title=" " alt="" coords="1688,402,1569,428,1436,447,1321,456,1270,454,1205,447,1144,435,1145,430,1206,442,1270,449,1321,450,1436,442,1568,423,1687,397"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1AbstractNodeInfo.html#ab8ca178ded60ce933791cfdfb579da7d" title="updateConfirmStatus This method invoked after process a received package and update confirm status of..." alt="" coords="1484,507,1651,547"/>
+<area shape="poly" id="edge22_Node000001_Node000018" title=" " alt="" coords="1751,408,1706,450,1652,491,1618,510,1616,505,1649,486,1703,446,1748,405"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a7e8a2787da5e2320c96383ef64aec186" title="addParser This method add to cache new parser for command ." alt="" coords="1239,205,1402,245"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1472,263,1402,246,1403,241,1473,257"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#ab1c0a2096e4503bf776156a15f6bd91f" title="ban This node, set trust value to 0." alt="" coords="1223,269,1418,295"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1472,285,1418,285,1418,279,1472,279"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="1205,319,1436,344"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1473,304,1385,321,1384,316,1472,298"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="1539,253,1479,179,1434,131,1401,115,1404,110,1438,127,1483,175,1543,249"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1AbstractNodeInfo.html#a7e7ac36f818b2abcaa0bf902032608df" title="setTrust This method set manually value of this node trust." alt="" coords="1239,393,1402,433"/>
+<area shape="poly" id="edge16_Node000002_Node000016" title=" " alt="" coords="1521,311,1437,358,1365,395,1362,390,1435,353,1519,306"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1AbstractNodeInfo.html#a9c50ea89f39104d72c3da7b382cf8b2a" title="~AbstractNodeInfo" alt="" coords="1239,141,1402,181"/>
+<area shape="poly" id="edge19_Node000002_Node000017" title=" " alt="" coords="1530,256,1486,224,1435,195,1401,182,1403,177,1437,190,1489,220,1533,251"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeInfo.html#a274cbc7cbd3f0176d8eb7a77bd8cab93" title="AbstractNodeInfo." alt="" coords="995,77,1157,117"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1225,99,1157,99,1157,94,1225,94"/>
+<area shape="poly" id="edge14_Node000006_Node000015" title=" " alt="" coords="1228,117,1207,131,1178,160,1154,195,1134,231,1117,269,1095,340,1083,393,1078,392,1089,339,1112,267,1129,229,1149,192,1174,157,1204,127,1225,113"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#a525c9bed45161fefcbc6d3833ff1137a" title="createNodeInfo This method create a nodeInfo object. override this method for create your own nodeInf..." alt="" coords="760,77,947,117"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="981,99,947,99,947,94,981,94"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1AbstractNode.html#aa0a2e3439c01b9b30017ae159c6885ea" title="registerSocket This method registration new socket object." alt="" coords="516,77,712,117"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="746,99,712,99,712,94,746,94"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNode.html#a5d66fe8476e6a17bcca8ee66e177a575" title="addNode &#45; Connect to node (server) with address." alt="" coords="263,55,467,80"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="502,86,467,82,467,77,503,81"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1AbstractNode.html#a8f2a1fec2f063d16af89af0cb7183a5d" title="incomingConnection This is ovverided method of QTCPServer." alt="" coords="261,105,468,145"/>
+<area shape="poly" id="edge13_Node000009_Node000014" title=" " alt="" coords="503,112,468,116,468,110,502,107"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNode.html#a6c64327f29ae5e1b38b8d06212948631" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="7,5,211,31"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="285,55,175,33,176,28,286,49"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNode.html#a625931eebfe7c7710e2cb71ce47b803e" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="7,55,211,80"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="249,70,211,70,211,65,249,65"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,104,213,129"/>
+<area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="286,85,176,107,175,101,285,80"/>
+<area shape="poly" id="edge15_Node000015_Node000015" title=" " alt="" coords="1114,381,1100,374,1076,371,1055,373,1042,378,1037,384,1040,392,1035,393,1032,383,1039,374,1054,368,1076,366,1102,369,1116,376"/>
+<area shape="poly" id="edge17_Node000016_Node000015" title=" " alt="" coords="1225,415,1157,415,1157,410,1225,410"/>
+<area shape="poly" id="edge18_Node000016_Node000016" title=" " alt="" coords="1362,381,1347,374,1321,371,1297,373,1283,378,1278,384,1281,392,1275,393,1273,383,1280,374,1296,368,1321,366,1349,369,1364,376"/>
+</map>

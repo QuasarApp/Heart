@@ -1,0 +1,10 @@
+<map id="QH::AsyncRenderLoop::isRun" name="QH::AsyncRenderLoop::isRun">
+<area shape="rect" id="Node000001" title="isRun This method returns the state of the render loop." alt="" coords="463,55,629,95"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AsyncRenderLoop.html#a4ec2ae4c64b004760b99f21fcf9b4630" title="run This method starts the render loop." alt="" coords="220,5,415,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="452,55,368,33,369,28,453,49"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AsyncRenderLoop.html#a389284fbd29360d494de26cd1627ce25" title="stop This method stops the render loop." alt="" coords="234,55,401,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="449,78,401,78,401,73,449,73"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AsyncRenderLoop.html#a9d8e9b87969f1f9cb9d16343825e74a2" title=" " alt="" coords="5,85,172,125"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="464,101,415,110,352,115,287,117,172,114,172,108,287,112,351,110,414,105,463,96"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="221,90,173,97,172,91,220,85"/>
+</map>

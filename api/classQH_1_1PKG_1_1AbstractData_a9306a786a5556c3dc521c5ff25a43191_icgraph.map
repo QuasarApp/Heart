@@ -1,0 +1,5 @@
+<map id="QH::PKG::AbstractData::command" name="QH::PKG::AbstractData::command">
+<area shape="rect" id="Node000001" title="command This static method that return glaball code of this object." alt="" coords="232,5,403,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="5,5,184,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,28,184,28,184,23,218,23"/>
+</map>

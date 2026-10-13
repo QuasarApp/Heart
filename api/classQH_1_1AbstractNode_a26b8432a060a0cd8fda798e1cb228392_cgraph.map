@@ -1,0 +1,9 @@
+<map id="QH::AbstractNode::nodeErrorOccured" name="QH::AbstractNode::nodeErrorOccured">
+<area shape="rect" id="Node000001" title="nodeErrorOccured This slot invoked when error ocured in the nodeInfo." alt="" coords="5,35,215,75"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a6e8f12dfe44a951590f139a6366c8c80" title="networkAddress This method return network address of current node or client." alt="" coords="277,5,439,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,40,263,34,263,39,215,45"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1HostAddress.html#a66403f64a0da84060763b8645be42403" title="toString this method convert the Host Address value to string value." alt="" coords="263,70,453,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="215,64,249,68,248,73,215,69"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1HostAddress.html#a2e69981566e7f12c0ccbda6651861b4e" title="The port method return port of node." alt="" coords="501,70,668,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="454,80,488,80,488,85,454,85"/>
+</map>

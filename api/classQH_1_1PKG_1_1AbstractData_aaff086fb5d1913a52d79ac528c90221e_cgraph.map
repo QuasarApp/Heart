@@ -1,0 +1,9 @@
+<map id="QH::PKG::AbstractData::fromPakcage" name="QH::PKG::AbstractData::fromPakcage">
+<area shape="rect" id="Node000001" title="fromPakcage &#45; This method initialize the current object from a package class object." alt="" coords="5,23,176,63"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="224,31,429,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,41,210,41,210,46,176,46"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="487,5,701,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="429,31,473,27,473,32,430,36"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="477,55,711,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="430,50,464,53,464,58,429,55"/>
+</map>

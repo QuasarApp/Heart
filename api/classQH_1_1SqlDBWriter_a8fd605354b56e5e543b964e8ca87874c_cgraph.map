@@ -1,0 +1,5 @@
+<map id="QH::SqlDBWriter::enableFK" name="QH::SqlDBWriter::enableFK">
+<area shape="rect" id="Node000001" title="enableFK This method enable foreign key for the sqlite database." alt="" coords="5,5,204,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="252,5,405,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,15,238,15,238,21,204,21"/>
+</map>

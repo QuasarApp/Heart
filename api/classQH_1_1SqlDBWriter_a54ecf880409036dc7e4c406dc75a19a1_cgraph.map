@@ -1,0 +1,5 @@
+<map id="QH::SqlDBWriter::databaseLocation" name="QH::SqlDBWriter::databaseLocation">
+<area shape="rect" id="Node000001" title="databaseLocation This method return location of database. If it is sqlite then return path to db file..." alt="" coords="5,5,203,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="251,13,404,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,23,237,23,237,28,203,28"/>
+</map>

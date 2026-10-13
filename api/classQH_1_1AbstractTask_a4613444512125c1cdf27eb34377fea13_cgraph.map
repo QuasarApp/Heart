@@ -1,0 +1,7 @@
+<map id="QH::AbstractTask::execute" name="QH::AbstractTask::execute">
+<area shape="rect" id="Node000001" title="execute This method will be invoked when task be executed." alt="" coords="5,31,197,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractTask.html#a3b2babac1ecdac031ecda3dc3a9031ad" title="isValid This method check task configuration and return true if task is valid else false." alt="" coords="245,5,429,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,30,232,27,232,32,198,36"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractTask.html#ab038b5a8e81c74bd1700833a04dbd91e" title="taskId This method return id of this task." alt="" coords="247,55,428,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="198,50,233,54,233,59,197,56"/>
+</map>

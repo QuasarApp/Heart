@@ -1,0 +1,14 @@
+<map id="QH::SqlDB::SqlDB" name="QH::SqlDB::SqlDB">
+<area shape="rect" id="Node000001" title=" " alt="" coords="944,31,1080,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#a5d98b780aaaeac57a13ca500a79f43c5" title="initDefaultDbObjects This method create a default cache and database writer objects if the input poin..." alt="" coords="705,23,896,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="930,46,896,46,896,41,930,41"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="196,31,376,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="691,46,376,46,376,41,691,41"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#a91bcaebc9a0f58940ddf4b5acfcfdb2d" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="424,56,657,81"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="692,57,658,60,657,55,691,51"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="5,5,148,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="182,33,148,29,148,24,183,28"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d" title="run This method is some as AbstractNode::run but set for node custom work folder. This maybe use for ..." alt="" coords="5,55,148,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="183,58,148,62,148,57,182,53"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="410,58,376,55,377,50,410,53"/>
+</map>

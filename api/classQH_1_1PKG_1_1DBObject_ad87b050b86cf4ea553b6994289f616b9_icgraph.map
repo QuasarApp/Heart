@@ -1,0 +1,9 @@
+<map id="QH::PKG::DBObject::isBundle" name="QH::PKG::DBObject::isBundle">
+<area shape="rect" id="Node000001" title="isBundle This method definef determines whether the object will be abstract (composite objects) or si..." alt="" coords="540,35,695,75"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#a4c69d1ac91f3998609e5a13f5e9e0935" title="fromSqlRecord This method should be initialize this object from the executed sqlRecord...." alt="" coords="307,5,462,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="525,46,462,38,463,32,526,41"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1SqlDBWriter.html#acbc1518dd1e6ad0be6d572b5244b4c10" title="selectQuery generate select query to database from parameters." alt="" coords="277,70,492,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="526,68,490,73,490,67,526,63"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SqlDBWriter.html#af5d8296ab694df3fbdfcfb26032891e9" title="getAllObjects This method execute a select method of the templateObject and return list of all select..." alt="" coords="5,70,229,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="264,85,230,85,230,80,264,80"/>
+</map>

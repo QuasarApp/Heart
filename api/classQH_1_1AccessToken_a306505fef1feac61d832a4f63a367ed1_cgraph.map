@@ -1,0 +1,9 @@
+<map id="QH::AccessToken::AccessToken" name="QH::AccessToken::AccessToken">
+<area shape="rect" id="Node000001" title="AccessToken copy constructor." alt="" coords="5,55,228,80"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AccessToken.html#a7a9a27fb6f69fa164e69e6f996557600" title="AccessToken This constructor create token on duration (in seconds)." alt="" coords="276,5,499,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,52,303,31,304,36,187,57"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AccessToken.html#abf0f81aa301fa880798687c066198254" title="clearThis Method reset all data of token." alt="" coords="301,55,473,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,65,287,65,287,70,228,70"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AccessToken.html#aa055fd5f88b0e2565995be5c9de804d7" title="isValid This method check this toke to valid." alt="" coords="296,104,479,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="187,77,304,99,303,104,187,83"/>
+</map>

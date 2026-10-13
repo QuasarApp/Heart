@@ -1,0 +1,16 @@
+<map id="QH::ISqlDB::setLastUpdateTime" name="QH::ISqlDB::setLastUpdateTime">
+<area shape="rect" id="Node000001" title="setLastUpdateTime This method set new value of the update time." alt="" coords="1221,31,1449,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#a4e1274edcad6e7762aa2c20a8be605f2" title="globalUpdateDataBasePrivate This method update(write) all data from cache into database...." alt="" coords="985,23,1173,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1208,46,1174,46,1174,41,1208,41"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1ISqlDB.html#a3b75d32a8116d8bc7dd4cb856aed5113" title="getFromCache This method return strong pointer to the database object from cache (pool)." alt="" coords="497,5,691,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="971,40,691,26,692,20,971,35"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1ISqlDB.html#a774a614db4613366ad99b4dd9f54c19d" title="globalUpdateDataBase This is base method for syncing data from the cache with database." alt="" coords="749,51,937,91"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="972,59,938,63,937,58,971,53"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1ISqlDB.html#a452699ac344620fe5a37375d8312aca4" title=" " alt="" coords="251,5,439,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="483,21,439,21,439,15,483,15"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1ISqlDB.html#abcadb2dd92c17c2899a6cffe9216f518" title="changeObjects This method change object of the database." alt="" coords="5,5,203,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="237,21,203,21,203,15,237,15"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="736,51,653,33,655,28,737,46"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1ISqlDB.html#a1f2a03c6dd9215e8277b8ff1ea3858ca" title="prepareForDelete This method must be prepare object for delete. Override this for working main functi..." alt="" coords="487,59,701,84"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="735,74,701,74,701,69,735,69"/>
+</map>

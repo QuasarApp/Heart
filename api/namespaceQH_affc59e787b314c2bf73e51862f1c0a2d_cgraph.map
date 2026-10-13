@@ -1,0 +1,6 @@
+<map id="QH::qHash" name="QH::qHash">
+<area shape="rect" id="Node000001" title="qHash calc hash of the CacheAction enum." alt="" coords="5,29,96,55"/>
+<area shape="rect" id="Node000002" href="$namespaceQH.html#a45ccfd42a87e2eaa3aff092007b0c5d3" title="qHash &#45; Simple hash function of NodeCoonectionStatus" alt="" coords="144,29,235,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="96,39,130,39,130,45,96,45"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="166,30,161,21,163,11,173,5,189,3,209,6,217,15,213,18,206,11,189,8,175,10,168,15,166,20,170,28"/>
+</map>

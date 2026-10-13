@@ -1,0 +1,5 @@
+<map id="QH::PKG::MultiversionData::toBytesOf" name="QH::PKG::MultiversionData::toBytesOf">
+<area shape="rect" id="Node000001" title="toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages." alt="" coords="251,5,448,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1MultiversionData.html#ab3119f5ccb454aecc559e9ff7952dc02" title="toPackage This method convert this class object to the package. For more info see Package class." alt="" coords="5,5,203,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,28,203,28,203,23,237,23"/>
+</map>

@@ -1,0 +1,25 @@
+<map id="QH::APIVersionParser::sendSupportedAPI" name="QH::APIVersionParser::sendSupportedAPI">
+<area shape="rect" id="Node000001" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="5,149,164,189"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#a7dd711e95aa8ac11ba718ec56d1e9f71" title="multiVersionPackages return list of the supported multiversions packages." alt="" coords="212,5,396,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,147,148,102,178,77,211,55,222,49,225,53,213,60,182,81,152,106,106,151"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#a3a8de0d71e500e5b5a7c2447e89f71a5" title="sendData This method send data object another to node" alt="" coords="222,70,386,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="122,147,211,106,237,97,239,102,213,110,124,152"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1APIVersion.html#a2995f64d4a92c471eb28e16d3d84ca2f" title=" " alt="" coords="227,120,381,160"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="164,156,213,150,213,155,165,161"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1DistVersion.html#a24ce6dc27a977260345b792490243a02" title=" " alt="" coords="214,185,394,210"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="165,177,201,181,200,187,164,182"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1DistVersion.html#a4c6c999a12bbb09f87724b207fc74dbc" title=" " alt="" coords="216,234,392,259"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="130,187,213,220,237,228,236,233,211,225,128,192"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1APIVersion.html#a073cf4907881b91081a8a123e4bb9ebf" title=" " alt="" coords="221,284,387,324"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="108,188,154,229,213,270,226,276,223,281,211,274,151,233,104,192"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1iParser.html#a8e02f14c79abb1945d29e75eca621905" title=" " alt="" coords="481,34,615,59"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="386,68,467,56,468,61,386,73"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node" alt="" coords="444,107,652,133"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="386,93,452,103,451,108,386,98"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="710,34,901,59"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="616,44,696,44,696,49,616,49"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="764,36,755,26,760,16,777,9,805,7,841,11,852,16,856,22,851,25,848,20,840,16,805,13,778,15,763,20,760,25,768,32"/>
+<area shape="poly" id="edge8_Node000006_Node000006" title=" " alt="" coords="509,109,500,99,505,89,521,83,548,81,582,85,592,89,596,95,591,98,588,93,581,90,548,86,522,88,508,93,505,98,513,105"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="700,107,911,133"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="652,117,687,117,687,123,652,123"/>
+</map>

@@ -1,0 +1,20 @@
+<map id="QH::AbstractNode::sendPackage" name="QH::AbstractNode::sendPackage">
+<area shape="rect" id="Node000001" title="sendPackage This method prepare and send to target address a package." alt="" coords="5,131,236,156"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="300,80,455,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,128,298,105,299,111,187,133"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="284,156,471,181"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="237,152,271,155,270,161,236,157"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="550,5,721,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="409,77,518,39,551,31,552,36,519,45,411,82"/>
+<area shape="rect" id="Node000004" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="561,55,709,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="455,82,547,73,548,79,455,88"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="800,80,1005,105"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="455,90,786,90,786,95,455,95"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="710,72,786,79,786,84,709,77"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="519,156,752,181"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="471,166,505,166,505,171,471,171"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="537,205,734,231"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="445,179,555,200,554,205,444,184"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="813,205,992,231"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="734,215,799,215,799,221,734,221"/>
+</map>

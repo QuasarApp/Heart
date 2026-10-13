@@ -1,0 +1,38 @@
+<map id="QH::AbstractNode::sendData" name="QH::AbstractNode::sendData">
+<area shape="rect" id="Node000001" title="sendData This method send data object another to node" alt="" coords="948,170,1156,195"/>
+<area shape="poly" id="edge12_Node000001_Node000001" title=" " alt="" coords="1100,161,1097,156,1089,153,1052,149,1023,151,1008,156,1005,161,1013,168,1009,172,1000,162,1004,152,1022,146,1052,143,1090,147,1101,152,1104,158"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a74f7e468330622c2ed2c42baf2f78ded" title="badRequest This method is send data about error of request." alt="" coords="673,42,896,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1025,163,969,121,935,99,899,81,866,70,867,65,901,76,938,95,972,117,1028,159"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="413,42,621,67"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="1034,160,1012,128,981,92,943,58,899,32,853,17,806,10,757,8,709,11,622,26,555,45,554,39,621,21,709,6,757,3,806,5,855,12,901,27,946,53,985,88,1016,125,1038,157"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header packge of the big data." alt="" coords="442,189,593,229"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="934,191,593,208,593,203,934,186"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="9,189,160,229"/>
+<area shape="poly" id="edge10_Node000001_Node000006" title=" " alt="" coords="934,181,900,180,706,172,555,164,405,163,316,169,212,180,153,192,152,187,212,175,316,164,404,158,555,158,706,167,900,175,934,176"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#ad9fe7e31fd993db7bc9bfe816b7fea98" title="ping This method send ping package to address for testing connection." alt="" coords="697,91,872,117"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="997,168,899,139,832,119,833,114,901,133,998,163"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="669,303,900,329"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="1029,207,973,251,938,274,901,293,864,306,863,301,899,288,935,269,970,246,1025,202"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1iParser.html#a59b7936d0681224d29a93105b6b182c9" title="sendData This method send data object another to node" alt="" coords="703,353,867,378"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="1037,209,982,276,944,312,901,342,868,356,866,351,899,338,941,308,978,272,1033,205"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1iParser.html#a3a8de0d71e500e5b5a7c2447e89f71a5" title="sendData This method send data object another to node" alt="" coords="703,254,867,279"/>
+<area shape="poly" id="edge14_Node000001_Node000010" title=" " alt="" coords="998,202,827,257,825,251,997,197"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="659,57,622,57,622,52,659,52"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,189,364,229"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="428,212,364,212,364,207,428,207"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="199,221,160,221,160,215,199,216"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="174,198,213,198,213,203,174,203"/>
+<area shape="poly" id="edge9_Node000007_Node000003" title=" " alt="" coords="701,91,587,70,588,65,702,86"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="440,318,595,343"/>
+<area shape="poly" id="edge15_Node000010_Node000011" title=" " alt="" coords="705,285,670,293,622,308,573,321,572,315,621,303,669,288,704,280"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1BigDataParser.html#a89357e037e1008aaf0d1648c13cf0542" title="finishPart This metho process last package of big data transaction." alt="" coords="442,253,593,293"/>
+<area shape="poly" id="edge19_Node000010_Node000014" title=" " alt="" coords="689,272,593,274,593,269,689,266"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="438,368,597,408"/>
+<area shape="poly" id="edge21_Node000010_Node000015" title=" " alt="" coords="691,283,671,293,655,307,647,323,639,340,623,357,598,371,596,366,620,353,635,337,643,321,651,304,668,289,688,278"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,318,365,343"/>
+<area shape="poly" id="edge16_Node000011_Node000012" title=" " alt="" coords="426,342,366,342,366,337,426,337"/>
+<area shape="poly" id="edge17_Node000012_Node000011" title=" " alt="" coords="379,319,439,319,439,325,379,325"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,311,164,351"/>
+<area shape="poly" id="edge18_Node000012_Node000013" title=" " alt="" coords="198,333,164,333,164,328,198,328"/>
+<area shape="poly" id="edge20_Node000014_Node000005" title=" " alt="" coords="432,252,360,232,361,227,433,247"/>
+</map>

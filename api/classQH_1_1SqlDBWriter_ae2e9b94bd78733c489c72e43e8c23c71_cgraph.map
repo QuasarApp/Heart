@@ -1,0 +1,8 @@
+<map id="QH::SqlDBWriter::initDb" name="QH::SqlDBWriter::initDb">
+<area shape="rect" id="Node000001" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea..." alt="" coords="5,45,181,70"/>
+<area shape="poly" id="edge3_Node000001_Node000001" title=" " alt="" coords="56,46,48,36,53,26,68,20,93,18,125,22,137,31,134,35,123,27,93,23,69,25,56,30,54,36,60,43"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#af8374167be0dc29d3c68c1f2d0bcb50d" title="defaultInitPararm This method return default parameters of the database." alt="" coords="229,5,412,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,42,215,37,216,43,182,48"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1SqlDBWriter.html#aebc0936d9761274f2c00dd7c93655cee" title="getInitPararm This method read parameters of database." alt="" coords="231,69,410,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="182,67,218,72,217,77,181,72"/>
+</map>

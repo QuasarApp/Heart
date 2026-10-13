@@ -1,0 +1,9 @@
+<map id="QH::ISqlDB::pushToQueue" name="QH::ISqlDB::pushToQueue">
+<area shape="rect" id="Node000001" title="pushToQueue this method should be add the object to the update queue in the physical data dash." alt="" coords="729,5,917,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#a3b75d32a8116d8bc7dd4cb856aed5113" title="getFromCache This method return strong pointer to the database object from cache (pool)." alt="" coords="487,5,681,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="716,21,681,21,681,15,716,15"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1ISqlDB.html#a452699ac344620fe5a37375d8312aca4" title=" " alt="" coords="251,5,439,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="473,21,439,21,439,15,473,15"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1ISqlDB.html#abcadb2dd92c17c2899a6cffe9216f518" title="changeObjects This method change object of the database." alt="" coords="5,5,203,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="237,21,203,21,203,15,237,15"/>
+</map>

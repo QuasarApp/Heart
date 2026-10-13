@@ -1,0 +1,7 @@
+<map id="QH::DbAddress::DbAddress" name="QH::DbAddress::DbAddress">
+<area shape="rect" id="Node000001" title="DbAddress this constructor initialize a default database address." alt="" coords="5,31,204,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#ad6af2ba06607b38164fea920ada92ea7" title="id This method return id of object in table." alt="" coords="263,5,403,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,30,249,25,249,30,204,35"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DbAddress.html#ab7916c57de8d8c8f2a19de8a08228f67" title="table This method return table name." alt="" coords="252,55,413,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,51,238,55,238,60,204,56"/>
+</map>

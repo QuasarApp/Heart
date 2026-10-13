@@ -1,0 +1,7 @@
+<map id="QH::AbstractNodeInfo::confirmData" name="QH::AbstractNodeInfo::confirmData">
+<area shape="rect" id="Node000001" title="confirmData This method check all data of node and return true. If node is confirmed." alt="" coords="5,37,168,77"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivere own version to the distanation node." alt="" coords="216,5,379,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,42,202,37,203,42,169,48"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#aed86119d910f2e64cec6e61dab61af45" title="fVersionReceived This method return true if this node receive version information." alt="" coords="216,69,379,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="169,67,203,72,202,78,168,72"/>
+</map>

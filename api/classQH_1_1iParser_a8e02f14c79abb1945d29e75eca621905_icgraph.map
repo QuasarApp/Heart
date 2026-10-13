@@ -1,0 +1,37 @@
+<map id="QH::iParser::node" name="QH::iParser::node">
+<area shape="rect" id="Node000001" title=" " alt="" coords="923,242,1057,267"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#aac0935f6d9d0254d3ebc264b832bde5f" title=" " alt="" coords="706,5,865,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="978,229,963,192,941,146,911,100,873,59,855,48,858,43,876,55,915,96,945,144,968,190,983,228"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#ad9f5846d0c4d680cabb972e029a634c3" title="getSelectedApiParser This method return apiParser for selected node" alt="" coords="701,69,869,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="970,233,929,182,902,154,873,130,841,112,843,107,876,126,906,151,933,178,974,229"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header packge of the big data." alt="" coords="455,184,606,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="909,248,606,215,606,210,909,243"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="9,184,160,224"/>
+<area shape="poly" id="edge13_Node000001_Node000007" title=" " alt="" coords="943,240,874,217,692,173,617,161,546,154,475,152,399,155,212,175,153,187,152,181,212,169,399,150,475,147,546,148,617,155,693,168,875,212,945,235"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="696,393,875,433"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="973,280,932,328,876,377,843,396,840,391,873,372,928,324,969,277"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="453,377,608,402"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="965,278,924,306,876,332,807,354,736,370,609,387,608,382,735,365,805,349,874,327,922,302,962,274"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1BigDataParser.html#a89357e037e1008aaf0d1648c13cf0542" title="finishPart This metho process last package of big data transaction." alt="" coords="455,248,606,288"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="909,260,606,269,606,263,908,254"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1iParser.html#a59b7936d0681224d29a93105b6b182c9" title="sendData This method send data object another to node" alt="" coords="703,458,867,483"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="983,281,968,318,946,363,915,409,876,447,854,460,851,456,873,443,911,405,941,361,963,316,978,279"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1iParser.html#a3a8de0d71e500e5b5a7c2447e89f71a5" title="sendData This method send data object another to node" alt="" coords="703,293,867,318"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="925,273,838,295,837,290,924,268"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a7e15cb6b920947141c6b51f52e1e5053" title="AbstractNode &#45; Base constructor of node." alt="" coords="413,13,648,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="692,28,648,28,648,23,692,23"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,184,364,224"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="441,207,364,207,364,201,441,201"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="199,216,160,215,160,210,199,210"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="174,192,213,193,213,198,174,198"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,377,365,402"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="439,401,366,400,366,395,439,395"/>
+<area shape="poly" id="edge11_Node000010_Node000009" title=" " alt="" coords="379,378,453,378,453,384,379,383"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,369,164,409"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="198,392,164,392,164,387,198,387"/>
+<area shape="poly" id="edge15_Node000012_Node000006" title=" " alt="" coords="441,247,364,226,365,221,443,242"/>
+<area shape="poly" id="edge18_Node000014_Node000009" title=" " alt="" coords="733,325,697,340,674,354,649,366,607,379,605,374,647,362,671,349,695,335,731,320"/>
+<area shape="poly" id="edge19_Node000014_Node000012" title=" " alt="" coords="689,294,606,282,607,276,690,289"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="451,312,610,352"/>
+<area shape="poly" id="edge20_Node000014_Node000015" title=" " alt="" coords="690,318,610,326,610,321,689,313"/>
+</map>

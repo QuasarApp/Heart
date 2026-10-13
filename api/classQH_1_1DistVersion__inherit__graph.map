@@ -1,0 +1,9 @@
+<map id="QH::DistVersion" name="QH::DistVersion">
+<area shape="rect" id="Node000001" title="The DistVersion class This is information of supported versions of the destinations api." alt="" coords="81,472,244,757"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="11,119,146,424"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,436,130,471,125,472,117,438"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,5,152,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="81,84,81,119,76,119,76,84"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="170,239,326,304"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="239,318,201,472,196,471,234,317"/>
+</map>

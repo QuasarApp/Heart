@@ -1,0 +1,5 @@
+<map id="QH::SqlDBWriter::insertQuery" name="QH::SqlDBWriter::insertQuery">
+<area shape="rect" id="Node000001" title="insertQuery This method prepare the insert object query." alt="" coords="5,5,219,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="267,5,420,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,15,253,15,253,21,219,21"/>
+</map>

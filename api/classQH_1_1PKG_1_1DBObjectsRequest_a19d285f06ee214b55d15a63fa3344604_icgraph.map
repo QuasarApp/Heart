@@ -1,0 +1,5 @@
+<map id="QH::PKG::DBObjectsRequest::clear" name="QH::PKG::DBObjectsRequest::clear">
+<area shape="rect" id="Node000001" title="clear This method clear all data of database object. Override This method for remove or reset your ow..." alt="" coords="260,5,467,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObjectsRequest.html#ae8390197c828ada4631d2204694fe3ff" title="fromSqlRecord This method should be initialize this object from the executed sqlRecord...." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,28,212,28,212,23,247,23"/>
+</map>

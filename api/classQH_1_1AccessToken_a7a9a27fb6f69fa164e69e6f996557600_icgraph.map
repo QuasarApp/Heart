@@ -1,0 +1,12 @@
+<map id="QH::AccessToken::AccessToken" name="QH::AccessToken::AccessToken">
+<area shape="rect" id="Node000001" title="AccessToken This constructor create token on duration (in seconds)." alt="" coords="535,81,757,107"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AccessToken.html#a306505fef1feac61d832a4f63a367ed1" title="AccessToken copy constructor." alt="" coords="264,5,487,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="586,80,421,33,422,28,587,75"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AccessToken.html#a710291113c7fea553e95ee6919bdae5c" title="operator != compare left and right values with type AccessToken." alt="" coords="5,107,216,132"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="521,92,397,91,264,97,174,109,173,104,264,91,397,85,521,86"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AccessToken.html#a7fb255e739f0daf4de8ab17772b084c3" title="operator = this is operator of copy objects." alt="" coords="272,107,479,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="521,108,479,112,479,107,521,103"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AccessToken.html#a6606860eb1a009e321e80c99c9493b03" title="operator == compare left and right values with type AccessToken." alt="" coords="267,156,484,181"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="594,114,487,146,436,159,435,153,486,141,593,108"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="293,156,179,135,180,129,294,151"/>
+</map>

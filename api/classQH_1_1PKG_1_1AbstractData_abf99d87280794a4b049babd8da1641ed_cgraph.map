@@ -1,0 +1,32 @@
+<map id="QH::PKG::AbstractData::toString" name="QH::PKG::AbstractData::toString">
+<area shape="rect" id="Node000001" title="toString &#45; Return a string implementation for this object." alt="" coords="5,98,176,138"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html#ad510842b57d0b5f35323839572ce4b2b" title="cmd &#45; This is command of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="661,5,868,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,95,224,83,449,49,647,26,648,31,449,54,224,89,169,101"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1AbstractData.html#acc7826b8610064c1afd4fc09fe383459" title="cmdString &#45; This is command string of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="224,98,395,138"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,124,210,124,210,130,176,129"/>
+<area shape="poly" id="edge17_Node000003_Node000001" title=" " alt="" coords="224,112,190,112,190,106,224,107"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1AbstractData.html#a6333bd90eb3c6606586dd6261cae4350" title="isValid This method check current object to valid." alt="" coords="679,206,850,246"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="394,135,443,147,667,200,665,206,442,153,392,141"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1AbstractData.html#a5a9b243f140fce1a72707858a1182720" title="toPackage This method convert this class object to the package. For more info see Package class." alt="" coords="443,98,613,138"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="395,115,429,115,429,121,395,121"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="557,96,604,67,660,40,683,32,685,37,662,44,607,71,560,100"/>
+<area shape="poly" id="edge12_Node000005_Node000004" title=" " alt="" coords="561,136,608,164,662,192,681,199,679,204,660,196,605,169,558,140"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="947,105,1118,131"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="613,115,934,115,934,121,613,121"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="687,55,842,80"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="613,97,691,80,692,86,614,102"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="671,156,858,181"/>
+<area shape="poly" id="edge13_Node000005_Node000010" title=" " alt="" coords="614,134,692,150,691,156,613,139"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="833,77,952,100,951,105,832,83"/>
+<area shape="rect" id="Node000008" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="959,56,1107,81"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="842,65,945,66,945,71,842,70"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="1197,31,1403,56"/>
+<area shape="poly" id="edge11_Node000007_Node000009" title=" " alt="" coords="831,52,916,41,1055,35,1184,36,1184,41,1055,40,916,46,831,57"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="1106,59,1183,52,1184,57,1107,64"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="916,156,1149,181"/>
+<area shape="poly" id="edge14_Node000010_Node000011" title=" " alt="" coords="858,166,902,166,902,171,858,171"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="934,205,1131,231"/>
+<area shape="poly" id="edge15_Node000010_Node000012" title=" " alt="" coords="835,179,950,200,949,205,834,184"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="1211,205,1389,231"/>
+<area shape="poly" id="edge16_Node000012_Node000013" title=" " alt="" coords="1131,215,1197,215,1197,221,1131,221"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="QH::AbstractNode::ping" name="QH::AbstractNode::ping">
+<area shape="rect" id="Node000001" title="ping This method send ping package to address for testing connection." alt="" coords="5,43,180,68"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a6b82304763449743abf43501a02b1263" title="address &#45; Thim method return own network address of current node (server)." alt="" coords="233,5,431,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,40,237,30,237,35,175,45"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node" alt="" coords="228,79,436,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,65,234,74,233,79,177,71"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="293,80,285,70,289,60,305,54,332,52,365,56,378,65,375,70,363,61,332,57,307,59,293,64,290,70,297,77"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="484,79,695,104"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="436,89,471,89,471,94,436,94"/>
+</map>

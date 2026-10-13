@@ -1,0 +1,18 @@
+<map id="QH::PKG::BadRequest::BadRequest" name="QH::PKG::BadRequest::BadRequest">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,125,168,165"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913" title="BadRequest." alt="" coords="237,64,400,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,123,228,105,230,110,164,128"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="216,161,421,186"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="169,152,203,157,202,162,168,158"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c" title="err This method return a text of error message." alt="" coords="751,11,940,37"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="354,61,407,37,469,17,538,7,608,3,737,8,737,13,608,9,538,13,470,22,409,42,357,66"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BadRequest.html#a7d13c8e8dfa93f1f82ea1986219541b1" title="setErr &#45; Set a error message." alt="" coords="505,32,667,72"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="400,72,491,61,491,66,400,77"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1BadRequest.html#a0ade1a713015f14614111645ba1d0f27" title="setErrCode This method set error code." alt="" coords="505,96,667,136"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="400,91,491,102,491,107,400,96"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="667,40,737,33,737,38,668,46"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="479,161,693,186"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="422,171,465,171,465,176,422,176"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="469,210,703,235"/>
+<area shape="poly" id="edge8_Node000006_Node000008" title=" " alt="" coords="389,183,504,205,503,210,388,189"/>
+</map>

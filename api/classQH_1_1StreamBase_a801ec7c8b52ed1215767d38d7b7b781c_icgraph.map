@@ -1,0 +1,30 @@
+<map id="QH::StreamBase::fromStream" name="QH::StreamBase::fromStream">
+<area shape="rect" id="Node000001" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="849,279,1064,304"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="591,241,797,267"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="853,279,784,269,784,264,854,274"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2" title="This is wraper over fromStream. For see more information see toStream method." alt="" coords="587,315,801,340"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="850,309,787,317,787,312,850,303"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AccessToken.html#a9aec9093056fedad8e93f4b689387dc1" title="AccessToken &#45; Create token from bytes array of another token." alt="" coords="314,5,537,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="679,230,658,189,627,139,587,88,563,65,537,46,512,33,514,28,540,41,566,61,590,84,632,135,663,186,684,228"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BadRequest.html#a01fc2487dc79320538caae60d02ada4e" title=" " alt="" coords="344,55,507,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="672,232,616,171,579,138,537,110,506,96,508,91,540,105,582,134,620,167,676,229"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1StreamBase.html#ae1809a88c20eb34def5d2abe660d15cb" title="copy This is base copy method for all StreamBase structures. Default implementation it is copy from b..." alt="" coords="341,120,509,145"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="664,235,607,197,538,160,499,148,500,143,540,156,610,192,667,231"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1DBObjectsRequest.html#a298d28f9b3873c2d3cab01f86f990bcd" title="DBObjectsRequest This is default constructor for parsing packages." alt="" coords="322,170,529,210"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="626,241,510,213,511,207,627,235"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1DeleteObject.html#aa9d70e1e966d6bf63b3e4b3a1f696578" title=" " alt="" coords="340,234,511,274"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="577,257,511,257,511,251,577,251"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1StreamBase.html#a43522cd09c37ab3fcb6d75854691fb55" title="fromBase64 This method provide initialization of object from the base64 string." alt="" coords="317,299,533,324"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="621,272,486,301,485,296,620,267"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1AbstractData.html#aaff086fb5d1913a52d79ac528c90221e" title="fromPakcage &#45; This method initialize the current object from a package class object." alt="" coords="340,349,511,389"/>
+<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="602,274,588,282,573,295,565,309,556,324,540,339,512,353,510,348,537,334,552,321,560,306,569,291,585,277,600,269"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1Ping.html#ac3d177fda7a075664eb7cbe97d7b02be" title=" " alt="" coords="351,413,500,439"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="596,276,588,281,576,295,569,310,565,340,561,372,554,388,540,403,522,415,501,423,499,418,519,410,537,399,549,385,556,370,560,340,564,308,572,292,585,277,593,271"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1StreamBase.html#ac6bb1881b3b2716143666b0d59131b49" title=" " alt="" coords="312,463,539,488"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="595,276,589,281,573,302,566,322,566,366,565,410,557,432,541,453,524,465,521,460,537,449,553,429,560,409,560,366,561,321,568,299,585,277,591,272"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html#a0dd29d2bd00cf6aa93fe4019c3fa864f" title="DBObjectsRequest This is default constructor for parsing packages." alt="" coords="5,124,264,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="308,177,264,171,265,166,309,172"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html#af995f9cbb509385e95341ae85a916c39" title="DBObjectsRequest This contsrucor create a object with request the array of T objects." alt="" coords="5,203,264,257"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="309,209,265,215,264,210,308,203"/>
+<area shape="poly" id="edge14_Node000014_Node000014" title=" " alt="" coords="741,306,738,301,730,297,694,293,666,295,651,300,648,306,656,313,652,316,643,306,647,296,665,290,694,288,731,292,742,297,745,303"/>
+</map>

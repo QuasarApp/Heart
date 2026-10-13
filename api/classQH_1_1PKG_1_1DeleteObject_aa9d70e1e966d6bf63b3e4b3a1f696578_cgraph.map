@@ -1,0 +1,18 @@
+<map id="QH::PKG::DeleteObject::DeleteObject" name="QH::PKG::DeleteObject::DeleteObject">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,63,176,103"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DeleteObject.html#a64a55b5094fb1ac9c357b6efc564e7e9" title=" " alt="" coords="241,5,412,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,60,230,46,231,51,174,65"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="224,70,429,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="176,80,210,80,210,85,176,85"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="233,119,420,145"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="177,98,253,114,252,119,176,103"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="487,45,701,70"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="429,70,473,66,473,71,430,76"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="477,94,711,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="430,89,464,92,464,98,429,95"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="420,121,463,116,464,122,420,126"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="495,143,693,169"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="420,138,482,143,481,149,420,143"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="759,143,937,169"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="693,153,745,153,745,159,693,159"/>
+</map>

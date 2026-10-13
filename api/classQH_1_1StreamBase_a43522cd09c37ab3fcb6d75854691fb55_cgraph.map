@@ -1,0 +1,9 @@
+<map id="QH::StreamBase::fromBase64" name="QH::StreamBase::fromBase64">
+<area shape="rect" id="Node000001" title="fromBase64 This method provide initialization of object from the base64 string." alt="" coords="5,31,221,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="269,31,475,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,41,255,41,255,46,221,46"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="532,5,747,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="475,31,518,27,519,32,475,36"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="523,55,756,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="475,50,509,53,509,58,475,55"/>
+</map>

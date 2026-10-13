@@ -1,0 +1,23 @@
+<map id="QH::PKG::MultiversionData::toPackage" name="QH::PKG::MultiversionData::toPackage">
+<area shape="rect" id="Node000001" title="toPackage This method convert this class object to the package. For more info see Package class." alt="" coords="5,90,203,130"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="537,5,707,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,88,186,58,250,33,320,18,392,11,523,9,523,14,392,16,321,24,251,38,189,63,136,92"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1AbstractData.html#ad510842b57d0b5f35323839572ce4b2b" title="cmd &#45; This is command of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="251,48,457,73"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="202,88,275,73,276,79,203,93"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="277,97,431,123"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="203,107,263,107,263,113,203,113"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1AbstractData.html#a6333bd90eb3c6606586dd6261cae4350" title="isValid This method check current object to valid." alt="" coords="269,147,439,187"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="192,127,255,142,254,147,191,133"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1MultiversionData.html#a9281005803e74888ac772857893759af" title="toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages." alt="" coords="255,211,453,251"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="135,128,188,163,252,197,269,204,267,209,250,202,185,167,132,133"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="422,95,456,82,480,65,504,48,545,32,547,37,507,52,483,70,459,87,423,100"/>
+<area shape="rect" id="Node000005" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="548,63,696,88"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="431,97,534,84,535,89,432,103"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="787,88,992,113"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="432,106,773,100,773,105,432,111"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="696,80,773,87,772,92,696,85"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="505,180,739,205"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="453,214,520,205,521,210,453,220"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1MultiversionData.html#a68c217913692806e6db854cf2559b102" title="toStreamOf This overrload of the base toStream method for support the multi version packages." alt="" coords="523,230,721,270"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="453,236,510,240,509,245,453,241"/>
+</map>

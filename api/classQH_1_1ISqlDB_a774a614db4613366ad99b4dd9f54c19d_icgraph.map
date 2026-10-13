@@ -1,0 +1,11 @@
+<map id="QH::ISqlDB::globalUpdateDataBase" name="QH::ISqlDB::globalUpdateDataBase">
+<area shape="rect" id="Node000001" title="globalUpdateDataBase This is base method for syncing data from the cache with database." alt="" coords="749,23,937,63"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#a3b75d32a8116d8bc7dd4cb856aed5113" title="getFromCache This method return strong pointer to the database object from cache (pool)." alt="" coords="497,5,691,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="735,35,691,31,692,25,736,30"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1ISqlDB.html#a1f2a03c6dd9215e8277b8ff1ea3858ca" title="prepareForDelete This method must be prepare object for delete. Override this for working main functi..." alt="" coords="487,55,701,80"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="736,56,702,60,701,54,736,51"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1ISqlDB.html#a452699ac344620fe5a37375d8312aca4" title=" " alt="" coords="251,5,439,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="483,21,439,21,439,15,483,15"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1ISqlDB.html#abcadb2dd92c17c2899a6cffe9216f518" title="changeObjects This method change object of the database." alt="" coords="5,5,203,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="237,21,203,21,203,15,237,15"/>
+</map>

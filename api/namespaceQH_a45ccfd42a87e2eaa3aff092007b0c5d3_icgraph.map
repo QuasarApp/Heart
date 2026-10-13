@@ -1,0 +1,12 @@
+<map id="QH::qHash" name="QH::qHash">
+<area shape="rect" id="Node000001" title="qHash &#45; Simple hash function of NodeCoonectionStatus" alt="" coords="236,80,327,105"/>
+<area shape="poly" id="edge5_Node000001_Node000001" title=" " alt="" coords="314,70,305,62,281,59,262,61,252,65,250,71,255,78,251,81,244,72,248,62,260,56,281,53,307,57,317,66"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddressKey.html#a4290e04f7eb12971186b51d5912565d2" title="hash This method must be calc hash int32 code of source object." alt="" coords="5,5,188,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,75,187,44,154,33,155,28,189,40,250,70"/>
+<area shape="rect" id="Node000003" href="$namespaceQH.html#affc59e787b314c2bf73e51862f1c0a2d" title="qHash calc hash of the CacheAction enum." alt="" coords="51,55,142,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="222,87,142,76,143,71,223,82"/>
+<area shape="rect" id="Node000004" href="$namespaceQH.html#a3e8ba84461cd74d44e6002f1ce090bd4" title="qHash This functions calls int 32 hash of address." alt="" coords="51,104,142,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="223,103,143,113,142,108,222,98"/>
+<area shape="rect" id="Node000005" href="$namespaceQH.html#ab0e4b508bf6200374ee9e28692044dba" title=" " alt="" coords="51,153,142,179"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="248,114,189,143,143,158,141,153,187,138,246,110"/>
+</map>

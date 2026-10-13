@@ -1,0 +1,12 @@
+<map id="QH::StreamBase::compare" name="QH::StreamBase::compare">
+<area shape="rect" id="Node000001" title="compare This method compare array signatures of this and right objects." alt="" coords="5,80,200,105"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="248,55,435,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,80,234,76,235,81,201,85"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="764,80,943,105"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="200,90,750,90,750,95,200,95"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="483,5,716,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="408,52,518,31,519,36,409,57"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="501,55,698,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="435,65,487,65,487,70,435,70"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="698,75,751,80,750,85,698,80"/>
+</map>

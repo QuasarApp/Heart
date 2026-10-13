@@ -1,0 +1,9 @@
+<map id="QH::PKG::GetSingleValue::GetSingleValue" name="QH::PKG::GetSingleValue::GetSingleValue">
+<area shape="rect" id="Node000001" title="GetSingleValue This is default constructor of the GetMaxIntegerId class." alt="" coords="5,55,189,95"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#ad6af2ba06607b38164fea920ada92ea7" title="id This method return id of object in table." alt="" coords="259,5,399,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,53,264,31,265,37,180,58"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1GetSingleValue.html#ae5e4a9906e001bc60db7d8674c2913e4" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="237,55,421,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="190,73,223,73,223,78,190,78"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddress.html#ab7916c57de8d8c8f2a19de8a08228f67" title="table This method return table name." alt="" coords="249,120,410,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="180,93,265,114,264,119,178,98"/>
+</map>

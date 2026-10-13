@@ -1,0 +1,15 @@
+<map id="src/public/workstate.h" name="src/public/workstate.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="172,5,337,31"/>
+<area shape="rect" id="Node000002" href="$hostaddress_8h.html" title=" " alt="" coords="145,79,258,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,33,220,69,216,66,244,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="282,79,337,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="266,29,294,66,290,69,262,33"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,120,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="180,106,99,148,96,143,178,102"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="144,152,259,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="204,104,204,138,199,138,199,104"/>
+<area shape="rect" id="Node000005" href="$config_8h.html" title=" " alt="" coords="283,152,357,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="222,102,290,142,287,147,219,106"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="257,225,383,251"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="323,178,323,212,317,212,317,178"/>
+</map>

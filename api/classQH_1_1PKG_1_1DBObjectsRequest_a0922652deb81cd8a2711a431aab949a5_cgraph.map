@@ -1,0 +1,7 @@
+<map id="QH::PKG::DBObjectsRequest::createDBObject" name="QH::PKG::DBObjectsRequest::createDBObject">
+<area shape="rect" id="Node000001" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="5,37,212,77"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html#a7f0c55859af62b0bafd8bfb0f835aa26" title="create &#45; This is factory method for create a new object." alt="" coords="260,5,431,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,41,246,36,247,41,213,46"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObjectSet.html#a7bb1de4669e44b40cc17e6e4b42db908" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="262,69,429,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="213,69,249,74,248,79,212,74"/>
+</map>

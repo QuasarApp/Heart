@@ -1,0 +1,42 @@
+<map id="QH::AbstractNode::createNodeInfo" name="QH::AbstractNode::createNodeInfo">
+<area shape="rect" id="Node000001" title="createNodeInfo This method create a nodeInfo object. override this method for create your own nodeInf..." alt="" coords="5,64,192,104"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a274cbc7cbd3f0176d8eb7a77bd8cab93" title="AbstractNodeInfo." alt="" coords="240,64,403,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,81,226,81,226,87,192,87"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#acccb35f613b7d70f0657207c6dae4779" title="sct This method return socket of connection." alt="" coords="661,14,852,39"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="402,69,450,63,648,37,648,42,451,68,403,75"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#a7307b7e2061345a70bf8eb8fb005661e" title="setNetworkAddress This method update network address of the current node." alt="" coords="675,64,838,104"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="403,81,661,81,661,87,403,87"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeInfo.html#a5b5fedac71ba0a760da283867231a2e1" title="setSct This method sets a new socket for this node or client." alt="" coords="451,156,613,196"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="369,102,474,148,472,153,367,107"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNodeInfo.html#a9cf6584038ac40b2c58e066088a1d79b" title="info &#45; This method return Host domain information. For more information see the Qt Documentation abou..." alt="" coords="900,29,1063,69"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="838,69,886,61,887,67,839,74"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a6e8f12dfe44a951590f139a6366c8c80" title="networkAddress This method return network address of current node or client." alt="" coords="900,93,1063,133"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="838,92,887,98,886,104,838,97"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="942,30,939,20,946,10,960,5,981,3,1006,6,1019,13,1017,18,1004,11,981,8,961,10,949,15,945,21,947,28"/>
+<area shape="poly" id="edge17_Node000007_Node000003" title=" " alt="" coords="547,154,594,102,625,74,660,50,677,42,679,46,663,54,628,78,597,105,551,157"/>
+<area shape="poly" id="edge18_Node000007_Node000004" title=" " alt="" coords="572,154,660,114,680,106,682,111,662,118,574,158"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNodeInfo.html#a91508c98d7052c9186986dd90650c23a" title="removeSocket This method use for remove socket. You can override this method for handle this event." alt="" coords="675,243,838,283"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="586,194,692,235,690,240,584,199"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1AbstractNodeInfo.html#a11fcc13ddb06cef4d562b50496955281" title="setStatus This method Sets new value of status node." alt="" coords="900,185,1063,225"/>
+<area shape="poly" id="edge19_Node000007_Node000009" title=" " alt="" coords="614,179,886,197,886,202,614,184"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1AbstractNodeInfo.html#adde0bea9d0457611c942c476c35501b5" title="sigConnected This is wrapper signal for the QAbstractSocket::connetced signal." alt="" coords="675,307,838,347"/>
+<area shape="poly" id="edge20_Node000007_Node000016" title=" " alt="" coords="552,195,599,243,630,269,663,292,674,299,672,303,660,297,626,274,596,247,548,198"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1AbstractNodeInfo.html#ae6cb40339146ed9855baf67f7b3e62de" title="sigErrorOccurred This is wrapper signal for the QAbstractSocket::errorOccurred signal." alt="" coords="675,371,838,411"/>
+<area shape="poly" id="edge21_Node000007_Node000017" title=" " alt="" coords="545,195,562,230,588,273,622,318,663,357,671,362,668,366,660,361,618,321,584,276,557,232,540,197"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1AbstractNodeInfo.html#a6b7a22230fded7af5b6b43e34e4b3862" title="sigReadyRead This is wrapper signal for the QAbstractSocket::readyRead signal." alt="" coords="675,128,838,168"/>
+<area shape="poly" id="edge22_Node000007_Node000018" title=" " alt="" coords="613,163,662,157,662,162,614,169"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="835,240,888,226,890,231,836,245"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1AbstractNodeInfo.html#af5b9325a1549ccdabf46fa19d2d4d3a5" title="sigDisconnected This is wrapper signal for the QAbstractSocket::disconnected signal." alt="" coords="900,249,1063,289"/>
+<area shape="poly" id="edge16_Node000008_Node000015" title=" " alt="" coords="838,262,887,264,887,269,838,268"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36" title="status This method return status of the node connection." alt="" coords="1321,156,1484,196"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1063,197,1307,180,1308,185,1063,202"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56" title="statusChaned This signal emitted when nodes status is changed." alt="" coords="1111,213,1273,253"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="1063,214,1098,218,1097,223,1063,219"/>
+<area shape="poly" id="edge15_Node000011_Node000010" title=" " alt="" coords="1265,211,1315,197,1316,202,1267,216"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNodeInfo.html#a90877ac6cc3938d87aeec2a60f2e1b2f" title="confirmData This method check all data of node and return true. If node is confirmed." alt="" coords="1321,220,1484,260"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="1274,233,1308,234,1307,240,1274,239"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivere own version to the distanation node." alt="" coords="1532,188,1695,228"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="1484,225,1518,220,1519,225,1485,230"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1AbstractNodeInfo.html#aed86119d910f2e64cec6e61dab61af45" title="fVersionReceived This method return true if this node receive version information." alt="" coords="1532,252,1695,292"/>
+<area shape="poly" id="edge14_Node000012_Node000014" title=" " alt="" coords="1485,250,1519,255,1518,260,1484,255"/>
+</map>

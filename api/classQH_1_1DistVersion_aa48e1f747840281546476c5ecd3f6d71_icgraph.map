@@ -1,0 +1,7 @@
+<map id="QH::DistVersion::min" name="QH::DistVersion::min">
+<area shape="rect" id="Node000001" title=" " alt="" coords="309,31,467,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DistVersion.html#ada69b62b05bea644a02f5bccd113103d" title="getMaxСompatible return maximum available on booth nodes version." alt="" coords="5,5,261,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="295,37,260,33,261,28,296,32"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DistVersion.html#a093fde7cdb54b7e49a7f817de7527a63" title="getMinСompatible return maximum available on booth nodes version." alt="" coords="7,55,259,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="296,55,260,58,259,53,295,49"/>
+</map>

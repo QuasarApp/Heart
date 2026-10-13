@@ -1,0 +1,8 @@
+<map id="QH::SoftDelete::SoftDelete" name="QH::SoftDelete::SoftDelete">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,200,55"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="64,31,55,21,60,11,76,5,103,3,136,7,149,16,146,20,134,11,103,8,77,10,63,15,61,20,68,27"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SoftDelete.html#a18ab089574d0ebbcc462bb24fb6984c9" title="softDelete This method remove this object and save all changes into database." alt="" coords="248,29,441,55"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="200,39,235,39,235,45,200,45"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1SoftDelete.html#afcf27c87951fcb170bbc0fd5a2c959a2" title="prepareForDelete This method must be prepare object for delete. Override this for working main functi..." alt="" coords="489,22,685,62"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="442,39,476,39,476,45,442,45"/>
+</map>

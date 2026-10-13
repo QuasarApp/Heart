@@ -1,0 +1,9 @@
+<map id="QH::SqlDBWriter::doQuery" name="QH::SqlDBWriter::doQuery">
+<area shape="rect" id="Node000001" title="doQuery This method execute a query in this database." alt="" coords="5,31,197,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="245,31,440,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,41,232,41,232,46,197,46"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="493,5,629,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="440,29,478,25,479,30,441,35"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="488,55,633,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="441,51,475,55,474,60,440,57"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="QH::PKG::APIVersion::command" name="QH::PKG::APIVersion::command">
+<area shape="rect" id="Node000001" title=" " alt="" coords="244,27,399,67"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1APIVersion.html#a82b8204e98a577a9b08fa93ef68de6e7" title="cmd &#45; This is command of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="5,5,196,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,38,196,33,197,28,231,33"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1APIVersionParser.html#a43ba30e9be862fb44c7e047b096013bb" title="searchPackage This method search package recursive in all registered pararsers. Searching will be in ..." alt="" coords="21,55,180,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,61,180,68,180,63,230,56"/>
+</map>

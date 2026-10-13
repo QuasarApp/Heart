@@ -1,0 +1,11 @@
+<map id="QH::PKG::GetMaxIntegerId::createDBObject" name="QH::PKG::GetMaxIntegerId::createDBObject">
+<area shape="rect" id="Node000001" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="5,69,200,109"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html#a7f0c55859af62b0bafd8bfb0f835aa26" title="create &#45; This is factory method for create a new object." alt="" coords="260,5,431,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,67,255,46,257,51,180,72"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObject.html#a6a811dc6f8ab97b144c0e857c3ddab09" title=" " alt="" coords="268,69,423,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="200,87,254,87,254,92,200,92"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#ac922a1a1beabd78edd79482ad3d604b8" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="248,133,443,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="180,107,257,127,255,132,179,112"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#a7b884ee30685e869aa24293568881806" title="clear This method clear all data of database object. Override This method for remove or reset your ow..." alt="" coords="491,69,645,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="423,87,477,87,477,92,423,92"/>
+</map>

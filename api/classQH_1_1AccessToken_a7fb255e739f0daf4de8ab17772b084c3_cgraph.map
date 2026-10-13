@@ -1,0 +1,9 @@
+<map id="QH::AccessToken::operator=" name="QH::AccessToken::operator=">
+<area shape="rect" id="Node000001" title="operator = this is operator of copy objects." alt="" coords="5,55,212,80"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AccessToken.html#a7a9a27fb6f69fa164e69e6f996557600" title="AccessToken This constructor create token on duration (in seconds)." alt="" coords="260,5,483,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,52,289,31,290,36,177,57"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AccessToken.html#a3c957c9688f8a24b673335c63921c617" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="262,55,481,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="212,65,248,65,248,70,212,70"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AccessToken.html#a03e2c3e63123e17bf923d3e97b2b75ed" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="271,104,471,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="177,77,290,99,289,104,176,83"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="QH::AsyncRenderLoop::run" name="QH::AsyncRenderLoop::run">
+<area shape="rect" id="Node000001" title="run This method starts the render loop." alt="" coords="5,59,200,84"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="248,29,443,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,57,234,53,235,58,201,62"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AsyncRenderLoop.html#ab5777138ac68a489dd72b51a6ee13b79" title="isRun This method returns the state of the render loop." alt="" coords="262,79,429,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="201,80,248,85,248,91,200,85"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="495,5,631,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="443,29,481,24,482,30,443,34"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="491,55,636,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="443,51,477,55,477,60,443,56"/>
+</map>

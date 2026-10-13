@@ -1,0 +1,17 @@
+<map id="QH::PKG::BigDataBase" name="QH::PKG::BigDataBase">
+<area shape="rect" id="Node000001" title="The BigDataBase class This is base class of big data parts. This class contains id of movving pacakge..." alt="" coords="211,785,373,971"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1BigDataHeader.html" title="The BigDataHeader class is first empty pacakge with information of big data package." alt="" coords="5,1019,181,1244"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="213,983,184,1020,179,1017,209,980"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1BigDataPart.html" title="The BigDataPart class This data class used for transporting big data files greater than 64kb." alt="" coords="205,1019,379,1244"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="295,985,295,1019,289,1019,289,985"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1BigDataRequest.html" title="The BigDataRequest class contains missing package parts for redownload. If missing parts count is 0 t..." alt="" coords="403,1059,586,1204"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="377,980,439,1057,435,1060,372,983"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html" title="The AbstractData class is provide base functions for transport data by network For create you own pac..." alt="" coords="211,472,373,737"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="295,751,295,785,289,785,289,751"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="141,119,275,424"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="252,437,261,471,256,472,247,438"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="135,5,281,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="211,84,211,119,205,119,205,84"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="299,239,455,304"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="368,318,328,473,323,471,363,317"/>
+</map>

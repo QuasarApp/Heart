@@ -1,0 +1,13 @@
+<map id="QH::PKG::AbstractData::create" name="QH::PKG::AbstractData::create">
+<area shape="rect" id="Node000001" title="create &#45; This is factory method for create a new object." alt="" coords="260,133,431,173"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObjectsRequest.html#a0922652deb81cd8a2711a431aab949a5" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="5,5,212,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="309,126,264,92,211,60,183,48,185,43,213,55,267,88,312,122"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DeleteObject.html#a2524a6fbd0d9287a2c272bacd0c10a56" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="23,69,194,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="257,132,182,112,184,107,258,127"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#a74f1cdbc1b7882026190970b9348aad1" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="11,133,206,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="246,156,206,156,206,151,246,151"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1GetSingleValue.html#a6300e93ecb575a31f50c9d34e57958ad" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="17,197,201,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="258,180,184,200,182,195,257,174"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1SetSingleValue.html#a65a19b05463eb49ae5045556655a8f12" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="17,261,200,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="312,184,267,219,213,252,185,264,183,259,211,247,264,215,309,180"/>
+</map>

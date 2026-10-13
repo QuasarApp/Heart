@@ -1,0 +1,5 @@
+<map id="QH::AbstractNode::prepareForDelete" name="QH::AbstractNode::prepareForDelete">
+<area shape="rect" id="Node000001" title="prepareForDelete This method must be prepare object for delete. Override this for working main functi..." alt="" coords="5,5,201,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a391beda8e270ac420a1dd0bede8d44ca" title="stop &#45; Stopped this node and close all network connections." alt="" coords="249,13,424,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,23,235,23,235,28,201,28"/>
+</map>

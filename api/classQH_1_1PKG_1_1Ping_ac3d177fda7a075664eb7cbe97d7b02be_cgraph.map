@@ -1,0 +1,11 @@
+<map id="QH::PKG::Ping::Ping" name="QH::PKG::Ping::Ping">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,155,80"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="203,29,408,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,56,188,52,189,58,155,62"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1Ping.html#ab3aebe0c5c1132dec0f2b476d75cb0cb" title=" " alt="" coords="231,79,380,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="155,73,217,79,217,85,155,78"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="465,5,680,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="408,30,452,26,452,31,408,35"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="456,55,689,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="408,49,443,52,442,58,408,54"/>
+</map>

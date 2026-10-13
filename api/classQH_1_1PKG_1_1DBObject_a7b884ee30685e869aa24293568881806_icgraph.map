@@ -1,0 +1,19 @@
+<map id="QH::PKG::DBObject::clear" name="QH::PKG::DBObject::clear">
+<area shape="rect" id="Node000001" title="clear This method clear all data of database object. Override This method for remove or reset your ow..." alt="" coords="985,133,1140,173"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#a6a811dc6f8ab97b144c0e857c3ddab09" title=" " alt="" coords="783,133,937,173"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="972,156,938,156,938,151,972,151"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObject.html#ade529f24a395079b26fe6d4725b6a956" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="560,5,715,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="826,126,783,92,733,60,707,48,710,43,736,55,786,88,829,122"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1DeleteObject.html#a2524a6fbd0d9287a2c272bacd0c10a56" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="552,69,723,109"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="776,132,707,112,708,107,777,127"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#a74f1cdbc1b7882026190970b9348aad1" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="540,133,735,173"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="769,156,735,156,735,151,769,151"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1GetSingleValue.html#a6300e93ecb575a31f50c9d34e57958ad" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="545,197,729,237"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="777,180,708,200,707,195,776,175"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1SetSingleValue.html#a65a19b05463eb49ae5045556655a8f12" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="546,261,729,301"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="829,185,786,219,736,252,710,264,707,259,733,247,783,215,826,180"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SqlDBWriter.html#acbc1518dd1e6ad0be6d572b5244b4c10" title="selectQuery generate select query to database from parameters." alt="" coords="277,13,492,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="546,28,492,28,492,23,546,23"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1SqlDBWriter.html#af5d8296ab694df3fbdfcfb26032891e9" title="getAllObjects This method execute a select method of the templateObject and return list of all select..." alt="" coords="5,13,229,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="264,28,230,28,230,23,264,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="QH::AbstractNode::connectionState" name="QH::AbstractNode::connectionState">
+<area shape="rect" id="Node000001" title="connectionState This method return string value about the cocction state." alt="" coords="5,5,223,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#af6025415774163d13379f4e01e081da2" title="connectionsCount &#45; Return count fo connections (connections with status connected)" alt="" coords="271,5,495,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,23,257,23,257,28,223,28"/>
+</map>

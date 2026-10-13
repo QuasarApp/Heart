@@ -1,0 +1,5 @@
+<map id="QH::StreamBase::toStream" name="QH::StreamBase::toStream">
+<area shape="rect" id="Node000001" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="5,5,203,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="251,5,429,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,15,237,15,237,21,203,21"/>
+</map>

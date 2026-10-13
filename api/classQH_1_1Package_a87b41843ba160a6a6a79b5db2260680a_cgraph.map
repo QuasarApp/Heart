@@ -1,0 +1,5 @@
+<map id="QH::Package::reset" name="QH::Package::reset">
+<area shape="rect" id="Node000001" title="reset This method reset all data and set for package invalid status." alt="" coords="5,5,149,31"/>
+<area shape="rect" id="Node000002" href="$structQH_1_1Header.html#abde0118b0bbc3f5329e91e2522ca89b4" title="reset This method reset all data and set for header invalid status." alt="" coords="197,5,336,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,15,183,15,183,21,150,21"/>
+</map>

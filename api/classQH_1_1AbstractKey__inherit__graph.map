@@ -1,0 +1,5 @@
+<map id="QH::AbstractKey" name="QH::AbstractKey">
+<area shape="rect" id="Node000001" title="The Abstractkey class is provide general hash function for all keys of Heart library...." alt="" coords="9,5,137,171"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddressKey.html" title="The DbAddressKey class is implementation for calc hash key of DbAddress objects." alt="" coords="5,219,141,404"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,184,76,218,71,218,71,184"/>
+</map>

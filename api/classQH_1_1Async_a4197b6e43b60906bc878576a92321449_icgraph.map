@@ -1,0 +1,69 @@
+<map id="QH::Async::Async" name="QH::Async::Async">
+<area shape="rect" id="Node000001" title="Async This is default constructor of the async object." alt="" coords="1843,500,1979,525"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AsyncLauncher.html#aeab2567db25ebe388ccfbb8d5e5465c3" title="AsyncLauncher This is base constructor of the AsyncLauncher object." alt="" coords="1609,557,1765,597"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1853,532,1758,559,1757,554,1851,527"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="1589,277,1784,303"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1885,492,1699,305,1703,301,1889,488"/>
+<area shape="rect" id="Node000023" href="$classQH_1_1AsyncRenderLoop.html#a057cc0e7894a8c3c5148e9f9b61bae27" title=" " alt="" coords="1603,493,1770,533"/>
+<area shape="poly" id="edge26_Node000001_Node000023" title=" " alt="" coords="1829,515,1770,515,1770,510,1829,510"/>
+<area shape="rect" id="Node000024" href="$classQH_1_1DataSender.html#abab6c393e112072d2e84d54837c04c8e" title=" " alt="" coords="1581,443,1792,468"/>
+<area shape="poly" id="edge27_Node000001_Node000024" title=" " alt="" coords="1852,499,1794,483,1743,471,1744,465,1795,478,1853,494"/>
+<area shape="rect" id="Node000025" href="$classQH_1_1SqlDBWriter.html#a2d2a100f0f23e89e14b942ed03e5ecdf" title=" " alt="" coords="1579,621,1795,647"/>
+<area shape="poly" id="edge29_Node000001_Node000025" title=" " alt="" coords="1890,537,1849,575,1796,611,1763,624,1761,619,1793,606,1846,571,1887,533"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a7e15cb6b920947141c6b51f52e1e5053" title="AbstractNode &#45; Base constructor of node." alt="" coords="1296,564,1531,589"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1595,579,1531,579,1531,574,1595,574"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1SqlDBWriter.html#a162a0f239ad6e300fcc1944f7e4c49ba" title="deleteObject This method execute a delete method of obj and remove current object from database." alt="" coords="1303,351,1523,376"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1636,309,1531,341,1478,353,1477,348,1530,335,1634,304"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1SqlDBWriter.html#ac74e4bd39588c9d5393f37a595e63add" title="doQuery This method execute a query in this database." alt="" coords="1317,153,1509,179"/>
+<area shape="poly" id="edge14_Node000004_Node000013" title=" " alt="" coords="1658,271,1601,231,1566,210,1530,192,1495,181,1497,176,1532,188,1568,205,1604,226,1661,267"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1SqlDBWriter.html#a5cb6bafc7cce3c9b11274c4a35968bc1" title="doSql This method execute a query in this database." alt="" coords="1327,203,1500,228"/>
+<area shape="poly" id="edge15_Node000004_Node000014" title=" " alt="" coords="1636,275,1530,242,1482,231,1483,225,1531,237,1638,270"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1SqlDBWriter.html#af5d8296ab694df3fbdfcfb26032891e9" title="getAllObjects This method execute a select method of the templateObject and return list of all select..." alt="" coords="1301,252,1525,277"/>
+<area shape="poly" id="edge16_Node000004_Node000015" title=" " alt="" coords="1575,282,1526,278,1526,272,1576,277"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1SqlDBWriter.html#a99859c7db48d0a77c05b24191453597c" title="initDb This method initialize a database params and create a new database if the old database not exi..." alt="" coords="1325,301,1501,327"/>
+<area shape="poly" id="edge17_Node000004_Node000016" title=" " alt="" coords="1576,302,1502,309,1501,304,1575,297"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1SqlDBWriter.html#afff8e9a3f342241834d18ba5f841b893" title="insertObject This method execute a insert method of the saveObject and insert it into database." alt="" coords="1305,55,1521,80"/>
+<area shape="poly" id="edge18_Node000004_Node000017" title=" " alt="" coords="1671,266,1649,227,1618,180,1578,133,1529,94,1506,82,1508,78,1532,89,1581,129,1622,177,1654,224,1676,264"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1SqlDBWriter.html#acba5e2a47c330fb2aae4608ae1698559" title="replaceObject This method execute a replace method of the saveObject and insert or save if not exists..." alt="" coords="1321,401,1506,441"/>
+<area shape="poly" id="edge20_Node000004_Node000018" title=" " alt="" coords="1659,313,1602,351,1532,390,1497,403,1495,398,1530,385,1599,347,1656,309"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1AsyncLauncher.html#a432024db945a90bf914fa5048fb6a05f" title="run This method run the action function in the work thread of this object." alt="" coords="1325,465,1502,491"/>
+<area shape="poly" id="edge21_Node000004_Node000019" title=" " alt="" coords="1671,316,1616,386,1577,424,1532,455,1502,468,1500,463,1529,450,1573,419,1612,382,1667,313"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1AsyncRenderLoop.html#a4ec2ae4c64b004760b99f21fcf9b4630" title="run This method starts the render loop." alt="" coords="1316,515,1511,540"/>
+<area shape="poly" id="edge22_Node000004_Node000020" title=" " alt="" coords="1669,315,1581,431,1569,453,1561,471,1550,488,1532,504,1507,517,1505,512,1529,500,1546,484,1556,468,1564,450,1576,429,1665,312"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1DataSender.html#aeddae1a4fc184f4d261fa62381b964e1" title="sendPackagePrivate This slot move send package to a main thread." alt="" coords="1315,5,1511,31"/>
+<area shape="poly" id="edge23_Node000004_Node000021" title=" " alt="" coords="1674,265,1655,217,1625,156,1583,95,1558,68,1529,44,1509,33,1511,28,1532,40,1561,64,1587,92,1630,154,1660,214,1679,263"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1SqlDBWriter.html#a5ab62ca1782b6d3012f0f1f5af032995" title="updateObject This method execute a update method of the saveObject and save all changes into database..." alt="" coords="1301,104,1525,129"/>
+<area shape="poly" id="edge24_Node000004_Node000022" title=" " alt="" coords="1666,268,1610,204,1572,171,1529,143,1502,132,1504,127,1532,138,1575,167,1614,201,1670,264"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1SqlDBWriter.html#ae13ca87dcbdfdeb6f4eaf467c6cd0d3a" title="deleteQuery This method prepare the delete object query." alt="" coords="1031,351,1248,376"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1289,375,1248,375,1248,369,1290,370"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1ISqlDB.html#a4e1274edcad6e7762aa2c20a8be605f2" title="globalUpdateDataBasePrivate This method update(write) all data from cache into database...." alt="" coords="1045,97,1233,137"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="1307,347,1295,340,1266,318,1241,293,1198,236,1166,181,1146,138,1151,136,1171,178,1202,233,1245,289,1270,314,1297,336,1310,343"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="1262,352,1303,352,1303,357,1262,357"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1ISqlDB.html#a3b75d32a8116d8bc7dd4cb856aed5113" title="getFromCache This method return strong pointer to the database object from cache (pool)." alt="" coords="497,80,691,105"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1032,115,692,100,692,94,1032,109"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1ISqlDB.html#a774a614db4613366ad99b4dd9f54c19d" title="globalUpdateDataBase This is base method for syncing data from the cache with database." alt="" coords="772,126,960,166"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="1032,131,961,139,960,133,1031,126"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1ISqlDB.html#a452699ac344620fe5a37375d8312aca4" title=" " alt="" coords="251,80,439,105"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="483,95,439,95,439,90,483,90"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1ISqlDB.html#abcadb2dd92c17c2899a6cffe9216f518" title="changeObjects This method change object of the database." alt="" coords="5,80,203,105"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="237,95,203,95,203,90,237,90"/>
+<area shape="poly" id="edge12_Node000011_Node000008" title=" " alt="" coords="758,128,659,108,660,103,759,122"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1ISqlDB.html#a1f2a03c6dd9215e8277b8ff1ea3858ca" title="prepareForDelete This method must be prepare object for delete. Override this for working main functi..." alt="" coords="487,133,701,159"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="759,149,702,149,702,143,759,143"/>
+<area shape="poly" id="edge19_Node000017_Node000007" title=" " alt="" coords="1329,85,1234,102,1233,97,1328,80"/>
+<area shape="poly" id="edge25_Node000022_Node000007" title=" " alt="" coords="1287,119,1234,119,1234,114,1287,114"/>
+<area shape="poly" id="edge28_Node000024_Node000003" title=" " alt="" coords="1592,476,1580,483,1565,500,1557,518,1549,537,1532,555,1510,566,1508,561,1529,551,1545,534,1552,516,1560,497,1577,479,1589,471"/>
+<area shape="rect" id="Node000026" href="$classQH_1_1AsyncSqlDBWriter.html#a3da175ac2d83423c6ebf29af441869d2" title=" " alt="" coords="1329,614,1497,654"/>
+<area shape="poly" id="edge30_Node000025_Node000026" title=" " alt="" coords="1565,637,1497,637,1497,631,1565,631"/>
+<area shape="rect" id="Node000027" href="$classQH_1_1DataBase.html#a5d98b780aaaeac57a13ca500a79f43c5" title="initDefaultDbObjects This method create a default cache and database writer objects if the input poin..." alt="" coords="1044,614,1235,654"/>
+<area shape="poly" id="edge31_Node000026_Node000027" title=" " alt="" coords="1316,637,1235,637,1235,631,1316,631"/>
+<area shape="rect" id="Node000028" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="504,621,684,647"/>
+<area shape="poly" id="edge32_Node000027_Node000028" title=" " alt="" coords="1030,637,684,637,684,631,1030,631"/>
+<area shape="rect" id="Node000031" href="$classQH_1_1DataBase.html#a91bcaebc9a0f58940ddf4b5acfcfdb2d" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="749,647,983,672"/>
+<area shape="poly" id="edge35_Node000027_Node000031" title=" " alt="" coords="1030,647,983,651,982,646,1030,641"/>
+<area shape="rect" id="Node000029" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="273,645,416,671"/>
+<area shape="poly" id="edge33_Node000028_Node000029" title=" " alt="" coords="491,647,416,654,416,649,490,641"/>
+<area shape="rect" id="Node000030" href="$classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d" title="run This method is some as AbstractNode::run but set for node custom work folder. This maybe use for ..." alt="" coords="273,596,416,621"/>
+<area shape="poly" id="edge34_Node000028_Node000030" title=" " alt="" coords="490,626,416,619,416,613,491,621"/>
+<area shape="poly" id="edge36_Node000031_Node000028" title=" " alt="" coords="736,650,684,645,684,640,736,645"/>
+</map>

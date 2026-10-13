@@ -1,0 +1,10 @@
+<map id="QH::Package::isValid" name="QH::Package::isValid">
+<area shape="rect" id="Node000001" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="5,55,160,80"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="208,5,379,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,52,225,31,226,36,138,57"/>
+<area shape="rect" id="Node000003" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="219,55,367,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,65,206,65,206,70,160,70"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="427,80,632,105"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="138,77,208,89,313,95,413,95,413,100,313,100,208,94,138,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="368,73,413,78,413,83,368,78"/>
+</map>

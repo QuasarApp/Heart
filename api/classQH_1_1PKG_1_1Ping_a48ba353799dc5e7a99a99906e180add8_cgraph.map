@@ -1,0 +1,5 @@
+<map id="QH::PKG::Ping::setAnsver" name="QH::PKG::Ping::setAnsver">
+<area shape="rect" id="Node000001" title="setAnsver &#45; Set the answer option." alt="" coords="5,5,192,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1Ping.html#abe7b6e7b3cc37d20416527a7869c24d6" title="answer This is bool value for check this object that it is answer or request. Using on tests." alt="" coords="240,5,405,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,15,226,15,226,21,193,21"/>
+</map>

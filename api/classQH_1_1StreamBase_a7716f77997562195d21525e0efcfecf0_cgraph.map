@@ -1,0 +1,9 @@
+<map id="QH::StreamBase::toBytes" name="QH::StreamBase::toBytes">
+<area shape="rect" id="Node000001" title="toBytes This method convert a current object to bytes array." alt="" coords="5,31,192,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="240,5,473,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,32,226,28,227,33,192,37"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="258,55,455,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="192,49,244,54,244,60,192,55"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="521,55,700,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="456,65,508,65,508,70,456,70"/>
+</map>

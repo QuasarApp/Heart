@@ -1,0 +1,16 @@
+<map id="QH::AbstractNodeParser::parsePackage" name="QH::AbstractNodeParser::parsePackage">
+<area shape="rect" id="Node000001" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="5,133,184,173"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html#a9306a786a5556c3dc521c5ff25a43191" title="command This static method that return glaball code of this object." alt="" coords="236,5,407,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,131,169,93,231,55,244,48,247,53,233,60,172,98,122,135"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a0ffd37d18237a8e9629f0a12dc217963" title="isLocal return true if connection opened on this node." alt="" coords="240,69,403,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,131,236,111,237,116,167,136"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#a6e8f12dfe44a951590f139a6366c8c80" title="networkAddress This method return network address of current node or client." alt="" coords="240,133,403,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="185,151,226,151,226,156,185,156"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1iParser.html#a8e02f14c79abb1945d29e75eca621905" title=" " alt="" coords="254,198,389,223"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="175,171,258,192,257,197,174,176"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeParser.html#a8e32e56dc3c18eecbe48d3bd6ff807da" title="sigPingReceived This method emited" alt="" coords="232,248,411,288"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="127,171,176,201,233,232,251,240,249,245,231,237,174,206,125,176"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="459,198,649,223"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="389,208,445,208,445,213,389,213"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="516,200,508,190,512,180,528,174,554,171,587,175,599,185,596,189,585,180,554,177,529,179,516,184,513,189,520,196"/>
+</map>

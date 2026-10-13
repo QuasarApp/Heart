@@ -1,0 +1,5 @@
+<map id="QH::AbstractTask::taskId" name="QH::AbstractTask::taskId">
+<area shape="rect" id="Node000001" title="taskId This method return id of this task." alt="" coords="245,5,427,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractTask.html#a4613444512125c1cdf27eb34377fea13" title="execute This method will be invoked when task be executed." alt="" coords="5,5,197,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,21,198,21,198,15,231,15"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="QH::SqlDBWriter::isValid" name="QH::SqlDBWriter::isValid">
+<area shape="rect" id="Node000001" title="isValid This method return true if database is successful inited and working correctly." alt="" coords="5,5,185,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="233,5,387,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,15,220,15,220,21,185,21"/>
+</map>

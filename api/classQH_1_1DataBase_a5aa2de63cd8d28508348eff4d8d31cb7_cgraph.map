@@ -1,0 +1,87 @@
+<map id="QH::DataBase::run" name="QH::DataBase::run">
+<area shape="rect" id="Node000001" title="run This method start and initialize the data base connection." alt="" coords="5,1011,148,1037"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="201,986,381,1011"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,1013,187,1008,187,1014,149,1018"/>
+<area shape="rect" id="Node000037" href="$classQH_1_1DataBase.html#a1325fcebbc812b6d296067adc9b6b13e" title="isSqlInited This method return true if database initialized successful." alt="" coords="196,1035,385,1061"/>
+<area shape="poly" id="edge48_Node000001_Node000037" title=" " alt="" coords="149,1029,183,1033,182,1039,148,1035"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#ab43e83e2b219d0585b7cd05ddc23d37e" title="dbLocation This method return location of nodes or clients database." alt="" coords="1047,70,1239,95"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="289,986,294,897,300,830,312,753,329,670,354,584,388,501,431,424,460,385,492,350,565,287,646,234,731,191,818,157,901,130,1044,95,1045,101,903,135,820,162,734,196,648,239,568,291,496,354,464,389,436,427,393,503,359,586,335,671,317,754,306,831,299,898,295,986"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1DataBase.html#a7cacc91f535f2d590ad2cdb9a977eeb2" title="defaultDbParams This method return default database parameters for this node. Override this method fo..." alt="" coords="1583,937,1816,962"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="377,1009,589,1033,715,1043,843,1047,1145,1047,1215,1044,1287,1038,1426,1016,1549,988,1643,963,1644,969,1550,994,1427,1021,1287,1043,1215,1050,1145,1052,843,1052,715,1048,588,1039,377,1014"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1DataBase.html#a5d98b780aaaeac57a13ca500a79f43c5" title="initDefaultDbObjects This method create a default cache and database writer objects if the input poin..." alt="" coords="749,227,939,267"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="290,986,300,914,323,800,341,736,365,669,394,605,431,545,470,497,514,452,562,412,611,375,706,313,785,271,788,275,709,318,614,379,565,416,518,456,474,501,436,548,399,607,370,671,346,737,328,802,305,915,296,986"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1ISqlDB.html#a89f0afce1825a96d6ddf856722c51cfe" title="sigItemChanged This signal emitted when database object is changed." alt="" coords="449,1087,656,1113"/>
+<area shape="poly" id="edge18_Node000002_Node000018" title=" " alt="" coords="356,1009,387,1022,402,1033,411,1044,421,1055,435,1066,470,1081,468,1086,432,1070,417,1059,407,1048,398,1037,384,1026,354,1014"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1ISqlDB.html#a9eb15de2b14acd8eaf3f19e01a1f9af4" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="452,1137,653,1162"/>
+<area shape="poly" id="edge19_Node000002_Node000019" title=" " alt="" coords="366,1009,387,1022,399,1035,406,1048,412,1075,417,1100,424,1112,435,1123,442,1128,439,1132,432,1127,419,1115,412,1102,406,1076,401,1050,395,1038,384,1026,363,1014"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1DataBase.html#a0385648eb8026ab8014f731fbd465eff" title="sigItemChanged This signal emitted when database object is changed." alt="" coords="433,1186,672,1211"/>
+<area shape="poly" id="edge20_Node000002_Node000020" title=" " alt="" coords="369,1009,387,1022,402,1041,410,1061,411,1100,414,1138,421,1155,435,1173,440,1177,436,1181,431,1177,416,1158,408,1139,406,1100,404,1062,397,1044,384,1026,366,1014"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1DataBase.html#a91bcaebc9a0f58940ddf4b5acfcfdb2d" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="436,687,669,713"/>
+<area shape="poly" id="edge21_Node000002_Node000021" title=" " alt="" coords="301,984,529,721,533,725,305,988"/>
+<area shape="rect" id="Node000030" href="$classQH_1_1DataBase.html#aa7a29c29d20a1bb627b7f29ce40544d1" title="SQLSources This method contains list of sqldatabase sources. This method will be invoked into initial..." alt="" coords="745,986,943,1011"/>
+<area shape="poly" id="edge46_Node000002_Node000030" title=" " alt="" coords="381,996,731,996,731,1001,381,1001"/>
+<area shape="rect" id="Node000032" href="$classQH_1_1DataBase.html#a44cdd4332be17948515ff03461e22c71" title="upgradeDataBase This method upgrade data base to actyaly database version." alt="" coords="725,383,963,409"/>
+<area shape="poly" id="edge47_Node000002_Node000032" title=" " alt="" coords="293,985,308,932,337,852,378,761,403,716,431,673,497,588,557,528,625,478,719,426,757,410,759,415,721,430,628,483,560,532,501,592,435,676,407,718,383,763,342,854,314,934,298,987"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SqlDBWriter.html#a54ecf880409036dc7e4c406dc75a19a1" title="databaseLocation This method return location of database. If it is sqlite then return path to db file..." alt="" coords="1328,5,1525,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1206,67,1314,45,1315,51,1207,73"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#ac855a4008eb35fb88d8d5e3db32bd291" title="db This node return pointer to database object." alt="" coords="1631,385,1768,410"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="1239,74,1322,72,1409,75,1485,85,1515,94,1536,106,1554,124,1564,143,1569,162,1570,182,1570,224,1575,246,1585,269,1605,300,1629,328,1674,374,1670,377,1625,332,1601,303,1580,272,1570,248,1565,224,1564,182,1563,163,1559,145,1550,127,1533,110,1512,99,1484,90,1408,80,1322,78,1240,79"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1ISqlDB.html#a20142160d3bcaa1ae869367a0c5eaada" title="writer This method return is database writer object. For more inforamation about writer see the SqlDB..." alt="" coords="1357,121,1496,146"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="1216,93,1344,116,1343,121,1215,98"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="1623,13,1776,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1525,23,1609,23,1609,28,1525,28"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1DataBase.html#aaa461d14501423d001410454da0a6dbf" title="localNodeName This method return local node name." alt="" coords="1864,911,2089,937"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1816,936,1850,933,1850,938,1817,941"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AsyncSqlDBWriter.html#a3da175ac2d83423c6ebf29af441869d2" title=" " alt="" coords="1059,169,1227,209"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="939,226,1045,205,1046,211,940,231"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1ISqlDB.html#a100f31dcf35a3b362800ea8378f4835a" title="setWriter This method set new writer for this cache." alt="" coords="1063,119,1224,145"/>
+<area shape="poly" id="edge13_Node000010_Node000014" title=" " alt="" coords="876,224,939,189,1015,155,1048,145,1050,150,1017,160,941,193,879,229"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1SqlDB.html#ae3ccd2359497c497c49b79b053c60ad0" title=" " alt="" coords="1075,234,1211,259"/>
+<area shape="poly" id="edge15_Node000010_Node000015" title=" " alt="" coords="940,244,1062,244,1062,249,940,249"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1SqlDBWriter.html#a2d2a100f0f23e89e14b942ed03e5ecdf" title=" " alt="" coords="1319,177,1535,202"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="1227,187,1305,187,1305,192,1227,192"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="1631,177,1767,202"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="1535,187,1618,187,1618,192,1535,192"/>
+<area shape="poly" id="edge14_Node000014_Node000007" title=" " alt="" coords="1224,130,1343,130,1343,136,1224,135"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1ISqlDB.html#ac3c7561a7409f831dc4a9c4d498243a6" title="ISqlDB This is default constructor of dbcache." alt="" coords="1355,234,1499,259"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="1212,244,1341,244,1341,249,1212,249"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1ISqlDB.html#ae369689c0beea5df1bacd30c273caa6a" title="setMode This method set a new value of the mode database cache." alt="" coords="1621,234,1778,259"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="1499,244,1607,244,1607,249,1499,249"/>
+<area shape="poly" id="edge27_Node000021_Node000006" title=" " alt="" coords="661,685,670,678,688,654,696,628,695,601,691,574,688,547,688,520,697,494,719,470,1271,468,1368,457,1465,442,1628,410,1629,416,1466,447,1369,462,1271,473,721,474,702,497,694,521,693,546,697,573,701,601,701,629,693,656,674,682,664,689"/>
+<area shape="poly" id="edge30_Node000021_Node000009" title=" " alt="" coords="564,712,586,745,621,790,667,835,693,854,721,870,780,893,832,907,879,912,924,912,1021,903,1077,898,1142,896,1428,896,1652,901,1850,912,1850,918,1652,907,1428,901,1142,901,1077,903,1021,908,925,918,879,918,831,912,779,898,719,874,690,858,664,839,617,793,582,749,559,714"/>
+<area shape="poly" id="edge29_Node000021_Node000010" title=" " alt="" coords="556,686,613,553,661,460,718,369,762,317,807,274,810,278,766,321,722,372,665,463,618,555,561,688"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1DataBase.html#abc66a8faebf4c160b1d8797f68dc0682" title="addDBPatch This method add database patch to the data base object." alt="" coords="745,737,943,762"/>
+<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="629,710,755,732,754,737,628,715"/>
+<area shape="rect" id="Node000024" href="$classQH_1_1DataBase.html#ae6b6601496dcf13a56c3ac45fda90d95" title="backUp This method make a backup of database." alt="" coords="1341,586,1512,611"/>
+<area shape="poly" id="edge24_Node000021_Node000024" title=" " alt="" coords="631,685,720,672,874,655,995,646,1116,637,1270,620,1335,611,1336,616,1271,625,1116,642,996,651,875,661,720,677,632,690"/>
+<area shape="rect" id="Node000025" href="$classQH_1_1DataBase.html#a703900ee0508c54c8d1a8e99b6b91b10" title="dbPatches This method should be return map with functions that upgrade production data base...." alt="" coords="1050,586,1237,611"/>
+<area shape="poly" id="edge28_Node000021_Node000025" title=" " alt="" coords="577,685,640,655,719,628,801,612,885,602,1036,595,1036,600,886,608,802,618,721,633,642,660,579,690"/>
+<area shape="rect" id="Node000026" href="$classQH_1_1DataBase.html#ad3a44c353e41fce4ab549c947401a4b1" title="objectChanged This method invoked when object with address changed in database. Override this method ..." alt="" coords="735,937,953,962"/>
+<area shape="poly" id="edge31_Node000021_Node000026" title=" " alt="" coords="562,712,583,752,618,807,665,866,692,892,721,915,751,930,748,935,719,920,688,896,661,869,614,810,579,755,558,714"/>
+<area shape="rect" id="Node000027" href="$classQH_1_1DataBase.html#ab2da8b81ec6d2d32777bf542c55ac447" title="objectRemoved This method invoked when object with address removed from database. Oberride this metho..." alt="" coords="733,485,955,510"/>
+<area shape="poly" id="edge32_Node000021_Node000027" title=" " alt="" coords="561,685,584,653,620,610,666,565,719,527,753,512,756,517,721,532,670,569,624,614,589,656,565,689"/>
+<area shape="rect" id="Node000028" href="$classQH_1_1DataBase.html#aded8da0f6bae3cd149b775ef5c24f253" title="onBeforeDBUpgrade This method will be invoked before upgrade database." alt="" coords="1016,535,1271,561"/>
+<area shape="poly" id="edge33_Node000021_Node000028" title=" " alt="" coords="568,685,631,640,674,615,719,595,790,575,863,560,1002,547,1002,552,864,566,791,580,721,600,676,620,634,644,571,689"/>
+<area shape="rect" id="Node000029" href="$classQH_1_1DataBase.html#a476baabaedb875d2b8c0b95b1121f15e" title="setLocalNodeName This method sets new local name of database file." alt="" coords="720,687,968,713"/>
+<area shape="poly" id="edge35_Node000021_Node000029" title=" " alt="" coords="670,697,706,697,706,703,670,703"/>
+<area shape="poly" id="edge36_Node000021_Node000030" title=" " alt="" coords="560,712,577,762,609,833,631,872,657,909,687,944,722,972,734,980,732,985,718,977,683,947,653,913,627,875,604,836,572,764,555,714"/>
+<area shape="rect" id="Node000031" href="$classQH_1_1DataBase.html#ac4e2bd9e3a232663493bfefc15544b2a" title="systemTables This method return the set of tables that forbidden for users. By default is NetworkMemb..." alt="" coords="739,786,949,811"/>
+<area shape="poly" id="edge37_Node000021_Node000031" title=" " alt="" coords="580,710,643,740,721,771,756,780,754,785,719,776,641,745,578,715"/>
+<area shape="poly" id="edge38_Node000021_Node000032" title=" " alt="" coords="563,685,612,625,670,540,683,508,688,480,697,453,718,426,740,412,743,416,722,430,701,455,693,481,688,509,674,543,617,628,567,689"/>
+<area shape="rect" id="Node000036" href="$classQH_1_1DataBase.html#aa8c95b91feb8619cce718212b9729ab6" title="welcomeAddress This method send to the node information about self. Override this method if you want ..." alt="" coords="728,835,960,861"/>
+<area shape="poly" id="edge45_Node000021_Node000036" title=" " alt="" coords="569,711,631,764,674,795,721,820,745,829,743,834,719,825,671,799,628,769,565,715"/>
+<area shape="rect" id="Node000023" href="$structQH_1_1DBPatch.html#a7cd0040b42e8721e772a8b3abf579088" title="isValid This method check this oject to valid." alt="" coords="1066,737,1221,762"/>
+<area shape="poly" id="edge23_Node000022_Node000023" title=" " alt="" coords="944,747,1053,747,1053,752,944,752"/>
+<area shape="poly" id="edge25_Node000024_Node000006" title=" " alt="" coords="1444,584,1668,416,1672,420,1447,588"/>
+<area shape="poly" id="edge26_Node000024_Node000008" title=" " alt="" coords="1440,610,1682,924,1678,927,1436,613"/>
+<area shape="poly" id="edge34_Node000028_Node000024" title=" " alt="" coords="1216,558,1342,581,1341,586,1215,563"/>
+<area shape="poly" id="edge39_Node000032_Node000006" title=" " alt="" coords="866,381,931,348,972,332,1015,320,1105,307,1196,304,1287,308,1375,318,1532,348,1647,378,1645,383,1531,353,1375,324,1287,314,1196,309,1105,313,1017,325,974,337,933,353,868,386"/>
+<area shape="poly" id="edge40_Node000032_Node000025" title=" " alt="" coords="877,407,924,432,948,450,970,470,986,498,992,524,999,547,1018,570,1038,582,1035,587,1014,574,994,550,987,525,981,500,966,474,945,454,921,437,875,411"/>
+<area shape="poly" id="edge43_Node000032_Node000028" title=" " alt="" coords="871,406,1106,527,1104,531,869,411"/>
+<area shape="rect" id="Node000033" href="$classQH_1_1ISqlDB.html#a3e1cf3423de48fd83e7959aebd8b94af" title="doQuery This method execute a query in this database." alt="" coords="1065,335,1221,361"/>
+<area shape="poly" id="edge41_Node000032_Node000033" title=" " alt="" coords="923,381,1051,360,1052,365,924,386"/>
+<area shape="rect" id="Node000034" href="$classQH_1_1DataBase.html#a5b8f6d22537bccc03844e8381f2e7a77" title="getDBAttribute This method gets value from the default of QH DB table &quot;DataBaseAttributes&quot;." alt="" coords="1034,385,1253,410"/>
+<area shape="poly" id="edge42_Node000032_Node000034" title=" " alt="" coords="963,394,1020,394,1020,399,963,399"/>
+<area shape="rect" id="Node000035" href="$classQH_1_1DataBase.html#a6c4dd47c696f21a0090bd4e7e058bbb7" title="setDBAttribute This method sets value for the default of QH DB table &quot;DataBaseAttributes&quot;." alt="" coords="1035,434,1252,459"/>
+<area shape="poly" id="edge44_Node000032_Node000035" title=" " alt="" coords="920,406,1054,429,1053,434,919,411"/>
+</map>

@@ -1,0 +1,14 @@
+<map id="QH::SqlDBWriter::deleteQuery" name="QH::SqlDBWriter::deleteQuery">
+<area shape="rect" id="Node000001" title="deleteQuery This method prepare the delete object query." alt="" coords="5,55,223,80"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="304,5,457,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,52,297,31,298,36,184,57"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1SqlDBWriter.html#a162a0f239ad6e300fcc1944f7e4c49ba" title="deleteObject This method execute a delete method of obj and remove current object from database." alt="" coords="271,55,491,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,74,257,74,257,79,223,79"/>
+<area shape="poly" id="edge6_Node000003_Node000001" title=" " alt="" coords="270,61,236,61,236,56,270,56"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="539,55,733,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="491,65,525,65,525,70,491,70"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="786,29,922,55"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="733,53,772,49,772,54,734,59"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="781,79,927,104"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="734,75,768,79,767,84,733,81"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="QH::Package::fromStream" name="QH::Package::fromStream">
+<area shape="rect" id="Node000001" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="5,5,195,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a87b41843ba160a6a6a79b5db2260680a" title="reset This method reset all data and set for package invalid status." alt="" coords="243,5,387,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,15,229,15,229,21,195,21"/>
+<area shape="rect" id="Node000003" href="$structQH_1_1Header.html#abde0118b0bbc3f5329e91e2522ca89b4" title="reset This method reset all data and set for header invalid status." alt="" coords="435,5,573,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="387,15,421,15,421,21,387,21"/>
+</map>

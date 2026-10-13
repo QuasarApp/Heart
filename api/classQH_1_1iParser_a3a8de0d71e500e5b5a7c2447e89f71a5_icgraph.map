@@ -1,0 +1,19 @@
+<map id="QH::iParser::sendData" name="QH::iParser::sendData">
+<area shape="rect" id="Node000001" title="sendData This method send data object another to node" alt="" coords="620,75,784,101"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="415,17,570,42"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="642,74,538,45,539,39,643,69"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1BigDataParser.html#a89357e037e1008aaf0d1648c13cf0542" title="finishPart This metho process last package of big data transaction." alt="" coords="417,68,568,108"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="606,91,568,91,568,85,606,85"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="413,132,572,172"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="647,107,560,134,558,129,646,102"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,17,365,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="402,41,366,41,366,35,402,36"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="379,18,415,18,415,23,379,23"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,5,164,45"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="198,30,164,30,164,24,198,25"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,69,364,109"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="403,91,364,92,364,86,403,86"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="9,69,160,109"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="199,101,160,101,160,95,199,96"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="174,78,213,78,213,83,174,83"/>
+</map>

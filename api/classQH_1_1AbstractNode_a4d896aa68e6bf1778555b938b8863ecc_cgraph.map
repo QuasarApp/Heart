@@ -1,0 +1,8 @@
+<map id="QH::AbstractNode::isBanned" name="QH::AbstractNode::isBanned">
+<area shape="rect" id="Node000001" title="isBanned This method checks if the node is banned." alt="" coords="5,57,212,82"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#acf79d4d87c0cdd97750e11be18581b9d" title="isBanned &#45; check node which banned." alt="" coords="260,5,423,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,54,246,41,247,46,177,59"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#abbea046714cf6e08aef4a52eec751f64" title="isValid &#45; Check valid of node. This method check connect status of socket." alt="" coords="260,93,423,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,79,247,93,246,98,176,85"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="298,94,295,84,302,74,318,69,341,67,368,70,383,77,381,82,367,75,341,72,319,74,306,79,301,85,303,92"/>
+</map>

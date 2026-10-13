@@ -1,0 +1,36 @@
+<map id="QH::AbstractNode::removeNode" name="QH::AbstractNode::removeNode">
+<area shape="rect" id="Node000001" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="5,177,236,202"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#ae94682079151e77fba8125b2d0635de3" title="isConnected &#45; Check of node connect status." alt="" coords="307,41,469,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,174,201,134,283,91,301,84,303,88,285,96,204,139,142,179"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNodeInfo.html#a0ffd37d18237a8e9629f0a12dc217963" title="isLocal return true if connection opened on this node." alt="" coords="307,105,469,145"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="174,174,292,145,294,151,176,179"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a6e8f12dfe44a951590f139a6366c8c80" title="networkAddress This method return network address of current node or client." alt="" coords="307,169,469,209"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="236,187,293,187,293,192,236,192"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeInfo.html#a91508c98d7052c9186986dd90650c23a" title="removeSocket This method use for remove socket. You can override this method for handle this event." alt="" coords="307,233,469,273"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="176,200,294,228,292,233,174,205"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node" alt="" coords="284,322,492,347"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="143,200,285,283,347,314,345,318,283,288,141,204"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="340,42,338,32,345,22,362,17,388,15,418,18,434,25,432,30,416,23,388,20,363,22,348,27,343,33,346,40"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#abbea046714cf6e08aef4a52eec751f64" title="isValid &#45; Check valid of node. This method check connect status of socket." alt="" coords="564,29,727,69"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="469,55,550,51,550,56,470,60"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36" title="status This method return status of the node connection." alt="" coords="1009,133,1172,173"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="470,69,540,79,996,139,996,144,540,84,469,75"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="602,30,599,20,606,10,622,5,645,3,673,6,688,13,685,18,671,11,645,8,623,10,609,15,604,21,607,28"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNodeInfo.html#a11fcc13ddb06cef4d562b50496955281" title="setStatus This method Sets new value of status node." alt="" coords="564,181,727,221"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="469,234,550,218,551,223,470,240"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1AbstractNodeInfo.html#af5b9325a1549ccdabf46fa19d2d4d3a5" title="sigDisconnected This is wrapper signal for the QAbstractSocket::disconnected signal." alt="" coords="564,245,727,285"/>
+<area shape="poly" id="edge16_Node000007_Node000013" title=" " alt="" coords="470,254,550,258,550,264,469,260"/>
+<area shape="poly" id="edge10_Node000008_Node000004" title=" " alt="" coords="726,189,798,180,995,160,996,165,799,185,727,194"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56" title="statusChaned This signal emitted when nodes status is changed." alt="" coords="799,195,961,235"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="727,203,785,207,784,212,727,209"/>
+<area shape="poly" id="edge15_Node000009_Node000004" title=" " alt="" coords="949,192,1007,175,1009,180,950,197"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNodeInfo.html#a90877ac6cc3938d87aeec2a60f2e1b2f" title="confirmData This method check all data of node and return true. If node is confirmed." alt="" coords="1009,197,1172,237"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="962,213,996,213,995,219,962,218"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivere own version to the distanation node." alt="" coords="1220,165,1383,205"/>
+<area shape="poly" id="edge13_Node000010_Node000011" title=" " alt="" coords="1172,202,1206,197,1207,202,1173,208"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNodeInfo.html#aed86119d910f2e64cec6e61dab61af45" title="fVersionReceived This method return true if this node receive version information." alt="" coords="1220,229,1383,269"/>
+<area shape="poly" id="edge14_Node000010_Node000012" title=" " alt="" coords="1173,227,1207,232,1206,238,1172,232"/>
+<area shape="poly" id="edge19_Node000014_Node000014" title=" " alt="" coords="347,324,338,314,342,304,359,297,388,295,424,299,434,304,438,310,434,313,431,308,423,304,388,301,360,303,346,308,343,313,350,320"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="540,322,751,347"/>
+<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="492,332,527,332,527,337,492,337"/>
+</map>

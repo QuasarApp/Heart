@@ -1,0 +1,5 @@
+<map id="QH::AbstractNode::ping" name="QH::AbstractNode::ping">
+<area shape="rect" id="Node000001" title="ping This method send ping package to address for testing connection." alt="" coords="261,5,436,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,5,213,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,21,214,21,214,15,248,15"/>
+</map>

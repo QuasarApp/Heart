@@ -1,0 +1,9 @@
+<map id="QH::PKG::SetSingleValue::SetSingleValue" name="QH::PKG::SetSingleValue::SetSingleValue">
+<area shape="rect" id="Node000001" title="SetSingleValue This is default constructor of the update query generator." alt="" coords="5,55,188,95"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#ad6af2ba06607b38164fea920ada92ea7" title="id This method return id of object in table." alt="" coords="257,5,397,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,53,262,31,263,37,178,58"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1SetSingleValue.html#accc8674b572951beb9eb5800dc4142ed" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="236,55,419,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="188,73,222,73,222,78,188,78"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddress.html#ab7916c57de8d8c8f2a19de8a08228f67" title="table This method return table name." alt="" coords="247,120,408,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,93,263,114,262,119,177,98"/>
+</map>

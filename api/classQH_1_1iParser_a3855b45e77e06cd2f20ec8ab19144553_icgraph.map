@@ -1,0 +1,8 @@
+<map id="QH::iParser::parserId" name="QH::iParser::parserId">
+<area shape="rect" id="Node000001" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="413,13,568,38"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,13,365,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="399,37,366,37,366,31,399,32"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="379,14,413,14,413,19,379,19"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,5,164,45"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="198,28,164,28,164,23,198,23"/>
+</map>

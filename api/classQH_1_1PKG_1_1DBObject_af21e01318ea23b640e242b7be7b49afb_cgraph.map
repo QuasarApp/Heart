@@ -1,0 +1,70 @@
+<map id="QH::PKG::DBObject::isValid" name="QH::PKG::DBObject::isValid">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,224,160,264"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#a6c934fbca68d047dc9451f5e3ccd1419" title="isInsertPrimaryKey This method check primaryKeys type. If the primary key have a type MemberType::Ins..." alt="" coords="411,144,565,184"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,226,397,179,398,184,161,231"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="1043,475,1197,515"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="96,263,145,348,183,403,230,460,284,514,346,558,379,576,413,589,449,597,487,600,692,600,842,600,906,591,986,569,1036,547,1079,521,1082,525,1038,552,988,575,907,597,842,605,692,605,487,605,448,602,412,594,377,580,343,563,281,518,226,464,179,406,141,351,92,266"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1AbstractData.html#a6333bd90eb3c6606586dd6261cae4350" title="isValid This method check current object to valid." alt="" coords="1490,109,1661,149"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="100,222,158,163,200,127,248,91,302,57,361,29,423,10,487,3,1121,3,1178,5,1234,13,1344,38,1443,71,1519,101,1517,106,1441,76,1343,44,1233,18,1177,11,1121,8,487,8,424,15,363,34,305,62,251,95,203,131,162,167,104,226"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1DBObject.html#af532ef59ced4b1768cc1902f8a68e67c" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="208,332,363,372"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="122,262,236,323,234,328,120,266"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObject.html#a8d312cbe9bfd1fb58f6ce16a3a384637" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="1043,151,1197,191"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="566,162,1029,167,1029,172,566,167"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#a6f9e5c2ec7976007d0ce62dfb41335d8" title="variantMap This method should be create a DBVariantMap implementation of this database object." alt="" coords="613,93,768,133"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="565,142,599,134,600,139,566,147"/>
+<area shape="poly" id="edge6_Node000004_Node000003" title=" " alt="" coords="751,91,802,78,862,69,925,68,987,79,1016,90,1043,106,1089,139,1086,143,1040,110,1014,95,986,84,925,73,862,74,803,83,752,96"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#a34e82d79450b6b780b6b11f209dc8a7e" title="isHaveAPrimaryKey This method return true if this object has a primary key. If you want to cache this..." alt="" coords="824,93,979,133"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="768,111,810,111,810,116,768,116"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="699,133,712,179,736,240,770,304,792,333,818,359,839,375,859,385,897,395,938,401,988,416,1077,465,1075,470,986,421,937,406,896,400,857,390,836,380,814,363,788,337,766,307,731,242,707,181,694,134"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="979,131,1031,145,1029,150,978,136"/>
+<area shape="poly" id="edge39_Node000008_Node000002" title=" " alt="" coords="297,330,343,268,374,233,409,201,426,189,430,193,412,205,378,237,347,272,302,333"/>
+<area shape="poly" id="edge40_Node000008_Node000003" title=" " alt="" coords="313,330,357,303,410,279,492,253,578,232,748,200,904,181,1029,172,1029,177,905,186,749,205,579,237,494,258,412,284,360,308,316,334"/>
+<area shape="poly" id="edge41_Node000008_Node000006" title=" " alt="" coords="297,371,314,404,338,444,371,484,391,500,412,514,452,532,493,546,580,565,669,572,757,570,841,561,920,548,1046,516,1047,521,921,553,842,567,757,576,668,578,579,570,492,551,450,537,409,518,387,504,367,487,334,448,309,407,292,373"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1DBObject.html#a69cc754770d581b2442e60b7185d86e0" title="condition This method must to return a condition of the WHERE block of the sql query...." alt="" coords="411,293,565,333"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="362,335,396,328,397,333,363,340"/>
+<area shape="rect" id="Node000024" href="$classQH_1_1PKG_1_1DBObject.html#a7a1965b828ecc3ce09c001ce8b8cb518" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="411,357,565,397"/>
+<area shape="poly" id="edge37_Node000008_Node000024" title=" " alt="" coords="363,359,397,363,396,369,363,364"/>
+<area shape="rect" id="Node000025" href="$classQH_1_1PKG_1_1DBObject.html#a69d0cd956579ed3ec374f2abbd24e420" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="411,421,565,461"/>
+<area shape="poly" id="edge42_Node000008_Node000025" title=" " alt="" coords="330,370,412,407,427,413,425,418,410,412,328,374"/>
+<area shape="poly" id="edge12_Node000009_Node000003" title=" " alt="" coords="565,307,653,300,759,288,873,267,986,237,1032,218,1075,196,1077,200,1035,223,988,243,875,273,760,293,653,306,566,313"/>
+<area shape="poly" id="edge13_Node000009_Node000006" title=" " alt="" coords="566,323,665,346,718,362,769,383,794,400,817,416,1030,470,1028,476,815,421,790,404,767,388,716,367,663,351,565,328"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1DBObject.html#ab2115a558a6450afa88a0f1f7611cf15" title=" " alt="" coords="613,421,768,461"/>
+<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="543,331,567,343,656,410,653,415,564,348,541,336"/>
+<area shape="poly" id="edge36_Node000010_Node000010" title=" " alt="" coords="652,422,650,412,656,403,670,397,691,395,714,398,727,405,725,410,713,403,691,400,671,402,660,407,655,413,658,420"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1DBObject.html#a1df7b0b912ccad1dad0b3dc97491d577" title="dbAddress This method return address of the database object. IF the object is not valid then this met..." alt="" coords="824,475,979,515"/>
+<area shape="poly" id="edge15_Node000010_Node000011" title=" " alt="" coords="769,458,811,469,810,474,768,463"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1AbstractData.html#abf99d87280794a4b049babd8da1641ed" title="toString &#45; Return a string implementation for this object." alt="" coords="816,309,987,349"/>
+<area shape="poly" id="edge18_Node000010_Node000012" title=" " alt="" coords="728,419,849,354,852,358,730,424"/>
+<area shape="poly" id="edge16_Node000011_Node000006" title=" " alt="" coords="979,492,1029,492,1029,497,979,497"/>
+<area shape="poly" id="edge17_Node000011_Node000008" title=" " alt="" coords="824,510,736,519,631,520,575,516,518,508,463,495,410,476,378,457,349,434,306,385,310,381,353,430,381,453,412,471,464,490,519,503,575,511,631,515,736,513,824,505"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1PKG_1_1AbstractData.html#ad510842b57d0b5f35323839572ce4b2b" title="cmd &#45; This is command of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="1472,325,1679,350"/>
+<area shape="poly" id="edge19_Node000012_Node000013" title=" " alt="" coords="987,328,1458,333,1458,339,987,333"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1PKG_1_1AbstractData.html#acc7826b8610064c1afd4fc09fe383459" title="cmdString &#45; This is command string of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="1035,233,1205,273"/>
+<area shape="poly" id="edge20_Node000012_Node000014" title=" " alt="" coords="984,307,1068,276,1070,281,986,312"/>
+<area shape="poly" id="edge21_Node000014_Node000007" title=" " alt="" coords="1191,231,1253,213,1485,150,1487,155,1254,219,1192,236"/>
+<area shape="poly" id="edge35_Node000014_Node000012" title=" " alt="" coords="1038,276,953,307,951,302,1036,271"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1PKG_1_1AbstractData.html#a5a9b243f140fce1a72707858a1182720" title="toPackage This method convert this class object to the package. For more info see Package class." alt="" coords="1253,228,1424,268"/>
+<area shape="poly" id="edge22_Node000014_Node000015" title=" " alt="" coords="1205,249,1240,248,1240,253,1206,254"/>
+<area shape="poly" id="edge30_Node000015_Node000007" title=" " alt="" coords="1364,226,1413,192,1471,159,1488,152,1490,157,1473,164,1415,197,1368,230"/>
+<area shape="poly" id="edge24_Node000015_Node000013" title=" " alt="" coords="1377,266,1422,288,1473,309,1502,319,1500,324,1471,315,1420,293,1375,270"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="1758,225,1929,250"/>
+<area shape="poly" id="edge23_Node000015_Node000016" title=" " alt="" coords="1424,244,1744,237,1744,242,1424,249"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="1498,275,1653,301"/>
+<area shape="poly" id="edge25_Node000015_Node000017" title=" " alt="" coords="1425,260,1486,270,1486,276,1424,265"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="1482,174,1669,199"/>
+<area shape="poly" id="edge31_Node000015_Node000020" title=" " alt="" coords="1416,225,1512,200,1513,205,1417,230"/>
+<area shape="poly" id="edge26_Node000017_Node000016" title=" " alt="" coords="1643,273,1762,250,1763,255,1644,278"/>
+<area shape="rect" id="Node000018" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="1769,326,1917,351"/>
+<area shape="poly" id="edge27_Node000017_Node000018" title=" " alt="" coords="1644,298,1763,321,1762,326,1643,303"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="2008,301,2213,326"/>
+<area shape="poly" id="edge29_Node000017_Node000019" title=" " alt="" coords="1653,289,1994,305,1994,311,1653,294"/>
+<area shape="poly" id="edge28_Node000018_Node000019" title=" " alt="" coords="1917,329,1994,322,1994,327,1918,334"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="1727,175,1960,201"/>
+<area shape="poly" id="edge32_Node000020_Node000021" title=" " alt="" coords="1669,184,1713,185,1713,190,1669,190"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="1745,126,1942,151"/>
+<area shape="poly" id="edge33_Node000020_Node000022" title=" " alt="" coords="1646,171,1758,151,1759,156,1647,177"/>
+<area shape="rect" id="Node000023" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="2021,126,2200,151"/>
+<area shape="poly" id="edge34_Node000022_Node000023" title=" " alt="" coords="1942,136,2007,136,2007,141,1942,141"/>
+<area shape="poly" id="edge38_Node000024_Node000010" title=" " alt="" coords="553,395,615,415,613,420,551,400"/>
+<area shape="poly" id="edge43_Node000025_Node000010" title=" " alt="" coords="566,439,599,439,599,444,566,444"/>
+</map>

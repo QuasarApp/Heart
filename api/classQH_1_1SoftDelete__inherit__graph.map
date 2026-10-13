@@ -1,0 +1,9 @@
+<map id="QH::SoftDelete" name="QH::SoftDelete">
+<area shape="rect" id="Node000001" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de..." alt="" coords="129,5,281,131"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html" title="The AbstractNode class &#45; Abstract implementation of node. this implementation have a methods for send..." alt="" coords="5,179,177,704"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,145,174,179,169,178,179,143"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1ISqlDB.html" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="202,189,437,694"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,143,244,188,239,189,225,145"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation fo datatbase. The SqlDB do not use caches,..." alt="" coords="202,752,437,957"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="322,708,322,752,317,752,317,708"/>
+</map>

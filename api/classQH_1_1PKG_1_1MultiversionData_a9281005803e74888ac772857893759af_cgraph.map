@@ -1,0 +1,7 @@
+<map id="QH::PKG::MultiversionData::toBytesOf" name="QH::PKG::MultiversionData::toBytesOf">
+<area shape="rect" id="Node000001" title="toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages." alt="" coords="5,27,203,67"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="251,5,484,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,34,240,30,240,35,203,39"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1MultiversionData.html#a68c217913692806e6db854cf2559b102" title="toStreamOf This overrload of the base toStream method for support the multi version packages." alt="" coords="269,55,466,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,55,255,61,254,66,202,60"/>
+</map>

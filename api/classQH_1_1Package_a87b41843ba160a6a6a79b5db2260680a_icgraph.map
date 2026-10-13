@@ -1,0 +1,10 @@
+<map id="QH::Package::reset" name="QH::Package::reset">
+<area shape="rect" id="Node000001" title="reset This method reset all data and set for package invalid status." alt="" coords="465,56,609,81"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a0a61d019f0fb3ddd263cbb660563c37c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="228,5,417,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="469,55,376,33,378,28,470,50"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Package.html#af0c9e0c57b9e333192714a11a5fb09ab" title=" " alt="" coords="5,31,180,56"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="451,66,180,51,180,46,452,61"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Package.html#a74458fb9c8c0a11d02bf39b5a0c4d229" title=" " alt="" coords="241,107,405,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="470,87,378,109,376,104,469,82"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="215,33,181,36,180,31,214,27"/>
+</map>

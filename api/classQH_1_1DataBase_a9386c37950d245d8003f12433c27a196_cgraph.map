@@ -1,0 +1,5 @@
+<map id="QH::DataBase::getById" name="QH::DataBase::getById">
+<area shape="rect" id="Node000001" title="Get an object by its identifier." alt="" coords="5,5,176,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#ac855a4008eb35fb88d8d5e3db32bd291" title="db This node return pointer to database object." alt="" coords="224,5,361,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,15,210,15,210,21,177,21"/>
+</map>

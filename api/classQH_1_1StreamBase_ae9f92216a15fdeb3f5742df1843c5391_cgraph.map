@@ -1,0 +1,7 @@
+<map id="QH::StreamBase::fromBytes" name="QH::StreamBase::fromBytes">
+<area shape="rect" id="Node000001" title="fromBytes This method provide initialization of object from byte array." alt="" coords="5,31,211,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="268,5,483,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,31,254,27,255,32,211,36"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="259,55,492,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="211,50,245,53,245,58,211,55"/>
+</map>

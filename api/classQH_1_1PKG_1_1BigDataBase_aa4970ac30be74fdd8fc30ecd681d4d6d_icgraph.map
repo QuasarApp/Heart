@@ -1,0 +1,9 @@
+<map id="QH::PKG::BigDataBase::toStream" name="QH::PKG::BigDataBase::toStream">
+<area shape="rect" id="Node000001" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="244,69,413,109"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1BigDataHeader.html#a9fabc598936645dda16e9a3e4aebe584" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="9,5,193,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="243,68,172,48,173,43,245,63"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1BigDataPart.html#ae1f48a578b1c162d4faafcb1735f79c2" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="19,69,182,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,92,182,92,182,87,230,87"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BigDataRequest.html#a8141ecde62ec5453684cf00f03176704" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="5,133,196,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="245,116,173,136,172,131,243,110"/>
+</map>

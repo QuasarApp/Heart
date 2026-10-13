@@ -1,0 +1,32 @@
+<map id="QH::DbAddress::table" name="QH::DbAddress::table">
+<area shape="rect" id="Node000001" title="table This method return table name." alt="" coords="1039,136,1200,161"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#a31f12a82353b94ba2c8039f9050279bd" title=" " alt="" coords="545,131,744,156"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1083,132,1039,112,990,97,935,87,892,85,848,88,793,97,729,113,675,133,673,128,727,108,791,91,847,83,892,79,936,82,991,91,1041,107,1085,127"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,5,497,31"/>
+<area shape="poly" id="edge14_Node000001_Node000004" title=" " alt="" coords="1090,130,1045,99,990,72,927,54,862,40,730,22,605,15,498,15,498,9,605,10,730,17,862,35,928,49,992,68,1048,94,1093,125"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1DbAddress.html#a1d2f41fda1a8e6d0ccc08ad7aa7792f0" title="DbAddress this constructor initialize a default database address." alt="" coords="792,107,991,132"/>
+<area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="1025,139,990,135,991,129,1026,134"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1GetSingleValue.html#a15b5a7da908d24256ba22538aaf8af2b" title="GetSingleValue This is default constructor of the GetMaxIntegerId class." alt="" coords="799,157,983,197"/>
+<area shape="poly" id="edge15_Node000001_Node000010" title=" " alt="" coords="1025,163,984,168,983,163,1025,158"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1SetSingleValue.html#abfa714fac357ee58976bfe83dd5eff59" title="SetSingleValue This is default constructor of the update query generator." alt="" coords="800,221,983,261"/>
+<area shape="poly" id="edge16_Node000001_Node000011" title=" " alt="" coords="1082,170,992,211,959,223,957,218,990,206,1080,165"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1DbAddress.html#aa472f3b0590b10de98f5455d49346993" title="setTable This method set new table name of address." alt="" coords="800,285,983,311"/>
+<area shape="poly" id="edge17_Node000001_Node000012" title=" " alt="" coords="1102,174,1056,225,1026,252,992,275,962,288,960,283,989,270,1022,248,1052,221,1098,170"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="688,121,686,117,678,113,645,109,618,111,604,116,602,122,609,129,605,132,596,122,601,112,617,106,645,104,679,108,689,113,693,118"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DbAddressKey.html#ac8f718b70ccd01809c7a8032755964cd" title=" " alt="" coords="252,55,497,80"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="589,129,497,102,425,83,426,77,498,97,590,124"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="617,124,564,83,531,62,496,44,463,33,464,28,498,40,534,57,567,78,621,120"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DbAddressKey.html#aea22139f43b20acf32e17d624245e510" title="equal This method must be make compare between current object and other." alt="" coords="11,144,198,169"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="531,143,398,143,252,146,198,150,198,144,252,141,398,137,531,138"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DbAddressKey.html#a4290e04f7eb12971186b51d5912565d2" title="hash This method must be calc hash int32 code of source object." alt="" coords="283,156,466,181"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="532,157,466,163,466,157,532,151"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1DbAddress.html#a18f81ba2b850c81afaf9a69f0089e33a" title=" " alt="" coords="5,255,204,280"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="627,169,574,223,538,250,498,270,455,283,411,291,321,297,237,292,167,283,168,277,237,287,321,291,410,286,454,277,496,265,535,245,571,219,623,165"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1DbAddress.html#aa96122ec4836f95ccbd33f8f902be20d" title=" " alt="" coords="272,229,477,255"/>
+<area shape="poly" id="edge9_Node000002_Node000008" title=" " alt="" coords="597,163,412,232,410,227,595,158"/>
+<area shape="poly" id="edge8_Node000007_Node000007" title=" " alt="" coords="153,246,150,241,142,237,105,233,76,235,60,240,57,246,65,253,61,256,52,246,57,236,75,230,105,228,143,232,154,237,157,243"/>
+<area shape="poly" id="edge10_Node000008_Node000005" title=" " alt="" coords="319,228,145,172,147,167,321,222"/>
+<area shape="poly" id="edge11_Node000008_Node000007" title=" " alt="" coords="259,256,205,261,204,255,258,250"/>
+<area shape="poly" id="edge12_Node000008_Node000008" title=" " alt="" coords="423,220,420,216,412,212,375,208,346,210,330,215,327,220,335,227,331,231,322,221,327,211,345,205,375,203,413,207,424,212,427,218"/>
+<area shape="poly" id="edge18_Node000012_Node000002" title=" " alt="" coords="809,283,791,275,748,247,709,214,655,158,659,154,713,211,751,243,793,270,811,278"/>
+</map>

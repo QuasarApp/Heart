@@ -1,0 +1,7 @@
+<map id="QH::iObjectProvider::getObject" name="QH::iObjectProvider::getObject">
+<area shape="rect" id="Node000001" title="getObject this method return a strong pointer to DBObject created by select method of the template ob..." alt="" coords="5,5,156,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iObjectProvider.html#a4e608ee9571fe5b59016337e9b72967d" title="getObjectRaw This method return object without test object type." alt="" coords="204,5,355,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,23,190,23,190,28,156,28"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iObjectProvider.html#af5d4465654369be3556de4088902ce8d" title="getAllObjects This method execute a select method of the templateObject and return list of all select..." alt="" coords="403,5,553,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="355,23,389,23,389,28,355,28"/>
+</map>

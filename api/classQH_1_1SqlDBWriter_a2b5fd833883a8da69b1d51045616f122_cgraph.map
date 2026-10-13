@@ -1,0 +1,5 @@
+<map id="QH::SqlDBWriter::updateQuery" name="QH::SqlDBWriter::updateQuery">
+<area shape="rect" id="Node000001" title="updateQuery This method execute update query of object. For more Information see DBObject::prepareUpd..." alt="" coords="5,5,227,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="275,5,428,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="227,15,261,15,261,21,227,21"/>
+</map>

@@ -1,0 +1,16 @@
+<map id="QH::PKG::DBObjectsRequest::DBObjectsRequest" name="QH::PKG::DBObjectsRequest::DBObjectsRequest">
+<area shape="rect" id="Node000001" title="DBObjectsRequest This is default constructor for parsing packages." alt="" coords="5,49,212,89"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="260,31,465,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,56,246,52,247,58,212,61"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="269,80,456,105"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="212,76,256,80,255,85,212,81"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="523,5,737,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="465,31,509,27,509,32,466,36"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="513,55,747,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="466,50,500,53,500,58,465,55"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="456,81,499,77,500,82,456,86"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="531,104,729,129"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="456,98,518,104,517,109,456,104"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="795,104,973,129"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="729,114,781,114,781,119,729,119"/>
+</map>

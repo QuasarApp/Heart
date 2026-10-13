@@ -1,0 +1,11 @@
+<map id="QH::BigDataParser::BigDataParser" name="QH::BigDataParser::BigDataParser">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,156,87"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="487,29,677,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,47,204,39,344,32,473,33,473,39,344,37,204,45,157,52"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#aa0d11d462df4b12a24958b28c40a107a" title=" " alt="" coords="248,55,395,80"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="156,65,234,65,234,70,156,70"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1iParser.html#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ..." alt="" coords="204,104,439,129"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="157,80,246,99,245,104,155,85"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="540,31,531,21,536,11,553,5,582,3,619,7,629,11,633,17,628,20,625,15,617,12,582,8,554,10,539,15,536,20,544,27"/>
+<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="395,58,472,50,473,55,395,63"/>
+</map>

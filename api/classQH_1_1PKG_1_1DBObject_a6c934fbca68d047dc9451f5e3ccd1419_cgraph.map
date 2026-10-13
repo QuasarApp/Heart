@@ -1,0 +1,13 @@
+<map id="QH::PKG::DBObject::isInsertPrimaryKey" name="QH::PKG::DBObject::isInsertPrimaryKey">
+<area shape="rect" id="Node000001" title="isInsertPrimaryKey This method check primaryKeys type. If the primary key have a type MemberType::Ins..." alt="" coords="5,9,160,49"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#a8d312cbe9bfd1fb58f6ce16a3a384637" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="613,5,768,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,24,208,23,387,19,565,20,600,21,600,26,565,25,387,25,208,28,160,29"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObject.html#a6f9e5c2ec7976007d0ce62dfb41335d8" title="variantMap This method should be create a DBVariantMap implementation of this database object." alt="" coords="208,37,363,77"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,37,195,42,194,47,160,43"/>
+<area shape="poly" id="edge5_Node000003_Node000002" title=" " alt="" coords="363,49,599,30,600,35,363,54"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#a34e82d79450b6b780b6b11f209dc8a7e" title="isHaveAPrimaryKey This method return true if this object has a primary key. If you want to cache this..." alt="" coords="411,63,565,103"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="363,64,397,69,396,74,363,70"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="411,127,565,167"/>
+<area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="330,75,412,112,427,119,425,124,410,117,328,80"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="559,60,606,47,607,52,560,65"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="QH::PKG::GetSingleValue::prepareSelectQuery" name="QH::PKG::GetSingleValue::prepareSelectQuery">
+<area shape="rect" id="Node000001" title="prepareSelectQuery This method should be prepare a query for selected data. Override this method for ..." alt="" coords="5,5,189,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1GetSingleValue.html#a1dd54091e21f9b9f65201494025a1e48" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="237,5,421,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,23,223,23,223,28,190,28"/>
+</map>

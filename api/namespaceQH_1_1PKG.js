@@ -1,0 +1,47 @@
+var namespaceQH_1_1PKG =
+[
+    [ "AbstractData", "classQH_1_1PKG_1_1AbstractData.html", "classQH_1_1PKG_1_1AbstractData" ],
+    [ "APIVersion", "classQH_1_1PKG_1_1APIVersion.html", "classQH_1_1PKG_1_1APIVersion" ],
+    [ "BadRequest", "classQH_1_1PKG_1_1BadRequest.html", "classQH_1_1PKG_1_1BadRequest" ],
+    [ "BigDataBase", "classQH_1_1PKG_1_1BigDataBase.html", "classQH_1_1PKG_1_1BigDataBase" ],
+    [ "BigDataHeader", "classQH_1_1PKG_1_1BigDataHeader.html", "classQH_1_1PKG_1_1BigDataHeader" ],
+    [ "BigDataPart", "classQH_1_1PKG_1_1BigDataPart.html", "classQH_1_1PKG_1_1BigDataPart" ],
+    [ "BigDataRequest", "classQH_1_1PKG_1_1BigDataRequest.html", "classQH_1_1PKG_1_1BigDataRequest" ],
+    [ "BigDataWraper", "classQH_1_1PKG_1_1BigDataWraper.html", "classQH_1_1PKG_1_1BigDataWraper" ],
+    [ "CachedDbObjectsRequest", "classQH_1_1PKG_1_1CachedDbObjectsRequest.html", "classQH_1_1PKG_1_1CachedDbObjectsRequest" ],
+    [ "CloseConnection", "classQH_1_1PKG_1_1CloseConnection.html", "classQH_1_1PKG_1_1CloseConnection" ],
+    [ "CustomDBRequest", "classQH_1_1PKG_1_1CustomDBRequest.html", "classQH_1_1PKG_1_1CustomDBRequest" ],
+    [ "DataPack", "classQH_1_1PKG_1_1DataPack.html", "classQH_1_1PKG_1_1DataPack" ],
+    [ "DBObject", "classQH_1_1PKG_1_1DBObject.html", "classQH_1_1PKG_1_1DBObject" ],
+    [ "DBObjectSet", "classQH_1_1PKG_1_1DBObjectSet.html", "classQH_1_1PKG_1_1DBObjectSet" ],
+    [ "DBObjectsRequest", "classQH_1_1PKG_1_1DBObjectsRequest.html", "classQH_1_1PKG_1_1DBObjectsRequest" ],
+    [ "DBObjectsRequestWithStream", "classQH_1_1PKG_1_1DBObjectsRequestWithStream.html", "classQH_1_1PKG_1_1DBObjectsRequestWithStream" ],
+    [ "DBVariant", "structQH_1_1PKG_1_1DBVariant.html", "structQH_1_1PKG_1_1DBVariant" ],
+    [ "DeleteObject", "classQH_1_1PKG_1_1DeleteObject.html", "classQH_1_1PKG_1_1DeleteObject" ],
+    [ "ErrorData", "structQH_1_1PKG_1_1ErrorData.html", "structQH_1_1PKG_1_1ErrorData" ],
+    [ "GetMaxIntegerId", "classQH_1_1PKG_1_1GetMaxIntegerId.html", "classQH_1_1PKG_1_1GetMaxIntegerId" ],
+    [ "GetSingleValue", "classQH_1_1PKG_1_1GetSingleValue.html", "classQH_1_1PKG_1_1GetSingleValue" ],
+    [ "MultiversionData", "classQH_1_1PKG_1_1MultiversionData.html", "classQH_1_1PKG_1_1MultiversionData" ],
+    [ "Ping", "classQH_1_1PKG_1_1Ping.html", "classQH_1_1PKG_1_1Ping" ],
+    [ "SerializationBox", "structQH_1_1PKG_1_1SerializationBox.html", "structQH_1_1PKG_1_1SerializationBox" ],
+    [ "SetSingleValue", "classQH_1_1PKG_1_1SetSingleValue.html", "classQH_1_1PKG_1_1SetSingleValue" ],
+    [ "UniversalData", "classQH_1_1PKG_1_1UniversalData.html", "classQH_1_1PKG_1_1UniversalData" ],
+    [ "VersionIsReceived", "classQH_1_1PKG_1_1VersionIsReceived.html", "classQH_1_1PKG_1_1VersionIsReceived" ],
+    [ "DBVariantMap", "namespaceQH_1_1PKG.html#a9c5945152704da42721e513d241d3234", null ],
+    [ "MemberType", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3", [
+      [ "None", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Insert", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3aa458be0f08b7e4ff3c0f633c100176c0", null ],
+      [ "Update", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3a06933067aafd48425d67bcb01bba5cb6", null ],
+      [ "Unique", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3ad019979a29c88c8d69bab3a63388da97", null ],
+      [ "Autoincement", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3a92a91d18335aef6659b20b60ec3edefc", null ],
+      [ "InsertUpdate", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3a97b903db6b5ee4452a482ff5db7e2532", null ],
+      [ "PrimaryKey", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3a29d1af362ab973271770de185604cae2", null ],
+      [ "PrimaryKeyAutoIncrement", "namespaceQH_1_1PKG.html#aeaa29184a428c7aa2fcbc8b61aae38d3a34ab5183fe1983f31cecd09cbf5b7fe9", null ]
+    ] ],
+    [ "PrepareResult", "namespaceQH_1_1PKG.html#a49607edf9d21ba3c4be8ccef9b96de6c", [
+      [ "Fail", "namespaceQH_1_1PKG.html#a49607edf9d21ba3c4be8ccef9b96de6caceaa0734f0b3c738120c67344d8f3ec1", null ],
+      [ "Success", "namespaceQH_1_1PKG.html#a49607edf9d21ba3c4be8ccef9b96de6ca505a83f220c02df2f85c3810cd9ceb38", null ],
+      [ "Disabled", "namespaceQH_1_1PKG.html#a49607edf9d21ba3c4be8ccef9b96de6cab9f5c797ebbf55adccdd8539a65a0241", null ]
+    ] ],
+    [ "qHash", "namespaceQH_1_1PKG.html#ad5e97490130d7b8fec79179e378544fd", null ]
+];

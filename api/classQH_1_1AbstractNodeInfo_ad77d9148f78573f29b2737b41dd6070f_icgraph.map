@@ -1,0 +1,6 @@
+<map id="QH::AbstractNodeInfo::setIsLocal" name="QH::AbstractNodeInfo::setIsLocal">
+<area shape="rect" id="Node000001" title="setIsLocal This method sets local status for this Node." alt="" coords="216,29,379,69"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a10d0390fb5bfa5d58bf8195a3ffc4f32" title="reset This method reset all fields of the nodeInfo." alt="" coords="5,29,168,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,52,168,52,168,47,202,47"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="122,18,110,11,87,8,66,10,54,15,50,21,52,28,47,30,45,20,51,10,65,5,87,3,111,6,125,13"/>
+</map>

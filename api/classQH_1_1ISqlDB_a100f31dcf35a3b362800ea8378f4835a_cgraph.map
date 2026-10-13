@@ -1,0 +1,5 @@
+<map id="QH::ISqlDB::setWriter" name="QH::ISqlDB::setWriter">
+<area shape="rect" id="Node000001" title="setWriter This method set new writer for this cache." alt="" coords="5,5,167,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#a20142160d3bcaa1ae869367a0c5eaada" title="writer This method return is database writer object. For more inforamation about writer see the SqlDB..." alt="" coords="215,5,353,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,15,201,15,201,21,167,21"/>
+</map>

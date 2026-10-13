@@ -1,0 +1,10 @@
+<map id="QH::AbstractNodeInfo::trust" name="QH::AbstractNodeInfo::trust">
+<area shape="rect" id="Node000001" title="trust &#45; Show current value of trust level node or client." alt="" coords="427,29,589,69"/>
+<area shape="poly" id="edge5_Node000001_Node000001" title=" " alt="" coords="544,18,531,11,508,8,488,10,476,15,471,21,474,28,468,30,466,20,472,10,487,5,508,3,533,6,546,13"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a7e7ac36f818b2abcaa0bf902032608df" title="setTrust This method set manually value of this node trust." alt="" coords="216,29,379,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="413,52,379,52,379,47,413,47"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="333,18,320,11,297,8,277,10,265,15,261,21,263,28,258,30,255,20,262,10,276,5,297,3,322,6,335,13"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a10d0390fb5bfa5d58bf8195a3ffc4f32" title="reset This method reset all fields of the nodeInfo." alt="" coords="5,29,168,69"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="202,52,168,52,168,47,202,47"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="122,18,110,11,87,8,66,10,54,15,50,21,52,28,47,30,45,20,51,10,65,5,87,3,111,6,125,13"/>
+</map>

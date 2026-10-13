@@ -1,0 +1,5 @@
+<map id="QH::PKG::GetMaxIntegerId::prepareSelectQuery" name="QH::PKG::GetMaxIntegerId::prepareSelectQuery">
+<area shape="rect" id="Node000001" title="prepareSelectQuery This method should be prepare a query for selected data. Override this method for ..." alt="" coords="5,5,200,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#ac922a1a1beabd78edd79482ad3d604b8" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="248,5,443,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,23,234,23,234,28,200,28"/>
+</map>

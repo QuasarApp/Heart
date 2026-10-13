@@ -1,0 +1,5 @@
+<map id="QH::SqlDBWriter::disableFK" name="QH::SqlDBWriter::disableFK">
+<area shape="rect" id="Node000001" title="disableFK This method disable foreign key for the sqlite database." alt="" coords="5,5,207,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr...." alt="" coords="255,5,408,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,15,241,15,241,21,207,21"/>
+</map>

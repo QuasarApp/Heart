@@ -1,0 +1,9 @@
+<map id="QH::DataSender::sendData" name="QH::DataSender::sendData">
+<area shape="rect" id="Node000001" title="sendPackagePrivate This slot move send package to a main thread." alt="" coords="5,31,201,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="249,31,444,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,41,235,41,235,46,202,46"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="497,5,633,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="444,29,482,25,483,30,445,35"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="492,55,637,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="445,51,479,55,478,60,444,57"/>
+</map>

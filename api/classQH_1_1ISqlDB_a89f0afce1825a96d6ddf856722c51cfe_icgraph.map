@@ -1,0 +1,17 @@
+<map id="QH::ISqlDB::sigItemChanged" name="QH::ISqlDB::sigItemChanged">
+<area shape="rect" id="Node000001" title="sigItemChanged This signal emitted when database object is changed." alt="" coords="489,104,696,129"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="256,29,436,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="542,102,441,69,400,57,401,52,442,63,544,97"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1ISqlDB.html#a3847dd9cea867db6f16a8b5bd7933358" title=" " alt="" coords="256,79,436,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="476,107,436,103,436,98,476,102"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1ISqlDB.html#aeae6eb6fdfcbed66bbe244bac97cb9f9" title=" " alt="" coords="251,128,441,153"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="476,131,442,134,441,129,476,125"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1ISqlDB.html#ae85f77326f000abdcec7650357a70b02" title=" " alt="" coords="252,177,440,203"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="541,136,442,167,397,180,396,175,441,162,540,131"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="33,5,175,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="242,34,175,28,176,22,242,29"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d" title="run This method is some as AbstractNode::run but set for node custom work folder. This maybe use for ..." alt="" coords="33,55,175,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="242,56,176,63,175,57,242,50"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1ISqlDB.html#abcadb2dd92c17c2899a6cffe9216f518" title="changeObjects This method change object of the database." alt="" coords="5,177,203,203"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="238,193,203,193,203,187,238,187"/>
+</map>

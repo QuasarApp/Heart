@@ -1,0 +1,15 @@
+<map id="QH::Async" name="QH::Async">
+<area shape="rect" id="Node000001" title="The Async class This is bundle of async templates and async wrappers." alt="" coords="267,119,403,264"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AsyncLauncher.html" title="The AsyncLauncher class is wraper of the Async class for support moving invokes to thread of the curr..." alt="" coords="5,452,145,577"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="257,235,206,270,160,314,137,346,119,382,93,453,88,451,114,380,133,344,156,310,202,266,254,231"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AsyncRenderLoop.html" title="The AsyncRenderLoop is a class for asynchronous rendering. This class is used to create a render loop..." alt="" coords="170,422,335,607"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="316,278,279,423,274,421,311,277"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DataSender.html" title="The DataSender class this class create a queue for sendet data to network." alt="" coords="360,472,479,557"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="360,277,411,471,406,473,355,278"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="503,312,655,717"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="417,240,456,272,492,310,505,329,501,332,488,314,453,276,413,244"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="302,5,369,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="338,84,338,118,333,118,333,84"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AsyncSqlDBWriter.html" title="The AsyncSqlDbWriter class is some as SqlDBWriter but run all command in own thread...." alt="" coords="495,765,663,851"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="582,731,582,765,577,765,577,731"/>
+</map>

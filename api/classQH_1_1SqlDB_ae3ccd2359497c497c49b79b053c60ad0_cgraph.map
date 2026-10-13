@@ -1,0 +1,7 @@
+<map id="QH::SqlDB::SqlDB" name="QH::SqlDB::SqlDB">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,141,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#ac3c7561a7409f831dc4a9c4d498243a6" title="ISqlDB This is default constructor of dbcache." alt="" coords="189,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="142,15,175,15,175,21,142,21"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1ISqlDB.html#ae369689c0beea5df1bacd30c273caa6a" title="setMode This method set a new value of the mode database cache." alt="" coords="381,5,539,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,15,368,15,368,21,333,21"/>
+</map>

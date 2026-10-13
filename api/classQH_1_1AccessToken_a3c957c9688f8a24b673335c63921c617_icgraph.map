@@ -1,0 +1,5 @@
+<map id="QH::AccessToken::fromStream" name="QH::AccessToken::fromStream">
+<area shape="rect" id="Node000001" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="260,5,479,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AccessToken.html#a7fb255e739f0daf4de8ab17772b084c3" title="operator = this is operator of copy objects." alt="" coords="5,5,212,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,21,212,21,212,15,246,15"/>
+</map>

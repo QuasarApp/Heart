@@ -1,0 +1,20 @@
+<map id="QH::PKG::DBObjectsRequestWithStream::DBObjectsRequestWithStream" name="QH::PKG::DBObjectsRequestWithStream::DBObjectsRequestWithStream">
+<area shape="rect" id="Node000001" title="DBObjectsRequest This contsrucor create a object with request the array of T objects." alt="" coords="5,72,264,127"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObjectsRequest.html#a298d28f9b3873c2d3cab01f86f990bcd" title="DBObjectsRequest This is default constructor for parsing packages." alt="" coords="312,47,519,87"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="264,82,298,78,298,83,264,87"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1DBObjectSet.html#a7bb1de4669e44b40cc17e6e4b42db908" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="332,111,499,151"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="264,111,318,118,318,123,264,117"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="567,31,772,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="519,55,553,52,553,57,519,60"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0" title="toBytes This method convert a current object to bytes array." alt="" coords="576,80,763,105"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="519,75,563,79,562,85,519,80"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="829,5,1044,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="772,31,816,27,816,32,772,36"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="820,55,1053,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="772,50,807,53,806,58,772,55"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="763,81,806,77,807,82,763,86"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="838,104,1035,129"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="763,98,825,104,824,109,763,104"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1" title="typeId This method return id of type." alt="" coords="1101,104,1280,129"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="1036,114,1088,114,1088,119,1036,119"/>
+</map>

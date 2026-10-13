@@ -1,0 +1,22 @@
+<map id="QH::HostAddress::HostAddress" name="QH::HostAddress::HostAddress">
+<area shape="rect" id="Node000001" title=" " alt="" coords="800,115,1023,140"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1HostAddress.html#ac4df0ccdc49242567a983ce99d09a705" title=" " alt="" coords="264,14,487,39"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="884,108,826,65,790,44,751,29,674,14,596,8,521,10,456,16,456,11,521,5,596,3,675,8,753,24,792,39,829,60,887,104"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1HostAddress.html#a7f72c839a2fba37d8a945c894f29058e" title=" " alt="" coords="5,140,216,166"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="786,124,544,120,404,123,264,130,174,143,173,138,264,125,404,117,544,115,786,119"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1HostAddress.html#a043ca735b0679994512c59525167df28" title=" " alt="" coords="535,140,752,166"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="787,142,753,146,752,140,786,137"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1HostAddress.html#a2bf39361169bb4ad56c26c34e5c01130" title=" " alt="" coords="540,39,747,64"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="852,114,688,67,690,62,853,109"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1HostAddress.html#ad262b48ba4596f425fea3ef3a0c4fe21" title=" " alt="" coords="535,190,752,215"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="860,147,753,180,703,192,702,187,751,175,858,142"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1HostAddress.html#a1c24891288fe08bab5149f7355e3e009" title=" " alt="" coords="535,239,752,264"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="885,151,826,191,753,230,719,242,717,236,751,225,823,187,882,147"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1HostAddress.html#a19e0cb9feb18278c8243aceb97606afc" title="toBytes This method convert a network address to a byte array." alt="" coords="280,140,471,166"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="521,156,471,156,471,150,521,150"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="266,156,216,156,216,150,266,150"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="526,43,486,40,487,34,526,38"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1HostAddress.html#ac6e5ee758cf7e003581209ce3ba221c5" title="fromBytes This method applay array obejct. (conver a byte array to a newtwork address object)" alt="" coords="271,214,479,239"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="521,243,479,239,480,234,521,238"/>
+<area shape="poly" id="edge11_Node000009_Node000003" title=" " alt="" coords="315,213,157,168,158,163,316,208"/>
+</map>

@@ -1,0 +1,43 @@
+<map id="QH::AbstractNode::badRequest" name="QH::AbstractNode::badRequest">
+<area shape="rect" id="Node000001" title="badRequest This method is send data about error of request." alt="" coords="5,260,228,285"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a6b82304763449743abf43501a02b1263" title="address &#45; Thim method return own network address of current node (server)." alt="" coords="293,5,490,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="120,259,139,216,171,157,216,94,244,65,274,41,287,34,290,39,278,46,247,69,220,97,176,160,144,219,125,261"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913" title="BadRequest." alt="" coords="310,55,473,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="125,258,181,186,225,142,275,105,296,94,298,99,277,110,228,146,185,189,129,261"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#a64d5cb2ff03bd82455c8daef2a36566c" title="ban &#45; This method set for target connection a trust property to 0 and target connection will been abo..." alt="" coords="306,120,477,145"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="131,258,192,212,232,185,275,162,317,147,319,152,277,167,235,190,195,216,135,262"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="555,228,765,253"/>
+<area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="140,258,200,230,237,216,275,206,340,196,391,195,507,206,598,222,597,227,506,211,391,200,340,202,277,211,239,221,202,235,142,262"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1AbstractNode.html#a3a0487102701cacc0367e58be47711b3" title="changeTrust This method change trust of connected node." alt="" coords="295,221,488,261"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="226,257,281,251,281,256,226,263"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNode.html#af0498eea2503a0753d910c14352730d2" title="fCloseConnectionAfterBadRequest This propery enable or disable droping connection after badRequests...." alt="" coords="289,285,493,325"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="226,283,276,289,275,294,226,288"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNode.html#a4d896aa68e6bf1778555b938b8863ecc" title="isBanned This method checks if the node is banned." alt="" coords="288,496,495,521"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="126,284,146,324,178,377,223,434,249,459,277,481,291,488,288,493,275,486,245,463,219,438,174,380,141,326,121,287"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1AbstractNode.html#a33193da61850603360c0ee0695a34cf8" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="276,373,507,399"/>
+<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="150,283,348,366,346,371,148,288"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node" alt="" coords="287,447,495,472"/>
+<area shape="poly" id="edge20_Node000001_Node000015" title=" " alt="" coords="132,284,192,341,233,376,277,408,341,439,338,444,275,412,230,380,188,345,128,287"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1HostAddress.html#a66403f64a0da84060763b8645be42403" title="toString this method convert the Host Address value to string value." alt="" coords="296,549,487,575"/>
+<area shape="poly" id="edge23_Node000001_Node000016" title=" " alt="" coords="124,285,141,332,172,399,217,471,245,504,278,532,294,542,291,546,274,536,242,508,213,474,167,402,136,334,119,286"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c" title="err This method return a text of error message." alt="" coords="813,35,1003,60"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="473,54,554,41,614,37,660,37,765,41,800,41,800,47,765,46,660,42,614,42,555,46,473,59"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1BadRequest.html#a7d13c8e8dfa93f1f82ea1986219541b1" title="setErr &#45; Set a error message." alt="" coords="579,55,741,95"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="473,73,565,73,565,78,473,78"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1BadRequest.html#a0ade1a713015f14614111645ba1d0f27" title="setErrCode This method set error code." alt="" coords="579,119,741,159"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="473,92,566,114,565,120,472,97"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="741,64,799,57,800,62,742,69"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="447,143,508,162,571,190,626,219,623,224,569,195,506,167,445,148"/>
+<area shape="poly" id="edge10_Node000009_Node000008" title=" " alt="" coords="488,238,541,238,541,243,488,243"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNodeInfo.html#acf79d4d87c0cdd97750e11be18581b9d" title="isBanned &#45; check node which banned." alt="" coords="579,401,741,441"/>
+<area shape="poly" id="edge14_Node000011_Node000012" title=" " alt="" coords="467,493,506,481,529,466,553,450,571,443,573,448,556,455,532,471,508,486,468,499"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1AbstractNodeInfo.html#abbea046714cf6e08aef4a52eec751f64" title="isValid &#45; Check valid of node. This method check connect status of socket." alt="" coords="579,489,741,529"/>
+<area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="495,506,564,506,564,511,495,511"/>
+<area shape="poly" id="edge16_Node000013_Node000013" title=" " alt="" coords="614,489,611,479,619,470,635,464,660,462,689,465,705,472,702,477,687,470,660,467,636,469,622,474,616,480,619,488"/>
+<area shape="poly" id="edge18_Node000014_Node000008" title=" " alt="" coords="425,371,505,334,572,296,628,259,631,263,575,300,508,339,427,376"/>
+<area shape="poly" id="edge19_Node000014_Node000014" title=" " alt="" coords="348,375,339,365,344,355,362,349,391,347,430,351,440,356,444,362,439,364,436,360,428,356,391,352,363,354,347,359,344,364,352,371"/>
+<area shape="poly" id="edge21_Node000015_Node000008" title=" " alt="" coords="432,444,469,429,505,408,547,373,585,333,640,263,644,266,589,337,551,377,508,412,471,434,434,449"/>
+<area shape="poly" id="edge22_Node000015_Node000015" title=" " alt="" coords="348,448,339,438,344,428,362,422,391,420,430,424,440,429,444,435,439,438,436,433,428,429,391,425,363,427,347,432,344,438,352,445"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1HostAddress.html#a2e69981566e7f12c0ccbda6651861b4e" title="The port method return port of node." alt="" coords="577,553,743,579"/>
+<area shape="poly" id="edge24_Node000016_Node000017" title=" " alt="" coords="487,561,563,562,563,567,487,566"/>
+</map>

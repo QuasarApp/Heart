@@ -1,0 +1,12 @@
+<map id="QH::PKG::BadRequest::BadRequest" name="QH::PKG::BadRequest::BadRequest">
+<area shape="rect" id="Node000001" title="BadRequest Init BadRequest from the ErrorData struct." alt="" coords="5,26,168,66"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913" title="BadRequest." alt="" coords="216,26,379,66"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,43,202,43,202,49,168,49"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c" title="err This method return a text of error message." alt="" coords="637,5,827,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="365,23,426,11,528,5,624,7,624,12,528,10,427,17,366,29"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BadRequest.html#a7d13c8e8dfa93f1f82ea1986219541b1" title="setErr &#45; Set a error message." alt="" coords="427,26,589,66"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="379,43,413,43,413,49,379,49"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1BadRequest.html#a0ade1a713015f14614111645ba1d0f27" title="setErrCode This method set error code." alt="" coords="427,90,589,130"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="365,64,429,83,428,89,363,69"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="590,33,623,29,624,34,590,38"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="QH::PKG::DeleteObject::DeleteObject" name="QH::PKG::DeleteObject::DeleteObject">
+<area shape="rect" id="Node000001" title="DeleteObject This is main constructor for request, you can remove any db object if you know them valu..." alt="" coords="5,37,176,77"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DeleteObject.html#a5ffa28118713049025ed8c2391e8dce8" title="address This method return address of the object that will be deleted." alt="" coords="224,5,395,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,42,210,37,211,42,177,48"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DeleteObject.html#adb5ce28c677132edd8a7ec2917f0e753" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="224,69,395,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,67,211,72,210,78,176,72"/>
+</map>

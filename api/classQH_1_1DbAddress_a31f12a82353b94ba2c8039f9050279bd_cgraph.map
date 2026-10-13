@@ -1,0 +1,24 @@
+<map id="QH::DbAddress::DbAddress" name="QH::DbAddress::DbAddress">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,205,204,231"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="64,207,55,197,60,187,77,181,105,179,140,183,150,187,154,193,149,196,147,191,139,188,105,184,78,186,63,191,61,196,68,203"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#a33a729c7e6fa56a088a3a8434f6825ef" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="255,5,461,31"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="112,203,163,130,204,86,251,48,280,33,283,38,253,52,207,90,167,133,116,206"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DbAddress.html#ad6af2ba06607b38164fea920ada92ea7" title="id This method return id of object in table." alt="" coords="523,144,663,169"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="114,204,135,178,167,146,206,115,251,92,309,75,357,71,405,78,465,91,517,110,562,134,560,139,515,115,463,97,404,83,357,76,310,80,253,96,209,119,170,150,139,182,118,207"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddress.html#ab1e05f3ebde983e0f34b419ab8840c1c" title="isValid This method check object for valid." alt="" coords="273,107,443,132"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="126,203,181,172,251,141,276,133,277,138,253,146,184,177,128,207"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DbAddress.html#a380df0bab17acf16de4c58cc75267998" title="setId This method set id for this address." alt="" coords="278,156,438,181"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="170,203,278,181,279,187,171,208"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DbAddress.html#aa472f3b0590b10de98f5455d49346993" title="setTable This method set new table name of address." alt="" coords="267,205,449,231"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="204,215,253,215,253,221,204,221"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1DbAddress.html#ab7916c57de8d8c8f2a19de8a08228f67" title="table This method return table name." alt="" coords="512,219,673,244"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="166,228,252,241,358,245,464,241,498,238,499,244,464,246,358,251,252,246,165,233"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1DbAddress.html#a402257f24f09ee1f956716238ca3904d" title="SHA256Hash This method return address hash. This hash using into database." alt="" coords="252,307,464,332"/>
+<area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="132,229,187,256,253,285,297,300,296,305,251,290,184,261,129,233"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1DbAddress.html#a46ea8365616f63aa904ff7cc785d4fbb" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="264,356,452,381"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="119,229,172,284,211,316,253,342,269,349,267,354,251,347,208,320,169,288,115,233"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1DbAddress.html#a18ccb4ea8b466e53218d1dfee8943dc5" title="toString This method return a string implementation fo this object." alt="" coords="269,405,447,431"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="115,230,135,263,165,307,205,353,253,392,265,398,262,403,251,396,202,357,161,311,130,266,111,232"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="438,162,509,158,509,164,439,167"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="450,221,499,223,498,229,450,226"/>
+</map>

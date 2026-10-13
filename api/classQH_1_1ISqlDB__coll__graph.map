@@ -1,0 +1,9 @@
+<map id="QH::ISqlDB" name="QH::ISqlDB">
+<area shape="rect" id="Node000001" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="51,299,285,804"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,95,72,161"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="55,173,93,298,88,299,50,175"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iObjectProvider.html" title="The iObjectProvider class is base interface for work with database objects. Using on database writers..." alt="" coords="97,5,239,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,265,171,298,165,298,165,265"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de..." alt="" coords="264,65,416,191"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="312,205,273,300,268,298,307,203"/>
+</map>

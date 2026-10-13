@@ -1,0 +1,69 @@
+<map id="QH::AbstractNode::getInfoPtr" name="QH::AbstractNode::getInfoPtr">
+<area shape="rect" id="Node000001" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="1227,278,1437,303"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a6c64327f29ae5e1b38b8d06212948631" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="415,38,619,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1319,266,1300,222,1270,169,1229,117,1205,95,1177,77,1099,43,1015,22,928,11,843,8,761,12,687,20,571,41,570,35,686,15,761,7,843,3,929,6,1016,17,1100,38,1180,72,1208,91,1233,114,1274,166,1305,220,1324,264"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a74f7e468330622c2ed2c42baf2f78ded" title="badRequest This method is send data about error of request." alt="" coords="673,303,896,329"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1213,299,896,314,896,308,1213,293"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="413,303,621,329"/>
+<area shape="poly" id="edge10_Node000001_Node000004" title=" " alt="" coords="1288,276,1236,258,1178,244,1036,226,923,225,811,238,670,267,605,285,550,306,548,301,603,280,669,261,811,233,923,219,1036,221,1179,239,1237,253,1289,271"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#a64d5cb2ff03bd82455c8daef2a36566c" title="ban &#45; This method set for target connection a trust property to 0 and target connection will been abo..." alt="" coords="978,253,1149,278"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1213,282,1149,276,1149,271,1213,277"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNode.html#a3a0487102701cacc0367e58be47711b3" title="changeTrust This method change trust of connected node." alt="" coords="967,353,1160,393"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="1277,310,1130,356,1129,351,1276,305"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#a8f2a1fec2f063d16af89af0cb7183a5d" title="incomingConnection This is ovverided method of QTCPServer." alt="" coords="681,137,888,177"/>
+<area shape="poly" id="edge9_Node000001_Node000007" title=" " alt="" coords="1303,271,1248,233,1214,214,1178,199,1104,179,1028,166,954,160,888,157,888,152,955,154,1029,161,1105,173,1180,193,1216,209,1250,228,1306,267"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#aa0a2e3439c01b9b30017ae159c6885ea" title="registerSocket This method registration new socket object." alt="" coords="965,87,1161,127"/>
+<area shape="poly" id="edge11_Node000001_Node000008" title=" " alt="" coords="1310,269,1254,209,1217,176,1177,148,1138,129,1140,124,1180,143,1221,172,1258,205,1314,266"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNode.html#a33193da61850603360c0ee0695a34cf8" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="948,442,1179,467"/>
+<area shape="poly" id="edge17_Node000001_Node000011" title=" " alt="" coords="1307,315,1251,360,1180,408,1140,428,1101,444,1099,439,1137,423,1177,403,1247,356,1304,311"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNode.html#a310f1e1a0770f13e4ec8b505624df843" title="sendData This method send data object another to node" alt="" coords="959,565,1167,590"/>
+<area shape="poly" id="edge21_Node000001_Node000012" title=" " alt="" coords="1326,317,1308,368,1279,433,1237,500,1210,530,1180,556,1160,567,1157,562,1177,551,1206,526,1232,497,1274,431,1303,366,1321,316"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node" alt="" coords="959,515,1167,541"/>
+<area shape="poly" id="edge22_Node000001_Node000013" title=" " alt="" coords="1319,317,1264,397,1225,442,1180,482,1145,503,1109,518,1107,513,1143,498,1177,478,1221,438,1260,393,1314,314"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="659,319,622,319,622,313,659,313"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="980,283,856,306,855,301,979,278"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="965,272,825,281,670,295,590,306,589,301,669,289,824,275,964,267"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="953,353,847,331,848,326,954,348"/>
+<area shape="poly" id="edge16_Node000008_Node000007" title=" " alt="" coords="952,130,889,141,888,136,951,124"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1AbstractNode.html#a5d66fe8476e6a17bcca8ee66e177a575" title="addNode &#45; Connect to node (server) with address." alt="" coords="683,87,887,113"/>
+<area shape="poly" id="edge12_Node000008_Node000009" title=" " alt="" coords="951,107,887,105,887,100,951,101"/>
+<area shape="poly" id="edge13_Node000009_Node000002" title=" " alt="" coords="701,87,587,66,588,61,702,82"/>
+<area shape="poly" id="edge15_Node000009_Node000004" title=" " alt="" coords="685,120,671,128,644,147,620,170,578,220,546,269,527,305,522,302,542,266,573,217,616,166,641,143,668,123,682,115"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNode.html#a625931eebfe7c7710e2cb71ce47b803e" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="415,87,619,113"/>
+<area shape="poly" id="edge14_Node000009_Node000010" title=" " alt="" coords="669,103,620,103,620,97,669,97"/>
+<area shape="poly" id="edge18_Node000011_Node000003" title=" " alt="" coords="1007,440,976,426,946,407,931,392,922,377,913,364,899,350,856,331,858,326,901,346,918,360,927,375,935,389,950,403,978,421,1009,435"/>
+<area shape="poly" id="edge19_Node000011_Node000004" title=" " alt="" coords="1019,439,963,417,899,396,757,364,588,331,589,326,758,359,901,391,964,412,1021,434"/>
+<area shape="poly" id="edge20_Node000011_Node000011" title=" " alt="" coords="1111,433,1108,428,1100,425,1063,421,1035,423,1019,428,1016,433,1024,440,1020,444,1011,434,1016,424,1034,418,1063,415,1102,419,1112,424,1116,430"/>
+<area shape="poly" id="edge23_Node000013_Node000003" title=" " alt="" coords="998,513,971,500,946,482,929,460,920,439,913,418,898,395,854,358,810,331,813,327,857,353,902,392,918,415,925,437,933,457,950,478,974,495,1001,508"/>
+<area shape="poly" id="edge28_Node000013_Node000004" title=" " alt="" coords="981,515,796,478,714,459,668,445,624,418,584,386,528,331,532,327,587,382,627,414,670,440,716,454,797,472,983,510"/>
+<area shape="poly" id="edge33_Node000013_Node000013" title=" " alt="" coords="1111,506,1108,502,1100,498,1063,494,1035,496,1019,501,1016,506,1024,513,1020,517,1011,507,1016,497,1034,491,1063,489,1102,493,1112,498,1116,504"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header packge of the big data." alt="" coords="442,556,593,596"/>
+<area shape="poly" id="edge24_Node000013_Node000014" title=" " alt="" coords="946,541,593,572,593,567,945,536"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="9,556,160,596"/>
+<area shape="poly" id="edge31_Node000013_Node000016" title=" " alt="" coords="945,524,798,520,614,520,413,527,212,547,153,559,152,553,212,541,413,522,614,515,798,515,945,519"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1AbstractNode.html#ad9fe7e31fd993db7bc9bfe816b7fea98" title="ping This method send ping package to address for testing connection." alt="" coords="697,405,872,430"/>
+<area shape="poly" id="edge29_Node000013_Node000017" title=" " alt="" coords="1014,513,947,482,923,466,899,452,843,433,845,428,901,447,926,462,949,478,1016,508"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="669,607,900,633"/>
+<area shape="poly" id="edge32_Node000013_Node000018" title=" " alt="" coords="973,547,949,556,925,573,901,590,848,610,846,605,899,586,922,568,947,551,971,542"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1iParser.html#a59b7936d0681224d29a93105b6b182c9" title="sendData This method send data object another to node" alt="" coords="703,657,867,682"/>
+<area shape="poly" id="edge34_Node000013_Node000019" title=" " alt="" coords="959,549,950,555,939,566,933,577,927,600,920,624,913,636,902,648,868,664,866,659,898,643,909,633,915,622,921,599,928,575,935,563,946,551,956,545"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1iParser.html#a3a8de0d71e500e5b5a7c2447e89f71a5" title="sendData This method send data object another to node" alt="" coords="703,706,867,731"/>
+<area shape="poly" id="edge35_Node000013_Node000020" title=" " alt="" coords="957,550,950,555,936,572,929,589,927,624,924,661,917,679,902,697,886,708,868,715,866,710,883,703,898,693,912,676,919,660,921,624,924,587,932,569,946,551,954,546"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,556,364,596"/>
+<area shape="poly" id="edge25_Node000014_Node000015" title=" " alt="" coords="428,579,364,579,364,573,428,573"/>
+<area shape="poly" id="edge26_Node000015_Node000016" title=" " alt="" coords="199,588,160,587,160,582,199,582"/>
+<area shape="poly" id="edge27_Node000016_Node000015" title=" " alt="" coords="174,564,213,565,213,570,174,570"/>
+<area shape="poly" id="edge30_Node000017_Node000004" title=" " alt="" coords="717,403,668,388,599,359,542,331,544,326,601,354,670,383,719,398"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="440,455,595,481"/>
+<area shape="poly" id="edge36_Node000020_Node000021" title=" " alt="" coords="688,710,668,697,652,678,643,660,638,623,636,585,631,566,619,546,602,526,582,509,543,483,546,479,586,505,606,522,624,542,635,564,641,585,644,623,648,659,656,676,671,693,691,706"/>
+<area shape="rect" id="Node000024" href="$classQH_1_1BigDataParser.html#a89357e037e1008aaf0d1648c13cf0542" title="finishPart This metho process last package of big data transaction." alt="" coords="442,699,593,739"/>
+<area shape="poly" id="edge40_Node000020_Node000024" title=" " alt="" coords="689,721,593,721,593,716,689,716"/>
+<area shape="rect" id="Node000025" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="438,635,597,675"/>
+<area shape="poly" id="edge42_Node000020_Node000025" title=" " alt="" coords="706,706,669,697,591,677,592,672,670,692,707,700"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,455,365,481"/>
+<area shape="poly" id="edge37_Node000021_Node000022" title=" " alt="" coords="426,480,366,479,366,474,426,474"/>
+<area shape="poly" id="edge38_Node000022_Node000021" title=" " alt="" coords="379,457,439,457,439,462,379,462"/>
+<area shape="rect" id="Node000023" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,448,164,488"/>
+<area shape="poly" id="edge39_Node000022_Node000023" title=" " alt="" coords="198,471,164,471,164,465,198,465"/>
+<area shape="poly" id="edge41_Node000024_Node000015" title=" " alt="" coords="428,697,412,689,380,668,351,643,305,598,309,594,354,639,383,664,415,684,430,692"/>
+</map>

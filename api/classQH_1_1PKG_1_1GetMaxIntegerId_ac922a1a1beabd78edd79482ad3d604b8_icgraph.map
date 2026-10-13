@@ -1,0 +1,9 @@
+<map id="QH::PKG::GetMaxIntegerId::table" name="QH::PKG::GetMaxIntegerId::table">
+<area shape="rect" id="Node000001" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="248,69,443,109"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#a74f1cdbc1b7882026190970b9348aad1" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="5,5,200,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,68,178,48,180,43,256,63"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#aef3bd8d3fb1fdf4d04490c3aa9d17684" title="GetMaxIntegerId This is default constructor of the GetMaxIntegerId class." alt="" coords="5,69,200,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="234,92,200,92,200,87,234,87"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html#a20edaade1ad04a7b7e3ec270e1b7787e" title="prepareSelectQuery This method should be prepare a query for selected data. Override this method for ..." alt="" coords="5,133,200,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="256,115,180,136,178,131,255,110"/>
+</map>

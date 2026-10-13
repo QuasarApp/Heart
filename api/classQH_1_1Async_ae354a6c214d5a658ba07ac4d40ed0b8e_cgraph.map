@@ -1,0 +1,7 @@
+<map id="QH::Async::asyncLauncher" name="QH::Async::asyncLauncher">
+<area shape="rect" id="Node000001" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="5,31,200,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="253,5,389,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,29,238,25,239,30,201,35"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="248,55,393,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,51,235,55,234,60,200,57"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="QH::PKG::DBObjectSet::table" name="QH::PKG::DBObjectSet::table">
+<area shape="rect" id="Node000001" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="312,101,479,141"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObjectsRequest.html#a0922652deb81cd8a2711a431aab949a5" title="createDBObject This method should be create a object with the some type as the object called this met..." alt="" coords="31,5,238,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="345,97,263,60,226,48,227,43,265,55,348,92"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObjectSet.html#a1ceab5a91a01b7c5b9a389acf6f7d1f5" title=" " alt="" coords="51,69,218,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="298,112,218,102,218,97,298,107"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObjectsRequest.html#af5ba6b69af11e1eb6ae4246c4f76703c" title="DBObjectsRequest This contsrucor create a object with request the array of T objects." alt="" coords="31,133,238,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="299,136,239,143,238,138,298,131"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html#af995f9cbb509385e95341ae85a916c39" title="DBObjectsRequest This contsrucor create a object with request the array of T objects." alt="" coords="5,198,264,253"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="346,150,265,188,230,200,229,195,263,183,344,145"/>
+</map>

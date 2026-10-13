@@ -1,0 +1,7 @@
+<map id="QH::AbstractNode::changeTrust" name="QH::AbstractNode::changeTrust">
+<area shape="rect" id="Node000001" title="changeTrust This method change trust of connected node." alt="" coords="532,5,725,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a74f7e468330622c2ed2c42baf2f78ded" title="badRequest This method is send data about error of request." alt="" coords="261,13,484,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="518,28,484,28,484,23,518,23"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,13,213,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="248,28,213,28,213,23,248,23"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="QH::AbstractNodeInfo::version" name="QH::AbstractNodeInfo::version">
+<area shape="rect" id="Node000001" title="version This method return version data structure;" alt="" coords="221,37,384,77"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#ad9f5846d0c4d680cabb972e029a634c3" title="getSelectedApiParser This method return apiParser for selected node" alt="" coords="5,5,173,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,46,173,41,174,35,208,40"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1APIVersionParser.html#a43ba30e9be862fb44c7e047b096013bb" title="searchPackage This method search package recursive in all registered pararsers. Searching will be in ..." alt="" coords="10,69,169,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,74,169,80,169,75,207,69"/>
+</map>

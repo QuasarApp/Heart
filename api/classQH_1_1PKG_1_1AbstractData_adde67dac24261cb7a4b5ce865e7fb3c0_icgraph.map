@@ -1,0 +1,11 @@
+<map id="QH::PKG::AbstractData::AbstractData" name="QH::PKG::AbstractData::AbstractData">
+<area shape="rect" id="Node000001" title="AbstractData &#45; Base constructor of this object." alt="" coords="469,24,640,64"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1BigDataWraper.html#a34cb1e352b314e53be25a6e986f109c6" title=" " alt="" coords="5,24,189,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="470,24,421,15,329,8,238,15,172,27,171,22,237,10,329,3,422,10,471,19"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1BigDataWraper.html#ae89cc57bd983ccde9d15532fcfdc4679" title="data This method sets data that shold be sent as big data." alt="" coords="237,24,421,64"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="456,47,422,47,422,42,456,42"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BigDataWraper.html#a79bf28f91f9aee67f665c3d16548910e" title="setData This method sets new data for this wrapper." alt="" coords="237,88,421,128"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="471,71,401,91,400,86,469,66"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="223,47,190,47,190,42,223,42"/>
+<area shape="poly" id="edge5_Node000004_Node000002" title=" " alt="" coords="242,87,170,67,171,62,244,82"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="QH::PKG::DBObjectsRequest::DBObjectsRequest" name="QH::PKG::DBObjectsRequest::DBObjectsRequest">
+<area shape="rect" id="Node000001" title="DBObjectsRequest This is default constructor for parsing packages." alt="" coords="312,53,519,93"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html#a0dd29d2bd00cf6aa93fe4019c3fa864f" title="DBObjectsRequest This is default constructor for parsing packages." alt="" coords="5,5,264,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="298,59,264,54,264,48,299,53"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html#af995f9cbb509385e95341ae85a916c39" title="DBObjectsRequest This contsrucor create a object with request the array of T objects." alt="" coords="5,84,264,139"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="298,91,264,96,264,91,298,86"/>
+</map>

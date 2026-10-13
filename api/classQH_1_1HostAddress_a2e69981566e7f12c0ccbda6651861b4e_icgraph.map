@@ -1,0 +1,54 @@
+<map id="QH::HostAddress::port" name="QH::HostAddress::port">
+<area shape="rect" id="Node000001" title="The port method return port of node." alt="" coords="1296,396,1463,421"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a5d66fe8476e6a17bcca8ee66e177a575" title="addNode &#45; Connect to node (server) with address." alt="" coords="263,29,467,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1367,384,1349,341,1323,288,1289,233,1246,184,1189,136,1138,108,1082,89,1009,70,937,55,863,44,716,33,580,32,467,36,467,31,579,26,716,27,864,39,938,50,1010,65,1083,83,1140,103,1192,132,1250,180,1293,230,1328,286,1354,339,1371,382"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1HostAddress.html#a1364cf0cacb8257eca2c08e76af644ec" title=" " alt="" coords="787,371,1009,396"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1287,397,1248,393,1125,386,1009,385,1009,379,1125,381,1248,387,1288,392"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1HostAddress.html#a386c79a3fdaa11da995d1699159fb3a3" title=" " alt="" coords="787,433,1009,459"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1283,419,1010,440,1009,435,1282,413"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1HostAddress.html#aa78ad265d59ee934a89648dba978a541" title=" " alt="" coords="787,497,1009,523"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1352,432,1305,461,1249,486,1188,501,1126,510,1010,517,1009,511,1126,505,1187,495,1247,481,1303,456,1349,427"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1HostAddress.html#abaee54b87f62e60f4d20e2e933c6f354" title="isValid This method return true if the current network address is valid." alt="" coords="1061,244,1244,269"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="1357,388,1309,339,1279,313,1247,291,1203,272,1205,267,1249,286,1282,309,1313,335,1360,384"/>
+<area shape="rect" id="Node000011" href="$namespaceQH.html#a71f262d17b6f24e2441d2e2090211ad2" title=" " alt="" coords="1092,599,1213,624"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1368,435,1322,507,1289,547,1249,582,1211,601,1208,596,1247,577,1285,543,1318,504,1363,432"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1HostAddress.html#a2bf39361169bb4ad56c26c34e5c01130" title=" " alt="" coords="795,547,1001,572"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1360,433,1313,479,1283,502,1249,520,1187,542,1123,555,1059,562,1001,565,1001,560,1059,557,1122,550,1186,536,1247,516,1280,498,1310,475,1357,430"/>
+<area shape="rect" id="Node000014" href="$namespaceQH.html#a18f603505581e3f5a8055f9d71bea125" title=" " alt="" coords="1089,648,1216,673"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="1373,435,1358,479,1332,535,1297,591,1275,617,1249,639,1218,655,1215,650,1247,634,1271,613,1292,588,1328,532,1353,477,1368,433"/>
+<area shape="rect" id="Node000015" href="$namespaceQH.html#ab0e4b508bf6200374ee9e28692044dba" title=" " alt="" coords="853,295,943,320"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="1327,394,1247,371,1080,337,943,316,944,311,1081,332,1249,366,1329,389"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1HostAddress.html#a965a64c4c3d2340a5e8fab3ed21c5774" title="setPort This method set new port value." alt="" coords="1059,447,1246,472"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="1309,427,1211,449,1210,444,1308,422"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1HostAddress.html#a66403f64a0da84060763b8645be42403" title="toString this method convert the Host Address value to string value." alt="" coords="1057,195,1248,220"/>
+<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="1364,385,1346,350,1320,309,1286,268,1247,234,1225,223,1227,218,1249,229,1290,264,1324,306,1351,347,1369,382"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a6c64327f29ae5e1b38b8d06212948631" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="7,55,211,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="249,56,212,60,211,55,249,51"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#a625931eebfe7c7710e2cb71ce47b803e" title="addNode This method add new peer connection to this node and execute the action when node status will..." alt="" coords="7,5,211,31"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="249,34,211,30,212,25,249,28"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,144,213,169"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="288,61,262,70,200,104,132,146,129,141,198,99,260,65,286,56"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1HostAddress.html#a7f72c839a2fba37d8a945c894f29058e" title=" " alt="" coords="793,245,1003,271"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1047,260,1004,260,1004,255,1047,255"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1HostAddress.html#ac4df0ccdc49242567a983ce99d09a705" title=" " alt="" coords="516,547,739,572"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="781,562,739,562,739,557,781,557"/>
+<area shape="poly" id="edge16_Node000016_Node000006" title=" " alt="" coords="1095,445,941,399,942,394,1097,440"/>
+<area shape="poly" id="edge17_Node000016_Node000007" title=" " alt="" coords="1046,456,1009,454,1010,449,1046,451"/>
+<area shape="poly" id="edge18_Node000016_Node000008" title=" " alt="" coords="1075,477,963,500,962,495,1074,472"/>
+<area shape="poly" id="edge19_Node000016_Node000012" title=" " alt="" coords="1121,482,1070,511,1010,538,973,549,971,544,1008,533,1068,506,1119,477"/>
+<area shape="poly" id="edge27_Node000017_Node000010" title=" " alt="" coords="1075,225,963,248,962,243,1074,220"/>
+<area shape="poly" id="edge28_Node000017_Node000015" title=" " alt="" coords="1071,227,1059,234,1044,246,1036,258,1026,272,1011,284,978,298,944,306,943,301,976,293,1008,280,1022,268,1031,255,1040,242,1056,229,1069,223"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1AbstractNode.html#a74f7e468330622c2ed2c42baf2f78ded" title="badRequest This method is send data about error of request." alt="" coords="516,195,739,220"/>
+<area shape="poly" id="edge21_Node000017_Node000018" title=" " alt="" coords="1044,210,739,210,739,205,1044,205"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1AbstractNode.html#a26b8432a060a0cd8fda798e1cb228392" title="nodeErrorOccured This slot invoked when error ocured in the nodeInfo." alt="" coords="793,79,1003,119"/>
+<area shape="poly" id="edge23_Node000017_Node000019" title=" " alt="" coords="1114,191,1008,140,959,122,961,117,1010,136,1116,186"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1AbstractNode.html#ad1d5c00f5287a7374420467565ab19a3" title="run This method implement deployment a network node (server) on selected address." alt="" coords="281,144,448,169"/>
+<area shape="poly" id="edge29_Node000017_Node000022" title=" " alt="" coords="1049,196,1009,191,699,171,448,161,449,156,700,165,1010,186,1050,190"/>
+<area shape="poly" id="edge22_Node000018_Node000005" title=" " alt="" coords="502,204,261,183,182,172,183,167,262,178,502,198"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1AbstractNode.html#aa0a2e3439c01b9b30017ae159c6885ea" title="registerSocket This method registration new socket object." alt="" coords="529,79,725,119"/>
+<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="779,102,725,102,725,97,779,97"/>
+<area shape="poly" id="edge25_Node000020_Node000002" title=" " alt="" coords="521,79,423,57,424,52,522,74"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1AbstractNode.html#a8f2a1fec2f063d16af89af0cb7183a5d" title="incomingConnection This is ovverided method of QTCPServer." alt="" coords="261,79,468,119"/>
+<area shape="poly" id="edge26_Node000020_Node000021" title=" " alt="" coords="515,102,468,102,468,97,515,97"/>
+<area shape="poly" id="edge30_Node000022_Node000005" title=" " alt="" coords="268,159,214,159,214,154,268,154"/>
+</map>

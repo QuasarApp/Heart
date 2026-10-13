@@ -1,0 +1,5 @@
+<map id="QH::ISqlDB::setSQLSources" name="QH::ISqlDB::setSQLSources">
+<area shape="rect" id="Node000001" title="setSQLSources This method set sql sources for deployed database." alt="" coords="5,5,203,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#a20142160d3bcaa1ae869367a0c5eaada" title="writer This method return is database writer object. For more inforamation about writer see the SqlDB..." alt="" coords="251,5,389,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,15,237,15,237,21,203,21"/>
+</map>

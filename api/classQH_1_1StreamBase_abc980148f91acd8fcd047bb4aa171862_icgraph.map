@@ -1,0 +1,13 @@
+<map id="QH::StreamBase::StreamBase" name="QH::StreamBase::StreamBase">
+<area shape="rect" id="Node000001" title=" " alt="" coords="280,116,496,141"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae1809a88c20eb34def5d2abe660d15cb" title="copy This is base copy method for all StreamBase structures. Default implementation it is copy from b..." alt="" coords="35,5,203,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="355,111,299,77,231,44,194,33,196,28,233,40,301,72,358,106"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8" title="This is wrapper over toStream." alt="" coords="11,79,226,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="282,117,210,107,211,101,283,111"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2" title="This is wraper over fromStream. For see more information see toStream method." alt="" coords="11,152,226,177"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="280,146,214,155,214,149,279,141"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1StreamBase.html#ac6bb1881b3b2716143666b0d59131b49" title=" " alt="" coords="5,201,232,227"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="346,149,233,191,184,204,183,199,231,186,344,144"/>
+<area shape="poly" id="edge3_Node000003_Node000003" title=" " alt="" coords="167,70,164,65,156,61,119,57,90,59,74,64,71,70,79,77,75,80,66,70,71,60,89,54,119,52,157,56,168,61,171,67"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="167,143,164,138,156,135,119,131,90,133,74,138,71,143,79,150,75,154,66,144,71,134,89,127,119,125,157,129,168,134,171,140"/>
+</map>

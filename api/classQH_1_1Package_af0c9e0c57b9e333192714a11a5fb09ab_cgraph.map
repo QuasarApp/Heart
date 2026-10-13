@@ -1,0 +1,27 @@
+<map id="QH::Package::~Package" name="QH::Package::~Package">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,156,180,181"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="465,56,636,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,153,478,82,479,87,153,159"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1Package.html#a0a61d019f0fb3ddd263cbb660563c37c" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="228,55,417,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="115,154,166,126,227,97,266,82,268,87,229,102,168,131,118,158"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1Package.html#a87b41843ba160a6a6a79b5db2260680a" title="reset This method reset all data and set for package invalid status." alt="" coords="479,5,623,31"/>
+<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="101,154,149,96,185,65,227,40,287,20,349,9,410,6,465,7,465,12,410,11,350,15,288,25,229,44,188,69,153,100,105,157"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="245,156,400,181"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="181,166,231,166,231,171,181,171"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="684,156,889,181"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="149,179,228,191,347,197,466,196,578,189,673,180,674,185,578,194,466,201,347,203,228,197,148,184"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1Package.html#aadc4a5a2fd7ecf72e83a68baebc770fd" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="237,257,408,283"/>
+<area shape="poly" id="edge12_Node000001_Node000009" title=" " alt="" coords="118,179,168,206,229,236,268,250,266,255,227,240,166,211,115,184"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1Package.html#a7a3a03c048ed888e579f459ebdc813d3" title="toString This method convert a package information to a string label." alt="" coords="241,307,404,332"/>
+<area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="106,180,155,235,190,266,229,293,243,299,241,304,227,298,187,271,151,239,102,183"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="381,52,477,31,478,36,383,57"/>
+<area shape="rect" id="Node000005" href="$structQH_1_1Header.html#abde0118b0bbc3f5329e91e2522ca89b4" title="reset This method reset all data and set for header invalid status." alt="" coords="717,5,856,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="623,15,704,15,704,21,623,21"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="372,153,416,134,430,124,439,113,449,103,464,92,481,84,483,89,467,96,453,107,443,117,434,128,419,139,374,158"/>
+<area shape="rect" id="Node000007" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="477,105,625,131"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="380,153,479,131,480,136,381,158"/>
+<area shape="poly" id="edge9_Node000006_Node000008" title=" " alt="" coords="400,166,670,166,670,171,400,171"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="611,128,714,150,713,156,610,133"/>
+<area shape="rect" id="Node000011" href="$structQH_1_1Header.html#a943599219cc4f8c4d030ac0454655181" title="toString This method return string of header of package." alt="" coords="473,307,629,332"/>
+<area shape="poly" id="edge14_Node000010_Node000011" title=" " alt="" coords="404,317,459,317,459,322,404,322"/>
+</map>

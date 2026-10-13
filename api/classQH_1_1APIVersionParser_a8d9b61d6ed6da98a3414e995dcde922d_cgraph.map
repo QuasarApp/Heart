@@ -1,0 +1,9 @@
+<map id="QH::APIVersionParser::parsePackage" name="QH::APIVersionParser::parsePackage">
+<area shape="rect" id="Node000001" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="5,27,164,67"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#ac5fce04e9ed75ba11e5b2d0528ad7fbf" title="commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePac..." alt="" coords="212,5,431,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,35,205,30,206,35,165,40"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1APIVersionParser.html#a8413c2d61664dc4ee6167d0f93d3a4a6" title="selectParser This method select api parser betwin nodes." alt="" coords="242,55,401,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="165,54,228,62,228,67,164,59"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#a2a4e439abcea25c522b3f9755e444880" title="version This method return version of parser object" alt="" coords="479,55,637,95"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="401,73,465,73,465,78,401,78"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="QH::AbstractNode::changeTrust" name="QH::AbstractNode::changeTrust">
+<area shape="rect" id="Node000001" title="changeTrust This method change trust of connected node." alt="" coords="5,5,199,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="247,13,457,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,23,233,23,233,28,199,28"/>
+</map>

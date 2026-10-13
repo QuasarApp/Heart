@@ -1,0 +1,6 @@
+<map id="QH::AbstractNode::removeNode" name="QH::AbstractNode::removeNode">
+<area shape="rect" id="Node000001" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="5,29,236,55"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="78,31,68,21,73,11,91,5,121,3,159,7,169,12,173,18,168,20,166,16,157,12,121,8,92,10,77,15,74,20,81,27"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="284,29,495,55"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,39,270,39,270,45,236,45"/>
+</map>

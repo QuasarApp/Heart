@@ -1,0 +1,5 @@
+<map id="QH::APIVersionParser::sigNoLongerSupport" name="QH::APIVersionParser::sigNoLongerSupport">
+<area shape="rect" id="Node000001" title="sigNoLongerSupport This signal will be emit when node receive incomplite versions." alt="" coords="5,5,167,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#a2a4e439abcea25c522b3f9755e444880" title="version This method return version of parser object" alt="" coords="215,5,373,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,23,201,23,201,28,167,28"/>
+</map>

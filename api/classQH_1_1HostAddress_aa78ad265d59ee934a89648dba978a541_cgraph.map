@@ -1,0 +1,8 @@
+<map id="QH::HostAddress::HostAddress" name="QH::HostAddress::HostAddress">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,228,31"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1HostAddress.html#a2e69981566e7f12c0ccbda6651861b4e" title="The port method return port of node." alt="" coords="511,5,677,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="228,15,497,15,497,21,228,21"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1HostAddress.html#a965a64c4c3d2340a5e8fab3ed21c5774" title="setPort This method set new port value." alt="" coords="276,31,463,56"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,26,263,30,262,35,228,32"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="463,30,497,26,498,32,463,35"/>
+</map>

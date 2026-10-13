@@ -1,0 +1,11 @@
+<map id="QH::ISqlDB::sigItemDeleted" name="QH::ISqlDB::sigItemDeleted">
+<area shape="rect" id="Node000001" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="428,31,629,56"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html#a5ecf8a9f1bb4320ff34a670c79578779" title=" " alt="" coords="196,5,380,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="414,34,380,30,380,25,415,29"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="198,55,378,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="414,57,379,61,378,56,414,52"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="5,29,148,55"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="184,58,148,53,149,48,184,52"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d" title="run This method is some as AbstractNode::run but set for node custom work folder. This maybe use for ..." alt="" coords="5,79,148,104"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="184,82,149,86,148,81,184,76"/>
+</map>

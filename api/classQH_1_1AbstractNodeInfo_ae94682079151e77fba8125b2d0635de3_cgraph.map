@@ -1,0 +1,9 @@
+<map id="QH::AbstractNodeInfo::isConnected" name="QH::AbstractNodeInfo::isConnected">
+<area shape="rect" id="Node000001" title="isConnected &#45; Check of node connect status." alt="" coords="5,61,168,101"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="47,62,45,52,51,42,65,37,87,35,111,38,125,45,122,50,110,43,87,40,66,42,54,47,50,53,52,60"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#abbea046714cf6e08aef4a52eec751f64" title="isValid &#45; Check valid of node. This method check connect status of socket." alt="" coords="216,29,379,69"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="168,66,202,61,203,66,169,72"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36" title="status This method return status of the node connection." alt="" coords="216,93,379,133"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="169,91,203,96,202,102,168,96"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="258,30,255,20,262,10,276,5,297,3,322,6,335,13,333,18,320,11,297,8,277,10,265,15,261,21,263,28"/>
+</map>

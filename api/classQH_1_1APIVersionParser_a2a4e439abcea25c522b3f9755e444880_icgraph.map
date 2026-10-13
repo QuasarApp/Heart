@@ -1,0 +1,18 @@
+<map id="QH::APIVersionParser::version" name="QH::APIVersionParser::version">
+<area shape="rect" id="Node000001" title="version This method return version of parser object" alt="" coords="497,116,656,156"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#a952b3b863da2cc2f6b66eaf6de7dd261" title="selectParser This method select parser by command and sender." alt="" coords="43,5,202,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="483,115,449,107,202,47,203,41,450,101,485,110"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1APIVersionParser.html#a8413c2d61664dc4ee6167d0f93d3a4a6" title="selectParser This method select api parser betwin nodes." alt="" coords="289,116,448,156"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="483,139,448,139,448,133,483,133"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1APIVersionParser.html#ad2ef7830df6669893d2136e6fde1c2d5" title="sigNoLongerSupport This signal will be emit when node receive incomplite versions." alt="" coords="288,208,449,248"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="519,164,416,210,414,205,517,159"/>
+<area shape="poly" id="edge6_Node000003_Node000002" title=" " alt="" coords="327,110,285,84,239,60,202,46,203,41,241,55,288,79,330,106"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#ad9f5846d0c4d680cabb972e029a634c3" title="getSelectedApiParser This method return apiParser for selected node" alt="" coords="39,69,207,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="275,121,206,108,207,103,276,116"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="43,133,202,173"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="276,145,202,150,202,145,275,140"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1APIVersionParser.html#a43ba30e9be862fb44c7e047b096013bb" title="searchPackage This method search package recursive in all registered pararsers. Searching will be in ..." alt="" coords="43,197,202,237"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="307,164,241,188,202,200,200,195,239,183,305,159"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#a7e15cb6b920947141c6b51f52e1e5053" title="AbstractNode &#45; Base constructor of node." alt="" coords="5,262,240,287"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="275,248,191,265,190,259,274,243"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="QH::PKG::DBObject::prepareUpdateQuery" name="QH::PKG::DBObject::prepareUpdateQuery">
+<area shape="rect" id="Node000001" title="prepareUpdateQuery this method should be prepare a insert data query." alt="" coords="208,5,367,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#a4c69d1ac91f3998609e5a13f5e9e0935" title="fromSqlRecord This method should be initialize this object from the executed sqlRecord...." alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,28,161,28,161,23,194,23"/>
+</map>

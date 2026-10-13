@@ -1,0 +1,12 @@
+<map id="QH::APIVersionParser::selectParser" name="QH::APIVersionParser::selectParser">
+<area shape="rect" id="Node000001" title="selectParser This method select parser by command and sender." alt="" coords="5,88,164,128"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#a8413c2d61664dc4ee6167d0f93d3a4a6" title="selectParser This method select api parser betwin nodes." alt="" coords="223,5,381,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,86,235,48,237,53,139,90"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1APIVersionParser.html#a2a4e439abcea25c522b3f9755e444880" title="version This method return version of parser object" alt="" coords="440,35,599,75"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="164,96,426,63,427,69,165,101"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DistVersion.html#a24ce6dc27a977260345b792490243a02" title=" " alt="" coords="212,121,392,146"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,115,199,119,198,124,164,120"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1DistVersion.html#a4c6c999a12bbb09f87724b207fc74dbc" title=" " alt="" coords="214,170,390,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="135,126,213,155,240,163,239,169,211,160,133,131"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="382,33,427,40,426,45,381,39"/>
+</map>

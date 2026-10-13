@@ -1,0 +1,17 @@
+<map id="QH::AbstractNodeInfo::isValid" name="QH::AbstractNodeInfo::isValid">
+<area shape="rect" id="Node000001" title="isValid &#45; Check valid of node. This method check connect status of socket." alt="" coords="795,85,957,125"/>
+<area shape="poly" id="edge8_Node000001_Node000001" title=" " alt="" coords="915,73,902,66,876,63,854,65,840,70,835,76,838,84,833,85,830,75,837,66,852,60,876,58,903,61,918,68"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a4d896aa68e6bf1778555b938b8863ecc" title="isBanned This method checks if the node is banned." alt="" coords="540,51,747,76"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="780,90,715,79,716,73,781,85"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#ae94682079151e77fba8125b2d0635de3" title="isConnected &#45; Check of node connect status." alt="" coords="562,125,725,165"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="781,124,725,133,724,128,780,118"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a74f7e468330622c2ed2c42baf2f78ded" title="badRequest This method is send data about error of request." alt="" coords="265,5,488,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="554,51,451,33,452,28,555,46"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#a8f2a1fec2f063d16af89af0cb7183a5d" title="incomingConnection This is ovverided method of QTCPServer." alt="" coords="273,55,480,95"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="527,71,480,73,480,68,526,66"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#afc2e2ade0437df8ef61f653cf416b4c1" title="nodeType This method should be return type of the serve." alt="" coords="5,5,213,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="251,21,214,21,214,15,251,15"/>
+<area shape="poly" id="edge6_Node000006_Node000006" title=" " alt="" coords="683,113,669,106,643,103,621,105,608,110,603,116,605,124,600,125,597,115,604,106,620,100,643,98,670,101,685,108"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="261,132,492,157"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="548,147,492,147,492,142,548,142"/>
+</map>

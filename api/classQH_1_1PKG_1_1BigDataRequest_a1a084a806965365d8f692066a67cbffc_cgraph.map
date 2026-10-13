@@ -1,0 +1,5 @@
+<map id="QH::PKG::BigDataRequest::fromStream" name="QH::PKG::BigDataRequest::fromStream">
+<area shape="rect" id="Node000001" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1BigDataBase.html#a076a3a5a4f8166cb2aa684ce472d92e0" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="244,5,413,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

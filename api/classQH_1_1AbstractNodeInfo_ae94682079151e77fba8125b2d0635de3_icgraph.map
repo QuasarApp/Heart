@@ -1,0 +1,6 @@
+<map id="QH::AbstractNodeInfo::isConnected" name="QH::AbstractNodeInfo::isConnected">
+<area shape="rect" id="Node000001" title="isConnected &#45; Check of node connect status." alt="" coords="284,29,447,69"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="407,18,392,11,365,8,342,10,328,15,323,21,325,28,320,30,317,20,325,10,341,5,365,3,394,6,409,13"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="5,37,236,62"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="270,52,236,52,236,47,270,47"/>
+</map>
