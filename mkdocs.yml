@@ -21,14 +21,22 @@ theme:
   name: material
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      # Soft palette derived from res/Banner_Web.png. These entries set the
+      # data-md-color-* page attributes (scheme switching / persistence),
+      # but Material ships no prebuilt rules for custom hex values, so the
+      # actual CSS variable overrides live in docs/overrides/main.css
+      # (attached via extra_css).
+      # Mid maroon (#7f2a19) top bar, soft coral (#b84e38) links.
+      primary: "#7f2a19"
+      accent: "#b84e38"
       toggle:
         icon: material/brightness-4
         name: Switch to dark mode
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      # Same maroon top bar on the slate neutrals, soft salmon
+      # (#e8917a) links for contrast on the dark background.
+      primary: "#7f2a19"
+      accent: "#e8917a"
       toggle:
         icon: material/brightness-7
         name: Switch to light mode
@@ -45,6 +53,13 @@ theme:
     - search.highlight
     - search.suggest
     - toc
+
+# Material for MkDocs only ships prebuilt palette rules for the named
+# Material colors, so the banner-derived custom palette is applied through
+# this extra stylesheet (loaded after the theme CSS, see the file header
+# in docs/overrides/main.css for the color choices).
+extra_css:
+  - overrides/main.css
 
 markdown_extensions:
   - admonition
