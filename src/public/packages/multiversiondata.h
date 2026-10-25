@@ -8,13 +8,14 @@
 #ifndef MULTIVERSIONDATA_H
 #define MULTIVERSIONDATA_H
 
+#include "heart_global.h"
 #include "abstractdata.h"
 
 
 namespace QH {
 namespace PKG {
 
-struct SerializationBox {
+struct HEARTSHARED_EXPORT SerializationBox {
     std::function<QDataStream& (QDataStream& stream)> from = nullptr;
     std::function<QDataStream& (QDataStream& stream)> to = nullptr;
 };

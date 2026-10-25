@@ -9,6 +9,7 @@
 
 #ifndef BIGDATAWRAPER_H
 #define BIGDATAWRAPER_H
+#include "heart_global.h"
 #include "abstractdata.h"
 
 namespace QH {
@@ -17,7 +18,7 @@ namespace PKG {
 /**
  * @brief The BigDataWraper class is wrapper of any big data commands.
  */
-class BigDataWraper: public AbstractData
+class HEARTSHARED_EXPORT BigDataWraper: public AbstractData
 {
     QH_PACKAGE("BigDataWraper")
 
