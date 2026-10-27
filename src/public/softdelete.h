@@ -37,7 +37,7 @@ protected:
     /**
      * @brief prepareForDelete This method must be prepare object for delete.
      * Override this for working main functions of this class.
-     * For more information see the SoftDelete class and SoftDelete::~SoftDelete distructor.
+     * For more information see the SoftDelete class and SoftDelete::~SoftDelete destructor.
      */
     virtual void prepareForDelete() = 0;
 

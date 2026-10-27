@@ -14,7 +14,7 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The BigDataRequest class contains missing package parts for redownload. If missing parts count is 0 then pacakge donwloaded successful.
+ * @brief The BigDataRequest class contains missing package parts for redownload. If missing parts count is 0 then package downloaded successful.
  * @see BigDataRequest::isFinishedSuccessful
  */
 class HEARTSHARED_EXPORT BigDataRequest: public BigDataBase
@@ -28,7 +28,7 @@ public:
 
     /**
      * @brief currentPart This method return current part number.
-     * @return current part numbep of moved pacakged.
+     * @return current part numbep of moved packaged.
      */
     int currentPart() const;
 

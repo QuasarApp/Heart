@@ -17,13 +17,13 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The BigDataHeader class is first empty pacakge with information of big data package.
+ * @brief The BigDataHeader class is first empty package with information of big data package.
  *
  * **Transfer algorithm**
  *
- * 1. The big data pacakge converted to bytearray.
- * 2. Prepare The BigDataHeader pacakge with unique id and count of the parts
- * 3. Part data pacakages.
+ * 1. The big data package converted to bytearray.
+ * 2. Prepare The BigDataHeader package with unique id and count of the parts
+ * 3. Part data packages.
  */
 class HEARTSHARED_EXPORT BigDataHeader : public BigDataBase
 {
@@ -49,8 +49,8 @@ public:
     void setPackagesCount(int newPackagesCount);
 
     /**
-     * @brief getCommand This method return commnad of moving package.
-     * @return commnad of moving package.
+     * @brief getCommand This method return command of moving package.
+     * @return command of moving package.
      */
     unsigned short getCommand() const;
 

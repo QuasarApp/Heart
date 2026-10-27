@@ -15,10 +15,10 @@ TcpSocket::TcpSocket(QObject *parent):
 }
 
 TcpSocket::~TcpSocket() {
-    handleDisckonnetFromHost();
+    handleDisconnectFromHost();
 }
 
-void TcpSocket::handleDisckonnetFromHost() {
+void TcpSocket::handleDisconnectFromHost() {
     disconnectFromHost();
 }
 

@@ -33,7 +33,7 @@ public:
      * If you want to get a object of C class but the database contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class.
      * This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors.
      * @note The type of input templateVal object must be child type of the DBObject class.
-     * @return return strong pointer to DBObject ot nullptr id object not exits.
+     * @return return strong pointer to DBObject or nullptr if object not exists.
      */
     template<class TYPE>
     QSharedPointer<TYPE> getObject(const TYPE &templateVal) {
@@ -49,7 +49,7 @@ public:
         auto result = val.template dynamicCast<TYPE>();
         if (!result && !val.isNull()) {
 
-            qCritical() << "getObject method returned object with deffirent type of TYPE,"
+            qCritical() << "getObject method returned object with different type of TYPE,"
                            " check getAllObjects merhod";
 
         }
@@ -66,7 +66,7 @@ public:
     QSharedPointer<PKG::DBObject> getObjectRaw(const PKG::DBObject &templateVal);
 
     /**
-     * @brief getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects
+     * @brief getAllObjects This method execute a select method of the templateObject and return list of all selected from databases or cache objects
      * @param templateObject This is template object for prepare a select request.
      * @param result This is return value, list of selected objects.
      * @return true if objects have in db else false.
@@ -125,7 +125,7 @@ public:
     /**
      * @brief doQuery This method execute a @a query in this database.
      * @param query This is query that will be executed.
-     * @param bindValues This is values that need to bind before excute query.
+     * @param bindValues This is values that need to bind before execute query.
      * @param result This is query result value.
      * @warning The result works onlt on await mode. Set the @a wait param to true.
      * @return true if the query finished successful

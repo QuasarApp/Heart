@@ -30,14 +30,14 @@ public:
     void setMax(unsigned short newMax);
 
     /**
-     * @brief getMaxСompatible return maximum available on booth nodes version.
+     * @brief getMaxCompatible return maximum available on both nodes version.
      * @param distVersion this is dis version.
      * @return return maximum version. if this version is not found return "-1"
      */
     int getMaxCompatible(const DistVersion& distVersion) const;
 
     /**
-     * @brief getMinСompatible return maximum available on booth nodes version.
+     * @brief getMinCompatible return maximum available on both nodes version.
      * @param distVersion this is dis version.
      * @return return minimum version. if this version is not found return "-1"
      */

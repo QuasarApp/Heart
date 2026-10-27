@@ -15,7 +15,7 @@
 namespace QH {
 
 /**
- * @brief ErrorCodes This namesapce contains all error codes of the Heart Library.
+ * @brief ErrorCodes This namespace contains all error codes of the Heart Library.
  * @note If you want to add won error code in this namespace then you should be create a own child of the AbstractErrorCodesHelper class
  * and override toString method.
  *
@@ -74,7 +74,7 @@ using Code = unsigned char;
  */
 enum AbstractErrorCodes: Code {
 
-    /// This reqest executed successful.
+    /// This request executed successful.
     NoError = 0,
     /// This is unknown error. Default value.
     UnknownError,

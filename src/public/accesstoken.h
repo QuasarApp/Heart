@@ -19,7 +19,7 @@ namespace QH {
 /**
  * @brief The AccessToken class contains information duration of the access.
  * Token are byte array for validation access users or another network member on nodes.
- *  In usually cases toke add permissions for database objects.
+ *  In usual cases token adds permissions for database objects.
  */
 class HEARTSHARED_EXPORT AccessToken : public StreamBase
 {
@@ -70,7 +70,7 @@ public:
     AccessToken(const AccessToken& other);
 
     /**
-     * @brief isValid This method check this toke to valid.
+     * @brief isValid This method check this token to be valid.
      * @return Return true if token is valid.
      */
     bool isValid() const;

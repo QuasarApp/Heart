@@ -18,7 +18,7 @@ namespace PKG {
 class BigDataHeader;
 class BigDataPart;
 class BigDataRequest;
-class BigDataWraper;
+class BigDataWrapper;
 }
 
 class AbstractNode;
@@ -47,11 +47,11 @@ public:
 protected:
 
     /**
-     * @brief newPackage This method process first header packge of the big data.
+     * @brief newPackage This method process first header package of the big data.
      * @param header This is header package.
-     * @param pkgHeader This is header of an incomming package.
+     * @param pkgHeader This is header of an incoming package.
      * @param sender This is socket object of a sender that send this package.
-     * @return true if packge processed successful else false
+     * @return true if package processed successful else false
      */
     bool newPackage(const QSharedPointer<PKG::BigDataHeader> &header,
                     AbstractNodeInfo * sender,
@@ -59,10 +59,10 @@ protected:
 
     /**
      * @brief processPart This method process part of package
-     * @param part This is pacakge part.
-     * @param pkgHeader This is header of an incomming package.
+     * @param part This is package part.
+     * @param pkgHeader This is header of an incoming package.
      * @param sender This is socket object of a sender that send this package.
-     * @return true if packge processed successful else false
+     * @return true if package processed successful else false
      */
     bool processPart(const QSharedPointer<PKG::BigDataPart>& part,
                      AbstractNodeInfo *sender,
@@ -71,22 +71,22 @@ protected:
     /**
      * @brief finishPart This metho process last package of big data transaction.
      * @param request this is shared pointer to last part of big data transaction.
-     * @param pkgHeader This is header of an incomming package.
+     * @param pkgHeader This is header of an incoming package.
      * @param sender This is socket object of a sender that send this package.
-     * @return true if pacakge parsed successful else false.
+     * @return true if package parsed successful else false.
      */
     bool processRequest(const QSharedPointer<PKG::BigDataRequest>& request,
                         QH::AbstractNodeInfo *sender,
                         const QH::Header &pkgHeader);
 
     /**
-     * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.
+     * @brief sendBigDataPackage This method separate big package and sent only header to server.
      * @param data This is package that will be sent to remote node.
      * @param sender This is request object.
      * @param pkgHeader requested header.
      * @return true if package sent successful
      */
-    bool processBigDataWraper(const QSharedPointer<PKG::BigDataWraper> &request,
+    bool processBigDataWrapper(const QSharedPointer<PKG::BigDataWrapper> &request,
                               AbstractNodeInfo *sender,
                               const Header &pkgHeader);
 
@@ -94,7 +94,7 @@ protected:
 private:
 
      /**
-     * @brief sendBigDataPackage This method separate big pacakge and sent only heder ot serve.
+     * @brief sendBigDataPackage This method separate big package and sent only header to server.
      * @param data This is package that will be sent to remote node.
      * @param sender This is request object.
      * @param pkgHeader requested header.
@@ -105,7 +105,7 @@ private:
                              const Header *pkgHeader);
 
     void insertNewBigData(const QSharedPointer<PKG::BigDataHeader> &header);
-    void checkOutDatedPacakges(unsigned int currentProcessedId);
+    void checkOutDatedPackages(unsigned int currentProcessedId);
 
     QHash<int, PoolData> _pool;
 

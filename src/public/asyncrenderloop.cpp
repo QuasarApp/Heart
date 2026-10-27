@@ -16,9 +16,9 @@ AsyncRenderLoop::AsyncRenderLoop(QThread *thread): Async(thread) {
 
 AsyncRenderLoop::~AsyncRenderLoop() {
 
-    Q_ASSERT_X(!isRun(), __FUNCTION__, "try to delete runned render loop! Please stop before delete."
+    Q_ASSERT_X(!isRun(), __FUNCTION__, "try to delete running render loop! Please stop before delete."
                                        "If you the SharedPointer,"
-                                       " it should be stoped monualy Or You can use AsyncRenderLoop::MainSharedPtr class");
+                                       " it should be stopped monualy Or You can use AsyncRenderLoop::MainSharedPtr class");
     AsyncRenderLoop::stop();
 
     delete thread();

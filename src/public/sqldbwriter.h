@@ -28,7 +28,7 @@ namespace QH {
 /**
  * @brief The SqlDBWriter class. This class write and read objects from database (hard level).
  *  Before working with database you need to initialize it. The SqlDBWriter support a any sql databases,
- *  For list of supported drivers see the Qt Docummentation https://doc.qt.io/qt-5/sql-driver.html
+ *  For list of supported drivers see the Qt Documentation https://doc.qt.io/qt-5/sql-driver.html
  *  For initialize a custom database driver you need to set an own params see the SqlDBWriter::initDb metthod.
  *  This class work only on own thread. For change working thread use the Qt method moveToThread.
  */
@@ -39,7 +39,7 @@ public:
     SqlDBWriter(QThread *thread);
 
     /**
-     * @brief initDb This method is wraper of the initDb(const QVariantMap &params) method.
+     * @brief initDb This method is wrapper of the initDb(const QVariantMap &params) method.
      *  This implementation read a initDbParams file and get all params from json.
      * @note this method must be invoked in the thread as a working thread of this object.
      * @param initDbParams This is path to  json configuration file with settings of database.
@@ -103,7 +103,7 @@ public:
 
     /**
      * @brief deleteQuery This method prepare the delete object query.
-     * @param deleteObject This is tempalte object for generate a  delete query.
+     * @param deleteObject This is template object for generate a  delete query.
      * @return true if query generated successful.
      */
     virtual bool deleteQuery(const QSharedPointer<QH::PKG::DBObject> &deleteObject) const;
@@ -143,7 +143,7 @@ protected:
     bool disableFK();
 
     /**
-     * @brief getInitPararm This method read parameters of database.
+     * @brief getInitParam This method read parameters of database.
      *
      * Support parameters of database:
      *
@@ -152,17 +152,17 @@ protected:
      * - DBInitFile - This is sql file with sql code (structure) with default structure of the database.
      * - DBPass - This is password of a remote database.
      * - DBLogin - This is login of a remote database.
-     * - DBHost - This is host addres of a remote database.
+     * - DBHost - This is host address of a remote database.
      * - DBPort - port of a remote database.
 
      * @param initFile This is path to json file with database configuration.
-     * @return The Map with readed configuration. IF file is incorrect or not exists then return an empty map.
+     * @return The Map with read configuration. IF file is incorrect or not exists then return an empty map.
      *
      */
     virtual QVariantMap getInitParams(const QString& initFile) const;
 
     /**
-     * @brief defaultInitPararm This method return default parameters of the database.
+     * @brief defaultInitParam This method return default parameters of the database.
      * @return map of database params.
      *
      * Support parameters of database:
@@ -177,7 +177,7 @@ protected:
      * - DBBackUpPath - path of database backups (sqlite only). Or (QH_DB_BACKUP_PATH)
 
      */
-    virtual QVariantMap defaultInitPararm() const;
+    virtual QVariantMap defaultInitParam() const;
 
     /**
      * @brief initSqlDataBasse This method create ad database connection.
@@ -230,7 +230,7 @@ private:
      * @brief doQueryPrivate This method execute a @a query in this database.
      * @param query This is query that will be executed.
      * @param result This is pointer to result value.
-     * @return true if query finished successfull
+     * @return true if query finished successful
      */
     bool doQueryPrivate(const QString& query,
                         const QVariantMap &bindValues,

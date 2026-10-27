@@ -42,7 +42,7 @@ bool QH::DataSender::sendPackagePrivate(QByteArray array, void *target) const {
     }
 
     if (array.size() != wrote) {
-        qCritical() << "Send raw data error. not all data writed";
+        qCritical() << "Send raw data error. not all data written";
         return false;
     }
 

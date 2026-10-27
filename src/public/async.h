@@ -53,8 +53,8 @@ protected:
     Async(QThread* thread);
 
     /**
-      @note This is async distructor.
-        This distructor wait for finishing of the own threads befor delete.
+      @note This is async destructor.
+        This destructor wait for finishing of the own threads before delete.
     */
     ~Async();
 
@@ -140,12 +140,12 @@ private slots:
 
 private:
     /**
-     * @brief threadAnalize This method check @a thread.
+     * @brief threadAnalyze This method check @a thread.
      *  if @a a thread is main thread then this method print error message in release build and
      *  invoke abort method in debug.
      * @param thread This is checked thread object.
      */
-    void threadAnalize(QThread* thread);
+    void threadAnalyze(QThread* thread);
 };
 
 }

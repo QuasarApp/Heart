@@ -7,29 +7,29 @@
 //#
 
 
-#include "bigdatawraper.h"
+#include "bigdatawrapper.h"
 
 namespace QH {
 namespace PKG {
-const AbstractData *BigDataWraper::data() const {
+const AbstractData *BigDataWrapper::data() const {
     return _data;
 }
 
-void BigDataWraper::setData(const AbstractData *newData) {
+void BigDataWrapper::setData(const AbstractData *newData) {
     _data = newData;
 }
 
-QString BigDataWraper::toString() const {
+QString BigDataWrapper::toString() const {
     if (_data)
         return QString("Wrapper of : %0").arg(_data->toString());
     return QString("Wrapper of : null");
 }
 
-QDataStream &BigDataWraper::fromStream(QDataStream &stream) {
+QDataStream &BigDataWrapper::fromStream(QDataStream &stream) {
     return stream;
 }
 
-QDataStream &BigDataWraper::toStream(QDataStream &stream) const {
+QDataStream &BigDataWrapper::toStream(QDataStream &stream) const {
     return stream;
 }
 

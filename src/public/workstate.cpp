@@ -52,7 +52,7 @@ WorkState::WorkState() {}
 QString WorkState::toString() const {
     QString result("State: %0 \n"
                    "Connections: %1 \n"
-                   "Actived connections: %2 / %3 \n"
+                   "Activated connections: %2 / %3 \n"
                    "Connected Addresses:\n"
                    "%4 \n"
                    "Baned: \n "

@@ -15,7 +15,7 @@ namespace QH {
 
 // Private implementation.
 /**
- * @brief The SQLiteDBCachePrivate class is private implementation of the sqllite database for working in the RAM.
+ * @brief The SQLiteDBCachePrivate class is private implementation of the sqlite database for working in the RAM.
  */
 class SQLiteDBCachePrivate: public AsyncSqlDBWriter {
 

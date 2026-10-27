@@ -20,8 +20,8 @@ class APIVersion;
 class VersionIsReceived;
 }
 /**
- * @brief The APIVersionParser class This is main parser forthe main command.
- * This parsers work only with the APIVersion packge;
+ * @brief The APIVersionParser class This is main parser for the main command.
+ * This parsers work only with the APIVersion package;
  */
 class HEARTSHARED_EXPORT APIVersionParser: public iParser
 {
@@ -43,9 +43,9 @@ public:
 
     /**
      * @brief searchPackage This method search package recursive in all registered pararsers. Searching will be in compatibility versions.
-     * Before search methd choose compatibly verson.
-     * @param cmd This is command for that shold be create pacakge object.
-     * @param ver This is version for that shold be create pacakge object.
+     * Before search method choose compatibly version.
+     * @param cmd This is command for that should be create package object.
+     * @param ver This is version for that should be create package object.
      * @param sender This is node that sent @a the cmd.
      * @return Package generated from cmd.
      */
@@ -56,8 +56,8 @@ public:
     /**
      * @brief getSelectedApiParser This method return apiParser for selected node
      * @param apiKey This is key of needed api.
-     * @param node This is distanation node.
-     * @return needed parser of the distanation node.
+     * @param node This is destination node.
+     * @return needed parser of the destination node.
      */
     QSharedPointer<iParser> getSelectedApiParser(const QString& apiKey,
                                                  QH::AbstractNodeInfo *node) const;
@@ -72,8 +72,8 @@ public:
 
     /**
      * @brief selectParser This method select api parser betwin nodes.
-     * @param distVersion This is information about distanation node version.
-     * @return hash map of needed parsers of the distanation node.
+     * @param distVersion This is information about destination node version.
+     * @return hash map of needed parsers of the destination node.
      */
     QHash<QString, QSharedPointer<QH::iParser>>
     selectParser(const VersionData& distVersion) const;
@@ -126,8 +126,8 @@ public:
     unsigned short minimumApiVersion(const QString& apiKey) const;
 
     /**
-     * @brief sendSupportedAPI This method sents all ainformation about suppported api.
-     * @param dist This is distanation node.
+     * @brief sendSupportedAPI This method sents all ainformation about supported api.
+     * @param dist This is destination node.
      * @return true if the information sent successful else false.
      */
     bool sendSupportedAPI(AbstractNodeInfo *dist) const;

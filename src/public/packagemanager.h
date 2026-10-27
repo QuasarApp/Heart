@@ -6,8 +6,8 @@
 */
 
 
-#ifndef PAKCAGEMANAGER_H
-#define PAKCAGEMANAGER_H
+#ifndef PACKAGEMANAGER_H
+#define PACKAGEMANAGER_H
 
 #include "package.h"
 
@@ -20,7 +20,7 @@ namespace QH {
 class PackaData;
 
 /**
- * @brief The PakcageManager class contains all processed packages. Working like a cache of packages.
+ * @brief The PackageManager class contains all processed packages. Working like a cache of packages.
  */
 class HEARTSHARED_EXPORT PackageManager
 {
@@ -29,17 +29,17 @@ public:
     ~PackageManager();
 
     /**
-     * @brief getPkgFromArhive This method return pointer to package from archive.
+     * @brief getPkgFromArchive This method return pointer to package from archive.
      * @param id This is id of the requirement package.
      * @result pointer of the processed package, if package not find then return nullptr.
      */
-    const Package * getPkgFromArhive(const unsigned int &id) const;
+    const Package * getPkgFromArchive(const unsigned int &id) const;
 
     /**
      * @brief contains This method checks if the package contains in this container by id.
      * @param id This is unique key of package.
      * In Default implementation it is qHash of package.
-     * @return True if the pakcage has been parsed.
+     * @return True if the package has been parsed.
      */
     bool contains(const unsigned int& id) const;
 
@@ -59,4 +59,4 @@ private:
 };
 
 }
-#endif // PAKCAGEMANAGER_H
+#endif // PACKAGEMANAGER_H

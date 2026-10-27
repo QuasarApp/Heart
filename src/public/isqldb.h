@@ -56,7 +56,7 @@ enum class CacheAction: int {
  * @brief The ISqlDB class it is db cache and bridge for DbWriters.
  * Work Scheme of the database cache:
  *
- * \image html DatabseCache.svg width=800px
+ * \image html DatabaseCache.svg width=800px
  *
  * This class implements only base functions of the cache. You need to override this class and create implementation for all methods of work with the cache.
  * * updateCache
@@ -84,7 +84,7 @@ public:
     ~ISqlDB() override;
 
     /**
-     * @brief writer This method return is database writer object. For more inforamation about writer see the SqlDBWriter class.
+     * @brief writer This method return is database writer object. For more information about writer see the SqlDBWriter class.
      * @return the pointer to writer.
      */
     SqlDBWriter* writer() const;
@@ -118,7 +118,7 @@ public:
      * @brief changeObjects This method change object of the database.
      * @param templateObject This is template for get objects from database.
      * @param changeAction This is lambda function for work with non const pointer of the object for change.
-     * @note If templateObject selecte more than 1 objects then the lambda function call for each all selected objects.
+     * @note If templateObject selects more than 1 object then the lambda function call for each all selected objects.
      * @return true if function finished successful.
      */
     bool changeObjects(const PKG::DBObject &templateObject,
@@ -184,7 +184,7 @@ protected:
     /**
      * @brief updateCache This method update already exits object on the cache, but not database.
      * @param obj This is object with changes for update the object rtom cache.
-     * @return true if save finished successful. If the obj mot exits in the cache then return false.
+     * @return true if save finished successful. If the obj not exists in the cache then return false.
      */
     virtual bool updateCache(const QSharedPointer<QH::PKG::DBObject> &obj) = 0;
 

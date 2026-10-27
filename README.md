@@ -28,7 +28,7 @@ This library consists of two levels (AbstractNode level and DataBaseNode level).
      ```cmake
      target_link_libraries(yourLib PUBLIC Heart)
      ```
- * rebuild yuor project
+ * rebuild your project
 
 
 
@@ -106,16 +106,16 @@ Create your parser api class.
            return ParserResult::Error;
        }
 
-       cardrequest._data = "responce for client "
+       cardrequest._data = "response for client "
 
-       // responce only for servers.
+       // response only for servers.
        if (nodeType() == QH::AbstractNode::NodeType::Server)
            sendData(cardrequest, sender->networkAddress(), &pkg.hdr);
 
        return ParserResult::Processed;
    }
 
-   // This vesion of the parser (any digital value.) .
+   // This version of the parser (any digital value.) .
    int version() const override {return 0;};
    QString parserId() const override {return "MyParser";};
 

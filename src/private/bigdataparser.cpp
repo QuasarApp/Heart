@@ -13,7 +13,7 @@
 #include <abstractnode.h>
 #include <cmath>
 #include <params.h>
-#include <bigdatawraper.h>
+#include <bigdatawrapper.h>
 
 #define TIMEOUT_INTERVAL 30000
 
@@ -21,7 +21,7 @@ namespace QH {
 
 BigDataParser::BigDataParser(AbstractNode* parentNode): iParser(parentNode) {
 
-    registerPackageType<PKG::BigDataWraper>();
+    registerPackageType<PKG::BigDataWrapper>();
     registerPackageType<PKG::BigDataRequest>();
     registerPackageType<PKG::BigDataHeader>();
     registerPackageType<PKG::BigDataPart>();
@@ -40,8 +40,8 @@ ParserResult BigDataParser::parsePackage(const QSharedPointer<PKG::AbstractData>
         return result;
     }
 
-    result = commandHandler<PKG::BigDataWraper>(this,
-                                                &BigDataParser::processBigDataWraper,
+    result = commandHandler<PKG::BigDataWrapper>(this,
+                                                &BigDataParser::processBigDataWrapper,
                                                 pkg, sender, pkgHeader);
     if (result != QH::ParserResult::NotProcessed) {
         return result;
@@ -79,7 +79,7 @@ void QH::BigDataParser::insertNewBigData(const QSharedPointer<PKG::BigDataHeader
         _pool[header->packageId()] = {header, _array, static_cast<int>(time(0))};
     }
 
-    checkOutDatedPacakges(header->packageId());
+    checkOutDatedPackages(header->packageId());
 }
 
 bool BigDataParser::newPackage(const QSharedPointer<PKG::BigDataHeader> &header,
@@ -108,7 +108,7 @@ bool BigDataParser::processPart(const QSharedPointer<PKG::BigDataPart> &part,
         return false;
     }
 
-    checkOutDatedPacakges(part->packageId());
+    checkOutDatedPackages(part->packageId());
 
     auto& localPool = _pool[part->packageId()];
 
@@ -168,7 +168,7 @@ bool BigDataParser::processRequest(const QSharedPointer<PKG::BigDataRequest> &re
         return false;
     }
 
-    checkOutDatedPacakges(id);
+    checkOutDatedPackages(id);
 
     const auto &localPool = _pool[id];
     if (request->currentPart() >= localPool.chaindata.size()) {
@@ -189,7 +189,7 @@ bool BigDataParser::processRequest(const QSharedPointer<PKG::BigDataRequest> &re
     return true;
 }
 
-bool BigDataParser::processBigDataWraper(const QSharedPointer<PKG::BigDataWraper> &request,
+bool BigDataParser::processBigDataWrapper(const QSharedPointer<PKG::BigDataWrapper> &request,
                                          AbstractNodeInfo *sender,
                                          const Header &pkgHeader) {
     return sendBigDataPackage(request->data(), sender, &pkgHeader);
@@ -226,7 +226,7 @@ bool BigDataParser::sendBigDataPackage(const PKG::AbstractData *data,
     return true;
 }
 
-void BigDataParser::checkOutDatedPacakges(unsigned int currentProcessedId) {
+void BigDataParser::checkOutDatedPackages(unsigned int currentProcessedId) {
     int utx = time(0);
 
     if (_pool.contains(currentProcessedId)) {

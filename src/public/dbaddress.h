@@ -38,7 +38,7 @@ public:
     QDataStream &toStream(QDataStream &stream) const;
 
     /**
-     * @brief toString This method return a string implementation fo this object.
+     * @brief toString This method return a string implementation of this object.
      * @return string of object.
      */
     QString toString() const;

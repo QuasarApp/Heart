@@ -22,7 +22,7 @@ struct HEARTSHARED_EXPORT SerializationBox {
 
 /**
  * @brief The MultiversionData class This class add support for multiple versions of ne command/package.
- * If you need to add support multiple versions make your pakcage class children of the MultiversionData class.
+ * If you need to add support multiple versions make your package class children of the MultiversionData class.
  *
  *  Example:
  *
@@ -75,7 +75,7 @@ public:
     MultiversionData(const QMap<unsigned short /*version*/, SerializationBox>& serializers);
 
     /**
-     * @brief packageVersion This method should be return number of the pacakge version.
+     * @brief packageVersion This method should be return number of the package version.
      * @return pcakge version. by default return - 0 (any version)
      */
     const DistVersion& packageVersion() const;
@@ -85,7 +85,7 @@ public:
 
     /**
      * @brief toBytesOf This is overload method of StreamBase::toBytes for support multi versions of packages.
-     * @param version This is required version pacakge.
+     * @param version This is required version package.
      * @return bytes array for package.
      * @note This is just wrapper method for the AbstractData::toStream method.
      */

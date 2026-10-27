@@ -15,7 +15,7 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The BigDataBase class This is base class of big data parts.  This class contains id of movving pacakge.
+ * @brief The BigDataBase class This is base class of big data parts.  This class contains id of movving package.
  */
 class HEARTSHARED_EXPORT BigDataBase: public AbstractData
 {
@@ -32,7 +32,7 @@ public:
 
     /**
      * @brief setPackageId This method sets new id of package that this package moving
-     * @param newPackageId This is new value of the id of pacakge.
+     * @param newPackageId This is new value of the id of package.
      */
     void setPackageId(int newPackageId);
 

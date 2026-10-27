@@ -2,7 +2,7 @@
 #define ITEST_H
 
 /**
- * @brief The iTest class is simle interface for testing.
+ * @brief The iTest class is simple interface for testing.
  * This calass have only one method "Test" for run test functions.
  */
 class iTest

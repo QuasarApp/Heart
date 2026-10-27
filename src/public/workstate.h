@@ -80,7 +80,7 @@ public:
     void setConnections(const QList<HostAddress> &connections);
 
     /**
-     * @brief activeConnections This method return list of actived connections.
+     * @brief activeConnections This method return list of activated connections.
      * @return list of active connections.
      */
     const QList<HostAddress> &activeConnections() const;

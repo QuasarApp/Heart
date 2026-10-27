@@ -35,7 +35,7 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
         return parentResult;
     }
 
-    // here node must be receive responce that version is delivered.
+    // here node must be receive response that version is delivered.
     // when node receive this message then node status are confirmed
     parentResult = commandHandler<PKG::VersionIsReceived>(this, &APIVersionParser::versionDeliveredSuccessful,
                                                      pkg, sender, pkgHeader);
@@ -46,7 +46,7 @@ ParserResult APIVersionParser::parsePackage(const QSharedPointer<PKG::AbstractDa
     const auto parser = selectParser(pkg->cmd(), sender);
 
     if (!parser) {
-        qWarning () << "Can't found requeried parser for versions";
+        qWarning () << "Can't found required parser for versions";
         return ParserResult::NotProcessed;
     }
 
@@ -139,7 +139,7 @@ bool QH::APIVersionParser::commandsValidation(const QSharedPointer<iParser> &par
                                    "already registered in the %2_v%3 parser. "
                                    "Use the iParser::initSupportedCommands method to "
                                    "fix this issue. "
-                                   "See our documentation for get more inforamtion. "
+                                   "See our documentation for get more information. "
                                    "https://quasarapp.ddns.net:3031/docs/QuasarApp/Heart/latest/classQH_1_1iParser.html").
                            arg(parserObject->parserId()).
                            arg(parserObject->version()).
