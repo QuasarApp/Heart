@@ -50,7 +50,7 @@ public:
     HostAddress& operator = (const HostAddress& right);;
     /**
      * @brief isIP This method return true if the @a address is valid.
-     * @brief address This is tring value of the network ip address.
+     * @brief address This is string value of the network ip address.
      * @return true if the @a address is valid.
      */
     static bool isIP(const QString& address);
@@ -74,9 +74,9 @@ public:
     QByteArray toBytes() const;
 
     /**
-     * @brief fromBytes This method applay @a array obejct. (conver a byte array to a newtwork address object)
+     * @brief fromBytes This method apply @a array object. (convert a byte array to a network address object)
      * @param array this is input array.
-     * @return true if array applayed successfull
+     * @return true if array applied successful
      */
     bool fromBytes(const QByteArray& array);
 

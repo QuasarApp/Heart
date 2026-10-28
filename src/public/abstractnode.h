@@ -47,11 +47,11 @@ class ErrorData;
 }
 
 /**
- * @brief The SslMode enum  This enum contatins options for set ssl mode of node (server).
+ * @brief The SslMode enum  This enum contains options for set ssl mode of node (server).
  * For more information see AbstractNode::useSelfSignedSslConfiguration AbstractNode::useSystemSslConfiguration and AbstractNode::disableSSL methods.
  */
 enum class SslMode {
-    /// This is not secure connection without ssl encription. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr).
+    /// This is not secure connection without ssl encryption. It is default value of new any node see AbstractNode(SslMode mode = SslMode::NoSSL, QObject * ptr = nullptr).
     NoSSL,
 #ifdef USE_HEART_SSL
 
@@ -63,17 +63,17 @@ enum class SslMode {
 };
 
 /**
- * @brief The AddNodeError enum contains error code that can be occured after invoke the AbstractNode::addNode mehod
+ * @brief The AddNodeError enum contains error code that can be occurred after invoke the AbstractNode::addNode method
  * @see AbstractNode::addNode
  * @see AbstractNode::addNodeFailed
- * @see AbstractNode::nodeAddedSucessful
+ * @see AbstractNode::nodeAddedSuccessful
  */
 enum class AddNodeError {
     /// unknown error
     UnknownError,
-    /// This error ocurred when DNS server not responce to node or node can't find the server ip address by host.
+    /// This error occurred when DNS server not response to node or node can't find the server ip address by host.
     HostNotFound,
-    /// This error ocurred when you try add baned node or server is overrload.
+    /// This error occurred when you try add baned node or server is overrload.
     RegisterSocketFailed
 };
 
@@ -110,7 +110,7 @@ public:
         /// Node with this type is general clints nodes.
         Client = 0,
 
-        /// Node with this ytpe is midle nodes that can works as a client and as servers.
+        /// Node with this ytpe is middle nodes that can works as a client and as servers.
         Node = 1,
 
         /// This is node can works only as a public server
@@ -133,12 +133,12 @@ public:
 
     /**
      * @brief run This method implement deployment a network node (server) on selected address.
-     * @param addres This is network address of work node or server.
-     *  If address is empty then server weel be listen all addreses of all interfaces else listen only selected address.
+     * @param address This is network address of work node or server.
+     *  If address is empty then server weel be listen all addresses of all interfaces else listen only selected address.
      * @param port This is port of deployment node (server)
      * @return Result of deployment node (sever). (True if deploy finished successful else false).
      */
-    virtual bool run(const QString& addres, unsigned short port);
+    virtual bool run(const QString& address, unsigned short port);
 
     /**
      * @brief selectParser This method select parser by command and sender.
@@ -202,7 +202,7 @@ public:
     /**
      * @brief sendData This method send data  object another to node
      * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
+     * @param address This is target address for sending.
      * @param req This is header of request.
      * @return hash of the sendet package. If function is failed then return 0.
      */
@@ -212,7 +212,7 @@ public:
     /**
      * @brief sendData This method send data  object another to node
      * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
+     * @param address This is target address for sending.
      * @param req This is header of request.
      * @return hash of the sendet package. If function is failed then return 0.
      */
@@ -223,7 +223,7 @@ public:
      * @brief addNode - Connect to node (server) with address.
      * @param address - This is Network address of node (server).
      * @return true if the node aaded successful
-     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::nodeAddedSuccessful
      * @see AbstractNode::addNodeFailed
      */
     bool addNode(const HostAddress &address);
@@ -236,14 +236,14 @@ public:
      * @param status This is required status.
      * @return true if node added successful.
      *
-     * @note The Action do not executed when node alredy connected.
+     * @note The Action do not executed when node already connected.
      * @note If you override the nodeConfirmend or the nodeConnected method then you must be invoke parent implementation else @a action do not executed.
-     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::nodeAddedSuccessful
      * @see AbstractNode::addNodeFailed
      */
     bool addNode(const HostAddress &address,
                  const std::function<void(QH::AbstractNodeInfo *)>& action,
-                 NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
+                 NodeConnectionStatus status = NodeConnectionStatus::Connected);
 
     /**
      * @brief addNode This method add new peer connection to this node and
@@ -262,32 +262,32 @@ public:
      *
      * @endcode
      *
-     * @note The Action do not executed when node alredy connected.
+     * @note The Action do not executed when node already connected.
      * @note If you override the nodeConfirmend or the nodeConnected method then you must be invoke parent implementation else @a action do not executed.
-     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::nodeAddedSuccessful
      * @see AbstractNode::addNodeFailed
      */
     bool addNode(const QString &domain, unsigned short port,
                  const std::function<void(QH::AbstractNodeInfo *)>& action = nullptr,
-                 NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
+                 NodeConnectionStatus status = NodeConnectionStatus::Connected);
 
     /**
-     * @brief removeNode - Remove node and disconnected forom node (server).
-     * @param nodeAdderess - This is network adddress of removed node (server).
-     * @return true if the node removed successful. If the nde with @a nodeAdderess is not exits return false.
+     * @brief removeNode - Remove node and disconnected from node (server).
+     * @param nodeAddress - This is network address of removed node (server).
+     * @return true if the node removed successfully. If the node with @a nodeAddress is not exists return false.
      */
-    bool removeNode(const HostAddress& nodeAdderess);
+    bool removeNode(const HostAddress& nodeAddress);
 
     /**
-     * @brief removeNode - Remove node and disconnected forom node (server).
+     * @brief removeNode - Remove node and disconnected from node (server).
      * @param node - This is removed node (server).
-     * @return true if the node removed successful. If the nde with @a nodeAdderess is not exits return false.
+     * @return true if the node removed successfully. If the node with @a nodeAddress is not exists return false.
      */
     bool removeNode(AbstractNodeInfo* node);
 
     /**
      * @brief address - Thim method return own network address of current node (server).
-     * @return The current network adderss.
+     * @return The current network address.
      */
     HostAddress address() const;
 
@@ -300,7 +300,7 @@ public:
     QSslConfiguration getSslConfig() const;
 #endif
     /**
-     * @brief getMode - This method return SSL mode of corrent node (server).
+     * @brief getMode - This method return SSL mode of current node (server).
      * @return current mode for more information see SslMode.
      */
     SslMode getMode() const;
@@ -313,7 +313,7 @@ public:
     virtual WorkState getWorkState() const;
 
     /**
-     * @brief connectionsCount - Return count fo connections (connections with status connected)
+     * @brief connectionsCount - Return count of connections (connections with status connected)
      * @return Count valid connections.
      */
     int connectionsCount() const;
@@ -338,37 +338,37 @@ public:
     static QThread *mainThreadID();
 
     /**
-     * @brief sheduleTask This method shedule execute task on this node.
-     * @param task This is task that will be sheduled.
-     * @return true if task added successfull else flase
+     * @brief scheduleTask This method schedule execute task on this node.
+     * @param task This is task that will be scheduled.
+     * @return true if task added successful else false
      * @see AbstractNode::removeTask
-     * @see AbstractNode::sheduledTaskCount
+     * @see AbstractNode::scheduledTaskCount
 
      */
-    bool sheduleTask(const QSharedPointer<AbstractTask>& task);
+    bool scheduleTask(const QSharedPointer<AbstractTask>& task);
 
     /**
-     * @brief removeTask This method remove task from sheduler.
+     * @brief removeTask This method remove task from scheduler.
      * @param taskId This is task id that will be removed.
-     * @see AbstractNode::sheduleTask
-     * @see AbstractNode::sheduledTaskCount
+     * @see AbstractNode::scheduleTask
+     * @see AbstractNode::scheduledTaskCount
      */
     void removeTask(int taskId);
 
     /**
-     * @brief sheduledTaskCount This method return count of sheduled tasks.
-     * @return count of sheduled tasks.
-     * @see AbstractNode::sheduleTask
+     * @brief scheduledTaskCount This method return count of scheduled tasks.
+     * @return count of scheduled tasks.
+     * @see AbstractNode::scheduleTask
      * @see AbstractNode::removeTask
      */
-    int sheduledTaskCount() const;
+    int scheduledTaskCount() const;
 
     /**
      * @brief badRequest This method is send data about error of request.
-     * @param address This is addrees of receiver.
-     * @param req This is header of incomming request.
+     * @param address This is address of receiver.
+     * @param req This is header of incoming request.
      * @param err This is message and code of error. For more information see the ErrorData struct.
-     * @param diff This is difference of current trust (currenTrus += diff).
+     * @param diff This is difference of current trust (currentTrust += diff).
      * By default diff equals REQUEST_ERROR
      */
     virtual void badRequest(const HostAddress &address, const Header &req,
@@ -379,7 +379,7 @@ public:
     /**
      * @brief ignoreSslErrors This method return list of ignored ssl errors
      * @return list of ignored ssl errors.
-     * @see handleSslErrorOcurred
+     * @see handleSslErrorOccurred
      */
     const QList<QSslError> &ignoreSslErrors() const;
 #endif
@@ -404,8 +404,8 @@ public:
     void setSendBadRequestErrors(bool value);
 
     /**
-     * @brief fCloseConnectionAfterBadRequest This propery enable or disable droping connection after badRequests. By default it is true.
-     * @return true if the clossing connection is enabled and false if disabled.
+     * @brief fCloseConnectionAfterBadRequest This property enable or disable dropping connection after badRequests. By default it is true.
+     * @return true if the closing connection is enabled and false if disabled.
      */
     bool fCloseConnectionAfterBadRequest() const;
 
@@ -417,7 +417,7 @@ public:
 
 signals:
     /**
-     * @brief requestError This signal emited when client or node received from remoute server or node the BadRequest package.
+     * @brief requestError This signal emitted when client or node received from remoute server or node the BadRequest package.
      * @param code This is code of error.
      * @param msg - received text of remoute node (server).
      */
@@ -439,7 +439,7 @@ protected:
     /**
      * @brief setIgnoreSslErrors This list sets new ignored errors.
      * @param newIgnoreSslErrors This is new list of ignored errors.
-     * @see handleSslErrorOcurred
+     * @see handleSslErrorOccurred
      */
     void setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors);
 
@@ -463,7 +463,7 @@ protected:
 
     /**
      * @brief registerSocket This method registration new socket object.
-     * @param socket This is incomming socket pointer.
+     * @param socket This is incoming socket pointer.
      * @param address This is host address of socket. By default is nullptr.
      *  Set this value for nodes created on this host.
      * @return return true if the scoeket has been registered successful.
@@ -472,9 +472,9 @@ protected:
 
     /**
      * @brief sendPackage This method prepare and send to target address a package.
-     * @param pkg This is sendet pakcage to target node.
+     * @param pkg This is sendet package to target node.
      * @param target This is target node.
-     * @return return true if The package is sendet succesfull.
+     * @return return true if The package is sendet successful.
      *
      * @note All packages sendets on the sender threaed. But thread of the node is wait for sends result.
      *  This is done that allthe data that is sent when node are dissconected come without fail.
@@ -494,12 +494,12 @@ protected:
     virtual QString connectionState() const;
 
     /**
-     * @brief banedList This method retrun list of banned clients of nodes.
+     * @brief banedList This method return list of banned clients of nodes.
      * @return list of baned nodes.
      */
     QList<HostAddress> banedList() const;
 
-    // TO-DO Need to add new method fo collect banned addresses for exmaple use the mask.
+    // TO-DO Need to add new method to collect banned addresses for example use the mask.
     // See Task https://github.com/QuasarApp/Heart/issues/13
     /**
      * @brief isBanned This method checks if the node is banned.
@@ -517,7 +517,7 @@ protected:
     /**
      * @brief changeTrust This method change trust of connected node.
      * @param id This is id of select node.
-     * @param diff This is difference of current trust (currenTrus += diff).
+     * @param diff This is difference of current trust (currentTrust += diff).
      * @return true if node trust is changed successful.
      */
     virtual bool changeTrust(const HostAddress& id, int diff);
@@ -527,7 +527,7 @@ protected:
 
     /**
      * @brief useSelfSignedSslConfiguration This method reconfigure current node to use selfSigned certificate.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
+     * @note Before invoke this method stop this node (server) see AbstractNode::stop.
      *  if mode will be working then this method return false.
      *  The self signed certificate is temp value, this is will be changed after reboot node (server)
      * @param crtData - This is data for generation a new self signed certification.
@@ -537,7 +537,7 @@ protected:
 
     /**
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
+     * @note Before invoke this method stop this node (server) see AbstractNode::stop.
      *  if mode will be working then this method return false.
      *  @param config This is system ssl configuration. by default used QSslConfiguration::defaultConfiguration() method.
      * @return result of change node ssl configuration.
@@ -546,7 +546,7 @@ protected:
 
     /**
      * @brief disableSSL This method disable ssl mode for this node.
-     * @note Befor invoke this method stop this node (server) see AbstractNode::stop.
+     * @note Before invoke this method stop this node (server) see AbstractNode::stop.
      *  if mode will be working then this method return false.
      * @return true if changes is completed.
      */
@@ -561,21 +561,21 @@ protected:
 
     /**
      * @brief nodeConfirmend This method invocked when the node status changed to "confirmend"
-     *  default implementatio do nothing.
+     *  default implementation do nothing.
      * @param node This is address of changed node.
      */
     virtual void nodeConfirmend(AbstractNodeInfo *node);
 
     /**
      * @brief nodeConnected This method invocked when the node status changed to "connected"
-     *  default implementatio do nothing.
+     *  default implementation do nothing.
      * @param node This is address of changed node.
      */
     virtual void nodeConnected(AbstractNodeInfo *node);
 
     /**
      * @brief nodeConnected This method invocked when the node status changed to "disconnected"
-     *  default implementatio do nothing.
+     *  default implementation do nothing.
      * @param node This is address of changed node.
      */
     virtual void nodeDisconnected(AbstractNodeInfo *node);
@@ -599,8 +599,8 @@ protected:
     QList<HostAddress> connectionsList() const;
 
     /**
-     * @brief activeConnectionsList This method return list of actived nodes connections
-     * @return list of actived nodes connections.
+     * @brief activeConnectionsList This method return list of activated nodes connections
+     * @return list of activated nodes connections.
      * @warning do not use this method for validation is connected.
      */
     QList<HostAddress> activeConnectionsList() const;
@@ -608,25 +608,25 @@ protected:
     /**
      * @brief addNodeFailed This method will be invoked when trying to add new node are failed.
      *  So override this method for handle this event.
-     * @param error This is error code that occured after invoke of the AbstractNode::addNode method
+     * @param error This is error code that occurred after invoke of the AbstractNode::addNode method
      * @see AbstractNode::addNode
-     * @see AbstractNode::nodeAddedSucessful
+     * @see AbstractNode::nodeAddedSuccessful
      */
     virtual void addNodeFailed(AddNodeError error);
 
     /**
-     * @brief nodeAddedSucessful This method will be invoked when new node added successful.
+     * @brief nodeAddedSuccessful This method will be invoked when new node added successful.
      * @param node This is pointer to added node.
-     * @note do not try remove the @a node pointer. This pointer will be removed automaticaly.
+     * @note do not try remove the @a node pointer. This pointer will be removed automatically.
      * @see AbstractNode::addNode
      * @see AbstractNode::addNodeFailed
      */
-    virtual void nodeAddedSucessful(AbstractNodeInfo* node);
+    virtual void nodeAddedSuccessful(AbstractNodeInfo* node);
 
     /**
-     * @brief addApiParserNative This is template metod that add sipport of new apiparser @a ApiType
+     * @brief addApiParserNative This is template method that add support of new apiparser @a ApiType
      * @tparam ApiType This is type of new apiParser that will be added to the main parser.
-     * @tparam Args This is argumets that will forward to the Parser constructor.
+     * @tparam Args This is arguments that will forward to the Parser constructor.
      * @return shared pointer to the @a ApiType
      */
     template<class ApiType, class ... Args >
@@ -635,9 +635,9 @@ protected:
     }
 
     /**
-     * @brief addApiParser This is template metod that add sipport of new apiparser @a ApiType
+     * @brief addApiParser This is template method that add support of new apiparser @a ApiType
      * @tparam ApiType This is type of new apiParser that will be added to the main parser.
-     * @tparam Args This is argumets that will forward to the Parser constructor.
+     * @tparam Args This is arguments that will forward to the Parser constructor.
      * @return shared pointer to the iParser
      */
     template<class ApiType, class ... Args >
@@ -653,25 +653,25 @@ protected slots:
     virtual void receivePing(const QSharedPointer<QH::PKG::Ping>& ping);;
 
     /**
-     * @brief nodeErrorOccured This slot invoked when error ocured in the @a nodeInfo.
-     * @param nodeInfo This is pinter to modeInfoObject.
+     * @brief nodeErrorOccurred This slot invoked when error ocured in the @a nodeInfo.
+     * @param nodeInfo This is pointer to modeInfoObject.
      * @param errorCode This is error code.
      * @param errorString This is string value of the error.
      * @note default implementation do nothing. Override this method if you want to handle nodes network errors.
      */
-    virtual void nodeErrorOccured(QH::AbstractNodeInfo *nodeInfo,
+    virtual void nodeErrorOccurred(QH::AbstractNodeInfo *nodeInfo,
                                   QAbstractSocket::SocketError errorCode,
                                   QString errorString);
 
 #ifdef USE_HEART_SSL
 
     /**
-     * @brief handleSslErrorOcurred This method invoked when a ssl socket receive an error mesage.
-     *  Default implementation just pront error messages
+     * @brief handleSslErrorOccurred This method invoked when a ssl socket receive an error message.
+     *  Default implementation just print error messages
      *  Overrid this method for handle ssl errors on this node or server.
-     * @param error This is error that occured..
+     * @param error This is error that occurred..
      */
-    virtual void handleSslErrorOcurred(QH::SslSocket *scket, const QSslError& error);
+    virtual void handleSslErrorOccurred(QH::SslSocket *scket, const QSslError& error);
 #endif
 
 private slots:
@@ -679,17 +679,17 @@ private slots:
     void avelableBytes(QH::AbstractNodeInfo* sender);
 
     /**
-     * @brief handleNodeStatusChanged This method invoked when status of peer node chganged.
+     * @brief handleNodeStatusChanged This method invoked when status of peer node changed.
      * @param node This is address of changed node.
      * @param status This is new status of node.
      *
      */
-    void handleNodeStatusChanged(QH::AbstractNodeInfo* node, QH::NodeCoonectionStatus status);
+    void handleNodeStatusChanged(QH::AbstractNodeInfo* node, QH::NodeConnectionStatus status);
 
     /**
-     * @brief handleWorkerStoped
+     * @brief handleWorkerStopped
      */
-    void handleWorkerStoped();
+    void handleWorkerStopped();
 
     /**
      * @brief handleForceRemoveNode - force remove connection.
@@ -706,14 +706,14 @@ private slots:
 #ifdef USE_HEART_SSL
 
     /**
-     * @brief handleSslErrorOcurredPrivate This method invoked when a ssl socket receive an error mesage.
-     *  Default implementation just pront error messages
+     * @brief handleSslErrorOccurredPrivate This method invoked when a ssl socket receive an error message.
+     *  Default implementation just print error messages
      * @param errors This is errors list.
      */
-    void handleSslErrorOcurredPrivate(QH::SslSocket *sender, const QList<QSslError> & errors);
+    void handleSslErrorOccurredPrivate(QH::SslSocket *sender, const QList<QSslError> & errors);
 
     /**
-     * @brief handleEncrypted invoke when a ssl socket is encripted!
+     * @brief handleEncrypted invoke when a ssl socket is encrypted!
      */
     void handleEncrypted(QH::AbstractNodeInfo *node);
 
@@ -749,7 +749,7 @@ private:
     bool listen(const HostAddress& address = HostAddress::Any);
 
     /**
-     * @brief newWork - this method it is wraper of the parsePackage method.
+     * @brief newWork - this method it is wrapper of the parsePackage method.
      *  the newWork invoke a parsePackage in the new thread.
      * @param pkg
      * @param sender
@@ -763,7 +763,7 @@ private:
     void checkConfirmendOfNode(AbstractNodeInfo *node);
 
     /**
-     * @brief initThreadId This method save curent thread as a main thread.
+     * @brief initThreadId This method save current thread as a main thread.
      */
     void initThreadId() const;
 
@@ -793,7 +793,7 @@ private:
     TaskScheduler *_tasksheduller = nullptr;
     APIVersionParser *_apiVersionParser = nullptr;
 
-    QHash<NodeCoonectionStatus,
+    QHash<NodeConnectionStatus,
           QHash<HostAddress,
                 std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 

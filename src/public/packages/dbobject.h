@@ -47,7 +47,7 @@ enum class MemberType {
     /// The Field with this type can not be duplicate on a table. If a Database object do not have a primary key then default implementation for select query try get object by fields with unique type.
     Unique = 0x4,
 
-    /// The field with this atribute automaticaly incemented into database, and will not to added into insert reqests, but it can be used with replace request as a key.
+    /// The field with this attribute automatically incremented into database, and will not to added into insert requests, but it can be used with replace request as a key.
     Autoincement = 0x8,
 
     /// The Field With This type can be inserted and updated.
@@ -138,7 +138,7 @@ public:
      * @param q This is query object.
      * @return PrepareResult object with information about prepare results.
      *
-     * @note If you want disable this mehod just override it and return the PrepareResult::Disabled value.
+     * @note If you want disable this method just override it and return the PrepareResult::Disabled value.
      */
     virtual PrepareResult prepareSelectQuery(QSqlQuery& q) const;
 
@@ -150,7 +150,7 @@ public:
      * @param q This is query object.
      * @return true if method finished successful.
      *
-     * Exampel of override fromSqlRecord method:
+     * Example of override fromSqlRecord method:
      * \code{cpp}
      *  bool ExampleObject::fromSqlRecord(const QSqlRecord &q) {
 
@@ -168,7 +168,7 @@ public:
      *  Override this method for insert item into database.
      * By Default This method prepare a insert query using the data that returned from the variantMap method.
      *
-     * @param q Thuis is query object.
+     * @param q Thus is query object.
      * @param replace This option disable or enable replacing of exists objects.
      *
      * Default insert query have a next template:
@@ -346,7 +346,7 @@ public:
      * Example of override:
      *
      * \code{cpp}
-     *     auto map = ParrentClass::variantMap();
+     *     auto map = ParentClass::variantMap();
            map.insert("myNewMembers", {_newMember.toBytes(), MemberType::InsertUpdate});
            return map;
      * \endcode
@@ -374,7 +374,7 @@ protected:
     /**
      * @brief condition This method must to return a condition of the WHERE block of the sql query.
      * This method using on default implementation of DBObject::prepareSelectQuery and DBObject::prepareRemoveQuery methods.
-     * The default implementation generate when block by map for more information see the variantMap nethod.
+     * The default implementation generate when block by map for more information see the variantMap method.
      * Override this method for customize your select or delete query.
      * @return condition string and qvariant map of the values for binding (bindingKey:bindValue).
      * @note This operation can not be block the sql request. Use the QString or int type for values of condition. If you want to  bytes array in condition then override the DBObject::condition method.
@@ -393,15 +393,15 @@ protected:
     /**
      * @brief primaryKey This method must be return the name of primary key of this object table.
      * If you want to create data object without primary key just return empty string.
-     * @note If you returned empty value then this method can not be prepare insert update and delete querys.
+     * @note If you returned empty value then this method can not be prepare insert update and delete queries.
      * @return The primary key name.
      */
     virtual QString primaryKey() const;
 
     /**
-     * @brief primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then return invalid value.
+     * @brief primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then return invalid value.
      * @return Value of primaryKey ( database id ).
-     * @note If you alredy override the condition method then You can return empty string because this method using in generate default condition only.
+     * @note If you already override the condition method then You can return empty string because this method using in generate default condition only.
      * @see DBObject::condition.
      */
     virtual QVariant primaryValue() const;

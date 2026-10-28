@@ -48,9 +48,9 @@ public:
     ~DataBase();
 
     /**
-     * @brief intSqlDb This method initalize database of this node or server.
+     * @brief intSqlDb This method initialize database of this node or server.
      * @param DBparamsFile This is path to json file with all params of database.
-     * For more information of available parameters see the SqlDBWriter::defaultInitPararm method.
+     * For more information of available parameters see the SqlDBWriter::defaultInitParam method.
      * @param cache This is pointer to the custom child of SqlDBCache class.
      * IF you set nullptr value of this parameter then  well be created a default SqlDBCache object.
      * @param writer This is pointer tot the custom child of SqlDBWriter class.
@@ -89,7 +89,7 @@ public:
      * @brief defaultDbParams This method return default database parameters for this node.
      * Override this method for set new default parameters. Or use json database parameters file in DataBaseNode::run.
      * @return Map with all database parameters.
-     *  For more information of available parameters see the SqlDBWriter::defaultInitPararm method.
+     *  For more information of available parameters see the SqlDBWriter::defaultInitParam method.
      */
     virtual QVariantMap defaultDbParams() const;
 
@@ -139,7 +139,7 @@ protected:
     /**
      * @brief backUp This method make a backup of database.
      * @param version This is current version of db.
-     * @return path to backupped db.
+     * @return path to backed-up db.
      */
     QString backUp(int version) const;
 
@@ -152,7 +152,7 @@ protected:
     /**
      * @brief setLocalNodeName This method sets new local name of database file.
      * @note This method must be invoked before the DataBaseNode::initsqlDb and the DataBaseNode::run methods.
-     * @param newLocalNodeName This is new name of node object and node databae file.
+     * @param newLocalNodeName This is new name of node object and node database file.
      *
      */
     void setLocalNodeName(const QString &newLocalNodeName);
@@ -195,7 +195,7 @@ protected:
             trust INTEGER default 0
         );
 
-        CREATE TABLE IF NOT EXISTS MemberPermisions (
+        CREATE TABLE IF NOT EXISTS MemberPermissions (
             memberId VARCHAR(64) NOT NULL,
             objectTable VARCHAR(100) NOT NULL,
             objectId VARCHAR(64) NOT NULL,
@@ -206,7 +206,7 @@ protected:
                     ON DELETE CASCADE
 
         );
-        CREATE UNIQUE INDEX IF NOT EXISTS MemberPermisionsIndex ON MemberPermisions(memberId, objectTable, objectId);
+        CREATE UNIQUE INDEX IF NOT EXISTS MemberPermissionsIndex ON MemberPermissions(memberId, objectTable, objectId);
 
      * \endcode
      * For add own sql code just override this method, but do not forget invoke a base method of a parent class.
@@ -222,7 +222,7 @@ protected:
 
     /**
      * @brief systemTables This method return the set of tables that forbidden for users.
-     * By default is NetworkMembers and MemberPermisions tables.
+     * By default is NetworkMembers and MemberPermissions tables.
      * @return set of tables names.
      */
     virtual QSet<QString> systemTables() const;
@@ -230,7 +230,7 @@ protected:
     /**
      * @brief objectRemoved This method invoked when object with @a address removed from database.
      *  Oberride this method for handle this event. Default implementation do nothing.
-     * @param address This is address of the deteted object.
+     * @param address This is address of the deleted object.
      */
     virtual void objectRemoved(const DbAddress& address);
 
@@ -243,7 +243,7 @@ protected:
 
     /**
      * @brief dbPatches This method should be return map with functions that upgrade production data base.
-     *  Eeach function shoul be can upgrade databae from preview version to own version.
+     *  Eeach function should be can upgrade database from preview version to own version.
      *  **Example**:
      *
      *  We have 4 version of data base {0, 1, 2, 3} each version should be contains own function for upgrade data base.
@@ -275,7 +275,7 @@ protected:
                    });
      *  @endcode
      *
-     * @return Map of database pactches.
+     * @return Map of database patches.
      *
      * @see DBPatchMap
      * @see DBPatch
@@ -303,12 +303,12 @@ protected:
 
     /**
      * @brief onBeforeDBUpgrade This method will be invoked before upgrade database.
-     * @param currentVerion This is current database version
+     * @param currentVersion This is current database version
      * @param tergetVersion This is target database version.
      * @see DataBase::dbPatches
      * @see DataBase::addDBPatch
      */
-    virtual void onBeforeDBUpgrade(int currentVerion, int tergetVersion) const;
+    virtual void onBeforeDBUpgrade(int currentVersion, int tergetVersion) const;
 
 
     /**
@@ -322,7 +322,7 @@ protected:
      * @tparam Setter The type of the setter function.
      * @param id The identifier of the object.
      * @param setter The setter function to set the identifier in the object.
-     * @param ifNotExistsCreate - this option will create a new object if object with @a id is not existst into database. But object wil not save into database.
+     * @param ifNotExistsCreate - this option will create a new object if object with @a id does not exist in database. But object will not save into database.
      * @return A pointer to an object of type QSharedPointer<Object>, or nullptr if the object is not found.
      *
      * Example:
@@ -456,7 +456,7 @@ protected:
 
 private:
     /**
-         * @brief workWithSubscribe This method work with subscribe commnads.
+         * @brief workWithSubscribe This method work with subscribe commands.
          * @param rec This is request data.
          * @param address This is sender address.
          * @return true if data parsed successful.
@@ -466,7 +466,7 @@ private:
                            const AbstractNodeInfo *sender);
 
 
-    bool isForbidenTable(const QString& table);
+    bool isForbiddenTable(const QString& table);
 
     ISqlDB *_db = nullptr;
     unsigned short _targetDBVersion = 0;

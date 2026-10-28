@@ -7,8 +7,8 @@
 //#
 
 
-#ifndef BIGDATAWRAPER_H
-#define BIGDATAWRAPER_H
+#ifndef BIGDATAWRAPPER_H
+#define BIGDATAWRAPPER_H
 #include "heart_global.h"
 #include "abstractdata.h"
 
@@ -16,17 +16,17 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief The BigDataWraper class is wrapper of any big data commands.
+ * @brief The BigDataWrapper class is wrapper of any big data commands.
  */
-class HEARTSHARED_EXPORT BigDataWraper: public AbstractData
+class HEARTSHARED_EXPORT BigDataWrapper: public AbstractData
 {
-    QH_PACKAGE("BigDataWraper")
+    QH_PACKAGE("BigDataWrapper")
 
 public:
-    BigDataWraper() = default;
+    BigDataWrapper() = default;
 
     /**
-     * @brief data This method sets data that shold be sent as big data.
+     * @brief data This method sets data that should be sent as big data.
      * @return
      */
     const AbstractData *data() const;
@@ -50,4 +50,4 @@ private:
 };
 }
 }
-#endif // BIGDATAWRAPER_H
+#endif // BIGDATAWRAPPER_H

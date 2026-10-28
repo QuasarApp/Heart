@@ -10,7 +10,7 @@
 namespace QH {
 
 /**
- * @brief ErrorCodes This namesapce contains all error codes of the Heart Library.
+ * @brief ErrorCodes This namespace contains all error codes of the Heart Library.
  */
 namespace ErrorCodes {
 
@@ -21,13 +21,13 @@ QString AbstractErrorCodesHelper::toString(Code enumData) {
     }
 
     case InvalidRequest: {
-        return "The client node prepare and send invalid request to server. (invalid pacakage received)";
+        return "The client node prepare and send invalid request to server. (invalid package received)";
     }
 
     default: break;
     }
 
-    return "Unknown Error ocurred";
+    return "Unknown Error occurred";
 }
 
 }

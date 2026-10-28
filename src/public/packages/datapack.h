@@ -14,8 +14,8 @@ namespace QH {
 namespace PKG {
 
 /**
- * @brief DataPack this is conteiner is wraqper of the QList for transport arrays to another node.
- * @tparam Package This is type of trasported pacakges item.
+ * @brief DataPack this is container is wraqper of the QList for transport arrays to another node.
+ * @tparam Package This is type of transported packages item.
  * @note All packs data objects should be inherited of the UniversalData class.
  *  This is due to classes base on abstract data may broken transporting data between nodes if you change toStream and fromStream methods.
  *  To fix this issue, we use QVariantMap container for parsing data.
@@ -53,8 +53,8 @@ public:
     }
 
     /**
-     * @brief setPackData This method sets new lsit of pacakges.
-     * @param newPackData This is new source lsit.
+     * @brief setPackData This method sets new list of packages.
+     * @param newPackData This is new source list.
      */
     void setPackData(const QList<QSharedPointer<Package>> &newPackData) {
         _packData = newPackData;
@@ -62,7 +62,7 @@ public:
 
     /**
      * @brief push This method append @a data to end of list.
-     * @param data This is new data pacakge that will be added into back of this list.
+     * @param data This is new data package that will be added into back of this list.
      */
     void push(const QSharedPointer<Package>& data) {
         _packData.push_back(data);
@@ -70,7 +70,7 @@ public:
 
     /**
      * @brief push This method append @a data to end of list.
-     * @param data This is new data pacakge that will be added into back of this list.
+     * @param data This is new data package that will be added into back of this list.
      */
     void push(const Package& data) {
         _packData.push_back(QSharedPointer<Package>::create(data));
@@ -78,7 +78,7 @@ public:
 
     /**
      * @brief isValid This implementation check all items of the pack to valid and packa size. The pack size should be more then 0.
-     * @return true if the pack of items is valid else flase..
+     * @return true if the pack of items is valid else false..
      */
     bool isValid() const override {
 

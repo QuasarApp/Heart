@@ -13,7 +13,7 @@ class MultiVersionPkg {
 public:
     int v2;
     int v1;
-    bool responce = false;
+    bool response = false;
     int lastSerializedFrom = 0;
     int lastSerializedto = 0;
 };
@@ -29,7 +29,7 @@ public:
                      [this](QDataStream& stream) -> QDataStream&{ // from
                          lastSerializedFrom = 0;
                          stream >> v1;
-                         stream >> responce;
+                         stream >> response;
 
                          return stream;
                      },
@@ -37,7 +37,7 @@ public:
                          lastSerializedto = 0;
 
                          stream << v1;
-                         stream << responce;
+                         stream << response;
 
                          return stream;
                      }
@@ -49,7 +49,7 @@ public:
                          lastSerializedFrom = 1;
 
                          stream >> v1;
-                         stream >> responce;
+                         stream >> response;
 
                          stream >> v2;
 
@@ -59,7 +59,7 @@ public:
                          lastSerializedto = 1;
 
                          stream << v1;
-                         stream << responce;
+                         stream << response;
 
                          stream << v2;
                          return stream;
@@ -78,13 +78,13 @@ protected:
     QDataStream &fromStream(QDataStream &stream) override {
         lastSerializedFrom = 0;
         stream >> v1;
-        stream >> responce;
+        stream >> response;
 
         return stream;
     };
     QDataStream &toStream(QDataStream &stream) const override {
         stream << v1;
-        stream << responce;
+        stream << response;
 
         return stream;
     };
@@ -101,7 +101,7 @@ public:
                         [this](QDataStream& stream) -> QDataStream&{ // from
                             lastSerializedFrom = 0;
                             stream >> v1;
-                            stream >> responce;
+                            stream >> response;
 
                             return stream;
                         },
@@ -109,7 +109,7 @@ public:
                             lastSerializedto = 0;
 
                             stream << v1;
-                            stream << responce;
+                            stream << response;
 
                             return stream;
                         }
@@ -121,7 +121,7 @@ public:
                             lastSerializedFrom = 1;
 
                             stream >> v1;
-                            stream >> responce;
+                            stream >> response;
 
                             stream >> v2;
 
@@ -131,7 +131,7 @@ public:
                             lastSerializedto = 1;
 
                             stream << v1;
-                            stream << responce;
+                            stream << response;
 
                             stream << v2;
                             return stream;
@@ -144,7 +144,7 @@ public:
                             lastSerializedFrom = 2;
 
                             stream >> v2;
-                            stream >> responce;
+                            stream >> response;
 
                             return stream;
                         },
@@ -152,7 +152,7 @@ public:
                             lastSerializedto = 2;
 
                             stream << v2;
-                            stream << responce;
+                            stream << response;
 
                             return stream;
                         }
@@ -179,8 +179,8 @@ public:
         if (pkg->cmd() == Base::command()) {
             data = pkg;
 
-            if (!data.dynamicCast<MultiVersionPkg>()->responce) {
-                data.dynamicCast<MultiVersionPkg>()->responce = true;
+            if (!data.dynamicCast<MultiVersionPkg>()->response) {
+                data.dynamicCast<MultiVersionPkg>()->response = true;
                 if (!sendData(pkg.data(), sender, &hdr)) {
                     return QH::ParserResult::Error;
                 }
@@ -252,11 +252,11 @@ void MultiVersionTest::test() {
     QVERIFY(connectFunc(_nodeV2, TEST_LOCAL_HOST, LOCAL_TEST_PORT));
     QVERIFY(connectFunc(_nodeOld, TEST_LOCAL_HOST, LOCAL_TEST_PORT));
 
-    testMultipacakges();
+    testMultipackages();
     testSinglePackages();
 }
 
-void MultiVersionTest::testMultipacakges() {
+void MultiVersionTest::testMultipackages() {
     auto nodeWithV1 = dynamic_cast<TestingClient<MultiVersionPkg1>*>(_nodeV1);
     auto nodeWithV2 = dynamic_cast<TestingClient<MultiVersionPkg2>*>(_nodeV2);
 
@@ -278,7 +278,7 @@ void MultiVersionTest::testMultipacakges() {
         // should use the maximum available serialization. it is 1
         QVERIFY(pkg.lastSerializedto == 1);
 
-        // wait for receive packge on distanation node
+        // wait for receive package on destination node
         QVERIFY(wait([&nodeWithV1]() {
             if (auto data = nodeWithV1->parser().staticCast<TestAPI<MultiVersionPkg1>>()->
                             getData().staticCast<MultiVersionPkg1>()) {
@@ -292,13 +292,13 @@ void MultiVersionTest::testMultipacakges() {
         QVERIFY(wait([&nodeWithV2]() {
             if (auto data = nodeWithV2->parser().staticCast<TestAPI<MultiVersionPkg1>>()->
                             getData().staticCast<MultiVersionPkg1>()) {
-                return data->responce == true;
+                return data->response == true;
             }
             return false;
 
         }, WAIT_RESPOCE_TIME));
 
-        // chec data all data should not be changed.
+        // check data all data should not be changed.
         auto data = nodeWithV2->parser().staticCast<TestAPI<MultiVersionPkg2>>()->
                     getData().staticCast<MultiVersionPkg2>();
 
@@ -329,7 +329,7 @@ void MultiVersionTest::testSinglePackages() {
         // should use the maximum available serialization. it is 0
         QVERIFY(pkg.lastSerializedto == 0);
 
-        // wait for receive packge on distanation node
+        // wait for receive package on destination node
         QVERIFY(wait([&nodeWithV1]() {
             if (auto data = nodeWithV1->parser().staticCast<TestAPI<MultiVersionPkg1>>()->
                             getData().staticCast<MultiVersionPkg1>()) {
@@ -343,13 +343,13 @@ void MultiVersionTest::testSinglePackages() {
         QVERIFY(wait([&nodeWithSingle]() {
             if (auto data = nodeWithSingle->parser().staticCast<TestAPI<SingleVersionPkg>>()->
                             getData().staticCast<SingleVersionPkg>()) {
-                return data->responce == true;
+                return data->response == true;
             }
             return false;
 
         }, WAIT_RESPOCE_TIME));
 
-        // chec data all data should not be changed.
+        // check data all data should not be changed.
         auto data = nodeWithSingle->parser().staticCast<TestAPI<SingleVersionPkg>>()->
                     getData().staticCast<SingleVersionPkg>();
 

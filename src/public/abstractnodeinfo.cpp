@@ -39,18 +39,18 @@ void AbstractNodeInfo::removeSocket() {
 
         socketPtr->disconnect();
 
-        // We invoke the delate later method on another thread (thread of the socket.)
-        // because all network sockets must be open adn closed in the one thread.
+        // We invoke the delete later method on another thread (thread of the socket.)
+        // because all network sockets must be open and closed in the one thread.
 
         QMetaObject::invokeMethod(socketPtr,
-                                  "handleDisckonnetFromHost",
+                                  "handleDisconnectFromHost",
                                   Qt::QueuedConnection);
 
         QMetaObject::invokeMethod(socketPtr,
                                   "deleteLater",
                                   Qt::QueuedConnection);
 
-        setStatus(NodeCoonectionStatus::NotConnected);
+        setStatus(NodeConnectionStatus::NotConnected);
         emit sigDisconnected(this);
 
     }
@@ -85,7 +85,7 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
 
     auto connectedF = [this] () {
 
-        setStatus(NodeCoonectionStatus::Connected);
+        setStatus(NodeConnectionStatus::Connected);
         emit sigConnected(this);
     };
 
@@ -113,22 +113,22 @@ void AbstractNodeInfo::setIsLocal(bool isLocal) {
     _isLocal = isLocal;
 }
 
-NodeCoonectionStatus AbstractNodeInfo::status() const {
+NodeConnectionStatus AbstractNodeInfo::status() const {
     return _status;
 }
 
-void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
+void AbstractNodeInfo::setStatus(const NodeConnectionStatus &status) {
     if (status == _status) {
         return;
     }
 
     _status = status;
 
-    emit statusChaned(this, _status);
+    emit statusChanged(this, _status);
 }
 
 bool AbstractNodeInfo::confirmData() const {
-    return _status != NodeCoonectionStatus::NotConnected && fVersionDelivered() && fVersionReceived();
+    return _status != NodeConnectionStatus::NotConnected && fVersionDelivered() && fVersionReceived();
 }
 
 const PackagesVersionData& AbstractNodeInfo::multiVersionPackages() const {
@@ -165,7 +165,7 @@ void AbstractNodeInfo::setVersion(const VersionData &newVersion) {
 
 void AbstractNodeInfo::updateConfirmStatus() {
     if (confirmData())
-        setStatus(NodeCoonectionStatus::Confirmed);
+        setStatus(NodeConnectionStatus::Confirmed);
 }
 
 bool AbstractNodeInfo::isLocal() const {
@@ -219,14 +219,14 @@ bool AbstractNodeInfo::isValid() const {
 }
 
 bool AbstractNodeInfo::isConnected() const {
-    return isValid() && status() != NodeCoonectionStatus::NotConnected;
+    return isValid() && status() != NodeConnectionStatus::NotConnected;
 }
 
 void AbstractNodeInfo::reset() {
     setSct(nullptr);
     setNetworkAddress(HostAddress{});
     setTrust(static_cast<int>(TrustNode::Default));
-    setStatus(NodeCoonectionStatus::NotConnected);
+    setStatus(NodeConnectionStatus::NotConnected);
     setIsLocal(false);
 
     QMutexLocker lock(&_parsersListMutex);
@@ -266,7 +266,7 @@ void AbstractNodeInfo::addParser(QSharedPointer<iParser> parser) {
     _parsersKeysMap[parser->parserId()] = parser;
 }
 
-uint qHash(NodeCoonectionStatus status) {
+uint qHash(NodeConnectionStatus status) {
     return static_cast<uint>(status);
 }
 

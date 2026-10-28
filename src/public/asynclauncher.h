@@ -15,9 +15,9 @@ class QThread;
 namespace QH {
 
 /**
- * @brief The AsyncLauncher class is wraper of the Async class for support moving invokes to thread of the current object.
+ * @brief The AsyncLauncher class is wrapper of the Async class for support moving invokes to thread of the current object.
  * @note For create this object use the AsyncFacrtory class.
- * Exmaple:
+ * Example:
  * @code{cpp}
  *  QThread *thread = new QThread();
  *  AsyncLauncher *async = AsyncFacrtory::makeAsyncObject<AsyncLauncher>(thread);
@@ -43,7 +43,7 @@ public:
      * @brief run This method run the @a action function in the work thread of this object.
      * @param action This is function for running in the work thread.
      * @param wait This option for sets awaiting of the finishing the @a action function. By default this is false.
-     * @return true if the action started succesful when @a wait is false and return true if the @a action finished succesful if the @a wait is true.
+     * @return true if the action started successful when @a wait is false and return true if the @a action finished successful if the @a wait is true.
      */
     bool run(const Job &action, bool wait = false);
 

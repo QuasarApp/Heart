@@ -32,7 +32,7 @@ else()
     option(HEART_TESTS "Enable or disable tests of the heart library" ON)
 endif()
 # Use only for android debug builds with debugging from usb.
-option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraryes" OFF)
+option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraries" OFF)
 option(HEART_PRINT_PACKAGES "This option enable or disabled log of add incoming network packages" OFF)
 option(HEART_PRINT_SQL_QUERIES "This option enable or disabled log of all sql queries" OFF)
 option(HEART_VALIDATE_PACKS "This option enable or disabled validation of child classes of the DataPack class" ON)

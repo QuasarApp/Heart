@@ -17,14 +17,14 @@
  */
 template<class Crypto>
 bool validationCrypto() {
-    // create crypto oject
+    // create crypto object
     auto crypto = new QH::KeyStorage(new Crypto());
 
 
     // get test pair keys
     auto keys = crypto->getNextPair("TEST_KEY");
 
-    // must be failed becouse crypto object still not inited.
+    // must be failed because crypto object still not inited.
     if (keys.isValid()) {
         delete crypto;
         return false;
@@ -47,7 +47,7 @@ bool validationCrypto() {
     // remove crypto object, after remove crypto object most be save all generated keys
     delete crypto;
 
-    // second initialisin of crypto object
+    // second initialising of crypto object
     crypto = new QH::KeyStorage(new Crypto());
     if (!crypto->initDefaultStorageLocation()) {
         delete crypto;

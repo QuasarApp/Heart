@@ -60,7 +60,7 @@ bool TestUtils::connectFunc(
         const QString& address,
         unsigned short port) const {
 
-    auto wraper = [&cli, address, port]() {
+    auto wrapper = [&cli, address, port]() {
         cli->addNode(QH::HostAddress{address, port});
         return true;
     };
@@ -69,5 +69,5 @@ bool TestUtils::connectFunc(
         return cli->confirmendCount();
     };
 
-    return funcPrivateConnect(wraper, check, [](){ return QMetaObject::Connection{};});
+    return funcPrivateConnect(wrapper, check, [](){ return QMetaObject::Connection{};});
 }

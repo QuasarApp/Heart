@@ -15,7 +15,7 @@ namespace QH {
 /**
  * @brief The Request class is base interface for working with requests commands.
  *
- * Example ovveriding Requests:
+ * Example overriding Requests:
  *\code {cpp}
     class HEARTSHARED_EXPORT MyRequest: public MyData, public Request
     {
@@ -37,7 +37,7 @@ namespace QH {
  *
  *\endcode
  *
- * So next you need to parse all requests data of p the MyData pacakge.
+ * So next you need to parse all requests data of p the MyData package.
  * \code{cpp}
  * bool SingleServer::workWithMyDataRequest(const MyData* objr) {
 

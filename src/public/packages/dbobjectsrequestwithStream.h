@@ -37,7 +37,7 @@ public:
      * @brief DBObjectsRequest This contsrucor create a object with request the array of T objects.
      * @note If you want to get all elements from table then skip @a conditions argument or set it to empty string value.
      * @param table  This is name of database table.
-     * @param conditions This is string with conditions for create sql query. If you want to get all elemts just ignore this argument.
+     * @param conditions This is string with conditions for create sql query. If you want to get all elements just ignore this argument.
      * @see DBObjectsRequest::setConditions
      */
     DBObjectsRequestWithStream(const QString& table,

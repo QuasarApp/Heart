@@ -39,7 +39,7 @@ namespace QH {
 Async::Async(QThread *thread):
     QObject() {
 
-    threadAnalize(thread);
+    threadAnalyze(thread);
     moveToThread(thread);
 }
 
@@ -61,7 +61,7 @@ void Async::asyncHandler(Job job,
     }
 }
 
-void Async::threadAnalize(QThread *thread) {
+void Async::threadAnalyze(QThread *thread) {
     QThread * mainThread = AbstractNode::mainThreadID();
 
     debug_assert((mainThread != thread) && thread, "You try create async object into main thread");

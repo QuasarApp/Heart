@@ -48,7 +48,7 @@ QString AbstractData::toString() const {
         arg(cmd());
 }
 
-void AbstractData::fromPakcage(const Package &pkg) {
+void AbstractData::fromPackage(const Package &pkg) {
     fromBytes(pkg.data);
 }
 

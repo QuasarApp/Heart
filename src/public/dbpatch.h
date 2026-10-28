@@ -32,11 +32,11 @@ struct HEARTSHARED_EXPORT DBPatch {
     /// For example - we has a data base with version 1 and we want to upgrade to version 2 then you need to set cersion field version to 1.
     unsigned short versionTo = 0;
 
-    /// This is lymbda function with action that will upgrade data base to new versio.
+    /// This is lymbda function with action that will upgrade data base to new version.
     std::function<bool (QH::iObjectProvider *)> action;
 
     /**
-     * @brief isValid This method check this oject to valid.
+     * @brief isValid This method check this object to valid.
      * @return true if object is valid else false.
      */
     bool isValid() const;

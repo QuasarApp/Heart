@@ -134,7 +134,7 @@ QStringList DataBase::SQLSources() const{
 }
 
 QSet<QString> DataBase::systemTables() const {
-    return {"NetworkMembers", "MemberPermisions"};
+    return {"NetworkMembers", "MemberPermissions"};
 }
 
 void DataBase::objectRemoved(const DbAddress &) {
@@ -201,7 +201,7 @@ ISqlDB *DataBase::db() const {
     return _db;
 }
 
-bool DataBase::isForbidenTable(const QString &table) {
+bool DataBase::isForbiddenTable(const QString &table) {
     return systemTables().contains(table);
 }
 
@@ -263,8 +263,8 @@ bool DataBase::upgradeDataBase() {
     return true;
 }
 
-void DataBase::onBeforeDBUpgrade(int currentVerion, int ) const {
-    backUp(currentVerion);
+void DataBase::onBeforeDBUpgrade(int currentVersion, int ) const {
+    backUp(currentVersion);
 }
 
 const QString &DataBase::localNodeName() const {
@@ -290,9 +290,9 @@ QVariant DataBase::getDBAttribute(const QString& key, const QVariant& defaultVal
 
     PKG::GetSingleValue request({"DataBaseAttributes", key}, "value", "name");
 
-    if (auto&& responce = _db->getObject(request)) {
-        if (!responce->value().isNull())
-            return responce->value();
+    if (auto&& response = _db->getObject(request)) {
+        if (!response->value().isNull())
+            return response->value();
 
     }
 

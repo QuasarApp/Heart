@@ -27,7 +27,7 @@ public:
 
     /**
      * @brief getPakckageNumber This method return current package number
-     * @return current pacakge number
+     * @return current package number
      */
     int getPakckageNumber() const;
 
@@ -47,8 +47,8 @@ public:
     const QByteArray &data() const;
 
     /**
-     * @brief setData this method sets new value raw data for pacakge part.
-     * @param newData this is a new value raw data for pacakge part.
+     * @brief setData this method sets new value raw data for package part.
+     * @param newData this is a new value raw data for package part.
      */
     void setData(const QByteArray &newData);
 
