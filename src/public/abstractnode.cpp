@@ -324,7 +324,7 @@ QSslConfiguration AbstractNode::getSslConfig() const {
     return _ssl;
 }
 
-QSslConfiguration AbstractNode::selfSignedSslConfiguration(const EasySSL::SslSrtData &sslData) {
+QSslConfiguration AbstractNode::selfSignedSslConfiguration(const EasySSL::SslCrtData &sslData) {
     QSslConfiguration res = QSslConfiguration::defaultConfiguration();
 
     QSslKey pkey;
@@ -383,7 +383,7 @@ void AbstractNode::setIgnoreSslErrors(const QList<QSslError> &newIgnoreSslErrors
     _ignoreSslErrors = newIgnoreSslErrors;
 };
 
-bool AbstractNode::useSelfSignedSslConfiguration(const EasySSL::SslSrtData &crtData) {
+bool AbstractNode::useSelfSignedSslConfiguration(const EasySSL::SslCrtData &crtData) {
 
     if (isListening()) {
         return false;

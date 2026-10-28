@@ -57,7 +57,7 @@ enum class SslMode {
 
     /// This option try enable ssl connection from system configuration form fore information see Qt Documentation https://doc.qt.io/qt-5/qsslconfiguration.html
     InitFromSystem,
-    /// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslSrtData struct.
+    /// This option force a current node geneerate self signed sertificat and work with it. For more information see a SslCrtData struct.
     InitSelfSigned
 #endif
 };
@@ -445,10 +445,10 @@ protected:
 
     /**
      * @brief selfSignedSslConfiguration This method create a new ssl configuration with selfsigned certificates.
-     * @param data This is data for generate selfsigned certification for more information see SslSrtData structure.
+     * @param data This is data for generate selfsigned certification for more information see SslCrtData structure.
      * @return The new selfsigned ssl configuration.
      */
-    virtual QSslConfiguration selfSignedSslConfiguration( const EasySSL::SslSrtData& data = {});
+    virtual QSslConfiguration selfSignedSslConfiguration( const EasySSL::SslCrtData& data = {});
 #endif
 
     /**
@@ -533,7 +533,7 @@ protected:
      * @param crtData - This is data for generation a new self signed certification.
      * @return result of change node ssl configuration.
      */
-    bool useSelfSignedSslConfiguration(const EasySSL::SslSrtData& crtData);
+    bool useSelfSignedSslConfiguration(const EasySSL::SslCrtData& crtData);
 
     /**
      * @brief useSystemSslConfiguration This method reconfigure current node to use sslConfig.
