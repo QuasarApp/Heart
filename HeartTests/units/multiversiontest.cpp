@@ -286,7 +286,7 @@ void MultiVersionTest::testMultipackages() {
             }
             return false;
 
-        }, WAIT_RESPOCE_TIME));
+        }, WAIT_RESPONSE_TIME));
 
         // wait for package on sender node.
         QVERIFY(wait([&nodeWithV2]() {
@@ -296,7 +296,7 @@ void MultiVersionTest::testMultipackages() {
             }
             return false;
 
-        }, WAIT_RESPOCE_TIME));
+        }, WAIT_RESPONSE_TIME));
 
         // check data all data should not be changed.
         auto data = nodeWithV2->parser().staticCast<TestAPI<MultiVersionPkg2>>()->
@@ -337,7 +337,7 @@ void MultiVersionTest::testSinglePackages() {
             }
             return false;
 
-        }, WAIT_RESPOCE_TIME));
+        }, WAIT_RESPONSE_TIME));
 
         // wait for package on sender node.
         QVERIFY(wait([&nodeWithSingle]() {
@@ -347,7 +347,7 @@ void MultiVersionTest::testSinglePackages() {
             }
             return false;
 
-        }, WAIT_RESPOCE_TIME));
+        }, WAIT_RESPONSE_TIME));
 
         // check data all data should not be changed.
         auto data = nodeWithSingle->parser().staticCast<TestAPI<SingleVersionPkg>>()->
