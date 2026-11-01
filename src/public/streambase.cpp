@@ -81,7 +81,13 @@ QDataStream &operator<<(QDataStream &stream, const StreamBase &obj) {
 
 QDataStream &operator>>(QDataStream &stream, StreamBase &obj) {
     (&obj)->fromStream(stream);
-    Q_ASSERT_X(obj.isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+    // a broken stream (a corrupted save file) is not a valid object state - the
+    // caller detects it through the stream status (error isolation of the saves)
+    // and skips the object. The assert is only for an intact stream: a fully
+    // parsed object from a good stream must be in a valid state.
+    if (stream.status() == QDataStream::Ok) {
+        Q_ASSERT_X(obj.isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+    }
     return stream;
 }
 
