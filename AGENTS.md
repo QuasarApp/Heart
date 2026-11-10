@@ -178,10 +178,27 @@ gh pr create \
 ### Test infrastructure
 
 Qt Test suite in `HeartTests/` (`tst_testprotockol.cpp` +
-`HeartTests/units/`): the executable `HeartTest` links `Qt6::Test` and
-`Heart`; built with `HEART_TESTS=ON` (default on desktop). The QuasarApp
-CMake layer registers `testHeartTest` (deploy via cqtdeployer + execute)
-under the `test` aggregate.
+`HeartTests/units/`): the executable `HeartTest` links `Qt::Test` and
+`Heart` (Qt 6 or Qt 5); built with `HEART_TESTS=ON` (default on desktop,
+forced `OFF` on Android/iOS).
+
+The `testProtockol` class registers the units in `tst_testprotockol.cpp`
+with the `TestCase(name, testClass)` macro:
+
+| Unit | Covers |
+|---|---|
+| `abstractNodeTest` | node connect + package round-trip over local TCP (port 27778) |
+| `bigDataTest` | 10 MB multi-part big-data transfer between two nodes (port 27781) |
+| `shedullerTest` | the node sheduler / periodic send (slowest unit, ~11 s) |
+| `upgradeDataBaseTest` | SQLite schema upgrades 0→1→2→3 and re-open |
+| `multiVersionTest` | multiversion stream protocol |
+
+The QuasarApp CMake layer (`submodules/QuasarAppLib/CMake/QuasarAppCITargets.cmake`,
+included from `QuasarApp.cmake`) registers the `test` aggregate plus
+`deployTestHeartTest` (cqtdeployer deploys `build/HeartTests/HeartTest` into
+`<repo>/Testing/HeartTest/`) and `testHeartTest` (executes
+`Testing/HeartTest/HeartTest.sh` from that directory), wired in with
+`add_dependencies(test testHeartTest)`.
 
 ### Running the tests from CMake
 
@@ -189,13 +206,73 @@ under the `test` aggregate.
 cmake -B build -G Ninja -DCMAKE_PREFIX_PATH=/opt/Qt/6.10.3/gcc_64 \
   -DCMAKE_BUILD_TYPE=Debug -DHEART_TESTS=ON
 cmake --build build --parallel 16
+```
+
+Then run the suite executable directly (the build rpath already resolves the
+Qt, OpenSSL and `Heart` libraries):
+
+```sh
 ./build/HeartTests/HeartTest
+```
+
+or via the CMake test targets — the path CI uses; requires `cqtdeployer`
+on `PATH` (deploys into `Testing/HeartTest/` first, then executes the
+generated `HeartTest.sh`):
+
+```sh
+cmake --build build --target test
+```
+
+Expected on `main` (verified, ~12 s, headless):
+`Totals: 7 passed, 0 failed, 0 skipped, 0 blacklisted` — `initTestCase`,
+the five units above and `cleanupTestCase`.
+
+To run a single unit, pass its test-function name as a positional argument
+(note: in Qt 6 the `-functions` flag only *lists* the functions — the
+Qt 5-style `-functions <name>` no longer selects one):
+
+```sh
+./build/HeartTests/HeartTest bigDataTest
 ```
 
 ### Smoke tests — the most important testing step
 
-The smoke test is: configure + build + run `HeartTest` headless (Qt Test
-runs in a `QCoreApplication`, no display needed) in a Debug build, all
-units passing. It is the fastest proof that the async/network/database
-surface still works — and because every QuasarApp engine project
-(Games → Ecliptica) links Heart, a red suite here blocks the merge.
+The smoke test is the headless suite run above: a fast, display-free proof
+that the async / network / database surface still works.
+
+**How a smoke test works.**
+
+1. It runs in a `QCoreApplication` (`tst_testprotockol.cpp`) — no
+   `QGuiApplication`, no display — so it works on headless CI runners.
+2. It is a Qt Test suite, so it is **runnable from CMake**:
+   `cmake --build build` produces `HeartTest`, which is then executed
+   directly (`./build/HeartTests/HeartTest`) or via the `test` target
+   (cqtdeployer deploy + execute) — no separate executable, no manual
+   script.
+3. It completes in ~12 s.
+
+**How to run the smoke test.**
+
+```sh
+# 1. configure the suite with a Debug build (see below)
+cmake -B build -G Ninja -DCMAKE_PREFIX_PATH=/opt/Qt/6.10.3/gcc_64 \
+  -DCMAKE_BUILD_TYPE=Debug -DHEART_TESTS=ON
+# 2. build
+cmake --build build --parallel 16
+# 3. run the whole suite — all 7 lines must pass
+./build/HeartTests/HeartTest
+```
+
+**Debug vs Release.** For a local smoke run configure with
+`-DCMAKE_BUILD_TYPE=Debug`: the `Q_ASSERT_X` invariants in the parsing
+chain (`src/public/streambase.cpp`) and the render-loop guard
+(`src/public/asyncrenderloop.cpp:19`) are compiled out by `NDEBUG` in
+Release builds, so a Debug suite is the stricter check. The CI gate
+itself builds in `Release` — see below.
+
+**The CI merge gate.** `.github/workflows/ci.yml` runs this suite on every
+pull request: matrix `ubuntu-latest` + `windows-latest`,
+`CMAKE_BUILD_TYPE=Release` (Linux Qt 6.12.0 / Windows Qt 6.10.3 MinGW),
+full build, then `cmake --build build --target test`. A red job blocks the
+merge — and because every QuasarApp engine project (Games → Ecliptica)
+links Heart, this suite is what keeps the downstream builds green.
