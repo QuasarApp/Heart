@@ -1,7 +1,7 @@
 <map id="src/public/abstracttask.h" name="src/public/abstracttask.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="47,5,228,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,128,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,33,90,71,86,67,124,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="152,79,267,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,29,190,67,186,71,147,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="47,5,227,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,81,128,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,32,91,72,88,68,122,35"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="152,81,266,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="151,31,189,70,183,70,149,36"/>
 </map>

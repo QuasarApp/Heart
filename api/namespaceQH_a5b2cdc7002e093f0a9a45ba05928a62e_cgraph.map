@@ -1,7 +1,7 @@
 <map id="QH::init" name="QH::init">
-<area shape="rect" id="Node000001" title="init This method initialize default resources of the Heart Library." alt="" coords="5,29,76,55"/>
-<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="17,30,12,21,15,11,25,5,41,3,60,6,68,15,64,18,57,11,41,8,26,10,19,15,17,20,22,28"/>
-<area shape="rect" id="Node000002" href="$heart_8h.html#ac574253826b0b2a23c4c9bcf2ec89f62" title=" " alt="" coords="124,29,235,55"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="76,39,110,39,110,45,76,45"/>
-<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="156,30,151,21,153,11,163,5,179,3,199,6,207,15,203,18,196,11,179,8,165,10,158,15,156,20,160,28"/>
+<area shape="rect" id="Node000001" title="init This method initialize default resources of the Heart Library." alt="" coords="5,29,76,57"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="16,29,12,20,15,11,25,5,41,3,57,5,67,13,62,14,55,10,40,8,27,10,19,14,17,20,21,28"/>
+<area shape="rect" id="Node000002" href="$heart_8h.html#ac574253826b0b2a23c4c9bcf2ec89f62" title=" " alt="" coords="124,29,233,57"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="76,41,111,43,106,44,76,46"/>
+<area shape="poly" id="edge3_Node000002_Node000002" title=" " alt="" coords="154,28,150,20,153,11,163,5,178,3,195,5,205,14,200,13,193,10,178,8,165,10,157,14,155,20,159,30"/>
 </map>

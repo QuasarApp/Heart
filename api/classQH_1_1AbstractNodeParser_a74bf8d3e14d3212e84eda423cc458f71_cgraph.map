@@ -1,11 +1,11 @@
 <map id="QH::AbstractNodeParser::AbstractNodeParser" name="QH::AbstractNodeParser::AbstractNodeParser">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,184,87"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="515,29,705,55"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,46,232,39,372,33,501,34,501,39,372,38,232,45,185,51"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#aa0d11d462df4b12a24958b28c40a107a" title=" " alt="" coords="276,55,423,80"/>
-<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="184,65,262,65,262,70,184,70"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1iParser.html#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ..." alt="" coords="232,104,467,129"/>
-<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="185,82,270,99,269,104,184,87"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="568,31,559,21,564,11,581,5,610,3,647,7,657,11,661,17,656,20,653,15,645,12,610,8,582,10,567,15,564,20,572,27"/>
-<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="423,58,500,50,501,55,423,63"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,46,183,91"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="513,29,702,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,47,230,41,370,34,500,37,495,38,370,39,231,46,184,52"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#aa0d11d462df4b12a24958b28c40a107a" title=" " alt="" coords="275,55,420,82"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="183,66,262,68,257,69,183,71"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1iParser.html#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ..." alt="" coords="231,107,465,134"/>
+<area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="183,84,264,102,259,103,183,89"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="563,28,556,20,562,11,579,5,608,3,638,5,656,14,651,14,637,10,608,8,580,10,565,15,562,20,568,30"/>
+<area shape="poly" id="edge4_Node000003_Node000002" title=" " alt="" coords="421,59,500,53,495,54,421,64"/>
 </map>

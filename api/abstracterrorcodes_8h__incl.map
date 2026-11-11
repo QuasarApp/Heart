@@ -1,7 +1,7 @@
 <map id="src/public/abstracterrorcodes.h" name="src/public/abstracterrorcodes.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,228,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="23,79,93,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,33,78,70,74,67,105,29"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="118,79,233,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,29,159,67,155,70,124,33"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,227,33"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="24,81,93,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,32,80,71,76,67,103,35"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="118,81,232,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,31,157,69,152,69,125,36"/>
 </map>

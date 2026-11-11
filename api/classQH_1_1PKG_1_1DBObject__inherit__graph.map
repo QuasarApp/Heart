@@ -1,25 +1,25 @@
 <map id="QH::PKG::DBObject" name="QH::PKG::DBObject">
-<area shape="rect" id="Node000001" title="The DBObject class&#45; main class for work with data base." alt="" coords="431,785,606,1171"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1DBObjectSet.html" title="The DBObjectSet class add features for control database object arrays. You will be able be get or rem..." alt="" coords="33,1299,215,1524"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="422,1047,323,1125,274,1171,229,1220,201,1259,177,1300,172,1297,196,1256,225,1217,270,1167,319,1121,418,1043"/>
-<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1DeleteObject.html" title="The DeleteObject class is request for update object with dbId;." alt="" coords="239,1219,401,1604"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="428,1182,404,1235,399,1233,423,1180"/>
-<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html" title="The GetMaxIntegerId class is intended for get a maximum value of a sql tables column." alt="" coords="425,1319,612,1504"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="521,1185,521,1319,516,1319,516,1185"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1GetSingleValue.html" title="The GetSingleValue class is intended for get a single value from database. The value is selected by p..." alt="" coords="636,1299,812,1524"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="614,1174,673,1297,668,1300,610,1176"/>
-<area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1SetSingleValue.html" title="The SetSingleValue class This is simple class &#45; request sets a single value into database." alt="" coords="837,1299,1011,1524"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="619,1039,725,1118,778,1165,826,1217,854,1256,878,1297,873,1300,850,1259,822,1220,774,1169,721,1122,616,1043"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html" title="The AbstractData class is provide base functions for transport data by network For create you own pac..." alt="" coords="437,472,600,737"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="521,751,521,785,516,785,516,751"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="367,119,502,424"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="479,437,488,471,483,472,474,438"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="361,5,508,71"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="437,84,437,119,432,119,432,84"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="526,239,682,304"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="595,318,555,473,550,471,590,317"/>
-<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1DBObjectsRequest.html" title="The DBObjectsRequest class is template class for get array of TEMPLATE Objects from database." alt="" coords="6,1652,242,1937"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="127,1538,127,1652,121,1652,121,1538"/>
-<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html" title="The DBObjectsRequestWithStream class is template class some as DBObjectsRequest but with implementati..." alt="" coords="5,1985,243,2125"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="127,1951,127,1985,121,1985,121,1951"/>
+<area shape="rect" id="Node000001" title="The DBObject class&#45; main class for work with data base." alt="" coords="424,858,597,1287"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1DBObjectSet.html" title="The DBObjectSet class add features for control database object arrays. You will be able be get or rem..." alt="" coords="33,1425,213,1676"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="412,1149,318,1234,270,1284,226,1337,198,1380,174,1426,169,1424,194,1378,222,1334,266,1281,314,1230,414,1145"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1DeleteObject.html" title="The DeleteObject class is request for update object with dbId;." alt="" coords="237,1335,396,1765"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="418,1301,398,1356,393,1354,420,1296"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html" title="The GetMaxIntegerId class is intended for get a maximum value of a sql tables column." alt="" coords="420,1447,602,1653"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="512,1300,513,1448,508,1447,510,1305"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1GetSingleValue.html" title="The GetSingleValue class is intended for get a single value from database. The value is selected by p..." alt="" coords="626,1425,798,1676"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="604,1289,662,1425,657,1425,603,1294"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1SetSingleValue.html" title="The SetSingleValue class This is simple class &#45; request sets a single value into database." alt="" coords="823,1425,996,1676"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="609,1140,715,1227,766,1278,813,1334,841,1377,865,1425,860,1424,837,1380,809,1337,763,1282,711,1231,610,1145"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html" title="The AbstractData class is provide base functions for transport data by network For create you own pac..." alt="" coords="432,514,590,810"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="511,822,513,858,508,857,510,827"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="362,126,495,466"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="470,478,480,514,475,514,470,483"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="357,5,500,78"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="428,90,431,126,426,126,428,95"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="518,260,671,332"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="584,344,547,515,542,514,583,349"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1DBObjectsRequest.html" title="The DBObjectsRequest class is template class for get array of TEMPLATE Objects from database." alt="" coords="6,1813,239,2131"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="123,1688,125,1813,120,1813,122,1693"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html" title="The DBObjectsRequestWithStream class is template class some as DBObjectsRequest but with implementati..." alt="" coords="5,2179,240,2335"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="124,2144,125,2180,120,2179,122,2148"/>
 </map>

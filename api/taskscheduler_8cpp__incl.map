@@ -1,20 +1,20 @@
 <map id="src/private/taskscheduler.cpp" name="src/private/taskscheduler.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="237,5,449,31"/>
-<area shape="rect" id="Node000002" href="$taskscheduler_8h.html" title=" " alt="" coords="214,79,338,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="334,33,298,70,294,67,330,29"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="363,79,459,104"/>
-<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="356,29,392,67,388,70,352,33"/>
-<area shape="rect" id="Node000003" href="$abstracttask_8h.html" title=" " alt="" coords="104,152,219,177"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="259,106,193,147,190,142,256,102"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,225,128,251"/>
-<area shape="poly" id="edge7_Node000002_Node000004" title=" " alt="" coords="214,101,183,107,151,118,120,133,94,154,84,167,78,182,71,212,65,211,73,180,80,164,90,150,117,128,149,113,182,102,213,95"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="243,152,309,177"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="279,104,279,138,273,138,273,104"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="333,152,393,177"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="292,102,340,141,336,145,288,106"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="417,152,487,177"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="305,102,411,144,409,149,303,106"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="148,179,95,219,92,215,145,175"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="152,225,267,251"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="171,176,196,213,192,216,167,179"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="236,5,447,33"/>
+<area shape="rect" id="Node000002" href="$taskscheduler_8h.html" title=" " alt="" coords="213,81,336,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="331,32,298,71,295,68,327,35"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="360,81,456,109"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="354,31,389,70,383,69,352,36"/>
+<area shape="rect" id="Node000003" href="$abstracttask_8h.html" title=" " alt="" coords="104,157,218,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="257,108,195,150,192,146,252,111"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,232,128,260"/>
+<area shape="poly" id="edge7_Node000002_Node000004" title=" " alt="" coords="210,103,182,111,150,122,120,138,94,158,77,187,70,218,65,216,72,185,90,155,117,133,148,117,181,106,215,101"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="242,157,307,184"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="276,107,277,142,272,140,273,111"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="330,157,390,184"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="290,107,336,146,330,146,289,112"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="413,157,482,184"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="306,107,406,150,401,151,305,112"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="147,184,97,225,94,220,142,186"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="152,232,266,260"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="171,183,195,220,190,219,169,187"/>
 </map>
