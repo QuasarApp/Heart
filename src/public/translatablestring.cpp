@@ -45,7 +45,7 @@ QString TranslatableString::text() const {
     }
 
     if (_isKey) {
-        QString result = QObject::tr(_data.toLatin1());
+        QString result = QCoreApplication::translate("TranslatableString", _data.toLatin1());
         for (const auto& arg: _args) {
             result = result.arg(arg.text());
         }

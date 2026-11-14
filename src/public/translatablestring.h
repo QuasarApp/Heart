@@ -57,7 +57,7 @@ public:
      * @brief calcCrc32Hash this method calc hash from raw text.
      * @return
      */
-    int calcCrc32Hash() const;
+    uint32_t calcCrc32Hash() const;
 
     /**
      * @brief tr this method create a string translation wrapper and save translation key for lupdate tool
@@ -65,14 +65,6 @@ public:
      * @return
      */
     static TranslatableString tr(const QString& source);
-
-    /**
-     * @brief qtTrId this method create a string translation wrapper and save translation key for lupdate tool
-     * @param source this is a source text.
-     * @return translatable string.
-     * @see https://doc.qt.io/qt-6/qttranslation.html#qtTrId
-     */
-    static TranslatableString qtTrId(const QString& source);
 
     /**
      * @brief setArgs this method set args for translation.
