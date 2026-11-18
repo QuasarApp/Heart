@@ -7,6 +7,8 @@
 
 #include "translatablestring.h"
 #include "crc32constexper.h"
+
+#include <QCoreApplication>
 namespace QH {
 
 TranslatableString::TranslatableString(int data) {
@@ -60,7 +62,7 @@ const QString &TranslatableString::rawText() const {
     return _data;
 }
 
-int TranslatableString::calcCrc32Hash() const {
+uint32_t TranslatableString::calcCrc32Hash() const {
     if (_data.isEmpty())
         return 0;
     return QuasarAppUtils::calculateCrc32(_data.toLatin1(), _data.size());
