@@ -28,7 +28,7 @@ PackageManager::~PackageManager() {
     _parseResults.clear();
 }
 
-const Package *PackageManager::getPkgFromArhive(const unsigned int &id) const {
+const Package *PackageManager::getPkgFromArchive(const unsigned int &id) const {
     if (!contains(id))
         return nullptr;
 

@@ -27,7 +27,7 @@ int QH::TaskScheduler::getTimeout(qint64 timeout) {
                              timeout), static_cast<qint64>(0));
 }
 
-bool TaskScheduler::shedule(const QSharedPointer<AbstractTask> &task) {
+bool TaskScheduler::schedule(const QSharedPointer<AbstractTask> &task) {
     if (!task->isValid())
         return false;
 
@@ -108,7 +108,7 @@ void TaskScheduler::handleTimeOut() {
         remove(task);
 
         if (task->mode() == ScheduleMode::Repeat) {
-            shedule(task);
+            schedule(task);
         }
 
         emit sigPushWork(task);

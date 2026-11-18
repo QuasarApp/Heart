@@ -8,6 +8,7 @@
 #ifndef BADREQUEST_H
 #define BADREQUEST_H
 
+#include "heart_global.h"
 #include "abstractdata.h"
 #include "abstracterrorcodes.h"
 
@@ -17,7 +18,7 @@ namespace PKG {
 /**
  * @brief The ErrorData struct is simple structure for contains data of the error.
  */
-struct ErrorData {
+struct HEARTSHARED_EXPORT ErrorData {
     /**
      * @brief code This is code of error. By Default this member equals EccorCodes::UnknownError.
      */

@@ -24,8 +24,8 @@ file(GLOB SOURCE_CPP
     "*.cpp" "*.h" "*.qrc"
     "units/*.cpp" "units/*.h" "units/*.qrc"
 )
-set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/units")
+set(PUBLIC_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(PUBLIC_INCLUDE_DIR ${PUBLIC_INCLUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/units")
 
 
 set(SOURCE_CPP ${SOURCE_CPP} )
@@ -35,8 +35,8 @@ message(SOURCE_CPP = ${SOURCE_CPP})
 add_executable(${CURRENT_PROJECT} ${SOURCE_CPP})
 target_link_libraries(${CURRENT_PROJECT} PRIVATE Qt::Test Heart)
 
-target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCUDE_DIR})
-target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCUDE_DIR})
+target_include_directories(${CURRENT_PROJECT} PUBLIC ${PUBLIC_INCLUDE_DIR})
+target_include_directories(${CURRENT_PROJECT} PRIVATE ${PRIVATE_INCLUDE_DIR})
 
 
 initTests()

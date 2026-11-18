@@ -13,7 +13,7 @@
 namespace QH {
 
 /**
- * @brief The AbstractSocket class This class is wraper of the QAbstract socket with slot implementation of the disconnect from host method.
+ * @brief The AbstractSocket class This class is wrapper of the QAbstract socket with slot implementation of the disconnect from host method.
  */
 class TcpSocket: public QTcpSocket
 {
@@ -24,9 +24,9 @@ public:
 public slots:
 
     /**
-     * @brief handleDisckonnetFromHost This is slot wrapper of the disconectFromHost method of QAbstractSocket class.
+     * @brief handleDisconnectFromHost This is slot wrapper of the disconnectedFromHost method of QAbstractSocket class.
      */
-    void handleDisckonnetFromHost();
+    void handleDisconnectFromHost();
 
 };
 

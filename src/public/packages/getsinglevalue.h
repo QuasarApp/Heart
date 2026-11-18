@@ -24,7 +24,7 @@ namespace PKG {
  *
  * @code{cpp}
  *
- *  QH::PKG::GetSingleValue request({"TableName", "PrimarykeyValue"}, "requestFieldColumName", "PrimaryKey");
+ *  QH::PKG::GetSingleValue request({"TableName", "PrimarykeyValue"}, "requestFieldColumnName", "PrimaryKey");
     auto result = _db->getObject(request);
 
     if (!result) {

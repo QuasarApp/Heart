@@ -28,13 +28,13 @@ class SQLiteDBCachePrivate;
  * This class use the in memory mode of the sqlite https://sqlite.org/inmemorydb.html
  * This class can be save set objects but available only for the sqlite database.
  *
- * Alghorithm:
+ * Algorithm:
  * 1. Object of this class upload all data from database into memory.
- * 2. All invokes of the sql methods save a change of database in the memory and save diff for the save on the local datatbase.
+ * 2. All invokes of the sql methods save a change of database in the memory and save diff for the save on the local database.
  * 3. When The object of this database destructed then all changes will be saved into local database.
  * For another database type use the SqlDBCache class.
  * @note if you want use the cache then you need to gat only one application with accses to the database
- * else your cache will be have a depricated or invalid data of objects.
+ * else your cache will be have a deprecated or invalid data of objects.
  *
  */
 class HEARTSHARED_EXPORT SQLiteDBCache : public ISqlDBCache

@@ -54,14 +54,14 @@ public:
     QString toString() const;
 
     /**
-     * @brief calcHash This method recalc hash sum for this pacakge.
-     * @return int32 hash of pacakge.
+     * @brief calcHash This method recalc hash sum for this package.
+     * @return int32 hash of package.
      */
     unsigned int calcHash() const;
 
     /**
-     * @brief maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package will separate to BigDataPart in sending.
-     * @return size in bytes of pacakge.
+     * @brief maximumSize This method return maximu size of package. If package large the maximum size then package will separate to BigDataPart in sending.
+     * @return size in bytes of package.
      */
     static unsigned int maximumSize();
 

@@ -23,7 +23,7 @@ public:
     DbAddressKey(const DbAddress& address);
 
     /**
-     * @brief DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor.
+     * @brief DbAddressKey This constructor it is vraper of DbAddress::DbAddress constructor.
      * @param table This is name of database table
      * @param value This is value of primary key.
      */

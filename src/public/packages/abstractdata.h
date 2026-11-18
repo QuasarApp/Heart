@@ -28,7 +28,7 @@
  * @brief QH_PACKAGE This macross prepare data to send and create a global id for package.
  * For get global id use the cmd method.
  * For get quick access for global command use the ClassName::command() method. This method is static.
- * @arg S This is unique id of the pacakge. Shold be some on all your network devices.
+ * @arg S This is unique id of the package. Should be some on all your network devices.
 
 */
 #define QH_PACKAGE(S) \
@@ -135,14 +135,14 @@ public:
     }
 
     /**
-     * @brief fromPakcage - This method initialize the current object from a package class object.
+     * @brief fromPackage - This method initialize the current object from a package class object.
      * @param pkg - Input package value.
      */
-    void fromPakcage(const Package& pkg);
+    void fromPackage(const Package& pkg);
 
     /**
      * @brief command This static method that return glaball code of this object.
-     * @note This method generated automaticaly in the QH_PACKAGE macross.
+     * @note This method generated automatically in the QH_PACKAGE macross.
      * @return global code
      * @see QH_PACKAGE
      */
@@ -150,7 +150,7 @@ public:
 
     /**
      * @brief commandText This method return text of package command
-     * @return text of pacakge command
+     * @return text of package command
      */
     static QString commandText(){return "NULL";};
 

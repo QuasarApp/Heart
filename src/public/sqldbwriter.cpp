@@ -228,7 +228,7 @@ QVariantMap SqlDBWriter::getInitParams(const QString &initFile) const {
 /*
  *  about driver see https://doc.qt.io/qt-5/sql-driver.html
  */
-QVariantMap SqlDBWriter::defaultInitPararm() const {
+QVariantMap SqlDBWriter::defaultInitParam() const {
     QVariantMap params;
     params["DBDriver"] = "QSQLITE";
     params["DBFile"] = DEFAULT_DB_PATH;
@@ -258,7 +258,7 @@ bool SqlDBWriter::initDb(const QString &initDbParams) {
     QVariantMap params;
 
     if (initDbParams.isEmpty()) {
-        params = defaultInitPararm();
+        params = defaultInitParam();
     } else {
         params = getInitParams(initDbParams);
     }
@@ -535,7 +535,7 @@ bool SqlDBWriter::workWithQuery(QSqlQuery &q,
         }
 
 #ifdef HEART_PRINT_SQL_QUERIES
-        qDebug() << QString("Query executed successfull into %0\n"
+        qDebug() << QString("Query executed successful into %0\n"
                             "query: %1").
                     arg(_db->databaseName(), q.executedQuery();
 #endif

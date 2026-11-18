@@ -15,7 +15,7 @@ namespace QH {
 
 class AbstractNode;
 /**
- * @brief The ScheduleMode enum contails list of the shedule modes.
+ * @brief The ScheduleMode enum contains list of the schedule modes.
  */
 enum class ScheduleMode: int{
     /// In this mode AbstractTask will be executed after **time** msecunds from the moment of adding this task.
@@ -54,7 +54,7 @@ public:
     virtual ~AbstractTask() = default;
 
     /**
-     * @brief mode This method retunr current mode of this task.
+     * @brief mode This method return current mode of this task.
      * @return current mode of this task.
      * @see AbstractTask::setMode
      */
@@ -86,7 +86,7 @@ public:
     /**
      * @brief execute This method will be invoked when task be executed.
      * @param node This is pointer to node object.
-     * @return true if the work winished successfull
+     * @return true if the work winished successful
      */
     virtual bool execute(AbstractNode *node) const = 0;
 

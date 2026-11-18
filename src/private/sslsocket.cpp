@@ -16,15 +16,15 @@ SslSocket::SslSocket(QObject *parent):
 
     connect(this, QOverload<const QList<QSslError> &>::of(&QSslSocket::sslErrors),
             this, [this](const QList<QSslError> & errors){
-        emit sslErrorsOcurred(this, errors);
+        emit sslErrorsOccurred(this, errors);
     }, Qt::DirectConnection);
 }
 
 SslSocket::~SslSocket() {
-    handleDisckonnetFromHost();
+    handleDisconnectFromHost();
 }
 
-void SslSocket::handleDisckonnetFromHost() {
+void SslSocket::handleDisconnectFromHost() {
     disconnectFromHost();
 }
 

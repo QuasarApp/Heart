@@ -43,20 +43,20 @@ namespace QH {
  * More example of use:
  * @code{cpp}
  * QDataStream &ClassName::fromStream(QDataStream &stream)
-    {
-        versionHeader(0, stream);
-
-        READ_WRITE_IMPL(fild0,
-                        fild1)
-    }
-
-    QDataStream &ClassName::toStream(QDataStream &stream) const
-    {
-        versionHeader(0, stream);
-
-        READ_WRITE_IMPL(fild0,
-                        fild1)
-    }
+ * {
+ *     versionHeader(0, stream);
+ *
+ *     READ_WRITE_IMPL(fild0,
+ *                     fild1)
+ * }
+ *
+ * QDataStream &ClassName::toStream(QDataStream &stream) const
+ * {
+ *     versionHeader(0, stream);
+ *
+ *     READ_WRITE_IMPL(fild0,
+ *                     fild1)
+ * }
  * @endcode
  *
  */
@@ -85,7 +85,7 @@ protected:
      * @param stream - stream to read.
      * @return version of the object.
      * @see fromStream
-
+     
      */
     char readVersion(QDataStream &stream);
 
@@ -101,6 +101,9 @@ protected:
      * @brief versionHeader this is new function that automaticaly choose what shuld be to-do (read/wirte).
      * @param version this is a version of object.
      * @param stream this is stream cheenel to save or read.
+     * @note The version returned by versionHeader() should be handled manually.
+     * @note For backward compatibility, toStream() always writes version 0.
+     * @note Consider implementing version switching logic for multiversion support.
      * @return version of object.
      */
     char versionHeader(char version, QDataStream &stream) const;
