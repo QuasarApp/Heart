@@ -789,7 +789,6 @@ private:
 
     DataSender * _dataSender = nullptr;
     AsyncLauncher * _socketWorker = nullptr;
-    QThread *_senderThread = nullptr;
     TaskScheduler *_tasksheduller = nullptr;
     APIVersionParser *_apiVersionParser = nullptr;
 

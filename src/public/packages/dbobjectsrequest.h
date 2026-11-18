@@ -30,7 +30,7 @@ namespace PKG {
  * @note Any objects in the query well not be saved in to cache. For caching your objects use the CachedDbObjectsRequest class.
  */
 template <class T>
-class DBObjectsRequest final: public DBObjectSet
+class HEARTSHARED_EXPORT DBObjectsRequest final: public DBObjectSet
 {
 public:
 

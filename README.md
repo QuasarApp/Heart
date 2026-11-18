@@ -153,4 +153,4 @@ public:
     }
 };
 ```
-For more information, see our QuasarApp Heart [Code](https://quasarapp.ddns.net:3031/docs/QuasarApp/Heart/latest/) Documentation.
+For more information, see our QuasarApp Heart [documentation](https://quasarapp.github.io/Heart/) and the [API reference](https://quasarapp.github.io/Heart/api/).

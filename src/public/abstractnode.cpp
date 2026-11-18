@@ -54,14 +54,9 @@ AbstractNode::AbstractNode( QObject *ptr):
 
     initThreadId();
 
-    _senderThread = new QThread();
-    _senderThread->setObjectName("Sender");
-
-    _senderThread->start();
-
-    // This object moving to _senderThread.
-    _dataSender = new DataSender(_senderThread);
-    _socketWorker = new AsyncLauncher(_senderThread);
+    // All sockets and the data sender are created and work in the node worker thread (main thread).
+    _dataSender = new DataSender(mainThreadID());
+    _socketWorker = new AsyncLauncher(mainThreadID());
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
 
@@ -89,9 +84,6 @@ AbstractNode::AbstractNode( QObject *ptr):
 
 AbstractNode::~AbstractNode() {
 
-    _senderThread->quit();
-    _senderThread->wait();
-
     for (auto it: std::as_const(_receiveData)) {
         delete  it;
     }
@@ -99,7 +91,6 @@ AbstractNode::~AbstractNode() {
     _receiveData.clear();
 
     delete _dataSender;
-    delete _senderThread;
     delete _socketWorker;
     delete _tasksheduller;
     delete _apiVersionParser;
@@ -150,6 +141,31 @@ void AbstractNode::stop() {
         i->disconnect();
     }
     _connectionsMutex.unlock();
+
+    // Pool workers can be blocked while they wait for a job that was posted
+    // to the main thread (for example, socket writes executed by the data
+    // sender). Only this thread can deliver those jobs, so it must keep
+    // processing events until all workers are finished. Otherwise this
+    // method would wait for the workers and the workers would wait for this
+    // thread (deadlock).
+    const auto deadline = QDeadlineTimer(WAIT_TIME);
+    while (!deadline.hasExpired()) {
+        bool hasWork = false;
+        _workersMutex.lock();
+        for (const auto &worker : _workers) {
+            if (worker && !worker->isFinished()) {
+                hasWork = true;
+                break;
+            }
+        }
+        _workersMutex.unlock();
+
+        if (!hasWork) {
+            break;
+        }
+
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
 
     _workersMutex.lock();
     for (auto it: std::as_const(_workers)) {

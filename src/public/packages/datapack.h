@@ -22,7 +22,7 @@ namespace PKG {
  * @see UniversalData
  */
 template<class Package>
-class DataPack final: public AbstractData
+class HEARTSHARED_EXPORT DataPack final: public AbstractData
 {
     QH_PACKAGE(Package::commandText() + "Pack")
 

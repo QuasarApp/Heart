@@ -58,7 +58,10 @@ src/Heart_autogen/
 src/cmake_install.cmake
 HeartTests/cmake_install.cmake
 cmake_install.cmake
-docs/
+docs/api/
+docs/res/
+docs/index.md
+site/
 src/heart_global.h
 doxygen.conf
 # git 

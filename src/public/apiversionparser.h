@@ -22,7 +22,7 @@ class VersionIsReceived;
  * @brief The APIVersionParser class This is main parser forthe main command.
  * This parsers work only with the APIVersion packge;
  */
-class APIVersionParser: public iParser
+class HEARTSHARED_EXPORT APIVersionParser: public iParser
 {
     Q_OBJECT
 public:
