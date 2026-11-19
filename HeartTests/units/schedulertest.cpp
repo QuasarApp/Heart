@@ -6,11 +6,10 @@
 //#
 
 
-#include "shedullertest.h"
+#include "schedulertest.h"
 
 #include "abstractnode.h"
 #include "abstracttask.h"
-#include "ctime"
 #include <QTest>
 #include <QDateTime>
 #include <cmath>
@@ -67,13 +66,13 @@ void ShedullerTest::testSingleMode() {
     task->setTime(stepTime);
 
     quint64 ct = QDateTime::currentMSecsSinceEpoch();
-    node->sheduleTask(task);
+    node->scheduleTask(task);
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
     int diff = std::abs(static_cast<long long>(node->executedTime - (ct + stepTime)));
     QVERIFY(diff < measurementError);
     node->executedTime = 0;
 
-    QVERIFY(node->sheduledTaskCount() == 0);
+    QVERIFY(node->scheduledTaskCount() == 0);
 
     node->softDelete();
 }
@@ -85,7 +84,7 @@ void ShedullerTest::testRepeatMode() {
     task->setMode(QH::ScheduleMode::Repeat);
 
     quint64 ct = QDateTime::currentMSecsSinceEpoch();
-    node->sheduleTask(task);
+    node->scheduleTask(task);
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
 
     int diff = std::abs(static_cast<long long>(node->executedTime - (ct + stepTime)));
@@ -93,16 +92,16 @@ void ShedullerTest::testRepeatMode() {
     QVERIFY(diff < measurementError);
     node->executedTime = 0;
 
-    QVERIFY(node->sheduledTaskCount() == 1);
+    QVERIFY(node->scheduledTaskCount() == 1);
 
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
     diff = std::abs(static_cast<long long>(node->executedTime - (ct + stepTime * 2)));
 
     QVERIFY(diff < measurementError);
-    QVERIFY(node->sheduledTaskCount() == 1);
+    QVERIFY(node->scheduledTaskCount() == 1);
 
     node->removeTask(task->taskId());
-    QVERIFY(node->sheduledTaskCount() == 0);
+    QVERIFY(node->scheduledTaskCount() == 0);
 
     node->softDelete();
 
@@ -118,12 +117,12 @@ void ShedullerTest::testTimePointMode() {
     quint64 requestTime = QDateTime::currentMSecsSinceEpoch() + 5000;
     task->setTime(requestTime);
 
-    node->sheduleTask(task);
+    node->scheduleTask(task);
     QVERIFY(wait([&node](){return node->executedTime;}, WAIT_TIME));
     int diff = std::abs(static_cast<long long>(node->executedTime - requestTime));
 
     QVERIFY(diff < measurementError);
-    QVERIFY(node->sheduledTaskCount() == 0);
+    QVERIFY(node->scheduledTaskCount() == 0);
 
     node->softDelete();
 

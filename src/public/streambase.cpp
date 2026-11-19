@@ -30,8 +30,9 @@ bool StreamBase::fromBytes(const QByteArray &data) {
 
     fromStream(stream);
 
-    Q_ASSERT_X(isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
-
+    Q_ASSERT_X(isValid(), __FUNCTION__,
+               QString("Parsing error detected, check your parsing chain %0").
+               arg(typeid(*this).name()).toLatin1());
     return true;
 }
 
@@ -43,7 +44,9 @@ QByteArray StreamBase::toBytes() const {
         stream.setVersion(parsingVersion());
     }
 
-    Q_ASSERT_X(isValid(), __FUNCTION__, "Parsing error detected, check your parsing chain");
+    Q_ASSERT_X(isValid(), __FUNCTION__,
+               QString("Parsing error detected, check your parsing chain %0").
+                   arg(typeid(*this).name()).toLatin1());
 
     toStream(stream);
     return res;

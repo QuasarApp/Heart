@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.19)
 
 project(Heart)
 if(TARGET ${PROJECT_NAME})
-  message("The ${PROJECT_NAME} arledy included in main Project")
+  message("The ${PROJECT_NAME} already included in main Project")
   return()
 endif()
 
@@ -32,7 +32,7 @@ else()
     option(HEART_TESTS "Enable or disable tests of the heart library" ON)
 endif()
 # Use only for android debug builds with debugging from usb.
-option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraryes" OFF)
+option(HEART_STATIC_SSL "This option enable or disabled static link ssl libraries" OFF)
 option(HEART_PRINT_PACKAGES "This option enable or disabled log of add incoming network packages" OFF)
 option(HEART_PRINT_SQL_QUERIES "This option enable or disabled log of all sql queries" OFF)
 option(HEART_VALIDATE_PACKS "This option enable or disabled validation of child classes of the DataPack class" ON)
@@ -45,11 +45,12 @@ else()
 endif()
 
 # Add sub directories
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(Qt6 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/crc)
+add_subdirectory(submodules/constexpr-xxh3)
+
 
 if (HEART_SSL)
     option(EASYSSL_TESTS "disable tests of the easyssl submodule " OFF)
@@ -68,4 +69,3 @@ initAll()
 
 configure_file_in(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
 addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
-

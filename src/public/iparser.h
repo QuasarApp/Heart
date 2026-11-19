@@ -56,7 +56,7 @@ public:
     template<class T>
     /**
      * @brief registerPackageType This method register package type T.
-     * This is need to prepare pacakge for parsing in the parsePackage method.
+     * This is need to prepare package for parsing in the parsePackage method.
      * @see initSupportedCommands
      */
     void registerPackageType() {
@@ -73,9 +73,9 @@ public:
     };
 
     /**
-     * @brief parsePackage This is main method of all childs classes of an AbstractNode class.
+     * @brief parsePackage This is main method of all children classes of an AbstractNode class.
      *  This method work on own thread.
-     *  If you ovveride this method you need to create this than an example:
+     *  If you override this method you need to create this than an example:
      * \code{cpp}
         ParserResult DataBaseNode::parsePackage(PKG::AbstractData *pkg,
                                                 const Header& pkgHeader,
@@ -112,8 +112,8 @@ public:
             return ParserResult::NotProcessed;
         }
      * \endcode
-     * @param pkg This is package with incomming data.
-     * @param sender This is sender this pacakge.
+     * @param pkg This is package with incoming data.
+     * @param sender This is sender this package.
      * @param pkgHeader This is header of the incoming packet is used to create a response.
      * @return item of ParserResult. For more information see The ParserResult enum.
      * @see AbstractNode::commandHandler
@@ -137,8 +137,8 @@ public:
     virtual int version() const = 0;
 
     /**
-     * @brief commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method.
-     * Exmaple of use :
+     * @brief commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePackage method.
+     * Example of use :
      * @code{cpp}
      *      auto result = commandHandler<MyPackage>(this, &MyClass::processMyPackage, pkg, sender, pkgHeader);
             if (result != QH::ParserResult::NotProcessed) {
@@ -146,7 +146,7 @@ public:
             }
             ...
      * @endcode
-     * @tparam PackageClass This is class name that you want handle.  All classes mist be inhert of the QH::PKG::AbstractData class.
+     * @tparam PackageClass This is class name that you want handle.  All classes mist be inherit of the QH::PKG::AbstractData class.
      * @tparam HandlerType This is type of the handler object that will invoke @a HandlerMethod method.
 
      * @tparam HandlerMethod This is name of the handler method.
@@ -154,8 +154,8 @@ public:
      *  **bool Method(const QSharedPointer<QH::PKG::PackageClass> &, const QH::Header &pkgHeader, const QH::AbstractNodeInfo *sender)**.
      * @param handlerObject This is pointer to handler object.
      * @param method This is handler method.
-     * @param pkg This is package data from the AbstractNode::parsePackage argumetns
-     * @param pkgHeader This is header of an incomming package.
+     * @param pkg This is package data from the AbstractNode::parsePackage arguments
+     * @param pkgHeader This is header of an incoming package.
      * @param sender This is socket object of a sender that send this package.
      * @return item of ParserResult. For more information see The ParserResult enum.
      *
@@ -194,9 +194,9 @@ public:
     const PacksMap &registeredTypes() const;
 
     /**
-     * @brief genPackage This is factory method that generate data pacakge objects by command.
+     * @brief genPackage This is factory method that generate data package objects by command.
      *  All object should be registered before using this method.
-     * @param cmd This is command of pacakge see Header::command.
+     * @param cmd This is command of package see Header::command.
      * @return shared pointer to new data object.
      * @see AbstractNode::registerPackageType
      * @see Header::command
@@ -235,10 +235,10 @@ protected:
     /**
      * @brief sendData This method send data  object another to node
      * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
+     * @param address This is target address for sending.
      * @param req This is header of request.
      * @return hash of the sendet package. If function is failed then return 0.
-     * @note This method is a just wraper of the AbstractNode::sendData method.
+     * @note This method is a just wrapper of the AbstractNode::sendData method.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp,  const HostAddress& address,
                                   const Header *req = nullptr) const;
@@ -246,10 +246,10 @@ protected:
     /**
      * @brief sendData This method send data  object another to node
      * @param resp This is pointer to sendet object.
-     * @param address This is target addres for sending.
+     * @param address This is target address for sending.
      * @param req This is header of request.
      * @return hash of the sendet package. If function is failed then return 0.
-     * @note This method is a just wraper of the AbstractNode::sendData method.
+     * @note This method is a just wrapper of the AbstractNode::sendData method.
      */
     virtual unsigned int sendData(const PKG::AbstractData *resp, const AbstractNodeInfo *node,
                                   const Header *req = nullptr) const;

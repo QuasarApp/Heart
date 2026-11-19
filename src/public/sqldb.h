@@ -12,7 +12,7 @@
 namespace QH {
 
 /**
- * @brief The SqlDB class This is base implementation fo datatbase.
+ * @brief The SqlDB class This is base implementation of database.
  * The SqlDB do not use caches, all request run on the sqlwtiter class.
  */
 class HEARTSHARED_EXPORT SqlDB final: public ISqlDB {

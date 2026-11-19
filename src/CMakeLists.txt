@@ -44,17 +44,17 @@ file(GLOB SOURCE_CPP
     "private/*.cpp" "private/*.h" "private/*.qrc"
 )
 
-set(PUBLIC_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public")
-set(PUBLIC_INCUDE_DIR ${PUBLIC_INCUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public/packages")
-set(PRIVATE_INCUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
+set(PUBLIC_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(PUBLIC_INCLUDE_DIR ${PUBLIC_INCLUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public")
+set(PUBLIC_INCLUDE_DIR ${PUBLIC_INCLUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/public/packages")
+set(PRIVATE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/private")
 
 
 add_library(${PROJECT_NAME} ${SOURCE_CPP})
-target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crc )
+target_link_libraries(${PROJECT_NAME} PUBLIC Qt::Core Qt::Network Qt::Sql Qt::Concurrent QuasarApp crc xxh3)
 if (HEART_SSL)
     target_link_libraries(${PROJECT_NAME} PUBLIC easyssl)
 endif()
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCUDE_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCUDE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PRIVATE ${PRIVATE_INCLUDE_DIR})

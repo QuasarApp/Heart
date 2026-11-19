@@ -16,7 +16,7 @@ namespace QH {
 
 iParser::iParser(AbstractNode *parentNode) {
     _node = parentNode;
-    debug_assert(_node, "All parsers shold be initialized with parent node");
+    debug_assert(_node, "All parsers should be initialized with parent node");
 }
 
 QString iParser::pareseResultToString(const ParserResult &parseResult) {

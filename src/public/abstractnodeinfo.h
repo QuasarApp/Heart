@@ -31,8 +31,8 @@ enum class TrustNode: unsigned char {
     /// General trust of the node or client
     Default = 100,
 
-    /// This trusted of unbanned nodes or clients. Recomended trust of unbanned client.
-    /// For more informations see method AbstrcatData::unBan
+    /// This trusted of unbanned nodes or clients. Recommended trust of unbanned client.
+    /// For more information see method AbstractData::unBan
     Restore = 20,
 
     /// Node with this trust value is forbidden.
@@ -190,7 +190,7 @@ public:
 
     /**
      * @brief setSct This method sets a new socket for this node or client.
-     * @param sct This is a new valuse of the socket.
+     * @param sct This is a new value of the socket.
      */
     void setSct(QAbstractSocket *sct);
 
@@ -219,8 +219,8 @@ public:
     void setFVersionReceived(bool newFVersionReceived);
 
     /**
-     * @brief fVersionDelivered This method return true if this node delivere own version to the distanation node.
-     * @return true if this node delivere own version to the distanation node.
+     * @brief fVersionDelivered This method return true if this node delivered own version to the destination node.
+     * @return true if this node delivered own version to the destination node.
      */
     bool fVersionDelivered() const;
 
@@ -231,14 +231,14 @@ public:
     void setFVersionDelivered(bool newFVersionDelivered);
 
     /**
-     * @brief getParser This method return parser of choosed command.
+     * @brief getParser This method return parser of chosen command.
      * @param cmd This is command that need to parse.
-     * @return parser of the @a cmd comand.
+     * @return parser of the @a cmd command.
      */
     QSharedPointer<QH::iParser> getParser(unsigned short cmd);
 
     /**
-     * @brief getParser This method return parser of choosed command.
+     * @brief getParser This method return parser of chosen command.
      * @param type This is type of api parser.
      * @return parser by type.
      */
@@ -282,7 +282,7 @@ public slots:
 signals:
 
     /**
-     * @brief sigConnected This is wrapper signal for the QAbstractSocket::connetced signal.
+     * @brief sigConnected This is wrapper signal for the QAbstractSocket::connected signal.
      * @param thisNode This is pointer to current object.
      */
     void sigConnected(QH::AbstractNodeInfo* thisNode);
@@ -317,11 +317,11 @@ signals:
     void sigConfirmed(QH::AbstractNodeInfo* thisNode);
 
     /**
-     * @brief statusChaned This signal emitted when nodes status is changed.
+     * @brief statusChanged This signal emitted when nodes status is changed.
      * @param thisNode This is pointer to current object.
      * @param status This is status of node. For more information see the NodeCoonectionStatus enum.
      */
-    void statusChaned(QH::AbstractNodeInfo* thisNode, QH::NodeCoonectionStatus status);
+    void statusChanged(QH::AbstractNodeInfo* thisNode, QH::NodeCoonectionStatus status);
 
 protected:
 

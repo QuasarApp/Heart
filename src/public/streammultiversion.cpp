@@ -22,4 +22,16 @@ char StreamMultiversion::readVersion(QDataStream &stream) {
     return version;
 
 }
+
+char StreamMultiversion::versionHeader(char, QDataStream &stream) {
+    return readVersion(stream);
+}
+
+char StreamMultiversion::versionHeader(char version, QDataStream &stream) const {
+    saveVersion(version, stream);
+    return version;
+
+}
+
+
 }

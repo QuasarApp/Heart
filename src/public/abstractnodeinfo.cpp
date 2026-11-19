@@ -39,11 +39,11 @@ void AbstractNodeInfo::removeSocket() {
 
         socketPtr->disconnect();
 
-        // We invoke the delate later method on another thread (thread of the socket.)
-        // because all network sockets must be open adn closed in the one thread.
+        // We invoke the delete later method on another thread (thread of the socket.)
+        // because all network sockets must be open and closed in the one thread.
 
         QMetaObject::invokeMethod(socketPtr,
-                                  "handleDisckonnetFromHost",
+                                  "handleDisconnectFromHost",
                                   Qt::QueuedConnection);
 
         QMetaObject::invokeMethod(socketPtr,
@@ -124,7 +124,7 @@ void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
 
     _status = status;
 
-    emit statusChaned(this, _status);
+    emit statusChanged(this, _status);
 }
 
 bool AbstractNodeInfo::confirmData() const {

@@ -20,7 +20,7 @@ namespace PKG {
  * Example of use
  *
  * @code{cpp}
- * QH::PKG::DeleteObject rquest({"UsersTable", "userName"}, "name");
+ * QH::PKG::DeleteObject request({"UsersTable", "userName"}, "name");
  * @endcode
  */
 class HEARTSHARED_EXPORT DeleteObject: public DBObject, public IToken
@@ -31,7 +31,7 @@ public:
 
     /**
      * @brief DeleteObject This is main constructor for request, you can remove any db object if you know them value of the primary key.
-     * @param address This is defautl addres of the ovject {table, id}. Where id is value of the primart key.
+     * @param address This is default address of the ovject {table, id}. Where id is value of the primart key.
      * @param primaryKey This is primary key name - filed of the table. By default using **id**
      */
     DeleteObject(const DbAddress& address, const QString& primaryKey);
@@ -57,12 +57,12 @@ public:
 
     /**
      * @brief setAddress This method sets new address for object that will be deleted from database.
-     * @param newAddress This is new value of the database adderess.
+     * @param newAddress This is new value of the database address.
      */
     void setAddress(const DbAddress &newAddress);
 
     /**
-     * @brief setPrimaryKey This meethod sets new value of the primary key.
+     * @brief setPrimaryKey This method sets new value of the primary key.
      * @param newPrimaryKey This is new value of the primary key
      */
     void setPrimaryKey(const QString &newPrimaryKey);

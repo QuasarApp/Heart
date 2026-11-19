@@ -31,7 +31,7 @@ public:
     /**
      * @brief shedule This method shedule new task in this node.
      * @param task This is sharedpointe to taskObject.
-     * @return true if the task sheduled successful. If the task alredy sheduled the return false.
+     * @return true if the task sheduled successful. If the task already sheduled the return false.
      */
     bool shedule(const QSharedPointer<AbstractTask>& task);
 
@@ -57,7 +57,7 @@ public:
 
 signals:
     /**
-     * @brief sigPushWork This signal emited when the task @a work neet to execute.
+     * @brief sigPushWork This signal emitted when the task @a work need to execute.
      * @param work This is needed to execute task.
      */
     void sigPushWork(QSharedPointer<QH::AbstractTask> work);

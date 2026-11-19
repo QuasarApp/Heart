@@ -26,7 +26,7 @@ public:
     void test();
 protected:
 
-    void testMultipacakges();
+    void testMultipackages();
     void testSinglePackages();
 
 private:

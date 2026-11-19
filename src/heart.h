@@ -91,16 +91,16 @@ protected:
             return ParserResult::Error;
         }
 
-        cardrequest._data = "responce for client "
+        cardrequest._data = "response for client "
 
-        // responce only for servers.
+        // response only for servers.
         if (nodeType() == QH::AbstractNode::NodeType::Server)
             sendData(cardrequest, sender->networkAddress(), &pkg.hdr);
 
         return ParserResult::Processed;
     }
 
-    // This vesion of the parser (any digital value.) .
+    // This version of the parser (any digital value.) .
     int version() const override {return 0;};
     QString parserId() const override {return "MyParser";};
 
@@ -204,9 +204,9 @@ namespace QH {
      */
     HEARTSHARED_EXPORT QString heartLibVersion();
 
-    /** @brief The PKG namesapce - this namespace contains all default packages of the Heart library.
+    /** @brief The PKG namespace - this namespace contains all default packages of the Heart library.
      *  If you want create a pool request for Heart Library with own implemented packages
-     *  you need to create a new package into a PKG namesapce.
+     *  you need to create a new package into a PKG namespace.
      */
     namespace PKG {
 

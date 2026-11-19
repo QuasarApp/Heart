@@ -73,7 +73,7 @@ public:
     HEARTSHARED_EXPORT friend QDataStream& operator<< (QDataStream& stream, const StreamBase& obj);
 
     /**
-     * @brief This is wraper over fromStream. For see more information see toStream method.
+     * @brief This is wrapper over fromStream. For see more information see toStream method.
      * @param stream This is qt data stream object.
      * @param obj This is serialized object.
      * @return stream object.
@@ -130,7 +130,7 @@ protected:
      * @param stream This is Qt stream object.
      * @return Qt stream object.
      *
-     * Examle of base simple implementation:
+     * Example of base simple implementation:
      *
      *  \code{cpp}
         QDataStream &ExampleClass::fromStream(QDataStream &stream) const {
@@ -148,7 +148,7 @@ protected:
      * @param stream This is Qt stream object.
      * @return Qt stream object.
      *
-     * Examle of base simple implementation:
+     * Example of base simple implementation:
      * \code{cpp}
         QDataStream &ExampleClass::toStream(QDataStream &stream) const {
             StreamBase::toStream(stream);

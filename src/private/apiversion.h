@@ -18,7 +18,7 @@ namespace PKG {
 
 
 /**
- * @brief The APIVersion class This is base pacakge class that send information about supported api version on the paired node
+ * @brief The APIVersion class This is base package class that send information about supported api version on the paired node
  */
 class APIVersion: public QH::PKG::AbstractData
 {

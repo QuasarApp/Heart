@@ -23,16 +23,41 @@ namespace QH {
  * class myClass: public StreamMultiversion {
  *      protected:
  *      QDataStream &fromStream(QDataStream &stream) override {
- *          char version = readVersion();
+ *          char version = versionHeader(0, stream);
+ *          readWrite(stream, data);
  *          return stream;
  *      }
  *
  *      QDataStream &toStream(QDataStream &stream) const override {
- *          saveVersion(1, stream);
+ *          char version = versionHeader(0, stream);
+ *          readWrite(stream, data);
  *          return stream;
  *      }
  *
+ *      private:
+ *      int data;
+ *
  * }
+ * @endcode
+ *
+ * More example of use:
+ * @code{cpp}
+ * QDataStream &ClassName::fromStream(QDataStream &stream)
+ * {
+ *     versionHeader(0, stream);
+ *
+ *     READ_WRITE_IMPL(fild0,
+ *                     fild1)
+ * }
+ *
+ * QDataStream &ClassName::toStream(QDataStream &stream) const
+ * {
+ *     versionHeader(0, stream);
+ *
+ *     READ_WRITE_IMPL(fild0,
+ *                     fild1)
+ * }
+ * @endcode
  *
  */
 class HEARTSHARED_EXPORT StreamMultiversion: public StreamBase
@@ -42,6 +67,8 @@ public:
     StreamMultiversion();
     ~StreamMultiversion();
     // StreamBase interface
+
+protected:
 
     /**
      * @brief saveVersion save version of the object to the stream.
@@ -58,11 +85,79 @@ public:
      * @param stream - stream to read.
      * @return version of the object.
      * @see fromStream
-
+     
      */
     char readVersion(QDataStream &stream);
 
+    /**
+     * @brief versionHeader this is new function that automaticaly choose what shuld be to-do (read/wirte).
+     * @param version this is a version of object.
+     * @param stream this is stream cheenel to save or read.
+     * @return version of object.
+     */
+    char versionHeader(char version, QDataStream &stream);
+
+    /**
+     * @brief versionHeader this is new function that automaticaly choose what shuld be to-do (read/wirte).
+     * @param version this is a version of object.
+     * @param stream this is stream cheenel to save or read.
+     * @note The version returned by versionHeader() should be handled manually.
+     * @note For backward compatibility, toStream() always writes version 0.
+     * @note Consider implementing version switching logic for multiversion support.
+     * @return version of object.
+     */
+    char versionHeader(char version, QDataStream &stream) const;
+
+    /**
+     * @brief readWrite this method automaticaly choose what we need to-do read or write.
+     * @param stream
+     * @param data
+     */
+    template <class T>
+    void readWrite(QDataStream &stream, const T& data) const {
+        stream << data;
+    }
+
+    /**
+     * @brief readWrite this method automaticaly choose what we need to-do read or write.
+     * @param stream
+     * @param data
+     */
+    template <class T>
+    void readWrite(QDataStream &stream, T& data) {
+        stream >> data;
+
+    }
+
+    /**
+     * @brief readWritePack - this is a pack write or read from the srting
+     * @param stream - stream cheenel to save or read.
+     * @param args - list of arguments
+     */
+    template <typename... Args>
+    void readWritePack(QDataStream &stream, Args&&... args) const {
+        (readWrite(stream, std::forward<Args>(args)), ...);
+    }
+
+    /**
+     * @brief readWritePack - this is a pack write or read from the srting
+     * @param stream - stream cheenel to save or read.
+     * @param args - list of arguments
+     */
+    template <typename... Args>
+    void readWritePack(QDataStream &stream, Args&&... args) {
+        (readWrite(stream, std::forward<Args>(args)), ...);
+    }
 
 };
+
 }
+
+
+#define READ_WRITE_IMPL(...) \
+    readWritePack(stream, __VA_ARGS__); \
+    return stream; \
+
+
+
 #endif // STREAMMULTIVERSION_H
