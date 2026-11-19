@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classQH_1_1iPa
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classQH_1_1iParser.html" title="The iParser class This class provide functions for parsing income packages. For yousing just override...">iParser</a> class This class provide functions for parsing income packages. For yousing just override the <a class="el" href="#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ...">iParser::parsePackage</a> method.  
+<p>The <a class="el" href="classQH_1_1iParser.html" title="The iParser class This class provide functions for parsing income packages. For yousing just override...">iParser</a> class This class provide functions for parsing income packages. For yousing just override the <a class="el" href="#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all children classes of an AbstractNode class....">iParser::parsePackage</a> method.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="iparser_8h_source.html">iparser.h</a>&gt;</code></p>
@@ -126,12 +126,12 @@ Inheritance diagram for QH::iParser:</div>
 <div class="center"><img src="classQH_1_1iParser__inherit__graph.png" border="0" usemap="#aQH_1_1iParser_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="aQH_1_1iParser_inherit__map" id="aQH_1_1iParser_inherit__map">
 <area shape="rect" title="The iParser class This class provide functions for parsing income packages. For yousing just override..." alt="" coords="194,126,392,555"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html" title="The APIVersionParser class This is main parser forthe main command. This parsers work only with the A..." alt="" coords="5,603,180,899"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html" title="The APIVersionParser class This is main parser for the main command. This parsers work only with the ..." alt="" coords="5,603,180,899"/>
 <area shape="poly" title=" " alt="" coords="188,555,167,605,162,602,186,560"/>
 <area shape="rect" href="classQH_1_1AbstractNodeParser.html" title="The AbstractNodeParser class is main parser of the abstract level of the hear lib." alt="" coords="205,670,381,832"/>
 <area shape="poly" title=" " alt="" coords="294,568,295,671,290,670,291,572"/>
-<area shape="rect" href="classQH_1_1BigDataParser.html" title="The BigDataParser class is main manager for control big data packages." alt="" coords="405,637,591,866"/>
-<area shape="poly" title=" " alt="" coords="399,549,444,637,439,637,397,554"/>
+<area shape="rect" href="classQH_1_1BigDataParser.html" title="The BigDataParser class is main manager for control big data packages." alt="" coords="405,637,599,866"/>
+<area shape="poly" title=" " alt="" coords="400,546,447,637,442,637,398,551"/>
 <area shape="rect" title=" " alt="" coords="196,5,259,78"/>
 <area shape="poly" title=" " alt="" coords="239,89,249,126,243,126,238,95"/>
 <area shape="rect" title=" " alt="" coords="283,5,436,78"/>
@@ -157,18 +157,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a055bf8c8d5cd27f07f5070d6a686c924" id="r_a055bf8c8d5cd27f07f5070d6a686c924"><td class="memItemLeft">virtual&#160;</td><td class="memItemRight"><a class="el" href="#a055bf8c8d5cd27f07f5070d6a686c924">~iParser</a> ()=default</td></tr>
 <tr class="memitem:a4d3c2cf63298dc7ce96c24e82e1a432a" id="r_a4d3c2cf63298dc7ce96c24e82e1a432a"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
 <tr class="memitem:a4d3c2cf63298dc7ce96c24e82e1a432a template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a4d3c2cf63298dc7ce96c24e82e1a432a">registerPackageType</a> ()</td></tr>
-<tr class="memdesc:a4d3c2cf63298dc7ce96c24e82e1a432a"><td class="mdescLeft">&#160;</td><td class="mdescRight">registerPackageType This method register package type T. This is need to prepare pacakge for parsing in the parsePackage method.  <br /></td></tr>
+<tr class="memdesc:a4d3c2cf63298dc7ce96c24e82e1a432a"><td class="mdescLeft">&#160;</td><td class="mdescRight">registerPackageType This method register package type T. This is need to prepare package for parsing in the parsePackage method.  <br /></td></tr>
 <tr class="memitem:a885002744bd0db485827be6bc23f4651" id="r_a885002744bd0db485827be6bc23f4651"><td class="memItemLeft">virtual <a class="el" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81c">ParserResult</a>&#160;</td><td class="memItemRight"><a class="el" href="#a885002744bd0db485827be6bc23f4651">parsePackage</a> (const QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1AbstractData.html">PKG::AbstractData</a> &gt; &amp;pkg, const <a class="el" href="structQH_1_1Header.html">Header</a> &amp;pkgHeader, <a class="el" href="classQH_1_1AbstractNodeInfo.html">AbstractNodeInfo</a> *sender)=0</td></tr>
-<tr class="memdesc:a885002744bd0db485827be6bc23f4651"><td class="mdescLeft">&#160;</td><td class="mdescRight">parsePackage This is main method of all childs classes of an <a class="el" href="classQH_1_1AbstractNode.html" title="The AbstractNode class - Abstract implementation of node. this implementation have a methods for send...">AbstractNode</a> class. This method work on own thread. If you ovveride this method you need to create this than an example:  <br /></td></tr>
+<tr class="memdesc:a885002744bd0db485827be6bc23f4651"><td class="mdescLeft">&#160;</td><td class="mdescRight">parsePackage This is main method of all children classes of an <a class="el" href="classQH_1_1AbstractNode.html" title="The AbstractNode class - Abstract implementation of node. this implementation have a methods for send...">AbstractNode</a> class. This method work on own thread. If you override this method you need to create this than an example:  <br /></td></tr>
 <tr class="memitem:aee2338d36122eeb9612426a2ddfb58df" id="r_aee2338d36122eeb9612426a2ddfb58df"><td class="memItemLeft">virtual int&#160;</td><td class="memItemRight"><a class="el" href="#aee2338d36122eeb9612426a2ddfb58df">version</a> () const =0</td></tr>
 <tr class="memdesc:aee2338d36122eeb9612426a2ddfb58df"><td class="mdescLeft">&#160;</td><td class="mdescRight">version This method return version of parser object  <br /></td></tr>
 <tr class="memitem:ac5fce04e9ed75ba11e5b2d0528ad7fbf" id="r_ac5fce04e9ed75ba11e5b2d0528ad7fbf"><td class="memTemplParams" colspan="2">template&lt;class PackageClass, class HandlerType, class HandlerMethod&gt; </td></tr>
 <tr class="memitem:ac5fce04e9ed75ba11e5b2d0528ad7fbf template"><td class="memItemLeft"><a class="el" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81c">ParserResult</a>&#160;</td><td class="memItemRight"><a class="el" href="#ac5fce04e9ed75ba11e5b2d0528ad7fbf">commandHandler</a> (HandlerType handlerObject, HandlerMethod method, const QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1AbstractData.html">QH::PKG::AbstractData</a> &gt; &amp;pkg, <a class="el" href="classQH_1_1AbstractNodeInfo.html">QH::AbstractNodeInfo</a> *sender, const <a class="el" href="structQH_1_1Header.html">QH::Header</a> &amp;pkgHeader)</td></tr>
-<tr class="memdesc:ac5fce04e9ed75ba11e5b2d0528ad7fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method. Exmaple of use :  <br /></td></tr>
+<tr class="memdesc:ac5fce04e9ed75ba11e5b2d0528ad7fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePackage method. Example of use :  <br /></td></tr>
 <tr class="memitem:adb845df893b8c1c7b80a266116889f4c" id="r_adb845df893b8c1c7b80a266116889f4c"><td class="memItemLeft">const <a class="el" href="namespaceQH.html#adeb188410d7694d61da95eb839bb944d">PacksMap</a> &amp;&#160;</td><td class="memItemRight"><a class="el" href="#adb845df893b8c1c7b80a266116889f4c">registeredTypes</a> () const</td></tr>
 <tr class="memdesc:adb845df893b8c1c7b80a266116889f4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">registeredTypes This method return list of registered command.  <br /></td></tr>
 <tr class="memitem:a8de1bcbb532cf032bc00462506327e5e" id="r_a8de1bcbb532cf032bc00462506327e5e"><td class="memItemLeft">QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1AbstractData.html">PKG::AbstractData</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a8de1bcbb532cf032bc00462506327e5e">genPackage</a> (unsigned short cmd) const</td></tr>
-<tr class="memdesc:a8de1bcbb532cf032bc00462506327e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">genPackage This is factory method that generate data pacakge objects by command. All object should be registered before using this method.  <br /></td></tr>
+<tr class="memdesc:a8de1bcbb532cf032bc00462506327e5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">genPackage This is factory method that generate data package objects by command. All object should be registered before using this method.  <br /></td></tr>
 <tr class="memitem:a739b2ac9fa63553c5ce1e80002d02f93" id="r_a739b2ac9fa63553c5ce1e80002d02f93"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a739b2ac9fa63553c5ce1e80002d02f93">checkCommand</a> (unsigned short cmd) const</td></tr>
 <tr class="memdesc:a739b2ac9fa63553c5ce1e80002d02f93"><td class="mdescLeft">&#160;</td><td class="mdescRight">checkCommand This method check command are if registered type or not.  <br /></td></tr>
 <tr class="memitem:a3855b45e77e06cd2f20ec8ab19144553" id="r_a3855b45e77e06cd2f20ec8ab19144553"><td class="memItemLeft">virtual QString&#160;</td><td class="memItemRight"><a class="el" href="#a3855b45e77e06cd2f20ec8ab19144553">parserId</a> () const =0</td></tr>
@@ -199,7 +199,7 @@ Friends</h2></td></tr>
 <tr class="memitem:ac34827723212e57cadf597d4436fd432" id="r_ac34827723212e57cadf597d4436fd432"><td class="memItemLeft">class&#160;</td><td class="memItemRight"><a class="el" href="#ac34827723212e57cadf597d4436fd432">AbstractNode</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="classQH_1_1iParser.html" title="The iParser class This class provide functions for parsing income packages. For yousing just override...">iParser</a> class This class provide functions for parsing income packages. For yousing just override the <a class="el" href="#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ...">iParser::parsePackage</a> method. </p>
+<div class="textblock"><p>The <a class="el" href="classQH_1_1iParser.html" title="The iParser class This class provide functions for parsing income packages. For yousing just override...">iParser</a> class This class provide functions for parsing income packages. For yousing just override the <a class="el" href="#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all children classes of an AbstractNode class....">iParser::parsePackage</a> method. </p>
 <dl class="section see"><dt>See also</dt><dd>AbstractNode::parsePackage </dd>
 <dd>
 <a class="el" href="classQH_1_1AbstractNode.html" title="The AbstractNode class - Abstract implementation of node. this implementation have a methods for send...">AbstractNode</a> </dd></dl>
@@ -344,17 +344,17 @@ template&lt;class PackageClass, class HandlerType, class HandlerMethod&gt; </div
 </table>
 </div><div class="memdoc">
 
-<p>commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePackage method. Exmaple of use : </p>
+<p>commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePackage method. Example of use : </p>
 <div class="fragment"><div class="line"><span class="keyword">auto</span> result = <a class="code hl_function" href="#ac5fce04e9ed75ba11e5b2d0528ad7fbf">commandHandler&lt;MyPackage&gt;</a>(<span class="keyword">this</span>, &amp;MyClass::processMyPackage, pkg, sender, pkgHeader);</div>
 <div class="line"><span class="keywordflow">if</span> (result != <a class="code hl_enumvalue" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81ca1e6978383f55b7c1922abe5245e000e9">QH::ParserResult::NotProcessed</a>) {</div>
 <div class="line">    <span class="keywordflow">return</span> result;</div>
 <div class="line">}</div>
 <div class="line">...</div>
-<div class="ttc" id="aclassQH_1_1iParser_html_ac5fce04e9ed75ba11e5b2d0528ad7fbf"><div class="ttname"><a href="#ac5fce04e9ed75ba11e5b2d0528ad7fbf">QH::iParser::commandHandler</a></div><div class="ttdeci">ParserResult commandHandler(HandlerType handlerObject, HandlerMethod method, const QSharedPointer&lt; QH::PKG::AbstractData &gt; &amp;pkg, QH::AbstractNodeInfo *sender, const QH::Header &amp;pkgHeader)</div><div class="ttdoc">commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePac...</div><div class="ttdef"><b>Definition</b> <a href="iparser_8h_source.html#l00167">iparser.h:167</a></div></div>
+<div class="ttc" id="aclassQH_1_1iParser_html_ac5fce04e9ed75ba11e5b2d0528ad7fbf"><div class="ttname"><a href="#ac5fce04e9ed75ba11e5b2d0528ad7fbf">QH::iParser::commandHandler</a></div><div class="ttdeci">ParserResult commandHandler(HandlerType handlerObject, HandlerMethod method, const QSharedPointer&lt; QH::PKG::AbstractData &gt; &amp;pkg, QH::AbstractNodeInfo *sender, const QH::Header &amp;pkgHeader)</div><div class="ttdoc">commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePac...</div><div class="ttdef"><b>Definition</b> <a href="iparser_8h_source.html#l00167">iparser.h:167</a></div></div>
 <div class="ttc" id="anamespaceQH_html_a576db1ca8fddb712c8eaa6caa435f81ca1e6978383f55b7c1922abe5245e000e9"><div class="ttname"><a href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81ca1e6978383f55b7c1922abe5245e000e9">QH::ParserResult::NotProcessed</a></div><div class="ttdeci">@ NotProcessed</div><div class="ttdoc">the parser does not know what to do with the package or has not finished processing it.</div><div class="ttdef"><b>Definition</b> <a href="iparser_8h_source.html#l00039">iparser.h:39</a></div></div>
 </div><!-- fragment --> <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">PackageClass</td><td>This is class name that you want handle. All classes mist be inhert of the <a class="el" href="classQH_1_1PKG_1_1AbstractData.html" title="The AbstractData class is provide base functions for transport data by network For create you own pac...">QH::PKG::AbstractData</a> class. </td></tr>
+    <tr><td class="paramname">PackageClass</td><td>This is class name that you want handle. All classes mist be inherit of the <a class="el" href="classQH_1_1PKG_1_1AbstractData.html" title="The AbstractData class is provide base functions for transport data by network For create you own pac...">QH::PKG::AbstractData</a> class. </td></tr>
     <tr><td class="paramname">HandlerType</td><td>This is type of the handler object that will invoke <em class="arg">HandlerMethod</em> method.</td></tr>
     <tr><td class="paramname">HandlerMethod</td><td>This is name of the handler method. The handler method should be support next signature: <b>bool Method(const QSharedPointer&lt;QH::PKG::PackageClass&gt; &amp;, const QH::Header &amp;pkgHeader, const QH::AbstractNodeInfo *sender)</b>. </td></tr>
   </table>
@@ -364,14 +364,14 @@ template&lt;class PackageClass, class HandlerType, class HandlerMethod&gt; </div
   <table class="params">
     <tr><td class="paramname">handlerObject</td><td>This is pointer to handler object. </td></tr>
     <tr><td class="paramname">method</td><td>This is handler method. </td></tr>
-    <tr><td class="paramname">pkg</td><td>This is package data from the AbstractNode::parsePackage argumetns </td></tr>
-    <tr><td class="paramname">pkgHeader</td><td>This is header of an incomming package. </td></tr>
+    <tr><td class="paramname">pkg</td><td>This is package data from the AbstractNode::parsePackage arguments </td></tr>
+    <tr><td class="paramname">pkgHeader</td><td>This is header of an incoming package. </td></tr>
     <tr><td class="paramname">sender</td><td>This is socket object of a sender that send this package. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>item of <a class="el" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81c" title="The ParserResult enum. Error - parser detect a errorob package. NotProcessed - the parser does not kn...">ParserResult</a>. For more information see The <a class="el" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81c" title="The ParserResult enum. Error - parser detect a errorob package. NotProcessed - the parser does not kn...">ParserResult</a> enum.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ...">iParser::parsePackage</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all children classes of an AbstractNode class....">iParser::parsePackage</a> </dd>
 <dd>
 <a class="el" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81c" title="The ParserResult enum. Error - parser detect a errorob package. NotProcessed - the parser does not kn...">ParserResult</a> </dd></dl>
 
@@ -381,10 +381,10 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1iParser_ac5fce04e9ed75ba11e5b2d0528ad7fbf_icgraph.png" border="0" usemap="#aclassQH_1_1iParser_ac5fce04e9ed75ba11e5b2d0528ad7fbf_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1iParser_ac5fce04e9ed75ba11e5b2d0528ad7fbf_icgraph" id="aclassQH_1_1iParser_ac5fce04e9ed75ba11e5b2d0528ad7fbf_icgraph">
-<area shape="rect" title="commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePac..." alt="" coords="409,48,626,76"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="203,5,361,50"/>
+<area shape="rect" title="commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePac..." alt="" coords="409,48,626,76"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="203,5,361,50"/>
 <area shape="poly" title=" " alt="" coords="401,46,361,42,361,37,407,45"/>
-<area shape="rect" href="classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="207,75,356,119"/>
+<area shape="rect" href="classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="207,75,356,119"/>
 <area shape="poly" title=" " alt="" coords="407,79,357,89,357,83,401,79"/>
 <area shape="rect" href="classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="5,75,155,119"/>
 <area shape="poly" title=" " alt="" coords="189,106,155,108,155,103,194,106"/>
@@ -409,10 +409,10 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>genPackage This is factory method that generate data pacakge objects by command. All object should be registered before using this method. </p>
+<p>genPackage This is factory method that generate data package objects by command. All object should be registered before using this method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>This is command of pacakge see <a class="el" href="structQH_1_1Header.html#abef9f4c10b6860810e6377a2a1dea43c" title="command of package for more information see the AbstractData::toPackage method.">Header::command</a>. </td></tr>
+    <tr><td class="paramname">cmd</td><td>This is command of package see <a class="el" href="structQH_1_1Header.html#abef9f4c10b6860810e6377a2a1dea43c" title="command of package for more information see the AbstractData::toPackage method.">Header::command</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -427,7 +427,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1iParser_a8de1bcbb532cf032bc00462506327e5e_icgraph.png" border="0" usemap="#aclassQH_1_1iParser_a8de1bcbb532cf032bc00462506327e5e_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1iParser_a8de1bcbb532cf032bc00462506327e5e_icgraph" id="aclassQH_1_1iParser_a8de1bcbb532cf032bc00462506327e5e_icgraph">
-<area shape="rect" title="genPackage This is factory method that generate data pacakge objects by command. All object should be..." alt="" coords="412,5,590,33"/>
+<area shape="rect" title="genPackage This is factory method that generate data package objects by command. All object should be..." alt="" coords="412,5,590,33"/>
 <area shape="rect" href="classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,5,364,33"/>
 <area shape="poly" title=" " alt="" coords="394,19,364,22,364,17,399,19"/>
 <area shape="rect" href="classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="7,5,162,33"/>
@@ -464,7 +464,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>initSupportedCommands This method will be invoked before add a parser into parser's storage. Use this method to register your command for this parser object. By default, this method does nothing, You still can register your command in the class constructor. But if you use inheritance between your APIs versions to you must use this method, because your constructors both all your commands, this broken API selector of your node. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ...">registerPackageType</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare package for parsing ...">registerPackageType</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="iparser_8cpp_source.html#l00066">66</a> of file <a class="el" href="iparser_8cpp_source.html">iparser.cpp</a>.</p>
 <div class="dynheader">
@@ -512,7 +512,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="multiVersionPackages return list of the supported multiversions packages." alt="" coords="618,36,802,81"/>
 <area shape="rect" href="classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="414,14,568,42"/>
 <area shape="poly" title=" " alt="" coords="600,43,569,41,569,36,606,43"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="412,65,570,110"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="412,65,570,110"/>
 <area shape="poly" title=" " alt="" coords="606,72,571,80,571,74,601,73"/>
 <area shape="rect" href="classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,14,364,42"/>
 <area shape="poly" title=" " alt="" coords="396,37,364,39,364,34,401,36"/>
@@ -569,11 +569,11 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="973,238,958,201,936,154,906,106,869,64,854,53,854,48,872,60,911,103,941,152,963,199,978,241"/>
 <area shape="rect" href="classQH_1_1APIVersionParser.html#ad9f5846d0c4d680cabb972e029a634c3" title="getSelectedApiParser This method return apiParser for selected node" alt="" coords="698,75,866,119"/>
 <area shape="poly" title=" " alt="" coords="963,240,923,192,897,165,869,140,840,122,841,117,872,136,901,161,927,188,968,242"/>
-<area shape="rect" href="classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header packge of the big data." alt="" coords="454,195,603,239"/>
+<area shape="rect" href="classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header package of the big data." alt="" coords="454,195,603,239"/>
 <area shape="poly" title=" " alt="" coords="901,260,604,228,604,223,906,258"/>
 <area shape="rect" href="classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="10,195,159,239"/>
 <area shape="poly" title=" " alt="" coords="932,248,870,229,689,183,614,170,544,163,473,161,398,164,212,185,157,196,154,192,211,180,397,159,473,156,544,157,615,165,690,178,871,224,937,248"/>
-<area shape="rect" href="classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="693,407,871,451"/>
+<area shape="rect" href="classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="693,407,871,451"/>
 <area shape="poly" title=" " alt="" coords="966,293,925,342,872,390,840,409,839,404,869,386,922,339,962,295"/>
 <area shape="rect" href="classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="452,402,606,430"/>
 <area shape="poly" title=" " alt="" coords="958,290,918,321,872,346,804,370,733,389,607,411,606,405,732,384,802,365,870,341,915,317,953,292"/>
@@ -585,7 +585,7 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="915,285,841,307,840,301,910,286"/>
 <area shape="rect" href="classQH_1_1AbstractNode.html#a7e15cb6b920947141c6b51f52e1e5053" title="AbstractNode &#45; Base constructor of node." alt="" coords="412,14,645,42"/>
 <area shape="poly" title=" " alt="" coords="685,29,647,30,645,25,690,27"/>
-<area shape="rect" href="classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,195,362,239"/>
+<area shape="rect" href="classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="213,195,362,239"/>
 <area shape="poly" title=" " alt="" coords="436,218,364,220,362,214,441,216"/>
 <area shape="poly" title=" " alt="" coords="195,227,161,228,159,223,200,224"/>
 <area shape="poly" title=" " alt="" coords="174,206,215,207,211,210,176,210"/>
@@ -597,7 +597,7 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="437,261,363,241,363,236,442,260"/>
 <area shape="poly" title=" " alt="" coords="720,337,695,353,681,363,672,373,662,383,647,393,607,407,606,402,644,388,658,379,668,369,677,359,692,348,715,339"/>
 <area shape="poly" title=" " alt="" coords="682,306,604,298,604,293,687,306"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="450,333,608,378"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="450,333,608,378"/>
 <area shape="poly" title=" " alt="" coords="682,333,609,347,608,341,688,332"/>
 </map>
 </div>
@@ -637,7 +637,7 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classQH_1_1iParser_a57144e8bce827563a2cc02699fcc2b1e_icgraph.png" border="0" usemap="#aclassQH_1_1iParser_a57144e8bce827563a2cc02699fcc2b1e_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1iParser_a57144e8bce827563a2cc02699fcc2b1e_icgraph" id="aclassQH_1_1iParser_a57144e8bce827563a2cc02699fcc2b1e_icgraph">
 <area shape="rect" title="pareseResultToString This method convert ParserResult value to string." alt="" coords="244,5,430,50"/>
-<area shape="rect" href="classQH_1_1iParser.html#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="5,14,196,42"/>
+<area shape="rect" href="classQH_1_1iParser.html#a885002744bd0db485827be6bc23f4651" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="5,14,196,42"/>
 <area shape="poly" title=" " alt="" coords="225,28,196,30,196,25,230,27"/>
 </map>
 </div>
@@ -676,7 +676,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>parsePackage This is main method of all childs classes of an <a class="el" href="classQH_1_1AbstractNode.html" title="The AbstractNode class - Abstract implementation of node. this implementation have a methods for send...">AbstractNode</a> class. This method work on own thread. If you ovveride this method you need to create this than an example: </p>
+<p>parsePackage This is main method of all children classes of an <a class="el" href="classQH_1_1AbstractNode.html" title="The AbstractNode class - Abstract implementation of node. this implementation have a methods for send...">AbstractNode</a> class. This method work on own thread. If you override this method you need to create this than an example: </p>
 <div class="fragment"><div class="line"><a class="code hl_enumeration" href="namespaceQH.html#a576db1ca8fddb712c8eaa6caa435f81c">ParserResult</a> DataBaseNode::parsePackage(<a class="code hl_class" href="classQH_1_1PKG_1_1AbstractData.html">PKG::AbstractData</a> *pkg,</div>
 <div class="line">                                        <span class="keyword">const</span> <a class="code hl_struct" href="structQH_1_1Header.html">Header</a>&amp; pkgHeader,</div>
 <div class="line">                                        <span class="keyword">const</span> <a class="code hl_class" href="classQH_1_1AbstractNodeInfo.html">AbstractNodeInfo</a>* sender) {</div>
@@ -720,8 +720,8 @@ Here is the caller graph for this function:</div>
 <div class="ttc" id="astructQH_1_1Header_html"><div class="ttname"><a href="structQH_1_1Header.html">QH::Header</a></div><div class="ttdoc">The Header struct 32 bytes.</div><div class="ttdef"><b>Definition</b> <a href="header_8h_source.html#l00019">header.h:19</a></div></div>
 </div><!-- fragment --> <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pkg</td><td>This is package with incomming data. </td></tr>
-    <tr><td class="paramname">sender</td><td>This is sender this pacakge. </td></tr>
+    <tr><td class="paramname">pkg</td><td>This is package with incoming data. </td></tr>
+    <tr><td class="paramname">sender</td><td>This is sender this package. </td></tr>
     <tr><td class="paramname">pkgHeader</td><td>This is header of the incoming packet is used to create a response. </td></tr>
   </table>
   </dd>
@@ -739,7 +739,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1iParser_a885002744bd0db485827be6bc23f4651_cgraph.png" border="0" usemap="#aclassQH_1_1iParser_a885002744bd0db485827be6bc23f4651_cgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1iParser_a885002744bd0db485827be6bc23f4651_cgraph" id="aclassQH_1_1iParser_a885002744bd0db485827be6bc23f4651_cgraph">
-<area shape="rect" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="5,14,196,42"/>
+<area shape="rect" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="5,14,196,42"/>
 <area shape="rect" href="classQH_1_1iParser.html#a57144e8bce827563a2cc02699fcc2b1e" title="pareseResultToString This method convert ParserResult value to string." alt="" coords="244,5,430,50"/>
 <area shape="poly" title=" " alt="" coords="196,25,230,27,225,28,196,30"/>
 </map>
@@ -801,7 +801,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="classQH_1_1AbstractNode.html#a9f17f59d62043e16608b45e404945252" title="getInfoPtr &#45; This method return information class pointer about netwok connection...." alt="" coords="699,248,909,275"/>
 <area shape="poly" title=" " alt="" coords="652,259,687,261,681,262,652,264"/>
 <area shape="poly" title=" " alt="" coords="275,299,207,277,130,235,131,230,209,272,280,299"/>
-<area shape="rect" href="classQH_1_1iParser.html#a8de1bcbb532cf032bc00462506327e5e" title="genPackage This is factory method that generate data pacakge objects by command. All object should be..." alt="" coords="458,300,637,327"/>
+<area shape="rect" href="classQH_1_1iParser.html#a8de1bcbb532cf032bc00462506327e5e" title="genPackage This is factory method that generate data package objects by command. All object should be..." alt="" coords="458,300,637,327"/>
 <area shape="poly" title=" " alt="" coords="378,311,446,313,440,314,378,316"/>
 </map>
 </div>
@@ -838,7 +838,7 @@ Here is the caller graph for this function:</div>
 
 <p>registeredTypes This method return list of registered command. </p>
 <dl class="section return"><dt>Returns</dt><dd>list of registered command. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ...">iParser::registerPackageType</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4d3c2cf63298dc7ce96c24e82e1a432a" title="registerPackageType This method register package type T. This is need to prepare package for parsing ...">iParser::registerPackageType</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="iparser_8cpp_source.html#l00034">34</a> of file <a class="el" href="iparser_8cpp_source.html">iparser.cpp</a>.</p>
 
@@ -869,7 +869,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>registerPackageType This method register package type T. This is need to prepare pacakge for parsing in the parsePackage method. </p>
+<p>registerPackageType This method register package type T. This is need to prepare package for parsing in the parsePackage method. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="#a4fd369f5a278250ddd90dc134155e882" title="initSupportedCommands This method will be invoked before add a parser into parser&#39;s storage....">initSupportedCommands</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="iparser_8h_source.html#l00062">62</a> of file <a class="el" href="iparser_8h_source.html">iparser.h</a>.</p>
@@ -878,7 +878,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1iParser_a4d3c2cf63298dc7ce96c24e82e1a432a_icgraph.png" border="0" usemap="#aclassQH_1_1iParser_a4d3c2cf63298dc7ce96c24e82e1a432a_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1iParser_a4d3c2cf63298dc7ce96c24e82e1a432a_icgraph" id="aclassQH_1_1iParser_a4d3c2cf63298dc7ce96c24e82e1a432a_icgraph">
-<area shape="rect" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ..." alt="" coords="231,48,465,76"/>
+<area shape="rect" title="registerPackageType This method register package type T. This is need to prepare package for parsing ..." alt="" coords="231,48,465,76"/>
 <area shape="rect" href="classQH_1_1AbstractNodeParser.html#a74bf8d3e14d3212e84eda423cc458f71" title=" " alt="" coords="5,5,183,50"/>
 <area shape="poly" title=" " alt="" coords="224,46,183,42,183,37,229,45"/>
 <area shape="rect" href="classQH_1_1BigDataParser.html#aa113dac0a45ba80b3818d3dd98d67243" title=" " alt="" coords="19,75,169,119"/>
@@ -924,13 +924,13 @@ Here is the caller graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">resp</td><td>This is pointer to sendet object. </td></tr>
-    <tr><td class="paramname">address</td><td>This is target addres for sending. </td></tr>
+    <tr><td class="paramname">address</td><td>This is target address for sending. </td></tr>
     <tr><td class="paramname">req</td><td>This is header of request. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>hash of the sendet package. If function is failed then return 0. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This method is a just wraper of the <a class="el" href="classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node">AbstractNode::sendData</a> method. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This method is a just wrapper of the <a class="el" href="classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node">AbstractNode::sendData</a> method. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="iparser_8cpp_source.html#l00056">56</a> of file <a class="el" href="iparser_8cpp_source.html">iparser.cpp</a>.</p>
 <div class="dynheader">
@@ -990,13 +990,13 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">resp</td><td>This is pointer to sendet object. </td></tr>
-    <tr><td class="paramname">address</td><td>This is target addres for sending. </td></tr>
+    <tr><td class="paramname">address</td><td>This is target address for sending. </td></tr>
     <tr><td class="paramname">req</td><td>This is header of request. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>hash of the sendet package. If function is failed then return 0. </dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This method is a just wraper of the <a class="el" href="classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node">AbstractNode::sendData</a> method. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This method is a just wrapper of the <a class="el" href="classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node">AbstractNode::sendData</a> method. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="iparser_8cpp_source.html#l00050">50</a> of file <a class="el" href="iparser_8cpp_source.html">iparser.cpp</a>.</p>
 <div class="dynheader">
@@ -1027,14 +1027,14 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="633,76,541,50,541,45,639,76"/>
 <area shape="rect" href="classQH_1_1BigDataParser.html#a89357e037e1008aaf0d1648c13cf0542" title="finishPart This metho process last package of big data transaction." alt="" coords="416,72,566,117"/>
 <area shape="poly" title=" " alt="" coords="600,95,567,97,566,92,605,94"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="412,141,570,186"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="412,141,570,186"/>
 <area shape="poly" title=" " alt="" coords="644,113,561,143,560,138,639,114"/>
 <area shape="rect" href="classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,19,364,47"/>
 <area shape="poly" title=" " alt="" coords="396,43,364,44,364,39,401,41"/>
 <area shape="poly" title=" " alt="" coords="379,21,416,24,411,25,380,27"/>
 <area shape="rect" href="classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,5,164,50"/>
 <area shape="poly" title=" " alt="" coords="193,32,165,32,163,27,198,29"/>
-<area shape="rect" href="classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,75,362,119"/>
+<area shape="rect" href="classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="213,75,362,119"/>
 <area shape="poly" title=" " alt="" coords="398,96,363,99,363,93,404,95"/>
 <area shape="rect" href="classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="10,75,159,119"/>
 <area shape="poly" title=" " alt="" coords="195,107,160,108,159,103,200,105"/>
@@ -1074,7 +1074,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classQH_1_1iParser_a03bac86f241460ac513dea7274df7469_cgraph.png" border="0" usemap="#aclassQH_1_1iParser_a03bac86f241460ac513dea7274df7469_cgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1iParser_a03bac86f241460ac513dea7274df7469_cgraph" id="aclassQH_1_1iParser_a03bac86f241460ac513dea7274df7469_cgraph">
 <area shape="rect" title=" " alt="" coords="5,141,158,168"/>
-<area shape="rect" href="classQH_1_1iParser.html#a8de1bcbb532cf032bc00462506327e5e" title="genPackage This is factory method that generate data pacakge objects by command. All object should be..." alt="" coords="206,89,384,116"/>
+<area shape="rect" href="classQH_1_1iParser.html#a8de1bcbb532cf032bc00462506327e5e" title="genPackage This is factory method that generate data package objects by command. All object should be..." alt="" coords="206,89,384,116"/>
 <area shape="poly" title=" " alt="" coords="140,138,222,119,218,122,143,143"/>
 <area shape="rect" href="classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="218,141,372,168"/>
 <area shape="poly" title=" " alt="" coords="158,161,205,162,200,165,159,166"/>

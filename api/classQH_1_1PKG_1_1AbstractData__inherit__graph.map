@@ -1,51 +1,51 @@
 <map id="QH::PKG::AbstractData" name="QH::PKG::AbstractData">
-<area shape="rect" id="Node000001" title="The AbstractData class is provide base functions for transport data by network For create you own pac..." alt="" coords="968,514,1127,810"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1APIVersion.html" title="The APIVersion class This is base pacakge class that send information about supported api version on ..." alt="" coords="5,902,177,1243"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="951,676,768,702,542,742,431,766,331,795,248,826,216,842,190,860,169,880,151,904,146,902,165,877,187,856,213,838,246,821,329,790,430,761,540,736,767,697,955,672"/>
+<area shape="rect" id="Node000001" title="The AbstractData class is provide base functions for transport data by network For create you own pac..." alt="" coords="976,514,1135,810"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1APIVersion.html" title="The APIVersion class This is base package class that send information about supported api version on ..." alt="" coords="5,902,177,1243"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="959,675,774,702,545,741,433,766,332,794,249,826,216,842,190,860,169,880,151,904,146,902,165,877,187,856,213,838,247,821,331,789,432,761,544,736,773,696,963,672"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1BadRequest.html" title="The BadRequest class send response about error to client." alt="" coords="201,947,352,1198"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="951,667,824,680,748,692,669,711,588,735,508,768,434,809,366,860,348,879,333,900,309,948,304,947,328,898,344,875,363,856,431,804,506,763,586,730,667,705,747,687,824,675,955,663"/>
-<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1BigDataBase.html" title="The BigDataBase class This is base class of big data parts. This class contains id of movving pacakge..." alt="" coords="376,969,534,1176"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="952,679,860,701,752,736,697,760,643,788,593,821,548,860,527,884,509,911,483,970,478,968,504,909,522,881,544,856,590,817,641,784,695,755,750,731,859,696,956,675"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1BigDataWraper.html" title="The BigDataWraper class is wrapper of any big data commands." alt="" coords="558,980,731,1164"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="953,706,903,735,847,770,792,812,744,859,723,888,704,919,675,982,670,980,699,916,718,885,740,856,789,808,844,766,900,731,957,702"/>
-<area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1CloseConnection.html" title="The CloseConnection class &#45; This commanad is request for close connection on parent node of connectio..." alt="" coords="755,1014,937,1131"/>
-<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="967,821,951,859,875,1016,871,1013,946,856,964,826"/>
-<area shape="rect" id="Node000013" href="$classQH_1_1PKG_1_1DBObject.html" title="The DBObject class&#45; main class for work with data base." alt="" coords="961,858,1134,1287"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1048,822,1050,859,1045,857,1047,827"/>
-<area shape="rect" id="Node000021" href="$classQH_1_1PKG_1_1DataPack.html" title="DataPack this is conteiner is wraqper of the QList for transport arrays to another node." alt="" coords="1158,916,1304,1229"/>
-<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="1130,821,1148,857,1174,917,1169,916,1144,859,1130,826"/>
-<area shape="rect" id="Node000022" href="$classQH_1_1PKG_1_1MultiversionData.html" title="The MultiversionData class This class add support for multiple versions of ne command/package...." alt="" coords="1328,969,1514,1176"/>
-<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="1139,711,1232,774,1278,813,1319,856,1356,910,1386,970,1381,969,1352,913,1315,859,1274,817,1229,779,1139,716"/>
-<area shape="rect" id="Node000023" href="$classQH_1_1PKG_1_1Ping.html" title="The Ping class &#45; test class for translate data on network." alt="" coords="1538,969,1653,1176"/>
-<area shape="poly" id="edge22_Node000001_Node000023" title=" " alt="" coords="1140,675,1233,696,1336,731,1389,755,1439,783,1486,817,1528,856,1547,881,1563,909,1584,970,1578,969,1558,911,1543,884,1524,859,1483,821,1436,788,1386,760,1334,736,1231,701,1142,680"/>
-<area shape="rect" id="Node000024" href="$classQH_1_1PKG_1_1UniversalData.html" title="The UniversalData class contains all data of object in the QMap Use this package if you want to chang..." alt="" coords="1677,980,1844,1164"/>
-<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="1141,667,1259,683,1326,697,1397,716,1469,740,1540,771,1606,810,1666,856,1692,883,1712,914,1741,981,1736,980,1707,917,1687,886,1663,860,1603,814,1537,776,1467,745,1396,721,1325,702,1258,688,1143,672"/>
-<area shape="rect" id="Node000025" href="$classQH_1_1PKG_1_1VersionIsReceived.html" title="The VersionIsReceived class base class for confirmed versions." alt="" coords="1868,958,2061,1187"/>
-<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="1140,673,1318,700,1529,741,1632,766,1725,793,1803,823,1858,856,1881,877,1901,902,1932,959,1927,958,1897,905,1877,881,1855,860,1801,828,1724,798,1631,771,1527,746,1317,706,1142,678"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="898,126,1031,466"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1007,478,1017,515,1011,514,1006,483"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="893,5,1036,78"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="965,90,967,127,962,126,964,95"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="1055,260,1208,332"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1121,344,1084,515,1079,513,1119,349"/>
-<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1BigDataHeader.html" title="The BigDataHeader class is first empty pacakge with information of big data package." alt="" coords="72,1425,244,1676"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="423,1192,402,1243,367,1289,352,1301,338,1308,311,1314,285,1320,258,1337,225,1379,200,1426,195,1424,221,1376,255,1333,283,1315,310,1309,337,1303,350,1296,363,1285,397,1240,425,1187"/>
-<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1BigDataPart.html" title="The BigDataPart class This data class used for transporting big data files greater than 64kb." alt="" coords="268,1425,440,1676"/>
-<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="431,1188,383,1426,378,1424,430,1193"/>
-<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1BigDataRequest.html" title="The BigDataRequest class contains missing package parts for redownload. If missing parts count is 0 t..." alt="" coords="463,1469,642,1631"/>
-<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="480,1187,539,1470,534,1470,478,1192"/>
-<area shape="rect" id="Node000014" href="$classQH_1_1PKG_1_1DBObjectSet.html" title="The DBObjectSet class add features for control database object arrays. You will be able be get or rem..." alt="" coords="667,1425,847,1676"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="949,1287,950,1289,927,1307,904,1314,882,1321,860,1337,827,1379,801,1427,797,1424,823,1376,856,1333,880,1316,903,1309,924,1302,947,1285,953,1283"/>
-<area shape="rect" id="Node000017" href="$classQH_1_1PKG_1_1DeleteObject.html" title="The DeleteObject class is request for update object with dbId;." alt="" coords="871,1335,1029,1765"/>
-<area shape="poly" id="edge16_Node000013_Node000017" title=" " alt="" coords="1002,1299,996,1337,991,1334,999,1304"/>
-<area shape="rect" id="Node000018" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html" title="The GetMaxIntegerId class is intended for get a maximum value of a sql tables column." alt="" coords="1053,1447,1236,1653"/>
-<area shape="poly" id="edge17_Node000013_Node000018" title=" " alt="" coords="1095,1299,1126,1448,1121,1446,1093,1304"/>
-<area shape="rect" id="Node000019" href="$classQH_1_1PKG_1_1GetSingleValue.html" title="The GetSingleValue class is intended for get a single value from database. The value is selected by p..." alt="" coords="1260,1425,1432,1676"/>
-<area shape="poly" id="edge18_Node000013_Node000019" title=" " alt="" coords="1144,1282,1148,1285,1173,1302,1198,1309,1224,1315,1250,1333,1284,1376,1310,1425,1304,1424,1280,1379,1247,1337,1222,1320,1197,1314,1171,1307,1144,1289,1144,1288"/>
-<area shape="rect" id="Node000020" href="$classQH_1_1PKG_1_1SetSingleValue.html" title="The SetSingleValue class This is simple class &#45; request sets a single value into database." alt="" coords="1457,1425,1630,1676"/>
-<area shape="poly" id="edge19_Node000013_Node000020" title=" " alt="" coords="1145,1284,1147,1285,1186,1307,1223,1315,1259,1314,1295,1309,1331,1303,1368,1302,1406,1311,1446,1333,1467,1352,1485,1374,1513,1426,1508,1424,1481,1377,1463,1356,1443,1337,1405,1316,1368,1308,1332,1309,1296,1314,1260,1319,1223,1320,1184,1312,1145,1290,1145,1289"/>
-<area shape="rect" id="Node000015" href="$classQH_1_1PKG_1_1DBObjectsRequest.html" title="The DBObjectsRequest class is template class for get array of TEMPLATE Objects from database." alt="" coords="640,1813,873,2131"/>
-<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="758,1688,759,1814,754,1812,755,1693"/>
-<area shape="rect" id="Node000016" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html" title="The DBObjectsRequestWithStream class is template class some as DBObjectsRequest but with implementati..." alt="" coords="639,2179,874,2335"/>
-<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="758,2144,759,2181,755,2178,755,2148"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="959,666,831,679,754,691,673,709,591,734,511,767,435,808,366,860,348,879,333,900,309,948,304,947,328,898,344,875,363,856,432,804,508,762,589,729,672,704,753,686,831,674,964,663"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1BigDataBase.html" title="The BigDataBase class This is base class of big data parts. This class contains id of movving package..." alt="" coords="376,969,534,1176"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="959,678,866,700,756,735,700,759,645,787,594,821,548,860,527,884,509,912,482,971,477,969,504,909,522,881,544,856,591,816,643,783,698,754,754,730,864,695,963,675"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1BigDataWrapper.html" title="The BigDataWrapper class is wrapper of any big data commands." alt="" coords="558,980,739,1164"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="961,707,911,736,855,771,801,812,752,859,730,888,711,919,681,982,676,980,706,916,726,885,748,856,797,808,852,767,909,731,965,703"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1CloseConnection.html" title="The CloseConnection class &#45; This commanad is request for close connection on parent node of connectio..." alt="" coords="763,1014,945,1131"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="975,821,959,859,883,1016,879,1013,954,856,972,826"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1PKG_1_1DBObject.html" title="The DBObject class&#45; main class for work with data base." alt="" coords="969,858,1142,1287"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1056,822,1058,859,1053,857,1055,827"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1PKG_1_1DataPack.html" title="DataPack this is container is wraqper of the QList for transport arrays to another node." alt="" coords="1166,916,1312,1229"/>
+<area shape="poly" id="edge20_Node000001_Node000021" title=" " alt="" coords="1138,821,1156,857,1182,917,1177,916,1152,859,1138,826"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1PKG_1_1MultiversionData.html" title="The MultiversionData class This class add support for multiple versions of ne command/package...." alt="" coords="1336,969,1522,1176"/>
+<area shape="poly" id="edge21_Node000001_Node000022" title=" " alt="" coords="1147,711,1240,774,1286,813,1327,856,1364,910,1394,970,1389,969,1360,913,1323,859,1282,817,1237,779,1147,716"/>
+<area shape="rect" id="Node000023" href="$classQH_1_1PKG_1_1Ping.html" title="The Ping class &#45; test class for translate data on network." alt="" coords="1546,969,1661,1176"/>
+<area shape="poly" id="edge22_Node000001_Node000023" title=" " alt="" coords="1148,675,1241,696,1344,731,1397,755,1447,783,1494,817,1536,856,1555,881,1571,909,1592,970,1586,969,1566,911,1551,884,1532,859,1491,821,1444,788,1394,760,1342,736,1239,701,1150,680"/>
+<area shape="rect" id="Node000024" href="$classQH_1_1PKG_1_1UniversalData.html" title="The UniversalData class contains all data of object in the QMap Use this package if you want to chang..." alt="" coords="1685,980,1852,1164"/>
+<area shape="poly" id="edge23_Node000001_Node000024" title=" " alt="" coords="1149,667,1267,683,1334,697,1405,716,1477,740,1548,771,1614,810,1674,856,1700,883,1720,914,1749,981,1744,980,1715,917,1695,886,1671,860,1611,814,1545,776,1475,745,1404,721,1333,702,1266,688,1151,672"/>
+<area shape="rect" id="Node000025" href="$classQH_1_1PKG_1_1VersionIsReceived.html" title="The VersionIsReceived class base class for confirmed versions." alt="" coords="1876,958,2069,1187"/>
+<area shape="poly" id="edge24_Node000001_Node000025" title=" " alt="" coords="1149,673,1326,700,1537,741,1640,766,1733,793,1811,823,1866,856,1889,877,1909,902,1940,959,1935,958,1905,905,1885,881,1863,860,1809,828,1732,798,1639,771,1535,746,1325,706,1150,678"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="906,126,1039,466"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1015,478,1025,515,1019,514,1014,483"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="901,5,1044,78"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="973,90,975,127,970,126,972,95"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="1063,260,1216,332"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1129,344,1092,515,1087,513,1127,349"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1PKG_1_1BigDataHeader.html" title="The BigDataHeader class is first empty package with information of big data package." alt="" coords="77,1425,250,1676"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="423,1192,401,1243,367,1289,340,1308,314,1314,289,1320,264,1337,231,1379,206,1426,201,1424,226,1376,260,1333,287,1315,313,1309,338,1303,363,1285,397,1240,425,1187"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1PKG_1_1BigDataPart.html" title="The BigDataPart class This data class used for transporting big data files greater than 64kb." alt="" coords="274,1425,445,1676"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="433,1188,387,1426,382,1424,431,1193"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1BigDataRequest.html" title="The BigDataRequest class contains missing package parts for redownload. If missing parts count is 0 t..." alt="" coords="469,1469,647,1631"/>
+<area shape="poly" id="edge9_Node000007_Node000010" title=" " alt="" coords="481,1187,544,1470,538,1470,480,1192"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1PKG_1_1DBObjectSet.html" title="The DBObjectSet class add features for control database object arrays. You will be able be get or rem..." alt="" coords="672,1425,852,1676"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="957,1287,958,1289,934,1307,911,1314,888,1321,865,1337,832,1379,806,1426,802,1423,828,1376,861,1333,886,1316,909,1309,932,1302,955,1285,961,1283"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1PKG_1_1DeleteObject.html" title="The DeleteObject class is request for update object with dbId;." alt="" coords="876,1335,1035,1765"/>
+<area shape="poly" id="edge16_Node000013_Node000017" title=" " alt="" coords="1009,1299,1003,1337,998,1334,1006,1304"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1PKG_1_1GetMaxIntegerId.html" title="The GetMaxIntegerId class is intended for get a maximum value of a sql tables column." alt="" coords="1059,1447,1241,1653"/>
+<area shape="poly" id="edge17_Node000013_Node000018" title=" " alt="" coords="1102,1299,1132,1448,1127,1446,1100,1304"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1PKG_1_1GetSingleValue.html" title="The GetSingleValue class is intended for get a single value from database. The value is selected by p..." alt="" coords="1265,1425,1438,1676"/>
+<area shape="poly" id="edge18_Node000013_Node000019" title=" " alt="" coords="1152,1282,1156,1285,1180,1302,1205,1309,1230,1315,1256,1333,1289,1376,1315,1426,1310,1425,1285,1379,1252,1337,1228,1320,1203,1314,1178,1307,1152,1289,1152,1288"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1PKG_1_1SetSingleValue.html" title="The SetSingleValue class This is simple class &#45; request sets a single value into database." alt="" coords="1462,1425,1635,1676"/>
+<area shape="poly" id="edge19_Node000013_Node000020" title=" " alt="" coords="1153,1284,1155,1285,1194,1307,1230,1315,1266,1314,1302,1309,1337,1303,1374,1303,1412,1311,1452,1333,1473,1352,1490,1374,1518,1426,1513,1424,1486,1377,1469,1356,1448,1337,1410,1316,1374,1308,1338,1309,1302,1314,1267,1319,1230,1320,1192,1312,1153,1290,1153,1289"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1PKG_1_1DBObjectsRequest.html" title="The DBObjectsRequest class is template class for get array of TEMPLATE Objects from database." alt="" coords="646,1813,878,2131"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="763,1688,764,1814,760,1812,761,1693"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1PKG_1_1DBObjectsRequestWithStream.html" title="The DBObjectsRequestWithStream class is template class some as DBObjectsRequest but with implementati..." alt="" coords="644,2179,880,2335"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="764,2144,764,2181,760,2178,760,2148"/>
 </map>

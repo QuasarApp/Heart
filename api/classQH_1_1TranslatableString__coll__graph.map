@@ -1,0 +1,9 @@
+<map id="QH::TranslatableString" name="QH::TranslatableString">
+<area shape="rect" id="Node000001" title="The TranslatableString class is a wrapper for The QString with boolean flag isKey." alt="" coords="16,835,171,1198"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamMultiversion.html" title="The StreamMultiversion class this parser works with simple multiversion packages." alt="" coords="5,514,181,787"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,800,96,836,91,835,93,805"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="27,126,160,466"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,478,96,514,91,514,93,483"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="22,5,165,78"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="93,90,96,126,91,126,93,95"/>
+</map>

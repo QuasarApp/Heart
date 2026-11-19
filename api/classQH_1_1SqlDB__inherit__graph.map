@@ -1,5 +1,5 @@
 <map id="QH::SqlDB" name="QH::SqlDB">
-<area shape="rect" id="Node000001" title="The SqlDB class This is base implementation fo datatbase. The SqlDB do not use caches,..." alt="" coords="46,938,278,1167"/>
+<area shape="rect" id="Node000001" title="The SqlDB class This is base implementation of database. The SqlDB do not use caches,..." alt="" coords="46,938,278,1167"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1ISqlDB.html" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="46,327,278,890"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,903,165,939,159,938,161,908"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,106,68,178"/>

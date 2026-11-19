@@ -1,5 +1,5 @@
 <map id="QH::DbAddressKey::DbAddressKey" name="QH::DbAddressKey::DbAddressKey">
-<area shape="rect" id="Node000001" title="DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="5,364,250,392"/>
+<area shape="rect" id="Node000001" title="DbAddressKey This constructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="5,364,250,392"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#a31f12a82353b94ba2c8039f9050279bd" title=" " alt="" coords="298,236,495,264"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,361,352,268,351,273,160,366"/>
 <area shape="rect" id="Node000008" href="$classQH_1_1DbAddress.html#ab7916c57de8d8c8f2a19de8a08228f67" title="table This method return table name." alt="" coords="802,261,963,289"/>
@@ -20,7 +20,7 @@
 <area shape="poly" id="edge10_Node000002_Node000009" title=" " alt="" coords="445,262,588,307,583,308,445,267"/>
 <area shape="rect" id="Node000010" href="$classQH_1_1DbAddress.html#a46ea8365616f63aa904ff7cc785d4fbb" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="555,364,742,392"/>
 <area shape="poly" id="edge12_Node000002_Node000010" title=" " alt="" coords="414,262,470,305,506,328,544,349,565,359,559,359,542,354,503,333,467,309,413,267"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1DbAddress.html#a18ccb4ea8b466e53218d1dfee8943dc5" title="toString This method return a string implementation fo this object." alt="" coords="560,416,738,444"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1DbAddress.html#a18ccb4ea8b466e53218d1dfee8943dc5" title="toString This method return a string implementation of this object." alt="" coords="560,416,738,444"/>
 <area shape="poly" id="edge13_Node000002_Node000011" title=" " alt="" coords="408,262,461,330,500,368,544,401,559,410,554,410,542,405,497,372,457,333,406,267"/>
 <area shape="poly" id="edge7_Node000006_Node000004" title=" " alt="" coords="715,156,803,139,798,140,716,161"/>
 <area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="716,236,803,257,798,258,716,242"/>

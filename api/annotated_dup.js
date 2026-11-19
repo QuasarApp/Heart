@@ -12,7 +12,7 @@ var annotated_dup =
         [ "BigDataHeader", "classQH_1_1PKG_1_1BigDataHeader.html", "classQH_1_1PKG_1_1BigDataHeader" ],
         [ "BigDataPart", "classQH_1_1PKG_1_1BigDataPart.html", "classQH_1_1PKG_1_1BigDataPart" ],
         [ "BigDataRequest", "classQH_1_1PKG_1_1BigDataRequest.html", "classQH_1_1PKG_1_1BigDataRequest" ],
-        [ "BigDataWraper", "classQH_1_1PKG_1_1BigDataWraper.html", "classQH_1_1PKG_1_1BigDataWraper" ],
+        [ "BigDataWrapper", "classQH_1_1PKG_1_1BigDataWrapper.html", "classQH_1_1PKG_1_1BigDataWrapper" ],
         [ "CachedDbObjectsRequest", "classQH_1_1PKG_1_1CachedDbObjectsRequest.html", "classQH_1_1PKG_1_1CachedDbObjectsRequest" ],
         [ "CloseConnection", "classQH_1_1PKG_1_1CloseConnection.html", "classQH_1_1PKG_1_1CloseConnection" ],
         [ "CustomDBRequest", "classQH_1_1PKG_1_1CustomDBRequest.html", "classQH_1_1PKG_1_1CustomDBRequest" ],
@@ -67,8 +67,10 @@ var annotated_dup =
       [ "SqlDB", "classQH_1_1SqlDB.html", "classQH_1_1SqlDB" ],
       [ "SqlDBWriter", "classQH_1_1SqlDBWriter.html", "classQH_1_1SqlDBWriter" ],
       [ "StreamBase", "classQH_1_1StreamBase.html", "classQH_1_1StreamBase" ],
+      [ "StreamMultiversion", "classQH_1_1StreamMultiversion.html", "classQH_1_1StreamMultiversion" ],
       [ "TaskScheduler", "classQH_1_1TaskScheduler.html", "classQH_1_1TaskScheduler" ],
       [ "TcpSocket", "classQH_1_1TcpSocket.html", "classQH_1_1TcpSocket" ],
+      [ "TranslatableString", "classQH_1_1TranslatableString.html", "classQH_1_1TranslatableString" ],
       [ "WorkState", "classQH_1_1WorkState.html", "classQH_1_1WorkState" ]
     ] ]
 ];

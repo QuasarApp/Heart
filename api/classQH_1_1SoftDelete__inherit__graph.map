@@ -4,6 +4,6 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,162,173,194,168,192,180,157"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1ISqlDB.html" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="199,204,432,768"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,157,240,204,235,204,225,162"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation fo datatbase. The SqlDB do not use caches,..." alt="" coords="199,827,432,1055"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation of database. The SqlDB do not use caches,..." alt="" coords="199,827,432,1055"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="317,780,318,828,313,826,314,785"/>
 </map>

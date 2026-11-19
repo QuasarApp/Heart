@@ -1,0 +1,5 @@
+<map id="QH::StreamMultiversion::versionHeader" name="QH::StreamMultiversion::versionHeader">
+<area shape="rect" id="Node000001" title="versionHeader this is new function that automaticaly choose what shuld be to&#45;do (read/wirte)." alt="" coords="5,5,183,50"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1StreamMultiversion.html#acead87b69451cd1ed841d9e5da7b0425" title="saveVersion save version of the object to the stream." alt="" coords="231,5,408,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,25,218,27,212,28,183,30"/>
+</map>

@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -125,52 +125,53 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('badrequest_8h_
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#ifndef BADREQUEST_H</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#define BADREQUEST_H</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="abstractdata_8h.html">abstractdata.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="abstracterrorcodes_8h.html">abstracterrorcodes.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceQH.html">QH</a>{</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceQH_1_1PKG.html">PKG</a> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span></div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structQH_1_1PKG_1_1ErrorData.html">   20</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structQH_1_1PKG_1_1ErrorData.html">ErrorData</a> {</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="structQH_1_1PKG_1_1ErrorData.html#a6f80cf14a6e7a8c938e4bc09dc2b385c">   24</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code hl_variable" href="structQH_1_1PKG_1_1ErrorData.html#a6f80cf14a6e7a8c938e4bc09dc2b385c">code</a> = 0;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structQH_1_1PKG_1_1ErrorData.html#aa2338a2a63b0f08369016bbd2e9c3b2a">   28</a></span>    QString <a class="code hl_variable" href="structQH_1_1PKG_1_1ErrorData.html#aa2338a2a63b0f08369016bbd2e9c3b2a">msg</a>;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>};</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;heart_global.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="abstractdata_8h.html">abstractdata.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="abstracterrorcodes_8h.html">abstracterrorcodes.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceQH.html">QH</a>{</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceQH_1_1PKG.html">PKG</a> {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span></div>
+<div class="foldopen" id="foldopen00021" data-start="{" data-end="};">
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="structQH_1_1PKG_1_1ErrorData.html">   21</a></span><span class="keyword">struct </span>HEARTSHARED_EXPORT <a class="code hl_struct" href="structQH_1_1PKG_1_1ErrorData.html">ErrorData</a> {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structQH_1_1PKG_1_1ErrorData.html#a6f80cf14a6e7a8c938e4bc09dc2b385c">   25</a></span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code hl_variable" href="structQH_1_1PKG_1_1ErrorData.html#a6f80cf14a6e7a8c938e4bc09dc2b385c">code</a> = 0;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="structQH_1_1PKG_1_1ErrorData.html#aa2338a2a63b0f08369016bbd2e9c3b2a">   29</a></span>    QString <a class="code hl_variable" href="structQH_1_1PKG_1_1ErrorData.html#aa2338a2a63b0f08369016bbd2e9c3b2a">msg</a>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
 </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span></div>
-<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classQH_1_1PKG_1_1BadRequest.html">   34</a></span><span class="keyword">class </span>HEARTSHARED_EXPORT <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a> : <span class="keyword">public</span> <a class="code hl_function" href="classQH_1_1PKG_1_1AbstractData.html#adde67dac24261cb7a4b5ce865e7fb3c0">AbstractData</a></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_define" href="abstractdata_8h.html#a18b352069f5c4ccb60a0936c829f2972">QH_PACKAGE</a>(<span class="stringliteral">&quot;BadRequest&quot;</span>)</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> errocode = <a class="code hl_enumvalue" href="namespaceQH_1_1ErrorCodes.html#af74ba82769709cc90936d385629992e4a45891bda4e9551a0c7bb1f3df8997ea2">ErrorCodes::InvalidRequest</a>, <span class="keyword">const</span> QString &amp; <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c">err</a> = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structQH_1_1PKG_1_1ErrorData.html">ErrorData</a>&amp; data);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a>(<span class="keyword">const</span> <a class="code hl_class" href="classQH_1_1Package.html">Package</a>&amp; package);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    QString <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c">err</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a7d13c8e8dfa93f1f82ea1986219541b1">setErr</a>(<span class="keyword">const</span> QString &amp;<a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c">err</a>);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="comment">// StreamBase interface</span></div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    QDataStream &amp;<a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a80909a0565f29de8e7450ffaf2c75dc7">fromStream</a>(QDataStream &amp;stream) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    QDataStream &amp;<a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a8c89cdc6a265b13c725fa4effd8c4917">toStream</a>(QDataStream &amp;stream) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a2a40d248764179aada21db74855e8c21">errCode</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0ade1a713015f14614111645ba1d0f27">setErrCode</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> code);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    QString _err;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> _errCode;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>};</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span></div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="};">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classQH_1_1PKG_1_1BadRequest.html">   35</a></span><span class="keyword">class </span>HEARTSHARED_EXPORT <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a> : <span class="keyword">public</span> <a class="code hl_function" href="classQH_1_1PKG_1_1AbstractData.html#adde67dac24261cb7a4b5ce865e7fb3c0">AbstractData</a></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_define" href="abstractdata_8h.html#a18b352069f5c4ccb60a0936c829f2972">QH_PACKAGE</a>(<span class="stringliteral">&quot;BadRequest&quot;</span>)</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> errocode = <a class="code hl_enumvalue" href="namespaceQH_1_1ErrorCodes.html#af74ba82769709cc90936d385629992e4a45891bda4e9551a0c7bb1f3df8997ea2">ErrorCodes::InvalidRequest</a>, <span class="keyword">const</span> QString &amp; <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c">err</a> = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structQH_1_1PKG_1_1ErrorData.html">ErrorData</a>&amp; data);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">BadRequest</a>(<span class="keyword">const</span> <a class="code hl_class" href="classQH_1_1Package.html">Package</a>&amp; package);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    QString <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c">err</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a7d13c8e8dfa93f1f82ea1986219541b1">setErr</a>(<span class="keyword">const</span> QString &amp;<a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0d1e2e6db058733eacd7f72872cea16c">err</a>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="comment">// StreamBase interface</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    QDataStream &amp;<a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a80909a0565f29de8e7450ffaf2c75dc7">fromStream</a>(QDataStream &amp;stream) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    QDataStream &amp;<a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a8c89cdc6a265b13c725fa4effd8c4917">toStream</a>(QDataStream &amp;stream) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a2a40d248764179aada21db74855e8c21">errCode</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classQH_1_1PKG_1_1BadRequest.html#a0ade1a713015f14614111645ba1d0f27">setErrCode</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> code);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    QString _err;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> _errCode;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>};</div>
 </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>}</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">#endif </span><span class="comment">// BADREQUEST_H</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">#endif </span><span class="comment">// BADREQUEST_H</span></div>
 <div class="ttc" id="aabstractdata_8h_html"><div class="ttname"><a href="abstractdata_8h.html">abstractdata.h</a></div></div>
 <div class="ttc" id="aabstractdata_8h_html_a18b352069f5c4ccb60a0936c829f2972"><div class="ttname"><a href="abstractdata_8h.html#a18b352069f5c4ccb60a0936c829f2972">QH_PACKAGE</a></div><div class="ttdeci">#define QH_PACKAGE(S)</div><div class="ttdoc">QH_PACKAGE This macross prepare data to send and create a global id for package. For get global id us...</div><div class="ttdef"><b>Definition</b> <a href="abstractdata_8h_source.html#l00034">abstractdata.h:34</a></div></div>
 <div class="ttc" id="aabstracterrorcodes_8h_html"><div class="ttname"><a href="abstracterrorcodes_8h.html">abstracterrorcodes.h</a></div></div>
@@ -184,11 +185,11 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('badrequest_8h_
 <div class="ttc" id="aclassQH_1_1PKG_1_1BadRequest_html_aa9723fd7e61da984ccb4c09ad1a5b913"><div class="ttname"><a href="classQH_1_1PKG_1_1BadRequest.html#aa9723fd7e61da984ccb4c09ad1a5b913">QH::PKG::BadRequest::BadRequest</a></div><div class="ttdeci">BadRequest(unsigned char errocode=ErrorCodes::InvalidRequest, const QString &amp;err=&quot;&quot;)</div><div class="ttdoc">BadRequest.</div><div class="ttdef"><b>Definition</b> <a href="badrequest_8cpp_source.html#l00016">badrequest.cpp:16</a></div></div>
 <div class="ttc" id="aclassQH_1_1Package_html"><div class="ttname"><a href="classQH_1_1Package.html">QH::Package</a></div><div class="ttdoc">The Package struct. This is base structure for transporting data by network between QH nodes....</div><div class="ttdef"><b>Definition</b> <a href="package_8h_source.html#l00023">package.h:23</a></div></div>
 <div class="ttc" id="anamespaceQH_1_1ErrorCodes_html_af74ba82769709cc90936d385629992e4a45891bda4e9551a0c7bb1f3df8997ea2"><div class="ttname"><a href="namespaceQH_1_1ErrorCodes.html#af74ba82769709cc90936d385629992e4a45891bda4e9551a0c7bb1f3df8997ea2">QH::ErrorCodes::InvalidRequest</a></div><div class="ttdeci">@ InvalidRequest</div><div class="ttdoc">The sender to remote nodes request is invalid. This is default value.</div><div class="ttdef"><b>Definition</b> <a href="abstracterrorcodes_8h_source.html#l00082">abstracterrorcodes.h:82</a></div></div>
-<div class="ttc" id="anamespaceQH_1_1PKG_html"><div class="ttname"><a href="namespaceQH_1_1PKG.html">QH::PKG</a></div><div class="ttdoc">The PKG namesapce - this namespace contains all default packages of the Heart library....</div><div class="ttdef"><b>Definition</b> <a href="heart_8h_source.html#l00211">heart.h:211</a></div></div>
+<div class="ttc" id="anamespaceQH_1_1PKG_html"><div class="ttname"><a href="namespaceQH_1_1PKG.html">QH::PKG</a></div><div class="ttdoc">The PKG namespace - this namespace contains all default packages of the Heart library....</div><div class="ttdef"><b>Definition</b> <a href="heart_8h_source.html#l00211">heart.h:211</a></div></div>
 <div class="ttc" id="anamespaceQH_html"><div class="ttname"><a href="namespaceQH.html">QH</a></div><div class="ttdoc">The QH namespace - QuasarApp Heart namespace. This namespace contains all classes of the Heart librar...</div><div class="ttdef"><b>Definition</b> <a href="heart_8cpp_source.html#l00013">heart.cpp:13</a></div></div>
-<div class="ttc" id="astructQH_1_1PKG_1_1ErrorData_html"><div class="ttname"><a href="structQH_1_1PKG_1_1ErrorData.html">QH::PKG::ErrorData</a></div><div class="ttdoc">The ErrorData struct is simple structure for contains data of the error.</div><div class="ttdef"><b>Definition</b> <a href="#l00020">badrequest.h:20</a></div></div>
-<div class="ttc" id="astructQH_1_1PKG_1_1ErrorData_html_a6f80cf14a6e7a8c938e4bc09dc2b385c"><div class="ttname"><a href="structQH_1_1PKG_1_1ErrorData.html#a6f80cf14a6e7a8c938e4bc09dc2b385c">QH::PKG::ErrorData::code</a></div><div class="ttdeci">unsigned char code</div><div class="ttdoc">code This is code of error. By Default this member equals EccorCodes::UnknownError.</div><div class="ttdef"><b>Definition</b> <a href="#l00024">badrequest.h:24</a></div></div>
-<div class="ttc" id="astructQH_1_1PKG_1_1ErrorData_html_aa2338a2a63b0f08369016bbd2e9c3b2a"><div class="ttname"><a href="structQH_1_1PKG_1_1ErrorData.html#aa2338a2a63b0f08369016bbd2e9c3b2a">QH::PKG::ErrorData::msg</a></div><div class="ttdeci">QString msg</div><div class="ttdoc">msg This is message of error.</div><div class="ttdef"><b>Definition</b> <a href="#l00028">badrequest.h:28</a></div></div>
+<div class="ttc" id="astructQH_1_1PKG_1_1ErrorData_html"><div class="ttname"><a href="structQH_1_1PKG_1_1ErrorData.html">QH::PKG::ErrorData</a></div><div class="ttdoc">The ErrorData struct is simple structure for contains data of the error.</div><div class="ttdef"><b>Definition</b> <a href="#l00021">badrequest.h:21</a></div></div>
+<div class="ttc" id="astructQH_1_1PKG_1_1ErrorData_html_a6f80cf14a6e7a8c938e4bc09dc2b385c"><div class="ttname"><a href="structQH_1_1PKG_1_1ErrorData.html#a6f80cf14a6e7a8c938e4bc09dc2b385c">QH::PKG::ErrorData::code</a></div><div class="ttdeci">unsigned char code</div><div class="ttdoc">code This is code of error. By Default this member equals EccorCodes::UnknownError.</div><div class="ttdef"><b>Definition</b> <a href="#l00025">badrequest.h:25</a></div></div>
+<div class="ttc" id="astructQH_1_1PKG_1_1ErrorData_html_aa2338a2a63b0f08369016bbd2e9c3b2a"><div class="ttname"><a href="structQH_1_1PKG_1_1ErrorData.html#aa2338a2a63b0f08369016bbd2e9c3b2a">QH::PKG::ErrorData::msg</a></div><div class="ttdeci">QString msg</div><div class="ttdoc">msg This is message of error.</div><div class="ttdef"><b>Definition</b> <a href="#l00029">badrequest.h:29</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

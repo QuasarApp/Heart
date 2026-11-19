@@ -1,6 +1,6 @@
 <map id="QH::DataBase::upgradeDataBase" name="QH::DataBase::upgradeDataBase">
 <area shape="rect" id="Node000001" title="upgradeDataBase This method upgrade data base to actyaly database version." alt="" coords="702,32,939,60"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="195,32,374,60"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initialize database of this node or server." alt="" coords="195,32,374,60"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="684,47,374,48,374,43,689,45"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1DataBase.html#a91bcaebc9a0f58940ddf4b5acfcfdb2d" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="422,57,654,85"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="689,58,655,63,655,58,684,58"/>

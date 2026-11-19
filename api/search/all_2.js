@@ -26,7 +26,7 @@ var searchData=
   ['bigdatarequest_23',['BigDataRequest',['../classQH_1_1PKG_1_1BigDataRequest.html',1,'QH::PKG::BigDataRequest'],['../classQH_1_1PKG_1_1BigDataRequest.html#a21b5f5d1678518489daeb886f214aa5b',1,'QH::PKG::BigDataRequest::BigDataRequest()']]],
   ['bigdatarequest_2ecpp_24',['bigdatarequest.cpp',['../bigdatarequest_8cpp.html',1,'']]],
   ['bigdatarequest_2eh_25',['bigdatarequest.h',['../bigdatarequest_8h.html',1,'']]],
-  ['bigdatawraper_26',['BigDataWraper',['../classQH_1_1PKG_1_1BigDataWraper.html',1,'QH::PKG::BigDataWraper'],['../classQH_1_1PKG_1_1BigDataWraper.html#a34cb1e352b314e53be25a6e986f109c6',1,'QH::PKG::BigDataWraper::BigDataWraper()']]],
-  ['bigdatawraper_2ecpp_27',['bigdatawraper.cpp',['../bigdatawraper_8cpp.html',1,'']]],
-  ['bigdatawraper_2eh_28',['bigdatawraper.h',['../bigdatawraper_8h.html',1,'']]]
+  ['bigdatawrapper_26',['BigDataWrapper',['../classQH_1_1PKG_1_1BigDataWrapper.html',1,'QH::PKG::BigDataWrapper'],['../classQH_1_1PKG_1_1BigDataWrapper.html#adea93fbfffdd5be1225480471721ea91',1,'QH::PKG::BigDataWrapper::BigDataWrapper()']]],
+  ['bigdatawrapper_2ecpp_27',['bigdatawrapper.cpp',['../bigdatawrapper_8cpp.html',1,'']]],
+  ['bigdatawrapper_2eh_28',['bigdatawrapper.h',['../bigdatawrapper_8h.html',1,'']]]
 ];

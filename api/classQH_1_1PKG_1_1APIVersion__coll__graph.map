@@ -1,5 +1,5 @@
 <map id="QH::PKG::APIVersion" name="QH::PKG::APIVersion">
-<area shape="rect" id="Node000001" title="The APIVersion class This is base pacakge class that send information about supported api version on ..." alt="" coords="73,858,245,1198"/>
+<area shape="rect" id="Node000001" title="The APIVersion class This is base package class that send information about supported api version on ..." alt="" coords="73,858,245,1198"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html" title="The AbstractData class is provide base functions for transport data by network For create you own pac..." alt="" coords="80,514,239,810"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,822,162,858,157,857,159,827"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1StreamBase.html" title="The StreamBase class add support streaming data for all children classes. For correctly working all s..." alt="" coords="10,126,143,466"/>

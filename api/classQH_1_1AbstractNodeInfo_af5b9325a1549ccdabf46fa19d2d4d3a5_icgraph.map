@@ -6,7 +6,7 @@
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1525,136,1482,100,1430,65,1398,50,1399,45,1433,60,1485,96,1530,138"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#ab1c0a2096e4503bf776156a15f6bd91f" title="ban This node, set trust value to 0." alt="" coords="1220,74,1414,102"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1497,141,1430,117,1388,105,1388,99,1432,112,1502,142"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="1202,126,1431,154"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected from node (server)." alt="" coords="1202,126,1431,154"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="1461,158,1432,157,1432,151,1466,158"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a5b5fedac71ba0a760da283867231a2e1" title="setSct This method sets a new socket for this node or client." alt="" coords="1236,177,1398,222"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="1461,182,1399,193,1398,187,1467,182"/>

@@ -1,6 +1,6 @@
 <map id="QH::PKG::BigDataBase" name="QH::PKG::BigDataBase">
-<area shape="rect" id="Node000001" title="The BigDataBase class This is base class of big data parts. This class contains id of movving pacakge..." alt="" coords="209,858,366,1064"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1BigDataHeader.html" title="The BigDataHeader class is first empty pacakge with information of big data package." alt="" coords="5,1112,178,1363"/>
+<area shape="rect" id="Node000001" title="The BigDataBase class This is base class of big data parts. This class contains id of movving package..." alt="" coords="209,858,366,1064"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1BigDataHeader.html" title="The BigDataHeader class is first empty package with information of big data package." alt="" coords="5,1112,178,1363"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="205,1078,180,1117,176,1114,208,1074"/>
 <area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1BigDataPart.html" title="The BigDataPart class This data class used for transporting big data files greater than 64kb." alt="" coords="202,1112,373,1363"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="289,1076,290,1113,285,1111,286,1081"/>

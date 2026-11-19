@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="multiVersionPackages return list of the supported multiversions packages." alt="" coords="618,36,802,81"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#a3855b45e77e06cd2f20ec8ab19144553" title="parserId This is id of the parsers. All parser will be synced betwin nodes by ids." alt="" coords="414,14,568,42"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="600,43,569,41,569,36,606,43"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="412,65,570,110"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="412,65,570,110"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="606,72,571,80,571,74,601,73"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,14,364,42"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,37,364,39,364,34,401,36"/>

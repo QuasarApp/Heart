@@ -1,5 +1,5 @@
 <map id="QH::PKG::DBObject::primaryValue" name="QH::PKG::DBObject::primaryValue">
-<area shape="rect" id="Node000001" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="1587,597,1740,642"/>
+<area shape="rect" id="Node000001" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="1587,597,1740,642"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#a69cc754770d581b2442e60b7185d86e0" title="condition This method must to return a condition of the WHERE block of the sql query...." alt="" coords="1184,417,1337,462"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1638,583,1597,531,1569,504,1537,483,1488,462,1436,449,1384,442,1338,439,1337,434,1385,437,1437,444,1490,457,1540,478,1572,500,1601,527,1644,585"/>
 <area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1DBObject.html#af532ef59ced4b1768cc1902f8a68e67c" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="983,537,1136,582"/>

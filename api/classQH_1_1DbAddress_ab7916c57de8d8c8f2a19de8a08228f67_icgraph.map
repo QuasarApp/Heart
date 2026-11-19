@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="table This method return table name." alt="" coords="1035,137,1195,165"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#a31f12a82353b94ba2c8039f9050279bd" title=" " alt="" coords="544,133,741,161"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1073,129,1033,113,986,98,931,88,888,85,845,89,790,98,728,114,675,135,673,130,726,109,789,93,844,84,888,80,932,83,987,93,1035,108,1079,130"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,5,496,33"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This constructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,5,496,33"/>
 <area shape="poly" id="edge14_Node000001_Node000004" title=" " alt="" coords="1083,127,1039,98,986,72,923,54,858,40,727,22,603,15,497,15,496,10,603,9,728,16,859,34,925,49,988,67,1042,94,1088,128"/>
 <area shape="rect" id="Node000009" href="$classQH_1_1DbAddress.html#a1d2f41fda1a8e6d0ccc08ad7aa7792f0" title="DbAddress this constructor initialize a default database address." alt="" coords="789,107,987,134"/>
 <area shape="poly" id="edge13_Node000001_Node000009" title=" " alt="" coords="1017,138,987,137,987,131,1022,138"/>

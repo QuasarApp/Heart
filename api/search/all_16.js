@@ -1,7 +1,7 @@
 var searchData=
 [
   ['wait_5fconfirm_5ftime_0',['WAIT_CONFIRM_TIME',['../config_8h.html#aa612ed37837474f375afab8d1dc89674',1,'config.h']]],
-  ['wait_5frespoce_5ftime_1',['WAIT_RESPOCE_TIME',['../config_8h.html#aafc9e5578e662388de665f933b8f6932',1,'config.h']]],
+  ['wait_5fresponse_5ftime_1',['WAIT_RESPONSE_TIME',['../config_8h.html#ad3d6f1580dad125a963e13e72e603211',1,'config.h']]],
   ['wait_5ftime_2',['WAIT_TIME',['../config_8h.html#ae7676cdfa371dfdcf6fb0687737c29a6',1,'config.h']]],
   ['waitfor_3',['waitFor',['../classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268',1,'QH::Async::waitFor(bool *condition, int timeout=WAIT_TIME, bool freaze=true) const'],['../classQH_1_1Async.html#ac9064eb611904127f4965f32d8b2fd9c',1,'QH::Async::waitFor(const Job &amp;condition, int timeout=WAIT_TIME, bool freaze=true) const']]],
   ['waitforstop_4',['waitForStop',['../classQH_1_1AsyncLauncher.html#ade68ea8623473e7158137d073d14e005',1,'QH::AsyncLauncher']]],

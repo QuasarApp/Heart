@@ -1,0 +1,41 @@
+<map id="QH::TranslatableString::operator=" name="QH::TranslatableString::operator=">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,325,172,370"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1TranslatableString.html#ae71b66ddb85c90966c1e9882b173e80e" title=" " alt="" coords="434,117,629,145"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,324,110,283,136,233,171,184,193,163,218,145,272,123,329,112,387,109,441,114,437,116,387,114,330,117,273,128,221,150,197,167,175,187,140,236,115,285,99,325"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1TranslatableString.html#a354964b513b70e80e14dc79f86e1174d" title=" " alt="" coords="683,109,849,154"/>
+<area shape="poly" id="edge23_Node000001_Node000003" title=" " alt="" coords="92,324,105,276,129,216,146,186,166,156,190,130,218,109,276,82,338,65,402,58,467,58,529,65,589,75,690,103,685,105,587,80,529,70,466,64,402,63,339,70,278,87,221,114,194,134,170,160,150,188,134,219,110,278,97,325"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1TranslatableString.html#adacffae4e761e1a577a53497ce18cd53" title="calcCrc32Hash this method calc hash from raw text." alt="" coords="220,354,386,399"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,356,207,362,202,364,173,361"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1TranslatableString.html#ad464b22fea0c226f30ac307f4a63e805" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="220,424,386,468"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="134,367,221,409,235,416,230,418,219,414,135,373"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1TranslatableString.html#aa60d734658ea21518705b39c9648ed99" title=" " alt="" coords="220,562,386,607"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="99,367,119,407,145,455,180,504,221,548,227,553,222,554,218,552,175,508,141,457,114,409,99,373"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1TranslatableString.html#ab2063bf0013a8332347f1bbbca317321" title=" " alt="" coords="220,632,386,676"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="95,368,112,420,136,486,172,556,195,588,222,617,226,623,221,622,218,621,191,592,168,558,131,488,106,421,95,373"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1TranslatableString.html#a9045ebd88fb9ce5f2c97c2768998a232" title=" " alt="" coords="448,185,615,230"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="161,322,445,232,443,237,163,327"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1TranslatableString.html#ac2b1a15cbf5cb6a84a2a721623eff484" title="rawText return raw key source." alt="" coords="220,701,386,746"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="93,367,105,431,127,516,144,561,165,606,191,649,222,687,225,692,220,690,218,690,186,652,160,609,139,563,122,517,100,432,92,373"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1TranslatableString.html#a30695d84190f60a92c83190d5471a0ea" title="setArgs this method set args for translation." alt="" coords="448,286,615,331"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="171,337,434,315,431,319,173,343"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1TranslatableString.html#a52b416e69edfde9d1a791da797c65d25" title="text this method return translated text." alt="" coords="220,184,386,228"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="114,323,162,285,218,245,241,234,238,238,221,249,165,289,118,326"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1TranslatableString.html#a414c9c1c4c9d727c8bec8777c5281615" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="220,493,386,538"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="107,367,156,422,187,452,221,478,230,485,224,486,218,483,184,456,153,426,107,372"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1TranslatableString.html#a0d157ef68c077847fd13598c4007e921" title="tr this method create a string translation wrapper and save translation key for lupdate tool" alt="" coords="440,7,624,34"/>
+<area shape="poly" id="edge21_Node000001_Node000016" title=" " alt="" coords="90,324,100,267,122,192,138,152,160,114,186,79,218,50,266,25,319,10,373,4,426,5,422,8,373,9,320,15,268,30,221,55,190,83,164,117,143,154,127,193,105,268,95,325"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="629,129,670,130,665,132,631,134"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1StreamMultiversion.html#ac9f6c0fad305566599552e608da51238" title="readWrite this method automaticaly choose what we need to&#45;do read or write." alt="" coords="443,493,620,538"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="379,466,444,487,439,489,379,471"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1StreamMultiversion.html#ac9079f1d42455949db08b8a84486c813" title="versionHeader this is new function that automaticaly choose what shuld be to&#45;do (read/wirte)." alt="" coords="443,424,620,468"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="386,443,430,445,425,447,387,448"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1StreamMultiversion.html#af777c2f1bee3f75859c2930da21ee26f" title="readVersion read version of the object from the stream." alt="" coords="677,424,855,468"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="620,443,664,445,659,447,621,449"/>
+<area shape="poly" id="edge11_Node000011_Node000003" title=" " alt="" coords="601,182,683,157,678,160,604,187"/>
+<area shape="poly" id="edge14_Node000013_Node000003" title=" " alt="" coords="566,284,628,240,729,162,725,165,631,244,569,288"/>
+<area shape="poly" id="edge16_Node000014_Node000002" title=" " alt="" coords="372,181,474,149,470,152,375,185"/>
+<area shape="poly" id="edge17_Node000014_Node000014" title=" " alt="" coords="262,183,260,173,267,165,282,159,303,157,326,159,341,168,336,169,325,165,303,162,283,164,271,169,266,175,267,183"/>
+<area shape="poly" id="edge19_Node000015_Node000006" title=" " alt="" coords="386,513,430,514,425,516,387,518"/>
+<area shape="poly" id="edge20_Node000015_Node000007" title=" " alt="" coords="378,490,444,472,439,474,380,495"/>
+<area shape="poly" id="edge22_Node000016_Node000003" title=" " alt="" coords="582,32,630,50,720,100,715,101,628,55,583,38"/>
+</map>

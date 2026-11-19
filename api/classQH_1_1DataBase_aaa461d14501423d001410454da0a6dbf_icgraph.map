@@ -8,9 +8,9 @@
 <area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="1791,224,1596,250,1485,258,1374,261,537,261,422,255,309,239,208,219,130,200,130,194,209,213,310,234,423,250,537,256,1374,256,1485,253,1596,245,1786,225"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#ae6b6601496dcf13a56c3ac45fda90d95" title="backUp This method make a backup of database." alt="" coords="1288,118,1457,146"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1487,132,1458,135,1458,129,1492,132"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="195,68,374,95"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initialize database of this node or server." alt="" coords="195,68,374,95"/>
 <area shape="poly" id="edge12_Node000002_Node000006" title=" " alt="" coords="1571,112,1488,83,1375,48,1247,20,1180,11,1115,8,819,8,707,11,620,20,422,53,344,70,342,64,422,48,619,14,707,6,819,3,1115,3,1181,6,1248,14,1377,43,1490,78,1576,112"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#aded8da0f6bae3cd149b775ef5c24f253" title="onBeforeDBUpgrade This method will be invoked before upgrade database." alt="" coords="987,93,1240,120"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#a7205a30aa2af35f9b6838a090d7e2728" title="onBeforeDBUpgrade This method will be invoked before upgrade database." alt="" coords="987,93,1240,120"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1270,122,1241,122,1241,116,1275,122"/>
 <area shape="poly" id="edge11_Node000003_Node000005" title=" " alt="" coords="1270,134,987,135,655,118,655,112,987,129,1275,133"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="968,107,655,109,655,104,973,106"/>

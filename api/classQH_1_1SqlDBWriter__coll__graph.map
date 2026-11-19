@@ -1,5 +1,5 @@
 <map id="QH::SqlDBWriter" name="QH::SqlDBWriter">
-<area shape="rect" id="Node000001" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="77,447,227,899"/>
+<area shape="rect" id="Node000001" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="78,447,226,899"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1Async.html" title="The Async class This is bundle of async templates and async wrappers." alt="" coords="5,182,139,343"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,355,111,447,106,447,91,360"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="41,5,104,78"/>

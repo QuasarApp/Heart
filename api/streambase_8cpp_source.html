@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -148,87 +148,90 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('streambase_8cp
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <a class="code hl_function" href="classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c">fromStream</a>(stream);</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    Q_ASSERT_X(isValid(), __FUNCTION__, <span class="stringliteral">&quot;Parsing error detected, check your parsing chain&quot;</span>);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    Q_ASSERT_X(isValid(), __FUNCTION__,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>               QString(<span class="stringliteral">&quot;Parsing error detected, check your parsing chain %0&quot;</span>).</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>               arg(<span class="keyword">typeid</span>(*this).name()).toLatin1());</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
 </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="foldopen" id="foldopen00038" data-start="{" data-end="}">
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">   38</a></span>QByteArray <a class="code hl_function" href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">StreamBase::toBytes</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    QByteArray res;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    QDataStream stream(&amp;res, QIODevice::WriteOnly);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">parsingVersion</a>()) {</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        stream.setVersion(<a class="code hl_function" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">parsingVersion</a>());</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    Q_ASSERT_X(isValid(), __FUNCTION__, <span class="stringliteral">&quot;Parsing error detected, check your parsing chain&quot;</span>);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_function" href="classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba">toStream</a>(stream);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">return</span> res;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="foldopen" id="foldopen00039" data-start="{" data-end="}">
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">   39</a></span>QByteArray <a class="code hl_function" href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">StreamBase::toBytes</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    QByteArray res;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    QDataStream stream(&amp;res, QIODevice::WriteOnly);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">parsingVersion</a>()) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        stream.setVersion(<a class="code hl_function" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">parsingVersion</a>());</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    Q_ASSERT_X(isValid(), __FUNCTION__,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>               QString(<span class="stringliteral">&quot;Parsing error detected, check your parsing chain %0&quot;</span>).</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                   arg(<span class="keyword">typeid</span>(*this).name()).toLatin1());</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_function" href="classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba">toStream</a>(stream);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> res;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">   52</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">StreamBase::fromBase64</a>(<span class="keyword">const</span> QString &amp;data) {</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">fromBase64</a>(data.toLatin1());</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">   55</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">StreamBase::fromBase64</a>(<span class="keyword">const</span> QString &amp;data) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">fromBase64</a>(data.toLatin1());</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>}</div>
 </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a43522cd09c37ab3fcb6d75854691fb55">   56</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">StreamBase::fromBase64</a>(<span class="keyword">const</span> QByteArray &amp;data) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391">fromBytes</a>(QByteArray::fromBase64(data, QByteArray::Base64UrlEncoding));</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>}</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a43522cd09c37ab3fcb6d75854691fb55">   59</a></span><span class="keywordtype">bool</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">StreamBase::fromBase64</a>(<span class="keyword">const</span> QByteArray &amp;data) {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391">fromBytes</a>(QByteArray::fromBase64(data, QByteArray::Base64UrlEncoding));</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>}</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#ad9cb9f6abbd5efe8c0e9cdacc3a5bf71">   60</a></span>QByteArray <a class="code hl_function" href="classQH_1_1StreamBase.html#ad9cb9f6abbd5efe8c0e9cdacc3a5bf71">StreamBase::toBase64</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">toBytes</a>().toBase64(QByteArray::Base64UrlEncoding);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#ad9cb9f6abbd5efe8c0e9cdacc3a5bf71">   63</a></span>QByteArray <a class="code hl_function" href="classQH_1_1StreamBase.html#ad9cb9f6abbd5efe8c0e9cdacc3a5bf71">StreamBase::toBase64</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">toBytes</a>().toBase64(QByteArray::Base64UrlEncoding);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
 </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
-<div class="foldopen" id="foldopen00064" data-start="{" data-end="}">
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">   64</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">StreamBase::parsingVersion</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">   67</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">StreamBase::parsingVersion</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>}</div>
 </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="foldopen" id="foldopen00068" data-start="{" data-end="}">
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1">   68</a></span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1">StreamBase::typeId</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">return</span> <span class="keyword">typeid</span> (<span class="keyword">this</span>).hash_code();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>}</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1">   71</a></span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1">StreamBase::typeId</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> <span class="keyword">typeid</span> (<span class="keyword">this</span>).hash_code();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
 </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
-<div class="foldopen" id="foldopen00072" data-start="{" data-end="}">
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8">   72</a></span>QDataStream &amp;<a class="code hl_friend" href="classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8">operator&lt;&lt;</a>(QDataStream &amp;stream, <span class="keyword">const</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#abc980148f91acd8fcd047bb4aa171862">StreamBase</a> &amp;obj) {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    Q_ASSERT_X(obj.isValid(), __FUNCTION__, <span class="stringliteral">&quot;Parsing error detected, check your parsing chain&quot;</span>);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">return</span> (&amp;obj)-&gt;toStream(stream);</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>}</div>
-</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8">   75</a></span>QDataStream &amp;<a class="code hl_friend" href="classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8">operator&lt;&lt;</a>(QDataStream &amp;stream, <span class="keyword">const</span> <a class="code hl_function" href="classQH_1_1StreamBase.html#abc980148f91acd8fcd047bb4aa171862">StreamBase</a> &amp;obj) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    Q_ASSERT_X(obj.isValid(), __FUNCTION__, <span class="stringliteral">&quot;Parsing error detected, check your parsing chain&quot;</span>);</div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2">   79</a></span>QDataStream &amp;<a class="code hl_friend" href="classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2">operator&gt;&gt;</a>(QDataStream &amp;stream, <a class="code hl_function" href="classQH_1_1StreamBase.html#abc980148f91acd8fcd047bb4aa171862">StreamBase</a> &amp;obj) {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    (&amp;obj)-&gt;<a class="code hl_function" href="classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c">fromStream</a>(stream);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    Q_ASSERT_X(obj.isValid(), __FUNCTION__, <span class="stringliteral">&quot;Parsing error detected, check your parsing chain&quot;</span>);</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keywordflow">return</span> stream;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordflow">return</span> (&amp;obj)-&gt;toStream(stream);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>}</div>
 </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>}</div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_a1b724e7297866b641cc7f57ce3458dd1"><div class="ttname"><a href="classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1">QH::StreamBase::typeId</a></div><div class="ttdeci">virtual unsigned int typeId() const</div><div class="ttdoc">typeId This method return id of type.</div><div class="ttdef"><b>Definition</b> <a href="#l00068">streambase.cpp:68</a></div></div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_a6b781c3a7fe49d2c14c6553fb012c999"><div class="ttname"><a href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">QH::StreamBase::parsingVersion</a></div><div class="ttdeci">virtual int parsingVersion() const</div><div class="ttdoc">parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)....</div><div class="ttdef"><b>Definition</b> <a href="#l00064">streambase.cpp:64</a></div></div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_a7716f77997562195d21525e0efcfecf0"><div class="ttname"><a href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">QH::StreamBase::toBytes</a></div><div class="ttdeci">QByteArray toBytes() const</div><div class="ttdoc">toBytes This method convert a current object to bytes array.</div><div class="ttdef"><b>Definition</b> <a href="#l00038">streambase.cpp:38</a></div></div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_a7e48742a89c739d22d5c344c0f2dd5d2"><div class="ttname"><a href="classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2">QH::StreamBase::operator&gt;&gt;</a></div><div class="ttdeci">HEARTSHARED_EXPORT friend QDataStream &amp; operator&gt;&gt;(QDataStream &amp;stream, StreamBase &amp;obj)</div><div class="ttdoc">This is wraper over fromStream. For see more information see toStream method.</div><div class="ttdef"><b>Definition</b> <a href="#l00079">streambase.cpp:79</a></div></div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2">   82</a></span>QDataStream &amp;<a class="code hl_friend" href="classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2">operator&gt;&gt;</a>(QDataStream &amp;stream, <a class="code hl_function" href="classQH_1_1StreamBase.html#abc980148f91acd8fcd047bb4aa171862">StreamBase</a> &amp;obj) {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    (&amp;obj)-&gt;<a class="code hl_function" href="classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c">fromStream</a>(stream);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    Q_ASSERT_X(obj.isValid(), __FUNCTION__, <span class="stringliteral">&quot;Parsing error detected, check your parsing chain&quot;</span>);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="keywordflow">return</span> stream;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
+</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>}</div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_a1b724e7297866b641cc7f57ce3458dd1"><div class="ttname"><a href="classQH_1_1StreamBase.html#a1b724e7297866b641cc7f57ce3458dd1">QH::StreamBase::typeId</a></div><div class="ttdeci">virtual unsigned int typeId() const</div><div class="ttdoc">typeId This method return id of type.</div><div class="ttdef"><b>Definition</b> <a href="#l00071">streambase.cpp:71</a></div></div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_a6b781c3a7fe49d2c14c6553fb012c999"><div class="ttname"><a href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999">QH::StreamBase::parsingVersion</a></div><div class="ttdeci">virtual int parsingVersion() const</div><div class="ttdoc">parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)....</div><div class="ttdef"><b>Definition</b> <a href="#l00067">streambase.cpp:67</a></div></div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_a7716f77997562195d21525e0efcfecf0"><div class="ttname"><a href="classQH_1_1StreamBase.html#a7716f77997562195d21525e0efcfecf0">QH::StreamBase::toBytes</a></div><div class="ttdeci">QByteArray toBytes() const</div><div class="ttdoc">toBytes This method convert a current object to bytes array.</div><div class="ttdef"><b>Definition</b> <a href="#l00039">streambase.cpp:39</a></div></div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_a7e48742a89c739d22d5c344c0f2dd5d2"><div class="ttname"><a href="classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2">QH::StreamBase::operator&gt;&gt;</a></div><div class="ttdeci">HEARTSHARED_EXPORT friend QDataStream &amp; operator&gt;&gt;(QDataStream &amp;stream, StreamBase &amp;obj)</div><div class="ttdoc">This is wrapper over fromStream. For see more information see toStream method.</div><div class="ttdef"><b>Definition</b> <a href="#l00082">streambase.cpp:82</a></div></div>
 <div class="ttc" id="aclassQH_1_1StreamBase_html_a801ec7c8b52ed1215767d38d7b7b781c"><div class="ttname"><a href="classQH_1_1StreamBase.html#a801ec7c8b52ed1215767d38d7b7b781c">QH::StreamBase::fromStream</a></div><div class="ttdeci">virtual QDataStream &amp; fromStream(QDataStream &amp;stream)=0</div><div class="ttdoc">fromStream This method should be read all bytes from the stream object and full the current object.</div></div>
 <div class="ttc" id="aclassQH_1_1StreamBase_html_a84c8a4e67b8902b8c3783f1a3eb34fba"><div class="ttname"><a href="classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba">QH::StreamBase::toStream</a></div><div class="ttdeci">virtual QDataStream &amp; toStream(QDataStream &amp;stream) const =0</div><div class="ttdoc">fromStream This method should be write all members of the current object to the stream object.</div></div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_a9390e17d87d94856a98d2d6c44e0d9b3"><div class="ttname"><a href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">QH::StreamBase::fromBase64</a></div><div class="ttdeci">bool fromBase64(const QString &amp;data)</div><div class="ttdoc">fromBase64 This method provide initialization of object from the base64 string.</div><div class="ttdef"><b>Definition</b> <a href="#l00052">streambase.cpp:52</a></div></div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_a988f85e3a17d0f892fb88c3fc2dc0eb8"><div class="ttname"><a href="classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8">QH::StreamBase::operator&lt;&lt;</a></div><div class="ttdeci">HEARTSHARED_EXPORT friend QDataStream &amp; operator&lt;&lt;(QDataStream &amp;stream, const StreamBase &amp;obj)</div><div class="ttdoc">This is wrapper over toStream.</div><div class="ttdef"><b>Definition</b> <a href="#l00072">streambase.cpp:72</a></div></div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_a9390e17d87d94856a98d2d6c44e0d9b3"><div class="ttname"><a href="classQH_1_1StreamBase.html#a9390e17d87d94856a98d2d6c44e0d9b3">QH::StreamBase::fromBase64</a></div><div class="ttdeci">bool fromBase64(const QString &amp;data)</div><div class="ttdoc">fromBase64 This method provide initialization of object from the base64 string.</div><div class="ttdef"><b>Definition</b> <a href="#l00055">streambase.cpp:55</a></div></div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_a988f85e3a17d0f892fb88c3fc2dc0eb8"><div class="ttname"><a href="classQH_1_1StreamBase.html#a988f85e3a17d0f892fb88c3fc2dc0eb8">QH::StreamBase::operator&lt;&lt;</a></div><div class="ttdeci">HEARTSHARED_EXPORT friend QDataStream &amp; operator&lt;&lt;(QDataStream &amp;stream, const StreamBase &amp;obj)</div><div class="ttdoc">This is wrapper over toStream.</div><div class="ttdef"><b>Definition</b> <a href="#l00075">streambase.cpp:75</a></div></div>
 <div class="ttc" id="aclassQH_1_1StreamBase_html_abc980148f91acd8fcd047bb4aa171862"><div class="ttname"><a href="classQH_1_1StreamBase.html#abc980148f91acd8fcd047bb4aa171862">QH::StreamBase::StreamBase</a></div><div class="ttdeci">StreamBase()</div></div>
 <div class="ttc" id="aclassQH_1_1StreamBase_html_ac6bb1881b3b2716143666b0d59131b49"><div class="ttname"><a href="classQH_1_1StreamBase.html#ac6bb1881b3b2716143666b0d59131b49">QH::StreamBase::~StreamBase</a></div><div class="ttdeci">virtual ~StreamBase()</div></div>
-<div class="ttc" id="aclassQH_1_1StreamBase_html_ad9cb9f6abbd5efe8c0e9cdacc3a5bf71"><div class="ttname"><a href="classQH_1_1StreamBase.html#ad9cb9f6abbd5efe8c0e9cdacc3a5bf71">QH::StreamBase::toBase64</a></div><div class="ttdeci">QByteArray toBase64() const</div><div class="ttdoc">toBase64 This method convert a current object to the base64 string.</div><div class="ttdef"><b>Definition</b> <a href="#l00060">streambase.cpp:60</a></div></div>
+<div class="ttc" id="aclassQH_1_1StreamBase_html_ad9cb9f6abbd5efe8c0e9cdacc3a5bf71"><div class="ttname"><a href="classQH_1_1StreamBase.html#ad9cb9f6abbd5efe8c0e9cdacc3a5bf71">QH::StreamBase::toBase64</a></div><div class="ttdeci">QByteArray toBase64() const</div><div class="ttdoc">toBase64 This method convert a current object to the base64 string.</div><div class="ttdef"><b>Definition</b> <a href="#l00063">streambase.cpp:63</a></div></div>
 <div class="ttc" id="aclassQH_1_1StreamBase_html_ae9f92216a15fdeb3f5742df1843c5391"><div class="ttname"><a href="classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391">QH::StreamBase::fromBytes</a></div><div class="ttdeci">bool fromBytes(const QByteArray &amp;dataz)</div><div class="ttdoc">fromBytes This method provide initialization of object from byte array.</div><div class="ttdef"><b>Definition</b> <a href="#l00021">streambase.cpp:21</a></div></div>
 <div class="ttc" id="anamespaceQH_html"><div class="ttname"><a href="namespaceQH.html">QH</a></div><div class="ttdoc">The QH namespace - QuasarApp Heart namespace. This namespace contains all classes of the Heart librar...</div><div class="ttdef"><b>Definition</b> <a href="heart_8cpp_source.html#l00013">heart.cpp:13</a></div></div>
 <div class="ttc" id="astreambase_8h_html"><div class="ttname"><a href="streambase_8h.html">streambase.h</a></div></div>

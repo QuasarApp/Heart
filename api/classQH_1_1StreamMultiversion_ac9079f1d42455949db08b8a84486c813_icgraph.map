@@ -1,0 +1,10 @@
+<map id="QH::StreamMultiversion::versionHeader" name="QH::StreamMultiversion::versionHeader">
+<area shape="rect" id="Node000001" title="versionHeader this is new function that automaticaly choose what shuld be to&#45;do (read/wirte)." alt="" coords="434,40,611,85"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1TranslatableString.html#ad464b22fea0c226f30ac307f4a63e805" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="220,5,386,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="416,46,387,43,387,38,421,46"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1TranslatableString.html#a414c9c1c4c9d727c8bec8777c5281615" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="220,75,386,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="421,78,387,86,386,81,416,79"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1TranslatableString.html#ad7137cfac203532543d1c32c764e0ac5" title=" " alt="" coords="5,40,172,85"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="202,44,173,51,171,46,207,43"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="201,81,172,78,172,73,207,81"/>
+</map>

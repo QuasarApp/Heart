@@ -1,5 +1,5 @@
 <map id="QH::AbstractNodeInfo::sigConnected" name="QH::AbstractNodeInfo::sigConnected">
-<area shape="rect" id="Node000001" title="sigConnected This is wrapper signal for the QAbstractSocket::connetced signal." alt="" coords="1412,126,1575,171"/>
+<area shape="rect" id="Node000001" title="sigConnected This is wrapper signal for the QAbstractSocket::connected signal." alt="" coords="1412,126,1575,171"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeInfo.html#a5b5fedac71ba0a760da283867231a2e1" title="setSct This method sets a new socket for this node or client." alt="" coords="1202,126,1364,171"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1394,149,1365,151,1365,146,1400,148"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a274cbc7cbd3f0176d8eb7a77bd8cab93" title="AbstractNodeInfo." alt="" coords="992,80,1154,124"/>

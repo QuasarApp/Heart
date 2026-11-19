@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,62,194,54,190,56,160,67"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObject.html#a8d312cbe9bfd1fb58f6ce16a3a384637" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="408,36,561,81"/>
 <area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="159,79,393,62,392,68,159,85"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="207,125,360,170"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="207,125,360,170"/>
 <area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="159,108,195,120,189,121,159,113"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,37,395,44,390,45,361,42"/>
 </map>

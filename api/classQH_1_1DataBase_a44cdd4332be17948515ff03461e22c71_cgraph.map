@@ -8,7 +8,7 @@
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="241,128,325,122,321,124,243,133"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1DataBase.html#a5b8f6d22537bccc03844e8381f2e7a77" title="getDBAttribute This method gets value from the default of QH DB table &quot;DataBaseAttributes&quot;." alt="" coords="308,153,525,180"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="242,149,295,155,290,157,242,154"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#aded8da0f6bae3cd149b775ef5c24f253" title="onBeforeDBUpgrade This method will be invoked before upgrade database." alt="" coords="290,205,543,232"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#a7205a30aa2af35f9b6838a090d7e2728" title="onBeforeDBUpgrade This method will be invoked before upgrade database." alt="" coords="290,205,543,232"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="168,153,290,189,330,201,324,201,289,194,168,158"/>
 <area shape="rect" id="Node000010" href="$classQH_1_1DataBase.html#a6c4dd47c696f21a0090bd4e7e058bbb7" title="setDBAttribute This method sets value for the default of QH DB table &quot;DataBaseAttributes&quot;." alt="" coords="308,257,524,284"/>
 <area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="144,153,207,197,248,221,291,241,316,252,311,252,289,246,245,226,204,202,142,158"/>

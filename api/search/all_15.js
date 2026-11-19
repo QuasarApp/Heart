@@ -5,8 +5,9 @@ var searchData=
   ['version_2',['version',['../classQH_1_1AbstractNodeParser.html#a90181d977db3d784ec4b611147694e16',1,'QH::AbstractNodeParser::version()'],['../classQH_1_1PKG_1_1APIVersion.html#ac3525e81da8cba1eebbc8cab84225b11',1,'QH::PKG::APIVersion::version()'],['../classQH_1_1BigDataParser.html#ab9dbe1bd13f86c319e5dd7f60db73a87',1,'QH::BigDataParser::version()'],['../classQH_1_1PKG_1_1VersionIsReceived.html#adfada5c24273b8a7ea91871474858750',1,'QH::PKG::VersionIsReceived::version()'],['../classQH_1_1AbstractNodeInfo.html#aa8e95bc103fc8c09705c1da17bcf6b2e',1,'QH::AbstractNodeInfo::version()'],['../classQH_1_1APIVersionParser.html#a2a4e439abcea25c522b3f9755e444880',1,'QH::APIVersionParser::version()'],['../classQH_1_1iParser.html#aee2338d36122eeb9612426a2ddfb58df',1,'QH::iParser::version()']]],
   ['versiondata_3',['VersionData',['../namespaceQH.html#a753b8ee6a12462cc4f787ef74e71fd2e',1,'QH']]],
   ['versionfrom_4',['versionFrom',['../structQH_1_1DBPatch.html#a1e6f908d76364960b3102b6c648386f2',1,'QH::DBPatch']]],
-  ['versionisreceived_5',['VersionIsReceived',['../classQH_1_1PKG_1_1VersionIsReceived.html',1,'QH::PKG::VersionIsReceived'],['../classQH_1_1PKG_1_1VersionIsReceived.html#a5f4495164ac2382091bdac80b1673b56',1,'QH::PKG::VersionIsReceived::VersionIsReceived()']]],
-  ['versionisreceived_2ecpp_6',['versionisreceived.cpp',['../versionisreceived_8cpp.html',1,'']]],
-  ['versionisreceived_2eh_7',['versionisreceived.h',['../versionisreceived_8h.html',1,'']]],
-  ['versionto_8',['versionTo',['../structQH_1_1DBPatch.html#aa22cc76ba7fe4eecd40eb09b1b94cecb',1,'QH::DBPatch']]]
+  ['versionheader_5',['versionHeader',['../classQH_1_1StreamMultiversion.html#ac9079f1d42455949db08b8a84486c813',1,'QH::StreamMultiversion::versionHeader(char version, QDataStream &amp;stream)'],['../classQH_1_1StreamMultiversion.html#a57874d5bd16d1adf9e17d2863a37b672',1,'QH::StreamMultiversion::versionHeader(char version, QDataStream &amp;stream) const']]],
+  ['versionisreceived_6',['VersionIsReceived',['../classQH_1_1PKG_1_1VersionIsReceived.html',1,'QH::PKG::VersionIsReceived'],['../classQH_1_1PKG_1_1VersionIsReceived.html#a5f4495164ac2382091bdac80b1673b56',1,'QH::PKG::VersionIsReceived::VersionIsReceived()']]],
+  ['versionisreceived_2ecpp_7',['versionisreceived.cpp',['../versionisreceived_8cpp.html',1,'']]],
+  ['versionisreceived_2eh_8',['versionisreceived.h',['../versionisreceived_8h.html',1,'']]],
+  ['versionto_9',['versionTo',['../structQH_1_1DBPatch.html#aa22cc76ba7fe4eecd40eb09b1b94cecb',1,'QH::DBPatch']]]
 ];

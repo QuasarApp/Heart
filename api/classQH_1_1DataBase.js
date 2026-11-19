@@ -19,7 +19,7 @@ var classQH_1_1DataBase =
     [ "localNodeName", "classQH_1_1DataBase.html#aaa461d14501423d001410454da0a6dbf", null ],
     [ "objectChanged", "classQH_1_1DataBase.html#ad3a44c353e41fce4ab549c947401a4b1", null ],
     [ "objectRemoved", "classQH_1_1DataBase.html#ab2da8b81ec6d2d32777bf542c55ac447", null ],
-    [ "onBeforeDBUpgrade", "classQH_1_1DataBase.html#aded8da0f6bae3cd149b775ef5c24f253", null ],
+    [ "onBeforeDBUpgrade", "classQH_1_1DataBase.html#a7205a30aa2af35f9b6838a090d7e2728", null ],
     [ "run", "classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7", null ],
     [ "run", "classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d", null ],
     [ "saveObj", "classQH_1_1DataBase.html#a6e3982c83f2745a94d9170b83077cd2e", null ],

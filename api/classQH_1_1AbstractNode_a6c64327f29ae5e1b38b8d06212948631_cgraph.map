@@ -15,20 +15,20 @@
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="370,151,588,484,583,486,368,156"/>
 <area shape="rect" id="Node000030" href="$classQH_1_1TcpSocket.html#a1004d2e1cd4b256a6e727139a58f66cd" title=" " alt="" coords="517,567,702,594"/>
 <area shape="poly" id="edge39_Node000002_Node000030" title=" " alt="" coords="361,151,369,225,378,276,391,333,409,393,435,451,468,506,510,553,514,558,509,558,506,557,464,509,430,454,404,394,385,334,372,277,364,226,359,156"/>
-<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#af6025415774163d13379f4e01e081da2" title="connectionsCount &#45; Return count fo connections (connections with status connected)" alt="" coords="759,528,983,572"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNode.html#af6025415774163d13379f4e01e081da2" title="connectionsCount &#45; Return count of connections (connections with status connected)" alt="" coords="759,528,983,572"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="707,529,746,535,741,536,708,534"/>
 <area shape="rect" id="Node000008" href="$classQH_1_1AbstractNode.html#a525c9bed45161fefcbc6d3833ff1137a" title="createNodeInfo This method create a nodeInfo object. override this method for create your own nodeInf..." alt="" coords="778,308,964,352"/>
 <area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="641,495,825,363,829,360,644,500"/>
-<area shape="rect" id="Node000018" href="$classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56" title="statusChaned This signal emitted when nodes status is changed." alt="" coords="1930,434,2092,479"/>
+<area shape="rect" id="Node000018" href="$classQH_1_1AbstractNodeInfo.html#ae575dff61305938371274996cd4651ab" title="statusChanged This signal emitted when nodes status is changed." alt="" coords="1930,434,2092,479"/>
 <area shape="poly" id="edge38_Node000006_Node000018" title=" " alt="" coords="707,514,759,513,983,513,1177,518,1328,526,1478,530,1671,522,1777,512,1881,493,1924,484,1929,483,1883,498,1778,518,1672,527,1478,535,1327,532,1176,523,983,518,759,518,708,519"/>
 <area shape="rect" id="Node000024" href="$classQH_1_1AbstractNodeInfo.html#ae6cb40339146ed9855baf67f7b3e62de" title="sigErrorOccurred This is wrapper signal for the QAbstractSocket::errorOccurred signal." alt="" coords="1496,588,1658,632"/>
 <area shape="poly" id="edge36_Node000006_Node000024" title=" " alt="" coords="684,541,713,553,736,569,760,582,857,606,957,622,1057,631,1156,635,1338,631,1483,622,1478,623,1338,637,1156,641,1057,637,956,627,856,611,758,587,733,573,710,558,683,546"/>
 <area shape="rect" id="Node000025" href="$classQH_1_1AbstractNodeInfo.html#a6b7a22230fded7af5b6b43e34e4b3862" title="sigReadyRead This is wrapper signal for the QAbstractSocket::readyRead signal." alt="" coords="1496,657,1658,702"/>
 <area shape="poly" id="edge37_Node000006_Node000025" title=" " alt="" coords="693,541,713,553,730,574,737,595,744,614,761,630,786,642,818,653,896,669,991,680,1094,686,1305,687,1483,684,1478,685,1305,693,1094,691,990,685,895,674,816,658,784,647,758,635,739,617,732,596,725,576,710,557,693,546"/>
 <area shape="poly" id="edge30_Node000006_Node000026" title=" " alt="" coords="698,541,713,553,731,579,738,606,739,631,737,657,734,682,736,706,744,730,761,753,764,758,759,756,757,757,739,732,730,707,729,681,731,656,734,631,733,606,726,582,709,557,697,546"/>
-<area shape="rect" id="Node000027" href="$classQH_1_1AbstractNode.html#a2b364d1e22a20e24ce2f26a8b62fb6eb" title="nodeAddedSucessful This method will be invoked when new node added successful." alt="" coords="762,698,980,743"/>
+<area shape="rect" id="Node000027" href="$classQH_1_1AbstractNode.html#a1ef3e146737bb4026abca175d201285a" title="nodeAddedSuccessful This method will be invoked when new node added successful." alt="" coords="762,698,980,743"/>
 <area shape="poly" id="edge31_Node000006_Node000027" title=" " alt="" coords="696,541,713,553,726,569,733,585,738,617,743,647,749,662,761,677,775,690,770,689,757,681,745,665,738,649,733,617,728,587,722,572,709,557,695,546"/>
-<area shape="rect" id="Node000028" href="$classQH_1_1AbstractNode.html#a26b8432a060a0cd8fda798e1cb228392" title="nodeErrorOccured This slot invoked when error ocured in the nodeInfo." alt="" coords="767,218,975,263"/>
+<area shape="rect" id="Node000028" href="$classQH_1_1AbstractNode.html#aaaba8fd793a778d90418c9c417a66c38" title="nodeErrorOccurred This slot invoked when error ocured in the nodeInfo." alt="" coords="767,218,975,263"/>
 <area shape="poly" id="edge32_Node000006_Node000028" title=" " alt="" coords="619,496,639,454,670,401,710,344,758,293,794,272,798,269,761,297,714,348,675,404,644,457,623,499"/>
 <area shape="rect" id="Node000009" href="$classQH_1_1AbstractNodeInfo.html#a274cbc7cbd3f0176d8eb7a77bd8cab93" title="AbstractNodeInfo." alt="" coords="1045,306,1207,351"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="964,327,1032,328,1026,330,965,332"/>
@@ -49,7 +49,7 @@
 <area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="1433,413,1483,417,1478,417,1434,418"/>
 <area shape="rect" id="Node000016" href="$classQH_1_1AbstractNodeInfo.html#a11fcc13ddb06cef4d562b50496955281" title="setStatus This method Sets new value of status node." alt="" coords="1720,369,1882,414"/>
 <area shape="poly" id="edge26_Node000014_Node000016" title=" " alt="" coords="1433,391,1482,383,1597,378,1707,383,1701,384,1597,383,1483,388,1434,396"/>
-<area shape="rect" id="Node000023" href="$classQH_1_1AbstractNodeInfo.html#adde0bea9d0457611c942c476c35501b5" title="sigConnected This is wrapper signal for the QAbstractSocket::connetced signal." alt="" coords="1496,468,1658,512"/>
+<area shape="rect" id="Node000023" href="$classQH_1_1AbstractNodeInfo.html#adde0bea9d0457611c942c476c35501b5" title="sigConnected This is wrapper signal for the QAbstractSocket::connected signal." alt="" coords="1496,468,1658,512"/>
 <area shape="poly" id="edge27_Node000014_Node000023" title=" " alt="" coords="1419,433,1498,462,1493,462,1419,438"/>
 <area shape="poly" id="edge28_Node000014_Node000024" title=" " alt="" coords="1379,433,1541,577,1536,576,1378,438"/>
 <area shape="poly" id="edge29_Node000014_Node000025" title=" " alt="" coords="1361,433,1378,478,1403,534,1439,592,1460,619,1484,643,1489,649,1484,647,1481,646,1456,622,1434,595,1399,536,1373,480,1358,438"/>
@@ -62,7 +62,7 @@
 <area shape="poly" id="edge22_Node000018_Node000017" title=" " alt="" coords="2084,431,2130,419,2135,418,2086,436"/>
 <area shape="rect" id="Node000019" href="$classQH_1_1AbstractNodeInfo.html#a90877ac6cc3938d87aeec2a60f2e1b2f" title="confirmData This method check all data of node and return true. If node is confirmed." alt="" coords="2140,438,2303,483"/>
 <area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="2093,455,2127,458,2122,459,2093,461"/>
-<area shape="rect" id="Node000020" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivere own version to the distanation node." alt="" coords="2351,404,2513,448"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivered own version to the destination node." alt="" coords="2351,404,2513,448"/>
 <area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="2303,444,2332,442,2338,441,2304,450"/>
 <area shape="rect" id="Node000021" href="$classQH_1_1AbstractNodeInfo.html#aed86119d910f2e64cec6e61dab61af45" title="fVersionReceived This method return true if this node receive version information." alt="" coords="2351,473,2513,518"/>
 <area shape="poly" id="edge21_Node000019_Node000021" title=" " alt="" coords="2303,471,2338,479,2332,479,2303,477"/>

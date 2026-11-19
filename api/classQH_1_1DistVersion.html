@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -157,9 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae02e6f08ea2bd1f7ebe2219880fd5ab" id="r_aae02e6f08ea2bd1f7ebe2219880fd5ab"><td class="memItemLeft">unsigned short&#160;</td><td class="memItemRight"><a class="el" href="#aae02e6f08ea2bd1f7ebe2219880fd5ab">max</a> () const</td></tr>
 <tr class="memitem:a24ce6dc27a977260345b792490243a02" id="r_a24ce6dc27a977260345b792490243a02"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a24ce6dc27a977260345b792490243a02">setMax</a> (unsigned short newMax)</td></tr>
 <tr class="memitem:ada69b62b05bea644a02f5bccd113103d" id="r_ada69b62b05bea644a02f5bccd113103d"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#ada69b62b05bea644a02f5bccd113103d">getMaxCompatible</a> (const <a class="el" href="classQH_1_1DistVersion.html">DistVersion</a> &amp;distVersion) const</td></tr>
-<tr class="memdesc:ada69b62b05bea644a02f5bccd113103d"><td class="mdescLeft">&#160;</td><td class="mdescRight">getMaxСompatible return maximum available on booth nodes version.  <br /></td></tr>
+<tr class="memdesc:ada69b62b05bea644a02f5bccd113103d"><td class="mdescLeft">&#160;</td><td class="mdescRight">getMaxCompatible return maximum available on both nodes version.  <br /></td></tr>
 <tr class="memitem:a093fde7cdb54b7e49a7f817de7527a63" id="r_a093fde7cdb54b7e49a7f817de7527a63"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a093fde7cdb54b7e49a7f817de7527a63">getMinCompatible</a> (const <a class="el" href="classQH_1_1DistVersion.html">DistVersion</a> &amp;distVersion) const</td></tr>
-<tr class="memdesc:a093fde7cdb54b7e49a7f817de7527a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">getMinСompatible return maximum available on booth nodes version.  <br /></td></tr>
+<tr class="memdesc:a093fde7cdb54b7e49a7f817de7527a63"><td class="mdescLeft">&#160;</td><td class="mdescRight">getMinCompatible return maximum available on both nodes version.  <br /></td></tr>
 <tr class="memitem:a2c498313195641d3be3d8ee6f339bc61" id="r_a2c498313195641d3be3d8ee6f339bc61"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a2c498313195641d3be3d8ee6f339bc61">isSupport</a> (unsigned short version) const</td></tr>
 <tr class="memdesc:a2c498313195641d3be3d8ee6f339bc61"><td class="mdescLeft">&#160;</td><td class="mdescRight">isSupport This method return true if the <em class="arg">version</em> is supported of this versions range.  <br /></td></tr>
 <tr class="memitem:ad56258633e56f9ef2721330b73a064e7" id="r_ad56258633e56f9ef2721330b73a064e7"><td class="memItemLeft">QString&#160;</td><td class="memItemRight"><a class="el" href="#ad56258633e56f9ef2721330b73a064e7">toString</a> () const override</td></tr>
@@ -233,7 +233,7 @@ Protected Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Qt stream object.</dd></dl>
-<p>Examle of base simple implementation:</p>
+<p>Example of base simple implementation:</p>
 <div class="fragment"><div class="line">QDataStream &amp;ExampleClass::fromStream(QDataStream &amp;stream)<span class="keyword"> const </span>{</div>
 <div class="line">    <a class="code hl_function" href="classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba">StreamBase::toStream</a>(stream);</div>
 <div class="line">    stream &gt;&gt; exampleMember;</div>
@@ -262,7 +262,7 @@ Protected Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>getMaxСompatible return maximum available on booth nodes version. </p>
+<p>getMaxCompatible return maximum available on both nodes version. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">distVersion</td><td>this is dis version. </td></tr>
@@ -277,7 +277,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1DistVersion_ada69b62b05bea644a02f5bccd113103d_cgraph.png" border="0" usemap="#aclassQH_1_1DistVersion_ada69b62b05bea644a02f5bccd113103d_cgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1DistVersion_ada69b62b05bea644a02f5bccd113103d_cgraph" id="aclassQH_1_1DistVersion_ada69b62b05bea644a02f5bccd113103d_cgraph">
-<area shape="rect" title="getMaxСompatible return maximum available on booth nodes version." alt="" coords="5,32,261,60"/>
+<area shape="rect" title="getMaxCompatible return maximum available on both nodes version." alt="" coords="5,32,261,60"/>
 <area shape="rect" href="classQH_1_1DistVersion.html#aae02e6f08ea2bd1f7ebe2219880fd5ab" title=" " alt="" coords="309,5,469,33"/>
 <area shape="poly" title=" " alt="" coords="261,30,296,29,290,30,262,35"/>
 <area shape="rect" href="classQH_1_1DistVersion.html#aa48e1f747840281546476c5ecd3f6d71" title=" " alt="" coords="311,57,467,85"/>
@@ -302,7 +302,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>getMinСompatible return maximum available on booth nodes version. </p>
+<p>getMinCompatible return maximum available on both nodes version. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">distVersion</td><td>this is dis version. </td></tr>
@@ -317,7 +317,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1DistVersion_a093fde7cdb54b7e49a7f817de7527a63_cgraph.png" border="0" usemap="#aclassQH_1_1DistVersion_a093fde7cdb54b7e49a7f817de7527a63_cgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1DistVersion_a093fde7cdb54b7e49a7f817de7527a63_cgraph" id="aclassQH_1_1DistVersion_a093fde7cdb54b7e49a7f817de7527a63_cgraph">
-<area shape="rect" title="getMinСompatible return maximum available on booth nodes version." alt="" coords="5,32,257,60"/>
+<area shape="rect" title="getMinCompatible return maximum available on both nodes version." alt="" coords="5,32,257,60"/>
 <area shape="rect" href="classQH_1_1DistVersion.html#aae02e6f08ea2bd1f7ebe2219880fd5ab" title=" " alt="" coords="305,5,465,33"/>
 <area shape="poly" title=" " alt="" coords="257,30,292,29,287,30,258,35"/>
 <area shape="rect" href="classQH_1_1DistVersion.html#aa48e1f747840281546476c5ecd3f6d71" title=" " alt="" coords="307,57,463,85"/>
@@ -404,9 +404,9 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classQH_1_1DistVersion_aae02e6f08ea2bd1f7ebe2219880fd5ab_icgraph.png" border="0" usemap="#aclassQH_1_1DistVersion_aae02e6f08ea2bd1f7ebe2219880fd5ab_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1DistVersion_aae02e6f08ea2bd1f7ebe2219880fd5ab_icgraph" id="aclassQH_1_1DistVersion_aae02e6f08ea2bd1f7ebe2219880fd5ab_icgraph">
 <area shape="rect" title=" " alt="" coords="309,32,469,60"/>
-<area shape="rect" href="classQH_1_1DistVersion.html#ada69b62b05bea644a02f5bccd113103d" title="getMaxСompatible return maximum available on booth nodes version." alt="" coords="5,5,261,33"/>
+<area shape="rect" href="classQH_1_1DistVersion.html#ada69b62b05bea644a02f5bccd113103d" title="getMaxCompatible return maximum available on both nodes version." alt="" coords="5,5,261,33"/>
 <area shape="poly" title=" " alt="" coords="290,36,261,35,261,30,296,36"/>
-<area shape="rect" href="classQH_1_1DistVersion.html#a093fde7cdb54b7e49a7f817de7527a63" title="getMinСompatible return maximum available on booth nodes version." alt="" coords="7,57,259,85"/>
+<area shape="rect" href="classQH_1_1DistVersion.html#a093fde7cdb54b7e49a7f817de7527a63" title="getMinCompatible return maximum available on both nodes version." alt="" coords="7,57,259,85"/>
 <area shape="poly" title=" " alt="" coords="290,56,259,61,259,56,296,55"/>
 </map>
 </div>
@@ -435,9 +435,9 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="classQH_1_1DistVersion_aa48e1f747840281546476c5ecd3f6d71_icgraph.png" border="0" usemap="#aclassQH_1_1DistVersion_aa48e1f747840281546476c5ecd3f6d71_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1DistVersion_aa48e1f747840281546476c5ecd3f6d71_icgraph" id="aclassQH_1_1DistVersion_aa48e1f747840281546476c5ecd3f6d71_icgraph">
 <area shape="rect" title=" " alt="" coords="309,32,465,60"/>
-<area shape="rect" href="classQH_1_1DistVersion.html#ada69b62b05bea644a02f5bccd113103d" title="getMaxСompatible return maximum available on booth nodes version." alt="" coords="5,5,261,33"/>
+<area shape="rect" href="classQH_1_1DistVersion.html#ada69b62b05bea644a02f5bccd113103d" title="getMaxCompatible return maximum available on both nodes version." alt="" coords="5,5,261,33"/>
 <area shape="poly" title=" " alt="" coords="290,36,261,35,261,30,296,36"/>
-<area shape="rect" href="classQH_1_1DistVersion.html#a093fde7cdb54b7e49a7f817de7527a63" title="getMinСompatible return maximum available on booth nodes version." alt="" coords="7,57,259,85"/>
+<area shape="rect" href="classQH_1_1DistVersion.html#a093fde7cdb54b7e49a7f817de7527a63" title="getMinCompatible return maximum available on both nodes version." alt="" coords="7,57,259,85"/>
 <area shape="poly" title=" " alt="" coords="291,55,259,61,259,56,296,55"/>
 </map>
 </div>
@@ -487,7 +487,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="212,48,391,76"/>
 <area shape="rect" href="classQH_1_1APIVersionParser.html#a952b3b863da2cc2f6b66eaf6de7dd261" title="selectParser This method select parser by command and sender." alt="" coords="5,5,164,50"/>
 <area shape="poly" title=" " alt="" coords="193,46,164,43,164,38,199,45"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="5,75,164,119"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="5,75,164,119"/>
 <area shape="poly" title=" " alt="" coords="193,80,165,87,164,82,199,79"/>
 </map>
 </div>
@@ -518,7 +518,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title=" " alt="" coords="212,48,387,76"/>
 <area shape="rect" href="classQH_1_1APIVersionParser.html#a952b3b863da2cc2f6b66eaf6de7dd261" title="selectParser This method select parser by command and sender." alt="" coords="5,5,164,50"/>
 <area shape="poly" title=" " alt="" coords="193,46,164,43,164,38,199,45"/>
-<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="5,75,164,119"/>
+<area shape="rect" href="classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="5,75,164,119"/>
 <area shape="poly" title=" " alt="" coords="193,80,165,87,164,82,199,78"/>
 </map>
 </div>
@@ -557,7 +557,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Qt stream object.</dd></dl>
-<p>Examle of base simple implementation: </p><div class="fragment"><div class="line">QDataStream &amp;ExampleClass::toStream(QDataStream &amp;stream)<span class="keyword"> const </span>{</div>
+<p>Example of base simple implementation: </p><div class="fragment"><div class="line">QDataStream &amp;ExampleClass::toStream(QDataStream &amp;stream)<span class="keyword"> const </span>{</div>
 <div class="line">    <a class="code hl_function" href="classQH_1_1StreamBase.html#a84c8a4e67b8902b8c3783f1a3eb34fba">StreamBase::toStream</a>(stream);</div>
 <div class="line">    stream &lt;&lt; exampleMember;</div>
 <div class="line">    <span class="keywordflow">return</span> stream;</div>

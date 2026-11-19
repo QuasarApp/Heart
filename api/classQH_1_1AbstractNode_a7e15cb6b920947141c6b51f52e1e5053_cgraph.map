@@ -1,41 +1,39 @@
 <map id="QH::AbstractNode::AbstractNode" name="QH::AbstractNode::AbstractNode">
-<area shape="rect" id="Node000001" title="AbstractNode &#45; Base constructor of node." alt="" coords="5,360,239,388"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a58aa93482a88a5d997ea50efe50bba26" title="addApiParser This method add new Api parser for this node." alt="" coords="310,5,500,50"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,359,140,304,170,223,192,179,218,136,249,95,285,60,298,53,295,58,288,64,253,99,222,139,197,182,175,225,145,305,129,361"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a098ae2092d96d1952da84a9be2dcf3dd" title="addApiParserNative This is template metod that add sipport of new apiparser ApiType" alt="" coords="310,75,500,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,359,146,315,179,253,226,187,254,156,285,130,298,123,295,127,288,134,258,160,230,190,184,256,151,317,131,361"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#aac0935f6d9d0254d3ebc264b832bde5f" title=" " alt="" coords="326,144,484,189"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="130,359,189,283,234,238,285,199,314,186,310,190,288,203,237,242,193,286,135,362"/>
-<area shape="rect" id="Node000008" href="$classQH_1_1AsyncLauncher.html#aeab2567db25ebe388ccfbb8d5e5465c3" title="AsyncLauncher This is base constructor of the AsyncLauncher object." alt="" coords="328,213,483,258"/>
-<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="140,358,203,314,286,268,315,258,311,262,288,273,206,319,144,362"/>
-<area shape="rect" id="Node000010" href="$classQH_1_1DataSender.html#abab6c393e112072d2e84d54837c04c8e" title=" " alt="" coords="301,282,510,310"/>
-<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="164,358,286,320,324,312,319,315,287,325,167,362"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNode.html#a50fcf123314f3e016abce341f8711082" title="mainThreadID This method return the pointer to main thread" alt="" coords="287,334,524,362"/>
-<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="238,361,273,359,269,362,240,366"/>
-<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNode.html#afaff36e14f7538c9ba6fdb50be6100a9" title="receivePing This method invoked when node receive new ping object." alt="" coords="295,386,516,414"/>
-<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="238,382,282,387,277,390,240,387"/>
-<area shape="rect" id="Node000013" href="$classQH_1_1AbstractNode.html#abd6fa637322787096b1405cb9ad2cf3b" title="sigNoLongerSupport is some as a APIVersionParser::sigNoLongerSupport. This signal just retronslate th..." alt="" coords="292,437,518,482"/>
-<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="169,386,287,422,314,432,309,433,286,428,170,391"/>
-<area shape="rect" id="Node000014" href="$classQH_1_1APIVersionParser.html#ad2ef7830df6669893d2136e6fde1c2d5" title="sigNoLongerSupport This signal will be emit when node receive incomplite versions." alt="" coords="325,507,486,551"/>
-<area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="139,386,202,438,244,467,288,492,313,504,308,505,285,497,241,471,199,442,139,391"/>
-<area shape="rect" id="Node000016" href="$classQH_1_1AbstractNodeParser.html#a8e32e56dc3c18eecbe48d3bd6ff807da" title="sigPingReceived This method emited" alt="" coords="317,576,494,621"/>
-<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="132,386,156,423,191,470,236,519,288,561,305,572,300,573,285,566,232,523,187,473,152,426,132,391"/>
-<area shape="rect" id="Node000017" href="$classQH_1_1TaskScheduler.html#a9b9b1ea64b09ad3973fb9a96ed66390e" title="sigPushWork This signal emited when the task work neet to execute." alt="" coords="330,645,480,690"/>
-<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="128,386,149,435,182,500,228,571,257,603,288,631,318,649,313,649,285,635,253,607,224,574,177,503,144,437,128,391"/>
-<area shape="rect" id="Node000018" href="$classQH_1_1TaskScheduler.html#ac3d046ef9fbe3cb069c16053bf02d339" title=" " alt="" coords="330,715,480,759"/>
-<area shape="poly" id="edge21_Node000001_Node000018" title=" " alt="" coords="127,386,144,446,173,530,195,576,221,622,252,664,288,700,318,720,313,719,285,704,248,667,216,625,190,579,168,532,138,447,126,391"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="778,152,968,180"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="484,149,572,138,651,134,731,138,793,148,788,150,730,144,651,139,572,144,486,154"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1iParser.html#aa0d11d462df4b12a24958b28c40a107a" title=" " alt="" coords="578,152,724,180"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="484,164,565,165,560,168,486,169"/>
-<area shape="rect" id="Node000007" href="$classQH_1_1iParser.html#a8e02f14c79abb1945d29e75eca621905" title=" " alt="" coords="584,204,718,232"/>
-<area shape="poly" id="edge8_Node000004_Node000007" title=" " alt="" coords="484,180,572,200,567,202,486,186"/>
-<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="835,152,829,144,834,134,849,128,873,126,899,128,915,137,909,137,898,133,873,131,850,133,837,138,834,143,840,152"/>
-<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="723,164,765,165,760,167,725,169"/>
-<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="712,201,798,183,794,186,715,206"/>
-<area shape="rect" id="Node000009" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="584,270,719,298"/>
-<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="483,248,571,267,566,269,484,253"/>
-<area shape="poly" id="edge13_Node000010_Node000009" title=" " alt="" coords="510,288,570,287,565,289,511,293"/>
-<area shape="rect" id="Node000015" href="$classQH_1_1APIVersionParser.html#a2a4e439abcea25c522b3f9755e444880" title="version This method return version of parser object" alt="" coords="572,507,730,551"/>
-<area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="485,526,559,528,554,530,486,532"/>
+<area shape="rect" id="Node000001" title="AbstractNode &#45; Base constructor of node." alt="" coords="5,334,239,362"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a58aa93482a88a5d997ea50efe50bba26" title="addApiParser This method add new Api parser for this node." alt="" coords="305,5,495,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,332,142,281,174,208,196,168,221,129,251,92,285,60,294,56,290,60,288,64,255,96,226,132,200,171,179,210,147,283,130,334"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a098ae2092d96d1952da84a9be2dcf3dd" title="addApiParserNative This is template method that add support of new apiparser ApiType" alt="" coords="305,75,495,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="128,333,149,292,183,238,229,180,256,153,285,130,296,125,292,129,288,134,260,157,233,183,188,241,153,295,132,335"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#aac0935f6d9d0254d3ebc264b832bde5f" title=" " alt="" coords="321,144,479,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="133,332,194,268,238,231,285,199,308,190,304,193,288,203,241,235,198,272,138,335"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1AsyncLauncher.html#a680586ee5a5f902a2450cae8e81a05e6" title="AsyncLauncher This is base constructor of the AsyncLauncher object." alt="" coords="322,213,478,258"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="149,331,211,300,286,268,309,261,305,264,288,273,213,305,152,335"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1DataSender.html#afd63fb1f793c04d1265e5ea15cd339e7" title=" " alt="" coords="295,282,504,310"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="199,331,309,311,305,315,201,336"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNode.html#afaff36e14f7538c9ba6fdb50be6100a9" title="receivePing This method invoked when node receive new ping object." alt="" coords="289,334,510,362"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="238,345,276,346,272,349,240,350"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNode.html#abd6fa637322787096b1405cb9ad2cf3b" title="sigNoLongerSupport is some as a APIVersionParser::sigNoLongerSupport. This signal just retronslate th..." alt="" coords="287,385,513,430"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="189,360,281,380,276,383,190,365"/>
+<area shape="rect" id="Node000013" href="$classQH_1_1APIVersionParser.html#ad2ef7830df6669893d2136e6fde1c2d5" title="sigNoLongerSupport This signal will be emit when node receive incomplite versions." alt="" coords="320,455,480,499"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="144,360,208,399,288,440,308,449,303,450,286,445,206,403,145,365"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1AbstractNodeParser.html#a8e32e56dc3c18eecbe48d3bd6ff807da" title="sigPingReceived This method emitted" alt="" coords="311,524,488,569"/>
+<area shape="poly" id="edge18_Node000001_Node000015" title=" " alt="" coords="134,359,195,431,239,473,288,509,299,517,294,517,285,514,235,477,191,435,133,364"/>
+<area shape="rect" id="Node000016" href="$classQH_1_1TaskScheduler.html#a9b9b1ea64b09ad3973fb9a96ed66390e" title="sigPushWork This signal emitted when the task work need to execute." alt="" coords="325,593,475,638"/>
+<area shape="poly" id="edge19_Node000001_Node000016" title=" " alt="" coords="129,359,152,403,185,462,231,525,258,554,288,579,313,594,307,594,285,583,255,558,227,528,181,465,147,406,129,364"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1TaskScheduler.html#ac3d046ef9fbe3cb069c16053bf02d339" title=" " alt="" coords="325,663,475,707"/>
+<area shape="poly" id="edge20_Node000001_Node000017" title=" " alt="" coords="127,359,146,415,177,492,198,535,224,576,254,615,288,648,313,665,308,665,285,652,250,618,219,579,193,537,172,495,141,417,126,364"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1iParser.html#ac34827723212e57cadf597d4436fd432" title=" " alt="" coords="767,152,957,180"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="478,149,561,138,640,134,720,138,782,148,777,150,719,144,640,139,561,144,480,154"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1iParser.html#aa0d11d462df4b12a24958b28c40a107a" title=" " alt="" coords="568,152,713,180"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="479,164,554,165,549,168,481,169"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1iParser.html#a8e02f14c79abb1945d29e75eca621905" title=" " alt="" coords="574,204,707,232"/>
+<area shape="poly" id="edge8_Node000004_Node000007" title=" " alt="" coords="479,181,561,200,556,202,480,186"/>
+<area shape="poly" id="edge5_Node000005_Node000005" title=" " alt="" coords="824,151,818,144,823,134,838,128,862,126,888,128,904,137,898,137,887,133,862,131,839,133,826,138,823,143,829,152"/>
+<area shape="poly" id="edge7_Node000006_Node000005" title=" " alt="" coords="712,164,754,165,749,167,714,169"/>
+<area shape="poly" id="edge9_Node000007_Node000005" title=" " alt="" coords="702,201,787,183,783,185,704,206"/>
+<area shape="rect" id="Node000009" href="$classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="572,270,708,298"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="477,249,560,266,555,268,478,254"/>
+<area shape="poly" id="edge13_Node000010_Node000009" title=" " alt="" coords="504,288,560,287,555,289,506,293"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1APIVersionParser.html#a2a4e439abcea25c522b3f9755e444880" title="version This method return version of parser object" alt="" coords="561,455,719,499"/>
+<area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="480,474,548,476,543,478,481,480"/>
 </map>

@@ -4,14 +4,14 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="633,76,541,50,541,45,639,76"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1BigDataParser.html#a89357e037e1008aaf0d1648c13cf0542" title="finishPart This metho process last package of big data transaction." alt="" coords="416,72,566,117"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="600,95,567,97,566,92,605,94"/>
-<area shape="rect" id="Node000008" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="412,141,570,186"/>
+<area shape="rect" id="Node000008" href="$classQH_1_1APIVersionParser.html#afa3f66fdd5e9865983d30b5989de8080" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="412,141,570,186"/>
 <area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="644,113,561,143,560,138,639,114"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#a03bac86f241460ac513dea7274df7469" title=" " alt="" coords="212,19,364,47"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="396,43,364,44,364,39,401,41"/>
 <area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="379,21,416,24,411,25,380,27"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#ae53fd9564203972730a1aa30cd81aa48" title="toString This method show all supported commands and them names." alt="" coords="5,5,164,50"/>
 <area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="193,32,165,32,163,27,198,29"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="213,75,362,119"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="213,75,362,119"/>
 <area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="398,96,363,99,363,93,404,95"/>
 <area shape="rect" id="Node000007" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="10,75,159,119"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="195,107,160,108,159,103,200,105"/>

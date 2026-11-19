@@ -6,7 +6,7 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="183,283,288,304,283,307,184,288"/>
 <area shape="rect" id="Node000004" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="834,109,981,137"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="119,255,174,193,214,159,259,130,327,100,387,80,442,69,494,64,548,65,605,70,744,86,840,105,835,106,743,91,605,75,547,70,494,70,442,74,388,85,329,105,262,135,217,163,178,197,123,259"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="1072,109,1276,137"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="1072,109,1276,137"/>
 <area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="114,256,133,218,164,169,206,118,232,96,259,78,316,52,375,32,436,18,497,9,560,4,623,3,746,12,862,30,967,54,1055,79,1123,103,1118,104,1053,84,965,59,861,35,745,17,623,8,560,9,498,14,437,23,376,37,318,57,262,83,235,100,210,122,168,172,138,221,119,258"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a0929d9a1d7967ac2281cd76c16658935" title="multiVersionPackages This is list of packages of one api package tah support multiple versions." alt="" coords="290,361,461,406"/>
 <area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="135,283,193,314,262,346,281,355,276,356,260,351,190,319,135,288"/>
@@ -25,7 +25,7 @@
 <area shape="poly" id="edge14_Node000009_Node000012" title=" " alt="" coords="439,283,491,295,573,318,567,319,489,300,439,288"/>
 <area shape="poly" id="edge12_Node000010_Node000004" title=" " alt="" coords="664,268,867,146,872,144,667,273"/>
 <area shape="poly" id="edge13_Node000010_Node000005" title=" " alt="" coords="718,291,785,294,863,292,945,281,985,271,1023,257,1062,235,1098,206,1151,151,1155,148,1101,210,1065,239,1025,262,986,276,946,286,864,298,785,300,718,297"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="823,220,992,248"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="823,220,992,248"/>
 <area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="717,268,818,251,813,252,718,273"/>
 <area shape="rect" id="Node000013" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="791,321,1024,349"/>
 <area shape="poly" id="edge15_Node000012_Node000013" title=" " alt="" coords="734,333,779,336,773,336,735,339"/>

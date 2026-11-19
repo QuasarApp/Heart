@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['data_0',['data',['../classQH_1_1PKG_1_1BigDataPart.html#a5d5af14e76aadd9b7767f4f684e3ecb7',1,'QH::PKG::BigDataPart::data()'],['../classQH_1_1PKG_1_1BigDataWraper.html#ae89cc57bd983ccde9d15532fcfdc4679',1,'QH::PKG::BigDataWraper::data()'],['../classQH_1_1PKG_1_1DBObjectsRequest.html#a68a66b59cd34d9c648b72760acca77f7',1,'QH::PKG::DBObjectsRequest::data()']]],
+  ['data_0',['data',['../classQH_1_1PKG_1_1BigDataPart.html#a5d5af14e76aadd9b7767f4f684e3ecb7',1,'QH::PKG::BigDataPart::data()'],['../classQH_1_1PKG_1_1BigDataWrapper.html#accf7d9a77565febe081df10005240dfe',1,'QH::PKG::BigDataWrapper::data()'],['../classQH_1_1PKG_1_1DBObjectsRequest.html#a68a66b59cd34d9c648b72760acca77f7',1,'QH::PKG::DBObjectsRequest::data()']]],
   ['database_1',['DataBase',['../classQH_1_1DataBase.html#a5174dbc1aa5eeee0898ef34608f3aef9',1,'QH::DataBase']]],
   ['databaselocation_2',['databaseLocation',['../classQH_1_1SqlDBWriter.html#a54ecf880409036dc7e4c406dc75a19a1',1,'QH::SqlDBWriter']]],
   ['datapack_3',['DataPack',['../classQH_1_1PKG_1_1DataPack.html#a9dad71eb96e80f87be4df378c8aa9a0e',1,'QH::PKG::DataPack']]],
-  ['datasender_4',['DataSender',['../classQH_1_1DataSender.html#abab6c393e112072d2e84d54837c04c8e',1,'QH::DataSender']]],
+  ['datasender_4',['DataSender',['../classQH_1_1DataSender.html#afd63fb1f793c04d1265e5ea15cd339e7',1,'QH::DataSender']]],
   ['db_5',['db',['../classQH_1_1DataBase.html#ac855a4008eb35fb88d8d5e3db32bd291',1,'QH::DataBase::db()'],['../classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8',1,'QH::SqlDBWriter::db()'],['../classQH_1_1SqlDBWriter.html#ad3205d60d667eae806987d519268603a',1,'QH::SqlDBWriter::db() const']]],
   ['dbaddress_6',['DbAddress',['../classQH_1_1DbAddress.html#a31f12a82353b94ba2c8039f9050279bd',1,'QH::DbAddress::DbAddress()=default'],['../classQH_1_1DbAddress.html#a1d2f41fda1a8e6d0ccc08ad7aa7792f0',1,'QH::DbAddress::DbAddress(const QString &amp;table, const QVariant &amp;id)']]],
   ['dbaddress_7',['dbAddress',['../classQH_1_1PKG_1_1DBObject.html#a1df7b0b912ccad1dad0b3dc97491d577',1,'QH::PKG::DBObject']]],
@@ -17,7 +17,7 @@ var searchData=
   ['dbpatches_14',['dbPatches',['../classQH_1_1DataBase.html#a703900ee0508c54c8d1a8e99b6b91b10',1,'QH::DataBase']]],
   ['dbvariant_15',['DBVariant',['../structQH_1_1PKG_1_1DBVariant.html#a2bd8c7791b7f56542e8d44c96747c4c8',1,'QH::PKG::DBVariant::DBVariant()'],['../structQH_1_1PKG_1_1DBVariant.html#a9f73ff4129f88c6f2f10df563bcb44e7',1,'QH::PKG::DBVariant::DBVariant(const QVariant &amp;value, MemberType type)']]],
   ['defaultdbparams_16',['defaultDbParams',['../classQH_1_1DataBase.html#a7cacc91f535f2d590ad2cdb9a977eeb2',1,'QH::DataBase']]],
-  ['defaultinitpararm_17',['defaultInitPararm',['../classQH_1_1SqlDBWriter.html#af8374167be0dc29d3c68c1f2d0bcb50d',1,'QH::SqlDBWriter']]],
+  ['defaultinitparam_17',['defaultInitParam',['../classQH_1_1SqlDBWriter.html#a2f24e9645932bb36d4cef57d6c12070b',1,'QH::SqlDBWriter']]],
   ['deletebyid_18',['deleteById',['../classQH_1_1DataBase.html#a25b102ed0199e08e2e5d0a2c70326f7e',1,'QH::DataBase']]],
   ['deletefromcache_19',['deleteFromCache',['../classQH_1_1ISqlDB.html#a96c27efdf88d7c118a2bcabfa536d5b7',1,'QH::ISqlDB::deleteFromCache()'],['../classQH_1_1SqlDB.html#aaeca8f4db439e5a23a5e5632f6154d4c',1,'QH::SqlDB::deleteFromCache()']]],
   ['deleteobject_20',['DeleteObject',['../classQH_1_1PKG_1_1DeleteObject.html#a64a55b5094fb1ac9c357b6efc564e7e9',1,'QH::PKG::DeleteObject::DeleteObject()'],['../classQH_1_1PKG_1_1DeleteObject.html#a003d59eef1921f248df18bdd7b4986ff',1,'QH::PKG::DeleteObject::DeleteObject(const DbAddress &amp;address, const QString &amp;primaryKey)'],['../classQH_1_1PKG_1_1DeleteObject.html#aa9d70e1e966d6bf63b3e4b3a1f696578',1,'QH::PKG::DeleteObject::DeleteObject(const Package &amp;pkg)']]],

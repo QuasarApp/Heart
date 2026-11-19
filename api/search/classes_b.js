@@ -5,5 +5,6 @@ var searchData=
   ['softdelete_2',['SoftDelete',['../classQH_1_1SoftDelete.html',1,'QH']]],
   ['sqldb_3',['SqlDB',['../classQH_1_1SqlDB.html',1,'QH']]],
   ['sqldbwriter_4',['SqlDBWriter',['../classQH_1_1SqlDBWriter.html',1,'QH']]],
-  ['streambase_5',['StreamBase',['../classQH_1_1StreamBase.html',1,'QH']]]
+  ['streambase_5',['StreamBase',['../classQH_1_1StreamBase.html',1,'QH']]],
+  ['streammultiversion_6',['StreamMultiversion',['../classQH_1_1StreamMultiversion.html',1,'QH']]]
 ];

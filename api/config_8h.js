@@ -18,6 +18,6 @@ var config_8h =
     [ "ROUTE_CACHE_LIMIT", "config_8h.html#acffbd4bade21acc9d80ba429582d5b96", null ],
     [ "TRANSPORT_PACKAGES_CACHE", "config_8h.html#abcc90294eb9982eea691e39f3015b445", null ],
     [ "WAIT_CONFIRM_TIME", "config_8h.html#aa612ed37837474f375afab8d1dc89674", null ],
-    [ "WAIT_RESPOCE_TIME", "config_8h.html#aafc9e5578e662388de665f933b8f6932", null ],
+    [ "WAIT_RESPONSE_TIME", "config_8h.html#ad3d6f1580dad125a963e13e72e603211", null ],
     [ "WAIT_TIME", "config_8h.html#ae7676cdfa371dfdcf6fb0687737c29a6", null ]
 ];

@@ -9,7 +9,7 @@
 <area shape="poly" id="edge6_Node000003_Node000002" title=" " alt="" coords="322,115,283,90,238,65,202,50,201,45,240,60,286,85,328,115"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1APIVersionParser.html#ad9f5846d0c4d680cabb972e029a634c3" title="getSelectedApiParser This method return apiParser for selected node" alt="" coords="38,75,206,119"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="270,128,206,116,206,111,275,126"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="43,144,201,189"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="43,144,201,189"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="270,155,202,162,201,157,275,153"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1APIVersionParser.html#a43ba30e9be862fb44c7e047b096013bb" title="searchPackage This method search package recursive in all registered pararsers. Searching will be in ..." alt="" coords="43,213,201,258"/>
 <area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="300,176,240,204,202,216,200,211,238,198,305,174"/>

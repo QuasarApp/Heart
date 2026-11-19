@@ -1,19 +1,20 @@
 <map id="src/public/streammultiversion.cpp" name="src/public/streammultiversion.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="258,5,500,33"/>
-<area shape="rect" id="Node000002" href="$streammultiversion_8h.html" title=" " alt="" coords="298,81,460,109"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="380,31,381,67,376,64,377,36"/>
-<area shape="rect" id="Node000003" href="$streambase_8h.html" title=" " alt="" coords="324,157,434,184"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,107,381,142,377,140,377,111"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="5,232,102,260"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="324,187,117,233,116,228,323,182"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="126,232,235,260"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="346,185,231,229,229,224,341,185"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="260,232,365,260"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="369,184,335,223,333,219,364,186"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="388,232,503,260"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="392,182,426,222,421,220,390,187"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="127,5,369,33"/>
+<area shape="rect" id="Node000002" href="$streammultiversion_8h.html" title=" " alt="" coords="199,81,361,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,31,271,67,266,66,253,36"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,232,115,260"/>
+<area shape="poly" id="edge9_Node000001_Node000005" title=" " alt="" coords="236,32,190,83,129,157,80,221,76,218,124,154,186,79,232,35"/>
+<area shape="rect" id="Node000003" href="$streambase_8h.html" title=" " alt="" coords="257,157,367,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="287,107,303,143,298,142,285,112"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="138,232,235,260"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="292,184,223,227,220,222,287,186"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="268,187,120,230,119,225,266,182"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="259,232,365,260"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="314,183,314,218,310,215,310,187"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="388,232,502,260"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="337,182,412,225,406,225,335,187"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="527,232,660,260"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="418,182,543,227,538,227,417,188"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="363,182,531,228,526,228,362,188"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="684,232,775,260"/>
-<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="435,180,671,231,666,232,434,186"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="368,178,670,230,666,233,367,183"/>
 </map>

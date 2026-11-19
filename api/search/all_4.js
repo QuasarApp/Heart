@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['data',['../classQH_1_1Package.html#a63692c530fcabf6a1a383d0dc34455aa',1,'QH::Package::data'],['../classQH_1_1PKG_1_1BigDataPart.html#a5d5af14e76aadd9b7767f4f684e3ecb7',1,'QH::PKG::BigDataPart::data()'],['../classQH_1_1PKG_1_1BigDataWraper.html#ae89cc57bd983ccde9d15532fcfdc4679',1,'QH::PKG::BigDataWraper::data()'],['../classQH_1_1PKG_1_1DBObjectsRequest.html#a68a66b59cd34d9c648b72760acca77f7',1,'QH::PKG::DBObjectsRequest::data()']]],
+  ['data_0',['data',['../classQH_1_1Package.html#a63692c530fcabf6a1a383d0dc34455aa',1,'QH::Package::data'],['../classQH_1_1PKG_1_1BigDataPart.html#a5d5af14e76aadd9b7767f4f684e3ecb7',1,'QH::PKG::BigDataPart::data()'],['../classQH_1_1PKG_1_1BigDataWrapper.html#accf7d9a77565febe081df10005240dfe',1,'QH::PKG::BigDataWrapper::data()'],['../classQH_1_1PKG_1_1DBObjectsRequest.html#a68a66b59cd34d9c648b72760acca77f7',1,'QH::PKG::DBObjectsRequest::data()']]],
   ['database_1',['DataBase',['../classQH_1_1DataBase.html',1,'QH::DataBase'],['../classQH_1_1DataBase.html#a5174dbc1aa5eeee0898ef34608f3aef9',1,'QH::DataBase::DataBase()']]],
   ['database_2ecpp_2',['database.cpp',['../database_8cpp.html',1,'']]],
   ['database_2eh_3',['database.h',['../database_8h.html',1,'']]],
@@ -9,7 +9,7 @@ var searchData=
   ['datapack_6',['DataPack',['../classQH_1_1PKG_1_1DataPack.html',1,'QH::PKG::DataPack&lt; Package &gt;'],['../classQH_1_1PKG_1_1DataPack.html#a9dad71eb96e80f87be4df378c8aa9a0e',1,'QH::PKG::DataPack::DataPack()']]],
   ['datapack_2ecpp_7',['datapack.cpp',['../datapack_8cpp.html',1,'']]],
   ['datapack_2eh_8',['datapack.h',['../datapack_8h.html',1,'']]],
-  ['datasender_9',['DataSender',['../classQH_1_1DataSender.html',1,'QH::DataSender'],['../classQH_1_1DataSender.html#abab6c393e112072d2e84d54837c04c8e',1,'QH::DataSender::DataSender()']]],
+  ['datasender_9',['DataSender',['../classQH_1_1DataSender.html',1,'QH::DataSender'],['../classQH_1_1DataSender.html#afd63fb1f793c04d1265e5ea15cd339e7',1,'QH::DataSender::DataSender()']]],
   ['datasender_2ecpp_10',['datasender.cpp',['../datasender_8cpp.html',1,'']]],
   ['datasender_2eh_11',['datasender.h',['../datasender_8h.html',1,'']]],
   ['day_12',['Day',['../classQH_1_1AbstractTask.html#afc3d945ccba42d55e621b9736a7f5459a842dc19b25b125e8e957151b5d7206b0',1,'QH::AbstractTask::Day'],['../classQH_1_1AccessToken.html#abf34e312096fff71e0bb26f93ffeafd4a7ef86064c519c65138da43be79ad4fc7',1,'QH::AccessToken::Day']]],
@@ -48,7 +48,7 @@ var searchData=
   ['default_5fport_45',['DEFAULT_PORT',['../config_8h.html#a16b710f592bf8f7900666392adc444dc',1,'config.h']]],
   ['default_5fupdate_5finterval_46',['DEFAULT_UPDATE_INTERVAL',['../config_8h.html#a915e7a142e3b3029868f9a51d1ba0074',1,'config.h']]],
   ['defaultdbparams_47',['defaultDbParams',['../classQH_1_1DataBase.html#a7cacc91f535f2d590ad2cdb9a977eeb2',1,'QH::DataBase']]],
-  ['defaultinitpararm_48',['defaultInitPararm',['../classQH_1_1SqlDBWriter.html#af8374167be0dc29d3c68c1f2d0bcb50d',1,'QH::SqlDBWriter']]],
+  ['defaultinitparam_48',['defaultInitParam',['../classQH_1_1SqlDBWriter.html#a2f24e9645932bb36d4cef57d6c12070b',1,'QH::SqlDBWriter']]],
   ['delete_49',['Delete',['../namespaceQH.html#ace076ce8e05d5a86833dd9fdda021a8baf2a6c498fb90ee345d997f888fce3b18',1,'QH']]],
   ['deletebyid_50',['deleteById',['../classQH_1_1DataBase.html#a25b102ed0199e08e2e5d0a2c70326f7e',1,'QH::DataBase']]],
   ['deletefromcache_51',['deleteFromCache',['../classQH_1_1ISqlDB.html#a96c27efdf88d7c118a2bcabfa536d5b7',1,'QH::ISqlDB::deleteFromCache()'],['../classQH_1_1SqlDB.html#aaeca8f4db439e5a23a5e5632f6154d4c',1,'QH::SqlDB::deleteFromCache()']]],

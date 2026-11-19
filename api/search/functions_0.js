@@ -20,9 +20,10 @@ var searchData=
   ['apisversions_17',['apisVersions',['../classQH_1_1PKG_1_1APIVersion.html#a4c9f54cb40b6ab3ce24f4ce65338e876',1,'QH::PKG::APIVersion']]],
   ['apiversion_18',['APIVersion',['../classQH_1_1PKG_1_1APIVersion.html#a3ac8ec95b81fe489d48f9911ca389ad9',1,'QH::PKG::APIVersion']]],
   ['apiversionparser_19',['APIVersionParser',['../classQH_1_1APIVersionParser.html#aac0935f6d9d0254d3ebc264b832bde5f',1,'QH::APIVersionParser']]],
-  ['async_20',['Async',['../classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449',1,'QH::Async']]],
-  ['asynclauncher_21',['AsyncLauncher',['../classQH_1_1AsyncLauncher.html#aeab2567db25ebe388ccfbb8d5e5465c3',1,'QH::AsyncLauncher']]],
-  ['asynclauncher_22',['asyncLauncher',['../classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e',1,'QH::Async']]],
-  ['asyncrenderloop_23',['AsyncRenderLoop',['../classQH_1_1AsyncRenderLoop.html#a057cc0e7894a8c3c5148e9f9b61bae27',1,'QH::AsyncRenderLoop']]],
-  ['asyncsqldbwriter_24',['AsyncSqlDBWriter',['../classQH_1_1AsyncSqlDBWriter.html#a3da175ac2d83423c6ebf29af441869d2',1,'QH::AsyncSqlDBWriter']]]
+  ['arg_20',['arg',['../classQH_1_1TranslatableString.html#ae71b66ddb85c90966c1e9882b173e80e',1,'QH::TranslatableString::arg(const TranslatableString &amp;newArg)'],['../classQH_1_1TranslatableString.html#aab6bb0bafdb08702455a73b0003f8c07',1,'QH::TranslatableString::arg(int newArg)']]],
+  ['async_21',['Async',['../classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16',1,'QH::Async']]],
+  ['asynclauncher_22',['AsyncLauncher',['../classQH_1_1AsyncLauncher.html#a680586ee5a5f902a2450cae8e81a05e6',1,'QH::AsyncLauncher']]],
+  ['asynclauncher_23',['asyncLauncher',['../classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e',1,'QH::Async']]],
+  ['asyncrenderloop_24',['AsyncRenderLoop',['../classQH_1_1AsyncRenderLoop.html#a057cc0e7894a8c3c5148e9f9b61bae27',1,'QH::AsyncRenderLoop']]],
+  ['asyncsqldbwriter_25',['AsyncSqlDBWriter',['../classQH_1_1AsyncSqlDBWriter.html#a3da175ac2d83423c6ebf29af441869d2',1,'QH::AsyncSqlDBWriter']]]
 ];

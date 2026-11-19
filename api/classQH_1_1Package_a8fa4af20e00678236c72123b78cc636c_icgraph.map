@@ -1,5 +1,5 @@
 <map id="QH::Package::maximumSize" name="QH::Package::maximumSize">
-<area shape="rect" id="Node000001" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="2839,139,3044,167"/>
+<area shape="rect" id="Node000001" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="2839,139,3044,167"/>
 <area shape="rect" id="Node000002" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="2644,112,2791,140"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2822,139,2792,138,2792,132,2827,139"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="2438,164,2592,192"/>

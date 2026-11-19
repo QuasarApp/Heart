@@ -6,5 +6,5 @@ var searchData=
   ['bigdataparser_3',['BigDataParser',['../classQH_1_1BigDataParser.html',1,'QH']]],
   ['bigdatapart_4',['BigDataPart',['../classQH_1_1PKG_1_1BigDataPart.html',1,'QH::PKG']]],
   ['bigdatarequest_5',['BigDataRequest',['../classQH_1_1PKG_1_1BigDataRequest.html',1,'QH::PKG']]],
-  ['bigdatawraper_6',['BigDataWraper',['../classQH_1_1PKG_1_1BigDataWraper.html',1,'QH::PKG']]]
+  ['bigdatawrapper_6',['BigDataWrapper',['../classQH_1_1PKG_1_1BigDataWrapper.html',1,'QH::PKG']]]
 ];

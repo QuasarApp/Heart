@@ -12,13 +12,13 @@
 <area shape="poly" id="edge14_Node000002_Node000012" title=" " alt="" coords="395,170,477,198,510,209,505,209,475,203,394,175"/>
 <area shape="rect" id="Node000013" href="$classQH_1_1SqlDBWriter.html#a5ab62ca1782b6d3012f0f1f5af032995" title="updateObject This method execute a update method of the saveObject and save all changes into database..." alt="" coords="478,109,701,137"/>
 <area shape="poly" id="edge15_Node000002_Node000013" title=" " alt="" coords="428,137,465,136,460,137,429,143"/>
-<area shape="rect" id="Node000015" href="$classQH_1_1ISqlDB.html#a20142160d3bcaa1ae869367a0c5eaada" title="writer This method return is database writer object. For more inforamation about writer see the SqlDB..." alt="" coords="520,265,659,293"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1ISqlDB.html#a20142160d3bcaa1ae869367a0c5eaada" title="writer This method return is database writer object. For more information about writer see the SqlDBW..." alt="" coords="520,265,659,293"/>
 <area shape="poly" id="edge19_Node000002_Node000015" title=" " alt="" coords="361,170,413,211,444,232,477,250,508,264,503,263,475,255,441,237,410,216,359,175"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="765,109,958,137"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="666,83,773,106,768,106,666,88"/>
 <area shape="rect" id="Node000008" href="$classQH_1_1SqlDBWriter.html#ae13ca87dcbdfdeb6f4eaf467c6cd0d3a" title="deleteQuery This method prepare the delete object query." alt="" coords="753,57,970,85"/>
 <area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="699,77,740,80,735,81,700,83"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="1028,109,1164,137"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="1028,109,1164,137"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="959,121,1015,123,1010,123,959,126"/>
 <area shape="rect" id="Node000007" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="1024,57,1168,85"/>
 <area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="927,106,1013,90,1018,88,928,111"/>

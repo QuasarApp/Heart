@@ -1,5 +1,5 @@
 <map id="QH::iParser::registerPackageType" name="QH::iParser::registerPackageType">
-<area shape="rect" id="Node000001" title="registerPackageType This method register package type T. This is need to prepare pacakge for parsing ..." alt="" coords="231,48,465,76"/>
+<area shape="rect" id="Node000001" title="registerPackageType This method register package type T. This is need to prepare package for parsing ..." alt="" coords="231,48,465,76"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeParser.html#a74bf8d3e14d3212e84eda423cc458f71" title=" " alt="" coords="5,5,183,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,46,183,42,183,37,229,45"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#aa113dac0a45ba80b3818d3dd98d67243" title=" " alt="" coords="19,75,169,119"/>

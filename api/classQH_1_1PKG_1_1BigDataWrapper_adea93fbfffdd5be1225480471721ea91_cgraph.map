@@ -1,0 +1,17 @@
+<map id="QH::PKG::BigDataWrapper::BigDataWrapper" name="QH::PKG::BigDataWrapper::BigDataWrapper">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,140,197,184"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1AbstractData.html#adde67dac24261cb7a4b5ce865e7fb3c0" title="AbstractData &#45; Base constructor of this object." alt="" coords="484,36,653,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,138,136,109,166,76,202,45,244,21,275,11,308,5,374,4,438,14,496,30,491,31,437,19,374,10,308,10,276,16,246,26,205,49,169,80,140,112,119,141"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1BigDataWrapper.html#accf7d9a77565febe081df10005240dfe" title="data This method sets data that should be sent as big data." alt="" coords="245,36,436,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,137,244,90,262,85,258,88,246,95,148,142"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1BigDataWrapper.html#a68a0c9140e80b6fc199a2ebd47c3bb3f" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="245,105,436,150"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="196,146,231,142,227,145,198,151"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1BigDataWrapper.html#a772b7ed35ebd97927005314d8d2b0ad5" title="setData This method sets new data for this wrapper." alt="" coords="245,174,436,219"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="197,173,232,180,227,182,198,179"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1BigDataWrapper.html#a1782d90fbeef99b741c66eb2d06da2a1" title="fromStream This method should be write all members of the current object to the stream object." alt="" coords="245,244,436,288"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="146,182,246,229,263,238,258,238,244,234,146,187"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1PKG_1_1BigDataWrapper.html#ac16421e693a25751a22000f9d76e391f" title=" " alt="" coords="245,313,436,358"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="121,182,174,240,209,271,246,299,256,306,251,305,243,303,205,275,171,244,120,187"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="435,56,471,57,466,59,437,61"/>
+<area shape="poly" id="edge6_Node000005_Node000002" title=" " alt="" coords="411,171,435,160,486,125,530,92,534,90,489,130,437,164,413,176"/>
+</map>

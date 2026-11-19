@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -118,6 +118,9 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('functions_func
 
 <h3 class="doxsection"><a id="index_s" name="index_s"></a>- s -</h3><ul>
 <li>saveObj()&#160;:&#160;<a class="el" href="classQH_1_1DataBase.html#a6e3982c83f2745a94d9170b83077cd2e">QH::DataBase</a></li>
+<li>saveVersion()&#160;:&#160;<a class="el" href="classQH_1_1StreamMultiversion.html#acead87b69451cd1ed841d9e5da7b0425">QH::StreamMultiversion</a></li>
+<li>scheduledTaskCount()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNode.html#a3c0fccf8b5544586f309936e80950027">QH::AbstractNode</a></li>
+<li>scheduleTask()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNode.html#a3ce3a9b96c0a23180c2252e6d3f8dde4">QH::AbstractNode</a></li>
 <li>sct()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#acccb35f613b7d70f0657207c6dae4779">QH::AbstractNodeInfo</a></li>
 <li>searchPackage()&#160;:&#160;<a class="el" href="classQH_1_1APIVersionParser.html#a43ba30e9be862fb44c7e047b096013bb">QH::APIVersionParser</a></li>
 <li>selectPackageVersion()&#160;:&#160;<a class="el" href="classQH_1_1APIVersionParser.html#ae65ceee9fa253bfe9e1bdbf9d46b605a">QH::APIVersionParser</a></li>
@@ -130,6 +133,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('functions_func
 <li>setAddress()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1DeleteObject.html#a87606cad5e5a3643667def20de68386f">QH::PKG::DeleteObject</a></li>
 <li>setAnsver()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1Ping.html#a48ba353799dc5e7a99a99906e180add8">QH::PKG::Ping</a></li>
 <li>setApisVersions()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1APIVersion.html#a2995f64d4a92c471eb28e16d3d84ca2f">QH::PKG::APIVersion</a></li>
+<li>setArgs()&#160;:&#160;<a class="el" href="classQH_1_1TranslatableString.html#a30695d84190f60a92c83190d5471a0ea">QH::TranslatableString</a></li>
 <li>setBanedList()&#160;:&#160;<a class="el" href="classQH_1_1WorkState.html#a8adfa3fac1f893b02a795f67e3d1a660">QH::WorkState</a></li>
 <li>setCloseConnectionAfterBadRequest()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNode.html#ae052688b7e50c9e5c15e3d2d57685a78">QH::AbstractNode</a></li>
 <li>setCommand()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1BigDataHeader.html#a99d7c9629ef95958209a0277264981fc">QH::PKG::BigDataHeader</a></li>
@@ -137,7 +141,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('functions_func
 <li>setConnections()&#160;:&#160;<a class="el" href="classQH_1_1WorkState.html#ad52d2640be8c7f04a96078847116a843">QH::WorkState</a></li>
 <li>setCurrentPart()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1BigDataRequest.html#a958ac0005496eed6e84fa9b9306c7e07">QH::PKG::BigDataRequest</a></li>
 <li>setCustomData()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1DataPack.html#a1a26bc7903e9423e39f7a49b85f7a555">QH::PKG::DataPack&lt; Package &gt;</a></li>
-<li>setData()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1BigDataPart.html#a31aff790ef8cfb4cfe98b9d95b1b9269">QH::PKG::BigDataPart</a>, <a class="el" href="classQH_1_1PKG_1_1BigDataWraper.html#a79bf28f91f9aee67f665c3d16548910e">QH::PKG::BigDataWraper</a></li>
+<li>setData()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1BigDataPart.html#a31aff790ef8cfb4cfe98b9d95b1b9269">QH::PKG::BigDataPart</a>, <a class="el" href="classQH_1_1PKG_1_1BigDataWrapper.html#a772b7ed35ebd97927005314d8d2b0ad5">QH::PKG::BigDataWrapper</a></li>
 <li>setDBAttribute()&#160;:&#160;<a class="el" href="classQH_1_1DataBase.html#a6c4dd47c696f21a0090bd4e7e058bbb7">QH::DataBase</a></li>
 <li>setErr()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1BadRequest.html#a7d13c8e8dfa93f1f82ea1986219541b1">QH::PKG::BadRequest</a></li>
 <li>setErrCode()&#160;:&#160;<a class="el" href="classQH_1_1PKG_1_1BadRequest.html#a0ade1a713015f14614111645ba1d0f27">QH::PKG::BadRequest</a></li>
@@ -177,8 +181,6 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('functions_func
 <li>setWriter()&#160;:&#160;<a class="el" href="classQH_1_1ISqlDB.html#a100f31dcf35a3b362800ea8378f4835a">QH::ISqlDB</a></li>
 <li>SHA256Hash()&#160;:&#160;<a class="el" href="classQH_1_1DbAddress.html#a402257f24f09ee1f956716238ca3904d">QH::DbAddress</a></li>
 <li>shedule()&#160;:&#160;<a class="el" href="classQH_1_1TaskScheduler.html#ac0dba557fb907b93395c5af97a224299">QH::TaskScheduler</a></li>
-<li>sheduledTaskCount()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNode.html#a0890ea96d495ad548d49c98d441c85dd">QH::AbstractNode</a></li>
-<li>sheduleTask()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNode.html#a47c7ffd8e1bb9e95f1bf0489d2c4c0bd">QH::AbstractNode</a></li>
 <li>sigConfirmed()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#ac494a9160c7c58d31fc9e5fe4428bd6e">QH::AbstractNodeInfo</a></li>
 <li>sigConnected()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#adde0bea9d0457611c942c476c35501b5">QH::AbstractNodeInfo</a></li>
 <li>sigDisconnected()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#af5b9325a1549ccdabf46fa19d2d4d3a5">QH::AbstractNodeInfo</a></li>
@@ -198,9 +200,10 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('functions_func
 <li>SqlDBWriter()&#160;:&#160;<a class="el" href="classQH_1_1SqlDBWriter.html#a2d2a100f0f23e89e14b942ed03e5ecdf">QH::SqlDBWriter</a></li>
 <li>SQLSources()&#160;:&#160;<a class="el" href="classQH_1_1DataBase.html#aa7a29c29d20a1bb627b7f29ce40544d1">QH::DataBase</a></li>
 <li>status()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36">QH::AbstractNodeInfo</a></li>
-<li>statusChaned()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56">QH::AbstractNodeInfo</a></li>
+<li>statusChanged()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNodeInfo.html#ae575dff61305938371274996cd4651ab">QH::AbstractNodeInfo</a></li>
 <li>stop()&#160;:&#160;<a class="el" href="classQH_1_1AbstractNode.html#a391beda8e270ac420a1dd0bede8d44ca">QH::AbstractNode</a>, <a class="el" href="classQH_1_1AsyncLauncher.html#a81a5a1bb7892446ed4291731d24b53ea">QH::AsyncLauncher</a>, <a class="el" href="classQH_1_1AsyncRenderLoop.html#a389284fbd29360d494de26cd1627ce25">QH::AsyncRenderLoop</a>, <a class="el" href="classQH_1_1DataBase.html#a3c607400d5b8e7ebb49fda5a3cf93fac">QH::DataBase</a></li>
 <li>StreamBase()&#160;:&#160;<a class="el" href="classQH_1_1StreamBase.html#abc980148f91acd8fcd047bb4aa171862">QH::StreamBase</a></li>
+<li>StreamMultiversion()&#160;:&#160;<a class="el" href="classQH_1_1StreamMultiversion.html#ae3ab1a8fd8b280225108434949083d02">QH::StreamMultiversion</a></li>
 <li>systemTables()&#160;:&#160;<a class="el" href="classQH_1_1DataBase.html#ac4e2bd9e3a232663493bfefc15544b2a">QH::DataBase</a></li>
 </ul>
 </div><!-- contents -->

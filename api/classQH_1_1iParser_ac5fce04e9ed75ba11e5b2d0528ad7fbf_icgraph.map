@@ -1,8 +1,8 @@
 <map id="QH::iParser::commandHandler" name="QH::iParser::commandHandler">
-<area shape="rect" id="Node000001" title="commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePac..." alt="" coords="409,48,626,76"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="203,5,361,50"/>
+<area shape="rect" id="Node000001" title="commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePac..." alt="" coords="409,48,626,76"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1APIVersionParser.html#a8d9b61d6ed6da98a3414e995dcde922d" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="203,5,361,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="401,46,361,42,361,37,407,45"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="207,75,356,119"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="207,75,356,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="407,79,357,89,357,83,401,79"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="5,75,155,119"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="189,106,155,108,155,103,194,106"/>

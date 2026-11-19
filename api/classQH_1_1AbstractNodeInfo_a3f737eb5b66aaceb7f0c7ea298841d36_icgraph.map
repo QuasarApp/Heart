@@ -4,10 +4,10 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2110,167,1844,79,1844,74,2115,168"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#a11fcc13ddb06cef4d562b50496955281" title="setStatus This method Sets new value of status node." alt="" coords="1694,202,1856,247"/>
 <area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="2096,202,1857,222,1856,216,2102,202"/>
-<area shape="rect" id="Node000021" href="$classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56" title="statusChaned This signal emitted when nodes status is changed." alt="" coords="1904,233,2066,278"/>
+<area shape="rect" id="Node000021" href="$classQH_1_1AbstractNodeInfo.html#ae575dff61305938371274996cd4651ab" title="statusChanged This signal emitted when nodes status is changed." alt="" coords="1904,233,2066,278"/>
 <area shape="poly" id="edge27_Node000001_Node000021" title=" " alt="" coords="2103,222,2067,235,2066,230,2098,223"/>
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="1807,16,1796,12,1775,10,1755,12,1743,17,1738,23,1739,32,1735,29,1733,21,1740,12,1754,7,1775,5,1798,7,1813,17"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="1202,5,1431,33"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected from node (server)." alt="" coords="1202,5,1431,33"/>
 <area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="1676,47,1432,30,1432,25,1681,46"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1AbstractNodeInfo.html#a91508c98d7052c9186986dd90650c23a" title="removeSocket This method use for remove socket. You can override this method for handle this event." alt="" coords="1481,236,1644,280"/>
 <area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="1681,239,1644,248,1644,242,1676,240"/>

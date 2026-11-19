@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="969,41,655,29,655,23,974,41"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1DataBase.html#a44cdd4332be17948515ff03461e22c71" title="upgradeDataBase This method upgrade data base to actyaly database version." alt="" coords="702,57,939,85"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="974,56,939,62,939,57,968,57"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="195,32,374,60"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initialize database of this node or server." alt="" coords="195,32,374,60"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="404,34,375,40,374,34,409,33"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="5,5,147,33"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="177,33,147,31,147,26,182,32"/>

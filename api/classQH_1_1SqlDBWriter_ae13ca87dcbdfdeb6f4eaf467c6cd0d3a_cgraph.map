@@ -7,7 +7,7 @@
 <area shape="poly" id="edge6_Node000003_Node000001" title=" " alt="" coords="267,63,237,65,237,60,272,62"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="537,57,730,85"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="489,69,524,71,519,71,490,74"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="783,31,918,58"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="783,31,918,58"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="731,57,765,55,770,54,731,62"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="778,83,923,110"/>
 <area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="731,80,765,86,760,86,731,85"/>

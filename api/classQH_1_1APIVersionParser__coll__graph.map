@@ -1,5 +1,5 @@
 <map id="QH::APIVersionParser" name="QH::APIVersionParser">
-<area shape="rect" id="Node000001" title="The APIVersionParser class This is main parser forthe main command. This parsers work only with the A..." alt="" coords="17,603,192,899"/>
+<area shape="rect" id="Node000001" title="The APIVersionParser class This is main parser for the main command. This parsers work only with the ..." alt="" coords="17,603,192,899"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1iParser.html" title="The iParser class This class provide functions for parsing income packages. For yousing just override..." alt="" coords="5,126,203,555"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,567,107,604,102,603,104,572"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="8,5,70,78"/>

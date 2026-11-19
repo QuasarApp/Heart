@@ -1,0 +1,5 @@
+<map id="QH::PackageManager::getPkgFromArchive" name="QH::PackageManager::getPkgFromArchive">
+<area shape="rect" id="Node000001" title="getPkgFromArchive This method return pointer to package from archive." alt="" coords="5,5,165,50"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PackageManager.html#aed260e46534c65f79f82628a346d4a13" title="contains This method checks if the package contains in this container by id." alt="" coords="213,5,372,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,25,200,27,195,28,165,30"/>
+</map>

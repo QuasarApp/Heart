@@ -12,7 +12,7 @@
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="567,269,509,271,508,266,572,268"/>
 <area shape="rect" id="Node000009" href="$classQH_1_1StreamBase.html#a43522cd09c37ab3fcb6d75854691fb55" title="fromBase64 This method provide initialization of object from the base64 string." alt="" coords="316,315,532,342"/>
 <area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="607,287,538,306,490,317,488,312,536,301,612,286"/>
-<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1AbstractData.html#aaff086fb5d1913a52d79ac528c90221e" title="fromPakcage &#45; This method initialize the current object from a package class object." alt="" coords="339,366,508,411"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1PKG_1_1AbstractData.html#acbc0bb4cfaf3307d98a67ac69ba8e803" title="fromPackage &#45; This method initialize the current object from a package class object." alt="" coords="339,366,508,411"/>
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="654,290,600,325,538,356,507,368,506,363,536,351,597,320,649,292"/>
 <area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1Ping.html#ac3d177fda7a075664eb7cbe97d7b02be" title=" " alt="" coords="350,435,498,462"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="670,294,616,362,580,397,538,426,499,441,498,436,536,421,576,392,612,358,666,296"/>

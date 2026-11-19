@@ -22,6 +22,7 @@ var searchData=
   ['_7esoftdelete_19',['~SoftDelete',['../classQH_1_1SoftDelete.html#a42620e71c093be57dd74575925a51b01',1,'QH::SoftDelete']]],
   ['_7esqldbwriter_20',['~SqlDBWriter',['../classQH_1_1SqlDBWriter.html#aefd983523c1751dce2a94aa1e66842d9',1,'QH::SqlDBWriter']]],
   ['_7estreambase_21',['~StreamBase',['../classQH_1_1StreamBase.html#ac6bb1881b3b2716143666b0d59131b49',1,'QH::StreamBase']]],
-  ['_7etaskscheduler_22',['~TaskScheduler',['../classQH_1_1TaskScheduler.html#a6b50c50868c369380571d6b683b786b5',1,'QH::TaskScheduler']]],
-  ['_7etcpsocket_23',['~TcpSocket',['../classQH_1_1TcpSocket.html#a6cf8905afc1f0c35d452887a06744b1d',1,'QH::TcpSocket']]]
+  ['_7estreammultiversion_22',['~StreamMultiversion',['../classQH_1_1StreamMultiversion.html#ad2f43c6514eb7410c773aab24189e55e',1,'QH::StreamMultiversion']]],
+  ['_7etaskscheduler_23',['~TaskScheduler',['../classQH_1_1TaskScheduler.html#a6b50c50868c369380571d6b683b786b5',1,'QH::TaskScheduler']]],
+  ['_7etcpsocket_24',['~TcpSocket',['../classQH_1_1TcpSocket.html#a6cf8905afc1f0c35d452887a06744b1d',1,'QH::TcpSocket']]]
 ];

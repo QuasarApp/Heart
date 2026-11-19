@@ -1,5 +1,5 @@
 <map id="QH::DbAddress::toString" name="QH::DbAddress::toString">
-<area shape="rect" id="Node000001" title="toString This method return a string implementation fo this object." alt="" coords="793,160,972,188"/>
+<area shape="rect" id="Node000001" title="toString This method return a string implementation of this object." alt="" coords="793,160,972,188"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1DbAddress.html#a31f12a82353b94ba2c8039f9050279bd" title=" " alt="" coords="546,133,743,161"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="775,162,744,161,744,156,780,162"/>
 <area shape="rect" id="Node000009" href="$classQH_1_1DbAddressKey.html#a0da3e6651798347013152ac58c96b719" title="toString This method should be return the string implementation of this key." alt="" coords="544,185,745,213"/>
@@ -7,7 +7,7 @@
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="684,118,671,114,645,112,620,114,606,119,603,124,609,134,604,132,597,124,603,115,619,109,645,107,673,109,689,118"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1DbAddressKey.html#ac8f718b70ccd01809c7a8032755964cd" title=" " alt="" coords="252,5,496,33"/>
 <area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="613,123,561,85,495,48,461,36,460,31,497,43,563,81,618,123"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,57,496,85"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This constructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,57,496,85"/>
 <area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="579,129,495,106,431,88,431,83,497,101,584,128"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1DbAddressKey.html#aea22139f43b20acf32e17d624245e510" title="equal This method must be make compare between current object and other." alt="" coords="11,147,198,174"/>
 <area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="528,145,397,146,252,150,199,153,198,148,252,145,397,141,533,144"/>

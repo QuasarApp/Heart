@@ -1,10 +1,10 @@
 <map id="QH::BigDataParser::parsePackage" name="QH::BigDataParser::parsePackage">
-<area shape="rect" id="Node000001" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="5,144,155,189"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#ac5fce04e9ed75ba11e5b2d0528ad7fbf" title="commandHandler This method it is simple wrapper for the handle pacakges in the AbstractNode::parsePac..." alt="" coords="203,39,420,67"/>
+<area shape="rect" id="Node000001" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="5,144,155,189"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#ac5fce04e9ed75ba11e5b2d0528ad7fbf" title="commandHandler This method it is simple wrapper for the handle packages in the AbstractNode::parsePac..." alt="" coords="203,39,420,67"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,142,151,111,202,83,238,70,234,74,204,87,154,116,112,146"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header packge of the big data." alt="" coords="475,75,624,119"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header package of the big data." alt="" coords="475,75,624,119"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="154,144,202,133,337,113,462,102,457,105,338,119,203,138,156,148"/>
-<area shape="rect" id="Node000010" href="$classQH_1_1BigDataParser.html#a73404491e5ce299be061c48ca28ce844" title="sendBigDataPackage This method separate big pacakge and sent only heder ot serve." alt="" coords="226,285,396,330"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1BigDataParser.html#a0369fd52ea3a002e356c54003b50e47e" title="sendBigDataPackage This method separate big package and sent only header to server." alt="" coords="222,285,400,330"/>
 <area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="102,186,147,229,204,271,216,279,211,278,201,275,144,233,101,192"/>
 <area shape="rect" id="Node000011" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="475,144,624,189"/>
 <area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="155,170,306,173,462,173,457,175,306,178,156,176"/>

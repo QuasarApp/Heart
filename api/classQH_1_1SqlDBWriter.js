@@ -5,7 +5,7 @@ var classQH_1_1SqlDBWriter =
     [ "databaseLocation", "classQH_1_1SqlDBWriter.html#a54ecf880409036dc7e4c406dc75a19a1", null ],
     [ "db", "classQH_1_1SqlDBWriter.html#a5f11b3868f09461cdff356306f062fe8", null ],
     [ "db", "classQH_1_1SqlDBWriter.html#ad3205d60d667eae806987d519268603a", null ],
-    [ "defaultInitPararm", "classQH_1_1SqlDBWriter.html#af8374167be0dc29d3c68c1f2d0bcb50d", null ],
+    [ "defaultInitParam", "classQH_1_1SqlDBWriter.html#a2f24e9645932bb36d4cef57d6c12070b", null ],
     [ "deleteObject", "classQH_1_1SqlDBWriter.html#a162a0f239ad6e300fcc1944f7e4c49ba", null ],
     [ "deleteQuery", "classQH_1_1SqlDBWriter.html#ae13ca87dcbdfdeb6f4eaf467c6cd0d3a", null ],
     [ "disableFK", "classQH_1_1SqlDBWriter.html#a04e893c242b25854f1bf3f64dc196ea5", null ],

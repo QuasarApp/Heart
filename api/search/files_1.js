@@ -12,6 +12,6 @@ var searchData=
   ['bigdatapart_2eh_9',['bigdatapart.h',['../bigdatapart_8h.html',1,'']]],
   ['bigdatarequest_2ecpp_10',['bigdatarequest.cpp',['../bigdatarequest_8cpp.html',1,'']]],
   ['bigdatarequest_2eh_11',['bigdatarequest.h',['../bigdatarequest_8h.html',1,'']]],
-  ['bigdatawraper_2ecpp_12',['bigdatawraper.cpp',['../bigdatawraper_8cpp.html',1,'']]],
-  ['bigdatawraper_2eh_13',['bigdatawraper.h',['../bigdatawraper_8h.html',1,'']]]
+  ['bigdatawrapper_2ecpp_12',['bigdatawrapper.cpp',['../bigdatawrapper_8cpp.html',1,'']]],
+  ['bigdatawrapper_2eh_13',['bigdatawrapper.h',['../bigdatawrapper_8h.html',1,'']]]
 ];

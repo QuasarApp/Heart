@@ -1,5 +1,5 @@
 var searchData=
 [
   ['local_5fserver_0',['LOCAL_SERVER',['../config_8h.html#a501131841846728b1da2a17901db3040',1,'config.h']]],
-  ['logick_5ferroor_1',['LOGICK_ERROOR',['../abstractnode_8h.html#a6e70188197fa629387bc2fbdef4aa449',1,'abstractnode.h']]]
+  ['logic_5ferror_1',['LOGIC_ERROR',['../abstractnode_8h.html#a5502fb51612ec27abb7e1f3091b86594',1,'abstractnode.h']]]
 ];

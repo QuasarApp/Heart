@@ -7,7 +7,7 @@
 <area shape="poly" id="edge5_Node000003_Node000002" title=" " alt="" coords="360,53,596,35,591,37,361,58"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#a34e82d79450b6b780b6b11f209dc8a7e" title="isHaveAPrimaryKey This method return true if this object has a primary key. If you want to cache this..." alt="" coords="408,65,561,110"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="360,69,395,76,390,76,360,75"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="408,135,561,179"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="408,135,561,179"/>
 <area shape="poly" id="edge6_Node000003_Node000005" title=" " alt="" coords="331,82,409,120,422,128,417,127,407,125,330,88"/>
 <area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="561,62,592,55,597,54,562,67"/>
 </map>

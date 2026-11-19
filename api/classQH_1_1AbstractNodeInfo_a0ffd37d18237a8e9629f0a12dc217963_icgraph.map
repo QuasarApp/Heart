@@ -1,8 +1,8 @@
 <map id="QH::AbstractNodeInfo::isLocal" name="QH::AbstractNodeInfo::isLocal">
 <area shape="rect" id="Node000001" title="isLocal return true if connection opened on this node." alt="" coords="493,65,655,110"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="242,5,419,50"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="242,5,419,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="475,64,419,52,420,47,481,64"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="216,74,445,102"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected from node (server)." alt="" coords="216,74,445,102"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="475,88,446,90,445,85,480,87"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#ad77d9148f78573f29b2737b41dd6070f" title="setIsLocal This method sets local status for this Node." alt="" coords="249,125,412,170"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="480,111,413,130,412,125,475,112"/>

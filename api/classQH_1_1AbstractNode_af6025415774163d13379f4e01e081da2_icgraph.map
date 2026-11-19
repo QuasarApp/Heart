@@ -1,5 +1,5 @@
 <map id="QH::AbstractNode::connectionsCount" name="QH::AbstractNode::connectionsCount">
-<area shape="rect" id="Node000001" title="connectionsCount &#45; Return count fo connections (connections with status connected)" alt="" coords="778,105,1002,150"/>
+<area shape="rect" id="Node000001" title="connectionsCount &#45; Return count of connections (connections with status connected)" alt="" coords="778,105,1002,150"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a423c7c2dad323cf458c2c19e0e7f7a61" title="connectionState This method return string value about the cocction state." alt="" coords="514,5,730,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="819,99,729,65,697,53,697,48,731,60,825,99"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#ac7463abfbdf33ae601a258e97528945f" title="getWorkStateString This method generate string about work state of server." alt="" coords="522,75,722,119"/>

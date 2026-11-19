@@ -1,5 +1,5 @@
 <map id="QH::TcpSocket::~TcpSocket" name="QH::TcpSocket::~TcpSocket">
 <area shape="rect" id="Node000001" title=" " alt="" coords="5,14,202,42"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1TcpSocket.html#ae4c0d25df1d1a43448943ba069be7170" title="handleDisckonnetFromHost This is slot wrapper of the disconectFromHost method of QAbstractSocket clas..." alt="" coords="250,5,487,50"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1TcpSocket.html#ad39faf2fbc1d170254002e0949dcc721" title="handleDisconnectFromHost This is slot wrapper of the disconnectedFromHost method of QAbstractSocket c..." alt="" coords="250,5,487,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,25,237,27,231,28,202,30"/>
 </map>

@@ -6,12 +6,12 @@
 <area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="168,102,203,110,197,111,168,108"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36" title="status This method return status of the node connection." alt="" coords="636,5,799,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="378,49,623,34,618,35,379,54"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56" title="statusChaned This signal emitted when nodes status is changed." alt="" coords="426,65,588,110"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#ae575dff61305938371274996cd4651ab" title="statusChanged This signal emitted when nodes status is changed." alt="" coords="426,65,588,110"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="378,66,413,73,408,74,378,72"/>
 <area shape="poly" id="edge7_Node000004_Node000003" title=" " alt="" coords="587,62,620,55,625,54,588,67"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1AbstractNodeInfo.html#a90877ac6cc3938d87aeec2a60f2e1b2f" title="confirmData This method check all data of node and return true. If node is confirmed." alt="" coords="636,75,799,119"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="589,89,623,93,618,93,589,94"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivere own version to the distanation node." alt="" coords="847,40,1009,85"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivered own version to the destination node." alt="" coords="847,40,1009,85"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="799,81,828,79,834,78,799,86"/>
 <area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeInfo.html#aed86119d910f2e64cec6e61dab61af45" title="fVersionReceived This method return true if this node receive version information." alt="" coords="847,109,1009,154"/>
 <area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="799,108,834,116,828,116,799,113"/>

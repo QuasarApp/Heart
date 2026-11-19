@@ -1,5 +1,5 @@
 <map id="QH::DistVersion::getMaxCompatible" name="QH::DistVersion::getMaxCompatible">
-<area shape="rect" id="Node000001" title="getMaxСompatible return maximum available on booth nodes version." alt="" coords="5,32,261,60"/>
+<area shape="rect" id="Node000001" title="getMaxCompatible return maximum available on both nodes version." alt="" coords="5,32,261,60"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1DistVersion.html#aae02e6f08ea2bd1f7ebe2219880fd5ab" title=" " alt="" coords="309,5,469,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="261,30,296,29,290,30,262,35"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1DistVersion.html#aa48e1f747840281546476c5ecd3f6d71" title=" " alt="" coords="311,57,467,85"/>

@@ -1,10 +1,10 @@
 <map id="QH::PKG::BigDataBase::setPackageId" name="QH::PKG::BigDataBase::setPackageId">
 <area shape="rect" id="Node000001" title="setPackageId This method sets new id of package that this package moving" alt="" coords="597,36,766,81"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header packge of the big data." alt="" coords="400,5,549,50"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1BigDataParser.html#af8492752a0a75ab1a64d48f62e7c1585" title="newPackage This method process first header package of the big data." alt="" coords="400,5,549,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="580,44,550,41,550,36,585,44"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1BigDataParser.html#a88ae2e5f2edf88b8c649d49401c783a2" title="processPart This method process part of package" alt="" coords="5,5,155,50"/>
 <area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="584,68,405,77,303,75,202,65,148,53,149,48,203,60,303,69,405,72,579,68"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="203,5,352,50"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1BigDataParser.html#a31240674b6244ce7be9faaf3ad5e5055" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="203,5,352,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="382,28,353,30,352,25,387,27"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,37,155,39,155,34,190,36"/>
 <area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="170,16,205,18,200,19,170,21"/>

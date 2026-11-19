@@ -2,13 +2,13 @@
 <area shape="rect" id="Node000001" title="networkAddress This method return network address of current node or client." alt="" coords="1759,160,1921,204"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#ac69e71eb572714d8fbd258157093c2e7" title="nodeConfirmend This method invocked when the node status changed to &quot;confirmend&quot; default implementati..." alt="" coords="1458,5,1711,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1813,146,1769,96,1741,70,1709,48,1682,36,1682,31,1712,44,1744,66,1773,92,1818,148"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a41260f5fbf3359b4fb5176f36f404c47" title="nodeConnected This method invocked when the node status changed to &quot;connected&quot; default implementatio ..." alt="" coords="1461,57,1708,85"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a41260f5fbf3359b4fb5176f36f404c47" title="nodeConnected This method invocked when the node status changed to &quot;connected&quot; default implementation..." alt="" coords="1461,57,1708,85"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1792,150,1754,128,1710,106,1657,88,1658,83,1712,101,1756,123,1797,151"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#a26b8432a060a0cd8fda798e1cb228392" title="nodeErrorOccured This slot invoked when error ocured in the nodeInfo." alt="" coords="1202,141,1410,186"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#aaaba8fd793a778d90418c9c417a66c38" title="nodeErrorOccurred This slot invoked when error ocured in the nodeInfo." alt="" coords="1202,141,1410,186"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1750,155,1710,150,1632,143,1553,143,1411,152,1410,147,1553,137,1633,138,1711,145,1755,155"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all childs classes of an AbstractNode class. This method work on ..." alt="" coords="1496,160,1673,204"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1AbstractNodeParser.html#a75079838727c3e2eabed9dd189ea6158" title="parsePackage This is main method of all children classes of an AbstractNode class...." alt="" coords="1496,160,1673,204"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1741,182,1674,184,1674,179,1746,182"/>
-<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="1470,228,1699,256"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1AbstractNode.html#a760af86e1c9bfcb5efd6813a3b9329a4" title="removeNode &#45; Remove node and disconnected from node (server)." alt="" coords="1470,228,1699,256"/>
 <area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="1746,208,1711,219,1662,230,1661,225,1710,214,1741,209"/>
 <area shape="rect" id="Node000013" href="$classQH_1_1AbstractNode.html#a310f1e1a0770f13e4ec8b505624df843" title="sendData This method send data object another to node" alt="" coords="1481,280,1688,308"/>
 <area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="1802,213,1759,245,1712,270,1674,282,1673,277,1710,265,1756,240,1796,215"/>

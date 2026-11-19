@@ -1,5 +1,5 @@
 <map id="QH::APIVersionParser::sendSupportedAPI" name="QH::APIVersionParser::sendSupportedAPI">
-<area shape="rect" id="Node000001" title="sendSupportedAPI This method sents all ainformation about suppported api." alt="" coords="5,156,164,201"/>
+<area shape="rect" id="Node000001" title="sendSupportedAPI This method sents all ainformation about supported api." alt="" coords="5,156,164,201"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1iParser.html#a7dd711e95aa8ac11ba718ec56d1e9f71" title="multiVersionPackages return list of the supported multiversions packages." alt="" coords="212,5,395,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,154,150,107,210,60,222,55,218,59,213,65,153,111,108,157"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1iParser.html#a3a8de0d71e500e5b5a7c2447e89f71a5" title="sendData This method send data object another to node" alt="" coords="222,74,385,102"/>

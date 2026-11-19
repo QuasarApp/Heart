@@ -10,5 +10,5 @@ var searchData=
   ['bigdataparser_7',['BigDataParser',['../classQH_1_1BigDataParser.html#aa113dac0a45ba80b3818d3dd98d67243',1,'QH::BigDataParser']]],
   ['bigdatapart_8',['BigDataPart',['../classQH_1_1PKG_1_1BigDataPart.html#abab56edc54961914deb123c05593cff6',1,'QH::PKG::BigDataPart']]],
   ['bigdatarequest_9',['BigDataRequest',['../classQH_1_1PKG_1_1BigDataRequest.html#a21b5f5d1678518489daeb886f214aa5b',1,'QH::PKG::BigDataRequest']]],
-  ['bigdatawraper_10',['BigDataWraper',['../classQH_1_1PKG_1_1BigDataWraper.html#a34cb1e352b314e53be25a6e986f109c6',1,'QH::PKG::BigDataWraper']]]
+  ['bigdatawrapper_10',['BigDataWrapper',['../classQH_1_1PKG_1_1BigDataWrapper.html#adea93fbfffdd5be1225480471721ea91',1,'QH::PKG::BigDataWrapper']]]
 ];

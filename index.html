@@ -383,7 +383,7 @@
      <div class="highlight"><pre><span></span><code><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">yourLib</span><span class="w"> </span><span class="s">PUBLIC</span><span class="w"> </span><span class="s">Heart</span><span class="p">)</span>
 </code></pre></div></p>
 </li>
-<li>rebuild yuor project</li>
+<li>rebuild your project</li>
 </ul>
 <h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
 <p>Create a own package class and override some basic methods.</p>
@@ -452,16 +452,16 @@
 <span class="w">           </span><span class="k">return</span><span class="w"> </span><span class="n">ParserResult</span><span class="o">::</span><span class="n">Error</span><span class="p">;</span>
 <span class="w">       </span><span class="p">}</span>
 
-<span class="w">       </span><span class="n">cardrequest</span><span class="p">.</span><span class="n">_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;responce for client &quot;</span>
+<span class="w">       </span><span class="n">cardrequest</span><span class="p">.</span><span class="n">_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;response for client &quot;</span>
 
-<span class="w">       </span><span class="c1">// responce only for servers.</span>
+<span class="w">       </span><span class="c1">// response only for servers.</span>
 <span class="w">       </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nodeType</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">QH</span><span class="o">::</span><span class="n">AbstractNode</span><span class="o">::</span><span class="n">NodeType</span><span class="o">::</span><span class="n">Server</span><span class="p">)</span>
 <span class="w">           </span><span class="n">sendData</span><span class="p">(</span><span class="n">cardrequest</span><span class="p">,</span><span class="w"> </span><span class="n">sender</span><span class="o">-&gt;</span><span class="n">networkAddress</span><span class="p">(),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">pkg</span><span class="p">.</span><span class="n">hdr</span><span class="p">);</span>
 
 <span class="w">       </span><span class="k">return</span><span class="w"> </span><span class="n">ParserResult</span><span class="o">::</span><span class="n">Processed</span><span class="p">;</span>
 <span class="w">   </span><span class="p">}</span>
 
-<span class="w">   </span><span class="c1">// This vesion of the parser (any digital value.) .</span>
+<span class="w">   </span><span class="c1">// This version of the parser (any digital value.) .</span>
 <span class="w">   </span><span class="kt">int</span><span class="w"> </span><span class="n">version</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;};</span>
 <span class="w">   </span><span class="n">QString</span><span class="w"> </span><span class="nf">parserId</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span><span class="k">return</span><span class="w"> </span><span class="s">&quot;MyParser&quot;</span><span class="p">;};</span>
 

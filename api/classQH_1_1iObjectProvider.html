@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -125,12 +125,12 @@ Inheritance diagram for QH::iObjectProvider:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1iObjectProvider__inherit__graph.png" border="0" usemap="#aQH_1_1iObjectProvider_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="aQH_1_1iObjectProvider_inherit__map" id="aQH_1_1iObjectProvider_inherit__map">
-<area shape="rect" title="The iObjectProvider class is base interface for work with database objects. Using on database writers..." alt="" coords="164,5,303,279"/>
+<area shape="rect" title="The iObjectProvider class is base interface for work with database objects. Using on database writers..." alt="" coords="163,5,302,279"/>
 <area shape="rect" href="classQH_1_1ISqlDB.html" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="9,327,242,890"/>
-<area shape="poly" title=" " alt="" coords="198,296,194,327,189,326,200,290"/>
-<area shape="rect" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="268,382,418,834"/>
-<area shape="poly" title=" " alt="" coords="269,290,293,383,288,383,269,296"/>
-<area shape="rect" href="classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation fo datatbase. The SqlDB do not use caches,..." alt="" coords="5,938,238,1167"/>
+<area shape="poly" title=" " alt="" coords="197,296,193,327,188,326,199,290"/>
+<area shape="rect" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="269,382,417,834"/>
+<area shape="poly" title=" " alt="" coords="268,290,292,383,287,383,268,296"/>
+<area shape="rect" href="classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation of database. The SqlDB do not use caches,..." alt="" coords="5,938,238,1167"/>
 <area shape="poly" title=" " alt="" coords="124,903,125,939,120,938,122,908"/>
 <area shape="rect" href="classQH_1_1AsyncSqlDBWriter.html" title="The AsyncSqlDbWriter class is some as SqlDBWriter but run all command in own thread...." alt="" coords="263,1005,429,1100"/>
 <area shape="poly" title=" " alt="" coords="346,848,348,1006,343,1005,343,852"/>
@@ -153,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4e608ee9571fe5b59016337e9b72967d" id="r_a4e608ee9571fe5b59016337e9b72967d"><td class="memItemLeft">QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a4e608ee9571fe5b59016337e9b72967d">getObjectRaw</a> (const <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &amp;templateVal)</td></tr>
 <tr class="memdesc:a4e608ee9571fe5b59016337e9b72967d"><td class="mdescLeft">&#160;</td><td class="mdescRight">getObjectRaw This method return object without test object type.  <br /></td></tr>
 <tr class="memitem:af5d4465654369be3556de4088902ce8d" id="r_af5d4465654369be3556de4088902ce8d"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#af5d4465654369be3556de4088902ce8d">getAllObjects</a> (const <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &amp;templateObject, QList&lt; QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt; &gt; &amp;result)=0</td></tr>
-<tr class="memdesc:af5d4465654369be3556de4088902ce8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects  <br /></td></tr>
+<tr class="memdesc:af5d4465654369be3556de4088902ce8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">getAllObjects This method execute a select method of the templateObject and return list of all selected from databases or cache objects  <br /></td></tr>
 <tr class="memitem:a8d50bd90db2add7257902bef8e7912cc" id="r_a8d50bd90db2add7257902bef8e7912cc"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#a8d50bd90db2add7257902bef8e7912cc">replaceObject</a> (const QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt; &amp;saveObject, bool wait)=0</td></tr>
 <tr class="memdesc:a8d50bd90db2add7257902bef8e7912cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">replaceObject This method execute a replace method of the saveObject and insert or save if not exists, all changes into database.  <br /></td></tr>
 <tr class="memitem:a6b321100605a45015d90df932ae0eb49" id="r_a6b321100605a45015d90df932ae0eb49"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#a6b321100605a45015d90df932ae0eb49">updateObject</a> (const QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt; &amp;saveObject, bool wait)=0</td></tr>
@@ -256,7 +256,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">query</td><td>This is query that will be executed. </td></tr>
-    <tr><td class="paramname">bindValues</td><td>This is values that need to bind before excute query. </td></tr>
+    <tr><td class="paramname">bindValues</td><td>This is values that need to bind before execute query. </td></tr>
     <tr><td class="paramname">result</td><td>This is query result value. </td></tr>
   </table>
   </dd>
@@ -335,7 +335,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects </p>
+<p>getAllObjects This method execute a select method of the templateObject and return list of all selected from databases or cache objects </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">templateObject</td><td>This is template object for prepare a select request. </td></tr>
@@ -396,7 +396,7 @@ template&lt;class TYPE&gt; </div>
 <dl class="section note"><dt>Note</dt><dd>This method return a database object with a type as a type of templateVal object. If you want to get a object of C class but the database contains object of D class then you get object with the C class and this object will be saved to cache. So next time if you want get a object D class you get a object with C class. This is possible only when the objects have the same id. that is, classes C and D are no different except for a command. So this behavior should not lead to errors. </dd>
 <dd>
 The type of input templateVal object must be child type of the <a class="el" href="classQH_1_1PKG_1_1DBObject.html" title="The DBObject class- main class for work with data base.">DBObject</a> class. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>return strong pointer to <a class="el" href="classQH_1_1PKG_1_1DBObject.html" title="The DBObject class- main class for work with data base.">DBObject</a> ot nullptr id object not exits. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>return strong pointer to <a class="el" href="classQH_1_1PKG_1_1DBObject.html" title="The DBObject class- main class for work with data base.">DBObject</a> or nullptr if object not exists. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="iobjectprovider_8h_source.html#l00039">39</a> of file <a class="el" href="iobjectprovider_8h_source.html">iobjectprovider.h</a>.</p>
 <div class="dynheader">

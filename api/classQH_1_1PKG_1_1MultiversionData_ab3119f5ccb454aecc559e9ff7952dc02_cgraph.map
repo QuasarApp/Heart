@@ -1,6 +1,6 @@
 <map id="QH::PKG::MultiversionData::toPackage" name="QH::PKG::MultiversionData::toPackage">
 <area shape="rect" id="Node000001" title="toPackage This method convert this class object to the package. For more info see Package class." alt="" coords="5,90,202,135"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="534,5,704,33"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="534,5,704,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,87,188,57,249,33,318,18,389,11,521,11,516,13,390,16,319,23,250,38,190,62,139,92"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1AbstractData.html#ad510842b57d0b5f35323839572ce4b2b" title="cmd &#45; This is command of this object, (for generate cmd use macross QH_PACKAGE)" alt="" coords="250,47,455,74"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="201,89,270,77,265,80,203,94"/>
@@ -13,7 +13,7 @@
 <area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="420,96,454,83,478,68,502,51,546,37,541,39,504,56,481,72,456,88,422,101"/>
 <area shape="rect" id="Node000005" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="546,65,693,93"/>
 <area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="429,100,532,89,527,91,430,106"/>
-<area shape="rect" id="Node000006" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="783,91,988,118"/>
+<area shape="rect" id="Node000006" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="783,91,988,118"/>
 <area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="429,109,771,105,766,108,429,114"/>
 <area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="693,83,770,93,765,94,693,89"/>
 <area shape="rect" id="Node000009" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="503,184,735,212"/>

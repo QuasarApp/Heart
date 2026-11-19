@@ -10,11 +10,11 @@
 <area shape="poly" id="edge12_Node000001_Node000008" title=" " alt="" coords="140,268,200,238,237,223,275,213,339,202,390,200,505,213,594,231,589,232,505,218,390,206,340,207,276,218,239,228,202,243,144,272"/>
 <area shape="rect" id="Node000009" href="$classQH_1_1AbstractNode.html#a3a0487102701cacc0367e58be47711b3" title="changeTrust This method change trust of connected node." alt="" coords="294,228,486,272"/>
 <area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="227,268,281,262,276,265,229,273"/>
-<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNode.html#af0498eea2503a0753d910c14352730d2" title="fCloseConnectionAfterBadRequest This propery enable or disable droping connection after badRequests...." alt="" coords="289,297,492,342"/>
+<area shape="rect" id="Node000010" href="$classQH_1_1AbstractNode.html#af0498eea2503a0753d910c14352730d2" title="fCloseConnectionAfterBadRequest This property enable or disable dropping connection after badRequests..." alt="" coords="289,297,492,342"/>
 <area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="227,296,276,303,271,306,229,301"/>
 <area shape="rect" id="Node000011" href="$classQH_1_1AbstractNode.html#a4d896aa68e6bf1778555b938b8863ecc" title="isBanned This method checks if the node is banned." alt="" coords="288,517,493,545"/>
 <area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="124,296,145,338,178,394,222,453,248,480,277,502,288,511,283,510,274,507,245,484,218,457,173,397,141,341,123,301"/>
-<area shape="rect" id="Node000014" href="$classQH_1_1AbstractNode.html#a33193da61850603360c0ee0695a34cf8" title="removeNode &#45; Remove node and disconnected forom node (server)." alt="" coords="276,389,505,417"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1AbstractNode.html#a0c1ce198736cf69fe87f597e2aea9ec4" title="removeNode &#45; Remove node and disconnected from node (server)." alt="" coords="276,389,505,417"/>
 <area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="150,296,277,351,344,382,339,383,275,356,151,302"/>
 <area shape="rect" id="Node000015" href="$classQH_1_1AbstractNode.html#afa44b1e6e1239e43d5d3e66d583472f9" title="sendData This method send data object another to node" alt="" coords="287,465,494,493"/>
 <area shape="poly" id="edge20_Node000001_Node000015" title=" " alt="" coords="131,296,192,357,233,393,277,426,338,459,332,460,274,431,229,398,188,361,130,301"/>

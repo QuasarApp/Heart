@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classQH_1_1Sof
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class povide the soft delete functionality. All child classes of this class must be deleted using the softDelete method for preparring for delete. IF you delete object without prepare then destructor invoke the abort function in debug mode. For release mode destructor print error message only.  
+<p>The <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class povide the soft delete functionality. All child classes of this class must be deleted using the softDelete method for preparring for delete. IF you delete object without prepare then distructor invoke the abort function in debug mode. For release mode distructor print error message only.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="softdelete_8h_source.html">softdelete.h</a>&gt;</code></p>
@@ -130,7 +130,7 @@ Inheritance diagram for QH::SoftDelete:</div>
 <area shape="poly" title=" " alt="" coords="179,162,173,194,168,192,180,157"/>
 <area shape="rect" href="classQH_1_1ISqlDB.html" title="The ISqlDB class it is db cache and bridge for DbWriters. Work Scheme of the database cache:" alt="" coords="199,204,432,768"/>
 <area shape="poly" title=" " alt="" coords="225,157,240,204,235,204,225,162"/>
-<area shape="rect" href="classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation fo datatbase. The SqlDB do not use caches,..." alt="" coords="199,827,432,1055"/>
+<area shape="rect" href="classQH_1_1SqlDB.html" title="The SqlDB class This is base implementation of database. The SqlDB do not use caches,..." alt="" coords="199,827,432,1055"/>
 <area shape="poly" title=" " alt="" coords="317,780,318,828,313,826,314,785"/>
 </map>
 </div>
@@ -147,17 +147,17 @@ Collaboration diagram for QH::SoftDelete:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a61440256265053a010592d06b0c61061" id="r_a61440256265053a010592d06b0c61061"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a61440256265053a010592d06b0c61061">SoftDelete</a> ()</td></tr>
 <tr class="memitem:a42620e71c093be57dd74575925a51b01" id="r_a42620e71c093be57dd74575925a51b01"><td class="memItemLeft">virtual&#160;</td><td class="memItemRight"><a class="el" href="#a42620e71c093be57dd74575925a51b01">~SoftDelete</a> ()</td></tr>
-<tr class="memdesc:a42620e71c093be57dd74575925a51b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">~SoftDelete This destructor has bin crashed if the softDelete method not will be invoked before delete this object. IF you try delete this object on release distribution then you get error message only without invoked std::abort method.  <br /></td></tr>
+<tr class="memdesc:a42620e71c093be57dd74575925a51b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">~SoftDelete This distructor has bin crashed if the softDelete method not will be invoked before delete this object. IF you try delete this object on release distribution then you get error message only without invoked std::abort method.  <br /></td></tr>
 <tr class="memitem:a18ab089574d0ebbcc462bb24fb6984c9" id="r_a18ab089574d0ebbcc462bb24fb6984c9"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a18ab089574d0ebbcc462bb24fb6984c9">softDelete</a> ()</td></tr>
 <tr class="memdesc:a18ab089574d0ebbcc462bb24fb6984c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">softDelete This method remove this object and save all changes into database.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pro-methods" class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:afcf27c87951fcb170bbc0fd5a2c959a2" id="r_afcf27c87951fcb170bbc0fd5a2c959a2"><td class="memItemLeft">virtual void&#160;</td><td class="memItemRight"><a class="el" href="#afcf27c87951fcb170bbc0fd5a2c959a2">prepareForDelete</a> ()=0</td></tr>
-<tr class="memdesc:afcf27c87951fcb170bbc0fd5a2c959a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">prepareForDelete This method must be prepare object for delete. Override this for working main functions of this class. For more information see the <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class and <a class="el" href="#a42620e71c093be57dd74575925a51b01" title="~SoftDelete This destructor has bin crashed if the softDelete method not will be invoked before delet...">SoftDelete::~SoftDelete</a> distructor.  <br /></td></tr>
+<tr class="memdesc:afcf27c87951fcb170bbc0fd5a2c959a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">prepareForDelete This method must be prepare object for delete. Override this for working main functions of this class. For more information see the <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class and <a class="el" href="#a42620e71c093be57dd74575925a51b01" title="~SoftDelete This distructor has bin crashed if the softDelete method not will be invoked before delet...">SoftDelete::~SoftDelete</a> distructor.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class povide the soft delete functionality. All child classes of this class must be deleted using the softDelete method for preparring for delete. IF you delete object without prepare then destructor invoke the abort function in debug mode. For release mode destructor print error message only. </p>
+<div class="textblock"><p>The <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class povide the soft delete functionality. All child classes of this class must be deleted using the softDelete method for preparring for delete. IF you delete object without prepare then distructor invoke the abort function in debug mode. For release mode distructor print error message only. </p>
 
 <p class="definition">Definition at line <a class="el" href="softdelete_8h_source.html#l00020">20</a> of file <a class="el" href="softdelete_8h_source.html">softdelete.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -231,7 +231,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>~SoftDelete This destructor has bin crashed if the softDelete method not will be invoked before delete this object. IF you try delete this object on release distribution then you get error message only without invoked std::abort method. </p>
+<p>~SoftDelete This distructor has bin crashed if the softDelete method not will be invoked before delete this object. IF you try delete this object on release distribution then you get error message only without invoked std::abort method. </p>
 <dl class="section warning"><dt>Warning</dt><dd>do not delete child classes using the delete operator or deleteLater method of the QObject class. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="softdelete_8cpp_source.html#l00013">13</a> of file <a class="el" href="softdelete_8cpp_source.html">softdelete.cpp</a>.</p>
@@ -262,7 +262,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>prepareForDelete This method must be prepare object for delete. Override this for working main functions of this class. For more information see the <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class and <a class="el" href="#a42620e71c093be57dd74575925a51b01" title="~SoftDelete This destructor has bin crashed if the softDelete method not will be invoked before delet...">SoftDelete::~SoftDelete</a> distructor. </p>
+<p>prepareForDelete This method must be prepare object for delete. Override this for working main functions of this class. For more information see the <a class="el" href="classQH_1_1SoftDelete.html" title="The SoftDelete class povide the soft delete functionality. All child classes of this class must be de...">SoftDelete</a> class and <a class="el" href="#a42620e71c093be57dd74575925a51b01" title="~SoftDelete This distructor has bin crashed if the softDelete method not will be invoked before delet...">SoftDelete::~SoftDelete</a> distructor. </p>
 
 <p>Implemented in <a class="el" href="classQH_1_1AbstractNode.html#a7cf8ff65202c98fae65a62eb74285793">QH::AbstractNode</a>, and <a class="el" href="classQH_1_1ISqlDB.html#a1f2a03c6dd9215e8277b8ff1ea3858ca">QH::ISqlDB</a>.</p>
 <div class="dynheader">

@@ -1,8 +1,8 @@
 <map id="QH::AbstractNode::getWorkState" name="QH::AbstractNode::getWorkState">
 <area shape="rect" id="Node000001" title="getWorkState &#45; This method collect general information about this server. For more information about ..." alt="" coords="5,208,205,253"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a98cf7ecc288c162cb5c9dbb4a8d348dc" title="activeConnectionsList This method return list of actived nodes connections" alt="" coords="283,5,468,50"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1AbstractNode.html#a98cf7ecc288c162cb5c9dbb4a8d348dc" title="activeConnectionsList This method return list of activated nodes connections" alt="" coords="283,5,468,50"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,206,170,134,208,94,251,60,271,51,267,55,254,65,211,98,174,137,122,209"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a418d91a221cf6700ba0e3d8af1063cfe" title="banedList This method retrun list of banned clients of nodes." alt="" coords="272,74,480,102"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNode.html#a418d91a221cf6700ba0e3d8af1063cfe" title="banedList This method return list of banned clients of nodes." alt="" coords="272,74,480,102"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,206,180,158,215,133,252,112,274,105,269,108,254,117,218,137,184,162,130,209"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1AbstractNode.html#a1f19acfbc98569ebd246d5c9c172c55b" title="connectionsList This method return list of all node connections" alt="" coords="253,126,499,154"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="149,205,198,183,252,162,281,156,276,159,254,168,200,188,152,210"/>

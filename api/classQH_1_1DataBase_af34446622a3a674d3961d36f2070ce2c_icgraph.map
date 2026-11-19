@@ -1,5 +1,5 @@
 <map id="QH::DataBase::initSqlDb" name="QH::DataBase::initSqlDb">
-<area shape="rect" id="Node000001" title="intSqlDb This method initalize database of this node or server." alt="" coords="195,32,374,60"/>
+<area shape="rect" id="Node000001" title="intSqlDb This method initialize database of this node or server." alt="" coords="195,32,374,60"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="5,5,147,33"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,33,147,31,147,26,182,32"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1DataBase.html#ae2aacb918b635f7d66665487959e432d" title="run This method is some as AbstractNode::run but set for node custom work folder. This maybe use for ..." alt="" coords="5,57,147,85"/>

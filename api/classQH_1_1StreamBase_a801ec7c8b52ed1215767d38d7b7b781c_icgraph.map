@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title="fromStream This method should be read all bytes from the stream object and full the current object." alt="" coords="846,293,1061,321"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1StreamBase.html#ae9f92216a15fdeb3f5742df1843c5391" title="fromBytes This method provide initialization of object from byte array." alt="" coords="590,255,794,282"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="837,291,790,286,790,280,843,290"/>
-<area shape="rect" id="Node000014" href="$classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2" title="This is wraper over fromStream. For see more information see toStream method." alt="" coords="585,331,798,358"/>
+<area shape="rect" id="Node000014" href="$classQH_1_1StreamBase.html#a7e48742a89c739d22d5c344c0f2dd5d2" title="This is wrapper over fromStream. For see more information see toStream method." alt="" coords="585,331,798,358"/>
 <area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="834,324,794,333,793,327,839,323"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1AccessToken.html#a9aec9093056fedad8e93f4b689387dc1" title="AccessToken &#45; Create token from bytes array of another token." alt="" coords="313,5,534,33"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="677,240,656,198,626,145,585,91,562,67,536,47,516,36,516,31,538,42,565,63,589,88,630,142,661,195,682,241"/>
@@ -16,7 +16,7 @@
 <area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="571,269,509,271,508,266,576,268"/>
 <area shape="rect" id="Node000010" href="$classQH_1_1StreamBase.html#a43522cd09c37ab3fcb6d75854691fb55" title="fromBase64 This method provide initialization of object from the base64 string." alt="" coords="316,315,532,342"/>
 <area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="609,287,490,317,488,312,614,285"/>
-<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1AbstractData.html#aaff086fb5d1913a52d79ac528c90221e" title="fromPakcage &#45; This method initialize the current object from a package class object." alt="" coords="339,366,508,411"/>
+<area shape="rect" id="Node000011" href="$classQH_1_1PKG_1_1AbstractData.html#acbc0bb4cfaf3307d98a67ac69ba8e803" title="fromPackage &#45; This method initialize the current object from a package class object." alt="" coords="339,366,508,411"/>
 <area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="599,288,587,297,572,311,563,326,554,341,539,356,510,371,508,366,535,352,550,338,559,323,567,308,583,293,594,290"/>
 <area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1Ping.html#ac3d177fda7a075664eb7cbe97d7b02be" title=" " alt="" coords="350,435,498,462"/>
 <area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="593,289,587,297,574,312,567,327,564,360,560,393,553,409,539,425,520,437,499,445,497,440,518,433,535,421,548,406,555,391,559,359,562,326,570,309,583,293,588,292"/>

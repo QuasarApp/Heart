@@ -7,7 +7,7 @@
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="360,422,403,424,398,425,361,427"/>
 <area shape="rect" id="Node000012" href="$classQH_1_1PKG_1_1AbstractData.html#abf99d87280794a4b049babd8da1641ed" title="toString &#45; Return a string implementation for this object." alt="" coords="408,164,577,208"/>
 <area shape="poly" id="edge21_Node000002_Node000012" title=" " alt="" coords="303,400,460,221,464,218,306,403"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="1353,392,1506,436"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="1353,392,1506,436"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="569,418,625,417,945,410,1265,410,1340,413,1335,413,1265,415,945,415,625,422,570,424"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#af532ef59ced4b1768cc1902f8a68e67c" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="633,432,787,476"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="569,432,620,441,615,442,570,438"/>
@@ -44,7 +44,7 @@
 <area shape="poly" id="edge25_Node000014_Node000016" title=" " alt="" coords="794,169,830,165,825,167,796,174"/>
 <area shape="poly" id="edge27_Node000016_Node000013" title=" " alt="" coords="950,125,997,83,1027,62,1059,43,1080,37,1075,40,1061,48,1030,66,1001,88,953,129"/>
 <area shape="poly" id="edge33_Node000016_Node000015" title=" " alt="" coords="991,170,1061,195,1082,205,1077,205,1059,200,991,175"/>
-<area shape="rect" id="Node000017" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="1345,109,1514,137"/>
+<area shape="rect" id="Node000017" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="1345,109,1514,137"/>
 <area shape="poly" id="edge26_Node000016_Node000017" title=" " alt="" coords="1012,143,1332,128,1327,129,1013,148"/>
 <area shape="rect" id="Node000018" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="1086,159,1239,186"/>
 <area shape="poly" id="edge28_Node000016_Node000018" title=" " alt="" coords="1012,155,1073,163,1068,164,1013,161"/>
@@ -53,7 +53,7 @@
 <area shape="poly" id="edge29_Node000018_Node000017" title=" " alt="" coords="1239,156,1339,140,1333,141,1240,161"/>
 <area shape="rect" id="Node000019" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="1356,161,1503,189"/>
 <area shape="poly" id="edge30_Node000018_Node000019" title=" " alt="" coords="1239,171,1343,174,1337,175,1240,176"/>
-<area shape="rect" id="Node000020" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="1594,187,1798,214"/>
+<area shape="rect" id="Node000020" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="1594,187,1798,214"/>
 <area shape="poly" id="edge32_Node000018_Node000020" title=" " alt="" coords="1227,184,1314,198,1450,205,1581,206,1575,207,1450,210,1313,203,1227,190"/>
 <area shape="poly" id="edge31_Node000019_Node000020" title=" " alt="" coords="1503,179,1581,189,1575,190,1504,185"/>
 <area shape="rect" id="Node000022" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="1313,5,1546,33"/>

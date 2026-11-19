@@ -1,0 +1,9 @@
+<map id="src/public/packages/bigdatawrapper.h" name="src/public/packages/bigdatawrapper.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="266,5,414,50"/>
+<area shape="rect" id="Node000002" href="$bigdataparser_8cpp.html" title=" " alt="" coords="5,106,216,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="274,57,145,108,143,103,268,55"/>
+<area shape="rect" id="Node000003" href="$abstractnode_8cpp.html" title=" " alt="" coords="240,106,440,134"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="342,64,342,107,338,104,338,67"/>
+<area shape="rect" id="Node000004" href="$bigdatawrapper_8cpp.html" title=" " alt="" coords="463,98,616,143"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="402,54,495,98,489,97,401,59"/>
+</map>

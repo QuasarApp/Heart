@@ -1,5 +1,5 @@
 <map id="QH::Package::calcHash" name="QH::Package::calcHash">
-<area shape="rect" id="Node000001" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="2635,259,2804,287"/>
+<area shape="rect" id="Node000001" title="calcHash This method recalc hash sum for this package." alt="" coords="2635,259,2804,287"/>
 <area shape="rect" id="Node000002" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="2434,234,2587,262"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="2617,261,2587,260,2587,254,2622,261"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1AbstractData.html#a5a9b243f140fce1a72707858a1182720" title="toPackage This method convert this class object to the package. For more info see Package class." alt="" coords="2186,156,2356,201"/>

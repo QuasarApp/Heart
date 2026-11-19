@@ -23,7 +23,7 @@ var hierarchy =
           [ "QH::PKG::BigDataPart", "classQH_1_1PKG_1_1BigDataPart.html", null ],
           [ "QH::PKG::BigDataRequest", "classQH_1_1PKG_1_1BigDataRequest.html", null ]
         ] ],
-        [ "QH::PKG::BigDataWraper", "classQH_1_1PKG_1_1BigDataWraper.html", null ],
+        [ "QH::PKG::BigDataWrapper", "classQH_1_1PKG_1_1BigDataWrapper.html", null ],
         [ "QH::PKG::CloseConnection", "classQH_1_1PKG_1_1CloseConnection.html", null ],
         [ "QH::PKG::DBObject", "classQH_1_1PKG_1_1DBObject.html", [
           [ "QH::PKG::DBObjectSet", "classQH_1_1PKG_1_1DBObjectSet.html", [
@@ -67,7 +67,10 @@ var hierarchy =
         ] ],
         [ "QH::DistVersion", "classQH_1_1DistVersion.html", null ],
         [ "QH::PKG::AbstractData", "classQH_1_1PKG_1_1AbstractData.html", null ],
-        [ "QH::Package", "classQH_1_1Package.html", null ]
+        [ "QH::Package", "classQH_1_1Package.html", null ],
+        [ "QH::StreamMultiversion", "classQH_1_1StreamMultiversion.html", [
+          [ "QH::TranslatableString", "classQH_1_1TranslatableString.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "QH::AsyncRenderLoop::MainSharedPtr&lt; T &gt;", "classQH_1_1AsyncRenderLoop_1_1MainSharedPtr.html", null ],

@@ -1,0 +1,25 @@
+<map id="src/public/translatablestring.cpp" name="src/public/translatablestring.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="432,5,662,33"/>
+<area shape="rect" id="Node000002" href="$translatablestring_8h.html" title=" " alt="" coords="305,81,453,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="514,35,424,77,421,72,519,32"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="477,81,616,109"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="548,31,549,67,545,64,545,36"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="641,81,775,109"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="576,31,669,74,663,75,575,36"/>
+<area shape="rect" id="Node000003" href="$streammultiversion_8h.html" title=" " alt="" coords="298,157,460,184"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,107,381,142,376,140,377,111"/>
+<area shape="rect" id="Node000004" href="$streambase_8h.html" title=" " alt="" coords="324,232,434,260"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="380,183,381,218,377,215,377,187"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,308,102,336"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="324,263,117,309,116,304,323,257"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="126,308,235,336"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="346,260,231,305,229,300,341,261"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="260,308,365,336"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="369,259,335,299,333,294,364,262"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="388,308,503,336"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="392,258,426,297,421,296,390,263"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="527,308,660,336"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="418,258,543,302,538,303,417,263"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="684,308,775,336"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="435,256,671,307,666,308,434,261"/>
+</map>

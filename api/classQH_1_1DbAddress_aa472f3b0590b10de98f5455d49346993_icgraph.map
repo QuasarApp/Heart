@@ -5,7 +5,7 @@
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="682,118,669,114,643,112,618,114,604,119,601,124,607,134,602,132,596,124,601,115,617,109,643,107,670,109,687,118"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1DbAddressKey.html#ac8f718b70ccd01809c7a8032755964cd" title=" " alt="" coords="252,5,496,33"/>
 <area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="611,123,560,85,495,48,460,36,460,31,497,43,563,81,617,123"/>
-<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This contructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,57,496,85"/>
+<area shape="rect" id="Node000004" href="$classQH_1_1DbAddressKey.html#ac6af6848329c8b0b78e5d6c1305e31f8" title="DbAddressKey This constructor it is vraper of DbAddress::DbAddress constructor." alt="" coords="252,57,496,85"/>
 <area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="578,128,495,106,431,88,431,83,497,101,583,128"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1DbAddressKey.html#aea22139f43b20acf32e17d624245e510" title="equal This method must be make compare between current object and other." alt="" coords="11,147,198,174"/>
 <area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="526,145,396,146,252,150,199,153,198,148,252,145,396,141,531,144"/>

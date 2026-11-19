@@ -36,7 +36,7 @@ var classQH_1_1AbstractNodeInfo =
     [ "sigErrorOccurred", "classQH_1_1AbstractNodeInfo.html#ae6cb40339146ed9855baf67f7b3e62de", null ],
     [ "sigReadyRead", "classQH_1_1AbstractNodeInfo.html#a6b7a22230fded7af5b6b43e34e4b3862", null ],
     [ "status", "classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36", null ],
-    [ "statusChaned", "classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56", null ],
+    [ "statusChanged", "classQH_1_1AbstractNodeInfo.html#ae575dff61305938371274996cd4651ab", null ],
     [ "trust", "classQH_1_1AbstractNodeInfo.html#a56a19c808051adade56d38f7d98e6f4b", null ],
     [ "unBan", "classQH_1_1AbstractNodeInfo.html#aac891743c591f485117d82908bf5161e", null ],
     [ "updateConfirmStatus", "classQH_1_1AbstractNodeInfo.html#ab8ca178ded60ce933791cfdfb579da7d", null ],

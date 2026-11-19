@@ -23,7 +23,7 @@ var searchData=
   ['getpackagescount_20',['getPackagesCount',['../classQH_1_1PKG_1_1BigDataHeader.html#a5cef564bc9093af77c6b1ccb647d599c',1,'QH::PKG::BigDataHeader']]],
   ['getpakckagenumber_21',['getPakckageNumber',['../classQH_1_1PKG_1_1BigDataPart.html#ae30c59250749b4883c5bbac0d1c36bdc',1,'QH::PKG::BigDataPart']]],
   ['getparser_22',['getParser',['../classQH_1_1AbstractNodeInfo.html#ab9c6c93d814621904d4500d036a85649',1,'QH::AbstractNodeInfo::getParser(unsigned short cmd)'],['../classQH_1_1AbstractNodeInfo.html#afc6db9aa54811d1e93b97d06f751bc4d',1,'QH::AbstractNodeInfo::getParser(const QString &amp;type)']]],
-  ['getpkgfromarhive_23',['getPkgFromArhive',['../classQH_1_1PackageManager.html#a02db329d867b331a26c633434572213d',1,'QH::PackageManager']]],
+  ['getpkgfromarchive_23',['getPkgFromArchive',['../classQH_1_1PackageManager.html#aa80cb36323fd48fad7fe27f3f4e6ef36',1,'QH::PackageManager']]],
   ['getrequestcmd_24',['getRequestCmd',['../classQH_1_1Request.html#a5333d91f9b2858435bff236255f26ae0',1,'QH::Request']]],
   ['getselectedapiparser_25',['getSelectedApiParser',['../classQH_1_1APIVersionParser.html#ad9f5846d0c4d680cabb972e029a634c3',1,'QH::APIVersionParser']]],
   ['getshared_26',['getShared',['../classQH_1_1AsyncRenderLoop_1_1MainSharedPtr.html#ab0012e4c679010eda0914173051702ff',1,'QH::AsyncRenderLoop::MainSharedPtr']]],

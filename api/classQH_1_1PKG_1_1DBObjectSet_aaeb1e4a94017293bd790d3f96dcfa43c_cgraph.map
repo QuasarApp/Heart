@@ -10,7 +10,7 @@
 <area shape="poly" id="edge43_Node000002_Node000011" title=" " alt="" coords="352,584,421,609,507,634,601,654,698,662,1127,662,1489,671,1483,672,1127,668,698,668,600,660,505,640,420,614,352,589"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1PKG_1_1DBObject.html#a8d312cbe9bfd1fb58f6ce16a3a384637" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="2035,661,2188,706"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="506,479,523,446,548,405,580,365,621,332,660,311,694,297,726,289,758,285,824,286,907,289,1580,289,1624,292,1668,300,1710,314,1752,331,1829,377,1900,432,1962,491,2015,550,2089,649,2084,647,2011,554,1958,495,1896,436,1826,381,1749,336,1709,319,1667,306,1624,297,1580,294,907,294,824,292,758,291,727,294,696,302,662,316,624,337,584,369,552,408,527,449,510,483"/>
-<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="1768,527,1922,571"/>
+<area shape="rect" id="Node000005" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="1768,527,1922,571"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="549,524,619,551,708,580,806,603,857,609,907,612,1344,612,1455,607,1565,596,1751,568,1756,568,1566,601,1455,612,1344,617,907,617,856,615,805,608,706,585,618,556,549,529"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1PKG_1_1DBObject.html#ab2115a558a6450afa88a0f1f7611cf15" title=" " alt="" coords="622,371,776,415"/>
 <area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="539,478,645,422,641,425,542,483"/>
@@ -50,7 +50,7 @@
 <area shape="poly" id="edge27_Node000016_Node000018" title=" " alt="" coords="1210,153,1245,153,1240,155,1211,158"/>
 <area shape="poly" id="edge29_Node000018_Node000015" title=" " alt="" coords="1385,169,1477,212,1502,222,1497,222,1475,217,1385,174"/>
 <area shape="poly" id="edge35_Node000018_Node000017" title=" " alt="" coords="1373,124,1419,92,1474,60,1491,55,1487,57,1477,65,1422,96,1376,128"/>
-<area shape="rect" id="Node000019" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="1760,124,1930,152"/>
+<area shape="rect" id="Node000019" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="1760,124,1930,152"/>
 <area shape="poly" id="edge28_Node000018_Node000019" title=" " alt="" coords="1427,145,1747,140,1742,141,1428,150"/>
 <area shape="rect" id="Node000020" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="1502,175,1655,203"/>
 <area shape="poly" id="edge30_Node000018_Node000020" title=" " alt="" coords="1428,161,1489,173,1484,174,1429,166"/>
@@ -59,7 +59,7 @@
 <area shape="poly" id="edge31_Node000020_Node000019" title=" " alt="" coords="1654,172,1756,155,1751,156,1656,177"/>
 <area shape="rect" id="Node000021" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="1772,176,1919,204"/>
 <area shape="poly" id="edge32_Node000020_Node000021" title=" " alt="" coords="1655,187,1758,189,1753,190,1656,192"/>
-<area shape="rect" id="Node000022" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="2009,202,2214,230"/>
+<area shape="rect" id="Node000022" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="2009,202,2214,230"/>
 <area shape="poly" id="edge34_Node000020_Node000022" title=" " alt="" coords="1646,201,1729,213,1866,219,1996,221,1991,221,1866,225,1729,218,1646,206"/>
 <area shape="poly" id="edge33_Node000021_Node000022" title=" " alt="" coords="1919,195,1996,204,1991,205,1920,200"/>
 <area shape="rect" id="Node000024" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="1729,72,1961,100"/>

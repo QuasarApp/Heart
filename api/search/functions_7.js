@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['handledisckonnetfromhost_0',['handleDisckonnetFromHost',['../classQH_1_1TcpSocket.html#ae4c0d25df1d1a43448943ba069be7170',1,'QH::TcpSocket']]],
+  ['handledisconnectfromhost_0',['handleDisconnectFromHost',['../classQH_1_1TcpSocket.html#ad39faf2fbc1d170254002e0949dcc721',1,'QH::TcpSocket']]],
   ['hash_1',['hash',['../classQH_1_1AbstractKey.html#acde16a481abd4094a9ea19d65216bc04',1,'QH::AbstractKey::hash()'],['../classQH_1_1DbAddressKey.html#a4290e04f7eb12971186b51d5912565d2',1,'QH::DbAddressKey::hash()']]],
   ['header_2',['Header',['../structQH_1_1Header.html#ae8cbf994f1a1a2551f2da89ce611788f',1,'QH::Header']]],
   ['heartlibversion_3',['heartLibVersion',['../namespaceQH.html#af39dfc381f88fc1d4089bb783f0d7f70',1,'QH']]],

@@ -4,13 +4,13 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,73,220,72,625,62,624,67,220,77,173,79"/>
 <area shape="rect" id="Node000005" href="$classQH_1_1AbstractNodeInfo.html#a11fcc13ddb06cef4d562b50496955281" title="setStatus This method Sets new value of status node." alt="" coords="220,87,382,131"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="172,89,207,95,202,96,172,94"/>
-<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivere own version to the distanation node." alt="" coords="851,5,1013,50"/>
+<area shape="rect" id="Node000003" href="$classQH_1_1AbstractNodeInfo.html#a5d8baaf86d3a792f8071207d9ba795c9" title="fVersionDelivered This method return true if this node delivered own version to the destination node." alt="" coords="851,5,1013,50"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="803,46,832,44,838,43,804,52"/>
 <area shape="rect" id="Node000004" href="$classQH_1_1AbstractNodeInfo.html#aed86119d910f2e64cec6e61dab61af45" title="fVersionReceived This method return true if this node receive version information." alt="" coords="851,75,1013,119"/>
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="803,73,838,81,832,81,803,78"/>
 <area shape="rect" id="Node000006" href="$classQH_1_1AbstractNodeInfo.html#a3f737eb5b66aaceb7f0c7ea298841d36" title="status This method return status of the node connection." alt="" coords="640,121,803,166"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="374,129,430,141,530,148,627,150,622,150,530,154,430,146,373,135"/>
-<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeInfo.html#a8d21d81ac9cd91d596e5f77c94805e56" title="statusChaned This signal emitted when nodes status is changed." alt="" coords="430,87,592,131"/>
+<area shape="rect" id="Node000007" href="$classQH_1_1AbstractNodeInfo.html#ae575dff61305938371274996cd4651ab" title="statusChanged This signal emitted when nodes status is changed." alt="" coords="430,87,592,131"/>
 <area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="382,106,417,109,412,109,383,112"/>
 <area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="592,88,623,84,628,83,593,94"/>
 <area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="593,120,627,128,622,128,593,125"/>

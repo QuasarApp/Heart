@@ -64,7 +64,9 @@ var dir_408e3e109cd8ba6803532e2e583521a9 =
     [ "streambase.cpp", "streambase_8cpp.html", "streambase_8cpp" ],
     [ "streambase.h", "streambase_8h.html", "streambase_8h" ],
     [ "streammultiversion.cpp", "streammultiversion_8cpp.html", null ],
-    [ "streammultiversion.h", "streammultiversion_8h.html", null ],
+    [ "streammultiversion.h", "streammultiversion_8h.html", "streammultiversion_8h" ],
+    [ "translatablestring.cpp", "translatablestring_8cpp.html", null ],
+    [ "translatablestring.h", "translatablestring_8h.html", "translatablestring_8h" ],
     [ "workstate.cpp", "workstate_8cpp.html", null ],
     [ "workstate.h", "workstate_8h.html", "workstate_8h" ]
 ];

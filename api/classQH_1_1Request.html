@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -137,7 +137,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="classQH_1_1Request.html" title="The Request class is base interface for working with requests commands.">Request</a> class is base interface for working with requests commands. </p>
-<p>Example ovveriding Requests: </p><div class="fragment"><div class="line"><span class="keyword">class </span>HEARTSHARED_EXPORT MyRequest: <span class="keyword">public</span> MyData, <span class="keyword">public</span> <a class="code hl_function" href="#aa91c0a78d7b783da7c6aa0477b935a1c">Request</a></div>
+<p>Example overriding Requests: </p><div class="fragment"><div class="line"><span class="keyword">class </span>HEARTSHARED_EXPORT MyRequest: <span class="keyword">public</span> MyData, <span class="keyword">public</span> <a class="code hl_function" href="#aa91c0a78d7b783da7c6aa0477b935a1c">Request</a></div>
 <div class="line">{</div>
 <div class="line"><span class="keyword">public</span>:</div>
 <div class="line">    MyRequest();</div>
@@ -156,7 +156,7 @@ Public Member Functions</h2></td></tr>
 <div class="line">};</div>
 <div class="ttc" id="aclassQH_1_1Request_html_a5333d91f9b2858435bff236255f26ae0"><div class="ttname"><a href="#a5333d91f9b2858435bff236255f26ae0">QH::Request::getRequestCmd</a></div><div class="ttdeci">virtual unsigned char getRequestCmd() const =0</div><div class="ttdoc">getRequestCmd This method return request command</div></div>
 <div class="ttc" id="aclassQH_1_1Request_html_aa91c0a78d7b783da7c6aa0477b935a1c"><div class="ttname"><a href="#aa91c0a78d7b783da7c6aa0477b935a1c">QH::Request::Request</a></div><div class="ttdeci">Request()</div><div class="ttdef"><b>Definition</b> <a href="request_8cpp_source.html#l00011">request.cpp:11</a></div></div>
-</div><!-- fragment --><p>So next you need to parse all requests data of p the MyData pacakge. </p><div class="fragment"><div class="line"><span class="keywordtype">bool</span> SingleServer::workWithMyDataRequest(<span class="keyword">const</span> MyData* objr) {</div>
+</div><!-- fragment --><p>So next you need to parse all requests data of p the MyData package. </p><div class="fragment"><div class="line"><span class="keywordtype">bool</span> SingleServer::workWithMyDataRequest(<span class="keyword">const</span> MyData* objr) {</div>
 <div class="line"> </div>
 <div class="line"> <span class="keyword">auto</span> request = <span class="keyword">dynamic_cast&lt;</span><span class="keyword">const </span><a class="code hl_function" href="#aa91c0a78d7b783da7c6aa0477b935a1c">Request</a>*<span class="keyword">&gt;</span>(obj);</div>
 <div class="line"> </div>

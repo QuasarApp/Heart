@@ -1,6 +1,6 @@
 <map id="QH::PKG::DBObject::dbAddress" name="QH::PKG::DBObject::dbAddress">
 <area shape="rect" id="Node000001" title="dbAddress This method return address of the database object. IF the object is not valid then this met..." alt="" coords="5,201,159,246"/>
-<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="819,176,972,220"/>
+<area shape="rect" id="Node000002" href="$classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="819,176,972,220"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,198,206,186,287,177,371,171,535,169,684,176,806,187,801,188,684,181,535,175,371,177,288,182,207,191,154,203"/>
 <area shape="rect" id="Node000003" href="$classQH_1_1PKG_1_1DBObject.html#af532ef59ced4b1768cc1902f8a68e67c" title="table This method should be return name of the database table that should be contains objects with th..." alt="" coords="207,201,360,246"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,221,194,222,189,225,160,226"/>
@@ -34,7 +34,7 @@
 <area shape="poly" id="edge12_Node000009_Node000011" title=" " alt="" coords="1197,378,1232,381,1227,381,1198,383"/>
 <area shape="poly" id="edge14_Node000011_Node000008" title=" " alt="" coords="1371,401,1464,448,1501,463,1495,463,1462,452,1369,406"/>
 <area shape="poly" id="edge20_Node000011_Node000010" title=" " alt="" coords="1365,355,1410,328,1462,301,1475,298,1480,296,1464,306,1412,333,1366,361"/>
-<area shape="rect" id="Node000012" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="1748,443,1917,471"/>
+<area shape="rect" id="Node000012" href="$classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="1748,443,1917,471"/>
 <area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="1415,395,1463,403,1735,445,1729,444,1462,409,1415,400"/>
 <area shape="rect" id="Node000013" href="$classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="1489,367,1642,395"/>
 <area shape="poly" id="edge15_Node000011_Node000013" title=" " alt="" coords="1415,378,1476,381,1471,381,1415,383"/>
@@ -43,7 +43,7 @@
 <area shape="poly" id="edge16_Node000013_Node000012" title=" " alt="" coords="1615,392,1717,422,1766,438,1761,438,1715,427,1615,398"/>
 <area shape="rect" id="Node000014" href="$structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="1758,342,1906,369"/>
 <area shape="poly" id="edge17_Node000013_Node000014" title=" " alt="" coords="1642,371,1740,364,1745,364,1643,376"/>
-<area shape="rect" id="Node000015" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="1996,367,2201,395"/>
+<area shape="rect" id="Node000015" href="$classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="1996,367,2201,395"/>
 <area shape="poly" id="edge19_Node000013_Node000015" title=" " alt="" coords="1642,378,1984,381,1979,381,1642,383"/>
 <area shape="poly" id="edge18_Node000014_Node000015" title=" " alt="" coords="1906,360,1983,370,1978,369,1906,365"/>
 <area shape="rect" id="Node000017" href="$classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="1716,290,1948,317"/>

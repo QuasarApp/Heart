@@ -7,7 +7,7 @@ var namespaceQH_1_1PKG =
     [ "BigDataHeader", "classQH_1_1PKG_1_1BigDataHeader.html", "classQH_1_1PKG_1_1BigDataHeader" ],
     [ "BigDataPart", "classQH_1_1PKG_1_1BigDataPart.html", "classQH_1_1PKG_1_1BigDataPart" ],
     [ "BigDataRequest", "classQH_1_1PKG_1_1BigDataRequest.html", "classQH_1_1PKG_1_1BigDataRequest" ],
-    [ "BigDataWraper", "classQH_1_1PKG_1_1BigDataWraper.html", "classQH_1_1PKG_1_1BigDataWraper" ],
+    [ "BigDataWrapper", "classQH_1_1PKG_1_1BigDataWrapper.html", "classQH_1_1PKG_1_1BigDataWrapper" ],
     [ "CachedDbObjectsRequest", "classQH_1_1PKG_1_1CachedDbObjectsRequest.html", "classQH_1_1PKG_1_1CachedDbObjectsRequest" ],
     [ "CloseConnection", "classQH_1_1PKG_1_1CloseConnection.html", "classQH_1_1PKG_1_1CloseConnection" ],
     [ "CustomDBRequest", "classQH_1_1PKG_1_1CustomDBRequest.html", "classQH_1_1PKG_1_1CustomDBRequest" ],

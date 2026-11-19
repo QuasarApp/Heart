@@ -28,7 +28,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="Logo_Web_alpha.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.922.164648a</span>
+   <div id="projectname">Heart<span id="projectnumber">&#160;1.4.960.c1457dd</span>
    </div>
    <div id="projectbrief">Heart is base back end library for your c++ Qt projects.</div>
   </td>
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('classQH_1_1Sql
 </div><!--header-->
 <div class="contents">
 
-<p>The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> class. This class write and read objects from database (hard level). Before working with database you need to initialize it. The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> support a any sql databases, For list of supported drivers see the Qt Docummentation <a href="https://doc.qt.io/qt-5/sql-driver.html">https://doc.qt.io/qt-5/sql-driver.html</a> For initialize a custom database driver you need to set an own params see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea...">SqlDBWriter::initDb</a> metthod. This class work only on own thread. For change working thread use the Qt method moveToThread.  
+<p>The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> class. This class write and read objects from database (hard level). Before working with database you need to initialize it. The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> support a any sql databases, For list of supported drivers see the Qt Documentation <a href="https://doc.qt.io/qt-5/sql-driver.html">https://doc.qt.io/qt-5/sql-driver.html</a> For initialize a custom database driver you need to set an own params see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re...">SqlDBWriter::initDb</a> metthod. This class work only on own thread. For change working thread use the Qt method moveToThread.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="sqldbwriter_8h_source.html">sqldbwriter.h</a>&gt;</code></p>
@@ -125,7 +125,7 @@ Inheritance diagram for QH::SqlDBWriter:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1SqlDBWriter__inherit__graph.png" border="0" usemap="#aQH_1_1SqlDBWriter_inherit__map" loading="lazy" alt="Inheritance graph"/></div>
 <map name="aQH_1_1SqlDBWriter_inherit__map" id="aQH_1_1SqlDBWriter_inherit__map">
-<area shape="rect" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="77,447,227,899"/>
+<area shape="rect" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="78,447,226,899"/>
 <area shape="rect" href="classQH_1_1AsyncSqlDBWriter.html" title="The AsyncSqlDbWriter class is some as SqlDBWriter but run all command in own thread...." alt="" coords="69,947,235,1042"/>
 <area shape="poly" title=" " alt="" coords="154,912,155,948,150,947,151,916"/>
 <area shape="rect" href="classQH_1_1Async.html" title="The Async class This is bundle of async templates and async wrappers." alt="" coords="5,182,139,343"/>
@@ -141,7 +141,7 @@ Collaboration diagram for QH::SqlDBWriter:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1SqlDBWriter__coll__graph.png" border="0" usemap="#aQH_1_1SqlDBWriter_coll__map" loading="lazy" alt="Collaboration graph"/></div>
 <map name="aQH_1_1SqlDBWriter_coll__map" id="aQH_1_1SqlDBWriter_coll__map">
-<area shape="rect" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="77,447,227,899"/>
+<area shape="rect" title="The SqlDBWriter class. This class write and read objects from database (hard level)...." alt="" coords="78,447,226,899"/>
 <area shape="rect" href="classQH_1_1Async.html" title="The Async class This is bundle of async templates and async wrappers." alt="" coords="5,182,139,343"/>
 <area shape="poly" title=" " alt="" coords="91,355,111,447,106,447,91,360"/>
 <area shape="rect" title=" " alt="" coords="41,5,104,78"/>
@@ -155,13 +155,13 @@ Collaboration diagram for QH::SqlDBWriter:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2d2a100f0f23e89e14b942ed03e5ecdf" id="r_a2d2a100f0f23e89e14b942ed03e5ecdf"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a2d2a100f0f23e89e14b942ed03e5ecdf">SqlDBWriter</a> (QThread *thread)</td></tr>
 <tr class="memitem:ae2e9b94bd78733c489c72e43e8c23c71" id="r_ae2e9b94bd78733c489c72e43e8c23c71"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71">initDb</a> (const QString &amp;initDbParams=<a class="el" href="config_8h.html#a7b9d4fe3f3090d5617cdc86cb250e776">DEFAULT_DB_PATH</a>)</td></tr>
-<tr class="memdesc:ae2e9b94bd78733c489c72e43e8c23c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">initDb This method is wraper of the <a class="el" href="#a99859c7db48d0a77c05b24191453597c" title="initDb This method initialize a database params and create a new database if the old database not exi...">initDb(const QVariantMap &amp;params)</a> method. This implementation read a initDbParams file and get all params from json.  <br /></td></tr>
+<tr class="memdesc:ae2e9b94bd78733c489c72e43e8c23c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">initDb This method is wrapper of the <a class="el" href="#a99859c7db48d0a77c05b24191453597c" title="initDb This method initialize a database params and create a new database if the old database not exi...">initDb(const QVariantMap &amp;params)</a> method. This implementation read a initDbParams file and get all params from json.  <br /></td></tr>
 <tr class="memitem:a99859c7db48d0a77c05b24191453597c" id="r_a99859c7db48d0a77c05b24191453597c"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#a99859c7db48d0a77c05b24191453597c">initDb</a> (const QVariantMap &amp;params)</td></tr>
 <tr class="memdesc:a99859c7db48d0a77c05b24191453597c"><td class="mdescLeft">&#160;</td><td class="mdescRight">initDb This method initialize a database params and create a new database if the old database not exists.  <br /></td></tr>
 <tr class="memitem:ae0a2380ecdf88e1f044bf35e631642fc" id="r_ae0a2380ecdf88e1f044bf35e631642fc"><td class="memItemLeft">virtual bool&#160;</td><td class="memItemRight"><a class="el" href="#ae0a2380ecdf88e1f044bf35e631642fc">isValid</a> () const</td></tr>
 <tr class="memdesc:ae0a2380ecdf88e1f044bf35e631642fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">isValid This method return true if database is successful inited and working correctly.  <br /></td></tr>
 <tr class="memitem:af5d8296ab694df3fbdfcfb26032891e9" id="r_af5d8296ab694df3fbdfcfb26032891e9"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#af5d8296ab694df3fbdfcfb26032891e9">getAllObjects</a> (const <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &amp;templateObject, QList&lt; QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt; &gt; &amp;result) override</td></tr>
-<tr class="memdesc:af5d8296ab694df3fbdfcfb26032891e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects  <br /></td></tr>
+<tr class="memdesc:af5d8296ab694df3fbdfcfb26032891e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">getAllObjects This method execute a select method of the templateObject and return list of all selected from databases or cache objects  <br /></td></tr>
 <tr class="memitem:a5ab62ca1782b6d3012f0f1f5af032995" id="r_a5ab62ca1782b6d3012f0f1f5af032995"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a5ab62ca1782b6d3012f0f1f5af032995">updateObject</a> (const QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt; &amp;ptr, bool wait=false) override</td></tr>
 <tr class="memdesc:a5ab62ca1782b6d3012f0f1f5af032995"><td class="mdescLeft">&#160;</td><td class="mdescRight">updateObject This method execute a update method of the saveObject and save all changes into database.  <br /></td></tr>
 <tr class="memitem:a162a0f239ad6e300fcc1944f7e4c49ba" id="r_a162a0f239ad6e300fcc1944f7e4c49ba"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a162a0f239ad6e300fcc1944f7e4c49ba">deleteObject</a> (const QSharedPointer&lt; <a class="el" href="classQH_1_1PKG_1_1DBObject.html">PKG::DBObject</a> &gt; &amp;ptr, bool wait=false) override</td></tr>
@@ -206,18 +206,18 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a04e893c242b25854f1bf3f64dc196ea5" id="r_a04e893c242b25854f1bf3f64dc196ea5"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a04e893c242b25854f1bf3f64dc196ea5">disableFK</a> ()</td></tr>
 <tr class="memdesc:a04e893c242b25854f1bf3f64dc196ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">disableFK This method disable foreign key for the sqlite database.  <br /></td></tr>
 <tr class="memitem:aebc0936d9761274f2c00dd7c93655cee" id="r_aebc0936d9761274f2c00dd7c93655cee"><td class="memItemLeft">virtual QVariantMap&#160;</td><td class="memItemRight"><a class="el" href="#aebc0936d9761274f2c00dd7c93655cee">getInitParams</a> (const QString &amp;initFile) const</td></tr>
-<tr class="memdesc:aebc0936d9761274f2c00dd7c93655cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">getInitPararm This method read parameters of database.  <br /></td></tr>
-<tr class="memitem:af8374167be0dc29d3c68c1f2d0bcb50d" id="r_af8374167be0dc29d3c68c1f2d0bcb50d"><td class="memItemLeft">virtual QVariantMap&#160;</td><td class="memItemRight"><a class="el" href="#af8374167be0dc29d3c68c1f2d0bcb50d">defaultInitPararm</a> () const</td></tr>
-<tr class="memdesc:af8374167be0dc29d3c68c1f2d0bcb50d"><td class="mdescLeft">&#160;</td><td class="mdescRight">defaultInitPararm This method return default parameters of the database.  <br /></td></tr>
+<tr class="memdesc:aebc0936d9761274f2c00dd7c93655cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">getInitParam This method read parameters of database.  <br /></td></tr>
+<tr class="memitem:a2f24e9645932bb36d4cef57d6c12070b" id="r_a2f24e9645932bb36d4cef57d6c12070b"><td class="memItemLeft">virtual QVariantMap&#160;</td><td class="memItemRight"><a class="el" href="#a2f24e9645932bb36d4cef57d6c12070b">defaultInitParam</a> () const</td></tr>
+<tr class="memdesc:a2f24e9645932bb36d4cef57d6c12070b"><td class="mdescLeft">&#160;</td><td class="mdescRight">defaultInitParam This method return default parameters of the database.  <br /></td></tr>
 <tr class="memitem:aa19ad14ceb874f4f10e862c913f810bb" id="r_aa19ad14ceb874f4f10e862c913f810bb"><td class="memItemLeft">virtual QSqlDatabase&#160;</td><td class="memItemRight"><a class="el" href="#aa19ad14ceb874f4f10e862c913f810bb">initSqlDataBasse</a> (const QString &amp;driverName, const QString &amp;name)</td></tr>
 <tr class="memdesc:aa19ad14ceb874f4f10e862c913f810bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">initSqlDataBasse This method create ad database connection. Without configuration. This method invoked in the initDbPrivate method.  <br /></td></tr>
 <tr class="memitem:a5f11b3868f09461cdff356306f062fe8" id="r_a5f11b3868f09461cdff356306f062fe8"><td class="memItemLeft">QSqlDatabase *&#160;</td><td class="memItemRight"><a class="el" href="#a5f11b3868f09461cdff356306f062fe8">db</a> ()</td></tr>
-<tr class="memdesc:a5f11b3868f09461cdff356306f062fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">db This method return db connection. If <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> in not inited then return nullptr. For more information about initialization the <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea...">SqlDBWriter::initDb</a> method.  <br /></td></tr>
+<tr class="memdesc:a5f11b3868f09461cdff356306f062fe8"><td class="mdescLeft">&#160;</td><td class="mdescRight">db This method return db connection. If <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> in not inited then return nullptr. For more information about initialization the <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re...">SqlDBWriter::initDb</a> method.  <br /></td></tr>
 <tr class="memitem:ad3205d60d667eae806987d519268603a" id="r_ad3205d60d667eae806987d519268603a"><td class="memItemLeft">const QSqlDatabase *&#160;</td><td class="memItemRight"><a class="el" href="#ad3205d60d667eae806987d519268603a">db</a> () const</td></tr>
 <tr class="memdesc:ad3205d60d667eae806987d519268603a"><td class="mdescLeft">&#160;</td><td class="mdescRight">db This is constant implementation of the <a class="el" href="#a5f11b3868f09461cdff356306f062fe8" title="db This method return db connection. If SqlDBWriter in not inited then return nullptr....">SqlDBWriter::db</a> method.  <br /></td></tr>
 <tr class="inherit_header pro_methods_classQH_1_1Async"><td colspan="2">Protected Member Functions inherited from <a class="el" href="classQH_1_1Async.html">QH::Async</a></td></tr>
-<tr class="memitem:a4197b6e43b60906bc878576a92321449 pro_methods_classQH_1_1Async" id="r_a4197b6e43b60906bc878576a92321449"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449">Async</a> (QThread *thread)</td></tr>
-<tr class="memdesc:a4197b6e43b60906bc878576a92321449 pro_methods_classQH_1_1Async"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classQH_1_1Async.html" title="The Async class This is bundle of async templates and async wrappers.">Async</a> This is default constructor of the async object.  <br /></td></tr>
+<tr class="memitem:a1f2a00b8700ae7ba7453ef233d2c7d16 pro_methods_classQH_1_1Async" id="r_a1f2a00b8700ae7ba7453ef233d2c7d16"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16">Async</a> (QThread *thread=nullptr)</td></tr>
+<tr class="memdesc:a1f2a00b8700ae7ba7453ef233d2c7d16 pro_methods_classQH_1_1Async"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classQH_1_1Async.html" title="The Async class This is bundle of async templates and async wrappers.">Async</a> This is default constructor of the async object.  <br /></td></tr>
 <tr class="memitem:adf61825e6c89ee237ab9fdc712999305 pro_methods_classQH_1_1Async" id="r_adf61825e6c89ee237ab9fdc712999305"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="classQH_1_1Async.html#adf61825e6c89ee237ab9fdc712999305">~Async</a> ()</td></tr>
 <tr class="memitem:abc180940c7b61a377ca5b9b0a3f7d268 pro_methods_classQH_1_1Async" id="r_abc180940c7b61a377ca5b9b0a3f7d268"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268">waitFor</a> (bool *condition, int timeout=<a class="el" href="config_8h.html#ae7676cdfa371dfdcf6fb0687737c29a6">WAIT_TIME</a>, bool freaze=true) const</td></tr>
 <tr class="memdesc:abc180940c7b61a377ca5b9b0a3f7d268 pro_methods_classQH_1_1Async"><td class="mdescLeft">&#160;</td><td class="mdescRight">waitFor This is base wait function.  <br /></td></tr>
@@ -230,7 +230,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a077f1563a70a8a58c3641c1fc1d5550e pub_types_classQH_1_1Async" id="r_a077f1563a70a8a58c3641c1fc1d5550e"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="classQH_1_1Async.html#a077f1563a70a8a58c3641c1fc1d5550e">Job</a> = std::function&lt;bool()&gt;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> class. This class write and read objects from database (hard level). Before working with database you need to initialize it. The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> support a any sql databases, For list of supported drivers see the Qt Docummentation <a href="https://doc.qt.io/qt-5/sql-driver.html">https://doc.qt.io/qt-5/sql-driver.html</a> For initialize a custom database driver you need to set an own params see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea...">SqlDBWriter::initDb</a> metthod. This class work only on own thread. For change working thread use the Qt method moveToThread. </p>
+<div class="textblock"><p>The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> class. This class write and read objects from database (hard level). Before working with database you need to initialize it. The <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> support a any sql databases, For list of supported drivers see the Qt Documentation <a href="https://doc.qt.io/qt-5/sql-driver.html">https://doc.qt.io/qt-5/sql-driver.html</a> For initialize a custom database driver you need to set an own params see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re...">SqlDBWriter::initDb</a> metthod. This class work only on own thread. For change working thread use the Qt method moveToThread. </p>
 
 <p class="definition">Definition at line <a class="el" href="sqldbwriter_8h_source.html#l00035">35</a> of file <a class="el" href="sqldbwriter_8h_source.html">sqldbwriter.h</a>.</p>
 </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -256,7 +256,7 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="classQH_1_1SqlDBWriter_a2d2a100f0f23e89e14b942ed03e5ecdf_cgraph.png" border="0" usemap="#aclassQH_1_1SqlDBWriter_a2d2a100f0f23e89e14b942ed03e5ecdf_cgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1SqlDBWriter_a2d2a100f0f23e89e14b942ed03e5ecdf_cgraph" id="aclassQH_1_1SqlDBWriter_a2d2a100f0f23e89e14b942ed03e5ecdf_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,221,33"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="269,5,404,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="269,5,404,33"/>
 <area shape="poly" title=" " alt="" coords="221,17,256,19,250,19,221,22"/>
 </map>
 </div>
@@ -270,7 +270,7 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="1137,46,1107,48,1107,43,1142,46"/>
 <area shape="rect" href="classQH_1_1DataBase.html#a5d98b780aaaeac57a13ca500a79f43c5" title="initDefaultDbObjects This method create a default cache and database writer objects if the input poin..." alt="" coords="702,24,892,68"/>
 <area shape="poly" title=" " alt="" coords="922,46,892,48,892,43,927,46"/>
-<area shape="rect" href="classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="195,32,374,60"/>
+<area shape="rect" href="classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initialize database of this node or server." alt="" coords="195,32,374,60"/>
 <area shape="poly" title=" " alt="" coords="684,47,374,48,374,43,689,45"/>
 <area shape="rect" href="classQH_1_1DataBase.html#a91bcaebc9a0f58940ddf4b5acfcfdb2d" title="sigItemDeleted This signal emitted when database object is deleted." alt="" coords="422,57,654,85"/>
 <area shape="poly" title=" " alt="" coords="689,56,655,62,655,57,684,57"/>
@@ -349,7 +349,7 @@ Here is the caller graph for this function:</div>
 <area shape="rect" title="databaseLocation This method return location of database. If it is sqlite then return path to db file..." alt="" coords="661,24,858,68"/>
 <area shape="rect" href="classQH_1_1DataBase.html#ab43e83e2b219d0585b7cd05ddc23d37e" title="dbLocation This method return location of nodes or clients database." alt="" coords="422,32,613,60"/>
 <area shape="poly" title=" " alt="" coords="643,46,614,48,614,43,649,46"/>
-<area shape="rect" href="classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="195,32,374,60"/>
+<area shape="rect" href="classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initialize database of this node or server." alt="" coords="195,32,374,60"/>
 <area shape="poly" title=" " alt="" coords="404,46,375,48,374,43,409,46"/>
 <area shape="rect" href="classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="5,5,147,33"/>
 <area shape="poly" title=" " alt="" coords="177,33,147,31,147,26,182,32"/>
@@ -383,7 +383,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>db This method return db connection. If <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> in not inited then return nullptr. For more information about initialization the <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea...">SqlDBWriter::initDb</a> method. </p>
+<p>db This method return db connection. If <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> in not inited then return nullptr. For more information about initialization the <a class="el" href="classQH_1_1SqlDBWriter.html" title="The SqlDBWriter class. This class write and read objects from database (hard level)....">SqlDBWriter</a> see the <a class="el" href="#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re...">SqlDBWriter::initDb</a> method. </p>
 <dl class="section return"><dt>Returns</dt><dd>pointer to actual database connection. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="sqldbwriter_8cpp_source.html#l00245">245</a> of file <a class="el" href="sqldbwriter_8cpp_source.html">sqldbwriter.cpp</a>.</p>
@@ -413,7 +413,7 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="1824,288,1808,330,1784,376,1751,422,1710,461,1687,474,1686,469,1707,457,1747,419,1779,373,1803,327,1820,291"/>
 <area shape="rect" href="classQH_1_1DataBase.html#ab43e83e2b219d0585b7cd05ddc23d37e" title="dbLocation This method return location of nodes or clients database." alt="" coords="1233,32,1424,60"/>
 <area shape="poly" title=" " alt="" coords="1482,46,1425,48,1425,43,1487,45"/>
-<area shape="rect" href="classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initalize database of this node or server." alt="" coords="986,32,1165,60"/>
+<area shape="rect" href="classQH_1_1DataBase.html#af34446622a3a674d3961d36f2070ce2c" title="intSqlDb This method initialize database of this node or server." alt="" coords="986,32,1165,60"/>
 <area shape="poly" title=" " alt="" coords="1215,46,1166,48,1165,43,1220,45"/>
 <area shape="rect" href="classQH_1_1DataBase.html#a5aa2de63cd8d28508348eff4d8d31cb7" title="run This method start and initialize the data base connection." alt="" coords="769,5,911,33"/>
 <area shape="poly" title=" " alt="" coords="968,34,912,30,911,25,973,33"/>
@@ -480,8 +480,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="af8374167be0dc29d3c68c1f2d0bcb50d" name="af8374167be0dc29d3c68c1f2d0bcb50d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8374167be0dc29d3c68c1f2d0bcb50d">&#9670;&#160;</a></span>defaultInitPararm()</h2>
+<a id="a2f24e9645932bb36d4cef57d6c12070b" name="a2f24e9645932bb36d4cef57d6c12070b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f24e9645932bb36d4cef57d6c12070b">&#9670;&#160;</a></span>defaultInitParam()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -490,7 +490,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">QVariantMap QH::SqlDBWriter::defaultInitPararm </td>
+          <td class="memname">QVariantMap QH::SqlDBWriter::defaultInitParam </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -503,7 +503,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>defaultInitPararm This method return default parameters of the database. </p>
+<p>defaultInitParam This method return default parameters of the database. </p>
 <dl class="section return"><dt>Returns</dt><dd>map of database params.</dd></dl>
 <p>Support parameters of database:</p>
 <ul>
@@ -521,10 +521,10 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classQH_1_1SqlDBWriter_af8374167be0dc29d3c68c1f2d0bcb50d_icgraph.png" border="0" usemap="#aclassQH_1_1SqlDBWriter_af8374167be0dc29d3c68c1f2d0bcb50d_icgraph" loading="lazy" alt=""/></div>
-<map name="aclassQH_1_1SqlDBWriter_af8374167be0dc29d3c68c1f2d0bcb50d_icgraph" id="aclassQH_1_1SqlDBWriter_af8374167be0dc29d3c68c1f2d0bcb50d_icgraph">
-<area shape="rect" title="defaultInitPararm This method return default parameters of the database." alt="" coords="229,21,411,66"/>
-<area shape="rect" href="classQH_1_1SqlDBWriter.html#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea..." alt="" coords="5,29,181,57"/>
+<div class="center"><img src="classQH_1_1SqlDBWriter_a2f24e9645932bb36d4cef57d6c12070b_icgraph.png" border="0" usemap="#aclassQH_1_1SqlDBWriter_a2f24e9645932bb36d4cef57d6c12070b_icgraph" loading="lazy" alt=""/></div>
+<map name="aclassQH_1_1SqlDBWriter_a2f24e9645932bb36d4cef57d6c12070b_icgraph" id="aclassQH_1_1SqlDBWriter_a2f24e9645932bb36d4cef57d6c12070b_icgraph">
+<area shape="rect" title="defaultInitParam This method return default parameters of the database." alt="" coords="229,21,411,66"/>
+<area shape="rect" href="classQH_1_1SqlDBWriter.html#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re..." alt="" coords="5,29,181,57"/>
 <area shape="poly" title=" " alt="" coords="211,43,181,46,181,41,216,43"/>
 <area shape="poly" title=" " alt="" coords="130,14,118,10,93,8,69,10,56,15,53,20,59,29,54,29,48,20,53,11,68,5,93,3,120,5,136,14"/>
 </map>
@@ -582,7 +582,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="189,106,289,89,294,88,190,111"/>
 <area shape="rect" href="classQH_1_1SqlDBWriter.html#ae13ca87dcbdfdeb6f4eaf467c6cd0d3a" title="deleteQuery This method prepare the delete object query." alt="" coords="273,109,489,137"/>
 <area shape="poly" title=" " alt="" coords="225,129,260,132,255,132,225,135"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="546,5,681,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="546,5,681,33"/>
 <area shape="poly" title=" " alt="" coords="446,54,530,38,536,37,447,59"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="541,57,685,85"/>
 <area shape="poly" title=" " alt="" coords="477,69,528,71,523,71,478,74"/>
@@ -644,7 +644,7 @@ Here is the caller graph for this function:</div>
 <p>deleteQuery This method prepare the delete object query. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">deleteObject</td><td>This is tempalte object for generate a delete query. </td></tr>
+    <tr><td class="paramname">deleteObject</td><td>This is template object for generate a delete query. </td></tr>
   </table>
   </dd>
 </dl>
@@ -664,7 +664,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="267,63,237,65,237,60,272,62"/>
 <area shape="rect" href="classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="537,57,730,85"/>
 <area shape="poly" title=" " alt="" coords="489,69,524,71,519,71,490,74"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="783,31,918,58"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="783,31,918,58"/>
 <area shape="poly" title=" " alt="" coords="731,57,765,55,770,54,731,62"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="778,83,923,110"/>
 <area shape="poly" title=" " alt="" coords="731,80,765,86,760,86,731,85"/>
@@ -778,7 +778,7 @@ Here is the call graph for this function:</div>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">query</td><td>This is query that will be executed. </td></tr>
-    <tr><td class="paramname">bindValues</td><td>This is values that need to bind before excute query. </td></tr>
+    <tr><td class="paramname">bindValues</td><td>This is values that need to bind before execute query. </td></tr>
     <tr><td class="paramname">result</td><td>This is query result value. </td></tr>
   </table>
   </dd>
@@ -797,7 +797,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" title="doQuery This method execute a query in this database." alt="" coords="5,32,197,60"/>
 <area shape="rect" href="classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="245,32,438,60"/>
 <area shape="poly" title=" " alt="" coords="197,43,231,46,226,46,197,48"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="490,5,626,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="490,5,626,33"/>
 <area shape="poly" title=" " alt="" coords="438,31,472,30,478,29,439,37"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="486,57,630,85"/>
 <area shape="poly" title=" " alt="" coords="439,55,473,61,468,61,438,60"/>
@@ -853,7 +853,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" title="doSql This method execute a query in this database." alt="" coords="5,32,178,60"/>
 <area shape="rect" href="classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="226,32,419,60"/>
 <area shape="poly" title=" " alt="" coords="178,43,213,45,207,46,178,48"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="472,5,607,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="472,5,607,33"/>
 <area shape="poly" title=" " alt="" coords="419,31,453,30,459,29,420,37"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="467,57,611,85"/>
 <area shape="poly" title=" " alt="" coords="420,55,454,61,449,61,419,60"/>
@@ -929,7 +929,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>getAllObjects This method execute a select method of the templateObject and return list of all selected from databaes or cache objects </p>
+<p>getAllObjects This method execute a select method of the templateObject and return list of all selected from databases or cache objects </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">templateObject</td><td>This is template object for prepare a select request. </td></tr>
@@ -952,7 +952,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="185,111,302,87,298,91,188,115"/>
 <area shape="rect" href="classQH_1_1SqlDBWriter.html#acbc1518dd1e6ad0be6d572b5244b4c10" title="selectQuery generate select query to database from parameters." alt="" coords="277,169,491,197"/>
 <area shape="poly" title=" " alt="" coords="186,139,302,164,298,167,188,144"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="548,5,683,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="548,5,683,33"/>
 <area shape="poly" title=" " alt="" coords="448,54,538,35,533,39,450,59"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="544,57,688,85"/>
 <area shape="poly" title=" " alt="" coords="480,69,530,70,526,72,482,74"/>
@@ -977,7 +977,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="841,333,902,388,944,420,991,453,1043,483,1100,507,1158,524,1218,530,1648,530,1734,533,1802,536,1867,530,1904,520,1947,505,1982,487,2014,464,2066,419,2070,417,2017,468,1985,491,1949,510,1906,525,1868,535,1802,541,1734,538,1648,535,1218,535,1157,529,1098,512,1041,487,988,457,940,424,899,392,840,338"/>
 <area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#a8d312cbe9bfd1fb58f6ce16a3a384637" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="2556,302,2709,347"/>
 <area shape="poly" title=" " alt="" coords="1076,227,1093,216,1108,201,1116,186,1125,172,1141,157,1214,112,1276,85,1342,72,1428,69,2100,69,2212,70,2301,79,2342,89,2385,105,2483,156,2523,185,2559,219,2611,290,2606,288,2555,223,2520,189,2481,160,2383,109,2340,94,2300,84,2212,75,2100,74,1428,74,1343,77,1278,90,1216,117,1145,161,1130,175,1121,189,1112,204,1097,220,1078,232"/>
-<area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="2289,170,2442,215"/>
+<area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="2289,170,2442,215"/>
 <area shape="poly" title=" " alt="" coords="1075,227,1260,159,1356,131,1396,122,1428,119,1865,119,1976,124,2087,136,2277,172,2271,172,2086,142,1975,129,1865,124,1428,124,1397,128,1357,136,1262,164,1077,232"/>
 <area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#ab2115a558a6450afa88a0f1f7611cf15" title=" " alt="" coords="1143,404,1296,448"/>
 <area shape="poly" title=" " alt="" coords="1046,273,1184,393,1178,393,1045,278"/>
@@ -1017,7 +1017,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="1731,625,1766,632,1761,631,1731,630"/>
 <area shape="poly" title=" " alt="" coords="1904,663,1997,710,2034,726,2029,725,1995,715,1903,669"/>
 <area shape="poly" title=" " alt="" coords="1914,618,1947,600,1970,581,1995,564,2005,561,2011,559,1998,568,1974,585,1950,604,1915,623"/>
-<area shape="rect" href="classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="2281,708,2450,736"/>
+<area shape="rect" href="classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="2281,708,2450,736"/>
 <area shape="poly" title=" " alt="" coords="1949,657,1997,666,2268,709,2263,709,1996,671,1949,663"/>
 <area shape="rect" href="classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="2022,629,2176,657"/>
 <area shape="poly" title=" " alt="" coords="1949,641,2010,643,2004,643,1949,646"/>
@@ -1026,7 +1026,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="2146,655,2250,687,2299,704,2294,703,2249,692,2146,660"/>
 <area shape="rect" href="structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="2292,607,2440,634"/>
 <area shape="poly" title=" " alt="" coords="2176,634,2274,628,2279,628,2176,639"/>
-<area shape="rect" href="classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="2530,632,2734,660"/>
+<area shape="rect" href="classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="2530,632,2734,660"/>
 <area shape="poly" title=" " alt="" coords="2176,642,2250,643,2517,646,2512,646,2250,648,2176,647"/>
 <area shape="poly" title=" " alt="" coords="2440,625,2517,635,2512,635,2440,630"/>
 <area shape="rect" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="2250,555,2482,582"/>
@@ -1063,7 +1063,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>getInitPararm This method read parameters of database. </p>
+<p>getInitParam This method read parameters of database. </p>
 <p>Support parameters of database:</p>
 <ul>
 <li>DBDriver - This is sql driver of data base for more information see The Qt Documentatuons <a href="https://doc.qt.io/qt-5/sql-driver.html">https://doc.qt.io/qt-5/sql-driver.html</a></li>
@@ -1071,7 +1071,7 @@ Here is the call graph for this function:</div>
 <li>DBInitFile - This is sql file with sql code (structure) with default structure of the database.</li>
 <li>DBPass - This is password of a remote database.</li>
 <li>DBLogin - This is login of a remote database.</li>
-<li>DBHost - This is host addres of a remote database.</li>
+<li>DBHost - This is host address of a remote database.</li>
 <li>DBPort - port of a remote database.</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1080,7 +1080,7 @@ Here is the call graph for this function:</div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The Map with readed configuration. IF file is incorrect or not exists then return an empty map. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The Map with read configuration. IF file is incorrect or not exists then return an empty map. </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="sqldbwriter_8cpp_source.html#l00209">209</a> of file <a class="el" href="sqldbwriter_8cpp_source.html">sqldbwriter.cpp</a>.</p>
 <div class="dynheader">
@@ -1088,8 +1088,8 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1SqlDBWriter_aebc0936d9761274f2c00dd7c93655cee_icgraph.png" border="0" usemap="#aclassQH_1_1SqlDBWriter_aebc0936d9761274f2c00dd7c93655cee_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1SqlDBWriter_aebc0936d9761274f2c00dd7c93655cee_icgraph" id="aclassQH_1_1SqlDBWriter_aebc0936d9761274f2c00dd7c93655cee_icgraph">
-<area shape="rect" title="getInitPararm This method read parameters of database." alt="" coords="229,21,407,66"/>
-<area shape="rect" href="classQH_1_1SqlDBWriter.html#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea..." alt="" coords="5,29,181,57"/>
+<area shape="rect" title="getInitParam This method read parameters of database." alt="" coords="229,21,407,66"/>
+<area shape="rect" href="classQH_1_1SqlDBWriter.html#ae2e9b94bd78733c489c72e43e8c23c71" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re..." alt="" coords="5,29,181,57"/>
 <area shape="poly" title=" " alt="" coords="210,43,181,46,181,41,216,43"/>
 <area shape="poly" title=" " alt="" coords="130,14,118,10,93,8,70,10,57,15,54,20,59,29,54,29,48,20,53,11,68,5,93,3,119,5,135,14"/>
 </map>
@@ -1120,11 +1120,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>initDb This method is wraper of the <a class="el" href="#a99859c7db48d0a77c05b24191453597c" title="initDb This method initialize a database params and create a new database if the old database not exi...">initDb(const QVariantMap &amp;params)</a> method. This implementation read a initDbParams file and get all params from json. </p>
+<p>initDb This method is wrapper of the <a class="el" href="#a99859c7db48d0a77c05b24191453597c" title="initDb This method initialize a database params and create a new database if the old database not exi...">initDb(const QVariantMap &amp;params)</a> method. This implementation read a initDbParams file and get all params from json. </p>
 <dl class="section note"><dt>Note</dt><dd>this method must be invoked in the thread as a working thread of this object. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">initDbParams</td><td>This is path to json configuration file with settings of database. For more information see description of the <a class="el" href="#aebc0936d9761274f2c00dd7c93655cee" title="getInitPararm This method read parameters of database.">SqlDBWriter::getInitParams</a> method. </td></tr>
+    <tr><td class="paramname">initDbParams</td><td>This is path to json configuration file with settings of database. For more information see description of the <a class="el" href="#aebc0936d9761274f2c00dd7c93655cee" title="getInitParam This method read parameters of database.">SqlDBWriter::getInitParams</a> method. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1136,11 +1136,11 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_cgraph.png" border="0" usemap="#aclassQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_cgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_cgraph" id="aclassQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_cgraph">
-<area shape="rect" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea..." alt="" coords="5,48,181,76"/>
+<area shape="rect" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re..." alt="" coords="5,48,181,76"/>
 <area shape="poly" title=" " alt="" coords="54,48,48,40,53,30,68,24,93,22,120,24,136,33,130,34,118,30,93,27,69,29,56,34,53,39,59,48"/>
-<area shape="rect" href="classQH_1_1SqlDBWriter.html#af8374167be0dc29d3c68c1f2d0bcb50d" title="defaultInitPararm This method return default parameters of the database." alt="" coords="229,5,411,50"/>
+<area shape="rect" href="classQH_1_1SqlDBWriter.html#a2f24e9645932bb36d4cef57d6c12070b" title="defaultInitParam This method return default parameters of the database." alt="" coords="229,5,411,50"/>
 <area shape="poly" title=" " alt="" coords="180,46,216,43,211,45,182,52"/>
-<area shape="rect" href="classQH_1_1SqlDBWriter.html#aebc0936d9761274f2c00dd7c93655cee" title="getInitPararm This method read parameters of database." alt="" coords="231,75,409,119"/>
+<area shape="rect" href="classQH_1_1SqlDBWriter.html#aebc0936d9761274f2c00dd7c93655cee" title="getInitParam This method read parameters of database." alt="" coords="231,75,409,119"/>
 <area shape="poly" title=" " alt="" coords="181,73,218,81,213,81,181,78"/>
 </map>
 </div>
@@ -1149,7 +1149,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_icgraph.png" border="0" usemap="#aclassQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_icgraph" loading="lazy" alt=""/></div>
 <map name="aclassQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_icgraph" id="aclassQH_1_1SqlDBWriter_ae2e9b94bd78733c489c72e43e8c23c71_icgraph">
-<area shape="rect" title="initDb This method is wraper of the initDb(const QVariantMap &amp;params) method. This implementation rea..." alt="" coords="5,29,181,57"/>
+<area shape="rect" title="initDb This method is wrapper of the initDb(const QVariantMap &amp;params) method. This implementation re..." alt="" coords="5,29,181,57"/>
 <area shape="poly" title=" " alt="" coords="121,14,112,10,93,8,75,10,65,15,63,20,67,29,62,28,57,20,61,11,74,5,93,3,114,5,127,14"/>
 </map>
 </div>
@@ -1183,7 +1183,7 @@ Here is the caller graph for this function:</div>
 <dl class="section note"><dt>Note</dt><dd>this method must be invoked in the some thread as a working thread of this object. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">params</td><td>This is params of initialize a database. For more information about available and supported parameters see the description <a class="el" href="#aebc0936d9761274f2c00dd7c93655cee" title="getInitPararm This method read parameters of database.">SqlDBWriter::getInitParams</a> method. For more information see description of the <a class="el" href="#aebc0936d9761274f2c00dd7c93655cee" title="getInitPararm This method read parameters of database.">SqlDBWriter::getInitParams</a> method. </td></tr>
+    <tr><td class="paramname">params</td><td>This is params of initialize a database. For more information about available and supported parameters see the description <a class="el" href="#aebc0936d9761274f2c00dd7c93655cee" title="getInitParam This method read parameters of database.">SqlDBWriter::getInitParams</a> method. For more information see description of the <a class="el" href="#aebc0936d9761274f2c00dd7c93655cee" title="getInitParam This method read parameters of database.">SqlDBWriter::getInitParams</a> method. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1198,7 +1198,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" title="initDb This method initialize a database params and create a new database if the old database not exi..." alt="" coords="5,32,181,60"/>
 <area shape="rect" href="classQH_1_1Async.html#ae354a6c214d5a658ba07ac4d40ed0b8e" title="asyncLauncher This method invoke a job on the thread (using the asyncHandler method) of this object." alt="" coords="229,32,422,60"/>
 <area shape="poly" title=" " alt="" coords="181,43,216,45,210,46,181,48"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="474,5,610,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="474,5,610,33"/>
 <area shape="poly" title=" " alt="" coords="422,31,456,30,462,29,423,37"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="470,57,614,85"/>
 <area shape="poly" title=" " alt="" coords="423,55,457,61,452,61,422,60"/>
@@ -1307,7 +1307,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="221,84,265,82,260,83,222,89"/>
 <area shape="rect" href="classQH_1_1SqlDBWriter.html#af7081f6138caaaa0b8b52d3889febcd7" title="insertQuery This method prepare the insert object query." alt="" coords="269,109,481,137"/>
 <area shape="poly" title=" " alt="" coords="221,106,256,111,250,111,221,111"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="538,5,673,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="538,5,673,33"/>
 <area shape="poly" title=" " alt="" coords="439,54,523,38,528,37,440,59"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="533,57,677,85"/>
 <area shape="poly" title=" " alt="" coords="472,69,520,71,515,71,472,74"/>
@@ -1505,7 +1505,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="189,83,225,81,219,82,191,88"/>
 <area shape="rect" href="classQH_1_1SqlDBWriter.html#a9932043d43e1c44899c04f50907f2398" title="replaceQuery This method prepare the replce object query." alt="" coords="242,105,426,150"/>
 <area shape="poly" title=" " alt="" coords="190,107,229,114,224,114,190,112"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="488,5,623,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="488,5,623,33"/>
 <area shape="poly" title=" " alt="" coords="401,50,476,36,471,38,402,55"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="483,57,627,85"/>
 <area shape="poly" title=" " alt="" coords="431,66,470,69,465,70,432,72"/>
@@ -1638,7 +1638,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="569,264,631,320,672,353,720,386,772,416,828,441,887,458,947,464,1376,464,1463,467,1530,470,1596,464,1633,454,1676,439,1711,421,1743,399,1794,354,1799,351,1746,403,1713,426,1678,444,1635,460,1597,469,1530,476,1462,473,1376,469,947,469,886,463,826,446,770,421,717,391,669,357,627,324,568,270"/>
 <area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#a8d312cbe9bfd1fb58f6ce16a3a384637" title="primaryKey This method must be return the name of primary key of this object table...." alt="" coords="2284,236,2438,281"/>
 <area shape="poly" title=" " alt="" coords="804,159,822,147,836,133,845,119,854,104,870,90,943,45,1005,19,1071,6,1156,3,1829,3,1941,4,2029,13,2071,23,2113,39,2212,90,2252,119,2287,154,2340,224,2335,222,2283,157,2249,123,2209,94,2111,44,2069,28,2028,18,1941,9,1829,8,1156,8,1072,11,1007,24,945,50,873,94,858,108,849,121,841,136,825,152,807,163"/>
-<area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wraper of DBAddress::id. If This object do not contains a id value then r..." alt="" coords="2018,104,2171,149"/>
+<area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#af58316c8c499590f9f1dcdf76f3abffb" title="primaryValue This method is wrapper of DBAddress::id. If This object do not contains a id value then ..." alt="" coords="2018,104,2171,149"/>
 <area shape="poly" title=" " alt="" coords="805,159,990,92,1085,65,1125,56,1156,53,1594,53,1705,58,1815,71,2005,106,2000,106,1814,76,1704,64,1594,59,1156,59,1126,62,1086,70,992,97,807,164"/>
 <area shape="rect" href="classQH_1_1PKG_1_1DBObject.html#ab2115a558a6450afa88a0f1f7611cf15" title=" " alt="" coords="872,335,1025,380"/>
 <area shape="poly" title=" " alt="" coords="775,204,912,325,907,325,774,209"/>
@@ -1678,7 +1678,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="1460,559,1495,566,1489,566,1460,565"/>
 <area shape="poly" title=" " alt="" coords="1633,598,1726,644,1763,660,1758,659,1724,649,1632,603"/>
 <area shape="poly" title=" " alt="" coords="1643,552,1676,534,1699,515,1724,498,1734,495,1739,494,1726,502,1702,520,1678,538,1644,557"/>
-<area shape="rect" href="classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this pacakge." alt="" coords="2010,642,2179,670"/>
+<area shape="rect" href="classQH_1_1Package.html#a0699ae5f3b8811038abccd594769929e" title="calcHash This method recalc hash sum for this package." alt="" coords="2010,642,2179,670"/>
 <area shape="poly" title=" " alt="" coords="1678,592,1725,600,1997,643,1992,643,1725,605,1677,597"/>
 <area shape="rect" href="classQH_1_1Package.html#a76a50e8688f2f4291760082ee833dde2" title="isValid This method validation a current package. Default implementation is checked a header and comp..." alt="" coords="1751,564,1904,591"/>
 <area shape="poly" title=" " alt="" coords="1678,575,1738,577,1733,578,1678,580"/>
@@ -1687,7 +1687,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="1875,589,1979,622,2028,638,2023,637,1978,627,1874,594"/>
 <area shape="rect" href="structQH_1_1Header.html#a3c0449ee7fa61d31b6e15931ae937362" title="isValid This method check header size and compare commands." alt="" coords="2021,541,2168,569"/>
 <area shape="poly" title=" " alt="" coords="1904,568,2002,563,2008,562,1905,574"/>
-<area shape="rect" href="classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of pacakge. If pacakge large the maximum size then package..." alt="" coords="2259,566,2463,594"/>
+<area shape="rect" href="classQH_1_1Package.html#a8fa4af20e00678236c72123b78cc636c" title="maximumSize This method return maximu size of package. If package large the maximum size then package..." alt="" coords="2259,566,2463,594"/>
 <area shape="poly" title=" " alt="" coords="1905,576,1978,577,2246,581,2240,581,1978,583,1905,582"/>
 <area shape="poly" title=" " alt="" coords="2169,559,2246,569,2240,569,2169,564"/>
 <area shape="rect" href="classQH_1_1StreamBase.html#a6b781c3a7fe49d2c14c6553fb012c999" title="parsingVersion this method return parsing version of Qt. By Default is 0 (last available parsing)...." alt="" coords="1978,489,2211,517"/>
@@ -1801,7 +1801,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="229,84,277,82,272,83,230,89"/>
 <area shape="rect" href="classQH_1_1SqlDBWriter.html#a2b5fd833883a8da69b1d51045616f122" title="updateQuery This method execute update query of object. For more Information see DBObject::prepareUpd..." alt="" coords="277,109,497,137"/>
 <area shape="poly" title=" " alt="" coords="229,106,264,111,259,111,229,111"/>
-<area shape="rect" href="classQH_1_1Async.html#a4197b6e43b60906bc878576a92321449" title="Async This is default constructor of the async object." alt="" coords="554,5,689,33"/>
+<area shape="rect" href="classQH_1_1Async.html#a1f2a00b8700ae7ba7453ef233d2c7d16" title="Async This is default constructor of the async object." alt="" coords="554,5,689,33"/>
 <area shape="poly" title=" " alt="" coords="452,54,538,37,543,36,453,59"/>
 <area shape="rect" href="classQH_1_1Async.html#abc180940c7b61a377ca5b9b0a3f7d268" title="waitFor This is base wait function." alt="" coords="549,57,693,85"/>
 <area shape="poly" title=" " alt="" coords="484,69,536,71,531,71,484,74"/>
