@@ -55,8 +55,8 @@ AbstractNode::AbstractNode( QObject *ptr):
     initThreadId();
 
     // All sockets and the data sender are created and work in the node worker thread (main thread).
-    _dataSender = new DataSender(mainThreadID());
-    _socketWorker = new AsyncLauncher(mainThreadID());
+    _dataSender = new DataSender();
+    _socketWorker = new AsyncLauncher();
     _tasksheduller = new TaskScheduler();
     _apiVersionParser = new APIVersionParser(this);
 

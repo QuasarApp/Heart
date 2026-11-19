@@ -51,7 +51,7 @@ protected:
      * @note @a thread must be a valid thread. It is allowed to use the node worker (main) thread:
      * in this case all jobs are executed directly in that thread. 
      */
-    Async(QThread* thread);
+    Async(QThread* thread = nullptr);
 
     /**
       @note This is async distructor.
