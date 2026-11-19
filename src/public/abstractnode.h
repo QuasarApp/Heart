@@ -243,7 +243,7 @@ public:
      */
     bool addNode(const HostAddress &address,
                  const std::function<void(QH::AbstractNodeInfo *)>& action,
-                 NodeConnectionStatus status = NodeConnectionStatus::Connected);
+                 NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
 
     /**
      * @brief addNode This method add new peer connection to this node and
@@ -269,7 +269,7 @@ public:
      */
     bool addNode(const QString &domain, unsigned short port,
                  const std::function<void(QH::AbstractNodeInfo *)>& action = nullptr,
-                 NodeConnectionStatus status = NodeConnectionStatus::Connected);
+                 NodeCoonectionStatus status = NodeCoonectionStatus::Connected);
 
     /**
      * @brief removeNode - Remove node and disconnected from node (server).
@@ -338,8 +338,8 @@ public:
     static QThread *mainThreadID();
 
     /**
-     * @brief scheduleTask This method schedule execute task on this node.
-     * @param task This is task that will be scheduled.
+     * @brief scheduleTask This method shedule execute task on this node.
+     * @param task This is task that will be sheduled.
      * @return true if task added successful else false
      * @see AbstractNode::removeTask
      * @see AbstractNode::scheduledTaskCount
@@ -348,7 +348,7 @@ public:
     bool scheduleTask(const QSharedPointer<AbstractTask>& task);
 
     /**
-     * @brief removeTask This method remove task from scheduler.
+     * @brief removeTask This method remove task from sheduler.
      * @param taskId This is task id that will be removed.
      * @see AbstractNode::scheduleTask
      * @see AbstractNode::scheduledTaskCount
@@ -356,8 +356,8 @@ public:
     void removeTask(int taskId);
 
     /**
-     * @brief scheduledTaskCount This method return count of scheduled tasks.
-     * @return count of scheduled tasks.
+     * @brief scheduledTaskCount This method return count of sheduled tasks.
+     * @return count of sheduled tasks.
      * @see AbstractNode::scheduleTask
      * @see AbstractNode::removeTask
      */
@@ -684,7 +684,7 @@ private slots:
      * @param status This is new status of node.
      *
      */
-    void handleNodeStatusChanged(QH::AbstractNodeInfo* node, QH::NodeConnectionStatus status);
+    void handleNodeStatusChanged(QH::AbstractNodeInfo* node, QH::NodeCoonectionStatus status);
 
     /**
      * @brief handleWorkerStopped
@@ -792,7 +792,7 @@ private:
     TaskScheduler *_tasksheduller = nullptr;
     APIVersionParser *_apiVersionParser = nullptr;
 
-    QHash<NodeConnectionStatus,
+    QHash<NodeCoonectionStatus,
           QHash<HostAddress,
                 std::function<void (QH::AbstractNodeInfo *)>>> _connectActions;
 

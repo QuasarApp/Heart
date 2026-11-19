@@ -42,7 +42,7 @@ enum class TrustNode: unsigned char {
 /**
  * @brief The AbstractNodeState enum - This is status of the known nodes or clients.
  */
-enum class NodeConnectionStatus: int {
+enum class NodeCoonectionStatus: int {
     /// This node not sent data about its envirement and status of node socket is disconnected.
     NotConnected,
     /// The node with this status has socket status is connected.
@@ -53,11 +53,11 @@ enum class NodeConnectionStatus: int {
 };
 
 /**
- * @brief qHash - Simple hash function of NodeConnectionStatus
+ * @brief qHash - Simple hash function of NodeCoonectionStatus
  * @param status - Input data.
  * @return crc32 hash code
  */
-uint qHash(NodeConnectionStatus status);
+uint qHash(NodeCoonectionStatus status);
 
 /**
  * @brief The AbstractNodeInfo class contains information about client or server connection and tcp socket of node.
@@ -161,15 +161,15 @@ public:
 
     /**
      * @brief status This method return status of the node connection.
-     * @return connection status for more info see NodeConnectionStatus.
+     * @return connection status for more info see NodeCoonectionStatus.
      */
-    NodeConnectionStatus status() const;
+    NodeCoonectionStatus status() const;
 
     /**
      * @brief setStatus This method Sets new value of status node.
      * @param status This is a new status of the node.
      */
-    void setStatus(const NodeConnectionStatus &status);
+    void setStatus(const NodeCoonectionStatus &status);
 
     /**
      * @brief updateConfirmStatus This method invoked after process a received package and update confirm status of the node.
@@ -319,9 +319,9 @@ signals:
     /**
      * @brief statusChanged This signal emitted when nodes status is changed.
      * @param thisNode This is pointer to current object.
-     * @param status This is status of node. For more information see the NodeConnectionStatus enum.
+     * @param status This is status of node. For more information see the NodeCoonectionStatus enum.
      */
-    void statusChanged(QH::AbstractNodeInfo* thisNode, QH::NodeConnectionStatus status);
+    void statusChanged(QH::AbstractNodeInfo* thisNode, QH::NodeCoonectionStatus status);
 
 protected:
 
@@ -340,7 +340,7 @@ private:
 
     QAbstractSocket *_sct = nullptr;
     int _trust = static_cast<int>(TrustNode::Default);
-    NodeConnectionStatus _status = NodeConnectionStatus::NotConnected;
+    NodeCoonectionStatus _status = NodeCoonectionStatus::NotConnected;
     bool _isLocal = false;
 
     QHash<unsigned short, QSharedPointer<iParser>> _parsersMap;
@@ -359,6 +359,6 @@ private:
 
 }
 
-Q_DECLARE_METATYPE(QH::NodeConnectionStatus)
+Q_DECLARE_METATYPE(QH::NodeCoonectionStatus)
 
 #endif // ABSTRACTNODEINFO_H

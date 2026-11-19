@@ -50,7 +50,7 @@ void AbstractNodeInfo::removeSocket() {
                                   "deleteLater",
                                   Qt::QueuedConnection);
 
-        setStatus(NodeConnectionStatus::NotConnected);
+        setStatus(NodeCoonectionStatus::NotConnected);
         emit sigDisconnected(this);
 
     }
@@ -85,7 +85,7 @@ void AbstractNodeInfo::setSct(QAbstractSocket *sct) {
 
     auto connectedF = [this] () {
 
-        setStatus(NodeConnectionStatus::Connected);
+        setStatus(NodeCoonectionStatus::Connected);
         emit sigConnected(this);
     };
 
@@ -113,11 +113,11 @@ void AbstractNodeInfo::setIsLocal(bool isLocal) {
     _isLocal = isLocal;
 }
 
-NodeConnectionStatus AbstractNodeInfo::status() const {
+NodeCoonectionStatus AbstractNodeInfo::status() const {
     return _status;
 }
 
-void AbstractNodeInfo::setStatus(const NodeConnectionStatus &status) {
+void AbstractNodeInfo::setStatus(const NodeCoonectionStatus &status) {
     if (status == _status) {
         return;
     }
@@ -128,7 +128,7 @@ void AbstractNodeInfo::setStatus(const NodeConnectionStatus &status) {
 }
 
 bool AbstractNodeInfo::confirmData() const {
-    return _status != NodeConnectionStatus::NotConnected && fVersionDelivered() && fVersionReceived();
+    return _status != NodeCoonectionStatus::NotConnected && fVersionDelivered() && fVersionReceived();
 }
 
 const PackagesVersionData& AbstractNodeInfo::multiVersionPackages() const {
@@ -165,7 +165,7 @@ void AbstractNodeInfo::setVersion(const VersionData &newVersion) {
 
 void AbstractNodeInfo::updateConfirmStatus() {
     if (confirmData())
-        setStatus(NodeConnectionStatus::Confirmed);
+        setStatus(NodeCoonectionStatus::Confirmed);
 }
 
 bool AbstractNodeInfo::isLocal() const {
@@ -219,14 +219,14 @@ bool AbstractNodeInfo::isValid() const {
 }
 
 bool AbstractNodeInfo::isConnected() const {
-    return isValid() && status() != NodeConnectionStatus::NotConnected;
+    return isValid() && status() != NodeCoonectionStatus::NotConnected;
 }
 
 void AbstractNodeInfo::reset() {
     setSct(nullptr);
     setNetworkAddress(HostAddress{});
     setTrust(static_cast<int>(TrustNode::Default));
-    setStatus(NodeConnectionStatus::NotConnected);
+    setStatus(NodeCoonectionStatus::NotConnected);
     setIsLocal(false);
 
     QMutexLocker lock(&_parsersListMutex);
@@ -266,7 +266,7 @@ void AbstractNodeInfo::addParser(QSharedPointer<iParser> parser) {
     _parsersKeysMap[parser->parserId()] = parser;
 }
 
-uint qHash(NodeConnectionStatus status) {
+uint qHash(NodeCoonectionStatus status) {
     return static_cast<uint>(status);
 }
 

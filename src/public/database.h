@@ -195,7 +195,7 @@ protected:
             trust INTEGER default 0
         );
 
-        CREATE TABLE IF NOT EXISTS MemberPermissions (
+        CREATE TABLE IF NOT EXISTS MemberPermisions (
             memberId VARCHAR(64) NOT NULL,
             objectTable VARCHAR(100) NOT NULL,
             objectId VARCHAR(64) NOT NULL,
@@ -206,7 +206,7 @@ protected:
                     ON DELETE CASCADE
 
         );
-        CREATE UNIQUE INDEX IF NOT EXISTS MemberPermissionsIndex ON MemberPermissions(memberId, objectTable, objectId);
+        CREATE UNIQUE INDEX IF NOT EXISTS MemberPermissionsIndex ON MemberPermisions(memberId, objectTable, objectId);
 
      * \endcode
      * For add own sql code just override this method, but do not forget invoke a base method of a parent class.
@@ -222,7 +222,7 @@ protected:
 
     /**
      * @brief systemTables This method return the set of tables that forbidden for users.
-     * By default is NetworkMembers and MemberPermissions tables.
+     * By default is NetworkMembers and MemberPermisions tables.
      * @return set of tables names.
      */
     virtual QSet<QString> systemTables() const;

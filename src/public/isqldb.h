@@ -66,7 +66,7 @@ enum class CacheAction: int {
  *
  * @note Objects of all implementation of this class must be deleted using the softDelete.
  * The softDelete method create save all cached data into database.
- * If you try delete this object without using softDelete method then destructor of this object emit runtime error exception (on the debug mode only).
+ * If you try delete this object without using softDelete method then distructor of this object emit runtime error exception (on the debug mode only).
  *
  */
 class HEARTSHARED_EXPORT ISqlDB: public QObject, public iObjectProvider, public SoftDelete

@@ -18,7 +18,7 @@
 namespace QH {
 
 /**
- * @brief The TaskScheduler class This class contains queue of all schedule tasks.
+ * @brief The TaskScheduler class This class contains queue of all shedule tasks.
  * @see AbstractTask
  */
 class TaskScheduler: public QObject
@@ -29,11 +29,11 @@ public:
     ~TaskScheduler();
 
     /**
-     * @brief schedule This method schedule new task in this node.
+     * @brief shedule This method shedule new task in this node.
      * @param task This is sharedpointe to taskObject.
-     * @return true if the task scheduled successful. If the task already scheduled the return false.
+     * @return true if the task sheduled successful. If the task already sheduled the return false.
      */
-    bool schedule(const QSharedPointer<AbstractTask>& task);
+    bool shedule(const QSharedPointer<AbstractTask>& task);
 
     /**
      * @brief remove This method remove the @a task from a tasks queue.

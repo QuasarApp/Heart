@@ -249,7 +249,7 @@ bool AbstractNode::addNode(const HostAddress &address) {
 
 bool AbstractNode::addNode(const HostAddress &address,
                            const std::function<void (QH::AbstractNodeInfo *)> &action,
-                           NodeConnectionStatus status) {
+                           NodeCoonectionStatus status) {
 
     auto peer = getInfoPtr(address);
 
@@ -263,7 +263,7 @@ bool AbstractNode::addNode(const HostAddress &address,
 
 bool AbstractNode::addNode(const QString &domain, unsigned short port,
                            const std::function<void (QH::AbstractNodeInfo *)> &action,
-                           NodeConnectionStatus status) {
+                           NodeCoonectionStatus status) {
 
     HostAddress address{domain, port};
     if (address.isNull()) {
@@ -439,7 +439,7 @@ bool AbstractNode::disableSSL() {
 }
 
 void AbstractNode::handleEncrypted(AbstractNodeInfo *node) {
-    handleNodeStatusChanged(node, NodeConnectionStatus::Connected);
+    handleNodeStatusChanged(node, NodeCoonectionStatus::Connected);
 }
 
 void AbstractNode::handleSslErrorOccurredPrivate(SslSocket * sslScocket, const QList<QSslError> &errors) {
@@ -546,7 +546,7 @@ bool AbstractNode::registerSocket(QAbstractSocket *socket, const HostAddress* cl
             this, &AbstractNode::handleNodeStatusChanged,
             Qt::QueuedConnection);
 
-    if (info->status() != NodeConnectionStatus::NotConnected) {
+    if (info->status() != NodeCoonectionStatus::NotConnected) {
         handleNodeStatusChanged(info, info->status());
     }
 
@@ -745,7 +745,7 @@ int AbstractNode::confirmendCount() const {
     QMutexLocker locer(&_connectionsMutex);
 
     for (auto i : _connections) {
-        if (i->status() == NodeConnectionStatus::Confirmed) {
+        if (i->status() == NodeCoonectionStatus::Confirmed) {
             count++;
         }
     }
@@ -1040,7 +1040,7 @@ bool AbstractNode::addApiParser(const QSharedPointer<iParser> &parser) {
 void AbstractNode::receivePing(const QSharedPointer<PKG::Ping> &) {};
 
 bool AbstractNode::scheduleTask(const QSharedPointer<AbstractTask> &task) {
-    return _tasksheduller->schedule(task);
+    return _tasksheduller->shedule(task);
 }
 
 void AbstractNode::removeTask(int taskId) {
@@ -1137,11 +1137,11 @@ void AbstractNode::prepareForDelete() {
     stop();
 }
 
-void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeConnectionStatus status) {
+void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeCoonectionStatus status) {
 
-    if (status == NodeConnectionStatus::NotConnected) {
+    if (status == NodeCoonectionStatus::NotConnected) {
         nodeDisconnected(node);
-    } else if (status == NodeConnectionStatus::Connected) {
+    } else if (status == NodeCoonectionStatus::Connected) {
 
 #ifdef USE_HEART_SSL
         if (_mode != SslMode::NoSSL) {
@@ -1168,14 +1168,14 @@ void AbstractNode::handleNodeStatusChanged(AbstractNodeInfo *node, NodeConnectio
 #endif
 
         nodeConnected(node);
-    } else if (status == NodeConnectionStatus::Confirmed) {
+    } else if (status == NodeCoonectionStatus::Confirmed) {
         nodeConfirmend(node);
     }
 }
 
 void AbstractNode::nodeConfirmend(AbstractNodeInfo *node) {
 
-    auto &actions = _connectActions[NodeConnectionStatus::Confirmed];
+    auto &actions = _connectActions[NodeCoonectionStatus::Confirmed];
     auto action = actions.take(node->networkAddress());
     if (action)
         action(node);
@@ -1186,7 +1186,7 @@ void AbstractNode::nodeConnected(AbstractNodeInfo *node) {
         qCritical() << "Failed to sent version information to dist node";
     }
 
-    auto &actions = _connectActions[NodeConnectionStatus::Connected];
+    auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     auto action = actions.take(node->networkAddress());
     if (action)
         action(node);
@@ -1204,7 +1204,7 @@ void AbstractNode::nodeErrorOccurred(AbstractNodeInfo *nodeInfo,
     QString message("Network error occurred on the %0 node. Message: %1");
     qCritical() << message.arg(nodeInfo->networkAddress().toString(), errorString);
 
-    auto &actions = _connectActions[NodeConnectionStatus::Connected];
+    auto &actions = _connectActions[NodeCoonectionStatus::Connected];
     actions.remove(nodeInfo->networkAddress());
 }
 
@@ -1213,7 +1213,7 @@ void AbstractNode::checkConfirmendOfNode(AbstractNodeInfo *info) {
     if(!info)
         return;
 
-    if (info->status() != NodeConnectionStatus::Confirmed) {
+    if (info->status() != NodeCoonectionStatus::Confirmed) {
         removeNode(info);
     }
 }

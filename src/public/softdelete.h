@@ -14,14 +14,14 @@ namespace QH {
 /**
  * @brief The SoftDelete class povide the soft delete functionality.
  * All child classes of this class must be deleted using the softDelete method for preparring for delete.
- * IF you delete object without prepare then destructor invoke the abort function in debug mode.
- * For release mode destructor print error message only.
+ * IF you delete object without prepare then distructor invoke the abort function in debug mode.
+ * For release mode distructor print error message only.
  */
 class HEARTSHARED_EXPORT SoftDelete {
 public:
     SoftDelete();
     /**
-     * @brief ~SoftDelete This destructor has bin crashed if the softDelete method not will be invoked before delete this object.
+     * @brief ~SoftDelete This distructor has bin crashed if the softDelete method not will be invoked before delete this object.
      * IF you try delete this object on release distribution then you get error message only without invoked std::abort method.
      * @warning do not delete child classes using the delete operator or deleteLater method of the QObject class.
      */
@@ -37,7 +37,7 @@ protected:
     /**
      * @brief prepareForDelete This method must be prepare object for delete.
      * Override this for working main functions of this class.
-     * For more information see the SoftDelete class and SoftDelete::~SoftDelete destructor.
+     * For more information see the SoftDelete class and SoftDelete::~SoftDelete distructor.
      */
     virtual void prepareForDelete() = 0;
 

@@ -15,7 +15,7 @@ namespace QH {
 
 class AbstractNode;
 /**
- * @brief The ScheduleMode enum contains list of the schedule modes.
+ * @brief The ScheduleMode enum contains list of the shedule modes.
  */
 enum class ScheduleMode: int{
     /// In this mode AbstractTask will be executed after **time** msecunds from the moment of adding this task.

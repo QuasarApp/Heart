@@ -134,7 +134,7 @@ QStringList DataBase::SQLSources() const{
 }
 
 QSet<QString> DataBase::systemTables() const {
-    return {"NetworkMembers", "MemberPermissions"};
+    return {"NetworkMembers", "MemberPermisions"};
 }
 
 void DataBase::objectRemoved(const DbAddress &) {
