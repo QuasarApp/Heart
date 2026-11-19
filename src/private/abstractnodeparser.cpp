@@ -43,7 +43,7 @@ ParserResult AbstractNodeParser::parsePackage(const QSharedPointer<PKG::Abstract
     if (!pkg->isValid()) {
         qCritical() << "incoming package is not valid!";
 
-        nodePtr->changeTrust(sender->networkAddress(), CRITICAL_ERROOR);
+        nodePtr->changeTrust(sender->networkAddress(), CRITICAL_ERROR);
         return ParserResult::Error;
     }
 

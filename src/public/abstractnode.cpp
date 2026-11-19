@@ -912,7 +912,7 @@ void AbstractNode::avelableBytes(AbstractNodeInfo *sender) {
             qWarning() << "Invalid Package received." + pkg.toString();
             pkg.reset();
             hdrArray.clear();
-            changeTrust(id, CRITICAL_ERROOR);
+            changeTrust(id, CRITICAL_ERROR);
 
         }
     }

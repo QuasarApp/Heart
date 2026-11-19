@@ -77,8 +77,8 @@ enum class AddNodeError {
     RegisterSocketFailed
 };
 
-#define CRITICAL_ERROOR  -50
-#define LOGICK_ERROOR    -20
+#define CRITICAL_ERROR  -50
+#define LOGIC_ERROR    -20
 #define REQUEST_ERROR    -5
 #define NOTSUPPORT_ERROR -1
 
