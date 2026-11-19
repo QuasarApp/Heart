@@ -6,11 +6,10 @@
 //#
 
 
-#include "shedullertest.h"
+#include "schedulertest.h"
 
 #include "abstractnode.h"
 #include "abstracttask.h"
-#include "ctime"
 #include <QTest>
 #include <QDateTime>
 #include <cmath>

@@ -9,7 +9,7 @@
 #include <QtTest>
 
 #include "abstractnodetest.h"
-#include <shedullertest.h>
+#include <schedulertest.h>
 #include <bigdatatest.h>
 #include <upgradedatabasetest.h>
 #include <multiversiontest.h>

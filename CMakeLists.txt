@@ -45,8 +45,7 @@ else()
 endif()
 
 # Add sub directories
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Network Sql Concurrent REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Network Sql Concurrent REQUIRED)
+find_package(Qt6 COMPONENTS Core Network Sql Concurrent REQUIRED)
 
 add_subdirectory(submodules/QuasarAppLib)
 add_subdirectory(submodules/crc)
@@ -70,4 +69,3 @@ initAll()
 
 configure_file_in(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
 addDoc(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/doxygen.conf)
-
