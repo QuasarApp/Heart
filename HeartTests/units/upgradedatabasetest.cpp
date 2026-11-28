@@ -7,6 +7,7 @@
 #include <isqldb.h>
 #include <database.h>
 #include <qaglobalutils.h>
+#include <QtDebug>
 
 #define LOCAL_TEST_PORT TEST_PORT + 5
 
@@ -89,19 +90,19 @@ void UpgradeDataBaseTest::test() {
     UpgradableDatabase *db = new UpgradableDatabase();
 
     QVERIFY(db->run("UpgradeDBTest"));
-    QuasarAppUtils::Params::log("Run DataBase finished successful", QuasarAppUtils::Info);
+    qInfo() << "Run DataBase finished successful";
 
     QVERIFY(db->checkVersion(3));
-    QuasarAppUtils::Params::log("Version is valid", QuasarAppUtils::Info);
+    qInfo() << "Version is valid";
 
     db->stop();
-    QuasarAppUtils::Params::log("Stop Db finished successful", QuasarAppUtils::Info);
+    qInfo() << "Stop Db finished successful";
 
     QVERIFY(db->run("UpgradeDBTest"));
-    QuasarAppUtils::Params::log("try run again finished successful", QuasarAppUtils::Info);
+    qInfo() << "try run again finished successful";
 
     delete db;
 
-    QuasarAppUtils::Params::log("The UpgradeDataBaseTest test passed.", QuasarAppUtils::Info);
+    qInfo() << "The UpgradeDataBaseTest test passed.";
 
 }
